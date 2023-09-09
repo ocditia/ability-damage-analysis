@@ -1,0 +1,1832 @@
+[
+    {
+      "name": "Elite tectonic",
+      "slot": "helm",
+      "tier": 92,
+      "magic_bonus": 24,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Elite tectonic",
+      "slot": "body",
+      "tier": 92,
+      "magic_bonus": 36,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Elite tectonic",
+      "slot": "legs",
+      "tier": 92,
+      "magic_bonus": 31,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Elite sirenic",
+      "slot": "helm",
+      "tier": 92,
+      "magic_bonus": 0,
+      "range_bonus": 24,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Elite sirenic",
+      "slot": "body",
+      "tier": 92,
+      "magic_bonus": 0,
+      "range_bonus": 36,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Elite sirenic",
+      "slot": "legs",
+      "tier": 92,
+      "magic_bonus": 0,
+      "range_bonus": 31,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Vestments of havoc",
+      "slot": "helm",
+      "tier": 92,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 28,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Vestments of havoc",
+      "slot": "body",
+      "tier": 95,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 42,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Vestments of havoc",
+      "slot": "legs",
+      "tier": 95,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 37,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Vestments of havoc",
+      "slot": "boots",
+      "tier": 95,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 19,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Tectonic",
+      "slot": "helm",
+      "tier": 90,
+      "magic_bonus": 23.2,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Tectonic",
+      "slot": "body",
+      "tier": 90,
+      "magic_bonus": 34.8,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Tectonic",
+      "slot": "legs",
+      "tier": 90,
+      "magic_bonus": 29,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Sirenic",
+      "slot": "helm",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 23.2,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Sirenic",
+      "slot": "body",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 34.8,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Sirenic",
+      "slot": "legs",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 29,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Pernix",
+      "slot": "helm",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 20.3,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Pernix",
+      "slot": "body",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 30.5,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Pernix",
+      "slot": "legs",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 25.4,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Pernix",
+      "slot": "boots",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 12.7,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Pernix",
+      "slot": "gloves",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 12.7,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Virtus",
+      "slot": "helm",
+      "tier": 80,
+      "magic_bonus": 20.3,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Virtus",
+      "slot": "body",
+      "tier": 80,
+      "magic_bonus": 30.5,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Virtus",
+      "slot": "legs",
+      "tier": 80,
+      "magic_bonus": 25.4,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Virtus",
+      "slot": "boots",
+      "tier": 80,
+      "magic_bonus": 12.7,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Virtus gloves",
+      "slot": "gloves",
+      "tier": 80,
+      "magic_bonus": 12.7,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Torva",
+      "slot": "helm",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 20.3,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Torva",
+      "slot": "body",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 30.5,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Torva",
+      "slot": "legs",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 25.4,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Torva",
+      "slot": "boots",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 12.7,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Torva",
+      "slot": "gloves",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 12.7,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Subjugation",
+      "slot": "helm",
+      "tier": 70,
+      "magic_bonus": 17.7,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Subjugation",
+      "slot": "body",
+      "tier": 70,
+      "magic_bonus": 26.5,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Subjugation",
+      "slot": "legs",
+      "tier": 70,
+      "magic_bonus": 22.1,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Subjugation",
+      "slot": "boots",
+      "tier": 70,
+      "magic_bonus": 11,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Subjugation",
+      "slot": "gloves",
+      "tier": 70,
+      "magic_bonus": 11,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Armadyl",
+      "slot": "helm",
+      "tier": 70,
+      "magic_bonus": 0,
+      "range_bonus": 17.7,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Armadyl",
+      "slot": "body",
+      "tier": 70,
+      "magic_bonus": 0,
+      "range_bonus": 26.5,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Armadyl",
+      "slot": "legs",
+      "tier": 70,
+      "magic_bonus": 0,
+      "range_bonus": 22.1,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Armadyl",
+      "slot": "boots",
+      "tier": 70,
+      "magic_bonus": 0,
+      "range_bonus": 11,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Armadyl",
+      "slot": "gloves",
+      "tier": 70,
+      "magic_bonus": 0,
+      "range_bonus": 11,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Bandos",
+      "slot": "helm",
+      "tier": 70,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 17.7,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Bandos",
+      "slot": "body",
+      "tier": 70,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 26.5,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Bandos",
+      "slot": "legs",
+      "tier": 70,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 22.1,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Bandos",
+      "slot": "boots",
+      "tier": 70,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 11,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Bandos",
+      "slot": "gloves",
+      "tier": 70,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 11,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Zaros",
+      "slot": "helm",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 20.3,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Zaros",
+      "slot": "body",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 30.5,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Zaros",
+      "slot": "legs",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 25.4,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Refined Zaros",
+      "slot": "helm",
+      "tier": 85,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 21.6,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Refined Zaros",
+      "slot": "body",
+      "tier": 85,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 32.5,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Refined Zaros",
+      "slot": "legs",
+      "tier": 85,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 27.1,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Seren",
+      "slot": "helm",
+      "tier": 80,
+      "magic_bonus": 20.3,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Seren",
+      "slot": "body",
+      "tier": 80,
+      "magic_bonus": 30.5,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Seren",
+      "slot": "legs",
+      "tier": 80,
+      "magic_bonus": 25.4,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Refined Seren",
+      "slot": "helm",
+      "tier": 85,
+      "magic_bonus": 21.6,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Refined Seren",
+      "slot": "body",
+      "tier": 85,
+      "magic_bonus": 32.5,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Refined Seren",
+      "slot": "legs",
+      "tier": 85,
+      "magic_bonus": 27.1,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Zamorak",
+      "slot": "helm",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 20.3,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Zamorak",
+      "slot": "body",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 30.5,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Zamorak",
+      "slot": "legs",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 25.4,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Refined Zamorak",
+      "slot": "helm",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 21.6,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Refined Zamorak",
+      "slot": "body",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 32.5,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Refined Zamorak",
+      "slot": "legs",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 27.1,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Sliske",
+      "slot": "helm",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Sliske",
+      "slot": "body",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Sliske",
+      "slot": "legs",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Achto primeval",
+      "slot": "helm",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Achto primeval",
+      "slot": "body",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Achto primeval",
+      "slot": "legs",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Achto Tempest",
+      "slot": "helm",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Achto Tempest",
+      "slot": "body",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Achto Tempest",
+      "slot": "legs",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Achto Teralith",
+      "slot": "helm",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Achto Teralith",
+      "slot": "body",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Achto Teralith",
+      "slot": "legs",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Cryptbloom",
+      "slot": "helm",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Cryptbloom",
+      "slot": "body",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Cryptbloom",
+      "slot": "legs",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Zuriel",
+      "slot": "helm",
+      "tier": 80,
+      "magic_bonus": 20.3,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Zuriel",
+      "slot": "body",
+      "tier": 80,
+      "magic_bonus": 30.5,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Zuriel",
+      "slot": "legs",
+      "tier": 80,
+      "magic_bonus": 25.4,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Superior Zuriel",
+      "slot": "helm",
+      "tier": 85,
+      "magic_bonus": 22.4,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Superior Zuriel",
+      "slot": "body",
+      "tier": 85,
+      "magic_bonus": 33.6,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Superior Zuriel",
+      "slot": "legs",
+      "tier": 85,
+      "magic_bonus": 28,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Morrigan",
+      "slot": "helm",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 20.3,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Morrigan",
+      "slot": "body",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 30.5,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Morrigan",
+      "slot": "legs",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 25.4,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Superior Morrigan",
+      "slot": "helm",
+      "tier": 85,
+      "magic_bonus": 0,
+      "range_bonus": 22.4,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Superior Morrigan",
+      "slot": "body",
+      "tier": 85,
+      "magic_bonus": 0,
+      "range_bonus": 33.6,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Superior Morrigan",
+      "slot": "legs",
+      "tier": 85,
+      "magic_bonus": 0,
+      "range_bonus": 28,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Ancient Warrior",
+      "slot": "helm",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 20.3,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Ancient Warrior",
+      "slot": "body",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 30.5,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Ancient Warrior",
+      "slot": "legs",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 25.4,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Superior Ancient Warrior",
+      "slot": "helm",
+      "tier": 85,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 22.4,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Superior Ancient Warrior",
+      "slot": "body",
+      "tier": 85,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 33.6,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Superior Ancient Warrior",
+      "slot": "legs",
+      "tier": 85,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 28,
+      "necro_bonus": 0,
+      "augment": "TRUE"
+    },
+    {
+      "name": "Deathtouch",
+      "slot": "gloves",
+      "tier": 90,
+      "magic_bonus": 14.5,
+      "range_bonus": 14.5,
+      "melee_bonus": 14.5,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Enhanced Kerapac",
+      "slot": "gloves",
+      "tier": 90,
+      "magic_bonus": 14.5,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Kerapac",
+      "slot": "gloves",
+      "tier": 85,
+      "magic_bonus": 13.5,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Enhanced nightmare gauntlets",
+      "slot": "gloves",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 14.5,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Nightmare gauntlets",
+      "slot": "gloves",
+      "tier": 85,
+      "magic_bonus": 0,
+      "range_bonus": 13.5,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Passage",
+      "slot": "gloves",
+      "tier": 85,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 13.5,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Enhanced passage",
+      "slot": "gloves",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 14.5,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Celestial",
+      "slot": "gloves",
+      "tier": 90,
+      "magic_bonus": 14.5,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Ascension",
+      "slot": "gloves",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 14.5,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Trimmed masterwork",
+      "slot": "gloves",
+      "tier": 92,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 15,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Masterwork",
+      "slot": "gloves",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 14.5,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Razorback",
+      "slot": "gloves",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 14.5,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Achto primeval",
+      "slot": "gloves",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Achto tempest",
+      "slot": "gloves",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Achto teralith",
+      "slot": "gloves",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Cinderbanes",
+      "slot": "gloves",
+      "tier": 85,
+      "magic_bonus": 11,
+      "range_bonus": 11,
+      "melee_bonus": 11,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Spellcaster",
+      "slot": "gloves",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Swift",
+      "slot": "gloves",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Blast diffusion",
+      "slot": "boots",
+      "tier": 80,
+      "magic_bonus": 12.7,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Enhanced blast diffusion",
+      "slot": "boots",
+      "tier": 90,
+      "magic_bonus": 14.5,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Laceration",
+      "slot": "boots",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 12.7,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Enhanced laceration",
+      "slot": "boots",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 14.5,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Fleeting",
+      "slot": "boots",
+      "tier": 80,
+      "magic_bonus": 0,
+      "range_bonus": 12.7,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Enhanced fleeting",
+      "slot": "boots",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 14.5,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Hailfire",
+      "slot": "boots",
+      "tier": 90,
+      "magic_bonus": 14.5,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Flarefrost",
+      "slot": "boots",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 14.5,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Emberkeen",
+      "slot": "boots",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 14.5,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Achto primeval",
+      "slot": "boots",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Achto tempest",
+      "slot": "boots",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Achto teralith",
+      "slot": "boots",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Silverhawk",
+      "slot": "boots",
+      "tier": 1,
+      "magic_bonus": 0.2,
+      "range_bonus": 0.2,
+      "melee_bonus": 0.2,
+      "necro_bonus": 0.2,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Trimmed masterwork",
+      "slot": "boots",
+      "tier": 92,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 15,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Masterwork",
+      "slot": "boots",
+      "tier": 90,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 14.5,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Comp",
+      "slot": "cape",
+      "tier": 85,
+      "magic_bonus": 31.5,
+      "range_bonus": 31.5,
+      "melee_bonus": 31.5,
+      "necro_bonus": 31.5,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Igneous",
+      "slot": "cape",
+      "tier": 85,
+      "magic_bonus": 43,
+      "range_bonus": 43,
+      "melee_bonus": 43,
+      "necro_bonus": 43,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Tokhaar",
+      "slot": "cape",
+      "tier": 75,
+      "magic_bonus": 33.5,
+      "range_bonus": 33.5,
+      "melee_bonus": 33.5,
+      "necro_bonus": 33.5,
+      "augment": "FALSE"
+    },
+    {
+      "name": "God cape",
+      "slot": "cape",
+      "tier": 55,
+      "magic_bonus": 31.5,
+      "range_bonus": 31.5,
+      "melee_bonus": 31.5,
+      "necro_bonus": 31.5,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Max cape",
+      "slot": "cape",
+      "tier": 85,
+      "magic_bonus": 31.5,
+      "range_bonus": 31.5,
+      "melee_bonus": 31.5,
+      "necro_bonus": 31.5,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Fire cape",
+      "slot": "cape",
+      "tier": 55,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 26.3,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Skillcape",
+      "slot": "cape",
+      "tier": 80,
+      "magic_bonus": 21.6,
+      "range_bonus": 21.6,
+      "melee_bonus": 21.6,
+      "necro_bonus": 21.6,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Reavers",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 27.7,
+      "range_bonus": 27.7,
+      "melee_bonus": 27.7,
+      "necro_bonus": 27.7,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Channelers",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 30.4,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Stalkers",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 30.4,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Champions",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 30.4,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Death",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 25.2,
+      "range_bonus": 25.2,
+      "melee_bonus": 25.2,
+      "necro_bonus": 25.2,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Death (i)",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 27.7,
+      "range_bonus": 27.7,
+      "melee_bonus": 27.7,
+      "necro_bonus": 27.7,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Asylum surgeon",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 21,
+      "range_bonus": 21,
+      "melee_bonus": 21,
+      "necro_bonus": 21,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Asylum surgeon (i)",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 23.4,
+      "range_bonus": 23.4,
+      "melee_bonus": 23.4,
+      "necro_bonus": 23.4,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Vigour",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 12,
+      "range_bonus": 12,
+      "melee_bonus": 12,
+      "necro_bonus": 12,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Seer",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 17.3,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Berserker",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 12,
+      "range_bonus": 12,
+      "melee_bonus": 12,
+      "necro_bonus": 12,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Archer",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 17.3,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Warrior",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 17.3,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Seer (i)",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 25.2,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Berserker (i)",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 17.3,
+      "range_bonus": 17.3,
+      "melee_bonus": 17.3,
+      "necro_bonus": 17.3,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Archer (i)",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 25.2,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Warrior (i)",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 25.2,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "LOTD",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 17.3,
+      "range_bonus": 17.3,
+      "melee_bonus": 17.3,
+      "necro_bonus": 17.3,
+      "augment": "FALSE"
+    },
+    {
+      "name": "LOTD (i)",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 19.8,
+      "range_bonus": 19.8,
+      "melee_bonus": 19.8,
+      "necro_bonus": 19.8,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Sixth Age",
+      "slot": "ring",
+      "tier": 0,
+      "magic_bonus": 21,
+      "range_bonus": 21,
+      "melee_bonus": 21,
+      "necro_bonus": 21,
+      "augment": "FALSE"
+    },
+    {
+      "name": "EOF (or)",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 59,
+      "range_bonus": 59,
+      "melee_bonus": 59,
+      "necro_bonus": 59,
+      "augment": "FALSE"
+    },
+    {
+      "name": "EOF",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 56,
+      "range_bonus": 56,
+      "melee_bonus": 56,
+      "necro_bonus": 56,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Souls",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 46.3,
+      "range_bonus": 46.3,
+      "melee_bonus": 46.3,
+      "necro_bonus": 46.3,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Souls (or)",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 48,
+      "range_bonus": 48,
+      "melee_bonus": 48,
+      "necro_bonus": 48,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Reaper",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 36.8,
+      "range_bonus": 36.8,
+      "melee_bonus": 36.8,
+      "necro_bonus": 36.8,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Reaper (or)",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 38.4,
+      "range_bonus": 38.4,
+      "melee_bonus": 38.4,
+      "necro_bonus": 38.4,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Salve",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Salve (e)",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 4.2,
+      "range_bonus": 4.2,
+      "melee_bonus": 4.2,
+      "necro_bonus": 4.2,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Blood fury",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 32.7,
+      "range_bonus": 32.7,
+      "melee_bonus": 32.7,
+      "necro_bonus": 32.7,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Desert 4",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 30.2,
+      "range_bonus": 30.2,
+      "melee_bonus": 30.2,
+      "necro_bonus": 30.2,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Fury (t)",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 34.2,
+      "range_bonus": 34.2,
+      "melee_bonus": 34.2,
+      "necro_bonus": 34.2,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Dragon rider",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 30.2,
+      "range_bonus": 30.2,
+      "melee_bonus": 30.2,
+      "necro_bonus": 30.2,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Amulet of the forsaken",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 36.8,
+      "range_bonus": 36.8,
+      "melee_bonus": 36.8,
+      "necro_bonus": 36.8,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Berserker",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 30.2,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Zealots",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Farsight",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 44.1,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Arcane",
+      "slot": "neck",
+      "tier": 0,
+      "magic_bonus": 44.1,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Scripture of Jas",
+      "slot": "pocket",
+      "tier": 0,
+      "magic_bonus": 8,
+      "range_bonus": 8,
+      "melee_bonus": 8,
+      "necro_bonus": 8,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Scripture of Ful",
+      "slot": "pocket",
+      "tier": 0,
+      "magic_bonus": 8,
+      "range_bonus": 8,
+      "melee_bonus": 8,
+      "necro_bonus": 8,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Scripture of Wen",
+      "slot": "pocket",
+      "tier": 0,
+      "magic_bonus": 8,
+      "range_bonus": 8,
+      "melee_bonus": 8,
+      "necro_bonus": 8,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Grimoire",
+      "slot": "pocket",
+      "tier": 0,
+      "magic_bonus": 7,
+      "range_bonus": 7,
+      "melee_bonus": 7,
+      "necro_bonus": 7,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Berserk blood essence",
+      "slot": "pocket",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Scrimshaw of cruelty",
+      "slot": "pocket",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Superior scrimshaw of cruelty",
+      "slot": "pocket",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Scrimshaw of vampyrism",
+      "slot": "pocket",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    },
+    {
+      "name": "Superior scrimshaw of vampyrism",
+      "slot": "pocket",
+      "tier": 0,
+      "magic_bonus": 0,
+      "range_bonus": 0,
+      "melee_bonus": 0,
+      "necro_bonus": 0,
+      "augment": "FALSE"
+    }
+  ]
