@@ -89,7 +89,7 @@ class AbilityDmg {
     }
   
     computeAd() {
-      const thAbilityDmg = (2.5 * this.magicLvl) + (2.5 * this.magicLvl) + (14.4 * SET_INS.thTier + 1.5 * this.magicBonus);
+      const thAbilityDmg = (2.5 * this.magicLvl) + (1.25 * this.magicLvl) + (14.4 * SET_INS.thTier + 1.5 * this.magicBonus);
       const mhAbilityDmg = (2.5 * this.magicLvl) + (9.6 * SET_INS.mhTier + this.magicBonus);
       const ohAbilityDmg = 0.5 * ((2.5 * this.magicLvl) + (9.6 * SET_INS.ohTier + this.magicBonus));
   
