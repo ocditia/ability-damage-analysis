@@ -162,10 +162,6 @@ button,select {
     text-transform: none
 }
 
-button,[type=button] {
-    -webkit-appearance: button
-}
-
 legend {
     padding: 0
 }
@@ -272,7 +268,6 @@ pre,code,kbd,samp {
 
 img,svg,video,canvas,audio,iframe,embed,object {
     display: block;
-    vertical-align: middle
 }
 
 img,video {
