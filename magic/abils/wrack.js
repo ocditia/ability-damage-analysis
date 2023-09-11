@@ -6,16 +6,13 @@ const Crit = require('../magic_crit')
 const timeStrike = require('./timestrike')
 
 function wrack(type, settings) {
-    const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const CAST_INS = new OnCast();
-
-    let AD = AD_INS.calcAd(type, settings['level'], settings['bonus'], settings['th']['tier'], settings['mh']['tier'], settings['oh']['tier'], settings['sh']['tier'], settings['sh']['type']);
     
     if (type === 'Two-hand' && settings['th']['name'] === 'Inquisitor staff') {
-        AD = CAST_INS.calcOnCast(AD, settings['enchAff']);
+        settings['AD'] = CAST_INS.calcOnCast(AD, settings['enchAff']);
     }
 
     let fixed = Math.floor(AD * 0.4);

@@ -8,6 +8,7 @@ const settings = {
     'level': 120,
     'boostedLvls': 21,
     'prayer': 0.12,
+    'AD': 1774,
 
     'mh':{
         'name': 'Wand of the praesul',

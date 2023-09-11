@@ -21,6 +21,9 @@ class AbilityDmg {
 
     return AD
   }
+  calcBonus(helm, neck, body, legs, boost, gloves, cape, pocket, ring, reaperCrew) {
+    return helm + neck + body + legs + boost + gloves + cape + pocket + ring + reaperCrew
+  }
 }
   
   module.exports = AbilityDmg;
