@@ -1,6 +1,6 @@
 class Crit {
     calcFCritChance(channeler_stacks, gconc, kalg, kalgSpec, reavers, grim, biting) {
-        let fcrit = parseFloat(
+        let fcrit =
             (0.05 * kalgSpec) +
             (0.01 * kalg) +
             (0.05 * reavers) +
@@ -8,7 +8,7 @@ class Crit {
             biting +
             (0.05 * gconc) +
             (0.04 * channeler_stacks)
-        ).toFixed(4);
+        ;
         
         return fcrit;
     }
