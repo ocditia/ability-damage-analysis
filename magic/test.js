@@ -6,102 +6,54 @@ const wrackBound = require('./abils/wrack_bound')
 
 const settings = {
     'level': 120,
-    'potion': 'Elder overload',
+    'boostedLvls': 21,
     'prayer': 0.12,
 
     'mh':{
         'name': 'Wand of the praesul',
-        'tier': 92,
-        'precise': 0,
-        'equilibrium': 0,
-        'aftershock': 0,
-        'flanking': 0,
-        'spendthrift': 0,
-        'lunging': 0,
-        'ruthless': 0,
+        'tier': 92
     },
 
     'oh':{
         'name': 'Seismic singularity',
-        'tier': 92,
-        'precise': 0,
-        'equilibrium': 0,
-        'aftershock': 0,
-        'flanking': 0,
-        'spendthrift': 0,
-        'lunging': 0,
-        'ruthless': 0,
+        'tier': 92
     },
 
     'th':{
         'name': 'Noxious staff',
-        'tier': 90,
-        'precise': 0,
-        'equilibrium': 0,
-        'aftershock': 0,
-        'flanking': 0,
-        'spendthrift': 0,
-        'lunging': 0,
-        'ruthless': 0,
+        'tier': 90
     },
 
     'sh':{
         'name': 'Kalphite rebounder',
         'tier': 90,
-        'type': 'defender',
-        'precise': 0,
-        'equilibrium': 0,
-        'aftershock': 0,
-        'flanking': 0,
-        'spendthrift': 0,
-        'lunging': 0,
-        'ruthless': 0,
+        'type': 'defender'
     },
 
-    'helm': {
-        'name': 'Tectonic',
-        'bonus': 24
-    },
-    'neck': {
-        'name': 'EOF (or)',
-        'bonus': 14
-    },
-    'body': {
-        'name': 'Tectonic',
-        'bonus': 36
-    },
-    'legs': {
-        'name': 'Tectonic',
-        'bonus': 30
-    },
-    'boots': {
-        'name': 'Enhnanced blast diffusion',
-        'bonus': 12
-    },
-    'gloves': {
-        'name': 'Enhanced Kerapac',
-        'bonus': 12
-    },
-    'ring': {
-        'name': 'Reavers',
-        'bonus': 32
-    },
-    'cape': {
-        'name': 'Igneous',
-        'bonus': 28
-    },
-    'pocket': {
-        'name': 'Grimoire',
-        'bonus': 8
-    },
+    'boots': 'Enhanced blast diffusion',
+
+    'gloves': 'Enhanced Kerapac',
+
+    'ring': 'Reavers',
+
     'aura': {
-        'name': 'Maniacal',
+        'name':'Maniacal',
         'boost': 0.10
     },
 
-    'bitingRank': 4,
-    'armour20': true,
-    'biting': 0.022,
+    'bonus': 0,
+
+    'biting': 0.088,
+    'grimoire': 1,
+    'reavers': 1,
+
+    'salve': false,
+    'scrimshaw': false,
+    'precise': 0,
+    'equilibrium': 0,
+    'ruthless': 0,
+    'flanking': 0,
+    'lunging': 0,
 
     'nope': 0,
     'vuln': 0,
@@ -125,10 +77,9 @@ const settings = {
     'cryptbloom': 0,
     'slayerPerk': 0,
     'kww': 0,
-    'boostedLvls': 21,
     'revenge': 0
 };
 
-const test = wrackBound('Two-hand', settings);
+const test = wrack('Two-hand', settings);
 
 console.log(test);
