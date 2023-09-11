@@ -501,7 +501,7 @@
                             <div class="effect-container">
                                 <img class="effect-icon" src="assets/effect_icons/Channeller's_ring.png">
                                 <p class="effect-text">Enchantment of metaphysics:</p>
-                                <input type="checkbox" id="chan-ench" name="chan-ench" checked>
+                                <input type="checkbox" id="ench-meta" name="ench-meta" checked>
                             </div>
                             <div class="effect-container">
                                 <img class="effect-icon" src="assets/effect_icons/Enchantment_of_affliction_detail.png">
@@ -521,7 +521,7 @@
                             <div class="effect-container">
                                 <img class="effect-icon" src="assets/effect_icons/Kerapac's_wrist_wraps.webp">
                                 <p class="effect-text">Kerapac's wristwraps combust:</p>
-                                <input type="checkbox" id="hex-hunter" name="kww">
+                                <input type="checkbox" id="kww" name="kww">
                             </div>
                             <div class="effect-container">
                                 <img class="effect-icon" src="assets/effect_icons/Binding_contract_(ripper_demon).webp">
@@ -600,8 +600,8 @@
                                 </div>
                             </div>
                             <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Revenge.png">
-                                <p class="effect-text">Revenge stacks:</p>
+                                <img class="job-icon-sm" src="assets/effect_icons/Revenge.png"></td>
+                                <p class="effect-text">Revenge:</p>
                                 <div class="dropdown">
                                     <button class="dropbtn" id="revenge">0</button>
                                     <div class="dropdown-content">
@@ -631,20 +631,150 @@
                             <div class="effect-container">
                                 <img class="job-icon-sm" src="assets/armour_icons/Head_slot.webp"></td>
                                 <div class="dropdown">
-                                    <button class="dropbtn" id="helmet-selection">Elite tectonic</button>
+                                    <button class="dropbtn" id="helmet">Elite tectonic</button>
                                     <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'helmet-selection')">None/Tank</a>
-                                        <a href="#" onclick="changeOption('Elite tectonic', 'potion-selection')">Elite tectonic</a>
-                                        <a href="#" onclick="changeOption('Tectonic', 'potion-selection')">Tectonic</a>
-                                        <a href="#" onclick="changeOption('Superior Zuriel', 'potion-selection')">Superior Zuriel</a>
-                                        <a href="#" onclick="changeOption('Refined Seren', 'potion-selection')">Refined Seren</a>
-                                        <a href="#" onclick="changeOption('Virtus', 'potion-selection')">Virtus</a>
-                                        <a href="#" onclick="changeOption('Seren', 'potion-selection')">Seren</a>
-                                        <a href="#" onclick="changeOption('Zuriel', 'potion-selection')">Zuriel</a>
-                                        <a href="#" onclick="changeOption('Subjugation', 'potion-selection')">Subjugation</a>
+                                        <a href="#" onclick="changeOption('None', 'helmet')">None/Tank</a>
+                                        <a href="#" onclick="changeOption('Elite tectonic', 'helmet')">Elite tectonic</a>
+                                        <a href="#" onclick="changeOption('Tectonic', 'helmet')">Tectonic</a>
+                                        <a href="#" onclick="changeOption('Superior Zuriel', 'helmet')">Superior Zuriel</a>
+                                        <a href="#" onclick="changeOption('Refined Seren', 'helmet')">Refined Seren</a>
+                                        <a href="#" onclick="changeOption('Virtus', 'helmet')">Virtus</a>
+                                        <a href="#" onclick="changeOption('Seren', 'helmet')">Seren</a>
+                                        <a href="#" onclick="changeOption('Zuriel', 'helmet')">Zuriel</a>
+                                        <a href="#" onclick="changeOption('Subjugation', 'helmet')">Subjugation</a>
                                     </div>
                                 </div>
-                                <input type="number" id="helm-bonus">
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Neck_slot.png"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="neck">EOF (or)</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'neck')">None</a>
+                                        <a href="#" onclick="changeOption('EOF (or)', 'neck')">EOF (or)</a>
+                                        <a href="#" onclick="changeOption('EOF', 'neck')">EOF</a>
+                                        <a href="#" onclick="changeOption('AOS (or)', 'neck')">AOS (or)</a>
+                                        <a href="#" onclick="changeOption('AOS', 'neck')">AOS</a>
+                                        <a href="#" onclick="changeOption('Reaper (or)', 'neck')">Reaper (or)</a>
+                                        <a href="#" onclick="changeOption('Reaper', 'neck')">Reaper</a>
+                                        <a href="#" onclick="changeOption('Salve (e)', 'neck')">Salve (e)</a>
+                                        <a href="#" onclick="changeOption('Salve', 'neck')">Salve</a>
+                                        <a href="#" onclick="changeOption('Dragon rider', 'neck')">Dragon rider</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Torso_slot.png"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="body">Elite tectonic</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'body')">None/Tank</a>
+                                        <a href="#" onclick="changeOption('Elite tectonic', 'body')">Elite tectonic</a>
+                                        <a href="#" onclick="changeOption('Tectonic', 'body')">Tectonic</a>
+                                        <a href="#" onclick="changeOption('Superior Zuriel', 'body')">Superior Zuriel</a>
+                                        <a href="#" onclick="changeOption('Refined Seren', 'body')">Refined Seren</a>
+                                        <a href="#" onclick="changeOption('Virtus', 'body')">Virtus</a>
+                                        <a href="#" onclick="changeOption('Seren', 'body')">Seren</a>
+                                        <a href="#" onclick="changeOption('Zuriel', 'body')">Zuriel</a>
+                                        <a href="#" onclick="changeOption('Subjugation', 'body')">Subjugation</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Legs_slot.png"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="legs">Elite tectonic</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'legs')">None/Tank</a>
+                                        <a href="#" onclick="changeOption('Elite tectonic', 'legs')">Elite tectonic</a>
+                                        <a href="#" onclick="changeOption('Tectonic', 'legs')">Tectonic</a>
+                                        <a href="#" onclick="changeOption('Superior Zuriel', 'legs')">Superior Zuriel</a>
+                                        <a href="#" onclick="changeOption('Refined Seren', 'legs')">Refined Seren</a>
+                                        <a href="#" onclick="changeOption('Virtus', 'legs')">Virtus</a>
+                                        <a href="#" onclick="changeOption('Seren', 'legs')">Seren</a>
+                                        <a href="#" onclick="changeOption('Zuriel', 'legs')">Zuriel</a>
+                                        <a href="#" onclick="changeOption('Subjugation', 'legs')">Subjugation</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Feet_slot.png"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="boots">Enhanced blast diffusion</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'boots')">None/Tank</a>
+                                        <a href="#" onclick="changeOption('Enhanced blast diffusion', 'boots')">Enhanced blast diffusion</a>
+                                        <a href="#" onclick="changeOption('Hailfire', 'boots')">Hailfire</a>
+                                        <a href="#" onclick="changeOption('Blast diffusion', 'boots')">Blast diffusion</a>
+                                        <a href="#" onclick="changeOption('Virtus', 'boots')">Virtus</a>
+                                        <a href="#" onclick="changeOption('Sugbjugation', 'boots')">Sugbjugation</a>
+                                        <a href="#" onclick="changeOption('Silverhawk', 'boots')">Silverhawk</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Back_slot.png"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="cape">Igneous</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'cape')">None/Tank</a>
+                                        <a href="#" onclick="changeOption('Igneous', 'cape')">Igneous</a>
+                                        <a href="#" onclick="changeOption('Completionist', 'cape')">Completionist</a>
+                                        <a href="#" onclick="changeOption('Tokhaar', 'cape')">Tokhaar</a>
+                                        <a href="#" onclick="changeOption('God cape', 'cape')">God cape</a>
+                                        <a href="#" onclick="changeOption('Max cape', 'cape')">Max cape</a>
+                                        <a href="#" onclick="changeOption('Skillcape', 'cape')">Skillcape</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Hands_slot.webp"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="gloves">Enhanced Kerapac</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'gloves')">None/Tank</a>
+                                        <a href="#" onclick="changeOption('Enhanced Kerapac', 'gloves')">Enhanced Kerapac</a>
+                                        <a href="#" onclick="changeOption('Deathtouch', 'gloves')">Deathtouch</a>
+                                        <a href="#" onclick="changeOption('Celestial', 'gloves')">Celestial</a>
+                                        <a href="#" onclick="changeOption('Kerapac', 'gloves')">Kerapac</a>
+                                        <a href="#" onclick="changeOption('Cinderbane', 'gloves')">Cinderbane</a>
+                                        <a href="#" onclick="changeOption('Virtus', 'gloves')">Virtus</a>
+                                        <a href="#" onclick="changeOption('Spellcaster', 'gloves')">Spellcaster</a>
+                                        <a href="#" onclick="changeOption('Subjugation', 'gloves')">Subjugation</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Ring_slot.png"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="ring">Reavers</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'ring')">None</a>
+                                        <a href="#" onclick="changeOption('Reavers', 'ring')">Reavers</a>
+                                        <a href="#" onclick="changeOption('Channelers', 'ring')">Channelers</a>
+                                        <a href="#" onclick="changeOption('Ring of death (i)', 'ring')">Ring of death (i)</a>
+                                        <a href="#" onclick="changeOption('Ring of death', 'ring')">Ring of death</a>
+                                        <a href="#" onclick="changeOption('ASR', 'ring')">ASR</a>
+                                        <a href="#" onclick="changeOption('ASR (i)', 'ring')">ASR (i)</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Pocket_slot.webp"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="pocket">Grimoire</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'pocket')">None</a>
+                                        <a href="#" onclick="changeOption('Grimoire', 'pocket')">Grimoire</a>
+                                        <a href="#" onclick="changeOption('Scripture', 'pocket')">Scripture</a>
+                                        <a href="#" onclick="changeOption('Superior scrimshaw of the elements', 'pocket')">Superior scrimshaw of the elements</a>
+                                        <a href="#" onclick="changeOption('Scrimshaw of the elements', 'pocket')">Scrimshaw of the elements</a>
+                                        <a href="#" onclick="changeOption('God book', 'pocket')">God book</a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <input type="text" id="pocket-bonus">
+                                  </div>
                             </div>
                         </div>
                     </div>
@@ -654,4 +784,5 @@
     </body>
     <script src="./js/nav-bar.js"></script>
     <script src="./js/dropdown.js"></script>
+    <script src="./js/number_input.js"></script>
 </html>

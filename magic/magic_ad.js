@@ -1,17 +1,18 @@
-const SET_INS = require('./magic_settings')
+const Settings = require('./magic_settings.js');
 
 class AbilityDmg {
-    constructor() {
+    constructor(settings) {
+      this.settings = Settings(settings);
       this.armour = {
-        'helm': SET_INS.helm,
-        'body': SET_INS.body,
-        'legs': SET_INS.legs,
-        'boots': SET_INS.boots,
-        'gloves': SET_INS.gloves,
-        'neck': SET_INS.neck,
-        'cape': SET_INS.cape,
-        'ring': SET_INS.ring,
-        'pocket': SET_INS.pocket
+        'helm': this.settings.helm,
+        'body': this.settings.body,
+        'legs': this.settings.legs,
+        'boots': this.settings.boots,
+        'gloves': this.settings.gloves,
+        'neck': this.settings.neck,
+        'cape': this.settings.cape,
+        'ring': this.settings.ring,
+        'pocket': this.settings.pocket
       };
   
       this.magicLvl = this.calculateLevels();
@@ -22,24 +23,24 @@ class AbilityDmg {
     }
   
     auraLevelBoost() {
-      const boost = SET_INS.utils.boosts.find((b) => b['name'] === SET_INS.aura);
+      const boost = this.settings.utils.boosts.find((b) => b['name'] === this.settings.aura);
       if (!boost) {
         return [0, 0, 0, 0];
-      }
+      } 
   
-      const magicBoostPercent = SET_INS.level * boost['magic_level_percent'];
+      const magicBoostPercent = this.settings.level * boost['magic_level_percent'];
   
       return magicBoostPercent;
     }
   
     potionLevelBoost() {
-      const boost = SET_INS.utils.boosts.find((b) => b['name'] === SET_INS.potion);
+      const boost = this.settings.utils.boosts.find((b) => b['name'] === this.settings.potion);
       if (!boost) {
         return [0, 0, 0, 0];
       }
   
       const boostValues = {
-        'magic_level_percent': SET_INS.level * boost['magic_level_percent'],
+        'magic_level_percent': this.settings.level * boost['magic_level_percent'],
         'magic_level_boost': boost['magic_level_boost'],
       };
   
@@ -52,8 +53,8 @@ class AbilityDmg {
       const auraBoost = this.auraLevelBoost();
       const potionBoost = this.potionLevelBoost();
   
-      let level = SET_INS.level + potionBoost + auraBoost;
-      if (SET_INS.zerkEss === 1 && (SET_INS.potion === null || SET_INS.potion.indexOf('verload') === -1)) {
+      let level = this.settings.level + potionBoost + auraBoost;
+      if (this.settings.zerkEss === 1 && (this.settings.potion === null || this.settings.potion.indexOf('verload') === -1)) {
         level = (1.14 * level) + 2;
       }
   
@@ -74,14 +75,14 @@ class AbilityDmg {
         'pocket': 'pocket'
       };
   
-      for (const item of SET_INS.utils.gear) {
+      for (const item of this.settings.utils.gear) {
         const slot = item['slot'];
         if (item['name'] === this.armour[gearSlots[slot]]) {
           bonus += item['magic_bonus'];
         }
       }
   
-      if (SET_INS.reaperCrew === 1) {
+      if (this.settings.reaperCrew === 1) {
         bonus += 12;
       }
   
@@ -89,13 +90,13 @@ class AbilityDmg {
     }
   
     computeAd() {
-      const thAbilityDmg = (2.5 * this.magicLvl) + (1.25 * this.magicLvl) + (14.4 * SET_INS.thTier + 1.5 * this.magicBonus);
-      const mhAbilityDmg = (2.5 * this.magicLvl) + (9.6 * SET_INS.mhTier + this.magicBonus);
-      const ohAbilityDmg = 0.5 * ((2.5 * this.magicLvl) + (9.6 * SET_INS.ohTier + this.magicBonus));
+      const thAbilityDmg = (2.5 * this.magicLvl) + (1.25 * this.magicLvl) + (14.4 * this.settings.thTier + 1.5 * this.magicBonus);
+      const mhAbilityDmg = (2.5 * this.magicLvl) + (9.6 * this.settings.mhTier + this.magicBonus);
+      const ohAbilityDmg = 0.5 * ((2.5 * this.magicLvl) + (9.6 * this.settings.ohTier + this.magicBonus));
   
       let shAbilityDmg = 0;
-      if (SET_INS.sh['type'] === 'defender') {
-        shAbilityDmg = 0.5 * ((2.5 * this.magicLvl) + (9.6 * (0.5 * SET_INS.shTier) + this.magicBonus));
+      if (this.settings.sh['type'] === 'defender') {
+        shAbilityDmg = 0.5 * ((2.5 * this.magicLvl) + (9.6 * (0.5 * this.settings.shTier) + this.magicBonus));
       }
   
       const dwAbilityDmg = mhAbilityDmg + ohAbilityDmg;

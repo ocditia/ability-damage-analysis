@@ -3030,3 +3030,11 @@ th,td{
   .dropdown:hover .dropdown-content {
     display: block;
   }
+
+  input[type="text"] {
+    padding: 1px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #19191a;
+    width: 50px;
+  }
