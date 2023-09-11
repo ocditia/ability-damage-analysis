@@ -3,8 +3,9 @@ const AbilityDmg = require('../magic_ad')
 const OnNPC = require('../magic_on_npc')
 const OnHit = require('../magic_on_hit')
 const Crit = require('../magic_crit')
+const timeStrike = require('./timestrike')
 
-function timeStrike(type, settings) {
+function wrackBound(type, settings) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
@@ -61,8 +62,8 @@ function timeStrike(type, settings) {
         reavers = 0;
     }
 
-    let fixed = Math.floor(AD * 0.6);
-    let variable = Math.floor(AD * 0.6);
+    let fixed = Math.floor(AD * 0.7);
+    let variable = Math.floor(AD * 1.3);
 
     if (type === 'Two-hand') {
         precise = settings['th']['precise'];
@@ -82,7 +83,7 @@ function timeStrike(type, settings) {
     let DmgAvg = [onHit[0][0] + Math.floor(0.5 * onHit[0][1]), onHit[1][0] + Math.floor(0.5 * onHit[1][1])];
     let fCritRegAvg = CRIT_INS.calcFCritDmg(onHit[0][0], onHit[0][1], 0, settings['enchMeta']);
     let fCritSunAvg = CRIT_INS.calcFCritDmg(onHit[1][0], onHit[1][1], 0, settings['enchMeta']);
-    let fCritChance = CRIT_INS.calcFCritChance(0, 0, settings['kalg'], settings['kalgSpec'], reavers, grimoire, biting);
+    let fCritChance = CRIT_INS.calcFCritChance(0, settings['gconc'], settings['kalg'], settings['kalgSpec'], reavers, grimoire, biting);
     let nCritRegAvg = CRIT_INS.calcNCritDmg(onHit[0][0], onHit[0][1], 0, settings['enchMeta']);
     let nCritSunAvg = CRIT_INS.calcNCritDmg(onHit[1][0], onHit[1][1], 0, settings['enchMeta']);
     let nCritChance = CRIT_INS.calcNCritChance(onHit[0][0], onHit[0][1], fCritChance);
@@ -95,7 +96,13 @@ function timeStrike(type, settings) {
 
     DmgAvg = [Math.floor(DmgAvg[0] * (1 - fCritChance - nCritChance)) + Math.floor(fCritDmg[0] * fCritChance) + Math.floor(nCritDmg[0] * nCritChance), Math.floor(DmgAvg[1] * (1 - fCritChance - nCritChance)) + Math.floor(fCritDmg[1] * fCritChance) + Math.floor(nCritDmg[1] * nCritChance), Math.floor(DmgAvg[2] * (1 - fCritChance - nCritChance)) + Math.floor(fCritDmg[2] * fCritChance) + Math.floor(nCritDmg[2] * nCritChance)];
 
+    if (settings['fsoa'] === true) {
+        fsoa = timeStrike(type, settings)
+        DmgAvg = [DmgAvg[0] + Math.floor(fsoa[1][0] * (fCritChance + nCritChance)), DmgAvg[1] + Math.floor(fsoa[1][1] * (fCritChance + nCritChance)), DmgAvg[2] + Math.floor(fsoa[1][2] * (fCritChance + nCritChance))]
+    }
+
     return  [DmgMin, DmgAvg, DmgMax];
 }
 
-module.exports = timeStrike;
+module.exports = wrackBound;
+
