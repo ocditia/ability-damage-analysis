@@ -1,62 +1,29 @@
 const fs = require('fs');
 
 class Settings {
-  constructor() {
-    this.level = 99;
-    this.potion = 'Elder overload';
-    this.prayer = 'Affliction';
+  constructor(settings) {
+    this.level = settings['level'];
+    this.potion = settings['potion'];
+    this.prayer = settings['prayer'];
 
-    this.mh = {
-      name: 'Wand of the praesul',
-      aftershock: 0,
-      precise: 0,
-      equilibrium: 0,
-      ruthless: 0,
-      spendthrift: 0,
-    };
+    this.mh = settings['mh']
 
-    this.oh = {
-      name: 'Imperium core',
-      aftershock: 0,
-      precise: 0,
-      equilibrium: 0,
-      ruthless: 0,
-      spendthrift: 0,
-    };
+    this.oh = settings['oh']
 
-    this.th = {
-      name: 'Inquisitor staff',
-      aftershock: 0,
-      precise: 0,
-      equilibrium: 0,
-      ruthless: 0,
-      spendthrift: 0,
-    };
+    this.th = settings['th']
 
-    this.sh = {
-      tier: 90,
-      type: 'defender',
-      aftershock: 0,
-      precise: 0,
-      equilibrium: 0,
-      ruthless: 0,
-      spendthrift: 0,
-    };
+    this.sh = settings['sh']
 
-    this.preciseRank = 0;
-    this.equilibriumRank = 0;
-    this.flankRank = 0;
-
-    this.helm = 'Elite tectonic';
-    this.neck = 'EOF (or)';
-    this.body = 'Elite tectonic';
-    this.legs = 'Elite tectonic';
-    this.boots = 'Enhanced blast diffusion';
-    this.gloves = 'Enhanced Kerapac';
-    this.ring = 'Reavers';
-    this.cape = 'Igneous';
-    this.pocket = 'Grimoire';
-    this.aura = 'Maniacal';
+    this.helm = settings['helm'];
+    this.neck = settings['neck'];
+    this.body = settings['body'];
+    this.legs = settings['legs'];
+    this.boots = settings['boots'];
+    this.gloves = settings['gloves'];
+    this.ring = settings['ring'];
+    this.cape = settings['cape'];
+    this.pocket = settings['pocket'];
+    this.aura = settings['aura'];
 
     if (this.ring === 'Reavers') {
       this.reavers = 1;
@@ -70,29 +37,36 @@ class Settings {
       this.grim = 0;
     }
 
-    this.biting = 0.088;
-    this.armourLvl = 20;
-    this.vuln = 1;
-    this.sc = 1;
-    this.fsoa = 0;
-    this.kalg = 1;
-    this.kalgSpec = 1;
-    this.ful = 0;
-    this.zerkEss = 0;
-    this.reaperCrew = 1;
-    this.gconc = 0;
-    this.enchMeta = 1;
-    this.enchAff = 1;
-    this.enchFlame = 1;
-    this.hex = 1;
-    this.ripper = 0;
-    this.dharok = 0;
-    this.exsang = 0;
-    this.rubyAurora = 0;
-    this.slayerSigil = 0;
-    this.cryptbloom = 0;
-    this.slayerPerk = 0;
-    this.kww = 0;
+    this.bitingRank = settings['biting-rank'];
+    this.armourLvl = True;
+    if (this.armourLvl === True){
+      this.biting = this.bitingRank * 0.022;
+    } else{
+      this.biting = this.bitingRank * 0.02;
+    }
+
+    this.nope = settings['nope'];
+    this.vuln = settings['vuln'];
+    this.sc = settings['sc'];
+    this.fsoa = settings['fsoa'];
+    this.kalg = settings['kalg'];
+    this.kalgSpec = settings['kalg-spec'];
+    this.ful = settings['ful'];
+    this.zerkEss = settings['zerk-ess'];
+    this.reaperCrew = settings['reaper-crew'];
+    this.gconc = settings['gconc'];
+    this.enchMeta = settings['ench-meta'];
+    this.enchAff = settings['ench-aff'];
+    this.enchFlame = settings['ench-flame'];
+    this.hex = settings['hex-hunter'];
+    this.ripper = settings['ripper-passive'];
+    this.dharok = settings['dharok'];
+    this.exsang = settings['exsang'];
+    this.rubyAurora = settings['ruby-aurora'];
+    this.slayerSigil = settings['sigil'];
+    this.cryptbloom = settings['cryptbloom'];
+    this.slayerPerk = settings['slayer-perk'];
+    this.kww = settings['kww'];
 
     this.utils = new Utils();
 
@@ -109,10 +83,6 @@ class Settings {
       }
     }
   }
-
-  setInput(name, value) {
-    this[name] = value;
-  }
 }
 
 class Utils {
@@ -123,6 +93,4 @@ class Utils {
   }
 }
 
-const SET_INS = new Settings();
-
-module.exports = SET_INS;
+module.exports = Settings;

@@ -3,6 +3,9 @@ function changeOption(optionText, dropdownId) {
   dropbtn.textContent = optionText;
 }
 
-window.addEventListener('load', function () {
-  changeOption('Elder overload', 'potionDropdown');
+document.querySelectorAll('.option').forEach(function(element) {
+  element.addEventListener('click', function(event) {
+    changeOption(event.target.textContent, 'myDropdown');
+    event.preventDefault();
+  });
 });
