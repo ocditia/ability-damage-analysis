@@ -28,10 +28,10 @@ class OnHit {
   }
 
   calcSalve(fixed, variable, salve) {
-    if (salve === 'Salve (e)') {
+    if (salve === 'enchanted') {
       return [Math.floor(fixed * 1.2), Math.floor(variable * 1.2)];
     } 
-    else if (salve === 'Salve') {
+    else if (salve === 'basic') {
       return [Math.floor(fixed * 1.15), Math.floor(variable * 1.15)];
     }
     else {

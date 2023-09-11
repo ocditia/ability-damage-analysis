@@ -35,13 +35,11 @@ class OnNPC {
       return Math.floor(dmg * 1.625);
     }
   
-    scrimshaw(dmg, flag, superior) {
-      if (flag === true) {
-        if (superior === true) {
-          return Math.floor(dmg * 1.0666);
-        } else {
-          return Math.floor(dmg * 1.05);
-        }
+    scrimshaw(dmg, scrimshaw) {
+      if (scrimshaw === 'superior') {
+        return Math.floor(dmg * 1.0666);
+      } else if (scrimshaw === 'base') {
+        return Math.floor(dmg * 1.05);
       } else {
         return dmg;
       }
