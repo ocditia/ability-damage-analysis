@@ -11,8 +11,10 @@ function wrackRuin(type, settings) {
     const CRIT_INS = new Crit();
     const CAST_INS = new OnCast();
     
+    let AD = settings['AD'];
+    
     if (type === 'Two-hand' && settings['th']['name'] === 'Inquisitor staff') {
-        settings['AD'] = CAST_INS.calcOnCast(AD, settings['enchAff']);
+        AD = CAST_INS.calcOnCast(AD, settings['enchAff']);
     }
 
     let fixed = Math.floor(AD * 0.6);
@@ -36,11 +38,11 @@ function wrackRuin(type, settings) {
     fCritDmg = NPC_INS.calcOnNpcCrit(fCritRegAvg, fCritSunAvg, settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'], settings['scrimshaw']['type']);
     nCritDmg = NPC_INS.calcOnNpcCrit(nCritRegAvg, nCritSunAvg, settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'], settings['scrimshaw']['type']);
 
-    DmgMin = [min(DmgMin[0], settings['cap']), min(DmgMin[1], settings['cap']) , min(DmgMin[2], settings['cap'])]
-    DmgAvg = [min(DmgAvg[0], settings['cap']), min(DmgAvg[1], settings['cap']) , min(DmgAvg[2], settings['cap'])]
-    DmgMax = [min(DmgMax[0], settings['critCap']), min(DmgMax[1], settings['critCap']) , min(DmgMax[2], settings['critCap'])]
-    fCritDmg = [min(fCritDmg[0], settings['critCap']), min(fCritDmg[1], settings['critCap']) , min(fCritDmg[2], settings['critCap'])]
-    nCritDmg = [min(nCritDmg[0], settings['critCap']), min(nCritDmg[1], settings['critCap']) , min(nCritDmg[2], settings['critCap'])]
+    DmgMin = [Math.min(DmgMin[0], settings['cap']), Math.min(DmgMin[1], settings['cap']) , Math.min(DmgMin[2], settings['cap'])]
+    DmgAvg = [Math.min(DmgAvg[0], settings['cap']), Math.min(DmgAvg[1], settings['cap']) , Math.min(DmgAvg[2], settings['cap'])]
+    DmgMax = [Math.min(DmgMax[0], settings['critCap']), Math.min(DmgMax[1], settings['critCap']) , Math.min(DmgMax[2], settings['critCap'])]
+    fCritDmg = [Math.min(fCritDmg[0], settings['critCap']), Math.min(fCritDmg[1], settings['critCap']) , Math.min(fCritDmg[2], settings['critCap'])]
+    nCritDmg = [Math.min(nCritDmg[0], settings['critCap']), Math.min(nCritDmg[1], settings['critCap']) , Math.min(nCritDmg[2], settings['critCap'])]
 
     DmgAvg = [Math.floor(DmgAvg[0] * (1 - fCritChance - nCritChance)) + Math.floor(fCritDmg[0] * fCritChance) + Math.floor(nCritDmg[0] * nCritChance), Math.floor(DmgAvg[1] * (1 - fCritChance - nCritChance)) + Math.floor(fCritDmg[1] * fCritChance) + Math.floor(nCritDmg[1] * nCritChance), Math.floor(DmgAvg[2] * (1 - fCritChance - nCritChance)) + Math.floor(fCritDmg[2] * fCritChance) + Math.floor(nCritDmg[2] * nCritChance)];
 

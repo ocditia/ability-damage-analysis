@@ -3,6 +3,7 @@
 const timeStrike = require('./abils/timestrike')
 const wrack = require('./abils/wrack')
 const wrackBound = require('./abils/wrack_bound')
+const wild = require('./abils/wild')
 
 const settings = {
     'level': 120,
@@ -47,6 +48,8 @@ const settings = {
     'biting': 0.088,
     'grimoire': 1,
     'reavers': 1,
+    'cap': 10000,
+    'critCap': 15000,
 
     'salve': false,
     'scrimshaw': false,
@@ -81,6 +84,6 @@ const settings = {
     'revenge': 0
 };
 
-const test = wrack('Two-hand', settings);
+const test = wild('Two-hand', settings);
 
 console.log(test);
