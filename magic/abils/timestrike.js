@@ -3,16 +3,16 @@ const AbilityDmg = require('../magic_ad')
 const OnNPC = require('../magic_on_npc')
 const OnHit = require('../magic_on_hit')
 const Crit = require('../magic_crit')
-const timeStrike = require('./timestrike')
 
 function timeStrike(type, settings) {
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const CAST_INS = new OnCast();
+    let AD = settings['AD'];
     
     if (type === 'Two-hand' && settings['th']['name'] === 'Inquisitor staff') {
-        settings['AD'] = CAST_INS.calcOnCast(AD, settings['enchAff']);
+        AD = CAST_INS.calcOnCast(AD, settings['enchAff']);
     }
 
     let fixed = Math.floor(AD * 0.4);
