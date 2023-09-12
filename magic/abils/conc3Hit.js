@@ -5,15 +5,19 @@ const OnHit = require('../magic_on_hit')
 const Crit = require('../magic_crit')
 const timeStrike = require('./timestrike')
 
-function asphyx(type, settings) {
+function conc3Hit(type, settings) {
     let hitcount = 0;
     let channelers = 0;
+    let gconc = 0;
     let hits = [];
+    let fixed = 0.15;
+    let variable = 0.60;
+
     if (settings['ring'] === 'Channelers') {
         channelers = 1;
     }
 
-    while (hitcount < 4) {
+    while (hitcount < 3) {
         const NPC_INS = new OnNPC();
         const HIT_INS = new OnHit();
         const CRIT_INS = new Crit();
@@ -25,17 +29,17 @@ function asphyx(type, settings) {
             AD = CAST_INS.calcOnCast(AD, settings['enchAff']);
         }
 
-        let fixed = Math.floor(AD * 0.376);
-        let variable = Math.floor(AD * 1.504);
+        fixed = Math.floor(AD * fixed);
+        variable = Math.floor(AD * variable);
 
-        let onHit = HIT_INS.calcOnHit(fixed, variable, settings['prayer'], settings['boostedLvls'], settings['dharok'], settings['exsang'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name'], false);
+        let onHit = HIT_INS.calcOnHit(fixed, variable, settings['prayer'], settings['boostedLvls'], settings['dharok'], settings['exsang'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name'], true);
 
         let DmgMin = [onHit[0][0], onHit[1][0]];
         let DmgMax = [onHit[0][0] + onHit[0][1], onHit[1][0] + onHit[1][1]];
         let DmgAvg = [onHit[0][0] + Math.floor(0.5 * onHit[0][1]), onHit[1][0] + Math.floor(0.5 * onHit[1][1])];
         let fCritRegAvg = CRIT_INS.calcFCritDmg(onHit[0][0], onHit[0][1], 0, settings['enchMeta']);
         let fCritSunAvg = CRIT_INS.calcFCritDmg(onHit[1][0], onHit[1][1], 0, settings['enchMeta']);
-        const fCritChance = CRIT_INS.calcFCritChance(channelers, settings['gconc'], settings['kalg'], settings['kalgSpec'], settings['reavers'], settings['grimoire'], settings['biting']);
+        const fCritChance = CRIT_INS.calcFCritChance(channelers, gconc, settings['kalg'], settings['kalgSpec'], settings['reavers'], settings['grimoire'], settings['biting']);
         let nCritRegAvg = CRIT_INS.calcNCritDmg(onHit[0][0], onHit[0][1], 0, settings['enchMeta']);
         let nCritSunAvg = CRIT_INS.calcNCritDmg(onHit[1][0], onHit[1][1], 0, settings['enchMeta']);
         const nCritChance = CRIT_INS.calcNCritChance(onHit[0][0], onHit[0][1], fCritChance);
@@ -65,10 +69,13 @@ function asphyx(type, settings) {
 
         let hitN = [DmgMin, DmgAvg, DmgMax];
         hitcount += 1;
+        //gconc += 1;
+        fixed = 0.150 + 0.014 * hitcount;
+        variable = 0.60 + 0.056 * hitcount;
         hits.push(hitN)
     }
     return hits
 }
 
-module.exports = asphyx;
+module.exports = conc3Hit;
 

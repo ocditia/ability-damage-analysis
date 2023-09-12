@@ -158,32 +158,8 @@
                                                 <td data-cell="meta"></td>
                                             </tr>
                                             <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Sacrifice.png"> </td>
-                                                <td data-cell="name">Sacrifice</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
                                                 <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Tuska's_Wrath.png"> </td>
                                                 <td data-cell="name">Tuska's wrath</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Bash.png"> </td>
-                                                <td data-cell="name">Bash</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Storm_Shards.webp"> </td>
-                                                <td data-cell="name">Storm shards</td>
                                                 <td></td>
                                                 <td data-cell="reg"></td>
                                                 <td data-cell="sun"></td>
@@ -776,6 +752,126 @@
                                     <input type="text" id="pocket-bonus">
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-3">
+                        <div class="card card-casters space-y-3">
+                            <div class="flex items-center">
+                                <div class="card-title">
+                                    Weapons
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/2h_slot.png"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="th">Fractured staff of Armadyl</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'helmet')">None/Tank</a>
+                                        <a href="#" onclick="changeOption('Elite tectonic', 'helmet')">Elite tectonic</a>
+                                        <a href="#" onclick="changeOption('Tectonic', 'helmet')">Tectonic</a>
+                                        <a href="#" onclick="changeOption('Superior Zuriel', 'helmet')">Superior Zuriel</a>
+                                        <a href="#" onclick="changeOption('Refined Seren', 'helmet')">Refined Seren</a>
+                                        <a href="#" onclick="changeOption('Virtus', 'helmet')">Virtus</a>
+                                        <a href="#" onclick="changeOption('Seren', 'helmet')">Seren</a>
+                                        <a href="#" onclick="changeOption('Zuriel', 'helmet')">Zuriel</a>
+                                        <a href="#" onclick="changeOption('Subjugation', 'helmet')">Subjugation</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <label>Precise rank:</label>
+                                <input type="number" id="thPrecise">
+                            </div>
+                            <div class="effect-container">
+                                <label>Equilibrium rank:</label>
+                                <input type="number" id="thEquilibrium">
+                            </div>
+                            <div class="effect-container">
+                                <label>Flanking rank:</label>
+                                <input type="number" id="thFlanking">
+                            </div>
+                            <div class="effect-container">
+                                <label>Ruthless rank:</label>
+                                <input type="number" id="thRuthless">
+                            </div>
+                            <div class="effect-container">
+                                <label>Spendthrift rank:</label>
+                                <input type="number" id="thSpendthrift">
+                            </div>
+                            <div class="effect-container">
+                                <label>Lunging rank:</label>
+                                <input type="number" id="thLunging">
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Main_hand_slot.webp"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="mh">Wand of the praesul</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'neck')">None</a>
+                                        <a href="#" onclick="changeOption('EOF (or)', 'neck')">EOF (or)</a>
+                                        <a href="#" onclick="changeOption('EOF', 'neck')">EOF</a>
+                                        <a href="#" onclick="changeOption('AOS (or)', 'neck')">AOS (or)</a>
+                                        <a href="#" onclick="changeOption('AOS', 'neck')">AOS</a>
+                                        <a href="#" onclick="changeOption('Reaper (or)', 'neck')">Reaper (or)</a>
+                                        <a href="#" onclick="changeOption('Reaper', 'neck')">Reaper</a>
+                                        <a href="#" onclick="changeOption('Salve (e)', 'neck')">Salve (e)</a>
+                                        <a href="#" onclick="changeOption('Salve', 'neck')">Salve</a>
+                                        <a href="#" onclick="changeOption('Dragon rider', 'neck')">Dragon rider</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="number" id="mhPrecise">
+                            <input type="number" id="mhEquilibrium">
+                            <input type="number" id="mhFlanking">
+                            <input type="number" id="mhRuthless">
+                            <input type="number" id="mhSpendthrift">
+                            <input type="number" id="mhLunging">
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Off-hand_slot.webp"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="oh">Imperium core</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'body')">None/Tank</a>
+                                        <a href="#" onclick="changeOption('Elite tectonic', 'body')">Elite tectonic</a>
+                                        <a href="#" onclick="changeOption('Tectonic', 'body')">Tectonic</a>
+                                        <a href="#" onclick="changeOption('Superior Zuriel', 'body')">Superior Zuriel</a>
+                                        <a href="#" onclick="changeOption('Refined Seren', 'body')">Refined Seren</a>
+                                        <a href="#" onclick="changeOption('Virtus', 'body')">Virtus</a>
+                                        <a href="#" onclick="changeOption('Seren', 'body')">Seren</a>
+                                        <a href="#" onclick="changeOption('Zuriel', 'body')">Zuriel</a>
+                                        <a href="#" onclick="changeOption('Subjugation', 'body')">Subjugation</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="number" id="ohPrecise">
+                            <input type="number" id="ohEquilibrium">
+                            <input type="number" id="ohFlanking">
+                            <input type="number" id="ohRuthless">
+                            <input type="number" id="ohSpendthrift">
+                            <input type="number" id="ohLunging">
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Off-hand_slot.webp"></td>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="sh">Kalphite rebounder</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'legs')">None/Tank</a>
+                                        <a href="#" onclick="changeOption('Elite tectonic', 'legs')">Elite tectonic</a>
+                                        <a href="#" onclick="changeOption('Tectonic', 'legs')">Tectonic</a>
+                                        <a href="#" onclick="changeOption('Superior Zuriel', 'legs')">Superior Zuriel</a>
+                                        <a href="#" onclick="changeOption('Refined Seren', 'legs')">Refined Seren</a>
+                                        <a href="#" onclick="changeOption('Virtus', 'legs')">Virtus</a>
+                                        <a href="#" onclick="changeOption('Seren', 'legs')">Seren</a>
+                                        <a href="#" onclick="changeOption('Zuriel', 'legs')">Zuriel</a>
+                                        <a href="#" onclick="changeOption('Subjugation', 'legs')">Subjugation</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="number" id="shPrecise">
+                                <input type="number" id="shEquilibrium">
+                                <input type="number" id="shFlanking">
+                                <input type="number" id="shRuthless">
+                                <input type="number" id="shSpendthrift">
+                                <input type="number" id="shLunging">
                         </div>
                     </div>
                 </section>
