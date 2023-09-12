@@ -3038,3 +3038,10 @@ th,td{
     background-color: #19191a;
     width: 50px;
   }
+  input[type="number"] {
+    padding-left: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #19191a;
+    width: 35px;
+  }

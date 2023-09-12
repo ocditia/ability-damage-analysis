@@ -4,12 +4,16 @@ const timeStrike = require('./abils/timestrike')
 const wrack = require('./abils/wrack')
 const wrackBound = require('./abils/wrack_bound')
 const wild = require('./abils/wild')
+const omni = require('./abils/omni')
+const asphyx = require('./abils/asphyx')
+const gconc = require('./abils/gconc')
+const igneousOmni = require('./abils/igneous_omni')
 
 const settings = {
     'level': 120,
     'boostedLvls': 21,
     'prayer': 0.12,
-    'AD': 1774,
+    'AD': 1756,
 
     'mh':{
         'name': 'Wand of the praesul',
@@ -22,8 +26,8 @@ const settings = {
     },
 
     'th':{
-        'name': 'Noxious staff',
-        'tier': 90
+        'name': 'Inquisitor staff',
+        'tier': 80
     },
 
     'sh':{
@@ -60,19 +64,19 @@ const settings = {
     'lunging': 0,
 
     'nope': 0,
-    'vuln': 0,
-    'sc': 0,
-    'fsoa': true,
+    'vuln': 1,
+    'sc': 1,
+    'fsoa': false,
     'kalg': 1,
     'kalgSpec': 1,
     'ful': 0,
     'zerkEss': 0,
     'reaperCrew': 1,
     'gconc': 0,
-    'enchMeta': 1,
-    'enchAff': 1,
-    'enchFlame': 1,
-    'hexHunter': 0,
+    'enchMeta': true,
+    'enchAff': true,
+    'enchFlame': true,
+    'hexHunter': 1,
     'ripperPassive': 0,
     'dharok': 0,
     'exsang': 0,
@@ -84,6 +88,6 @@ const settings = {
     'revenge': 0
 };
 
-const test = wild('Two-hand', settings);
+const test = igneousOmni('Two-hand', settings);
 
 console.log(test);
