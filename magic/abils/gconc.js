@@ -69,7 +69,7 @@ function gconc(type, settings) {
 
         let hitN = [DmgMin, DmgAvg, DmgMax];
         hitcount += 1;
-        //gconc += 1;
+        gconc += 1;
         fixed = 0.158 + 0.02 * hitcount;
         variable = 0.632 + 0.08 * hitcount;
         hits.push(hitN)
