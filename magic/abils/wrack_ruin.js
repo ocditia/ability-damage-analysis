@@ -5,22 +5,21 @@ const OnHit = require('../magic_on_hit')
 const Crit = require('../magic_crit')
 const timeStrike = require('./timestrike')
 
-function wrackRuin(type, settings) {
+function wrack_ruin(type, settings) {
+    const fixedPercent = 0.6;
+    const variablePercent = 2.4;
+    const basic = true;
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const CAST_INS = new OnCast();
     
     let AD = settings['AD'];
-    
-    if (type === 'Two-hand' && settings['th']['name'] === 'Inquisitor staff') {
-        AD = CAST_INS.calcOnCast(AD, settings['enchAff']);
-    }
 
-    let fixed = Math.floor(AD * 0.6);
-    let variable = Math.floor(AD * 3.0);
+    let fixed = Math.floor(AD * fixedPercent);
+    let variable = Math.floor(AD * variablePercent);
 
-    let onHit = HIT_INS.calcOnHit(fixed, variable, settings['prayer'], settings['boostedLvls'], settings['dharok'], settings['exsang'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name'], true);
+    let onHit = HIT_INS.calcOnHit(fixed, variable, settings['prayer'], settings['boostedLvls'], settings['dharok'], settings['exsang'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name'], basic);
 
     let DmgMin = [onHit[0][0], onHit[1][0]];
     let DmgMax = [onHit[0][0] + onHit[0][1], onHit[1][0] + onHit[1][1]];
@@ -54,5 +53,5 @@ function wrackRuin(type, settings) {
     return  [DmgMin, DmgAvg, DmgMax];
 }
 
-module.exports = wrackRuin;
+module.exports = wrack_ruin;
 

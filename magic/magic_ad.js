@@ -19,6 +19,10 @@ class AbilityDmg {
       AD = mhAbilityDmg + shAbilityDmg;
     }
 
+    if (type === 'Two-hand' && settings['th']['name'] === 'Inquisitor staff') {
+      AD = CAST_INS.calcOnCast(AD, settings['enchAff']);
+    }
+
     return AD
   }
   calcBonus(helm, neck, body, legs, boost, gloves, cape, pocket, ring, reaperCrew) {

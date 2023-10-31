@@ -5,30 +5,21 @@ const OnHit = require('../magic_on_hit')
 const Crit = require('../magic_crit')
 const timeStrike = require('./timestrike')
 
-function dragonBreath(type, settings) {
+function dragon_breath(type, settings) {
+    const fixedPercent = 0.376;
+    const variablePercent = 1.504;
+    const basic = true;
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const CAST_INS = new OnCast();
     
     let AD = settings['AD'];
-    
-    if (type === 'Two-hand' && settings['th']['name'] === 'Inquisitor staff') {
-        AD = CAST_INS.calcOnCast(AD, settings['enchAff']);
-    }
 
-    let fixed = 0.376;
-    let variable = 1.504;
+    let fixed = Math.floor(AD * fixedPercent);
+    let variable = Math.floor(AD * variablePercent);
 
-    if (settings['neck'] === 'Dragon rider') {
-        fixed += 0.10;
-        variable += 0.10;
-    }
-
-    fixed = Math.floor(AD * fixed);
-    variable = Math.floor(AD * variable);
-
-    let onHit = HIT_INS.calcOnHit(fixed, variable, settings['prayer'], settings['boostedLvls'], settings['dharok'], settings['exsang'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name'], true);
+    let onHit = HIT_INS.calcOnHit(fixed, variable, settings['prayer'], settings['boostedLvls'], settings['dharok'], settings['exsang'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name'], basic);
 
     let DmgMin = [onHit[0][0], onHit[1][0]];
     let DmgMax = [onHit[0][0] + onHit[0][1], onHit[1][0] + onHit[1][1]];
@@ -62,5 +53,5 @@ function dragonBreath(type, settings) {
     return  [DmgMin, DmgAvg, DmgMax];
 }
 
-module.exports = dragonBreath;
+module.exports = dragon_breath;
 
