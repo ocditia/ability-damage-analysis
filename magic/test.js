@@ -1,13 +1,34 @@
 
-
-const timeStrike = require('./abils/timestrike')
-const wrack = require('./abils/wrack')
-const wrackBound = require('./abils/wrack_bound')
-const wild = require('./abils/wild')
-const omni = require('./abils/omni')
 const asphyx = require('./abils/asphyx')
+const chain = require('./abils/chain')
+const combust = require('./abils/combust')
+const conc = require('./abils/conc')
+const conc3Hit = require('./abils/conc3Hit')
+const corrupt_blast = require('./abils/corrupt_blast')
+const deep_impact = require('./abils/deep_impact')
+const detonate = require('./abils/detonate')
+const dragon_breath = require('./abils/dragon_breath')
+const frost_surge = require('./abils/frost_surge')
 const gconc = require('./abils/gconc')
-const igneousOmni = require('./abils/igneous_omni')
+const gsonic = require('./abils/gsonic')
+const gstaff = require('./abils/gstaff')
+const igneous_omni = require('./abils/igneous_omni')
+const impact = require('./abils/impact')
+const magma = require('./abils/magma')
+const mh_auto = require('./abils/mh_auto')
+const nami = require('./abils/nami')
+const oh_auto = require('./abils/oh_auto')
+const omni = require('./abils/omni')
+const smoke_tend = require('./abils/smoke_tend')
+const sonic = require('./abils/sonic')
+const th_auto = require('./abils/th_auto')
+const timestrike = require('./abils/timestrike')
+const tuska = require('./abils/tuska')
+const wild = require('./abils/wild')
+const wrack_bound = require('./abils/wrack_bound')
+const wrack_ruin_bound = require('./abils/wrack_ruin_buind')
+const wrack_ruin = require('./abils/wrack_ruin')
+const wrack = require('./abils/wrack')
 
 const settings = {
     'level': 120,
@@ -88,6 +109,6 @@ const settings = {
     'revenge': 0
 };
 
-const test = igneousOmni('Two-hand', settings);
+const test = wrack_ruin_bound('Two-hand', settings);
 
 console.log(test);

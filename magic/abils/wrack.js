@@ -15,10 +15,6 @@ function wrack(type, settings) {
     const CAST_INS = new OnCast();
     
     let AD = settings['AD'];
-    
-    if (type === 'Two-hand' && settings['th']['name'] === 'Inquisitor staff') {
-        AD = CAST_INS.calcOnCast(AD, settings['enchAff']);
-    }
 
     let fixed = Math.floor(AD * fixedPercent);
     let variable = Math.floor(AD * variablePercent);
