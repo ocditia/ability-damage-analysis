@@ -26,9 +26,10 @@ const timestrike = require('./abils/timestrike')
 const tuska = require('./abils/tuska')
 const wild = require('./abils/wild')
 const wrack_bound = require('./abils/wrack_bound')
-const wrack_ruin_bound = require('./abils/wrack_ruin_buind')
+const wrack_ruin_bound = require('./abils/wrack_ruin_bound')
 const wrack_ruin = require('./abils/wrack_ruin')
 const wrack = require('./abils/wrack')
+const { performance } = require('perf_hooks');
 
 const settings = {
     'level': 120,
@@ -61,7 +62,7 @@ const settings = {
 
     'gloves': 'Enhanced Kerapac',
 
-    'ring': 'Reavers',
+    'ring': 'Channelers',
 
     'aura': {
         'name':'Maniacal',
@@ -72,7 +73,7 @@ const settings = {
 
     'biting': 0.088,
     'grimoire': 1,
-    'reavers': 1,
+    'reavers': 0,
     'cap': 10000,
     'critCap': 15000,
 
@@ -87,7 +88,7 @@ const settings = {
     'nope': 0,
     'vuln': 1,
     'sc': 1,
-    'fsoa': false,
+    'fsoa': true,
     'kalg': 1,
     'kalgSpec': 1,
     'ful': 0,
@@ -106,9 +107,20 @@ const settings = {
     'cryptbloom': 0,
     'slayerPerk': 0,
     'kww': 0,
-    'revenge': 0
+    'revenge': 0,
+    'flowStacks': 1
 };
 
-const test = wrack_ruin_bound('Two-hand', settings);
+const test = wrack('Two-hand', settings);
 
 console.log(test);
+
+var startTime = performance.now()
+for (var i = 0; i < 100; i++) {
+    const test1 = wrack('Two-hand', settings);
+}
+var endTime = performance.now()
+
+console.log('calcing 4 hit asphyx with instability 10,000 times took')
+console.log(endTime - startTime)
+console.log('miliseconds')

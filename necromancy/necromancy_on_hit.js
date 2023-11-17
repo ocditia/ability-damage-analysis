@@ -3,20 +3,8 @@ class OnHit {
     return [Math.floor(fixed + fixed * prayer), Math.floor(variable + variable * prayer)];
   }
 
-  calcDPL(fixed, variable, boostedLvls) {
-    return [Math.floor(fixed + boostedLvls * 4), Math.floor(variable + boostedLvls * 4)];
-  }
-
   calcDharok(fixed, variable, dharok) {
     return [Math.floor(fixed + fixed * dharok), Math.floor(variable + variable * dharok)];
-  }
-
-  calcSun(fixed, variable) {
-    return [Math.floor(fixed * 1.5), Math.floor(variable * 1.5)];
-  }
-
-  calcExsang(fixed, variable, exsang) {
-    return [Math.floor(fixed + fixed * 0.01 * exsang), Math.floor(variable + variable * 0.01 * exsang)];
   }
 
   calcFul(fixed, variable) {
@@ -53,18 +41,8 @@ class OnHit {
     }
   }
 
-  calcOnHit(fixed, variable, prayer, boostedLvls, dharok, exsang, ful, rubyAurora, salve, precise_rank, equilibrium_rank, aura, basic, sun) {
-    let dmg = this.calcDPL(fixed,variable,boostedLvls);
-
-    dmg = this.calcPrayer(fixed,variable,prayer);
-
-    if (sun === true) {
-      dmg = this.calcSun(dmg[0],dmg[1]);
-    }
-    
-    if (basic === true) {
-      dmg = this.calcExsang(dmg[0],dmg[1], exsang);
-    }
+  calcOnHit(fixed, variable, prayer, dharok, ful, rubyAurora, salve, precise_rank, equilibrium_rank, aura) {
+    let dmg = this.calcPrayer(fixed,variable,prayer);
     
     if (ful === true) {
       dmg = this.calcFul(dmg[0],dmg[1]);
