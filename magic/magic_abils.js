@@ -154,7 +154,8 @@ const settings = {
     'sigil': 0,
     'cryptbloom': 0,
     'slayer-perk': 0,
-    'kww': 0
+    'kww': 0,
+    'flowStacks' : 0
 };
 
 const magic = new MagicAbils('Average');

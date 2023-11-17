@@ -1,5 +1,5 @@
 class AbilityDmg {
-  calcAd(type, level, bonus, thTier, mhTier, ohTier, shTier, shType) {
+  calcAd(type, level, bonus, thTier, mhTier, ohTier, shTier, shType, flowStacks) {
     let AD;
 
     if (type === 'Two-hand') {
@@ -22,6 +22,8 @@ class AbilityDmg {
     if (type === 'Two-hand' && settings['th']['name'] === 'Inquisitor staff') {
       AD = CAST_INS.calcOnCast(AD, settings['enchAff']);
     }
+
+    AD = AD * (1+flowStacks/100)
 
     return AD
   }
