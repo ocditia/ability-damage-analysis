@@ -36,7 +36,7 @@ function necro_auto(type, settings) {
             let j = i;
             
             crit = CRIT_INS.critDmgBuff(j);
-            j = NPC_INS.calcOnNpc(j, settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
+            j = NPC_INS.calcOnNpc(j, settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw']);
             crit = NPC_INS.calcOnNpc(crit, settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);    
 
             if (j > settings['cap']) {
