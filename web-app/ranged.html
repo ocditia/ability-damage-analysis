@@ -7,6 +7,65 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
+        <nav class="fixed w-full lg:relative bg-card-light z-50">
+            <div class="responsive-container px-4 lg:px-0">
+                <div class="flex justify-between">
+                    <div class="flex space-x-3">
+                        <div>
+                            <a href="/" class="flex items-center py-4">
+                                <div class="flex flex-row items-center">
+                                    <label class="logo">RS Anaylsis</label>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hidden lg:flex items-center space-x-3">
+                        <ul class="nav-item">
+                            <li class="block transition-all duration-75 relative">
+                                <a href="index.html" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
+                                    Home
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="lg:hidden flex items-center">
+                            <button class="outline-none mobile-menu-button"><svg class="w-6 text-link-orange hover:opacity-75" x-show="!showMenu" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentcolor"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                            </button>
+                        </div>
+                        <ul class="nav-item">
+                            <li class="block transition-all duration-75 relative">
+                                <a href="/encounters/" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
+                                    Ability Analysis
+                                </a>
+                                <ul class="nav-dropdown py-2">
+                                    <li>
+                                        <div class="flex items-start bg-card-light py-6">
+                                            <div class="mx-6">
+                                                <a href="magic.html" class="text-link-orange font-bold tracking-wide block mb-2">Magic</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="melee.html" class="text-link-orange font-bold tracking-wide block mb-2">Melee</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="ranged.html" class="text-link-orange font-bold tracking-wide block mb-2">Ranged</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="necromancy.html" class="text-link-orange font-bold tracking-wide block mb-2">Necromancy</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav-item">
+                            <li class="block transition-all duration-75 relative">
+                                <a href="compare.html" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
+                                    Compare
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </nav>
         <div id="content" class="z-20">
             <div class="h-36 xl:h-80">
