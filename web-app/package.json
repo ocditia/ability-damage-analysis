@@ -5,9 +5,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "yarn run live-server"
+    "start": "yarn run http-server"
   },
   "devDependencies": {
-    "live-server": "^1.2.2"
+    "http-server": "^14.1.1"
   }
 }
