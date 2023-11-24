@@ -220,12 +220,95 @@ const prayers = {
     },
     "Anguish":{
         "boost": 0.08
-    },
+    }
 }
 
 const potions = {
     "Elder overload":{
         "levels": 5,
         "percent": 0.17
+    }
+}
+
+const abils = {
+    "basic attack":{
+        "fixed percent": 0.9,
+        "variable percent": 0.2
+    },
+    "skeleton auto":{
+        "fixed percent": 0.22,
+        "variable percent": 0.06
+    },
+    "finger of death":{
+        "fixed percent": 2.7,
+        "variable percent": 0.6
+    },
+    "touch of death":{
+        "fixed percent": 0.9,
+        "variable percent": 0.2
+    },
+    "death skulls":{
+        "fixed percent": 2.25,
+        "variable percent": 0.5
+    },
+    "blood siphon - siphon":{
+        "fixed percent": 0.22,
+        "variable percent": 0.06
+    },
+    "blood siphon - hit":{
+        "fixed percent": 1.17,
+        "variable percent": 0.26
+    },
+    "zombie auto":{
+        "fixed percent": 0.18,
+        "variable percent": 0.04
+    },
+    "zombie poison":{
+        "fixed percent": 0.08,
+        "variable percent": 0.04
+    },
+    "ghost auto":{
+        "fixed percent": 0.18,
+        "variable percent": 0.04
+    },
+    "bloat - initial hit":{
+        "fixed percent": 1.35,
+        "variable percent": 0.3
+    },
+    "soul sap":{
+        "fixed percent": 0.9,
+        "variable percent": 0.2
+    },
+    "soul strike - main":{
+        "fixed percent": 1.35,
+        "variable percent": 0.3
+    },
+    "soul strike - aoe":{
+        "fixed percent": 0.9,
+        "variable percent": 0.2
+    },
+    "spectral scythe - 1":{
+        "fixed percent": 0.72,
+        "variable percent": 0.16
+    },
+    "spectral scythe - 2":{
+        "fixed percent": 1.8,
+        "variable percent": 0.4
+    },
+    "spectral scythe - 3":{
+        "fixed percent": 2.25,
+        "variable percent": 0.5
+    },
+    "volley of souls":{
+        "fixed percent": 1.35,
+        "variable percent": 0.3
+    },
+    "death grasp":{
+        "fixed percent": 4.05,
+        "variable percent": 4.95
+    },
+    "death essence":{
+        "fixed percent": 3.6,
+        "variable percent": 0.8
     }
 }

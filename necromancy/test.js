@@ -9,23 +9,22 @@ const settings = {
 
     'mh':{
         'name': 'Wand of the praesul',
-        'tier': 92
+        'perks': [[Precise,6], [aftershock,1]]
     },
 
     'oh':{
         'name': 'Seismic singularity',
-        'tier': 92
+        'perks': [[equilibrium,2], [aftershock,4]]
     },
 
-    'th':{
-        'name': 'Inquisitor staff',
-        'tier': 80
+    'top':{
+        'name': 'Elite tectonic',
+        'perks': [[biting,4]]
     },
 
-    'sh':{
-        'name': 'Kalphite rebounder',
-        'tier': 90,
-        'type': 'defender'
+    'bottom':{
+        'name': 'Elite tectonic',
+        'perks': [[biting,4]]
     },
 
     'boots': 'Enhanced blast diffusion',

@@ -1,18 +1,38 @@
 class OnHit {
+  calcScriptureOfFul(fixed,variable) {
+    return [Math.floor(fixed + fixed * 1.2), Math.floor(variable + variable * 1.2)]
+  }
+
   calcPrayer(fixed, variable, prayer) {
     return [Math.floor(fixed + fixed * prayer), Math.floor(variable + variable * prayer)];
   }
 
-  calcDharok(fixed, variable, dharok) {
-    return [Math.floor(fixed + fixed * dharok), Math.floor(variable + variable * dharok)];
+  calcRevenge(fixed, variable, revenge) {
+    return [Math.floor(fixed + fixed * revenge * 0.05), Math.floor(variable + variable * revenge * 0.05)];
+  } //fix that defender get half effect
+
+  calcSpendthrift(fixed, variable, spendthrift) {
+    return [Math.floor(fixed + fixed * spendthrift * 0.01), Math.floor(variable + variable * spendthrift * 0.01)];
   }
 
-  calcFul(fixed, variable) {
-    return [Math.floor(fixed * 1.2), Math.floor(variable * 1.2)];
+  calcRuthless(fixed, variable, ruthlessStacks, ruthlessRank) {
+    return [Math.floor(fixed + fixed * ruthlessRank * ruthlessStacks * 0.005), Math.floor(variable + variable * ruthlessRank * ruthlessStacks * 0.005)];
   }
 
   calcRubyAurora(fixed, variable, rubyAurora) {
     return [Math.floor(fixed + fixed * 0.01 * rubyAurora), Math.floor(variable + variable * 0.01 * rubyAurora)];
+  }
+
+  calcSlayerHelm(fixed, variable, slayerhelm) {
+    return [Math.floor(fixed + fixed * slayerhelm), Math.floor(variable + variable * slayerhelm)];
+  }
+
+  calcFortGuardHouse(fixed, variable, guardhouse) {
+    return [Math.floor(fixed + fixed * guardhouse), Math.floor(variable + variable * guardhouse)];
+  }
+
+  calcGenocidal(fixed, variable, genocidal) {
+    return [Math.floor(fixed + fixed * genocidal), Math.floor(variable + variable * genocidal)];
   }
 
   calcSalve(fixed, variable, salve) {
@@ -25,7 +45,14 @@ class OnHit {
     else {
       return [Math.floor(fixed), Math.floor(variable)];
     }
+  }
+  
+  calcRipper(fixed, variable, ripper) {
+    return [Math.floor(fixed + fixed * ripper), Math.floor(variable + variable * ripper)];
+  }
 
+  calcDharok(fixed, variable, dharok) {
+    return [Math.floor(fixed + fixed * dharok), Math.floor(variable + variable * dharok)];
   }
 
   calcPrecise(fixed, variable, rank) {
