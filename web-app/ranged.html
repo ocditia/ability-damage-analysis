@@ -7,24 +7,446 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <nav>
-            <input type="checkbox" id="check">
-            <label for="check">
-                <i class="fas fa-bars"></i>
-            </label>
-            <label class="logo">Ability Damage Maths</label>
-            <ul>
-                <li><a id="homeLink" href="home.html">Home</a></li>
-                <li><a id="magicLink" href="magic.html">Magic</a></li>
-                <li><a id="meleeLink" href="melee.html">Melee</a></li>
-                <li><a id="rangedLink" href="ranged.html">Ranged</a></li>
-                <li><a id="necromancyLink" href="necromancy.html">Necromancy</a></li>
-                <li><a id="compareLink" href="compare.html">Compare</a></li>
-            </ul>
+        <nav class="fixed w-full lg:relative bg-card-light z-50">
+            <div class="responsive-container px-4 lg:px-0">
+                <div class="flex justify-between">
+                    <div class="flex space-x-3">
+                        <div>
+                            <a href="/" class="flex items-center py-4">
+                                <div class="flex flex-row items-center">
+                                    <label class="logo">RS Anaylsis</label>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hidden lg:flex items-center space-x-3">
+                        <ul class="nav-item">
+                            <li class="block transition-all duration-75 relative">
+                                <a href="home.html" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
+                                    Home
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="lg:hidden flex items-center">
+                            <button class="outline-none mobile-menu-button"><svg class="w-6 text-link-orange hover:opacity-75" x-show="!showMenu" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentcolor"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                            </button>
+                        </div>
+                        <ul class="nav-item">
+                            <li class="block transition-all duration-75 relative">
+                                <a href="/encounters/" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
+                                    Ability Analysis
+                                </a>
+                                <ul class="nav-dropdown py-2">
+                                    <li>
+                                        <div class="flex items-start bg-card-light py-6">
+                                            <div class="mx-6">
+                                                <a href="magic.html" class="text-link-orange font-bold tracking-wide block mb-2">Magic</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="melee.html" class="text-link-orange font-bold tracking-wide block mb-2">Melee</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="ranged.html" class="text-link-orange font-bold tracking-wide block mb-2">Ranged</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="necromancy.html" class="text-link-orange font-bold tracking-wide block mb-2">Necromancy</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav-item">
+                            <li class="block transition-all duration-75 relative">
+                                <a href="compare.html" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
+                                    Compare
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </nav>
-        <header class="header">
-            <img src="assets/range_background.png" alt="Header Image">
-        </header>
+        <div id="content" class="z-20">
+            <div class="h-36 xl:h-80">
+                <div class="responsive-container z-10 relative flex items-center h-full">
+                    <div class="flex items-center md:items-center flex-row w-full mt-0 md:mt-16 md:mb-12 lg:mb-0 lg:mt-0">
+                        <div class="w-1/12 xl:w-32 md:h-20 xl:h-32">
+                            <img class="job-icon-header mr-2 xl:mr-8 filter drop-shadow-lg-casters" src="./assets/style_icons/magic_icon.png">
+                        </div>
+                        <h1 class="text-3xl md:text-4xl xl:text-6xl font-semibold filter ml-8 drop-shadow-lg-casters mb-0">Ranged</h1>
+                    </div>
+                </div>
+                <div class="bg-gray-600 absolute top-0 left-0 w-full -z-1 h-96 md:h-72 xl:h-112 xl:mt-16 bg-bottom md:bg-top bg-cover" style="background-image:url(./assets/range_background.png)">
+                </div>
+            </div>
+        </div>
+        <div class="space-y-14 z-20">
+            <div class="responsive-container">
+                <section class="grid xl:grid-cols-12 gap-6 xl:gap-8">
+                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2">
+                        <div class="flex flex-col">
+                            <h1 class="role-header-casters mb-6 ml-3">Damage calculations</h1>
+                            <div class="card card-ranged space-y-3">
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Ability</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Regular</th>
+                                                <th>ECB</th>
+                                                <th>DS</th>
+                                                <th>DS + ECB</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/ranged/Ranged.webp"> </td>
+                                                <td data-cell="name">2h Auto</td>
+                                                <td></td>
+                                                <td data-cell="reg">1000</td>
+                                                <td data-cell="ecb">1000</td>
+                                                <td data-cell="ds">1000</td>
+                                                <td data-cell="ds-ecb">1000</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/ranged/Ranged.webp"> </td>
+                                                <td data-cell="name">Mh Auto</td>
+                                                <td></td>
+                                                <td data-cell="reg">1000</td>
+                                                <td data-cell="ecb">1000</td>
+                                                <td data-cell="ds">1000</td>
+                                                <td data-cell="ds-ecb">1000</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/ranged/Ranged.webp"> </td>
+                                                <td data-cell="name">Oh Auto</td>
+                                                <td></td>
+                                                <td data-cell="reg">1000</td>
+                                                <td data-cell="ecb">1000</td>
+                                                <td data-cell="ds">1000</td>
+                                                <td data-cell="ds-ecb">1000</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Freedom.webp"> </td>
+                                                <td data-cell="name">Freedom + Oh + Mh auto</td>
+                                                <td></td>
+                                                <td data-cell="reg">1000</td>
+                                                <td data-cell="ecb">1000</td>
+                                                <td data-cell="ds">1000</td>
+                                                <td data-cell="ds-ecb">1000</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Freedom.webp"> </td>
+                                                <td data-cell="name">Freedom + Oh + 2h auto</td>
+                                                <td></td>
+                                                <td data-cell="reg">1000</td>
+                                                <td data-cell="ecb">1000</td>
+                                                <td data-cell="ds">1000</td>
+                                                <td data-cell="ds-ecb">1000</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Tuska's_Wrath.png"> </td>
+                                                <td data-cell="name">Tuska's wrath</td>
+                                                <td></td>
+                                                <td data-cell="reg">1000</td>
+                                                <td data-cell="ecb">1000</td>
+                                                <td data-cell="ds">1000</td>
+                                                <td data-cell="ds-ecb">1000</td>
+                                            </tr>
+                                            <tr>
+                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/ranged/Piercing_Shot.webp"> </td>
+                                                <td data-cell="name">Piercing shot</td>
+                                                <td></td>
+                                                <td data-cell="reg">1000</td>
+                                                <td data-cell="ecb">1000</td>
+                                                <td data-cell="ds">1000</td>
+                                                <td data-cell="ds-ecb">1000</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-3">
+                        <div class="card card-ranged space-y-3">
+                            <div class="flex items-center">
+                                <div class="card-title">
+                                    Effects
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Elder_overload_salve_(6).webp"></td>
+                                <p class="effect-text">Potion:</p>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="potion-selection">Elder overload</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'potion-selection')">None</a>
+                                        <a href="#" onclick="changeOption('Elder overload', 'potion-selection')">Elder overload</a>
+                                        <a href="#" onclick="changeOption('Supreme overload', 'potion-selection')">Supreme overload</a>
+                                        <a href="#" onclick="changeOption('Overload', 'potion-selection')">Overload</a>
+                                        <a href="#" onclick="changeOption('Supreme', 'potion-selection')">Supreme</a>
+                                        <a href="#" onclick="changeOption('Extreme', 'potion-selection')">Extreme</a>
+                                        <a href="#" onclick="changeOption('Grand', 'potion-selection')">Grand</a>
+                                        <a href="#" onclick="changeOption('Super', 'potion-selection')">Super</a>
+                                        <a href="#" onclick="changeOption('Regular', 'potion-selection')">Regular</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/aura.png"></td>
+                                <p class="effect-text">Aura:</p>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="aura-selection">Maniacal</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('None', 'aura-selection')">None</a>
+                                        <a href="#" onclick="changeOption('Maniacal', 'aura-selection')">Maniacal</a>
+                                        <a href="#" onclick="changeOption('Mahjarrat', 'aura-selection')">Mahjarrat</a>
+                                        <a href="#" onclick="changeOption('Equilibrium', 'aura-selection')">Equilibrium</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Vulnerability_icon.webp">
+                                <p class="effect-text">Vulnerability:</p>
+                                <input type="checkbox" id="vuln" name="vuln" checked>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Smoke_Cloud_icon.webp">
+                                <p class="effect-text">Smoke cloud:</p>
+                                <input type="checkbox" id="sc" name="sc" checked>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Fractured_Staff_of_Armadyl.webp">
+                                <p class="effect-text">Instability Spec:</p>
+                                <input type="checkbox" id="fsoa" name="fsoa">
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Binding_contract_(kal'gerion_demon).webp">
+                                <p class="effect-text">Kalg demon passive:</p>
+                                <input type="checkbox" id="kalg" name="kalg">
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Kal'gerion_Demon_scroll_(Crit-i-Kal).webp">
+                                <p class="effect-text">Crit-i-kal spec:</p>
+                                <input type="checkbox" id="kalg-spec" name="kalg-spec" checked>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Scripture_of_Ful.webp">
+                                <p class="effect-text">Scripture of ful proc:</p>
+                                <input type="checkbox" id="ful-proc" name="ful-proc">
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Undead_slayer_sigil_detail.png">
+                                <p class="effect-text">Slayer sigil:</p>
+                                <input type="checkbox" id="sigil" name="sigil">
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
+                                <p class="effect-text">Slayer perk:</p>
+                                <input type="checkbox" id="slayer-perk" name="slayer-perk">
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Araxyte_spider.webp">
+                                <p class="effect-text">Nope Nope Nope:</p>
+                                <input type="checkbox" id="nope" name="nope">
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Berserk_blood_essence.webp">
+                                <p class="effect-text">Berserker essence:</p>
+                                <input type="checkbox" id="zerk-ess" name="zerk-ess">
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/death.png">
+                                <p class="effect-text">Reaper crew:</p>
+                                <input type="checkbox" id="reaper-crew" name="reaper-crew" checked>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Cryptbloom_helm.png">
+                                <p class="effect-text">Cryptbloom vuln:</p>
+                                <input type="checkbox" id="cryptbloom" name="cryptbloom" checked>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Greater_Concentrated_Blast.webp">
+                                <p class="effect-text">Gconc crit buff:</p>
+                                <input type="checkbox" id="gconc" name="gconc">
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Channeller's_ring.png">
+                                <p class="effect-text">Enchantment of metaphysics:</p>
+                                <input type="checkbox" id="ench-meta" name="ench-meta" checked>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Enchantment_of_affliction_detail.png">
+                                <p class="effect-text">Enchantment of affliction:</p>
+                                <input type="checkbox" id="ench-aff" name="ench-aff" checked>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Enchantment_of_flames_detail.png">
+                                <p class="effect-text">Enchantment of flames:</p>
+                                <input type="checkbox" id="ench-flame" name="ench-flame" checked>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Inquisitor_staff.webp">
+                                <p class="effect-text">Inquisitor effect:</p>
+                                <input type="checkbox" id="hex-hunter" name="hex-hunter">
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Kerapac's_wrist_wraps.webp">
+                                <p class="effect-text">Kerapac's wristwraps combust:</p>
+                                <input type="checkbox" id="kww" name="kww">
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Binding_contract_(ripper_demon).webp">
+                                <p class="effect-text">Ripper passive:</p>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="ripper-passive">0.0%</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('0.0%', 'ripper-passive')">0.0%</a>
+                                        <a href="#" onclick="changeOption('0.5%', 'ripper-passive')">0.5%</a>
+                                        <a href="#" onclick="changeOption('1.0%', 'ripper-passive')">1.0%</a>
+                                        <a href="#" onclick="changeOption('1.5%', 'ripper-passive')">1.5%</a>
+                                        <a href="#" onclick="changeOption('2.0%', 'ripper-passive')">2.0%</a>
+                                        <a href="#" onclick="changeOption('2.5%', 'ripper-passive')">2.5%</a>
+                                        <a href="#" onclick="changeOption('3.0%', 'ripper-passive')">3.0%</a>
+                                        <a href="#" onclick="changeOption('3.5%', 'ripper-passive')">3.5%</a>
+                                        <a href="#" onclick="changeOption('4.0%', 'ripper-passive')">4.0%</a>
+                                        <a href="#" onclick="changeOption('4.5%', 'ripper-passive')">4.5%</a>
+                                        <a href="#" onclick="changeOption('5.0%', 'ripper-passive')">5.0%</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Berserker's_Fury.webp">
+                                <p class="effect-text">Dharok's momento:</p>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="dharok">0.0%</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('0.0%', 'dharok')">0.0%</a>
+                                        <a href="#" onclick="changeOption('0.5%', 'dharok')">0.5%</a>
+                                        <a href="#" onclick="changeOption('1.0%', 'dharok')">1.0%</a>
+                                        <a href="#" onclick="changeOption('1.5%', 'dharok')">1.5%</a>
+                                        <a href="#" onclick="changeOption('2.0%', 'dharok')">2.0%</a>
+                                        <a href="#" onclick="changeOption('2.5%', 'dharok')">2.5%</a>
+                                        <a href="#" onclick="changeOption('3.0%', 'dharok')">3.0%</a>
+                                        <a href="#" onclick="changeOption('3.5%', 'dharok')">3.5%</a>
+                                        <a href="#" onclick="changeOption('4.0%', 'dharok')">4.0%</a>
+                                        <a href="#" onclick="changeOption('4.5%', 'dharok')">4.5%</a>
+                                        <a href="#" onclick="changeOption('5.0%', 'dharok')">5.0%</a>
+                                        <a href="#" onclick="changeOption('5.5%', 'dharok')">5.5%</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Exsanguinate_icon.webp">
+                                <p class="effect-text">Exsanguinate stacks:</p>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="exsang">0</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('0', 'exsang')">0</a>
+                                        <a href="#" onclick="changeOption('1', 'exsang')">1</a>
+                                        <a href="#" onclick="changeOption('2', 'exsang')">2</a>
+                                        <a href="#" onclick="changeOption('3', 'exsang')">3</a>
+                                        <a href="#" onclick="changeOption('4', 'exsang')">4</a>
+                                        <a href="#" onclick="changeOption('5', 'exsang')">5</a>
+                                        <a href="#" onclick="changeOption('6', 'exsang')">6</a>
+                                        <a href="#" onclick="changeOption('7', 'exsang')">7</a>
+                                        <a href="#" onclick="changeOption('8', 'exsang')">8</a>
+                                        <a href="#" onclick="changeOption('9', 'exsang')">9</a>
+                                        <a href="#" onclick="changeOption('10', 'exsang')">10</a>
+                                        <a href="#" onclick="changeOption('11', 'exsang')">11</a>
+                                        <a href="#" onclick="changeOption('12', 'exsang')">12</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="effect-icon" src="assets/effect_icons/Ruby_Aurora_icon.webp">
+                                <p class="effect-text">Ruby aurora:</p>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="ruby-aurora">0</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('0', 'ruby-aurora')">0</a>
+                                        <a href="#" onclick="changeOption('1', 'ruby-aurora')">1</a>
+                                        <a href="#" onclick="changeOption('2', 'ruby-aurora')">2</a>
+                                        <a href="#" onclick="changeOption('3', 'ruby-aurora')">3</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/effect_icons/Revenge.png"></td>
+                                <p class="effect-text">Revenge:</p>
+                                <div class="dropdown">
+                                    <button class="dropbtn" id="revenge">0</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" onclick="changeOption('0', 'revenge')">0</a>
+                                        <a href="#" onclick="changeOption('1', 'revenge')">1</a>
+                                        <a href="#" onclick="changeOption('2', 'revenge')">2</a>
+                                        <a href="#" onclick="changeOption('3', 'revenge')">3</a>
+                                        <a href="#" onclick="changeOption('4', 'revenge')">4</a>
+                                        <a href="#" onclick="changeOption('5', 'revenge')">5</a>
+                                        <a href="#" onclick="changeOption('6', 'revenge')">6</a>
+                                        <a href="#" onclick="changeOption('7', 'revenge')">7</a>
+                                        <a href="#" onclick="changeOption('8', 'revenge')">8</a>
+                                        <a href="#" onclick="changeOption('9', 'revenge')">9</a>
+                                        <a href="#" onclick="changeOption('10', 'revenge')">10</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-3">
+                        <div class="card card-ranged space-y-3">
+                            <div class="flex items-center">
+                                <div class="card-title">
+                                    Worn equipment
+                                </div>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Head_slot.webp"></td>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Neck_slot.png"></td>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Torso_slot.png"></td>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Legs_slot.png"></td>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Feet_slot.png"></td>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Back_slot.png"></td>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Hands_slot.webp"></td>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Ring_slot.png"></td>
+                            </div>
+                            <div class="effect-container">
+                                <img class="job-icon-sm" src="assets/armour_icons/Pocket_slot.webp"></td>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-3">
+                        <div class="card card-ranged space-y-3">
+                            <div class="flex items-center">
+                                <div class="card-title">
+                                    Weapons
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
     </body>
     <script src="./js/nav-bar.js"></script>
+    <script src="./js/dropdown.js"></script>
+    <script src="./js/number_input.js"></script>
 </html>

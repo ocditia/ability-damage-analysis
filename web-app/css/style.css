@@ -1326,11 +1326,7 @@ img,video {
     transition-duration: 75ms
 }
 
-.card-tanks {
-    --tw-border-color: #3A7AD6
-}
-
-.card-healers {
+.card-necro {
     --tw-border-color: #47C168
 }
 
@@ -1339,7 +1335,7 @@ img,video {
 }
 
 .card-ranged {
-    --tw-border-color: #D84D4D
+    --tw-border-color: #07a355
 }
 
 .card-casters {
@@ -3045,3 +3041,16 @@ th,td{
     background-color: #19191a;
     width: 35px;
   }
+
+  .dropdown-select {
+    width: 200px;
+    padding: 10px;
+    background: transparent;
+    color: white;
+}
+
+.dropdown-select option {
+    background: rgba(0, 0, 0, 0);
+    color: white;
+    padding: 5px;
+}
