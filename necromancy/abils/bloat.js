@@ -2,17 +2,19 @@ const AbilityDmg = require('../necromancy_ad')
 const OnNPC = require('../necromancy_on_npc')
 const OnHit = require('../necromancy_on_hit')
 const Crit = require('../necromancy_crit')
+const Abil = require('../necromancy_const')
+const Avg = require('../average_damage')
 const { channel } = require('diagnostics_channel')
 
-function necro_auto(type, settings) {
-    const numberOfHits = 1
-    const fixedPercent = 0.9;
-    const variablePercent = 0.2;
+function bloat(type, settings, numberOfHits) {
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
+    const AVG_INS = new Avg();
+    const fixedPercent = Abil['bloat - initial hit']['fixed percent'];
+    const variablePercent = Abil['bloat - initial hit']['variable percent'];
+
     const hits = []
-    
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
 
         //calculates ability damage
@@ -29,63 +31,68 @@ function necro_auto(type, settings) {
         fixed = onHit[0];
         variable = onHit[1];
 
-        //normal roll calcs
+        //apply crit dmg
         const dmg = [];
         const critDmg = [];
         for (var i = fixed; i < (fixed + variable); i++) {
-            let j = i;
-            
-            crit = CRIT_INS.critDmgBuff(j);
-            j = NPC_INS.calcOnNpc(j, settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
-            crit = NPC_INS.calcOnNpc(crit, settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);    
+            let non_crit = i;
+            crit = CRIT_INS.critDmgBuff(non_crit);
 
-            if (j > settings['cap']) {
-                j = settings['cap'];
-            }
-
-            if (crit > settings['cap']) {
-                crit = settings['cap'];
-            }
-
-            dmg.push(j)
+            dmg.push(non_crit)
             critDmg.push(crit)
         }
 
-        //set min and max damage
-        let dmgMin = dmg[0];
-        let dmgMax = dmg[dmg.length-1];
-
-        //calc average damage
-        var regTotal = 0;
-        for(var i = 0; i < dmg.length; i++) {
-            regTotal += dmg[i];
+        //apply special calculations
+        const dmg_bleed = [];
+        const critDmg_bleed = [];
+        for (var i = 0; i < (dmg.length-1); i++) {
+            dmg_bleed.push(bloatBleed(dmg[i],settings,Abil['bloat - bleed hit']['number of hits']))
+            critDmg_bleed.push(bloatBleed(dmg[i],settings,Abil['bloat - bleed hit']['number of hits']))
         }
-        var avgReg = regTotal / dmg.length;
 
-        var critTotal = 0;
-        for(var i = 0; i < critDmg.length; i++) {
-            critTotal += critDmg[i];
+        let dmgMin_bleed = 10 * dmg_bleed[0]
+        let dmgAvg_bleed = 10 * AVG_INS.averageDamage(dmg_bleed,critDmg_bleed,settings)
+        let dmgMax_bleed = 10 * critDmg_bleed[critDmg_bleed.length-1]
+        hits.push([dmgMin_bleed,dmgAvg_bleed,dmgMax_bleed])
+
+        //apply on-npc effects and hitcaps
+        for (var i = 0; i < (dmg.length-1); i++) {
+            dmg[i] = NPC_INS.calcOnNpc(dmg[i], settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
+            critDmg[i] = NPC_INS.calcOnNpc(critDmg[i], settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
+         
+            if (dmg[i] > settings['cap']) {
+                dmg[i] = settings['cap'];
+            }
+
+            if (critDmg[i] > settings['cap']) {
+                critDmg[i] = settings['cap'];
+            }
         }
-        var avgCrit = critTotal / critDmg.length;
+       
+        //add damage together where needed
 
-        fCritChance = CRIT_INS.calcFCritChance(0, settings['gconc'], settings['kalg'], settings['kalgSpec'], settings['reavers'], 0, settings['biting']);
-        let dmgAvg = fCritChance * avgCrit + (1 - fCritChance) * avgReg;
-
+        //set min, avg, and max damage
+        dmgMin = dmg[0]
+        dmgMax = critDmg[critDmg.length-1]
+        let dmgAvg = AVG_INS.averageDamage(dmg,critDmg,settings)
         hits.push([dmgMin,dmgAvg,dmgMax])
     }    
-    dmgMin = 0;
-    dmgAvg = 0;
-    dmgMax = 0;
 
-    for (i in hits) {
-        dmgMin += hits[i][0];
-        dmgAvg += hits[i][1];
-        dmgMax += hits[i][2];
-    }
-
-    hits.push([dmgMin,dmgAvg,dmgMax])
+    //compute total min, avg, and max of all hits combined
+    hits.push(AVG_INS.addUpDamages(hits))
     return hits;
 }
 
-module.exports = necro_auto;
+function bloatBleed(dmg,settings,numberOfHits) {
+    const NPC_INS = new OnNPC();
+    dmg = Math.floor(dmg/4);
+    dmg = NPC_INS.calcOnNpc(dmg, settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
+    
+    if (dmg > settings['cap']) {
+        dmg = settings['cap'];
+    }
 
+    return dmg
+}
+
+module.exports = bloat;

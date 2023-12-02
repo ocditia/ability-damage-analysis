@@ -1,4 +1,5 @@
 const necro_auto = require('./abils/necro_auto')
+const bloat = require('./abils/bloat')
 const { performance } = require('perf_hooks');
 
 const settings = {
@@ -9,22 +10,22 @@ const settings = {
 
     'mh':{
         'name': 'Wand of the praesul',
-        'perks': [[Precise,6], [aftershock,1]]
+        'perks': [['Precise',6], ['aftershock',1]]
     },
 
     'oh':{
         'name': 'Seismic singularity',
-        'perks': [[equilibrium,2], [aftershock,4]]
+        'perks': [['equilibrium',2], ['aftershock',4]]
     },
 
     'top':{
         'name': 'Elite tectonic',
-        'perks': [[biting,4]]
+        'perks': [['biting',4]]
     },
 
     'bottom':{
         'name': 'Elite tectonic',
-        'perks': [[biting,4]]
+        'perks': [['biting',4]]
     },
 
     'boots': 'Enhanced blast diffusion',
@@ -80,16 +81,16 @@ const settings = {
     'flowStacks': 1
 };
 
-const test = necro_auto('Two-hand', settings);
+const test = bloat('Two-hand', settings,1);
 
 console.log(test);
 
-var startTime = performance.now()
+/* var startTime = performance.now()
 for (var i = 0; i < 100000; i++) {
-    const test1 = necro_auto('Two-hand', settings);
+    const test1 = bloat('Two-hand', settings,1);
 }
 var endTime = performance.now()
 
 console.log('calcing necro auto 100,000 times took')
 console.log(endTime - startTime)
-console.log('miliseconds')
+console.log('miliseconds') */

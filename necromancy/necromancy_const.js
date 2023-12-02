@@ -275,6 +275,9 @@ const abils = {
         "fixed percent": 1.35,
         "variable percent": 0.3
     },
+    "bloat - bleed hit":{
+        "number of hits": 10
+    },
     "soul sap":{
         "fixed percent": 0.9,
         "variable percent": 0.2
@@ -312,3 +315,5 @@ const abils = {
         "variable percent": 0.8
     }
 }
+
+module.exports = abils;

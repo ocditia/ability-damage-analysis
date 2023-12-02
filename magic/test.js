@@ -115,12 +115,12 @@ const test = wrack('Two-hand', settings);
 
 console.log(test);
 
-var startTime = performance.now()
-for (var i = 0; i < 100; i++) {
-    const test1 = wrack('Two-hand', settings);
-}
-var endTime = performance.now()
+//var startTime = performance.now()
+//for (var i = 0; i < 100; i++) {
+//    const test1 = wrack('Two-hand', settings);
+//}
+//var endTime = performance.now()
 
-console.log('calcing 4 hit asphyx with instability 10,000 times took')
-console.log(endTime - startTime)
-console.log('miliseconds')
+//console.log('calcing 4 hit asphyx with instability 10,000 times took')
+//console.log(endTime - startTime)
+//console.log('miliseconds')
