@@ -16,7 +16,7 @@ body {
 }
 
 label.logo {
-    color: rgba(255,153,0,var(--tw-border-opacity));
+    color: rgba(184, 236, 242,var(--tw-border-opacity));
     font-size: 25px;
     font-weight: bold;
 }
@@ -953,7 +953,7 @@ img,video {
 
 .border-link-orange {
     --tw-border-opacity: 1;
-    border-color: rgba(255,153,0,var(--tw-border-opacity))
+    border-color: rgba(184, 236, 242,var(--tw-border-opacity))
 }
 
 .border-card-dark {
@@ -1240,7 +1240,7 @@ img,video {
 
 .text-link-orange {
     --tw-text-opacity: 1;
-    color: rgba(255,153,0,var(--tw-text-opacity))
+    color: rgba(184, 236, 242,var(--tw-text-opacity))
 }
 
 .text-card-header-text-color {
@@ -1250,7 +1250,7 @@ img,video {
 
 .hover\:text-link-orange:hover {
     --tw-text-opacity: 1;
-    color: rgba(255,153,0,var(--tw-text-opacity))
+    color: rgba(184, 236, 242,var(--tw-text-opacity))
 }
 
 .opacity-80 {
@@ -1327,19 +1327,19 @@ img,video {
 }
 
 .card-necro {
-    --tw-border-color: #47C168
+    --tw-border-color: #e180ff
 }
 
 .card-melee {
-    --tw-border-color: #D84D4D
+    --tw-border-color: #f15c5c
 }
 
 .card-ranged {
-    --tw-border-color: #07a355
+    --tw-border-color: #61ce7e
 }
 
 .card-casters {
-    --tw-border-color: #4272db
+    --tw-border-color: #4d8be6
 }
 
 .card {
@@ -1805,11 +1805,13 @@ nav#TableOfContents a.active {
     margin-bottom: 1rem;
     margin-top: -4rem;
     overflow-x: hidden;
-    padding-bottom: .5rem
+    padding-bottom: .5rem;
+    --tw-border-color: #4272db
 }
 
 .tabbed [type=radio] {
-    display: none
+    display: none;
+    --tw-border-color: #4272db
 }
 
 .tabs {
@@ -3034,23 +3036,27 @@ th,td{
     background-color: #19191a;
     width: 50px;
   }
-  input[type="number"] {
+input[type="number"] {
     padding-left: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #19191a;
-    width: 35px;
-  }
+    width: 50px;
+}
 
-  .dropdown-select {
-    width: 200px;
+.dropdown-select {
+    width: flex-width;
     padding: 10px;
-    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #19191a;
     color: white;
 }
 
 .dropdown-select option {
-    background: rgba(0, 0, 0, 0);
+    background: #19191a;
     color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     padding: 5px;
 }
