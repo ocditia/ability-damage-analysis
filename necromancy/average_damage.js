@@ -1,7 +1,8 @@
 const Crit = require('./necromancy_crit')
+const Abil = require('./necromancy_const')
 
 class avgDmg {
-    averageDamage(dmg_list,critDmg_list,settings) {
+    averageDamage(abil_val,dmg_list,critDmg_list,settings) {
         const CRIT_INS = new Crit();
 
         //calc average damage
@@ -17,7 +18,11 @@ class avgDmg {
         }
         var avgCrit = critTotal / critDmg_list.length;
 
-        let fCritChance = CRIT_INS.calcFCritChance(0, settings['gconc'], settings['kalg'], settings['kalgSpec'], settings['reavers'], 0, settings['biting']);
+        let fCritChance = 0
+        if (Abil[abil_val]['crit effects'] === true) {
+            fCritChance = CRIT_INS.calcFCritChance(0, settings['gconc'], settings['kalg'], settings['kalgSpec'], settings['reavers'], 0, settings['biting']);
+        } 
+
         let dmgAvg = fCritChance * avgCrit + (1 - fCritChance) * avgReg;
 
         return dmgAvg

@@ -233,11 +233,16 @@ const potions = {
 const abils = {
     "basic attack":{
         "fixed percent": 0.9,
-        "variable percent": 0.2
+        "variable percent": 0.2,
+        "on hit effects": true,
+        "crit effects": true
     },
     "skeleton auto":{
         "fixed percent": 0.22,
-        "variable percent": 0.06
+        "variable percent": 0.06,
+        "on hit effects": false,
+        "crit effects": false
+        
     },
     "finger of death":{
         "fixed percent": 2.7,

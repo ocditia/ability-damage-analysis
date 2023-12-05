@@ -6,15 +6,17 @@ const Abil = require('../necromancy_const')
 const Avg = require('../average_damage')
 const { channel } = require('diagnostics_channel')
 
-function bloat(type, settings, numberOfHits) {
+function necro_auto(type, settings, numberOfHits) {
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
-    const fixedPercent = Abil['bloat - initial hit']['fixed percent'];
-    const variablePercent = Abil['bloat - initial hit']['variable percent'];
+    let abil_val = 'skeleton auto'
+    const fixedPercent = Abil[abil_val]['fixed percent'];
+    const variablePercent = Abil[abil_val]['variable percent'];
 
     const hits = []
+   
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
 
         //calculates ability damage
@@ -25,8 +27,8 @@ function bloat(type, settings, numberOfHits) {
         let variable = Math.floor(AD * variablePercent);
 
         //applies on-hit effects
-        let onHit = HIT_INS.calcOnHit(fixed, variable, settings['prayer'], settings['dharok'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name']);
-
+        let onHit = HIT_INS.calcOnHit(fixed, variable, Abil[abil_val]["on hit effects"],settings['prayer'], settings['dharok'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name']);
+    
         //sets up for further calculations
         fixed = onHit[0];
         variable = onHit[1];
@@ -43,17 +45,11 @@ function bloat(type, settings, numberOfHits) {
         }
 
         //apply special calculations
-        const dmg_bleed = [];
-        const critDmg_bleed = [];
+        rage_stacks = settings['rage stacks'] + hitsplat
         for (var i = 0; i < (dmg.length); i++) {
-            dmg_bleed.push(bloatBleed(dmg[i],settings,Abil['bloat - bleed hit']['number of hits']))
-            critDmg_bleed.push(bloatBleed(dmg[i],settings,Abil['bloat - bleed hit']['number of hits']))
+            dmg[i] = dmg[i] * (1 + 0.03 * rage_stacks)
+            critDmg[i] = critDmg[i] * (1 + 0.03 * rage_stacks)
         }
-
-        let dmgMin_bleed = 10 * dmg_bleed[0]
-        let dmgAvg_bleed = 10 * AVG_INS.averageDamage(dmg_bleed,critDmg_bleed,settings)
-        let dmgMax_bleed = 10 * critDmg_bleed[critDmg_bleed.length-1]
-        hits.push([dmgMin_bleed,dmgAvg_bleed,dmgMax_bleed])
 
         //apply on-npc effects and hitcaps
         for (var i = 0; i < (dmg.length); i++) {
@@ -74,7 +70,7 @@ function bloat(type, settings, numberOfHits) {
         //set min, avg, and max damage
         dmgMin = dmg[0]
         dmgMax = critDmg[critDmg.length-1]
-        let dmgAvg = AVG_INS.averageDamage(dmg,critDmg,settings)
+        let dmgAvg = AVG_INS.averageDamage(abil_val,dmg,critDmg,settings)
         hits.push([dmgMin,dmgAvg,dmgMax])
     }    
 
@@ -83,16 +79,5 @@ function bloat(type, settings, numberOfHits) {
     return hits;
 }
 
-function bloatBleed(dmg,settings,numberOfHits) {
-    const NPC_INS = new OnNPC();
-    dmg = Math.floor(dmg/4);
-    dmg = NPC_INS.calcOnNpc(dmg, settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
-    
-    if (dmg > settings['cap']) {
-        dmg = settings['cap'];
-    }
+module.exports = necro_auto;
 
-    return dmg
-}
-
-module.exports = bloat;

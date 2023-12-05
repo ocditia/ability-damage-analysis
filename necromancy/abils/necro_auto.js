@@ -11,8 +11,9 @@ function necro_auto(type, settings, numberOfHits) {
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
-    const fixedPercent = Abil['basic attack']['fixed percent'];
-    const variablePercent = Abil['basic attack']['variable percent'];
+    let abil_val = 'basic attack'
+    const fixedPercent = Abil[abil_val]['fixed percent'];
+    const variablePercent = Abil[abil_val]['variable percent'];
 
     const hits = []
    
@@ -26,8 +27,8 @@ function necro_auto(type, settings, numberOfHits) {
         let variable = Math.floor(AD * variablePercent);
 
         //applies on-hit effects
-        let onHit = HIT_INS.calcOnHit(fixed, variable, settings['prayer'], settings['dharok'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name']);
-
+        let onHit = HIT_INS.calcOnHit(fixed, variable, Abil[abil_val]["on hit effects"],settings['prayer'], settings['dharok'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name']);
+    
         //sets up for further calculations
         fixed = onHit[0];
         variable = onHit[1];
@@ -35,7 +36,7 @@ function necro_auto(type, settings, numberOfHits) {
         //apply crit dmg
         const dmg = [];
         const critDmg = [];
-        for (var i = fixed; i < (fixed + variable); i++) {
+        for (var i = fixed; i <= (fixed + variable); i++) {
             let non_crit = i;
             crit = CRIT_INS.critDmgBuff(non_crit);
 
@@ -52,7 +53,7 @@ function necro_auto(type, settings, numberOfHits) {
         }
 
         //apply on-npc effects and hitcaps
-        for (var i = 0; i < (dmg.length-1); i++) {
+        for (var i = 0; i < (dmg.length); i++) {
             dmg[i] = NPC_INS.calcOnNpc(dmg[i], settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
             critDmg[i] = NPC_INS.calcOnNpc(critDmg[i], settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
          
@@ -70,7 +71,7 @@ function necro_auto(type, settings, numberOfHits) {
         //set min, avg, and max damage
         dmgMin = dmg[0]
         dmgMax = critDmg[critDmg.length-1]
-        let dmgAvg = AVG_INS.averageDamage(dmg,critDmg,settings)
+        let dmgAvg = AVG_INS.averageDamage(abil_val,dmg,critDmg,settings)
         hits.push([dmgMin,dmgAvg,dmgMax])
     }    
 

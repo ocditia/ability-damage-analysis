@@ -68,7 +68,12 @@ class OnHit {
     }
   }
 
-  calcOnHit(fixed, variable, prayer, dharok, ful, rubyAurora, salve, precise_rank, equilibrium_rank, aura) {
+  calcOnHit(fixed, variable, apply, prayer, dharok, ful, rubyAurora, salve, precise_rank, equilibrium_rank, aura) {
+    if (apply == false) {
+      return [fixed,variable]
+    }
+
+    else {
     let dmg = this.calcPrayer(fixed,variable,prayer);
     
     if (ful === true) {
@@ -85,6 +90,7 @@ class OnHit {
     
     return dmg;
     }
+}
 }
 
 module.exports = OnHit;

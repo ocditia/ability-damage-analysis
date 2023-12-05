@@ -1,5 +1,6 @@
 const necro_auto = require('./abils/necro_auto')
 const bloat = require('./abils/bloat')
+const skeleton_auto = require('./abils/skeleton_auto')
 const { performance } = require('perf_hooks');
 
 const settings = {
@@ -78,10 +79,11 @@ const settings = {
     'slayerPerk': 0,
     'kww': 0,
     'revenge': 0,
-    'flowStacks': 1
+    'flowStacks': 1,
+    'rage stacks': 2
 };
 
-const test = bloat('Two-hand', settings,1);
+const test = skeleton_auto('Two-hand', settings,10);
 
 console.log(test);
 
