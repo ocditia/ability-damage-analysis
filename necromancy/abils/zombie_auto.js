@@ -6,12 +6,12 @@ const Abil = require('../necromancy_const')
 const Avg = require('../average_damage')
 const { channel } = require('diagnostics_channel')
 
-function soul_sap(type, settings, numberOfHits) {
+function command_zombie(type, settings, numberOfHits) {
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
-    let abil_val = "soul sap"
+    let abil_val = "zombie auto"
     const fixedPercent = Abil[abil_val]['fixed percent'];
     const variablePercent = Abil[abil_val]['variable percent'];
 
@@ -74,5 +74,5 @@ function soul_sap(type, settings, numberOfHits) {
     return hits;
 }
 
-module.exports = soul_sap;
+module.exports = command_zombie;
 
