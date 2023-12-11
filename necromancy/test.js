@@ -1,6 +1,7 @@
 const necro_auto = require('./abils/necro_auto')
 const bloat = require('./abils/bloat')
 const skeleton_auto = require('./abils/skeleton_auto')
+const blood_siphon = require('./abils/blood_siphon')
 const { performance } = require('perf_hooks');
 
 const settings = {

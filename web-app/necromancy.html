@@ -4,9 +4,8 @@
         <meta charset="utf-8">
         <title>RS3 Ability Damage Maths </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
-
     <body>
         <nav class="fixed w-full lg:relative bg-card-light z-50">
             <div class="responsive-container px-4 lg:px-0">
@@ -79,7 +78,7 @@
                         <h1 class="text-3xl md:text-4xl xl:text-6xl font-semibold filter ml-8 drop-shadow-lg-casters mb-0">Necromancy</h1>
                     </div>
                 </div>
-                <div class="bg-gray-600 absolute top-0 left-0 w-full -z-1 h-96 md:h-72 xl:h-112 xl:mt-16 bg-bottom md:bg-top bg-cover" style="background-image:url(./assets/necro_background.png)">
+                <div class="bg-gray-600 absolute top-0 left-0 w-full -z-1 h-96 md:h-72 xl:h-112 xl:mt-16 bg-bottom md:bg-top bg-cover" style="background-image:url(./assets/magic_background.png)">
                 </div>
             </div>
         </div>
@@ -99,272 +98,94 @@
                                                 <th></th>
                                                 <th></th>
                                                 <th>Regular</th>
-                                                <th>Split soul</th>
+                                                <th>Split Soul</th>
+                                                <th>Weapon</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/necro_auto.webp"> </td>
-                                                <td data-cell="name">basic attack</td>
+                                                <td data-cell="name">Necro auto</td>
                                                 <td></td>
                                                 <td data-cell="reg">1000</td>
-                                                <td data-cell="splitSoul">1230</td>
+                                                <td data-cell="ss">1000</td>
+                                                <td data-cell="weapon">
+                                                    <select class="dropdown-select" id="necro auto">
+                                                        <option value="dw">Dw</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/necro_auto.webp"> </td>
+                                                <td data-cell="name">Necro auto (double damage)</td>
+                                                <td></td>
+                                                <td data-cell="reg">1000</td>
+                                                <td data-cell="ss">1000</td>
+                                                <td data-cell="weapon">
+                                                    <select class="dropdown-select" id="necro auto">
+                                                        <option value="dw">Dw</option>
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/soul_sap.webp"> </td>
                                                 <td data-cell="name">Soul Sap</td>
                                                 <td></td>
                                                 <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
+                                                <td data-cell="ss"></td>
+                                                <td data-cell="weapon">
+                                                    <select class="dropdown-select" id="soul sap">
+                                                        <option value="Dw">Dw</option>
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/touch_of_death.webp"> </td>
                                                 <td data-cell="name">Touch of Death</td>
                                                 <td></td>
                                                 <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
+                                                <td data-cell="ss"></td>
+                                                <td data-cell="weapon">
+                                                    <select class="dropdown-select" id="touch of death">
+                                                        <option value="Dw">Dw</option>
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/conjure_skeleton_warrior.webp"> </td>
-                                                <td data-cell="name">Skeleton conjure auto</td>
+                                                <td data-cell="name">Skeleton auto</td>
                                                 <td></td>
                                                 <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
+                                                <td data-cell="ss"></td>
+                                                <td data-cell="weapon">
+                                                    <select class="dropdown-select" id="skeleton auto">
+                                                        <option value="Dw">Dw</option>
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/conjure_putrid_zombie.webp"> </td>
-                                                <td data-cell="name">Zombie conjure auto</td>
+                                                <td data-cell="name">Zombie auto</td>
                                                 <td></td>
                                                 <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/conjure_putrid_zombie.webp"> </td>
-                                                <td data-cell="name">Zombie poison damage (broken)</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
+                                                <td data-cell="ss"></td>
+                                                <td data-cell="weapon">
+                                                    <select class="dropdown-select" id="zombie auto">
+                                                        <option value="Dw">Dw</option>
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/conjure_vengeful_ghost.webp"> </td>
-                                                <td data-cell="name">Ghost conjure auto</td>
+                                                <td data-cell="name">Ghost auto</td>
                                                 <td></td>
                                                 <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/finger of death.webp"> </td>
-                                                <td data-cell="name">Finger of Death</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/death_skull.webp"> </td>
-                                                <td data-cell="name">Death Skulls</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Wrack.webp"> </td>
-                                                <td data-cell="name">Wrack bound</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Wrack_and_Ruin.webp"> </td>
-                                                <td data-cell="name">Wrack and ruin</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Wrack_and_Ruin.webp"> </td>
-                                                <td data-cell="name">Wrack and ruin bound</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Chain.webp"> </td>
-                                                <td data-cell="name">Chain</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Sonic_Wave.webp"> </td>
-                                                <td data-cell="name">Sonic wave</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Greater_Sonic_Wave.webp"> </td>
-                                                <td data-cell="name">Greater sonic wave</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Concentrated_Blast.webp"> </td>
-                                                <td data-cell="name">Conc blast</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Concentrated_Blast.webp"> </td>
-                                                <td data-cell="name">Conc blast 3-hit</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Greater_Concentrated_Blast.webp"> </td>
-                                                <td data-cell="name">Greater conc blast</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Dragon_Breath.webp"> </td>
-                                                <td data-cell="name">Dragon breath</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Magma_Tempest.webp"> </td>
-                                                <td data-cell="name">Magma tempest</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Corruption_Blast.webp"> </td>
-                                                <td data-cell="name">Corruption blast</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Combust.png"> </td>
-                                                <td data-cell="name">Combust</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Impact.webp"> </td>
-                                                <td data-cell="name">Impact</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Detonate.webp"> </td>
-                                                <td data-cell="name">Detonate</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Detonate.webp"> </td>
-                                                <td data-cell="name">Detonate-3t</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Smoke_Tendrils.webp"> </td>
-                                                <td data-cell="name">Smoke tendrils</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Deep_Impact.webp"> </td>
-                                                <td data-cell="name">Deep impact</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Asphyxiate.png"> </td>
-                                                <td data-cell="name">Asphyxiate</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Wild_Magic.png"> </td>
-                                                <td data-cell="name">Wild magic</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Guthix_staff.png"> </td>
-                                                <td data-cell="name">gstaff (eof)</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Omnipower.png"> </td>
-                                                <td data-cell="name">Omnipower</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Omnipower.png"> </td>
-                                                <td data-cell="name">Igneous omnipower</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/magic/Tsunami.webp"> </td>
-                                                <td data-cell="name">Tsunami</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="sun"></td>
-                                                <td data-cell="meta"></td>
+                                                <td data-cell="ss"></td>
+                                                <td data-cell="weapon">
+                                                    <select class="dropdown-select" id="ghost auto">
+                                                        <option value="Dw">Dw</option>
+                                                    </select>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -373,517 +194,118 @@
                         </div>
                     </div>
                     
-                    <div class="xl:col-span-3">
-                        <div class="card card-casters space-y-3">
-                            <div class="flex items-center">
-                                <div class="card-title">
-                                    Effects
+                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2">
+                        <div class="tabbed md:pt-8">
+                            <input type="radio" id="tab-General" name="css-tabs" checked="">
+                            <input type="radio" id="tab-Armour" name="css-tabs">
+                            <input type="radio" id="tab-Weapons" name="css-tabs">
+                            <input type="radio" id="tab-Boss" name="css-tabs">
+                            <ul class="tabs desktop">
+                                <li class="tab desktop flex-grow text-center">
+                                <label for="tab-General" class="border-t-4" style="border-top-color:#4d8be6">
+                                <div class="flex items-center justify-center">
+                                <span class="md:hidden xl:inline">General</span>
+                                <span class="hidden md:inline xl:hidden text-lg">General</span>
                                 </div>
-                            </div>
+                                </label>
+                                </li>
+                                
+                                <li class="tab desktop flex-grow text-center">
+                                    <label for="tab-Armour" class="border-t-4" style="border-top-color:#4d8be6">
+                                    <div class="flex items-center justify-center">
+                                    <span class="md:hidden xl:inline">Armour</span>
+                                    <span class="hidden md:inline xl:hidden text-lg">Armour</span>
+                                    </div>
+                                    </label>
+                                </li>
 
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Elder_overload_salve_(6).webp"></td>
-                                <p class="effect-text">Potion:</p>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="potion-selection">Elder overload</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'potion-selection')">None</a>
-                                        <a href="#" onclick="changeOption('Elder overload', 'potion-selection')">Elder overload</a>
-                                        <a href="#" onclick="changeOption('Supreme overload', 'potion-selection')">Supreme overload</a>
-                                        <a href="#" onclick="changeOption('Overload', 'potion-selection')">Overload</a>
-                                        <a href="#" onclick="changeOption('Supreme', 'potion-selection')">Supreme</a>
-                                        <a href="#" onclick="changeOption('Extreme', 'potion-selection')">Extreme</a>
-                                        <a href="#" onclick="changeOption('Grand', 'potion-selection')">Grand</a>
-                                        <a href="#" onclick="changeOption('Super', 'potion-selection')">Super</a>
-                                        <a href="#" onclick="changeOption('Regular', 'potion-selection')">Regular</a>
+                                <li class="tab desktop flex-grow text-center">
+                                    <label for="tab-Weapons" class="border-t-4" style="border-top-color:#4d8be6">
+                                    <div class="flex items-center justify-center">
+                                    <span class="md:hidden xl:inline">Weapons</span>
+                                    <span class="hidden md:inline xl:hidden text-lg">Weapons</span>
                                     </div>
-                                </div>
-                            </div>
+                                    </label>
+                                </li>
 
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/aura.png"></td>
-                                <p class="effect-text">Aura:</p>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="aura-selection">Maniacal</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'aura-selection')">None</a>
-                                        <a href="#" onclick="changeOption('Maniacal', 'aura-selection')">Maniacal</a>
-                                        <a href="#" onclick="changeOption('Mahjarrat', 'aura-selection')">Mahjarrat</a>
-                                        <a href="#" onclick="changeOption('Equilibrium', 'aura-selection')">Equilibrium</a>
+                                <li class="tab desktop flex-grow text-center">
+                                    <label for="tab-Boss" class="border-t-4" style="border-top-color:#4d8be6">
+                                    <div class="flex items-center justify-center">
+                                    <span class="md:hidden xl:inline">Boss</span>
+                                    <span class="hidden md:inline xl:hidden text-lg">Boss</span>
                                     </div>
+                                    </label>
+                                </li>
+
+                                </li>
+                                </ul>
+
+                            <ul class="tabs meta-tabs">
+                                
+                            <li class="tab meta-tab">
+                                <label for="tab-General">General</label>
+                                <div class="tab-content meta-content">
+                                        <div class="effect-container">
+                                            <p class="effect-text">Ability Damage:</p>
+                                            <input type="number" id="AD" name="Ability Damage" step="1" value="0">
+                                        </div>
+                                        <div class="effect-container">
+                                            <p class="effect-text">Necro Level:</p>
+                                            <input type="number" id="baseMagic" name="Ability Damage" step="1" value="99" max="99" min="1">
+                                        </div>
+                                        <div class="effect-container text-right">
+                                            <img class="effect-icon" src="assets/effect_icons/Elder_overload_salve_(6).webp"></td>
+                                            <p class="effect-text">Potion:</p>
+                                            <select class="dropdown-select" id="potion">
+                                                <option value="none">None</option>
+                                                <option value="elder-ovl" selected>Elder overload</option>
+                                                <option value="Supreme-ovl">Supreme overload</option>
+                                                <option value="ovl">Overload</option>
+                                                <option value="supreme">Supreme</option>
+                                                <option value="extreme">Extreme</option>
+                                                <option value="grand">Grand</option>
+                                                <option value="super">Super</option>
+                                            </select>
+                                        </div>
+                                        <div class="effect-container text-right">
+                                            <img class="effect-icon" src="assets/effect_icons/Vulnerability_icon.webp"></td>
+                                            <p class="effect-text">Vulnerability:</p>
+                                            <input type="checkbox" id="vuln" name="vuln" checked>
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Revenge.png"></td>
+                                            <p class="effect-text">Revenge:</p>
+                                            <input type="number" id="baseMagic" name="Ability Damage" step="1" value="0" max="10" min="0">
+                                        </div>
                                 </div>
-                            </div>
-                            
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Vulnerability_icon.webp">
-                                <p class="effect-text">Vulnerability:</p>
-                                <input type="checkbox" id="vuln" name="vuln" checked>
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Smoke_Cloud_icon.webp">
-                                <p class="effect-text">Smoke cloud:</p>
-                                <input type="checkbox" id="sc" name="sc" checked>
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Fractured_Staff_of_Armadyl.webp">
-                                <p class="effect-text">Instability Spec:</p>
-                                <input type="checkbox" id="fsoa" name="fsoa">
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Binding_contract_(kal'gerion_demon).webp">
-                                <p class="effect-text">Kalg demon passive:</p>
-                                <input type="checkbox" id="kalg" name="kalg">
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Kal'gerion_Demon_scroll_(Crit-i-Kal).webp">
-                                <p class="effect-text">Crit-i-kal spec:</p>
-                                <input type="checkbox" id="kalg-spec" name="kalg-spec" checked>
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Scripture_of_Ful.webp">
-                                <p class="effect-text">Scripture of ful proc:</p>
-                                <input type="checkbox" id="ful-proc" name="ful-proc">
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Undead_slayer_sigil_detail.png">
-                                <p class="effect-text">Slayer sigil:</p>
-                                <input type="checkbox" id="sigil" name="sigil">
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
-                                <p class="effect-text">Slayer perk:</p>
-                                <input type="checkbox" id="slayer-perk" name="slayer-perk">
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Araxyte_spider.webp">
-                                <p class="effect-text">Nope Nope Nope:</p>
-                                <input type="checkbox" id="nope" name="nope">
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Berserk_blood_essence.webp">
-                                <p class="effect-text">Berserker essence:</p>
-                                <input type="checkbox" id="zerk-ess" name="zerk-ess">
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/death.png">
-                                <p class="effect-text">Reaper crew:</p>
-                                <input type="checkbox" id="reaper-crew" name="reaper-crew" checked>
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Cryptbloom_helm.png">
-                                <p class="effect-text">Cryptbloom vuln:</p>
-                                <input type="checkbox" id="cryptbloom" name="cryptbloom" checked>
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Greater_Concentrated_Blast.webp">
-                                <p class="effect-text">Gconc crit buff:</p>
-                                <input type="checkbox" id="gconc" name="gconc">
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Channeller's_ring.png">
-                                <p class="effect-text">Enchantment of metaphysics:</p>
-                                <input type="checkbox" id="ench-meta" name="ench-meta" checked>
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Enchantment_of_affliction_detail.png">
-                                <p class="effect-text">Enchantment of affliction:</p>
-                                <input type="checkbox" id="ench-aff" name="ench-aff" checked>
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Enchantment_of_flames_detail.png">
-                                <p class="effect-text">Enchantment of flames:</p>
-                                <input type="checkbox" id="ench-flame" name="ench-flame" checked>
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Inquisitor_staff.webp">
-                                <p class="effect-text">Inquisitor effect:</p>
-                                <input type="checkbox" id="hex-hunter" name="hex-hunter">
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Kerapac's_wrist_wraps.webp">
-                                <p class="effect-text">Kerapac's wristwraps combust:</p>
-                                <input type="checkbox" id="kww" name="kww">
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Binding_contract_(ripper_demon).webp">
-                                <p class="effect-text">Ripper passive:</p>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="ripper-passive">0.0%</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('0.0%', 'ripper-passive')">0.0%</a>
-                                        <a href="#" onclick="changeOption('0.5%', 'ripper-passive')">0.5%</a>
-                                        <a href="#" onclick="changeOption('1.0%', 'ripper-passive')">1.0%</a>
-                                        <a href="#" onclick="changeOption('1.5%', 'ripper-passive')">1.5%</a>
-                                        <a href="#" onclick="changeOption('2.0%', 'ripper-passive')">2.0%</a>
-                                        <a href="#" onclick="changeOption('2.5%', 'ripper-passive')">2.5%</a>
-                                        <a href="#" onclick="changeOption('3.0%', 'ripper-passive')">3.0%</a>
-                                        <a href="#" onclick="changeOption('3.5%', 'ripper-passive')">3.5%</a>
-                                        <a href="#" onclick="changeOption('4.0%', 'ripper-passive')">4.0%</a>
-                                        <a href="#" onclick="changeOption('4.5%', 'ripper-passive')">4.5%</a>
-                                        <a href="#" onclick="changeOption('5.0%', 'ripper-passive')">5.0%</a>
-                                    </div>
+                            </li>
+
+                            <li class="tab meta-tab">
+                                <label for="tab-Armour">Armour</label>
+                                <div class="tab-content meta-content">
+                                    <label for="tab-Armour">Armour test</label>
                                 </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Berserker's_Fury.webp">
-                                <p class="effect-text">Dharok's momento:</p>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="dharok">0.0%</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('0.0%', 'dharok')">0.0%</a>
-                                        <a href="#" onclick="changeOption('0.5%', 'dharok')">0.5%</a>
-                                        <a href="#" onclick="changeOption('1.0%', 'dharok')">1.0%</a>
-                                        <a href="#" onclick="changeOption('1.5%', 'dharok')">1.5%</a>
-                                        <a href="#" onclick="changeOption('2.0%', 'dharok')">2.0%</a>
-                                        <a href="#" onclick="changeOption('2.5%', 'dharok')">2.5%</a>
-                                        <a href="#" onclick="changeOption('3.0%', 'dharok')">3.0%</a>
-                                        <a href="#" onclick="changeOption('3.5%', 'dharok')">3.5%</a>
-                                        <a href="#" onclick="changeOption('4.0%', 'dharok')">4.0%</a>
-                                        <a href="#" onclick="changeOption('4.5%', 'dharok')">4.5%</a>
-                                        <a href="#" onclick="changeOption('5.0%', 'dharok')">5.0%</a>
-                                        <a href="#" onclick="changeOption('5.5%', 'dharok')">5.5%</a>
-                                    </div>
+                            </li>
+
+                            <li class="tab meta-tab">
+                                <label for="tab-Weapons">Weapons</label>
+                                <div class="tab-content meta-content">
                                 </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Exsanguinate_icon.webp">
-                                <p class="effect-text">Exsanguinate stacks:</p>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="exsang">0</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('0', 'exsang')">0</a>
-                                        <a href="#" onclick="changeOption('1', 'exsang')">1</a>
-                                        <a href="#" onclick="changeOption('2', 'exsang')">2</a>
-                                        <a href="#" onclick="changeOption('3', 'exsang')">3</a>
-                                        <a href="#" onclick="changeOption('4', 'exsang')">4</a>
-                                        <a href="#" onclick="changeOption('5', 'exsang')">5</a>
-                                        <a href="#" onclick="changeOption('6', 'exsang')">6</a>
-                                        <a href="#" onclick="changeOption('7', 'exsang')">7</a>
-                                        <a href="#" onclick="changeOption('8', 'exsang')">8</a>
-                                        <a href="#" onclick="changeOption('9', 'exsang')">9</a>
-                                        <a href="#" onclick="changeOption('10', 'exsang')">10</a>
-                                        <a href="#" onclick="changeOption('11', 'exsang')">11</a>
-                                        <a href="#" onclick="changeOption('12', 'exsang')">12</a>
-                                    </div>
+                            </li>
+
+                            <li class="tab meta-tab">
+                                <label for="tab-Bosses">Bosses</label>
+                                <div class="tab-content meta-content">
                                 </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="effect-icon" src="assets/effect_icons/Ruby_Aurora_icon.webp">
-                                <p class="effect-text">Ruby aurora:</p>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="ruby-aurora">0</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('0', 'ruby-aurora')">0</a>
-                                        <a href="#" onclick="changeOption('1', 'ruby-aurora')">1</a>
-                                        <a href="#" onclick="changeOption('2', 'ruby-aurora')">2</a>
-                                        <a href="#" onclick="changeOption('3', 'ruby-aurora')">3</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/effect_icons/Revenge.png"></td>
-                                <p class="effect-text">Revenge:</p>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="revenge">0</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('0', 'revenge')">0</a>
-                                        <a href="#" onclick="changeOption('1', 'revenge')">1</a>
-                                        <a href="#" onclick="changeOption('2', 'revenge')">2</a>
-                                        <a href="#" onclick="changeOption('3', 'revenge')">3</a>
-                                        <a href="#" onclick="changeOption('4', 'revenge')">4</a>
-                                        <a href="#" onclick="changeOption('5', 'revenge')">5</a>
-                                        <a href="#" onclick="changeOption('6', 'revenge')">6</a>
-                                        <a href="#" onclick="changeOption('7', 'revenge')">7</a>
-                                        <a href="#" onclick="changeOption('8', 'revenge')">8</a>
-                                        <a href="#" onclick="changeOption('9', 'revenge')">9</a>
-                                        <a href="#" onclick="changeOption('10', 'revenge')">10</a>
-                                    </div>
-                                </div>
-                            </div>
+                            </li>  
+
+                            </ul>
                         </div>
-                    </div>
-                    <div class="xl:col-span-3">
-                        <div class="card card-casters space-y-3">
-                            <div class="flex items-center">
-                                <div class="card-title">
-                                    Worn equipment
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Head_slot.webp"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="helmet">Elite tectonic</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'helmet')">None/Tank</a>
-                                        <a href="#" onclick="changeOption('Elite tectonic', 'helmet')">Elite tectonic</a>
-                                        <a href="#" onclick="changeOption('Tectonic', 'helmet')">Tectonic</a>
-                                        <a href="#" onclick="changeOption('Superior Zuriel', 'helmet')">Superior Zuriel</a>
-                                        <a href="#" onclick="changeOption('Refined Seren', 'helmet')">Refined Seren</a>
-                                        <a href="#" onclick="changeOption('Virtus', 'helmet')">Virtus</a>
-                                        <a href="#" onclick="changeOption('Seren', 'helmet')">Seren</a>
-                                        <a href="#" onclick="changeOption('Zuriel', 'helmet')">Zuriel</a>
-                                        <a href="#" onclick="changeOption('Subjugation', 'helmet')">Subjugation</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Neck_slot.png"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="neck">EOF (or)</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'neck')">None</a>
-                                        <a href="#" onclick="changeOption('EOF (or)', 'neck')">EOF (or)</a>
-                                        <a href="#" onclick="changeOption('EOF', 'neck')">EOF</a>
-                                        <a href="#" onclick="changeOption('AOS (or)', 'neck')">AOS (or)</a>
-                                        <a href="#" onclick="changeOption('AOS', 'neck')">AOS</a>
-                                        <a href="#" onclick="changeOption('Reaper (or)', 'neck')">Reaper (or)</a>
-                                        <a href="#" onclick="changeOption('Reaper', 'neck')">Reaper</a>
-                                        <a href="#" onclick="changeOption('Salve (e)', 'neck')">Salve (e)</a>
-                                        <a href="#" onclick="changeOption('Salve', 'neck')">Salve</a>
-                                        <a href="#" onclick="changeOption('Dragon rider', 'neck')">Dragon rider</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Torso_slot.png"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="body">Elite tectonic</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'body')">None/Tank</a>
-                                        <a href="#" onclick="changeOption('Elite tectonic', 'body')">Elite tectonic</a>
-                                        <a href="#" onclick="changeOption('Tectonic', 'body')">Tectonic</a>
-                                        <a href="#" onclick="changeOption('Superior Zuriel', 'body')">Superior Zuriel</a>
-                                        <a href="#" onclick="changeOption('Refined Seren', 'body')">Refined Seren</a>
-                                        <a href="#" onclick="changeOption('Virtus', 'body')">Virtus</a>
-                                        <a href="#" onclick="changeOption('Seren', 'body')">Seren</a>
-                                        <a href="#" onclick="changeOption('Zuriel', 'body')">Zuriel</a>
-                                        <a href="#" onclick="changeOption('Subjugation', 'body')">Subjugation</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Legs_slot.png"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="legs">Elite tectonic</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'legs')">None/Tank</a>
-                                        <a href="#" onclick="changeOption('Elite tectonic', 'legs')">Elite tectonic</a>
-                                        <a href="#" onclick="changeOption('Tectonic', 'legs')">Tectonic</a>
-                                        <a href="#" onclick="changeOption('Superior Zuriel', 'legs')">Superior Zuriel</a>
-                                        <a href="#" onclick="changeOption('Refined Seren', 'legs')">Refined Seren</a>
-                                        <a href="#" onclick="changeOption('Virtus', 'legs')">Virtus</a>
-                                        <a href="#" onclick="changeOption('Seren', 'legs')">Seren</a>
-                                        <a href="#" onclick="changeOption('Zuriel', 'legs')">Zuriel</a>
-                                        <a href="#" onclick="changeOption('Subjugation', 'legs')">Subjugation</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Feet_slot.png"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="boots">Enhanced blast diffusion</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'boots')">None/Tank</a>
-                                        <a href="#" onclick="changeOption('Enhanced blast diffusion', 'boots')">Enhanced blast diffusion</a>
-                                        <a href="#" onclick="changeOption('Hailfire', 'boots')">Hailfire</a>
-                                        <a href="#" onclick="changeOption('Blast diffusion', 'boots')">Blast diffusion</a>
-                                        <a href="#" onclick="changeOption('Virtus', 'boots')">Virtus</a>
-                                        <a href="#" onclick="changeOption('Sugbjugation', 'boots')">Sugbjugation</a>
-                                        <a href="#" onclick="changeOption('Silverhawk', 'boots')">Silverhawk</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Back_slot.png"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="cape">Igneous</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'cape')">None/Tank</a>
-                                        <a href="#" onclick="changeOption('Igneous', 'cape')">Igneous</a>
-                                        <a href="#" onclick="changeOption('Completionist', 'cape')">Completionist</a>
-                                        <a href="#" onclick="changeOption('Tokhaar', 'cape')">Tokhaar</a>
-                                        <a href="#" onclick="changeOption('God cape', 'cape')">God cape</a>
-                                        <a href="#" onclick="changeOption('Max cape', 'cape')">Max cape</a>
-                                        <a href="#" onclick="changeOption('Skillcape', 'cape')">Skillcape</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Hands_slot.webp"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="gloves">Enhanced Kerapac</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'gloves')">None/Tank</a>
-                                        <a href="#" onclick="changeOption('Enhanced Kerapac', 'gloves')">Enhanced Kerapac</a>
-                                        <a href="#" onclick="changeOption('Deathtouch', 'gloves')">Deathtouch</a>
-                                        <a href="#" onclick="changeOption('Celestial', 'gloves')">Celestial</a>
-                                        <a href="#" onclick="changeOption('Kerapac', 'gloves')">Kerapac</a>
-                                        <a href="#" onclick="changeOption('Cinderbane', 'gloves')">Cinderbane</a>
-                                        <a href="#" onclick="changeOption('Virtus', 'gloves')">Virtus</a>
-                                        <a href="#" onclick="changeOption('Spellcaster', 'gloves')">Spellcaster</a>
-                                        <a href="#" onclick="changeOption('Subjugation', 'gloves')">Subjugation</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Ring_slot.png"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="ring">Reavers</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'ring')">None</a>
-                                        <a href="#" onclick="changeOption('Reavers', 'ring')">Reavers</a>
-                                        <a href="#" onclick="changeOption('Channelers', 'ring')">Channelers</a>
-                                        <a href="#" onclick="changeOption('Ring of death (i)', 'ring')">Ring of death (i)</a>
-                                        <a href="#" onclick="changeOption('Ring of death', 'ring')">Ring of death</a>
-                                        <a href="#" onclick="changeOption('ASR', 'ring')">ASR</a>
-                                        <a href="#" onclick="changeOption('ASR (i)', 'ring')">ASR (i)</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Pocket_slot.webp"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="pocket">Grimoire</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'pocket')">None</a>
-                                        <a href="#" onclick="changeOption('Grimoire', 'pocket')">Grimoire</a>
-                                        <a href="#" onclick="changeOption('Scripture', 'pocket')">Scripture</a>
-                                        <a href="#" onclick="changeOption('Superior scrimshaw of the elements', 'pocket')">Superior scrimshaw of the elements</a>
-                                        <a href="#" onclick="changeOption('Scrimshaw of the elements', 'pocket')">Scrimshaw of the elements</a>
-                                        <a href="#" onclick="changeOption('God book', 'pocket')">God book</a>
-                                    </div>
-                                </div>
-                                <div>
-                                    <input type="text" id="pocket-bonus">
-                                </div>
-                            </div>
                         </div>
-                    </div>
-                    <div class="xl:col-span-3">
-                        <div class="card card-casters space-y-3">
-                            <div class="flex items-center">
-                                <div class="card-title">
-                                    Weapons
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/2h_slot.png"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="th">Fractured staff of Armadyl</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'helmet')">None/Tank</a>
-                                        <a href="#" onclick="changeOption('Elite tectonic', 'helmet')">Elite tectonic</a>
-                                        <a href="#" onclick="changeOption('Tectonic', 'helmet')">Tectonic</a>
-                                        <a href="#" onclick="changeOption('Superior Zuriel', 'helmet')">Superior Zuriel</a>
-                                        <a href="#" onclick="changeOption('Refined Seren', 'helmet')">Refined Seren</a>
-                                        <a href="#" onclick="changeOption('Virtus', 'helmet')">Virtus</a>
-                                        <a href="#" onclick="changeOption('Seren', 'helmet')">Seren</a>
-                                        <a href="#" onclick="changeOption('Zuriel', 'helmet')">Zuriel</a>
-                                        <a href="#" onclick="changeOption('Subjugation', 'helmet')">Subjugation</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="effect-container">
-                                <label>Precise rank:</label>
-                                <input type="number" id="thPrecise">
-                            </div>
-                            <div class="effect-container">
-                                <label>Equilibrium rank:</label>
-                                <input type="number" id="thEquilibrium">
-                            </div>
-                            <div class="effect-container">
-                                <label>Flanking rank:</label>
-                                <input type="number" id="thFlanking">
-                            </div>
-                            <div class="effect-container">
-                                <label>Ruthless rank:</label>
-                                <input type="number" id="thRuthless">
-                            </div>
-                            <div class="effect-container">
-                                <label>Spendthrift rank:</label>
-                                <input type="number" id="thSpendthrift">
-                            </div>
-                            <div class="effect-container">
-                                <label>Lunging rank:</label>
-                                <input type="number" id="thLunging">
-                            </div>
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Main_hand_slot.webp"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="mh">Wand of the praesul</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'neck')">None</a>
-                                        <a href="#" onclick="changeOption('EOF (or)', 'neck')">EOF (or)</a>
-                                        <a href="#" onclick="changeOption('EOF', 'neck')">EOF</a>
-                                        <a href="#" onclick="changeOption('AOS (or)', 'neck')">AOS (or)</a>
-                                        <a href="#" onclick="changeOption('AOS', 'neck')">AOS</a>
-                                        <a href="#" onclick="changeOption('Reaper (or)', 'neck')">Reaper (or)</a>
-                                        <a href="#" onclick="changeOption('Reaper', 'neck')">Reaper</a>
-                                        <a href="#" onclick="changeOption('Salve (e)', 'neck')">Salve (e)</a>
-                                        <a href="#" onclick="changeOption('Salve', 'neck')">Salve</a>
-                                        <a href="#" onclick="changeOption('Dragon rider', 'neck')">Dragon rider</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="number" id="mhPrecise">
-                            <input type="number" id="mhEquilibrium">
-                            <input type="number" id="mhFlanking">
-                            <input type="number" id="mhRuthless">
-                            <input type="number" id="mhSpendthrift">
-                            <input type="number" id="mhLunging">
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Off-hand_slot.webp"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="oh">Imperium core</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'body')">None/Tank</a>
-                                        <a href="#" onclick="changeOption('Elite tectonic', 'body')">Elite tectonic</a>
-                                        <a href="#" onclick="changeOption('Tectonic', 'body')">Tectonic</a>
-                                        <a href="#" onclick="changeOption('Superior Zuriel', 'body')">Superior Zuriel</a>
-                                        <a href="#" onclick="changeOption('Refined Seren', 'body')">Refined Seren</a>
-                                        <a href="#" onclick="changeOption('Virtus', 'body')">Virtus</a>
-                                        <a href="#" onclick="changeOption('Seren', 'body')">Seren</a>
-                                        <a href="#" onclick="changeOption('Zuriel', 'body')">Zuriel</a>
-                                        <a href="#" onclick="changeOption('Subjugation', 'body')">Subjugation</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="number" id="ohPrecise">
-                            <input type="number" id="ohEquilibrium">
-                            <input type="number" id="ohFlanking">
-                            <input type="number" id="ohRuthless">
-                            <input type="number" id="ohSpendthrift">
-                            <input type="number" id="ohLunging">
-                            <div class="effect-container">
-                                <img class="job-icon-sm" src="assets/armour_icons/Off-hand_slot.webp"></td>
-                                <div class="dropdown">
-                                    <button class="dropbtn" id="sh">Kalphite rebounder</button>
-                                    <div class="dropdown-content">
-                                        <a href="#" onclick="changeOption('None', 'legs')">None/Tank</a>
-                                        <a href="#" onclick="changeOption('Elite tectonic', 'legs')">Elite tectonic</a>
-                                        <a href="#" onclick="changeOption('Tectonic', 'legs')">Tectonic</a>
-                                        <a href="#" onclick="changeOption('Superior Zuriel', 'legs')">Superior Zuriel</a>
-                                        <a href="#" onclick="changeOption('Refined Seren', 'legs')">Refined Seren</a>
-                                        <a href="#" onclick="changeOption('Virtus', 'legs')">Virtus</a>
-                                        <a href="#" onclick="changeOption('Seren', 'legs')">Seren</a>
-                                        <a href="#" onclick="changeOption('Zuriel', 'legs')">Zuriel</a>
-                                        <a href="#" onclick="changeOption('Subjugation', 'legs')">Subjugation</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="number" id="shPrecise">
-                                <input type="number" id="shEquilibrium">
-                                <input type="number" id="shFlanking">
-                                <input type="number" id="shRuthless">
-                                <input type="number" id="shSpendthrift">
-                                <input type="number" id="shLunging">
-                        </div>
-                    </div>
                 </section>
             </div>
         </div>
     </body>
-
     <script src="./js/nav-bar.js"></script>
     <script src="./js/dropdown.js"></script>
     <script src="./js/number_input.js"></script>
