@@ -5,22 +5,106 @@
         <title>RS3 Ability Damage Maths </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="./css/style.css">
+
     </head>
     <body>
-        <nav>
-            <label class="logo">Ability Damage Maths</label>
-            <ul>
-                <li><a id="homeLink" href="index.html">Home</a></li>
-                <li><a id="magicLink" href="magic.html">Magic</a></li>
-                <li><a id="meleeLink" href="melee.html">Melee</a></li>
-                <li><a id="rangedLink" href="ranged.html">Ranged</a></li>
-                <li><a id="necromancyLink" href="necromancy.html">Necromancy</a></li>
-                <li><a id="compareLink" href="compare.html">Compare</a></li>
-            </ul>
+        <header class="bg-center bg-cover relative z-10 h-72 md:h-96 mt-10 lg:mt-0" style="background-image:url(./assets/main_background.png)"></header>
+        <nav role="navigation" class="fixed lg:absolute top-0 left-0 w-full z-50 bg-card-light lg:bg-transparent">
+            <div class="responsive-container">
+                <div class="flex justify-center">
+                    <div class="hidden lg:flex items-center space-x-3 my-4">
+                        <ul class="nav-item">
+                            <li class="block transition-all duration-75 relative">
+                                <a href="/" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
+                                    Ability Analysis
+                                </a>
+                                <ul class="nav-dropdown py-2">
+                                    <li>
+                                        <div class="flex items-start bg-card-light py-6">
+                                            <div class="mx-6">
+                                                <a href="./magic.html" class="text-link-orange font-bold tracking-wide block mb-2">Magic</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="./melee.html" class="text-link-orange font-bold tracking-wide block mb-2">Melee</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="./ranged.html" class="text-link-orange font-bold tracking-wide block mb-2">Ranged</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="./necromancy.html" class="text-link-orange font-bold tracking-wide block mb-2">Necromancy</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav-item">
+                            <li class="block transition-all duration-75 relative">
+                                <a href="./compare.html" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
+                                    Compare
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav-item">
+                            <li class="block transition-all duration-75 relative">
+                                <a href="" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
+                                    Changelog
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="lg:hidden flex items-center bg-card-light w-full py-2">
+                        <button class="outline-none mobile-menu-button"><svg class="w-6 h-6 text-link-orange hover:opacity-75" x-show="!showMenu" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentcolor"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </nav>
-        <header class="header">
-            <img src="./assets/main_background.png" alt="Header Image">
-        </header>
-    </body>
+
+    <div class="absolute top-16 left-0 w-full flex items-center justify-center my-20 z-10"></div>
+    <div id="content" class="z-20">
+        <div class="responsive-container">
+
+        </div>
+        <a class="block" href="https://discord.gg/rsanalysis">
+            <div class="join-community bg-cover bg-center my-24 px-4 pt-12 pb-36 sm:pb-12">
+                <div class="container mx-auto">
+                    <div class="mx-4 sm:mx-14">
+                        <h1 class="text-md sm:text-2xl pb-2 uppercase font-bold mb-0">Join the community</h1>
+                        <div class="flex flex-row items-center">
+                            <h2 class="text-md sm:text-2xl font-bold mb-0">https://discord.gg/rsanalysis</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div><footer class="footer">
+    <div id="footer--main" class="responsive-container mt-16">
+        <img src="/assets/rsmath.png">
+        <div class="flex flex-wrap md:flex-row lg:flex-nowrap mt-16">
+            <div id="footer-column--encounters" class="flex flex-col w-1/2 sm:w-1/3">
+                <h3 class="footer-header">
+                Ability Analysis
+                </h3>
+                <ul class="footer-list">
+                    <li><a href="/magic/">Magic</a></li>
+                    <li><a href="/melee/">Melee</a></li>
+                    <li><a href="/ranged/">Ranged</a></li>
+                    <li><a href="/necromancy/">Necromancy</a></li>
+                </ul>
+            </div>
+            <div class="flex-auto">
+                <h3 class="footer-header">
+                Info
+                </h3>
+                <ul class="footer-list">
+                    <li><a href="/credits/">Credits</a></li>
+                    <li><a href="/changelog/">Changelog</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </footer>
+</body>
     <script src="./js/nav-bar.js"></script>
 </html>

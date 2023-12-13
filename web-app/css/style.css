@@ -19,6 +19,7 @@ label.logo {
     color: rgba(184, 236, 242,var(--tw-border-opacity));
     font-size: 25px;
     font-weight: bold;
+    font-family: palatino;
 }
 
 @media (max-width: 952px) {
@@ -1415,7 +1416,7 @@ html {
 }
 
 header,.general-page-bg {
-    background-image: url(/theme-assets/homepage/endwalker@2x.png)
+    background-image: url(/assets/main_bgd.png);
 }
 
 header::after,.general-page-bg:after {
@@ -1935,7 +1936,9 @@ nav#TableOfContents a.active {
 
 .tab-content {
     display: none;
-    padding: 1rem
+    padding: 1rem;
+    height: auto;
+    overflow: visible;
 }
 
 @media(min-width: 768px) {
@@ -1996,7 +1999,8 @@ nav#TableOfContents a.active {
 }
 
 .meta-tab {
-    width: 100%
+    width: 100%;
+    display: flex;
 }
 
 .meta-tabs>.meta-tab>label {
@@ -2016,7 +2020,8 @@ nav#TableOfContents a.active {
     padding-left: 2rem;
     padding-right: 2rem;
     padding-top: 2rem;
-    padding-bottom: 2rem
+    padding-bottom: 2rem;
+    min-height: fit-content;
 }
 
 #content .meta-content {
@@ -2985,6 +2990,8 @@ th,td{
 .effect-container {
     display: flex;
     align-items: center;
+    height: auto;
+    width: auto;
 }
 
 .effect-text {

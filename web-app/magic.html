@@ -12,9 +12,9 @@
                 <div class="flex justify-between">
                     <div class="flex space-x-3">
                         <div>
-                            <a href="/" class="flex items-center py-4">
+                            <a href="./index.html" class="flex items-center py-4">
                                 <div class="flex flex-row items-center">
-                                    <label class="logo">RS Anaylsis</label>
+                                    <label class="logo">RS Analysis</label>
                                 </div>
                             </a>
                         </div>
@@ -593,7 +593,6 @@
                                 <label for="tab-General" class="border-t-4" style="border-top-color:#4d8be6">
                                 <div class="flex items-center justify-center">
                                 <span class="md:hidden xl:inline">General</span>
-                                <span class="hidden md:inline xl:hidden text-lg">General</span>
                                 </div>
                                 </label>
                                 </li>
@@ -602,7 +601,6 @@
                                     <label for="tab-Armour" class="border-t-4" style="border-top-color:#4d8be6">
                                     <div class="flex items-center justify-center">
                                     <span class="md:hidden xl:inline">Armour</span>
-                                    <span class="hidden md:inline xl:hidden text-lg">Armour</span>
                                     </div>
                                     </label>
                                 </li>
@@ -611,7 +609,6 @@
                                     <label for="tab-Weapons" class="border-t-4" style="border-top-color:#4d8be6">
                                     <div class="flex items-center justify-center">
                                     <span class="md:hidden xl:inline">Weapons</span>
-                                    <span class="hidden md:inline xl:hidden text-lg">Weapons</span>
                                     </div>
                                     </label>
                                 </li>
@@ -620,19 +617,17 @@
                                     <label for="tab-Boss" class="border-t-4" style="border-top-color:#4d8be6">
                                     <div class="flex items-center justify-center">
                                     <span class="md:hidden xl:inline">Boss</span>
-                                    <span class="hidden md:inline xl:hidden text-lg">Boss</span>
                                     </div>
                                     </label>
                                 </li>
 
                                 </li>
-                                </ul>
+                            </ul>
 
                             <ul class="tabs meta-tabs">
-                                
                             <li class="tab meta-tab">
                                 <label for="tab-General">General</label>
-                                <div class="tab-content meta-content">
+                                    <div class="tab-content meta-content">
                                         <div class="effect-container">
                                             <p class="effect-text">Ability Damage:</p>
                                             <input type="number" id="AD" name="Ability Damage" step="1" value="0">
@@ -659,14 +654,218 @@
                                                 <option value="super">Super</option>
                                             </select>
                                         </div>
-                                </div>
+                                        <div class="effect-container text-right">
+                                            <img class="effect-icon" src="assets/effect_icons/aura.png"></td>
+                                            <p class="effect-text">Aura:</p>
+                                            <select class="dropdown-select" id="aura">
+                                                <option value="none">None</option>
+                                                <option value="elder-ovl" selected>Maniacal</option>
+                                                <option value="Supreme-ovl">Mahjarrat</option>
+                                                <option value="ovl">Equilibrium</option>
+                                            </select>
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Binding_contract_(ripper_demon).webp"></td>
+                                            <p class="effect-text">Ripper Passive</p>
+                                            <input type="number" id="ripper-passive" name="ripper-passive" step="0.5" value="2.5" max="5.0" min="0.0">
+                                            <p class="effect-text">%</p>
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Berserker's_Fury.webp"></td>
+                                            <p class="effect-text">Dharok's Momento</p>
+                                            <input type="number" id="dharok" name="dharok" step="0.5" value="2.5" max="5.5" min="0.0">
+                                            <p class="effect-text">%</p>
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Exsanguinate_icon.webp"></td>
+                                            <p class="effect-text">Exsanguinate</p>
+                                            <input type="number" id="exsang" name="exsang" step="1" value="0" max="12" min="0">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Ruby_Aurora_icon.webp"></td>
+                                            <p class="effect-text">Ruby Aurora</p>
+                                            <input type="number" id="ruby-aurora" name="ruby-aurora" step="1" value="0" max="3" min="0">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Revenge.png"></td>
+                                            <p class="effect-text">Revenge</p>
+                                            <input type="number" id="revenge" name="revenge" step="1" value="0" max="10" min="0">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Vulnerability_icon.webp">
+                                            <p class="effect-text">Vulnerability:</p>
+                                            <input type="checkbox" id="vuln" name="vuln" checked>
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Smoke_Cloud_icon.webp">
+                                            <p class="effect-text">Smoke Cloud:</p>
+                                            <input type="checkbox" id="sc" name="sc" checked>
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Fractured_Staff_of_Armadyl.webp">
+                                            <p class="effect-text">Instability Spec:</p>
+                                            <input type="checkbox" id="fsoa" name="fsoa">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/death.png">
+                                            <p class="effect-text">Reaper Crew:</p>
+                                            <input type="checkbox" id="reaper-crew" name="reaper-crew" checked>
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Binding_contract_(kal'gerion_demon).webp">
+                                            <p class="effect-text">Kalg Passive:</p>
+                                            <input type="checkbox" id="kalg-passive" name="kalg-passive">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Kal'gerion_Demon_scroll_(Crit-i-Kal).webp">
+                                            <p class="effect-text">Crit-i-Kal Spec:</p>
+                                            <input type="checkbox" id="kalg-spec" name="kalg-spec">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Greater_Concentrated_Blast.webp">
+                                            <p class="effect-text">Gconc Crit Buff:</p>
+                                            <input type="checkbox" id="gconc" name="gconc">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Inquisitor_staff.webp">
+                                            <p class="effect-text">Inquisitor effect:</p>
+                                            <input type="checkbox" id="inquis" name="inquis">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Kerapac's_wrist_wraps.webp">
+                                            <p class="effect-text">Kerapac Wristwrap Combust:</p>
+                                            <input type="checkbox" id="KWW" name="KWW">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Enchantment_of_affliction_detail.png">
+                                            <p class="effect-text">Enchantment of Affliction:</p>
+                                            <input type="checkbox" id="ench-aff" name="ench-aff" checked>
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Enchantment_of_flames_detail.png">
+                                            <p class="effect-text">Enchantment of Flames:</p>
+                                            <input type="checkbox" id="ench-flame" name="ench-flame" checked>
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Channeller's_ring.png">
+                                            <p class="effect-text">Enchantment of Metaphysics:</p>
+                                            <input type="checkbox" id="ench-meta" name="ench-meta" checked>
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Scripture_of_Ful.webp">
+                                            <p class="effect-text">Scripture of Ful:</p>
+                                            <input type="checkbox" id="ful-book" name="ful-book">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Undead_slayer_sigil_detail.png">
+                                            <p class="effect-text">Slayer Sigil:</p>
+                                            <input type="checkbox" id="slay-sigil" name="slay-perk">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
+                                            <p class="effect-text">Slayer Perk:</p>
+                                            <input type="checkbox" id="slay-perk" name="slay-perk">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
+                                            <p class="effect-text">Genocidal:</p>
+                                            <input type="number" id="genocidal" name="genocidal" step="0.5" value="0" max="7" min="0">
+                                            <p class="effect-text">%</p>
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Araxyte_spider.webp">
+                                            <p class="effect-text">Nope Nope Nope:</p>
+                                            <input type="checkbox" id="nope" name="nope">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Berserk_blood_essence.webp">
+                                            <p class="effect-text">Berserker Essence:</p>
+                                            <input type="checkbox" id="zerk-ess" name="zerk-ess">
+                                        </div>
+                                        <div class="effect-container">
+                                            <img class="effect-icon" src="assets/effect_icons/Cryptbloom_helm.png">
+                                            <p class="effect-text">Cryptbloom Vuln:</p>
+                                            <input type="checkbox" id="crypt" name="crypt">
+                                        </div>
+                                    </div>
                             </li>
 
                             <li class="tab meta-tab">
                                 <label for="tab-Armour">Armour</label>
                                 <div class="tab-content meta-content">
-                                    <label for="tab-Armour">Armour test</label>
-                                </div>
+                                    <div class="effect-container text-right">
+                                        <img class="effect-icon" src="assets/armour_icons/Head_slot.webp"></td>
+                                        <select class="dropdown-select" id="helm">
+                                            <option value="none">None/Tank</option>
+                                            <option value="elite-tec" selected>Elite Tectonic</option>
+                                        </select>
+                                        <input type="number" id="helm-bonus" name="helm-bonus">
+                                    </div>
+                                    <div class="effect-container text-right">
+                                        <img class="effect-icon" src="assets/armour_icons/Torso_slot.png"></td>
+                                        <select class="dropdown-select" id="chest">
+                                            <option value="none">None/Tank</option>
+                                            <option value="elite-tec" selected>Elite Tectonic</option>
+                                        </select>
+                                        <input type="number" id="chest-bonus" name="chest-bonus">
+                                    </div>
+                                    <div class="effect-container text-right">
+                                        <img class="effect-icon" src="assets/armour_icons/Legs_slot.png"></td>
+                                        <select class="dropdown-select" id="leg">
+                                            <option value="none">None/Tank</option>
+                                            <option value="elite-tec" selected>Elite Tectonic</option>
+                                        </select>
+                                        <input type="number" id="leg-bonus" name="leg-bonus">
+                                    </div>
+                                    <div class="effect-container text-right">
+                                        <img class="effect-icon" src="assets/armour_icons/Hands_slot.webp"></td>
+                                        <select class="dropdown-select" id="hand">
+                                            <option value="none">None/Tank</option>
+                                            <option value="enh-kww" selected>Enh Kerapac Wristwraps</option>
+                                        </select>
+                                        <input type="number" id="hand-bonus" name="hand-bonus">
+                                    </div>
+                                    <div class="effect-container text-right">
+                                        <img class="effect-icon" src="assets/armour_icons/Feet_slot.png"></td>
+                                        <select class="dropdown-select" id="boots">
+                                            <option value="none">None/Tank</option>
+                                            <option value="enh-blast-diff" selected>Enhanced Blast Diffusion</option>
+                                        </select>
+                                        <input type="number" id="boot-bonus" name="boot-bonus">
+                                    </div>
+                                    <div class="effect-container text-right">
+                                        <img class="effect-icon" src="assets/armour_icons/Neck_slot.png"></td>
+                                        <select class="dropdown-select" id="neck">
+                                            <option value="none">None/Tank</option>
+                                            <option value="souls" selected>EOF(or)</option>
+                                        </select>
+                                        <input type="number" id="neck-bonus" name="neck-bonus">
+                                    </div>
+                                    <div class="effect-container text-right">
+                                        <img class="effect-icon" src="assets/armour_icons/Back_slot.png"></td>
+                                        <select class="dropdown-select" id="back">
+                                            <option value="none">None</option>
+                                            <option value="elite-tec" selected>Zuk</option>
+                                        </select>
+                                        <input type="number" id="back-bonus" name="back-bonus">
+                                    </div>
+                                    <div class="effect-container text-right">
+                                        <img class="effect-icon" src="assets/armour_icons/Ring_slot.png"></td>
+                                        <select class="dropdown-select" id="ring">
+                                            <option value="none">None</option>
+                                            <option value="asr" selected>Reavers</option>
+                                        </select>
+                                        <input type="number" id="ring-bonus" name="ring-bonus">
+                                    </div>
+                                    <div class="effect-container text-right">
+                                        <img class="effect-icon" src="assets/armour_icons/Pocket_slot.webp"></td>
+                                        <select class="dropdown-select" id="pocket">
+                                            <option value="none">None</option>
+                                            <option value="asr" selected>Grimoire</option>
+                                        </select>
+                                        <input type="number" id="pocket-bonus" name="pocket-bonus">
+                                    </div>
+                                    
                             </li>
 
                             <li class="tab meta-tab">
@@ -676,14 +875,14 @@
                             </li>
 
                             <li class="tab meta-tab">
-                                <label for="tab-Bosses">Bosses</label>
+                                <label for="tab-Boss">Bosses</label>
                                 <div class="tab-content meta-content">
                                 </div>
                             </li>  
 
                             </ul>
                         </div>
-                        </div>
+                    </div>
                 </section>
             </div>
         </div>
