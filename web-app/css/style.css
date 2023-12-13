@@ -1416,7 +1416,7 @@ html {
 }
 
 header,.general-page-bg {
-    background-image: url(/assets/main_bgd.png);
+    background-image: url(/assets/main_background.png);
 }
 
 header::after,.general-page-bg:after {
@@ -1588,16 +1588,6 @@ ul.nav-item li ul.nav-dropdown li {
     border-color: rgba(255,153,0,var(--tw-border-opacity));
     --tw-text-opacity: 1;
     color: rgba(255,153,0,var(--tw-text-opacity))
-}
-
-.mobile-menu>ul>li>.chevron {
-    background-image: url(/theme-assets/chevron-down.svg);
-    background-position: 100%;
-    background-repeat: no-repeat
-}
-
-.mobile-menu>ul>li.nav-active>.chevron {
-    background-image: url(/theme-assets/chevron-up.svg)
 }
 
 nav#TableOfContents ul a+ul {
@@ -2248,10 +2238,6 @@ nav#TableOfContents a.active {
 .h-shadow {
     color: #fff;
     text-shadow: 2px 2px 2px #222
-}
-
-.join-community {
-    background-image: url(/theme-assets/homepage/join-community.png)
 }
 
 .guide-info-container {
