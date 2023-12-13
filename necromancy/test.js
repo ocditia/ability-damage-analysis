@@ -5,10 +5,10 @@ const blood_siphon = require('./abils/blood_siphon')
 const { performance } = require('perf_hooks');
 
 const settings = {
+    'AD': 0, //for manual override only
     'level': 120,
-    'boostedLvls': 21,
-    'prayer': 0.12,
-    'AD': 1756,
+    'potion': "Elder overload",
+    'Reaper crew': true,
 
     'mh':{
         'name': 'Wand of the praesul',
@@ -56,7 +56,7 @@ const settings = {
     'ruthless': 0,
     'flanking': 0,
     'lunging': 0,
-
+    'prayer': "sorrow",
     'nope': 0,
     'vuln': 1,
     'sc': 1,
@@ -88,7 +88,7 @@ const test = skeleton_auto('Two-hand', settings,10);
 
 console.log(test);
 
-/* var startTime = performance.now()
+var startTime = performance.now()
 for (var i = 0; i < 100000; i++) {
     const test1 = bloat('Two-hand', settings,1);
 }
@@ -96,4 +96,4 @@ var endTime = performance.now()
 
 console.log('calcing necro auto 100,000 times took')
 console.log(endTime - startTime)
-console.log('miliseconds') */
+console.log('miliseconds')
