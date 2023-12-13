@@ -19,7 +19,7 @@ class avgDmg {
         var avgCrit = critTotal / critDmg_list.length;
 
         let fCritChance = 0
-        if (Abil[abil_val]['crit effects'] === true) {
+        if (Abil[abil_val]["crit effects"] === true) {
             fCritChance = CRIT_INS.calcFCritChance(0, settings['gconc'], settings['kalg'], settings['kalgSpec'], settings['reavers'], 0, settings['biting']);
         } 
 

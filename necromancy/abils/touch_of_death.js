@@ -48,9 +48,9 @@ function touch_of_death(type, settings, numberOfHits) {
 
         //apply on-npc effects and hitcaps
         for (var i = 0; i < (dmg.length); i++) {
-            dmg[i] = NPC_INS.calcOnNpc(dmg[i], settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
-            critDmg[i] = NPC_INS.calcOnNpc(critDmg[i], settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
-         
+            dmg[i] = NPC_INS.calcOnNpc(dmg[i], settings);
+            critDmg[i] = NPC_INS.calcOnNpc(critDmg[i], settings);
+            
             if (dmg[i] > settings['cap']) {
                 dmg[i] = settings['cap'];
             }

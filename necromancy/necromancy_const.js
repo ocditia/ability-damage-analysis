@@ -241,7 +241,7 @@ const potions = {
     },
     "Necromancy potion":
     {
-        "levels": 1
+        "levels": 1,
         "percent": 0.08
     }
 }
@@ -258,7 +258,6 @@ const abils = {
         "variable percent": 0.06,
         "on hit effects": false,
         "crit effects": false
-        
     },
     "finger of death":{
         "fixed percent": 2.7,
