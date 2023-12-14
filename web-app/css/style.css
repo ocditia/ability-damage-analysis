@@ -3007,6 +3007,7 @@ th,td{
     flex: 1 1 45%;
     max-width: 45%;
     min-width: auto;
+    margin-right: 12px;
 }
 
 .settings-wrapper {
