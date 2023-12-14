@@ -2727,6 +2727,15 @@ nav#TableOfContents a.active {
         font-size: 2.25rem;
         line-height: 2.5rem
     }
+
+    .md\:pt-16 {
+        padding-top: 4rem
+    }
+
+    .md\:pt-24 {
+        padding-top: 6rem
+    }
+
 }
 
 @media(min-width: 1024px) {
