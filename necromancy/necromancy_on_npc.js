@@ -8,11 +8,10 @@ class OnNPC {
     }
   
     vuln(dmg, flag) {
-      return Math.floor(dmg + (dmg * 0.1 * flag));
-    }
-  
-    sc(dmg, flag) {
-      return Math.floor(dmg + (dmg * 0.15 * flag));
+      if (flag === true) {
+        dmg = math.floor(dmg + dmg * 0.1)
+      }
+      return dmg
     }
   
     cryptbloom(dmg, flag) {
@@ -45,18 +44,10 @@ class OnNPC {
       }
     }
   
-    calcOnNpc(dmg, kww, ench, vuln, cryptbloom, slayerperk, slayersigil, aura, scrimshaw, meta) {
-      dmg = this.kww(dmg,kww,ench);
-      dmg = this.vuln(dmg,vuln);
-      dmg = this.cryptbloom(dmg,cryptbloom);
-      dmg = this.slayerperk(dmg,slayerperk);
-      dmg = this.slayersigil(dmg,slayersigil);
-      dmg = this.aura(dmg,aura);
-      if (meta === true) {
-      dmg = this.meta(dmg);
-      }
-      dmg = this.scrimshaw(dmg,scrimshaw);
-  
+    calcOnNpc(dmg, settings) {
+      dmg = this.vuln(dmg,settings['Vulnerability']);
+      dmg = this.slayersigil(dmg,settings['Slayer sigil'])
+        
       return dmg;
     }
   }

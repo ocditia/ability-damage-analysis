@@ -28,7 +28,7 @@ function necro_auto(type, settings, numberOfHits) {
 
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, Abil[abil_val]["on hit effects"],settings['prayer'], settings['dharok'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name']);
-    
+        
         //sets up for further calculations
         fixed = onHit[0];
         variable = onHit[1];
@@ -43,9 +43,9 @@ function necro_auto(type, settings, numberOfHits) {
             dmg.push(non_crit)
             critDmg.push(crit)
         }
-
+        
         //apply special calculations
-        rage_stacks = settings['rage stacks'] + hitsplat
+        rage_stacks = settings['Skeleton rage stacks'] + hitsplat
         for (var i = 0; i < (dmg.length); i++) {
             dmg[i] = dmg[i] * (1 + 0.03 * rage_stacks)
             critDmg[i] = critDmg[i] * (1 + 0.03 * rage_stacks)
@@ -53,8 +53,8 @@ function necro_auto(type, settings, numberOfHits) {
 
         //apply on-npc effects and hitcaps
         for (var i = 0; i < (dmg.length); i++) {
-            dmg[i] = NPC_INS.calcOnNpc(dmg[i], settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
-            critDmg[i] = NPC_INS.calcOnNpc(critDmg[i], settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
+            dmg[i] = NPC_INS.calcOnNpc(dmg[i], settings);
+            critDmg[i] = NPC_INS.calcOnNpc(critDmg[i], settings);
          
             if (dmg[i] > settings['cap']) {
                 dmg[i] = settings['cap'];

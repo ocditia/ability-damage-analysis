@@ -1,63 +1,33 @@
 const thWeapons = {
-    "Inquisitor staff":{
-        "tier": 80,
-        "weaponDmg": 0
-    },
-    "Fractured staff of Armadyl":{
-        "tier": 95,
-        "weaponDmg": 0
-    },
-    "Staff of Sliske":{
-        "tier": 92,
-        "weaponDmg": 0
-    },
-    "Noxious staff":{
-        "tier": 90,
-        "weaponDmg": 0
-    },
-    "Superior Zuriel":{
-        "tier": 88,
-        "weaponDmg": 0
-    },
-    "Obliteration":{
-        "tier": 87,
-        "weaponDmg": 0
-    },
-    "Attuned crystal":{
-        "tier": 80,
-        "weaponDmg": 0
-    },
-    "Sunspear":{
-        "tier": 78,
-        "weaponDmg": 0
-    },
+
 }
+
 const mhWeapons = {
-    "Wand of the praesul":{
-        "tier": 92,
+    "Death guard (tier 80)":{
+        "tier": 80,
         "weaponDmg": 0
     },
-    "Seismic wand":{
+    "Death guard (tier 90)":{
         "tier": 90,
         "weaponDmg": 0
     },
-    "Elite seasinger":{
-        "tier": 88,
-        "weaponDmg": 0
-    },
-    "Cywir":{
-        "tier": 85,
-        "weaponDmg": 0
-    },
-    "Virtus":{
-        "tier": 80,
+    "Omni guard":{
+        "tier": 95,
         "weaponDmg": 0
     }
 }
 
 const ohWeapons = {
-    "lantern":{
-        "tier": 92,
+    "Skull lantern (tier 80)":{
+        "tier": 80,
+        "weaponDmg": 0
+    },
+    "Skull lantern (tier 90)":{
+        "tier": 90,
+        "weaponDmg": 0
+    },
+    "Soulbound lantern":{
+        "tier": 95,
         "weaponDmg": 0
     }
 }
@@ -66,67 +36,85 @@ const shWeapons = {
 }
 
 const helms = {
-    "Deathguard":{
-        "bonus": 24
+    "Deathdealer hood (tier 80)":{
+        "bonus": 20.3
+    },
+    "Deathdealer hood (tier 90)":{
+        "bonus": 23.2
+    },
+    "Foot wraps of the first necromancer":{
+        "bonus": 25
     }
 }
 
 const bodies = {
-    "Deathguard":{
-        "bonus": 36
+    "Deathdealer robe top (tier 80)":{
+        "bonus": 30.5
+    },
+    "Deathdealer robe top (tier 90)":{
+        "bonus": 34.8
+    },
+    "Foot wraps of the first necromancer":{
+        "bonus": 37
     }
 }
 
 const legs = {
-    "Deathguard":{
-        "bonus": 31
+    "Deathdealer robe bottom (tier 80)":{
+        "bonus": 25.4
+    },
+    "Deathdealer robe bottom (tier 90)":{
+        "bonus": 29
+    },
+    "Foot wraps of the first necromancer":{
+        "bonus": 32
     }
 }
 
 const boots = {
-    "Enhanced blast diffusion":{
+    "Deathdealer boots (tier 80)":{
+        "bonus": 12.7
+    },
+    "Deathdealer boots (tier 90)":{
         "bonus": 14.5
     },
-    "Hailfire":{
-        "bonus": 14
+    "Foot wraps of the first necromancer":{
+        "bonus": 16
     },
-    "Blast diffusion":{
-        "bonus": 12
-    },
-    "Virtus":{
-        "bonus": 12
-    },
-    "Subjugation":{
-        "bonus": 11
-    },
-    "Silverhawk":{
-        "bonus": 0.2
+    "Silverhawk boots (tier 60)":{
+        "bonus": 6.9
     }
 }
 
 const gloves = {
-    "Deathguard":{
+    "Deathdealer gloves (tier 80)":{
+        "bonus": 12.7
+    },
+    "Deathdealer gloves (tier 90)":{
         "bonus": 14.5
+    },
+    "Hand wrap of the first necromancer":{
+        "bonus": 16
     }
 }
 
 const necks = {
-    "EOF (or)":{
+    "Essence of finality amulet (or)":{
         "bonus": 59
     },
-    "EOF":{
+    "Essence of finality amulet":{
         "bonus": 56
     },
-    "AOS (or)":{
+    "Amulet of souls (or)":{
         "bonus": 48
     },
-    "AOS":{
+    "Amulet of souls":{
         "bonus": 46.3
     },
     "Reaper (or)":{
         "bonus": 38.4
     },
-    "Reaper":{
+    "Reaper necklace":{
         "bonus": 36.8
     },
     "Salve (e)":{
@@ -135,7 +123,7 @@ const necks = {
     "Salve":{
         "bonus": 0
     },
-    "Dragon rider":{
+    "Dragon rider necklace":{
         "bonus": 30.2
     }
 }
@@ -143,9 +131,6 @@ const necks = {
 const rings = {
     "Reavers":{
         "bonus": 27.7
-    },
-    "Channelers":{
-        "bonus": 30.4
     },
     "Ring of death (i)":{
         "bonus": 27.7
@@ -162,13 +147,13 @@ const rings = {
 }
 
 const capes = {
-    "Igneous":{
+    "Igneous kal-mor":{
         "bonus": 43
     },
     "Completionist":{
         "bonus": 31.5
     },
-    "Tokhaar":{
+    "Tokhaar-kal-mor":{
         "bonus": 33
     },
     "God cape":{
@@ -186,14 +171,14 @@ const pockets = {
     "Grimoire":{
         "bonus": 7
     },
-    "Scripture":{
+    "Scripture of jas":{
         "bonus": 8
     },
-    "Superior scrimshaw of elements":{
-        "bonus": 0
+    "Scripture of ful":{
+        "bonus": 8
     },
-    "Scrimshaw of elements":{
-        "bonus": 0
+    "Scripture of wen":{
+        "bonus": 8
     },
     "Illuminated god book":{
         "bonus": 7
@@ -215,11 +200,23 @@ const auras = {
 }
 
 const prayers = {
-    "Affliction":{
+    "Ruination":{
         "boost": 0.12
     },
-    "Anguish":{
+    "Sorrow":{
+        "boost": 0.10
+    },
+    "Sanctity":{
         "boost": 0.08
+    },
+    "Accelerated decay":{
+        "boost": 0.06
+    },
+    "Hastened decay":{
+        "boost": 0.06
+    },
+    "Decay":{
+        "boost": 0.02
     }
 }
 
@@ -227,6 +224,25 @@ const potions = {
     "Elder overload":{
         "levels": 5,
         "percent": 0.17
+    },
+    "Overload":{
+        "levels": 3,
+        "percent": 0.15
+    },
+    "Extreme necromancy":
+    {
+        "levels": 3,
+        "percent": 0.15
+    },
+    "Super necromancy":
+    {
+        "levels": 2,
+        "percent": 0.12
+    },
+    "Necromancy potion":
+    {
+        "levels": 1,
+        "percent": 0.08
     }
 }
 
@@ -242,7 +258,6 @@ const abils = {
         "variable percent": 0.06,
         "on hit effects": false,
         "crit effects": false
-        
     },
     "finger of death":{
         "fixed percent": 2.7,
