@@ -102,92 +102,7 @@
                                                 <th>Weapon</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/necro_auto.webp"> </td>
-                                                <td data-cell="name">Necro auto</td>
-                                                <td></td>
-                                                <td data-cell="reg">1000</td>
-                                                <td data-cell="ss">1000</td>
-                                                <td data-cell="weapon">
-                                                    <select class="dropdown-select" id="necro auto">
-                                                        <option value="dw">Dw</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/necro_auto.webp"> </td>
-                                                <td data-cell="name">Necro auto (double damage)</td>
-                                                <td></td>
-                                                <td data-cell="reg">1000</td>
-                                                <td data-cell="ss">1000</td>
-                                                <td data-cell="weapon">
-                                                    <select class="dropdown-select" id="necro auto">
-                                                        <option value="dw">Dw</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/soul_sap.webp"> </td>
-                                                <td data-cell="name">Soul Sap</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="ss"></td>
-                                                <td data-cell="weapon">
-                                                    <select class="dropdown-select" id="soul sap">
-                                                        <option value="Dw">Dw</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/touch_of_death.webp"> </td>
-                                                <td data-cell="name">Touch of Death</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="ss"></td>
-                                                <td data-cell="weapon">
-                                                    <select class="dropdown-select" id="touch of death">
-                                                        <option value="Dw">Dw</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/conjure_skeleton_warrior.webp"> </td>
-                                                <td data-cell="name">Skeleton auto</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="ss"></td>
-                                                <td data-cell="weapon">
-                                                    <select class="dropdown-select" id="skeleton auto">
-                                                        <option value="Dw">Dw</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/conjure_putrid_zombie.webp"> </td>
-                                                <td data-cell="name">Zombie auto</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="ss"></td>
-                                                <td data-cell="weapon">
-                                                    <select class="dropdown-select" id="zombie auto">
-                                                        <option value="Dw">Dw</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td data-cell="img"> <img class="job-icon-sm" src="assets/ability_icons/necro/conjure_vengeful_ghost.webp"> </td>
-                                                <td data-cell="name">Ghost auto</td>
-                                                <td></td>
-                                                <td data-cell="reg"></td>
-                                                <td data-cell="ss"></td>
-                                                <td data-cell="weapon">
-                                                    <select class="dropdown-select" id="ghost auto">
-                                                        <option value="Dw">Dw</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </tbody>
+                                        <tbody class="js--damages-table"></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -238,20 +153,20 @@
                                                 <div class="card-title mb-1">Ability Damage</div>
                                                 <div class="effect-container">
                                                     <p class="effect-text">Ability Damage:</p>
-                                                    <input type="number" id="AD" name="Ability Damage" step="1" value="0">
+                                                    <input class="js--setting" data-setting-name="AD" type="number" id="AD" name="Ability Damage" step="1" value="0">
                                                 </div>
                                                 <div class="effect-container">
                                                     <p class="effect-text">Base Necromancy Level:</p>
-                                                    <input type="number" id="baseMagic" name="Ability Damage" step="1" value="120" max="120" min="1">
+                                                    <input class="js--setting" data-setting-name="level" type="number" id="baseMagic" name="Ability Damage" step="1" value="120" max="120" min="1">
                                                 </div>
                                                 <div class="effect-container">
                                                     <p class="effect-text">Boosted Necromancy Level:</p>
-                                                    <input type="number" id="boostMagic" name="boostMagic" step="1" value="135" max="135" min="1">
+                                                    <input class="js--setting" data-setting-name="boostedLevel" type="number" id="boostMagic" name="boostMagic" step="1" value="135" max="135" min="1">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Elder_overload_salve_(6).webp"></td>
                                                     <p class="effect-text">Potion:</p>
-                                                    <select class="dropdown-select" id="potion">
+                                                    <select class="js--setting" data-setting-name="potion" class="dropdown-select" id="potion">
                                                         <option value="none">None</option>
                                                         <option value="elder-ovl" selected>Elder overload</option>
                                                         <option value="Supreme-ovl">Supreme overload</option>
@@ -265,7 +180,7 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/death.png">
                                                     <p class="effect-text">Reaper Crew:</p>
-                                                    <input type="checkbox" id="reaper-crew" name="reaper-crew" checked>
+                                                    <input class="js--setting" data-setting-name="Reaper crew" type="checkbox" id="reaper-crew" name="reaper-crew" checked>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Berserk_blood_essence.webp">
@@ -580,7 +495,19 @@
             </div>
         </div>
     </body>
+    <template id="damage-table-row">
+        <tr class="js--ability">
+            <td data-cell="img"> <img class="job-icon-sm js--ability-icon"> </td>
+            <td class="js--ability-title" data-cell="name"></td>
+            <td></td>
+            <td class="js--ability-regular" data-cell="reg"></td>
+            <td class="js--ability-splitsoul" data-cell="ss"></td>
+            <td data-cell="weapon">
+                <select class="js--ability-weapon dropdown-select">
+                </select>
+            </td>
+        </tr>
+    </template>
     <script src="./js/nav-bar.js"></script>
-    <script src="./js/dropdown.js"></script>
-    <script src="./js/number_input.js"></script>
+    <script type="module" src="./js/calculator.js"></script>
 </html>
