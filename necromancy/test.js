@@ -1,43 +1,49 @@
 const necro_auto = require('./abils/necro_auto')
+const test_auto = require('./abils/zzz_test_abil')
 const bloat = require('./abils/bloat')
 const skeleton_auto = require('./abils/skeleton_auto')
 const blood_siphon = require('./abils/blood_siphon')
 const { performance } = require('perf_hooks');
 
 const settings = {
-    'AD': 1500, //for manual override only
+    'minavgmax': 'avg',
+
+    'ability damage': 0, //for manual override only
     'level': 120,
-    'potion': "Elder overload",
-    'Reaper crew': true,
+    'potion': "elder overload",
+    
+    'two-handed weapon': 1,
+    'main-hand weapon': 'Omni guard',
+    'off-hand weapon': 'Soulbound lantern',
+    'shield': 1,
+    'defender': 1,
+    'helmet': 'Crown of the first necromancer',
+    'body': 'Robe top of the first necromancer',
+    'leg': 'Robe bottom of the first necromancer',
+    'gloves': 'Hand wraps of the first necromancer',
+    'boots': 'Foot wraps of the first necromancer',
+    'necklace': 'Essence of finality amulet (or)',
+    'ring': 'Reavers',
+    'cape':'Igneous kal-mor',
+    'pocket slot': 'Grimoire',
+    'reaper crew': true,
 
-    'mh':{
-        'name': 'Wand of the praesul',
-        'perks': [['Precise',6], ['aftershock',1]]
+    'perks': {
+        'precise': 0,
+        'equilibrium': 0,
+        'genocidal': 0,
+        'spendthrift': 0,
+        'ruthless rank': 0,
+        'ruthless stacks': 0,
+        'slayer perk': false,
+        'biting': 4
     },
 
-    'oh':{
-        'name': 'Seismic singularity',
-        'perks': [['equilibrium',2], ['aftershock',4]]
-    },
-
-    'top':{
-        'name': 'Elite tectonic',
-        'perks': [['biting',4]]
-    },
-
-    'bottom':{
-        'name': 'Elite tectonic',
-        'perks': [['biting',4]]
-    },
-
-    'boots': 'Enhanced blast diffusion',
-
-    'gloves': 'Enhanced Kerapac',
-
-    'ring': 'Channelers',
-
+    
+    
+    
     'aura': 'Mahjarrat',
-
+    
     'bonus': 0,
 
     'cap': 10000,
@@ -49,34 +55,36 @@ const settings = {
     'Raksha inner power': 0,
 
     //on-hit effects
+    //pre-shared effects
+    'stone of jas': 0,
+
     //shared
     'Revenge': 0,
-    'Spendthrift': 0,
-    'Ruthless': 0,
+    'prayer': "sorrow",
 
     //pvn only
-    'Slayer helm': 0,
-    'Fort forinthry guardhouse': false,
+    'slayer helmet': 'none',
+    'fort forinthry guardhouse': false,
     'Salve amulet': false,
-    'Ripper demon passive': 0,
+    'ripper demon passive': 0,
     
     //unknown order
-    'Berserkers fury': 0,    
+    'berserkers fury': 0,    
 
     //on-crit effects
-    'Animate dead': false,
-    'Kalgerion demon familiar': false,
-    'Crit-i-kal': false,
+    'smoke cloud': false,
+    'kalgerion demon familiar': false,
+    'crit-i-kal': false,
 
     //on-npc effects
-    'Vulnerability': false,
-    'Corrupted wounds': false, //gop bleed buff
-    'Slayer sigil': false,
+    'vulnerability': false,
+    'corrupted wounds': false, //gop bleed buff
+    'slayer sigil': false,
 
     //apply somewhere idk
     'nopenopenope': 0, //poh spider buff
     'Ruby aurora': 0,
-    'cryptbloom': false,
+    'death spores': false,
     'Skeleton rage stacks': 2,
     'Zamorak inner chaos': 0,
     'Zamorak guardians triumph': 0,
@@ -88,13 +96,22 @@ const settings = {
     'Tokkul-zo': false,
 };
 
-const test = skeleton_auto('Two-hand', settings,10);
-
+const test = test_auto('dual-wield', settings,8);
 console.log(test);
 
+
+/* function test(settings) {
+    if (settings['ability damage'] != 0) {
+        let AD = settings['ability damage'];
+        return AD;
+    }
+}
+let AD = test(settings);
+console.log(AD) */
+
 /* var startTime = performance.now()
-for (var i = 0; i < 1000; i++) {
-    const test1 = bloat('Two-hand', settings,1);
+for (var i = 0; i < 100000; i++) {
+    const test1 = skeleton_auto('Two-hand', settings,10);
 }
 var endTime = performance.now()
 

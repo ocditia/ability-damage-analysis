@@ -7,6 +7,7 @@ const Avg = require('../average_damage')
 const { channel } = require('diagnostics_channel')
 
 function necro_auto(type, settings, numberOfHits) {
+    const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
@@ -20,14 +21,14 @@ function necro_auto(type, settings, numberOfHits) {
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
 
         //calculates ability damage
-        let AD = settings['AD'];
+        let AD = AD_INS.calcAd(type,settings);
         
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);
         let variable = Math.floor(AD * variablePercent);
 
         //applies on-hit effects
-        let onHit = HIT_INS.calcOnHit(fixed, variable, Abil[abil_val]["on hit effects"],settings['prayer'], settings['dharok'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name']);
+        let onHit = HIT_INS.calcOnHit(fixed, variable, Abil[abil_val]["on hit effects"],settings);
     
         //sets up for further calculations
         fixed = onHit[0];

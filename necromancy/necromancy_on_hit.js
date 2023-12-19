@@ -1,58 +1,76 @@
+const construction = require('./necromancy_const')
+
 class OnHit {
-  calcScriptureOfFul(fixed,variable) {
-    return [Math.floor(fixed + fixed * 1.2), Math.floor(variable + variable * 1.2)]
+  calcScriptureOfFul(buff,pocket) {
+    if (pocket === 'scripture of ful') {
+      buff = buff * (1 + 0.2);
+    }
+    return buff;
   }
 
-  calcPrayer(fixed, variable, prayer) {
-    return [Math.floor(fixed + fixed * prayer), Math.floor(variable + variable * prayer)];
+  calcStoneOfJas(buff,jas) {
+    return buff * (1 + jas);
   }
 
-  calcRevenge(fixed, variable, revenge) {
-    return [Math.floor(fixed + fixed * revenge * 0.05), Math.floor(variable + variable * revenge * 0.05)];
-  } //fix that defender get half effect
-
-  calcSpendthrift(fixed, variable, spendthrift) {
-    return [Math.floor(fixed + fixed * spendthrift * 0.01), Math.floor(variable + variable * spendthrift * 0.01)];
+  calcPrayer(buff,prayer) {
+    return buff * (1 + construction['prayers'][prayer]['boost']);
   }
 
-  calcRuthless(fixed, variable, ruthlessStacks, ruthlessRank) {
-    return [Math.floor(fixed + fixed * ruthlessRank * ruthlessStacks * 0.005), Math.floor(variable + variable * ruthlessRank * ruthlessStacks * 0.005)];
-  }
-
-  calcRubyAurora(fixed, variable, rubyAurora) {
-    return [Math.floor(fixed + fixed * 0.01 * rubyAurora), Math.floor(variable + variable * 0.01 * rubyAurora)];
-  }
-
-  calcSlayerHelm(fixed, variable, slayerhelm) {
-    return [Math.floor(fixed + fixed * slayerhelm), Math.floor(variable + variable * slayerhelm)];
-  }
-
-  calcFortGuardHouse(fixed, variable, guardhouse) {
-    return [Math.floor(fixed + fixed * guardhouse), Math.floor(variable + variable * guardhouse)];
-  }
-
-  calcGenocidal(fixed, variable, genocidal) {
-    return [Math.floor(fixed + fixed * genocidal), Math.floor(variable + variable * genocidal)];
-  }
-
-  calcSalve(fixed, variable, salve) {
-    if (salve === 'enchanted') {
-      return [Math.floor(fixed * 1.2), Math.floor(variable * 1.2)];
+  calcRevenge(buff,type,revengeStacks) {
+    if (type === 'shield') {
+      buff = buff * (1 + 0.05*revengeStacks);
     } 
-    else if (salve === 'basic') {
-      return [Math.floor(fixed * 1.15), Math.floor(variable * 1.15)];
+    else if (type === 'defender') { 
+      buff = buff * (1 + 0.025*revengeStacks);
     }
-    else {
-      return [Math.floor(fixed), Math.floor(variable)];
-    }
-  }
-  
-  calcRipper(fixed, variable, ripper) {
-    return [Math.floor(fixed + fixed * ripper), Math.floor(variable + variable * ripper)];
+    return buff;
   }
 
-  calcDharok(fixed, variable, dharok) {
-    return [Math.floor(fixed + fixed * dharok), Math.floor(variable + variable * dharok)];
+  calcSpendthrift(buff,spendthriftRank) {
+    return buff * (1 + (spendthriftRank * spendthriftRank)/100);
+  }
+
+  calcRuthless(buff,ruthlessRank, ruthlessStacks) {
+    return buff * (1 + 0.005 * ruthlessRank * ruthlessStacks);
+  }
+
+  calcSlayerHelmet(buff,slayerHelmet) {
+    return buff * (1 + construction['slayerHelmets'][slayerHelmet]['boost']);
+  }
+
+  calcGuardHouse(buff,guardhouse) {
+    if (guardhouse === 'level 1') {
+      buff = buff * 1.01;
+    } else if (guardhouse === 'level 1 undead') {
+      buff = buff * 1.02;
+    } else if (guardhouse === 'level 3 - low target') {
+      buff = buff * 1.11;
+    } else if (guardhouse === 'level 3 undead - low target') {
+      buff = buff * 1.12;
+    }
+    return buff;
+  }
+
+  calcGenocidal(buff,genocidal) {
+    return buff * (1 + genocidal);
+  }
+
+  calcSalveAmulet(buff,necklace) {
+    if (necklace === 'Salve amulet') {
+      buff = buff * 1.15;
+    } 
+    else if (necklace === 'Salve amulet (e)') {
+      buff = buff * 1.2;
+    }
+    return buff;
+  }
+
+  calcRipperPassive(buff,ripperPassive) {
+    return buff * (1 + ripperPassive);
+  }
+
+  calcBerserkersFury(buff,fury) {
+    return buff * (1 + fury);
   }
 
   calcPrecise(fixed, variable, rank) {
@@ -64,33 +82,44 @@ class OnHit {
     if (aura === 'equilibrium') {
       return [fixed + Math.floor(variable * 0.25), variable - Math.floor(variable * 0.5)];
     } else {
-      return [fixed + Math.floor(variable * rank * 0.03), variable - Math.floor(variable * rank * 0.04)];
+      return [Math.floor(fixed + variable * rank * 0.03), Math.floor(variable - variable * rank * 0.04)];
     }
   }
 
-  calcOnHit(fixed, variable, apply, prayer, dharok, ful, rubyAurora, salve, precise_rank, equilibrium_rank, aura) {
-    if (apply == false) {
-      return [fixed,variable]
-    }
+  calcOnHit(fixed, variable, type, apply, settings) {
+      if (apply == false) {
+        return [fixed,variable];
+      }
 
-    else {
-    let dmg = this.calcPrayer(fixed,variable,prayer);
-    
-    if (ful === true) {
-      dmg = this.calcFul(dmg[0],dmg[1]);
-    }
-    
-    dmg = this.calcRubyAurora(dmg[0], dmg[1], rubyAurora);
-    
-    dmg = this.calcSalve(dmg[0], dmg[1], salve);
+      else {
+        let buff = 10000
+        //all buffs in order of application
+        buff = this.calcScriptureOfFul(buff,settings['pocket slot']); //assumed on
+        buff = this.calcStoneOfJas(buff,settings['stone of jas']);
+        buff = this.calcPrayer(buff,settings['prayer']);
+        buff = this.calcRevenge(buff,type,settings['revenge stacks']);
+        buff = this.calcSpendthrift(buff,settings['perks']['spendthrift']); //causes a rounding-error
+        buff = this.calcRuthless(buff,settings['perks']['ruthless rank'],settings['perks']['ruthless stacks']);
+        buff = this.calcSlayerHelmet(buff,settings['slayer helmet']);
+        buff = this.calcGuardHouse(buff,settings['fort forinthry guardhouse']);
+        buff = this.calcGenocidal(buff, settings['perks']['genocidal']);
+        buff = this.calcSalveAmulet(buff,settings['necklace']);
+        buff = this.calcRipperPassive(buff,settings['ripper demon passive']);
 
-    dmg = this.calcPrecise(dmg[0], dmg[1], precise_rank);
+        //unknown order
+        buff = this.calcBerserkersFury(buff,settings['berserkers fury']);
 
-    dmg = this.calcEquilibrium(dmg[0], dmg[1], equilibrium_rank, aura);
-    
-    return dmg;
-    }
-}
+        //apply scaling to damage
+        fixed = Math.floor((fixed * buff)/10000);
+        variable = Math.floor((variable * buff)/10000);
+
+        //calculate precise and equilibrium
+        let dmg = this.calcPrecise(fixed,variable,settings['perks']['precise']);
+        dmg = this.calcEquilibrium(dmg[0],dmg[1],settings['aura'],settings['perks']['equilibrium']);
+      
+        return [fixed,variable];
+      }
+  }
 }
 
 module.exports = OnHit;

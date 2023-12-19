@@ -1,5 +1,5 @@
 const Crit = require('./necromancy_crit')
-const Abil = require('./necromancy_const')
+const construction = require('./necromancy_const')
 
 class avgDmg {
     averageDamage(abil_val,dmg_list,critDmg_list,settings) {
@@ -40,6 +40,46 @@ class avgDmg {
         }
 
         return [dmgMin,dmgAvg,dmgMax]
+    }
+
+    dmgObjectProbabilityCalc(dmgObject, settings) {
+        const CRIT_INS = new Crit();
+        let critChance = CRIT_INS.calcFCritChance(settings);
+
+        dmgObject['non-crit']['probability'] = 1 - critChance;
+        dmgObject['crit']['probability'] = critChance;
+        return dmgObject;
+    }
+
+    averageDamageList(dmgList) {
+        let total = 0;
+        for (const i of dmgList) {
+            total = total + i;
+        }
+        return total / dmgList.length;
+    }
+
+    averageDamageObject(dmgObject) {
+        let avg = 0;
+        for (let key in dmgObject) {
+           let dmg = this.averageDamageList(dmgObject[key]['list']);
+           let prob = dmgObject[key]['probability'];
+           avg = avg + dmg * prob;
+        }
+        return avg;
+    }
+
+    returnDecider(dmgObject,settings) {
+        dmgObject = this.dmgObjectProbabilityCalc(dmgObject,settings)
+        if (settings['minavgmax'] === 'min') {
+            return 'min';
+        }
+        else if (settings['minavgmax'] === 'max') {
+            return 'max';
+        }
+        else if (settings['minavgmax'] === 'avg') {
+            return this.averageDamageObject(dmgObject);
+        }
     }
 }
 

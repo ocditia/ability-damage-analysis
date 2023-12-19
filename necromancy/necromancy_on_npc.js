@@ -1,55 +1,67 @@
+const construction = require('./necromancy_const')
+
 class OnNPC {
-    kww(dmg, kww, ench) {
-      if (ench === true) {
-        return Math.floor(dmg + (dmg * 0.4 * kww));
-      } else {
-        return Math.floor(dmg + (dmg * 0.25 * kww));
-      }
-    }
-  
-    vuln(dmg, flag) {
+    calcVuln(dmg, flag) {
       if (flag === true) {
-        dmg = math.floor(dmg + dmg * 0.1)
+        dmg = Math.floor(dmg * (1 + 0.1));
       }
-      return dmg
-    }
-  
-    cryptbloom(dmg, flag) {
-      return Math.floor(dmg + (dmg * 0.1 * flag));
-    }
-  
-    slayerperk(dmg, flag) {
-      return Math.floor(dmg + (dmg * 0.07 * flag));
-    }
-  
-    slayersigil(dmg, flag) {
-      return Math.floor(dmg + (dmg * 0.15 * flag));
-    }
-  
-    aura(dmg, boost) {
-      return Math.floor(dmg + (dmg * boost));
-    }
-  
-    meta(dmg) {
-      return Math.floor(dmg * 1.625);
-    }
-  
-    scrimshaw(dmg, scrimshaw) {
-      if (scrimshaw === 'superior') {
-        return Math.floor(dmg * 1.0666);
-      } else if (scrimshaw === 'base') {
-        return Math.floor(dmg * 1.05);
-      } else {
-        return dmg;
+      return dmg;
+    } 
+
+    calcSlayerPerk(dmg, flag) {
+      if (flag === true) {
+        dmg = Math.floor(dmg * (1 + 0.07));
       }
+      return dmg;
+    }
+  
+    calcSlayerSigil(dmg, flag) {
+      if (flag === true) {
+        dmg = Math.floor(dmg * (1 + 0.15));
+      }
+      return dmg;
+    }
+  
+    calcAura(dmg, boost) {
+      return Math.floor(dmg * (1 + boost));
+    }
+
+    calcCryptbloom(dmg,flag) {
+      if (flag === true) {
+        dmg = Math.floor(dmg * (1 + 0.1));
+      }
+      return dmg;
     }
   
     calcOnNpc(dmg, settings) {
-      dmg = this.vuln(dmg,settings['Vulnerability']);
-      dmg = this.slayersigil(dmg,settings['Slayer sigil'])
+      //buffs applied in order of operations
+      dmg = this.calcVuln(dmg,settings['vulnerability']);
+      dmg = this.calcSlayerPerk(dmg,settings['perks']['slayer perk']);
+      dmg = this.calcSlayerSigil(dmg,settings['slayer sigil']);
+      dmg = this.calcAura(dmg, construction['auras'][settings['aura']]['boost']);
+
+      //unknown order of buffs
+      dmg = this.calcCryptbloom(dmg,settings['death spores']);
+
+      //zamorak inner chaos
+      //zamorak guardians triumph
+      //zamorak sword of edicts
+      //telos red beam
+      //telos black beam
+      //infernal puzzle box
+      //kbd wildy portal
+      //tokkul-zo
         
       return dmg;
     }
+
+    onNpcDamageList(dmgList,settings) {
+      const onNpcDmg = [];
+      for (const i of dmgList) {
+        onNpcDmg.push(this.calcOnNpc(i,settings));
+      }
+      return onNpcDmg;
+  }
   }
   
 module.exports = OnNPC;
