@@ -96,7 +96,7 @@ const settings = {
     'Tokkul-zo': false,
 };
 
-const test = test_auto('dual-wield', settings,8);
+const test = skeleton_auto('dual-wield', settings,1);
 console.log(test);
 
 

@@ -5,7 +5,7 @@ class AbilityDmg {
       //if manually overwritten use that
       if (settings['ability damage'] != 0) {
         return settings['ability damage'];
-      }
+      } 
 
       let AD = 0
       //two-handed AD

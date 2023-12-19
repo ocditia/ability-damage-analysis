@@ -13,88 +13,92 @@ for (let setting of settings) {
 function collectSettings() {
   // Have default settings here
   const settings = {
-      'AD': 1500, //for manual override only
-      'level': 120,
-      'potion': "Elder overload",
-      'Reaper crew': true,
+    'minavgmax': 'avg',
 
-      'mh':{
-          'name': 'Wand of the praesul',
-          'perks': [['Precise',6], ['aftershock',1]]
-      },
+    'ability damage': 0, //for manual override only
+    'level': 120,
+    'potion': 'elder overload',
+    
+    'two-handed weapon': 1,
+    'main-hand weapon': 'Omni guard',
+    'off-hand weapon': 'Soulbound lantern',
+    'shield': 1,
+    'defender': 1,
+    'helmet': 'Crown of the first necromancer',
+    'body': 'Robe top of the first necromancer',
+    'leg': 'Robe bottom of the first necromancer',
+    'gloves': 'Hand wraps of the first necromancer',
+    'boots': 'Foot wraps of the first necromancer',
+    'necklace': 'Essence of finality amulet (or)',
+    'ring': 'Reavers',
+    'cape':'Igneous kal-mor',
+    'pocket slot': 'Grimoire',
+    'reaper crew': true,
 
-      'oh':{
-          'name': 'Seismic singularity',
-          'perks': [['equilibrium',2], ['aftershock',4]]
-      },
+    'perks': {
+        'precise': 0,
+        'equilibrium': 0,
+        'genocidal': 0,
+        'spendthrift': 0,
+        'ruthless rank': 0,
+        'ruthless stacks': 0,
+        'slayer perk': false,
+        'biting': 4
+    },  
+    
+    'aura': 'Mahjarrat',
+    
+    'bonus': 0,
 
-      'top':{
-          'name': 'Elite tectonic',
-          'perks': [['biting',4]]
-      },
+    'cap': 30000,
+    'critCap': 15000,
 
-      'bottom':{
-          'name': 'Elite tectonic',
-          'perks': [['biting',4]]
-      },
+    //on-cast effects
+    'Zamorak balance of power': 0,
+    'Sophanem corrupted': 0,
+    'Raksha inner power': 0,
 
-      'boots': 'Enhanced blast diffusion',
+    //on-hit effects
+    //pre-shared effects
+    'stone of jas': 0,
 
-      'gloves': 'Enhanced Kerapac',
+    //shared
+    'Revenge': 0,
+    'prayer': "sorrow",
 
-      'ring': 'Channelers',
+    //pvn only
+    'slayer helmet': 'none',
+    'fort forinthry guardhouse': false,
+    'Salve amulet': false,
+    'ripper demon passive': 0,
+    
+    //unknown order
+    'berserkers fury': 0,    
 
-      'aura': 'Mahjarrat',
+    //on-crit effects
+    'smoke cloud': false,
+    'kalgerion demon familiar': false,
+    'crit-i-kal': false,
 
-      'bonus': 0,
+    //on-npc effects
+    'vulnerability': false,
+    'corrupted wounds': false, //gop bleed buff
+    'slayer sigil': false,
 
-      'cap': 10000,
-      'critCap': 15000,
-
-      //on-cast effects
-      'Zamorak balance of power': 0,
-      'Sophanem corrupted': 0,
-      'Raksha inner power': 0,
-
-      //on-hit effects
-      //shared
-      'Revenge': 0,
-      'Spendthrift': 0,
-      'Ruthless': 0,
-
-      //pvn only
-      'Slayer helm': 0,
-      'Fort forinthry guardhouse': false,
-      'Salve amulet': false,
-      'Ripper demon passive': 0,
-      
-      //unknown order
-      'Berserkers fury': 0,    
-
-      //on-crit effects
-      'Animate dead': false,
-      'Kalgerion demon familiar': false,
-      'Crit-i-kal': false,
-
-      //on-npc effects
-      'Vulnerability': false,
-      'Corrupted wounds': false, //gop bleed buff
-      'Slayer sigil': false,
-
-      //apply somewhere idk
-      'nopenopenope': 0, //poh spider buff
-      'Ruby aurora': 0,
-      'cryptbloom': false,
-      'Skeleton rage stacks': 2,
-      'Zamorak inner chaos': 0,
-      'Zamorak guardians triumph': 0,
-      'Zamorak sword of edicts': 0,
-      'Telos red beam': false,
-      'Telos black beam': false,
-      'Infernal puzzle box': false,
-      'King black dragon wilderness portal': false,
-      'Tokkul-zo': false,
-  };
+    //apply somewhere idk
+    'nopenopenope': 0, //poh spider buff
+    'Ruby aurora': 0,
+    'death spores': false,
+    'Skeleton rage stacks': 2,
+    'Zamorak inner chaos': 0,
+    'Zamorak guardians triumph': 0,
+    'Zamorak sword of edicts': 0,
+    'Telos red beam': false,
+    'Telos black beam': false,
+    'Infernal puzzle box': false,
+    'King black dragon wilderness portal': false,
+    'Tokkul-zo': false,
+};
 
   document.querySelectorAll('.js--setting').forEach(node => {
     let val = node.value;
@@ -110,6 +114,7 @@ function collectSettings() {
 }
 
 function buildDamagesTable(abilities) {
+  console.log("here")
   const table = document.querySelector(".js--damages-table")
   const template = document.querySelector("#damage-table-row")
 
@@ -130,9 +135,9 @@ function calculateDamages(settings) {
   document.querySelectorAll(".js--damages-table tr").forEach(row => {
     const key = row.getAttribute('data-ability-key');
     damages = abilities[key].calc('', settings, 1);
-    row.querySelector('.js--ability-regular').textContent = damages[0][1];
+    row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
 
-    // Recalculate with soulsplit
-    row.querySelector('.js--ability-splitsoul').textContent = damages[0][1];
+    // Recalculate with split soul
+    row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
   })
 }

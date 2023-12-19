@@ -225,8 +225,8 @@ const necromancy_construction = {
 
     'potions': {
         "elder overload":{
-            "levels": 5,
-            "percent": 0.17
+            'levels': 5,
+            'percent': 0.17
         },
         "overload":{
             "levels": 3,

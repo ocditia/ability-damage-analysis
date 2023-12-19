@@ -5,7 +5,7 @@ const skeleton_auto = require("./abils/skeleton_auto");
 
 const abilities = {
   'Skeleton Auto': {
-    title: 'Necro auto',
+    title: 'Skeleton auto',
     calc: skeleton_auto,
     icon: 'https://i.imgur.com/9vRoWeK.png',
     weapons: ['Dw'],
