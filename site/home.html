@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RS Analysis</title>
+        <link rel="stylesheet" href="./css/style.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        <!--HEADER-->
+        <header class="bg-center bg-cover relative z-10 h-64 md:h-96 mt-10 lg:mt-0" style="background-image:url(./assets/bg_main.png)"></header>
+
+        <!--MAIN CONTENT-->
+        <div class="space-y-14 z-20">
+            <div class="responsive-container">
+                <section class="grid xl:grid-cols-12 gap-6 xl:gap-8"> 
+                    <div class="xl:col-span-9 xl:row-start-1 xl:row-span-4 md:pt-6">
+                        <div class="flex flex-col">
+                            <h1 class="main-header mb-6 ml-3">Welcome to RS Analysis</h1>
+                            <div class="card border-b border-card-light">
+                                <div class="pb-5">
+                                    <div class="card-title">
+                                        About
+                                    </div>
+                                    <div>
+                                        <p >
+                                            We are a community of RuneScape players who are passionate about the game and its mechanics. 
+                                            We aim to provide the community with accurate and up-to-date information about the game, and to help players make informed decisions about their gear and ability rotations. 
+                                            We are always working on new projects ranging from web based damage analysis tools to comprehensive research papers. 
+                                            If you want to stay up to date with our latest projects or get involved with research and development check out our discord community linked below!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="./magic.html" class="flex flex-col group">
+                                <div class="card border-b border-card-light">
+                                    <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
+                                        <img class="card-icon" src="assets/style_icons/magic_icon.png">
+                                        <div class="card-title">
+                                            Magic Damage Calculator
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="./melee.html" class="flex flex-col group">
+                                <div class="card border-b border-card-light">
+                                    <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
+                                        <img class="card-icon" src="assets/effect_icons/death.png">
+                                        <div class="card-title">
+                                            Melee Damage Calculator
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="./ranged.html" class="flex flex-col group">
+                                <div class="card border-b border-card-light">
+                                    <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
+                                        <img class="card-icon" src="assets/style_icons/ranged_icon.PNG">
+                                        <div class="card-title">
+                                            Ranged Damage Calculator
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="./necromancy.html" class="flex flex-col group">
+                                <div class="card">
+                                    <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
+                                        <img class="card-icon" src="assets/style_icons/necro_icon.PNG">
+                                        <div class="card-title">
+                                            Necromancy Damage Calculator
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-9 xl:row-start-5">
+                        <div class="flex flex-col">
+                            <h1 class="main-header mb-6 ml-3">Most Recent Publication</h1>
+                            <a class="block" href="./paper.pdf">
+                                <div class="card card-home">
+                                    <div class="card-title pb-5">
+                                        A Quantitative Analysis of RuneScape 3 Combat
+                                    </div>
+                                    <embed src="./paper.pdf" type="application/pdf" width="100%" height="1000px"/>
+                                </div>
+                            </a>
+                            <!--
+                            <a class="block" href="./paper.pdf">
+                                <div class="card card-home">
+                                    <div class="card-title-link text:white hover:text-link pb-5 text-center">
+                                        A Quantitative Analysis of RuneScape 3 Combat
+                                    </div>
+                                    <div class="font-normal text-xl text-center pb-5">
+                                        Abstract
+                                    </div>
+                                    <div class="pb-5">
+                                        <p>
+                                            RuneScape PvM (Player versus Monster) encounters are fundamentally static. NPC
+                                            behavior, in most cases, is structured the same across all instances of an encounter. Players
+                                            execute predetermined sequences of abilities called rotations that are optimized for speed
+                                            and consistency. The PvM Encyclopedia offers publicly available rotations for every boss,
+                                            although they are primarily human-generated through trial and error. We propose that
+                                            RuneScape can be solved and explore the potential of statistical methods to evaluate both
+                                            individual actions and complete rotations. Player derived damage in a rotation can be
+                                            interpreted as discrete random variables with non-identical distributions. We find that
+                                            overtime, the distribution of the sum of these variables obtains Gaussian characteristics
+                                            and therefore show that sufficiently long rotations can be evaluated with a Gaussian approximation. These methods are useful for comparative analysis of existing rotations,
+                                            however, we aim to transcend intuition based rotation optimization-with dynamic programming and reinforcement learning methods-to gain a more refined understanding of
+                                            optimal combat engagement in RuneScape’s PvM arena.
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                            -->
+                        </div>
+                    </div>
+                    <div class="xl:col-span-3 xl:row-start-1 xl:row-span-1 md:pt-20">
+                        <div class="flex flex-col">
+                            <div class="card card-home">
+                                <div class="card-title">
+                                    Other Resources
+                                </div>
+                                <div class="effect-container">
+                                    <img class="effect-icon" src="assets/style_icons/magic_icon.png">
+                                    <li class="block transition-all duration-75 relative">
+                                        <a href="./research.html" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
+                                            Research
+                                        </a>
+                                    </li>
+                                </div>
+                                <div class="effect-container">
+                                    <img class="effect-icon" src="assets/style_icons/magic_icon.png">
+                                    <li class="block transition-all duration-75 relative">
+                                        <a href="./projects.html" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
+                                            Upcoming Projects
+                                        </a>
+                                    </li>
+                                </div>
+                                <div class="effect-container">
+                                    <img class="effect-icon" src="assets/style_icons/ranged_icon.PNG">
+                                    <li class="block transition-all duration-75 relative">
+                                        <a href="https://discord.gg/rsanalysis" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
+                                            Discord
+                                        </a>
+                                    </li>
+                                </div>
+                                <div class="effect-container">
+                                    <img class="effect-icon" src="assets/style_icons/necro_icon.PNG">
+                                    <li class="block transition-all duration-75 relative">
+                                        <a href="./changelog.html" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
+                                            Changelog
+                                        </a>
+                                    </li>
+                                </div>
+                                <div class="effect-container">
+                                    <img class="effect-icon" src="assets/style_icons/necro_icon.PNG">
+                                    <li class="block transition-all duration-75 relative">
+                                        <a href="./faq.html" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
+                                            FAQ
+                                        </a>
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-3 xl:row-start-2 xl:row-span-6">
+                        <div class="flex flex-col">
+                            <div class="card card-home">
+                                <div class="card-title pb-10">
+                                    Contributors
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                        <div class="mx-auto w-24 h-24 rounded-full bg-none overflow-hidden mb-3">
+                                            <img src="./assets/contributors/akritia.webp">
+                                        </div>
+                                    <div class="text-center text-gray-light">Akritia</div>
+                                    <div class="text-center text-gray-light">Research and Development</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                    <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                        <img src="./assets/contributors/kyroh.webp">
+                                    </div>
+                                    <div class="text-center text-gray-light">Kyroh</div>
+                                    <div class="text-center text-gray-light">Research and Development</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                    <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                        <img src="./assets/contributors/sfox.webp">
+                                    </div>
+                                    <div class="text-center text-gray-light">Sfox</div>
+                                    <div class="text-center text-gray-light">Research</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                    <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                        <img src="./assets/contributors/hight.webp">
+                                    </div>
+                                    <div class="text-center text-gray-light">HightDetal</div>
+                                    <div class="text-center text-gray-light">Development</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                    <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                        <img src="./assets/contributors/code.webp">
+                                    </div>
+                                    <div class="text-center text-gray-light">Codemati</div>
+                                    <div class="text-center text-gray-light">Development</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                    <a href="https://discord.gg/BGjvs8Y28n">
+                                    <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                        <img src="./assets/contributors/dolf.webp">
+                                    </div>
+                                    <div class="text-center text-gray-light">Gamedolf</div>
+                                    <div class="text-center text-gray-light">RS Math</div>
+                                    </a>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                        <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                            <img src="./assets/contributors/rex.webp">
+                                        </div>
+                                        <div class="text-center text-gray-light">RexT</div>
+                                        <div class="text-center text-gray-light">Legacy Sheet</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-9">
+                        <div class="flex flex-col">
+                            <div class="card card-home">
+                                <div class="card-title pb-5">
+                                    Affiliates
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <!--
+                                    <div class="effect-container">
+                                        <div class="card-icon rounded-full bg-black overflow-hidden mb-3">
+                                            <img src="./assets/contributors/pvme.jpeg">
+                                        </div>
+                                        <li class="block transition-all duration-75 relative">
+                                            <a href="https://discord.gg/pvme" class="py-2 font-normal text-xl text-white hover:text-link" title="">
+                                                PvM Encyclopedia
+                                            </a>
+                                        </li>
+                                        </a>
+                                    </div>
+                                    -->
+                                    <div class="effect-container">
+                                        <div class="card-icon rounded-full bg-black overflow-hidden mb-3">
+                                            <img src="./assets/contributors/rsmath.png">
+                                        </div>
+                                        <li class="block transition-all duration-75 relative">
+                                            <a href="https://discord.gg/BGjvs8Y28n" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
+                                                RS Math Discord
+                                            </a>
+                                        </li>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </body>
+</html>
