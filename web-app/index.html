@@ -8,7 +8,8 @@
 
     </head>
     <body>
-        <header class="bg-center bg-cover relative z-10 h-72 md:h-96 mt-10 lg:mt-0" style="background-image:url(./assets/bg_main.png)"></header>
+        <header class="bg-center bg-cover relative z-10 h-64 md:h-96 mt-10 lg:mt-0" style="background-image:url(./assets/bg_main.png)"></header>
+
         <nav role="navigation" class="fixed lg:absolute top-0 left-0 w-full z-50 bg-card-light lg:bg-transparent">
             <div class="responsive-container">
                 <div class="flex justify-center">
@@ -61,11 +62,185 @@
             </div>
         </nav>
 
-    <div class="absolute top-16 left-0 w-full flex items-center justify-center my-20 z-10"></div>
-    <div id="content" class="z-20">
-        <div class="responsive-container">
-
+        <div class="space-y-14 z-20">
+            <div class="responsive-container">
+                <section class="grid xl:grid-cols-12 gap-6 xl:gap-8"> 
+                    <div class="xl:col-span-9 xl:row-start-1">
+                        <div class="flex flex-col">
+                            <h1 class="role-header-casters mb-6 ml-3 md:pt-8">Welcome to RS Analysis</h1>
+                            <div class="card card-home border-b border-card-dark">
+                                <div class="pb-5">
+                                    <div class="card-title">
+                                        About Us
+                                    </div>
+                                    <div>
+                                        <p>
+                                            We are a community of RuneScape players who are passionate about the game and its mechanics. 
+                                            We aim to provide the community with accurate and up-to-date information about the game, and to help players make informed decisions about their gear and ability rotations. 
+                                            We are always working on new projects ranging from web based damage analysis tools to comprehensive research papers. 
+                                            If you want to stay up to date with our latest projects or get involved with research and development check out our discord community linked below!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="./research.html" class="flex flex-col group">
+                                <div class="card card-home border-b border-card-dark">
+                                <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
+                                <img class="effect-icon" src="assets/effect_icons/death.png">
+                                <div>
+                                <div class="card-title">
+                                Research
+                                </div>
+                                <div class="font-bold text-card-header-text-color">Updated: December 31st, 2023</div>
+                                </div>
+                                </div>
+                                </div>
+                            </a>
+                            <a href="./projects.html" class="flex flex-col group">
+                                <div class="card card-home border-b border-card-dark">
+                                <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
+                                <img class="effect-icon" src="assets/effect_icons/death.png">
+                                <div>
+                                <div class="card-title">
+                                Upcoming Projects
+                                </div>
+                                <div class="font-bold text-card-header-text-color">Updated: December 31st, 2023</div>
+                                </div>
+                                </div>
+                                </div>
+                            </a>
+                            <a href="./faq.html" class="flex flex-col group">
+                                <div class="card card-home">
+                                <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
+                                <img class="effect-icon" src="assets/effect_icons/death.png">
+                                <div>
+                                <div class="card-title">
+                                Frequently Asked Questions
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-9">
+                        <div class="flex flex-col">
+                            <a class="block" href="./paper.pdf">
+                                <div class="card card-home">
+                                    <div class="card-title pb-5">
+                                        Most Recent Publication
+                                    </div>
+                                    <embed src="./paper.pdf" type="application/pdf" width="100%" height="1000px"/>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-3 xl:row-start-1 xl:row-span-3 md:pt-24">
+                        <div class="flex flex-col">
+                            <div class="card card-home">
+                                <div class="card-title pb-5">
+                                    Contributors
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                        <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                            <img src="./assets/contributors/akritia.webp">
+                                        </div>
+                                    <div class="text-center text-gray-light">Akritia</div>
+                                    <div class="text-center text-gray-light">Research and Development</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                    <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                        <img src="./assets/contributors/kyroh.webp">
+                                    </div>
+                                    <div class="text-center text-gray-light">Kyroh</div>
+                                    <div class="text-center text-gray-light">Research and Development</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                    <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                        <img src="./assets/contributors/sfox.webp">
+                                    </div>
+                                    <div class="text-center text-gray-light">Sfox</div>
+                                    <div class="text-center text-gray-light">Research</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                    <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                        <img src="./assets/contributors/hight.webp">
+                                    </div>
+                                    <div class="text-center text-gray-light">HightDetal</div>
+                                    <div class="text-center text-gray-light">Development</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                    <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                        <img src="./assets/contributors/code.webp">
+                                    </div>
+                                    <div class="text-center text-gray-light">Codemati</div>
+                                    <div class="text-center text-gray-light">Development</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                    <a href="https://discord.gg/BGjvs8Y28n">
+                                    <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                        <img src="./assets/contributors/dolf.webp">
+                                    </div>
+                                    <div class="text-center text-gray-light">Gamedolf</div>
+                                    <div class="text-center text-gray-light">RS Math</div>
+                                    </a>
+                                    </div>
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                        <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                            <img src="./assets/contributors/rex.webp">
+                                        </div>
+                                        <div class="text-center text-gray-light">RexT</div>
+                                        <div class="text-center text-gray-light">Legacy Sheet</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-9">
+                        <div class="flex flex-col">
+                            <div class="card card-home">
+                                <div class="card-title pb-5">
+                                    Affiliates
+                                </div>
+                                <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                        <a href="https://discord.gg/pvme">
+                                            <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                                <img src="./assets/contributors/pvme.jpeg">
+                                            </div>
+                                            <div class="text-center text-gray-light">PvM Encyclopedia</div>
+                                        </a>
+                                    </div>
+                                    <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                        <a href="https://discord.gg/BGjvs8Y28n">
+                                            <div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
+                                                <img src="./assets/contributors/rsmath.png">
+                                            </div>
+                                            <div class="text-center text-gray-light">RS Math</div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
+
+    <div id="content" class="z-20">
         <a class="block" href="https://discord.gg/rsanalysis">
             <div class="join-community bg-cover bg-center my-24 px-4 pt-12 pb-36 sm:pb-12" style="background-image:url(./assets/main_background.png)">
                 <div class="container mx-auto">
@@ -78,32 +253,7 @@
                 </div>
             </div>
         </a>
-    </div><footer class="footer">
-    <div id="footer--main" class="responsive-container mt-16">
-        <div class="flex flex-wrap md:flex-row lg:flex-nowrap mt-16">
-            <div id="footer-column--encounters" class="flex flex-col w-1/2 sm:w-1/3">
-                <h3 class="footer-header">
-                Ability Analysis
-                </h3>
-                <ul class="footer-list">
-                    <li><a href="/magic/">Magic</a></li>
-                    <li><a href="/melee/">Melee</a></li>
-                    <li><a href="/ranged/">Ranged</a></li>
-                    <li><a href="/necromancy/">Necromancy</a></li>
-                </ul>
-            </div>
-            <div class="flex-auto">
-                <h3 class="footer-header">
-                Info
-                </h3>
-                <ul class="footer-list">
-                    <li><a href="/credits/">Credits</a></li>
-                    <li><a href="/changelog/">Changelog</a></li>
-                </ul>
-            </div>
-        </div>
     </div>
-    </footer>
 </body>
     <script src="./js/nav-bar.js"></script>
 </html>
