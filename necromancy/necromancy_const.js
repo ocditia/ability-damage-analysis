@@ -228,6 +228,10 @@ const necromancy_construction = {
             'levels': 5,
             'percent': 0.17
         },
+        "supreme overload":{
+            'levels': 4,
+            'percent': 0.16
+        },
         "overload":{
             "levels": 3,
             "percent": 0.15
