@@ -4,6 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>RS Analysis</title>
         <link rel="stylesheet" href="./css/style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body>
@@ -35,7 +36,7 @@
                             <a href="./magic.html" class="flex flex-col group">
                                 <div class="card border-b border-card-light">
                                     <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
-                                        <img class="card-icon" src="assets/style_icons/magic_icon.png">
+                                        <img class="card-icon" src="assets/style_icons/magic.svg">
                                         <div class="card-title">
                                             Magic Damage Calculator
                                         </div>
@@ -45,7 +46,7 @@
                             <a href="./melee.html" class="flex flex-col group">
                                 <div class="card border-b border-card-light">
                                     <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
-                                        <img class="card-icon" src="assets/effect_icons/death.png">
+                                        <img class="card-icon" src="assets/style_icons/melee.svg">
                                         <div class="card-title">
                                             Melee Damage Calculator
                                         </div>
@@ -55,7 +56,7 @@
                             <a href="./ranged.html" class="flex flex-col group">
                                 <div class="card border-b border-card-light">
                                     <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
-                                        <img class="card-icon" src="assets/style_icons/ranged_icon.PNG">
+                                        <img class="card-icon" src="assets/style_icons/ranged.svg">
                                         <div class="card-title">
                                             Ranged Damage Calculator
                                         </div>
@@ -65,7 +66,7 @@
                             <a href="./necromancy.html" class="flex flex-col group">
                                 <div class="card">
                                     <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
-                                        <img class="card-icon" src="assets/style_icons/necro_icon.PNG">
+                                        <img class="card-icon" src="assets/style_icons/necro.svg">
                                         <div class="card-title">
                                             Necromancy Damage Calculator
                                         </div>
@@ -77,42 +78,33 @@
                     <div class="xl:col-span-9 xl:row-start-5">
                         <div class="flex flex-col">
                             <h1 class="main-header mb-6 ml-3">Most Recent Publication</h1>
-                            <a class="block" href="./paper.pdf">
                                 <div class="card card-home">
-                                    <div class="card-title pb-5">
-                                        A Quantitative Analysis of RuneScape 3 Combat
-                                    </div>
-                                    <embed src="./paper.pdf" type="application/pdf" width="100%" height="1000px"/>
-                                </div>
-                            </a>
-                            <!--
-                            <a class="block" href="./paper.pdf">
-                                <div class="card card-home">
-                                    <div class="card-title-link text:white hover:text-link pb-5 text-center">
-                                        A Quantitative Analysis of RuneScape 3 Combat
-                                    </div>
-                                    <div class="font-normal text-xl text-center pb-5">
-                                        Abstract
-                                    </div>
+                                    <a href="./paper.pdf">
+                                        <div class="card-title hover:text-link">
+                                            Quantitative Analysis of RuneScape 3 Combat
+                                        </div>
+                                    </a>
                                     <div class="pb-5">
+                                        <em>Akritia, Kyroh, Gamedolf, Sfox</em>
+                                    </div>
+                                    <div class="pl-5 pb-5">
                                         <p>
-                                            RuneScape PvM (Player versus Monster) encounters are fundamentally static. NPC
-                                            behavior, in most cases, is structured the same across all instances of an encounter. Players
-                                            execute predetermined sequences of abilities called rotations that are optimized for speed
-                                            and consistency. The PvM Encyclopedia offers publicly available rotations for every boss,
-                                            although they are primarily human-generated through trial and error. We propose that
-                                            RuneScape can be solved and explore the potential of statistical methods to evaluate both
-                                            individual actions and complete rotations. Player derived damage in a rotation can be
-                                            interpreted as discrete random variables with non-identical distributions. We find that
-                                            overtime, the distribution of the sum of these variables obtains Gaussian characteristics
-                                            and therefore show that sufficiently long rotations can be evaluated with a Gaussian approximation. These methods are useful for comparative analysis of existing rotations,
-                                            however, we aim to transcend intuition based rotation optimization-with dynamic programming and reinforcement learning methods-to gain a more refined understanding of
-                                            optimal combat engagement in RuneScape’s PvM arena.
+                                            RuneScape PvM (Player versus Monster) encounters are fundamentally static. 
+                                            NPC behavior, in most cases, is structured the same across all instances of an encounter. 
+                                            Players execute predetermined sequences of abilities called rotations that are optimized for speed and consistency. 
+                                            The PvM Encyclopedia offers publicly available rotations for every boss, although they are primarily human-generated through trial and error. 
+                                            We propose that RuneScape can be solved and explore the potential of statistical methods to evaluate both individual actions and complete rotations. 
+                                            Player derived damage in a rotation can be interpreted as discrete random variables with non-identical distributions. We find that overtime, 
+                                            the distribution of the sum of these variables obtains Gaussian characteristics and therefore show that sufficiently long rotations can be evaluated with a Gaussian approximation. 
+                                            These methods are useful for comparative analysis of existing rotations, however, we aim to transcend intuition based rotation optimization&#8212;with dynamic programming and reinforcement learning methods&#8212;to gain a more refined understanding of optimal combat engagement in RuneScape&#39;s PvM arena.
                                         </p>
                                     </div>
+                                    <div class="text-xs pb-5">
+                                        <p>Comments:</p>
+                                        <p>Subjects: Statistics - Methods, Dynamic Programming, Game Theory</p>
+                                    </div>
+                                    <a href="./paper.pdf" class="hover:text-link">Open PDF</a>
                                 </div>
-                            </a>
-                            -->
                         </div>
                     </div>
                     <div class="xl:col-span-3 xl:row-start-1 xl:row-span-1 md:pt-20">
@@ -122,7 +114,7 @@
                                     Other Resources
                                 </div>
                                 <div class="effect-container">
-                                    <img class="effect-icon" src="assets/style_icons/magic_icon.png">
+                                    <img class="effect-icon" src="assets/google_icons/book-blue.svg">
                                     <li class="block transition-all duration-75 relative">
                                         <a href="./research.html" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
                                             Research
@@ -130,7 +122,7 @@
                                     </li>
                                 </div>
                                 <div class="effect-container">
-                                    <img class="effect-icon" src="assets/style_icons/magic_icon.png">
+                                    <img class="effect-icon" src="assets/google_icons/hammer-blue.svg">
                                     <li class="block transition-all duration-75 relative">
                                         <a href="./projects.html" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
                                             Upcoming Projects
@@ -138,7 +130,7 @@
                                     </li>
                                 </div>
                                 <div class="effect-container">
-                                    <img class="effect-icon" src="assets/style_icons/ranged_icon.PNG">
+                                    <img class="effect-icon" src="assets/google_icons/discord-blue.svg">
                                     <li class="block transition-all duration-75 relative">
                                         <a href="https://discord.gg/rsanalysis" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
                                             Discord
@@ -146,7 +138,7 @@
                                     </li>
                                 </div>
                                 <div class="effect-container">
-                                    <img class="effect-icon" src="assets/style_icons/necro_icon.PNG">
+                                    <img class="effect-icon" src="assets/google_icons/change-blue.svg">
                                     <li class="block transition-all duration-75 relative">
                                         <a href="./changelog.html" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
                                             Changelog
@@ -154,7 +146,7 @@
                                     </li>
                                 </div>
                                 <div class="effect-container">
-                                    <img class="effect-icon" src="assets/style_icons/necro_icon.PNG">
+                                    <img class="effect-icon" src="assets/google_icons/faq-blue.svg">
                                     <li class="block transition-all duration-75 relative">
                                         <a href="./faq.html" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
                                             FAQ
