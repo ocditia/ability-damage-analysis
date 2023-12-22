@@ -43,6 +43,13 @@ class necromancyHelper{
         }
         return total;
     }
+
+    flooredList(dmgList) {
+        for (var i = 0; i< dmgList.length; i++) {
+            dmgList[i] = Math.floor(dmgList[i]);
+        }
+        return dmgList
+    }
 }
 
 module.exports = necromancyHelper;

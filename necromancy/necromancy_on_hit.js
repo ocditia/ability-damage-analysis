@@ -5,15 +5,15 @@ class OnHit {
     if (pocket === 'scripture of ful') {
       buff = buff * (1 + 0.2);
     }
-    return buff;
+    return Math.floor(buff);
   }
 
   calcStoneOfJas(buff,jas) {
-    return buff * (1 + jas);
+    return Math.floor(buff * (1 + jas));
   }
 
   calcPrayer(buff,prayer) {
-    return buff * (1 + construction['prayers'][prayer]['boost']);
+    return Math.floor(buff * (1 + construction['prayers'][prayer]['boost']));
   }
 
   calcRevenge(buff,type,revengeStacks) {
@@ -23,19 +23,19 @@ class OnHit {
     else if (type === 'defender') { 
       buff = buff * (1 + 0.025*revengeStacks);
     }
-    return buff;
+    return Math.floor(buff);
   }
 
   calcSpendthrift(buff,spendthriftRank) {
-    return buff * (1 + (spendthriftRank * spendthriftRank)/100);
+    return Math.floor(buff * (1 + (spendthriftRank * spendthriftRank)/10000));
   }
 
   calcRuthless(buff,ruthlessRank, ruthlessStacks) {
-    return buff * (1 + 0.005 * ruthlessRank * ruthlessStacks);
+    return Math.floor(buff * (1 + 0.005 * ruthlessRank * ruthlessStacks));
   }
 
   calcSlayerHelmet(buff,slayerHelmet) {
-    return buff * (1 + construction['slayerHelmets'][slayerHelmet]['boost']);
+    return Math.floor(buff * (1 + construction['slayerHelmets'][slayerHelmet]['boost']));
   }
 
   calcGuardHouse(buff,guardhouse) {
@@ -48,11 +48,11 @@ class OnHit {
     } else if (guardhouse === 'level 3 undead - low target') {
       buff = buff * 1.12;
     }
-    return buff;
+    return Math.floor(buff);
   }
 
   calcGenocidal(buff,genocidal) {
-    return buff * (1 + genocidal);
+    return Math.floor(buff * (1 + genocidal));
   }
 
   calcSalveAmulet(buff,necklace) {
@@ -62,15 +62,15 @@ class OnHit {
     else if (necklace === 'Salve amulet (e)') {
       buff = buff * 1.2;
     }
-    return buff;
+    return Math.floor(buff);
   }
 
   calcRipperPassive(buff,ripperPassive) {
-    return buff * (1 + ripperPassive);
+    return Math.floor(buff * (1 + ripperPassive));
   }
 
   calcBerserkersFury(buff,fury) {
-    return buff * (1 + fury);
+    return Math.floor(buff * (1 + fury));
   }
 
   calcPrecise(fixed, variable, rank) {

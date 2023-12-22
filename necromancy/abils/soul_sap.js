@@ -53,7 +53,7 @@ function soul_sap(type, settings, numberOfHits) {
     
     //calc total damage
     hits.push(Helper.totalDamageCalc(hits));
-    return hits;
+    return Helper.flooredList(hits);
 }
 
 module.exports = soul_sap;

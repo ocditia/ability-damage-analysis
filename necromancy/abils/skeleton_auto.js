@@ -53,7 +53,7 @@ function skeleton_auto(type, settings, numberOfHits) {
     
     //calc total damage
     hits.push(Helper.totalDamageCalc(hits));
-    return hits;
+    return Helper.flooredList(hits);
 }
 
 module.exports = skeleton_auto;
