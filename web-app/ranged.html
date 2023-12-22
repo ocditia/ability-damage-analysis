@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RS Analysis</title>
+        <link rel="stylesheet" href="./css/style.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        <!--NAVBAR-->
+        <nav class="fixed w-full lg:relative bg-card z-50">
+            <div class="responsive-container px-4 lg:px-0">
+                <div class="flex justify-between">
+                    <div class="flex space-x-3">
+                        <div>
+                            <a href="./index.html" class="flex items-center py-4">
+                                <div class="flex flex-row items-center">
+                                    <label class="logo">RS Analysis</label>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lg:flex items-center space-x-3">
+                        <ul class="nav-item">
+                            <li class="block relative">
+                                <a href="index.html" class="py-2 px-4 font-normal text-xl text-lb hover:text-link" title="">
+                                    Home
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav-item">
+                            <li class="block relative">
+                                <a href="/" class="py-2 px-4 font-normal text-xl text-lb hover:text-link" title="">
+                                    Ability Analysis
+                                </a>
+                                <ul class="nav-dropdown py-2">
+                                    <li>
+                                        <div class="flex items-start bg-card py-6">
+                                            <div class="mx-6">
+                                                <a href="magic.html" class="text-lb hover:text-link tracking-wide block mb-2">Magic</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="melee.html" class="text-lb hover:text-link tracking-wide block mb-2">Melee</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="ranged.html" class="text-lb hover:text-link tracking-wide block mb-2">Ranged</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="necromancy.html" class="text-lb hover:text-link tracking-wide block mb-2">Necromancy</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav-item">
+                            <li class="block transition-all duration-75 relative">
+                                <a href="research.html" class="py-2 px-4 font-normal text-xl text-lb hover:text-link" title="">
+                                    Research
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+         <!--HEADER-->
+         <div id="content" class="z-20">
+            <div class="h-36 xl:h-80">
+                <div class="responsive-container z-10 relative flex items-center h-full text-white">
+                    <div class="flex items-center md:items-center flex-row w-full mt-0 md:mb-12 lg:mb-0 lg:mt-0">
+                        <div class="w-1/12 xl:w-32 md:h-20 xl:h-32">
+                            <img class="icon-header mr-2 xl:mr-8" src="./assets/style_icons/ranged-white.svg">
+                        </div>
+                        <h1 class="text-3xl md:text-4xl xl:text-6xl font-semibold ml-8 mb-0">Ranged Calculator</h1>
+                    </div>
+                </div>
+                <div class="bg-gray-600 absolute top-0 left-0 w-full -z-1 h-96 md:h-72 xl:h-112 xl:mt-16 bg-bottom md:bg-top bg-cover" style="background-image:url(./assets/range_background.png)"></div>
+            </div>
+        </div>
+
+        <div class="space-y-14 z-20">
+            <div class="responsive-container">
+                <section class="grid xl:grid-cols-12 gap-6 xl:gap-8"> 
+                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2 md:pt-6">
+                        <div class="flex flex-col">
+                            <h1 class="main-header mb-6 ml-3">Damage Values</h1>
+                            <div class="card card-magic">
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Ability</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Regular</th>
+                                                <th>ECB</th>
+                                                <th>Swift</th>
+                                                <th>Swift + ECB</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="js--damages-table"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--SETTINGS TABS-->
+                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2">
+                        <div class="tabbed md:pt-24">
+                            <input type="radio" id="tab-general" name="css-tabs" checked="">
+                            <input type="radio" id="tab-equipment" name="css-tabs">
+                            <input type="radio" id="tab-bosses" name="css-tabs">
+                            <!--CREATING TABS ON TABBED CONTAINER-->
+                            <ul class="tabs desktop">
+                                <li class="tab desktop flex-grow">
+                                    <label for="tab-general">General</label>
+                                </li>
+                                <li class="tab desktop flex-grow">
+                                    <label for="tab-equipment">Equipment</label>
+                                </li>
+                                <li class="tab desktop flex-grow">
+                                    <label for="tab-bosses">Bosses</label>
+                                </li>
+                            </ul>
+                            <!--CREATING TAB CONTENT-->
+                            <ul class="tabs meta-tabs">
+                                <!--General Tab Content-->
+                                <li class="tab meta-tab">
+                                    <label for="tab-General">General</label>
+                                    <div class="tab-content meta-content">
+                                        <div class="settings-wrapper">
+                                            <!--Ability Damgage-->
+                                            <div class="settings-container">
+                                                <div class="card-title mb-1">Ability Damage</div>
+                                                <div class="effect-container">
+                                                    <p class="effect-text">Ability Damage:</p>
+                                                    <input class="js--setting dropdown-select" data-setting-name="AD" type="number" id="AD" name="Ability Damage" step="1" value="0">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <p class="effect-text">Base Magic Level:</p>
+                                                    <input class="js--setting" data-setting-name="level" type="number" id="baseMagic" name="Ability Damage" step="1" value="120" max="120" min="1">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <p class="effect-text">Boosted Magic Level:</p>
+                                                    <input class="js--setting" data-setting-name="boostedLevel" type="number" id="boostMagic" name="boostMagic" step="1" value="135" max="135" min="1">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Elder_overload_salve_(6).webp"></td>
+                                                    <p class="effect-text">Potion:</p>
+                                                    <select class="js--setting dropdown-select" data-setting-name="potion" id="potion">
+                                                        <option value="none">None</option>
+                                                        <option value="elder overload" selected>Elder overload</option>
+                                                        <option value="Supreme-ovl">Supreme overload</option>
+                                                        <option value="ovlerload">Overload</option>
+                                                        <option value="supreme">Supreme</option>
+                                                        <option value="extreme">Extreme</option>
+                                                        <option value="grand">Grand</option>
+                                                        <option value="super">Super</option>
+                                                    </select>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/death.png">
+                                                    <p class="effect-text">Reaper Crew:</p>
+                                                    <input class="js--setting" data-setting-name="Reaper crew" type="checkbox" id="reaper-crew" name="reaper-crew" checked>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Berserk_blood_essence.webp">
+                                                    <p class="effect-text">Berserker Essence:</p>
+                                                    <input type="checkbox" id="zerk-ess" name="zerk-ess">
+                                                </div>
+                                            </div>
+                                            <!--On Cast-->
+                                            <div class="settings-container">
+                                                <div class="card-title mb-1">On-Cast</div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Inquisitor_staff.webp">
+                                                    <p class="effect-text">Inquisitor effect:</p>
+                                                    <input type="checkbox" id="inquis" name="inquis">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/ability_icons/magic/Greater_Sonic_Wave.webp">
+                                                    <p class="effect-text">Greater Sonic:</p>
+                                                    <input type="checkbox" id="g-sonic" name="g-sonic">
+                                                </div>
+                                            </div>
+                                            <!--On Hit Main-->
+                                            <div class="settings-container">
+                                                <div class="card-title mb-1">On-Hit Main</div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Prayer.webp"></td>
+                                                    <p class="effect-text">Prayer:</p>
+                                                    <select class="dropdown-select" id="aura">
+                                                        <option value="none">None</option>
+                                                        <option value="affliction" selected>Affliction</option>
+                                                        <option value="torment">Torment</option>
+                                                        <option value="augury">Augury</option>
+                                                    </select>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Scripture_of_Ful.webp">
+                                                    <p class="effect-text">Scripture of Ful:</p>
+                                                    <input type="checkbox" id="ful-book" name="ful-book">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Ruby_Aurora_icon.webp"></td>
+                                                    <p class="effect-text">Ruby Aurora</p>
+                                                    <input type="number" id="ruby-aurora" name="ruby-aurora" step="1" value="0" max="3" min="0">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Revenge.png"></td>
+                                                    <p class="effect-text">Revenge</p>
+                                                    <input type="number" id="revenge" name="revenge" step="1" value="0" max="10" min="0">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Berserker's_Fury.webp"></td>
+                                                    <p class="effect-text">Dharok's Momento</p>
+                                                    <input type="number" id="dharok" name="dharok" step="0.5" value="0" max="5.5" min="0.0">
+                                                    <p class="effect-text">%</p>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Ruthless.webp"></td>
+                                                    <p class="effect-text">Ruthless Stacks</p>
+                                                    <input type="number" id="ruthless" name="ruthless" step="1" value="0" max="5" min="0.0">
+                                                </div>
+                                            </div>
+                                            <!--On Hit Secondary-->
+                                            <div class="settings-container">
+                                                <div class="card-title mb-1">On-Hit Secondary</div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Full_slayer_helmet_(yellow).webp">
+                                                    <p class="effect-text">Slayer Helm:</p>
+                                                    <input type="checkbox" id="slayer-helm" name="slayer-helm">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Guardhouse_(Tier_3).webp">
+                                                    <p class="effect-text">Guardhouse:</p>
+                                                    <input type="checkbox" id="guardhouse" name="guardhouse">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
+                                                    <p class="effect-text">Genocidal:</p>
+                                                    <input type="number" id="genocidal" name="genocidal" step="0.5" value="0" max="7" min="0">
+                                                    <p class="effect-text">%</p>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Salve_amulet_(e).webp">
+                                                    <p class="effect-text">Salve Amulet(e):</p>
+                                                    <input type="checkbox" id="guardhouse" name="guardhouse">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Binding_contract_(ripper_demon).webp"></td>
+                                                    <p class="effect-text">Ripper Passive</p>
+                                                    <input type="number" id="ripper-passive" name="ripper-passive" step="0.5" value="2.5" max="5.0" min="0.0">
+                                                    <p class="effect-text">%</p>
+                                                </div>
+                                            </div>
+                                            <!--On NPC-->
+                                            <div class="settings-container">
+                                                <div class="card-title mb-1">On-NPC</div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Vulnerability_icon.webp">
+                                                    <p class="effect-text">Vulnerability:</p>
+                                                    <input type="checkbox" id="vuln" name="vuln" checked>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Smoke_Cloud_icon.webp">
+                                                    <p class="effect-text">Smoke Cloud:</p>
+                                                    <input type="checkbox" id="sc" name="sc" checked>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Cryptbloom_helm.png">
+                                                    <p class="effect-text">Cryptbloom Vuln:</p>
+                                                    <input type="checkbox" id="crypt" name="crypt">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
+                                                    <p class="effect-text">Slayer Perk:</p>
+                                                    <input type="checkbox" id="slay-perk" name="slay-perk">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Undead_slayer_sigil_detail.png">
+                                                    <p class="effect-text">Slayer Sigil:</p>
+                                                    <input type="checkbox" id="slay-sigil" name="slay-perk">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/aura.png"></td>
+                                                    <p class="effect-text">Aura:</p>
+                                                    <select class="dropdown-select" id="aura">
+                                                        <option value="none">None</option>
+                                                        <option value="maniacal" selected>Maniacal</option>
+                                                        <option value="mahjarrat">Mahjarrat</option>
+                                                        <option value="equilibrium">Equilibrium</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--Other-->
+                                            <div class="settings-container">
+                                                <div class="card-title mb-1">Other</div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Araxyte_spider.webp">
+                                                    <p class="effect-text">Nope Nope Nope:</p>
+                                                    <input type="checkbox" id="nope" name="nope">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Binding_contract_(kal'gerion_demon).webp">
+                                                    <p class="effect-text">Kalg Passive:</p>
+                                                    <input type="checkbox" id="kalg-passive" name="kalg-passive">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Kal'gerion_Demon_scroll_(Crit-i-Kal).webp">
+                                                    <p class="effect-text">Crit-i-Kal Spec:</p>
+                                                    <input type="checkbox" id="kalg-spec" name="kalg-spec" checked>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!--Armour Tab Content-->
+                                <li class="tab meta-tab">
+                                    <label for="tab-Equipment">Equipment</label>
+                                    <div class="tab-content meta-content">
+                                        <div class="settings-wrapper">
+                                            <!--Armour-->
+                                            <div class="settings-container left">
+                                                <div class="card-title mb-1">Armour</div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Head_slot.webp"></td>
+                                                    <select class="dropdown-select" id="helm">
+                                                        <option value="none">None/Tank</option>
+                                                        <option value="elite-tec" selected>TFN</option>
+                                                    </select>
+                                                    <input type="number" id="helm-bonus" name="helm-bonus">
+                                                </div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Torso_slot.png"></td>
+                                                    <select class="dropdown-select" id="chest">
+                                                        <option value="none">None/Tank</option>
+                                                        <option value="elite-tec" selected>TFN</option>
+                                                    </select>
+                                                    <input type="number" id="chest-bonus" name="chest-bonus">
+                                                </div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Legs_slot.png"></td>
+                                                    <select class="dropdown-select" id="leg">
+                                                        <option value="none">None/Tank</option>
+                                                        <option value="elite-tec" selected>TFN</option>
+                                                    </select>
+                                                    <input type="number" id="leg-bonus" name="leg-bonus">
+                                                </div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Hands_slot.webp"></td>
+                                                    <select class="dropdown-select" id="hand">
+                                                        <option value="none">None/Tank</option>
+                                                        <option value="enh-kww" selected>TFN</option>
+                                                    </select>
+                                                    <input type="number" id="hand-bonus" name="hand-bonus">
+                                                </div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Feet_slot.png"></td>
+                                                    <select class="dropdown-select" id="boots">
+                                                        <option value="none">None/Tank</option>
+                                                        <option value="enh-blast-diff" selected>TFN</option>
+                                                    </select>
+                                                    <input type="number" id="boot-bonus" name="boot-bonus">
+                                                </div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Neck_slot.png"></td>
+                                                    <select class="dropdown-select" id="neck">
+                                                        <option value="none">None/Tank</option>
+                                                        <option value="souls" selected>EOF(or)</option>
+                                                    </select>
+                                                    <input type="number" id="neck-bonus" name="neck-bonus">
+                                                </div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Back_slot.png"></td>
+                                                    <select class="dropdown-select" id="back">
+                                                        <option value="none">None</option>
+                                                        <option value="elite-tec" selected>Zuk</option>
+                                                    </select>
+                                                    <input type="number" id="back-bonus" name="back-bonus">
+                                                </div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Ring_slot.png"></td>
+                                                    <select class="dropdown-select" id="ring">
+                                                        <option value="none">None</option>
+                                                        <option value="asr" selected>Reavers</option>
+                                                    </select>
+                                                    <input type="number" id="ring-bonus" name="ring-bonus">
+                                                </div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Pocket_slot.webp"></td>
+                                                    <select class="dropdown-select" id="pocket">
+                                                        <option value="none">None</option>
+                                                        <option value="asr" selected>Grimoire</option>
+                                                    </select>
+                                                    <input type="number" id="pocket-bonus" name="pocket-bonus">
+                                                </div>
+                                                <div class="card-title mb-1">Weapons</div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Main_hand_slot.webp"></td>
+                                                    <select class="dropdown-select" id="mainhand">
+                                                        <option value="none">None</option>
+                                                        <option value="praesul" selected>Omni Guard</option>
+                                                    </select>
+                                                    <input type="number" id="mainhand" name="mainhand" value="95">
+                                                </div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Off-hand_slot.webp"></td>
+                                                    <select class="dropdown-select" id="mainhand">
+                                                        <option value="none">None</option>
+                                                        <option value="imp-core" selected>Soulbound</option>
+                                                    </select>
+                                                    <input type="number" id="offhand" name="offhand" value="95">
+                                                </div>
+                                                <div class="effect-container text-right">
+                                                    <img class="effect-icon" src="assets/armour_icons/Off-hand_slot.webp"></td>
+                                                    <select class="dropdown-select" id="shield">
+                                                        <option value="none" selected>None</option>
+                                                    </select>
+                                                    <input type="number" id="shield" name="shield" value="0">
+                                                </div>
+                                            </div>
+                                            <!--Perks-->
+                                            <div class="settings-container right">
+                                                <div class="card-title mb-1">Perks</div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/level-20.png">
+                                                    <p class="effect-text">Level 20 Armour:</p>
+                                                    <input type="checkbox" id="fsoa" name="fsoa" checked>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Biting.webp"></td>
+                                                    <p class="effect-text">Biting:</p>
+                                                    <input type="number" id="biting" name="biting" step="1" value="4" min="0">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Crackling.webp"></td>
+                                                    <p class="effect-text">Crackling:</p>
+                                                    <input type="number" id="crackling" name="crackling" step="1" value="4" min="0">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Precise.webp"></td>
+                                                    <p class="effect-text">Precise:</p>
+                                                    <input type="number" id="precise" name="precise" step="1" value="6" min="0">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Equilibrium.webp"></td>
+                                                    <p class="effect-text">Equilibrium:</p>
+                                                    <input type="number" id="equilibrium" name="equilibrium" step="1" value="2" min="0">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Aftershock.webp"></td>
+                                                    <p class="effect-text">Aftershock:</p>
+                                                    <input type="number" id="aftershock" name="aftershock" step="1" value="4" min="0">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Lunging.webp"></td>
+                                                    <p class="effect-text">Lunging:</p>
+                                                    <input type="number" id="lunging" name="lunging" step="1" value="0" min="0">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Flanking.webp"></td>
+                                                    <p class="effect-text">Flanking:</p>
+                                                    <input type="number" id="flank" name="flank" step="1" value="0" min="0">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Ruthless.webp"></td>
+                                                    <p class="effect-text">Ruthless:</p>
+                                                    <input type="number" id="ruthless" name="ruthless" step="1" value="0" min="0">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Spendthrift.webp"></td>
+                                                    <p class="effect-text">Spendthrift:</p>
+                                                    <input type="number" id="spendthrift" name="spendthrift" step="1" value="0" min="0">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        
+                                </li>
+                                <!--Bosses Tab Content-->
+                                <li class="tab meta-tab">
+                                    <label for="tab-Boss">Bosses</label>
+                                    <div class="tab-content meta-content">
+                                    </div>
+                                </li>  
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </body>
+    <template id="damage-table-row">
+        <tr class="js--ability">
+            <td data-cell="img"> <img class="job-icon-sm js--ability-icon"> </td>
+            <td class="js--ability-title" data-cell="name"></td>
+            <td></td>
+            <td class="js--ability-regular" data-cell="reg"></td>
+            <td class="js--ability-splitsoul" data-cell="ss"></td>
+            <td data-cell="weapon">
+                <select class="js--ability-weapon dropdown-select">
+                </select>
+            </td>
+        </tr>
+    </template>
+    <script type="module" src="./js/calculator.js"></script>
+</html>
