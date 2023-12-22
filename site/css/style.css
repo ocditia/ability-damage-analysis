@@ -44,11 +44,6 @@ ul.nav-item li ul.nav-dropdown li {
     width: 100%
 }
 
-.border-link{
-    --tw-border-opacity: 1;
-    border-color: rgba(60, 250, 183,var(--tw-border-opacity))
-}
-
 .text-link{
     --tw-text-opacity: 1;
     color: #968A5C
@@ -246,6 +241,10 @@ ul.nav-item li ul.nav-dropdown li {
 
 .tabbed [type=radio] {
     display: none;
+}
+
+.border-lb{
+    border-color: #b2dbee;
 }
 
 .tabs {
