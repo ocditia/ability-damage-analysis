@@ -1,5 +1,7 @@
 const construction = require('./ranged_const')
 
+//test commit
+
 class AbilityDmg {
     calcAd(type, settings) {
       //if manually overwritten use that
