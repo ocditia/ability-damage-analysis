@@ -1,55 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" dir="lts">
+<html>
     <head>
-        <meta charset="utf-8">
-        <title>RS3 Ability Damage Maths </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <title>RS Analysis</title>
+        <link rel="stylesheet" href="./css/style.css">
+        <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body>
-        <nav class="fixed w-full lg:relative bg-card-light z-50">
+        <!--NAVBAR-->
+        <nav class="fixed w-full lg:relative bg-card z-50">
             <div class="responsive-container px-4 lg:px-0">
                 <div class="flex justify-between">
                     <div class="flex space-x-3">
                         <div>
-                            <a href="/" class="flex items-center py-4">
+                            <a href="./index.html" class="flex items-center py-4">
                                 <div class="flex flex-row items-center">
-                                    <label class="logo">RS Anaylsis</label>
+                                    <label class="logo">RS Analysis</label>
                                 </div>
                             </a>
                         </div>
                     </div>
-                    <div class="hidden lg:flex items-center space-x-3">
+                    <div class="lg:flex items-center space-x-3">
                         <ul class="nav-item">
-                            <li class="block transition-all duration-75 relative">
-                                <a href="index.html" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
+                            <li class="block relative">
+                                <a href="index.html" class="py-2 px-4 font-normal text-xl text-lb hover:text-link" title="">
                                     Home
                                 </a>
                             </li>
                         </ul>
-                        <div class="lg:hidden flex items-center">
-                            <button class="outline-none mobile-menu-button"><svg class="w-6 text-link-orange hover:opacity-75" x-show="!showMenu" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentcolor"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                            </button>
-                        </div>
                         <ul class="nav-item">
-                            <li class="block transition-all duration-75 relative">
-                                <a href="/encounters/" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
+                            <li class="block relative">
+                                <a href="/encounters/" class="py-2 px-4 font-normal text-xl text-lb hover:text-link" title="">
                                     Ability Analysis
                                 </a>
                                 <ul class="nav-dropdown py-2">
                                     <li>
-                                        <div class="flex items-start bg-card-light py-6">
+                                        <div class="flex items-start bg-card py-6">
                                             <div class="mx-6">
-                                                <a href="magic.html" class="text-link-orange font-bold tracking-wide block mb-2">Magic</a>
+                                                <a href="magic.html" class="text-lb hover:text-link tracking-wide block mb-2">Magic</a>
                                             </div>
                                             <div class="mx-6">
-                                                <a href="melee.html" class="text-link-orange font-bold tracking-wide block mb-2">Melee</a>
+                                                <a href="melee.html" class="text-lb hover:text-link tracking-wide block mb-2">Melee</a>
                                             </div>
                                             <div class="mx-6">
-                                                <a href="ranged.html" class="text-link-orange font-bold tracking-wide block mb-2">Ranged</a>
+                                                <a href="ranged.html" class="text-lb hover:text-link tracking-wide block mb-2">Ranged</a>
                                             </div>
                                             <div class="mx-6">
-                                                <a href="necromancy.html" class="text-link-orange font-bold tracking-wide block mb-2">Necromancy</a>
+                                                <a href="necromancy.html" class="text-lb hover:text-link tracking-wide block mb-2">Necromancy</a>
                                             </div>
                                         </div>
                                     </li>
@@ -58,8 +55,8 @@
                         </ul>
                         <ul class="nav-item">
                             <li class="block transition-all duration-75 relative">
-                                <a href="compare.html" class="py-2 px-4 font-semibold text-xl text-white hover:text-link-orange border-b-2 border-link-orange border-opacity-0 hover:border-opacity-100" title="">
-                                    Compare
+                                <a href="research.html" class="py-2 px-4 font-normal text-xl text-lb hover:text-link" title="">
+                                    Research
                                 </a>
                             </li>
                         </ul>
@@ -68,14 +65,15 @@
             </div>
         </nav>
 
-        <div id="content" class="z-20">
+         <!--HEADER-->
+         <div id="content" class="z-20">
             <div class="h-36 xl:h-80">
-                <div class="responsive-container z-10 relative flex items-center h-full">
-                    <div class="flex items-center md:items-center flex-row w-full mt-0 md:pt-24 md:mb-12 lg:mb-0 lg:mt-0">
+                <div class="responsive-container z-10 relative flex items-center h-full text-white">
+                    <div class="flex items-center md:items-center flex-row w-full mt-0 md:mb-12 lg:mb-0 lg:mt-0">
                         <div class="w-1/12 xl:w-32 md:h-20 xl:h-32">
-                            <img class="job-icon-header mr-2 xl:mr-8 filter drop-shadow-lg-casters" src="./assets/style_icons/necro_icon.png">
+                            <img class="icon-header mr-2 xl:mr-8" src="./assets/style_icons/necro-white.svg">
                         </div>
-                        <h1 class="text-3xl md:text-4xl xl:text-6xl font-semibold filter ml-8 drop-shadow-lg-casters mb-0">Necromancy</h1>
+                        <h1 class="text-3xl md:text-4xl xl:text-6xl font-semibold ml-8 mb-0">Necromancy Calculator</h1>
                     </div>
                 </div>
                 <div class="bg-gray-600 absolute top-0 left-0 w-full -z-1 h-96 md:h-72 xl:h-112 xl:mt-16 bg-bottom md:bg-top bg-cover" style="background-image:url(./assets/necro_background.png)">
@@ -85,11 +83,11 @@
 
         <div class="space-y-14 z-20">
             <div class="responsive-container">
-                <section class="grid xl:grid-cols-12 gap-6 xl:gap-8 md:pt-8">
-                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2">
+                <section class="grid xl:grid-cols-12 gap-6 xl:gap-8"> 
+                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2 md:pt-6">
                         <div class="flex flex-col">
-                            <h1 class="role-header-casters mb-6 ml-3">Damage calculations</h1>
-                            <div class="card card-necro space-y-3">
+                            <h1 class="main-header mb-6 ml-3">Damage Values</h1>
+                            <div class="card card-necro">
                                 <div class="table-container">
                                     <table>
                                         <thead>
@@ -108,37 +106,23 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!--SETTINGS TABS-->
                     <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2">
-                        <div class="tabbed md:pt-16">
-                            <input type="radio" id="tab-General" name="css-tabs" checked="">
-                            <input type="radio" id="tab-Equipment" name="css-tabs">
-                            <input type="radio" id="tab-Boss" name="css-tabs">
+                        <div class="tabbed md:pt-24">
+                            <input type="radio" id="tab-general" name="css-tabs" checked="">
+                            <input type="radio" id="tab-equipment" name="css-tabs">
+                            <input type="radio" id="tab-bosses" name="css-tabs">
                             <!--CREATING TABS ON TABBED CONTAINER-->
                             <ul class="tabs desktop">
-                                <li class="tab desktop flex-grow text-center">
-                                <label for="tab-General" class="border-t-4" style="border-top-color:#e180ff">
-                                <div class="flex items-center justify-center">
-                                <span class="md:hidden xl:inline">General</span>
-                                </div>
-                                </label>
+                                <li class="tab desktop flex-grow">
+                                    <label for="tab-general">General</label>
                                 </li>
-                                
-                                <li class="tab desktop flex-grow text-center">
-                                    <label for="tab-Equipment" class="border-t-4" style="border-top-color:#e180ff">
-                                    <div class="flex items-center justify-center">
-                                    <span class="md:hidden xl:inline">Equipment</span>
-                                    </div>
-                                    </label>
+                                <li class="tab desktop flex-grow">
+                                    <label for="tab-equipment">Equipment</label>
                                 </li>
-
-                                <li class="tab desktop flex-grow text-center">
-                                    <label for="tab-Boss" class="border-t-4" style="border-top-color:#e180ff">
-                                    <div class="flex items-center justify-center">
-                                    <span class="md:hidden xl:inline">Boss</span>
-                                    </div>
-                                    </label>
+                                <li class="tab desktop flex-grow">
+                                    <label for="tab-bosses">Bosses</label>
                                 </li>
                             </ul>
                             <!--CREATING TAB CONTENT-->
@@ -153,7 +137,7 @@
                                                 <div class="card-title mb-1">Ability Damage</div>
                                                 <div class="effect-container">
                                                     <p class="effect-text">Ability Damage:</p>
-                                                    <input class="js--setting" data-setting-name="AD" type="number" id="AD" name="Ability Damage" step="1" value="0">
+                                                    <input class="js--setting dropdown-select" data-setting-name="AD" type="number" id="AD" name="Ability Damage" step="1" value="0">
                                                 </div>
                                                 <div class="effect-container">
                                                     <p class="effect-text">Base Necromancy Level:</p>
@@ -166,11 +150,11 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Elder_overload_salve_(6).webp"></td>
                                                     <p class="effect-text">Potion:</p>
-                                                    <select class="js--setting" data-setting-name="potion" class="dropdown-select" id="potion">
+                                                    <select class="js--setting" data-setting-name="potion" id="potion">
                                                         <option value="none">None</option>
                                                         <option value="elder overload" selected>Elder overload</option>
                                                         <option value="Supreme-ovl">Supreme overload</option>
-                                                        <option value="overload">Overload</option>
+                                                        <option value="ovlerload">Overload</option>
                                                         <option value="supreme">Supreme</option>
                                                         <option value="extreme">Extreme</option>
                                                         <option value="grand">Grand</option>
@@ -508,6 +492,5 @@
             </td>
         </tr>
     </template>
-    <script src="./js/nav-bar.js"></script>
     <script type="module" src="./js/calculator.js"></script>
 </html>
