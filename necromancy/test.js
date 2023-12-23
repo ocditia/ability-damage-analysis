@@ -43,7 +43,7 @@ const settings = {
     
     
     'aura': 'Mahjarrat',
-    
+    'split soul': true,
     'bonus': 0,
 
     'cap': 10000,

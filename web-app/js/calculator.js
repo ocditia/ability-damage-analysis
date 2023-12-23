@@ -47,11 +47,9 @@ function collectSettings() {
     },  
     
     'aura': 'Mahjarrat',
-    
+    'split soul': false,
     'bonus': 0,
-
     'cap': 30000,
-    'critCap': 15000,
 
     //on-cast effects
     'Zamorak balance of power': 0,
@@ -134,10 +132,13 @@ function buildDamagesTable(abilities) {
 function calculateDamages(settings) {
   document.querySelectorAll(".js--damages-table tr").forEach(row => {
     const key = row.getAttribute('data-ability-key');
+    settings['split soul'] = false;
     damages = abilities[key].calc('', settings, 1);
     row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
 
     // Recalculate with split soul
+    settings['split soul'] = true;
+    damages = abilities[key].calc('', settings, 1);
     row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
   })
 }

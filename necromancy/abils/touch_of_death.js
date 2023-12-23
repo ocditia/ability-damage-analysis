@@ -4,6 +4,7 @@ const OnHit = require('../necromancy_on_hit')
 const Crit = require('../necromancy_crit')
 const NecroHelper = require('../necromancy_helper')
 const Avg = require('../average_damage')
+const split_soul = require('./split_soul')
 const construction = require('../necromancy_const')
 const { channel } = require('diagnostics_channel')
 
@@ -14,7 +15,7 @@ function touch_of_death(type, settings, numberOfHits) {
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new NecroHelper(); 
-    let abil_val = 'soul sap'
+    let abil_val = 'touch of death'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
 
@@ -43,9 +44,17 @@ function touch_of_death(type, settings, numberOfHits) {
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);        
 
+        //split soul
+        splitSoul = split_soul(damageObject['non-crit']['list'],settings);
+        splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
+
         //apply hit caps
         damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
+
+        //add up damages
+        damageObject['non-crit']['list'] = Helper.listAdder(damageObject['non-crit']['list'],splitSoul);
+        damageObject['crit']['list'] = Helper.listAdder(damageObject['crit']['list'],splitSoulCrit);
 
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings));
@@ -57,4 +66,3 @@ function touch_of_death(type, settings, numberOfHits) {
 }
 
 module.exports = touch_of_death;
-

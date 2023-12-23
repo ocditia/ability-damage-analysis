@@ -48,7 +48,15 @@ class necromancyHelper{
         for (var i = 0; i< dmgList.length; i++) {
             dmgList[i] = Math.floor(dmgList[i]);
         }
-        return dmgList
+        return dmgList;
+    }
+
+    listAdder(list1,list2) {
+        const returnList = []
+        for (var i = 0; i<list1.length; i++) {
+            returnList.push(list1[i] + list2[i]);
+        }
+        return returnList;
     }
 }
 
