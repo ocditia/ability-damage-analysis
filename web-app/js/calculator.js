@@ -108,7 +108,7 @@ function collectSettings() {
       val = node.checked;
     }
     settings[node.getAttribute('data-setting-name')] = val;
-  });
+  }); 
 
   return settings;
 }

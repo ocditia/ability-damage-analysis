@@ -7,14 +7,14 @@ const Avg = require('../average_damage')
 const construction = require('../necromancy_const')
 const { channel } = require('diagnostics_channel')
 
-function death_skulls(type, settings, numberOfHits) {
+function command_zombie(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new NecroHelper(); 
-    let abil_val = 'death skulls'
+    let abil_val = 'command zombie'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
 
@@ -56,5 +56,5 @@ function death_skulls(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = death_skulls;
+module.exports = command_zombie;
 

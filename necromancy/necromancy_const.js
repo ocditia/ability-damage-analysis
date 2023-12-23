@@ -329,8 +329,8 @@ const necromancy_construction = {
             "variable percent": 0.04
         },
         "command zombie":{
-            "fixed percent": 0.08,
-            "variable percent": 0.04,
+            "fixed percent": 3.6,
+            "variable percent": 0.8,
             "on hit effects": false,
             "crit effects": false
         },
