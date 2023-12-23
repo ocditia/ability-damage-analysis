@@ -20,6 +20,18 @@ Run the local server:
 yarn start
 ```
 
+### Linting
+
+To run the linter and fix all issues:
+
+```sh
+yarn lint:fix
+```
+
+**NOTE: There are a lot of issues. Some are actual bugs, some are style/readability/consistency issues.**
+
+If you have the `ESLint` VSCode extension, you can configure it to format on save.
+
 ## TODO
 
 * Bug fixes/enhancements
