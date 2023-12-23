@@ -28,6 +28,22 @@ To run the linter and fix all issues:
 yarn lint:fix
 ```
 
+
+### Testing
+
+To run all tests:
+
+```sh
+yarn test:all
+```
+
+To run style-specific tests:
+
+```sh
+yarn test:necro
+yarn test:magic
+```
+
 **NOTE: There are a lot of issues. Some are actual bugs, some are style/readability/consistency issues.**
 
 If you have the `ESLint` VSCode extension, you can configure it to format on save.
