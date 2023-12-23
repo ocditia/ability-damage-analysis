@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RS Analysis</title>
+        <link rel="stylesheet" href="./css/style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        <!--NAVBAR-->
+        <nav class="fixed w-full lg:relative bg-card z-50">
+            <div class="responsive-container px-4 lg:px-0">
+                <div class="flex justify-between">
+                    <div class="flex space-x-3">
+                        <div>
+                            <a href="./index.html" class="flex items-center py-4">
+                                <div class="flex flex-row items-center">
+                                    <label class="logo">RS Analysis</label>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lg:flex items-center space-x-3">
+                        <ul class="nav-item">
+                            <li class="block relative">
+                                <a href="index.html" class="py-2 px-4 font-normal text-xl text-lb hover:text-link" title="">
+                                    Home
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav-item">
+                            <li class="block relative">
+                                <a href="/" class="py-2 px-4 font-normal text-xl text-lb hover:text-link" title="">
+                                    Ability Analysis
+                                </a>
+                                <ul class="nav-dropdown py-2">
+                                    <li>
+                                        <div class="flex items-start bg-card py-6">
+                                            <div class="mx-6">
+                                                <a href="magic.html" class="text-lb hover:text-link tracking-wide block mb-2">Magic</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="melee.html" class="text-lb hover:text-link tracking-wide block mb-2">Melee</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="ranged.html" class="text-lb hover:text-link tracking-wide block mb-2">Ranged</a>
+                                            </div>
+                                            <div class="mx-6">
+                                                <a href="necromancy.html" class="text-lb hover:text-link tracking-wide block mb-2">Necromancy</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav-item">
+                            <li class="block transition-all duration-75 relative">
+                                <a href="research.html" class="py-2 px-4 font-normal text-xl text-lb hover:text-link" title="">
+                                    Research
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!--HEADER-->
+        <header class="bg-center bg-cover relative z-10 h-64 md:h-96 mt-10 lg:mt-0" style="background-image:url(./assets/main_background.png)"></header>
+
+        <!--MAIN CONTENT-->
+        <div class="space-y-14 z-20">
+            <div class="responsive-container">
+                <section class="grid xl:grid-cols-12 gap-6 xl:gap-8"> 
+                    <div class="xl:col-span-9 xl:row-start-1 xl:row-span-1 md:pt-6">
+                        <div class="flex flex-col">
+                            <h1 class="main-header mb-6 ml-3">Active Projects</h1>
+                                <div class="card card-home">
+                                    Work in progress
+                                </div>
+                        </div>
+                    </div>
+                    <div class="xl:col-span-9 xl:row-span-1 md:pt-6">
+                        <div class="flex flex-col">
+                            <h1 class="main-header mb-6 ml-3">Backlog</h1>
+                                <div class="card card-home">
+                                    Work in progress
+                                </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </body>
+</html>
