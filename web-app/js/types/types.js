@@ -1,7 +1,14 @@
 const WieldType = {
-  TWO_HAND: 'Two-hand',
-  DUAL_WIELD: 'Dual-wield',
-  MH_AND_SHIELD: 'Mainhand + shield'
+  TWO_HAND: "Two-hand",
+  DUAL_WIELD: "Dual-wield",
+  MH_AND_SHIELD: "Mainhand + shield",
+};
+
+const Perks = {
+  PRECISE: "Precise",
+  AFTERSHOCK: "aftershock",
+  EQUILIBRIUM: "equilibrium",
+  BITING: "biting",
 };
 
 // const BoostPotion = {
@@ -17,5 +24,6 @@ const WieldType = {
 // }
 
 module.exports = {
-  WieldType
+  WieldType,
+  Perks,
 };

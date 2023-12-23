@@ -7,6 +7,7 @@
   "scripts": {
     "lint": "eslint ./js",
     "lint:fix": "eslint ./js --fix",
+    "prettier:fix": "prettier --write",
     "start": "yarn run http-server"
   },
   "devDependencies": {
@@ -16,6 +17,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.5.0",
     "eslint-plugin-promise": "^6.1.1",
-    "http-server": "^14.1.1"
+    "http-server": "^14.1.1",
+    "prettier": "3.1.1"
   }
 }

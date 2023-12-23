@@ -1,12 +1,12 @@
-const AbilityDmg = require('../magic_ad');
-const OnNPC = require('../magic_on_npc');
-const OnHit = require('../magic_on_hit');
-const Crit = require('../magic_crit');
-const timeStrike = require('./timestrike');
-const { channel } = require('diagnostics_channel');
+const AbilityDmg = require("../magic_ad");
+const OnNPC = require("../magic_on_npc");
+const OnHit = require("../magic_on_hit");
+const Crit = require("../magic_crit");
+const timeStrike = require("./timestrike");
+const { channel } = require("diagnostics_channel");
 
 // FIXME: Wrack not timestrike?
-function wrack (type, settings) {
+function wrack(type, settings) {
   const numberOfHits = 1;
   const fixedPercent = 0.6;
   const variablePercent = 0.6;
@@ -32,7 +32,21 @@ function wrack (type, settings) {
     let variable = Math.floor(AD * variablePercent);
 
     // applies on-hit effects
-    const onHit = HIT_INS.calcOnHit(fixed, variable, settings.prayer, settings.boostedLvls, settings.dharok, settings.exsang, settings.ful, settings.rubyAurora, settings.salve, settings.precise, settings.equilibrium, settings.aura.name, basic);
+    const onHit = HIT_INS.calcOnHit(
+      fixed,
+      variable,
+      settings.prayer,
+      settings.boostedLvls,
+      settings.dharok,
+      settings.exsang,
+      settings.ful,
+      settings.rubyAurora,
+      settings.salve,
+      settings.precise,
+      settings.equilibrium,
+      settings.aura.name,
+      basic,
+    );
 
     // sets up for further calculations
     fixed = onHit[0];
@@ -41,13 +55,24 @@ function wrack (type, settings) {
     // normal roll calcs
     const dmg = [];
     minCrit = CRIT_INS.minNCritRoll(fixed, variable);
-    for (var i = fixed; i < (fixed + variable); i++) {
+    for (var i = fixed; i < fixed + variable; i++) {
       let j = i;
       if (j > minCrit) {
         j = CRIT_INS.critDmgBuff(i, channeler, false);
       }
 
-      j = NPC_INS.calcOnNpc(j, settings.kww, settings.enchFlame, settings.vuln, settings.cryptbloom, settings.slayerPerk, settings.slayerSigil, settings.aura.boost, settings.scrimshaw, false);
+      j = NPC_INS.calcOnNpc(
+        j,
+        settings.kww,
+        settings.enchFlame,
+        settings.vuln,
+        settings.cryptbloom,
+        settings.slayerPerk,
+        settings.slayerSigil,
+        settings.aura.boost,
+        settings.scrimshaw,
+        false,
+      );
 
       if (j > settings.cap) {
         j = settings.cap;
@@ -59,9 +84,20 @@ function wrack (type, settings) {
     // forced crit calcs
     const fcritDmg = [];
     minFCrit = CRIT_INS.calcFCritDmg(fixed, variable);
-    for (var i = minFCrit; i < (fixed + variable); i++) {
+    for (var i = minFCrit; i < fixed + variable; i++) {
       i = CRIT_INS.critDmgBuff(i, channeler, false);
-      i = NPC_INS.calcOnNpc(i, settings.kww, settings.enchFlame, settings.vuln, settings.cryptbloom, settings.slayerPerk, settings.slayerSigil, settings.aura.boost, settings.scrimshaw, false);
+      i = NPC_INS.calcOnNpc(
+        i,
+        settings.kww,
+        settings.enchFlame,
+        settings.vuln,
+        settings.cryptbloom,
+        settings.slayerPerk,
+        settings.slayerSigil,
+        settings.aura.boost,
+        settings.scrimshaw,
+        false,
+      );
 
       if (i > settings.cap) {
         i = settings.cap;
@@ -87,7 +123,15 @@ function wrack (type, settings) {
     }
     const avgFCrit = critTotal / fcritDmg.length;
 
-    fCritChance = CRIT_INS.calcFCritChance(0, settings.gconc, settings.kalg, settings.kalgSpec, settings.reavers, 0, settings.biting);
+    fCritChance = CRIT_INS.calcFCritChance(
+      0,
+      settings.gconc,
+      settings.kalg,
+      settings.kalgSpec,
+      settings.reavers,
+      0,
+      settings.biting,
+    );
     const dmgAvg = fCritChance * avgFCrit + (1 - fCritChance) * avgReg;
 
     // adds fsoa damage

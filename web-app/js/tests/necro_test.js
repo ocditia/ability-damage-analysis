@@ -1,5 +1,6 @@
-const necroAutoCalc = require('../necromancy/abils/necro_auto');
-const { performance } = require('perf_hooks');
+const { Perks } = require('../types/types');
+const necroAutoCalc = require("../necromancy/abils/necro_auto");
+const { performance } = require("perf_hooks");
 
 // TODO: Use type class instead
 const settings = {
@@ -9,34 +10,40 @@ const settings = {
   AD: 1756,
 
   mh: {
-    name: 'Wand of the praesul',
-    perks: [[Precise, 6], [aftershock, 1]]
+    name: "Wand of the praesul",
+    perks: [
+      [Perks.PRECISE, 6],
+      [Perks.AFTERSHOCK, 1],
+    ],
   },
 
   oh: {
-    name: 'Seismic singularity',
-    perks: [[equilibrium, 2], [aftershock, 4]]
+    name: "Seismic singularity",
+    perks: [
+      [Perks.EQUILIBRIUM, 2],
+      [Perks.AFTERSHOCK, 4],
+    ],
   },
 
   top: {
-    name: 'Elite tectonic',
-    perks: [[biting, 4]]
+    name: "Elite tectonic",
+    perks: [[Perks.BITING, 4]],
   },
 
   bottom: {
-    name: 'Elite tectonic',
-    perks: [[biting, 4]]
+    name: "Elite tectonic",
+    perks: [[Perks.BITING, 4]],
   },
 
-  boots: 'Enhanced blast diffusion',
+  boots: "Enhanced blast diffusion",
 
-  gloves: 'Enhanced Kerapac',
+  gloves: "Enhanced Kerapac",
 
-  ring: 'Channelers',
+  ring: "Channelers",
 
   aura: {
-    name: 'Maniacal',
-    boost: 0.10
+    name: "Maniacal",
+    boost: 0.1,
   },
 
   bonus: 0,
@@ -78,21 +85,20 @@ const settings = {
   slayerPerk: 0,
   kww: 0,
   revenge: 0,
-  flowStacks: 1
+  flowStacks: 1,
 };
 
-const test = necroAutoCalc('Two-hand', settings);
+const test = necroAutoCalc("Two-hand", settings);
 
 console.log(test);
 
 const startTime = performance.now();
 for (let i = 0; i < 100000; i++) {
-  const test1 = necroAutoCalc('Two-hand', settings);
-  console.log(test1);
+  necroAutoCalc("Two-hand", settings);
 }
 
 const endTime = performance.now();
 
-console.log('calcing necro auto 100,000 times took');
+console.log("calcing necro auto 100,000 times took");
 console.log(endTime - startTime);
-console.log('miliseconds');
+console.log("miliseconds");

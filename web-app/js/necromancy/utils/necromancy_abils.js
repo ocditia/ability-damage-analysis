@@ -1,8 +1,7 @@
 const abils = {
-    "basic attack":
-    {
-        const min_percent = 0.9;
-        const var_percent = 0.2,
-        const numberOfHits = 1;
-    }
-}
+  "basic attack": {
+    min_percent: 0.9,
+    var_percent: 0.2,
+    numberOfHits: 1,
+  },
+};

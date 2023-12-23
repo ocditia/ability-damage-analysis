@@ -1,10 +1,10 @@
-const AbilityDmg = require('../necromancy_ad');
-const OnNPC = require('../necromancy_on_npc');
-const OnHit = require('../necromancy_on_hit');
-const Crit = require('../necromancy_crit');
-const { channel } = require('diagnostics_channel');
+const AbilityDmg = require("../necromancy_ad");
+const OnNPC = require("../necromancy_on_npc");
+const OnHit = require("../necromancy_on_hit");
+const Crit = require("../necromancy_crit");
+const { channel } = require("diagnostics_channel");
 
-function necroAutoCalc (type, settings) {
+function necroAutoCalc(type, settings) {
   const numberOfHits = 1;
   const fixedPercent = 0.9;
   const variablePercent = 0.2;
@@ -22,7 +22,18 @@ function necroAutoCalc (type, settings) {
     let variable = Math.floor(AD * variablePercent);
 
     // applies on-hit effects
-    const onHit = HIT_INS.calcOnHit(fixed, variable, settings.prayer, settings.dharok, settings.ful, settings.rubyAurora, settings.salve, settings.precise, settings.equilibrium, settings.aura.name);
+    const onHit = HIT_INS.calcOnHit(
+      fixed,
+      variable,
+      settings.prayer,
+      settings.dharok,
+      settings.ful,
+      settings.rubyAurora,
+      settings.salve,
+      settings.precise,
+      settings.equilibrium,
+      settings.aura.name,
+    );
 
     // sets up for further calculations
     fixed = onHit[0];
@@ -31,12 +42,34 @@ function necroAutoCalc (type, settings) {
     // normal roll calcs
     const dmg = [];
     const critDmg = [];
-    for (var i = fixed; i < (fixed + variable); i++) {
+    for (var i = fixed; i < fixed + variable; i++) {
       let j = i;
 
       crit = CRIT_INS.critDmgBuff(j);
-      j = NPC_INS.calcOnNpc(j, settings.kww, settings.enchFlame, settings.vuln, settings.cryptbloom, settings.slayerPerk, settings.slayerSigil, settings.aura.boost, settings.scrimshaw, false);
-      crit = NPC_INS.calcOnNpc(crit, settings.kww, settings.enchFlame, settings.vuln, settings.cryptbloom, settings.slayerPerk, settings.slayerSigil, settings.aura.boost, settings.scrimshaw, false);
+      j = NPC_INS.calcOnNpc(
+        j,
+        settings.kww,
+        settings.enchFlame,
+        settings.vuln,
+        settings.cryptbloom,
+        settings.slayerPerk,
+        settings.slayerSigil,
+        settings.aura.boost,
+        settings.scrimshaw,
+        false,
+      );
+      crit = NPC_INS.calcOnNpc(
+        crit,
+        settings.kww,
+        settings.enchFlame,
+        settings.vuln,
+        settings.cryptbloom,
+        settings.slayerPerk,
+        settings.slayerSigil,
+        settings.aura.boost,
+        settings.scrimshaw,
+        false,
+      );
 
       if (j > settings.cap) {
         j = settings.cap;
@@ -67,7 +100,15 @@ function necroAutoCalc (type, settings) {
     }
     const avgCrit = critTotal / critDmg.length;
 
-    fCritChance = CRIT_INS.calcFCritChance(0, settings.gconc, settings.kalg, settings.kalgSpec, settings.reavers, 0, settings.biting);
+    fCritChance = CRIT_INS.calcFCritChance(
+      0,
+      settings.gconc,
+      settings.kalg,
+      settings.kalgSpec,
+      settings.reavers,
+      0,
+      settings.biting,
+    );
     const dmgAvg = fCritChance * avgCrit + (1 - fCritChance) * avgReg;
 
     hits.push([dmgMin, dmgAvg, dmgMax]);
