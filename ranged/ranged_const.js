@@ -1,4 +1,4 @@
-const necromancy_construction = {
+const ranged_construction = {
     'two-handed weapons': {
     },
 
@@ -401,4 +401,4 @@ const necromancy_construction = {
     }    
 }
 
-module.exports = necromancy_construction;
+module.exports = ranged_construction;
