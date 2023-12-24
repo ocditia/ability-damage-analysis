@@ -3,15 +3,15 @@ const necromancy_construction = {
     },
 
     'main-hand weapons': {
-        "Death guard (tier 80)":{
+        "death guard (tier 80)":{
             "tier": 80,
             "weaponDmg": 0
         },
-        "Death guard (tier 90)":{
+        "death guard (tier 90)":{
             "tier": 90,
             "weaponDmg": 0
         },
-        "Omni guard":{
+        "omni guard":{
             "tier": 95,
             "weaponDmg": 0
         }
@@ -39,164 +39,161 @@ const necromancy_construction = {
     },
 
     'helmets': {
-        "Deathdealer hood (tier 80)":{
+        "deathdealer hood (tier 80)":{
             "bonus": 20.3
         },
-        "Deathdealer hood (tier 90)":{
+        "deathdealer hood (tier 90)":{
             "bonus": 23.2
         },
-        "Crown of the first necromancer":{
+        "crown of the first necromancer":{
             "bonus": 25
         }
     },
 
     'bodies': {
-        "Deathdealer robe top (tier 80)":{
+        "deathdealer robe top (tier 80)":{
             "bonus": 30.5
         },
-        "Deathdealer robe top (tier 90)":{
+        "deathdealer robe top (tier 90)":{
             "bonus": 34.8
         },
-        "Robe top of the first necromancer":{
+        "robe top of the first necromancer":{
             "bonus": 37
         }
     },
 
     'legs': {
-        "Deathdealer robe bottom (tier 80)":{
+        "deathdealer robe bottom (tier 80)":{
             "bonus": 25.4
         },
-        "Deathdealer robe bottom (tier 90)":{
+        "deathdealer robe bottom (tier 90)":{
             "bonus": 29
         },
-        "Robe bottom of the first necromancer":{
+        "robe bottom of the first necromancer":{
             "bonus": 32
         }
     },
 
     'boots': {
-        "Deathdealer boots (tier 80)":{
+        "deathdealer boots (tier 80)":{
             "bonus": 12.7
         },
-        "Deathdealer boots (tier 90)":{
+        "deathdealer boots (tier 90)":{
             "bonus": 14.5
         },
-        "Foot wraps of the first necromancer":{
+        "foot wraps of the first necromancer":{
             "bonus": 16
         },
-        "Silverhawk boots (tier 60)":{
+        "silverhawk boots (tier 60)":{
             "bonus": 6.9
         }
     },
 
     'gloves': {
-        "Deathdealer gloves (tier 80)":{
+        "deathdealer gloves (tier 80)":{
             "bonus": 12.7
         },
-        "Deathdealer gloves (tier 90)":{
+        "deathdealer gloves (tier 90)":{
             "bonus": 14.5
         },
-        "Hand wraps of the first necromancer":{
+        "hand wraps of the first necromancer":{
             "bonus": 16
         }
     },
 
     'necklaces': {
-        "Essence of finality amulet (or)":{
+        "essence of finality amulet (or)":{
             "bonus": 59
         },
-        "Essence of finality amulet":{
+        "essence of finality amulet":{
             "bonus": 56
         },
-        "Amulet of souls (or)":{
+        "amulet of souls (or)":{
             "bonus": 48
         },
-        "Amulet of souls":{
+        "amulet of souls":{
             "bonus": 46.3
         },
-        "Reaper (or)":{
+        "reaper (or)":{
             "bonus": 38.4
         },
-        "Reaper necklace":{
+        "reaper necklace":{
             "bonus": 36.8
         },
-        "Salve (e)":{
+        "salve (e)":{
             "bonus": 4.2
         },
-        "Salve":{
+        "salve":{
             "bonus": 0
-        },
-        "Dragon rider necklace":{
-            "bonus": 30.2
         }
     },
 
     'rings': {
-        "Reavers":{
+        "reavers":{
             "bonus": 27.7
         },
-        "Ring of death (i)":{
+        "ring of death (i)":{
             "bonus": 27.7
         },
-        "Ring of death":{
+        "ring of death":{
             "bonus": 25.2
         },
-        "ASR (i)":{
+        "asylum surgeon ring (i)":{
             "bonus": 23.4
         },
-        "ASR":{
+        "asylum surgeon ring":{
             "bonus": 21
         }
     },
 
     'capes': {
-        "Igneous kal-mor":{
+        "igneous kal-mor":{
             "bonus": 43
         },
-        "Completionist":{
+        "completionist":{
             "bonus": 31.5
         },
-        "Tokhaar-kal-mor":{
+        "tokhaar-kal-mor":{
             "bonus": 33
         },
-        "God cape":{
+        "god cape":{
             "bonus": 31.5
         },
-        "Max cape":{
+        "max cape":{
             "bonus": 31.5
         },
-        "Skillcape":{
+        "skillcape":{
             "bonus": 21.6
         }
     },
 
     'pockets': {
-        "Grimoire":{
+        "grimoire":{
             "bonus": 7
         },
-        "Scripture of jas":{
+        "scripture of jas":{
             "bonus": 8
         },
-        "Scripture of ful":{
+        "scripture of ful":{
             "bonus": 8
         },
-        "Scripture of wen":{
+        "scripture of wen":{
             "bonus": 8
         },
-        "Illuminated god book":{
+        "illuminated god book":{
             "bonus": 7
         },
-        "God book":{
+        "god book":{
             "bonus": 5
         }
     },
 
     'auras': {
-        "Mahjarrat":{
+        "mahjarrat":{
             "levels": 0.0,
             "boost": 0.05
         },
-        "Equilibrium":{
+        "equilibrium":{
             "levels": 0.0,
             "boost": 0.0
         }
@@ -257,22 +254,22 @@ const necromancy_construction = {
         "none":{
             "boost": 0
         },
-        "Slayer helmet":{
+        "slayer helmet":{
             "boost": 0.075
         },
-        "Full slayer helmet":{
+        "full slayer helmet":{
             "boost": 0.075
         },
-        "Reinforced slayer helmet":{
+        "reinforced slayer helmet":{
             "boost": 0.08
         },
-        "Strong slayer helmet":{
+        "strong slayer helmet":{
             "boost": 0.085
         },
-        "Mighty slayer helmet":{
+        "mighty slayer helmet":{
             "boost": 0.09
         },
-        "Corrupted slayer helmet":{
+        "corrupted slayer helmet":{
             "boost": 0.095
         }
     },

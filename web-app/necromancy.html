@@ -137,15 +137,11 @@
                                                 <div class="card-title mb-1">Ability Damage</div>
                                                 <div class="effect-container">
                                                     <p class="effect-text">Ability Damage:</p>
-                                                    <input class="js--setting dropdown-select" data-setting-name="AD" type="number" id="AD" name="Ability Damage" step="1" value="0">
+                                                    <input class="js--setting dropdown-select" data-setting-name="AD" type="number" id="ability damage" name="Ability Damage" step="1" value="0">
                                                 </div>
                                                 <div class="effect-container">
                                                     <p class="effect-text">Base Necromancy Level:</p>
-                                                    <input class="js--setting" data-setting-name="level" type="number" id="baseMagic" name="Ability Damage" step="1" value="120" max="120" min="1">
-                                                </div>
-                                                <div class="effect-container">
-                                                    <p class="effect-text">Boosted Necromancy Level:</p>
-                                                    <input class="js--setting" data-setting-name="boostedLevel" type="number" id="boostMagic" name="boostMagic" step="1" value="135" max="135" min="1">
+                                                    <input class="js--setting" data-setting-name="level" type="number" id="level" name="Level" step="1" value="120" max="120" min="1">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Elder_overload_salve_(6).webp"></td>
@@ -163,7 +159,7 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/death.png">
                                                     <p class="effect-text">Reaper Crew:</p>
-                                                    <input class="js--setting" data-setting-name="Reaper crew" type="checkbox" id="reaper-crew" name="reaper-crew" checked>
+                                                    <input class="js--setting" data-setting-name="Reaper crew" type="checkbox" id="reaper crew" name="reaper crew" checked>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Berserk_blood_essence.webp">
@@ -177,22 +173,20 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Prayer.webp"></td>
                                                     <p class="effect-text">Prayer:</p>
-                                                    <select class="dropdown-select" id="aura">
+                                                    <select class="dropdown-select" id="prayer">
                                                         <option value="none">None</option>
-                                                        <option value="elder-ovl" selected>Ruination</option>
-                                                        <option value="Supreme-ovl">Sorrow</option>
-                                                        <option value="ovl">Sanctity</option>
+                                                        <option value="ruination" selected>Ruination</option>
+                                                        <option value="sorrow">Sorrow</option>
+                                                        <option value="sanctity">Sanctity</option>
+                                                        <option value="accelerated decay">Accelerated Decay</option>
+                                                        <option value="hastened decay">Hastened Decay</option>
+                                                        <option value="decay">Decay</option>
                                                     </select>
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Scripture_of_Ful.webp">
-                                                    <p class="effect-text">Scripture of Ful:</p>
-                                                    <input type="checkbox" id="ful-book" name="ful-book">
-                                                </div>
+                                                </div>  
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Ruby_Aurora_icon.webp"></td>
                                                     <p class="effect-text">Ruby Aurora</p>
-                                                    <input type="number" id="ruby-aurora" name="ruby-aurora" step="1" value="0" max="3" min="0">
+                                                    <input type="number" id="ruby aurora" name="ruby aurora" step="1" value="0" max="3" min="0">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Revenge.png"></td>
@@ -202,13 +196,13 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Berserker's_Fury.webp"></td>
                                                     <p class="effect-text">Dharok's Momento</p>
-                                                    <input type="number" id="dharok" name="dharok" step="0.5" value="0" max="5.5" min="0.0">
+                                                    <input type="number" id="berserkers fury" name="berserkers fury" step="0.5" value="0" max="5.5" min="0.0">
                                                     <p class="effect-text">%</p>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Ruthless.webp"></td>
                                                     <p class="effect-text">Ruthless Stacks</p>
-                                                    <input type="number" id="ruthless" name="ruthless" step="1" value="0" max="5" min="0.0">
+                                                    <input type="number" id="ruthless stacks" name="ruthless stacks" step="1" value="0" max="5" min="0.0">
                                                 </div>
                                             </div>
                                             <!--On Hit Secondary-->
@@ -219,34 +213,35 @@
                                                     <p class="effect-text">Slayer Helm:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="slayerHelmets" id="slayerHelmets">
                                                         <option value="none" selected>None</option>
-                                                        <option value="Slayer helmet">Regular</option>
-                                                        <option value="Full slayer helmet">Full</option>
-                                                        <option value="Reinforced slayer helmet">Reinforced</option>
-                                                        <option value="Strong slayer helmet">Strong</option>
-                                                        <option value="Mighty slayer helmet">Mighty</option>
-                                                        <option value="Corrupted slayer helmet">Corrupted</option>
+                                                        <option value="slayer helmet">Regular</option>
+                                                        <option value="full slayer helmet">Full</option>
+                                                        <option value="reinforced slayer helmet">Reinforced</option>
+                                                        <option value="strong slayer helmet">Strong</option>
+                                                        <option value="mighty slayer helmet">Mighty</option>
+                                                        <option value="corrupted slayer helmet">Corrupted</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Guardhouse_(Tier_3).webp">
                                                     <p class="effect-text">Guardhouse:</p>
-                                                    <input type="checkbox" id="guardhouse" name="guardhouse">
+                                                    <select class="js--setting dropdown-select" data-setting-name="slayerHelmets" id="slayerHelmets">
+                                                        <option value="none" selected>None</option>
+                                                        <option value="level 1">Level 1</option>
+                                                        <option value="level 1 - undead">Level 1 with undead target</option>
+                                                        <option value="level 3">Level 3 with target under 25%</option>
+                                                        <option value="level 3 - undead">Level 3 with undead target under 25%</option>
+                                                    </select>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
                                                     <p class="effect-text">Genocidal:</p>
-                                                    <input type="number" id="genocidal" name="genocidal" step="0.5" value="0" max="7" min="0">
+                                                    <input type="number" id="genocidal" name="genocidal" step="0.5" value="0" max="5" min="0">
                                                     <p class="effect-text">%</p>
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Salve_amulet_(e).webp">
-                                                    <p class="effect-text">Salve Amulet(e):</p>
-                                                    <input type="checkbox" id="guardhouse" name="guardhouse">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Binding_contract_(ripper_demon).webp"></td>
                                                     <p class="effect-text">Ripper Passive</p>
-                                                    <input type="number" id="ripper-passive" name="ripper-passive" step="0.5" value="2.5" max="5.0" min="0.0">
+                                                    <input type="number" id="ripper demon passive" name="ripper demon passive" step="0.5" value="2.5" max="5.0" min="0.0">
                                                     <p class="effect-text">%</p>
                                                 </div>
                                             </div>
@@ -256,35 +251,35 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Vulnerability_icon.webp">
                                                     <p class="effect-text">Vulnerability:</p>
-                                                    <input type="checkbox" id="vuln" name="vuln" checked>
+                                                    <input type="checkbox" id="vulnerability" name="vulnerability" checked>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Smoke_Cloud_icon.webp">
                                                     <p class="effect-text">Smoke Cloud:</p>
-                                                    <input type="checkbox" id="sc" name="sc" checked>
+                                                    <input type="checkbox" id="smoke cloud" name="smoke cloud" checked>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Cryptbloom_helm.png">
                                                     <p class="effect-text">Cryptbloom Vuln:</p>
-                                                    <input type="checkbox" id="crypt" name="crypt">
+                                                    <input type="checkbox" id="death spores" name="death spores">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
                                                     <p class="effect-text">Slayer Perk:</p>
-                                                    <input type="checkbox" id="slay-perk" name="slay-perk">
+                                                    <input type="checkbox" id="slayer perk" name="slayer perk">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Undead_slayer_sigil_detail.png">
                                                     <p class="effect-text">Slayer Sigil:</p>
-                                                    <input type="checkbox" id="slay-sigil" name="slay-perk">
+                                                    <input type="checkbox" id="slayer sigil" name="slayer sigil">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/aura.png"></td>
                                                     <p class="effect-text">Aura:</p>
                                                     <select class="dropdown-select" id="aura">
                                                         <option value="none">None</option>
-                                                        <option value="Supreme-ovl" selected>Mahjarrat</option>
-                                                        <option value="ovl">Equilibrium</option>
+                                                        <option value="mahjarrat" selected>Mahjarrat</option>
+                                                        <option value="equilibrium">Equilibrium</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -294,17 +289,17 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Araxyte_spider.webp">
                                                     <p class="effect-text">Nope Nope Nope:</p>
-                                                    <input type="checkbox" id="nope" name="nope">
+                                                    <input type="checkbox" id="nopenopenope" name="nopenopenope">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Binding_contract_(kal'gerion_demon).webp">
                                                     <p class="effect-text">Kalg Passive:</p>
-                                                    <input type="checkbox" id="kalg-passive" name="kalg-passive">
+                                                    <input type="checkbox" id="kalgerion demon familiar" name="kalgerion demon familiar">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Kal'gerion_Demon_scroll_(Crit-i-Kal).webp">
                                                     <p class="effect-text">Crit-i-Kal Spec:</p>
-                                                    <input type="checkbox" id="kalg-spec" name="kalg-spec" checked>
+                                                    <input type="checkbox" id="crit-i-kal" name="crit-i-kal" checked>
                                                 </div>
                                             </div>
                                         </div>
@@ -320,17 +315,21 @@
                                                 <div class="card-title mb-1">Armour</div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Head_slot.webp"></td>
-                                                    <select class="dropdown-select" id="helm">
+                                                    <select class="dropdown-select" id="helmet">
                                                         <option value="none">None/Tank</option>
-                                                        <option value="elite-tec" selected>TFN</option>
+                                                        <option value="crown of the first necromancer" selected>TFN</option>
+                                                        <option value="deathdealer hood (tier 90)" selected>t90 deathdealer</option>
+                                                        <option value="deathdealer hood (tier 80)" selected>t80 deathdealer</option>
                                                     </select>
                                                     <input type="number" id="helm-bonus" name="helm-bonus">
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Torso_slot.png"></td>
-                                                    <select class="dropdown-select" id="chest">
+                                                    <select class="dropdown-select" id="body">
                                                         <option value="none">None/Tank</option>
-                                                        <option value="elite-tec" selected>TFN</option>
+                                                        <option value="robe top of the first necromancer" selected>TFN</option>
+                                                        <option value="deathdealer robe top (tier 90)" selected>t90 deathdealer</option>
+                                                        <option value="deathdealer robe top (tier 80)" selected>t80 deathdealer</option>
                                                     </select>
                                                     <input type="number" id="chest-bonus" name="chest-bonus">
                                                 </div>
@@ -338,15 +337,19 @@
                                                     <img class="effect-icon" src="assets/armour_icons/Legs_slot.png"></td>
                                                     <select class="dropdown-select" id="leg">
                                                         <option value="none">None/Tank</option>
-                                                        <option value="elite-tec" selected>TFN</option>
+                                                        <option value="robe bottom of the first necromancer" selected>TFN</option>
+                                                        <option value="deathdealer robe bottom (tier 90)" selected>t90 deathdealer</option>
+                                                        <option value="deathdealer robe bottom (tier 80)" selected>t80 deathdealer</option>
                                                     </select>
                                                     <input type="number" id="leg-bonus" name="leg-bonus">
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Hands_slot.webp"></td>
-                                                    <select class="dropdown-select" id="hand">
+                                                    <select class="dropdown-select" id="gloves">
                                                         <option value="none">None/Tank</option>
-                                                        <option value="enh-kww" selected>TFN</option>
+                                                        <option value="hand wraps of the first necromancer" selected>TFN</option>
+                                                        <option value="deathdealer gloves (tier 90)" selected>t90 deathdealer</option>
+                                                        <option value="deathdealer gloves (tier 80)" selected>t80 deathdealer</option>
                                                     </select>
                                                     <input type="number" id="hand-bonus" name="hand-bonus">
                                                 </div>
@@ -354,23 +357,37 @@
                                                     <img class="effect-icon" src="assets/armour_icons/Feet_slot.png"></td>
                                                     <select class="dropdown-select" id="boots">
                                                         <option value="none">None/Tank</option>
-                                                        <option value="enh-blast-diff" selected>TFN</option>
+                                                        <option value="foot wraps of the first necromancer" selected>TFN</option>
+                                                        <option value="deathdealer boots (tier 90)" selected>t90 deathdealer</option>
+                                                        <option value="deathdealer boots (tier 80)" selected>t80 deathdealer</option>>
                                                     </select>
                                                     <input type="number" id="boot-bonus" name="boot-bonus">
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Neck_slot.png"></td>
-                                                    <select class="dropdown-select" id="neck">
+                                                    <select class="dropdown-select" id="necklace">
                                                         <option value="none">None/Tank</option>
-                                                        <option value="souls" selected>EOF(or)</option>
+                                                        <option value="essence of finality amulet (or)" selected>EOF(or)</option>
+                                                        <option value="essence of finality amulet" selected>EOF</option>
+                                                        <option value="amulet of souls (or)" selected>AOS(or)</option>
+                                                        <option value="amulet of souls" selected>AOS</option>
+                                                        <option value="reaper (or)" selected>Reaper(or)</option>
+                                                        <option value="reaeper necklace" selected>Reaper</option>
+                                                        <option value="salve (e)" selected>Salve (e)</option>
+                                                        <option value="salve" selected>salve</option>
                                                     </select>
                                                     <input type="number" id="neck-bonus" name="neck-bonus">
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Back_slot.png"></td>
-                                                    <select class="dropdown-select" id="back">
+                                                    <select class="dropdown-select" id="cape">
                                                         <option value="none">None</option>
-                                                        <option value="elite-tec" selected>Zuk</option>
+                                                        <option value="igneous kal-mor" selected>Zuk</option>
+                                                        <option value="tokhaar-kal-mor" selected>Kiln</option>
+                                                        <option value="completionist" selected>Comp cape</option>
+                                                        <option value="god cape" selected>God cape</option>
+                                                        <option value="max cape" selected>Max cape</option>
+                                                        <option value="skill cape" selected>Skill cape</option>
                                                     </select>
                                                     <input type="number" id="back-bonus" name="back-bonus">
                                                 </div>
@@ -378,32 +395,45 @@
                                                     <img class="effect-icon" src="assets/armour_icons/Ring_slot.png"></td>
                                                     <select class="dropdown-select" id="ring">
                                                         <option value="none">None</option>
-                                                        <option value="asr" selected>Reavers</option>
+                                                        <option value="reavers" selected>Reaver's</option>
+                                                        <option value="ring of death (i)" selected>ROD (i)</option>
+                                                        <option value="ring of death" selected>ROD</option>
+                                                        <option value="asylum surgeon ring (i)" selected>ASR (i)</option>
+                                                        <option value="asylum surgeon ring" selected>ASR</option>
                                                     </select>
                                                     <input type="number" id="ring-bonus" name="ring-bonus">
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Pocket_slot.webp"></td>
-                                                    <select class="dropdown-select" id="pocket">
+                                                    <select class="dropdown-select" id="pocket slot">
                                                         <option value="none">None</option>
-                                                        <option value="asr" selected>Grimoire</option>
+                                                        <option value="grimoire" selected>Grimoire</option>
+                                                        <option value="scripture of jas" selected>Ful</option>
+                                                        <option value="scripture of ful" selected>Jas</option>
+                                                        <option value="scripture of wen" selected>Wen</option>
+                                                        <option value="illuminated god book" selected>Illuminated god book</option>
+                                                        <option value="god book" selected>God book</option>
                                                     </select>
                                                     <input type="number" id="pocket-bonus" name="pocket-bonus">
                                                 </div>
                                                 <div class="card-title mb-1">Weapons</div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Main_hand_slot.webp"></td>
-                                                    <select class="dropdown-select" id="mainhand">
+                                                    <select class="dropdown-select" id="main-hand weapon">
                                                         <option value="none">None</option>
-                                                        <option value="praesul" selected>Omni Guard</option>
+                                                        <option value="omni guard" selected>Omni Guard</option>
+                                                        <option value="death guard (tier 90)" selected>Death guard (t90)</option>
+                                                        <option value="death guard (tier 80)" selected>Death guard (t80)</option>
                                                     </select>
                                                     <input type="number" id="mainhand" name="mainhand" value="95">
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Off-hand_slot.webp"></td>
-                                                    <select class="dropdown-select" id="mainhand">
+                                                    <select class="dropdown-select" id="off-hand weapon">
                                                         <option value="none">None</option>
-                                                        <option value="imp-core" selected>Soulbound</option>
+                                                        <option value="soulbound lantern" selected>Soulbound lantern</option>
+                                                        <option value="skull lantern (tier 90)" selected>Skull lantern (t90)</option>
+                                                        <option value="skull lantern (tier 80)" selected>Skull lantern (t80)</option>
                                                     </select>
                                                     <input type="number" id="offhand" name="offhand" value="95">
                                                 </div>
@@ -421,7 +451,7 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/level-20.png">
                                                     <p class="effect-text">Level 20 Armour:</p>
-                                                    <input type="checkbox" id="fsoa" name="fsoa" checked>
+                                                    <input type="checkbox" id="level 20 armour" name="level 20 armour" checked>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Biting.webp"></td>
@@ -456,12 +486,12 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Flanking.webp"></td>
                                                     <p class="effect-text">Flanking:</p>
-                                                    <input type="number" id="flank" name="flank" step="1" value="0" min="0">
+                                                    <input type="number" id="flanking" name="flanking" step="1" value="0" min="0">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Ruthless.webp"></td>
                                                     <p class="effect-text">Ruthless:</p>
-                                                    <input type="number" id="ruthless" name="ruthless" step="1" value="0" min="0">
+                                                    <input type="number" id="ruthless rank" name="ruthless rank" step="1" value="0" min="0">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Spendthrift.webp"></td>

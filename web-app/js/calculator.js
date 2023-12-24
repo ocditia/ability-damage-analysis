@@ -34,17 +34,18 @@ function collectSettings() {
     'cape':'Igneous kal-mor',
     'pocket slot': 'Grimoire',
     'reaper crew': true,
+    'level 20 armour': true,
 
-    'perks': {
-        'precise': 0,
-        'equilibrium': 0,
-        'genocidal': 0,
-        'spendthrift': 0,
-        'ruthless rank': 0,
-        'ruthless stacks': 0,
-        'slayer perk': false,
-        'biting': 4
-    },  
+    //perks
+    'precise': 0,
+    'equilibrium': 0,
+    'genocidal': 0,
+    'spendthrift': 0,
+    'ruthless rank': 0,
+    'ruthless stacks': 0,
+    'slayer perk': false,
+    'biting': 4,
+    'flanking': 0,
     
     'aura': 'Mahjarrat',
     'split soul': false,
