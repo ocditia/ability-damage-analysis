@@ -25,7 +25,7 @@ function soul_sap(type, settings, numberOfHits) {
         const damageObject = Helper.damageObjectCreator(settings);
 
         //calculates ability damage
-        let AD = 1000; //AD_INS.calcAd(type,settings);
+        let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
         
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);
