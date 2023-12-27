@@ -3,7 +3,7 @@ class Crit {
         let fcrit = 0.1 +
             (0.05 * settings['crit-i-kal']) +
             (0.01 * settings['kalgerion demon familiar']) +
-            (0.02 * settings['perks']['biting']);
+            (0.02 * settings['biting']);
 
         if (settings['ring'] === 'reavers') {
             fcrit = fcrit + 0.05;

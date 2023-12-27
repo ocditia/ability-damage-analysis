@@ -36,7 +36,7 @@ class OnNPC {
     calcOnNpc(dmg, settings) {
       //buffs applied in order of operations
       dmg = this.calcVuln(dmg,settings['vulnerability']);
-      dmg = this.calcSlayerPerk(dmg,settings['perks']['slayer perk']);
+      dmg = this.calcSlayerPerk(dmg,settings['slayer perk']);
       dmg = this.calcSlayerSigil(dmg,settings['slayer sigil']);
       dmg = this.calcAura(dmg, construction['auras'][settings['aura']]['boost']);
 
