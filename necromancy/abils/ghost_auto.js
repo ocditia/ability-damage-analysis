@@ -43,18 +43,10 @@ function ghost_auto(type, settings, numberOfHits) {
         //apply on-npc effects and hitcaps
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);
-        
-        //split soul
-        splitSoul = split_soul(damageObject['non-crit']['list'],settings);
-        splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
 
         //apply hit caps
         damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
-
-        //add up damages
-        damageObject['non-crit']['list'] = Helper.listAdder(damageObject['non-crit']['list'],splitSoul);
-        damageObject['crit']['list'] = Helper.listAdder(damageObject['crit']['list'],splitSoulCrit);
 
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings));
