@@ -18,6 +18,7 @@ function touch_of_death(type, settings, numberOfHits) {
     let abil_val = 'touch of death'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
+    settings['category'] = construction['abilities'][abil_val]['category'];
 
     const hits = []
    

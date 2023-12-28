@@ -18,6 +18,7 @@ function volley_of_souls_3(type, settings, numberOfHits) {
     let abil_val = 'volley of souls'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
+    settings['category'] = construction['abilities'][abil_val]['category'];
 
     const hits = []
     numberOfHits = 3;

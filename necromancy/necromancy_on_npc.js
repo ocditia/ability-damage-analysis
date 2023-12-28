@@ -85,8 +85,11 @@ class OnNPC {
       return dmg;
     }
 
-    calcGuardiansTriumph(dmg,stacks) {
-      return dmg += Math.floor(dmg * 0.2 * stacks);
+    calcGuardiansTriumph(dmg,stacks,category) {
+      if (category === 'basic') {
+        return dmg += Math.floor(dmg * 0.2 * stacks);
+      }
+      return dmg;  
     }
 
     calcSwordofEdicts(dmg,flag) {
@@ -104,7 +107,7 @@ class OnNPC {
       return dmg + Math.floor(dmg * 0.1 * stacks);
     }
   
-    calcOnNpc(dmg, settings,AD) {
+    calcOnNpc(dmg, settings, AD, category) {
       //buffs applied in order of operations
       dmg = this.calcVuln(dmg,settings['vulnerability']);
       dmg = this.calcSlayerPerk(dmg,settings['slayer perk']);
@@ -120,7 +123,7 @@ class OnNPC {
       dmg = this.calcTokkulZo(dmg,settings['Tokkul-zo']);
       dmg = this.calcKBD(dmg,settings['King black dragon wilderness portal']);
       dmg = this.calcInnerChaos(dmg,settings['Zamorak inner chaos']);
-      dmg = this.calcGuardiansTriumph(dmg,settings['Zamorak guardians triumph']);
+      dmg = this.calcGuardiansTriumph(dmg,settings['Zamorak guardians triumph'],settings['category']);
       dmg = this.calcSwordofEdicts(dmg,settings['Zamorak sword of edicts']);
       dmg = this.calcBalanceofPower(dmg,settings['Zamorak balance of power']);
       dmg = this.calcInnerPower(dmg,settings['Raksha inner power']);

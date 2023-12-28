@@ -18,6 +18,7 @@ function ghost_auto(type, settings, numberOfHits) {
     let abil_val = 'ghost auto'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
+    settings['category'] = construction['abilities'][abil_val]['category'];
 
     const hits = []
    

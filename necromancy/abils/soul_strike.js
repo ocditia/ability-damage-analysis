@@ -18,6 +18,7 @@ function soul_strike(type, settings, numberOfHits) {
     let abil_val = 'soul strike - main'
     let fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     let variablePercent = construction['abilities'][abil_val]['variable percent'];
+    settings['category'] = construction['abilities'][abil_val]['category'];
 
     if (settings['flanking position'] === true) {
         fixedPercent += fixedPercent * settings['flanking'] * 0.4;

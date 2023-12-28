@@ -18,6 +18,7 @@ function zombie_auto(type, settings, numberOfHits) {
     let abil_val = 'zombie auto'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
+    settings['category'] = construction['abilities'][abil_val]['category'];
 
     const hits = []
    

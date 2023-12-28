@@ -18,6 +18,7 @@ function blood_siphon(type, settings, numberOfHits) {
     let abil_val = 'blood siphon - hit'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
+    settings['category'] = construction['abilities'][abil_val]['category'];
 
     const hits = []
    

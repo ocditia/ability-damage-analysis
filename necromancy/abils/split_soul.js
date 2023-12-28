@@ -1,6 +1,7 @@
 const NecroHelper = require('../necromancy_helper')
 
 function split_soul(dmgList, settings) {
+    settings['category'] = 'split soul';
     const Helper = new NecroHelper(); 
     if (settings['split soul'] === true) {
         const splitSoul = [];

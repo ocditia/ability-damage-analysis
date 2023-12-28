@@ -279,148 +279,126 @@ const necromancy_construction = {
             "fixed percent": 0.9,
             "variable percent": 0.2,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'necro auto'
+            "crit effects": true
         },
         "skeleton auto":{
             "fixed percent": 0.22,
             "variable percent": 0.06,
             "on hit effects": false,
-            "crit effects": false,
-            'category': 'conjure'
+            "crit effects": false
         },
         "finger of death":{
             "fixed percent": 2.7,
             "variable percent": 0.6,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            "crit effects": true
         },
         "touch of death":{
             "fixed percent": 0.9,
             "variable percent": 0.2,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'basic'
+            "crit effects": true
         },
         "death skulls":{
             "fixed percent": 2.25,
             "variable percent": 0.5,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'ultimate'
+            "crit effects": true
         },
         "blood siphon - siphon":{
             "fixed percent": 0.22,
-            "variable percent": 0.06,
-            'category': 'abil'
+            "variable percent": 0.06
         },
         "blood siphon - hit":{
             "fixed percent": 1.17,
             "variable percent": 0.26,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            "crit effects": true
         },
         "zombie auto":{
             "fixed percent": 0.18,
             "variable percent": 0.04,
             "on hit effects": false,
-            "crit effects": false,
-            'category': 'conjure'        
+            "crit effects": false        
         },
         "zombie poison":{
             "fixed percent": 0.08,
-            "variable percent": 0.04,
-            'category': 'poison'
+            "variable percent": 0.04
         },
         "command zombie":{
             "fixed percent": 3.6,
             "variable percent": 0.8,
             "on hit effects": false,
-            "crit effects": false,
-            'category': 'abil'
+            "crit effects": false
         },
         "ghost auto":{
             "fixed percent": 0.18,
             "variable percent": 0.04,
             "on hit effects": false,
-            "crit effects": false,
-            'category': 'conjure'
+            "crit effects": false
         },
         "bloat - initial hit":{
             "fixed percent": 1.35,
             "variable percent": 0.3,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            "crit effects": true
         },
         "bloat - bleed hit":{
-            "number of hits": 10,
-            'category': 'dot'
+            "number of hits": 10
         },
         "soul sap":{
             "fixed percent": 0.9,
             "variable percent": 0.2,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'basic'
+            "crit effects": true
         },
         "soul strike - main":{
             "fixed percent": 1.35,
             "variable percent": 0.3,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            "crit effects": true
         },
         "soul strike - aoe":{
             "fixed percent": 0.9,
             "variable percent": 0.2,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            "crit effects": true
         },
         "spectral scythe - 1":{
             "fixed percent": 0.72,
             "variable percent": 0.16,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            "crit effects": true
         },
         "spectral scythe - 2":{
             "fixed percent": 1.8,
             "variable percent": 0.4,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            "crit effects": true
         },
         "spectral scythe - 3":{
             "fixed percent": 2.25,
             "variable percent": 0.5,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            "crit effects": true
         },
         "volley of souls":{
             "fixed percent": 1.35,
             "variable percent": 0.3,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            "crit effects": true
         },
         "death grasp":{
             "fixed percent": 4.05,
             "variable percent": 4.95,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            "crit effects": true
         },
         "death essence":{
             "fixed percent": 3.6,
             "variable percent": 0.8,
             "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            "crit effects": true
         }
     }
 }

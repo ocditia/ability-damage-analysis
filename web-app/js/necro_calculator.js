@@ -14,6 +14,7 @@ function collectSettings() {
   // Have default settings here
   const settings = {
     'minavgmax': 'avg',
+    'category': 'none',
 
     'ability damage': 0, //for manual override only
     'level': 120,

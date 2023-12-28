@@ -1,126 +1,120 @@
-
-const asphyx = require('./abils/asphyx')
-const chain = require('./abils/chain')
-const combust = require('./abils/combust')
-const conc = require('./abils/conc')
-const conc3Hit = require('./abils/conc3Hit')
-const corrupt_blast = require('./abils/corrupt_blast')
-const deep_impact = require('./abils/deep_impact')
-const detonate = require('./abils/detonate')
-const dragon_breath = require('./abils/dragon_breath')
-const frost_surge = require('./abils/frost_surge')
-const gconc = require('./abils/gconc')
-const gsonic = require('./abils/gsonic')
-const gstaff = require('./abils/gstaff')
-const igneous_omni = require('./abils/igneous_omni')
-const impact = require('./abils/impact')
-const magma = require('./abils/magma')
-const mh_auto = require('./abils/mh_auto')
-const nami = require('./abils/nami')
-const oh_auto = require('./abils/oh_auto')
-const omni = require('./abils/omni')
-const smoke_tend = require('./abils/smoke_tend')
-const sonic = require('./abils/sonic')
-const th_auto = require('./abils/th_auto')
-const timestrike = require('./abils/timestrike')
-const tuska = require('./abils/tuska')
-const wild = require('./abils/wild')
-const wrack_bound = require('./abils/wrack_bound')
-const wrack_ruin_bound = require('./abils/wrack_ruin_bound')
-const wrack_ruin = require('./abils/wrack_ruin')
-const wrack = require('./abils/wrack')
+const necro_auto = require('./abils/necro_auto')
+const test_auto = require('./abils/zzz_test_abil')
+const bloat = require('./abils/bloat')
+const skeleton_auto = require('./abils/skeleton_auto')
+const blood_siphon = require('./abils/blood_siphon')
 const { performance } = require('perf_hooks');
 
 const settings = {
+    'minavgmax': 'avg',
+
+    'ability damage': 0, //for manual override only
     'level': 120,
-    'boostedLvls': 21,
-    'prayer': 0.12,
-    'AD': 1756,
+    'potion': "elder overload",
+    
+    'two-handed weapon': 1,
+    'main-hand weapon': 'Omni guard',
+    'off-hand weapon': 'Soulbound lantern',
+    'shield': 1,
+    'defender': 1,
+    'helmet': 'Crown of the first necromancer',
+    'body': 'Robe top of the first necromancer',
+    'leg': 'Robe bottom of the first necromancer',
+    'gloves': 'Hand wraps of the first necromancer',
+    'boots': 'Foot wraps of the first necromancer',
+    'necklace': 'Essence of finality amulet (or)',
+    'ring': 'Reavers',
+    'cape':'Igneous kal-mor',
+    'pocket slot': 'Grimoire',
+    'reaper crew': true,
 
-    'mh':{
-        'name': 'Wand of the praesul',
-        'tier': 92
+    'perks': {
+        'precise': 0,
+        'equilibrium': 0,
+        'genocidal': 0,
+        'spendthrift': 0,
+        'ruthless rank': 0,
+        'ruthless stacks': 0,
+        'slayer perk': false,
+        'biting': 4
     },
 
-    'oh':{
-        'name': 'Seismic singularity',
-        'tier': 92
-    },
-
-    'th':{
-        'name': 'Inquisitor staff',
-        'tier': 80
-    },
-
-    'sh':{
-        'name': 'Kalphite rebounder',
-        'tier': 90,
-        'type': 'defender'
-    },
-
-    'boots': 'Enhanced blast diffusion',
-
-    'gloves': 'Enhanced Kerapac',
-
-    'ring': 'Channelers',
-
-    'aura': {
-        'name':'Maniacal',
-        'boost': 0.10
-    },
-
+    
+    
+    
+    'aura': 'Mahjarrat',
+    'split soul': true,
     'bonus': 0,
 
-    'biting': 0.088,
-    'grimoire': 1,
-    'reavers': 0,
     'cap': 10000,
     'critCap': 15000,
 
-    'salve': false,
-    'scrimshaw': false,
-    'precise': 0,
-    'equilibrium': 0,
-    'ruthless': 0,
-    'flanking': 0,
-    'lunging': 0,
+    //on-cast effects
+    'Zamorak balance of power': 0,
+    'Sophanem corrupted': 0,
+    'Raksha inner power': 0,
 
-    'nope': 0,
-    'vuln': 1,
-    'sc': 1,
-    'fsoa': true,
-    'kalg': 1,
-    'kalgSpec': 1,
-    'ful': 0,
-    'zerkEss': 0,
-    'reaperCrew': 1,
-    'gconc': 0,
-    'enchMeta': true,
-    'enchAff': true,
-    'enchFlame': true,
-    'hexHunter': 1,
-    'ripperPassive': 0,
-    'dharok': 0,
-    'exsang': 0,
-    'rubyAurora': 0,
-    'slayerSigil': 0,
-    'cryptbloom': 0,
-    'slayerPerk': 0,
-    'kww': 0,
-    'revenge': 0,
-    'flowStacks': 1
+    //on-hit effects
+    //pre-shared effects
+    'stone of jas': 0,
+
+    //shared
+    'Revenge': 0,
+    'prayer': "sorrow",
+
+    //pvn only
+    'slayer helmet': 'none',
+    'fort forinthry guardhouse': false,
+    'Salve amulet': false,
+    'ripper demon passive': 0,
+    
+    //unknown order
+    'berserkers fury': 0,    
+
+    //on-crit effects
+    'smoke cloud': false,
+    'kalgerion demon familiar': false,
+    'crit-i-kal': false,
+
+    //on-npc effects
+    'vulnerability': false,
+    'corrupted wounds': false, //gop bleed buff
+    'slayer sigil': false,
+
+    //apply somewhere idk
+    'nopenopenope': 0, //poh spider buff
+    'Ruby aurora': 0,
+    'death spores': false,
+    'Skeleton rage stacks': 2,
+    'Zamorak inner chaos': 0,
+    'Zamorak guardians triumph': 0,
+    'Zamorak sword of edicts': 0,
+    'Telos red beam': false,
+    'Telos black beam': false,
+    'Infernal puzzle box': false,
+    'King black dragon wilderness portal': false,
+    'Tokkul-zo': false,
 };
 
-const test = wrack('Two-hand', settings);
-
+const test = necro_auto('dual-wield', settings,1);
 console.log(test);
 
-//var startTime = performance.now()
-//for (var i = 0; i < 100; i++) {
-//    const test1 = wrack('Two-hand', settings);
-//}
-//var endTime = performance.now()
 
-//console.log('calcing 4 hit asphyx with instability 10,000 times took')
-//console.log(endTime - startTime)
-//console.log('miliseconds')
+/* function test(settings) {
+    if (settings['ability damage'] != 0) {
+        let AD = settings['ability damage'];
+        return AD;
+    }
+}
+let AD = test(settings);
+console.log(AD) */
+
+/* var startTime = performance.now()
+for (var i = 0; i < 100000; i++) {
+    const test1 = skeleton_auto('Two-hand', settings,10);
+}
+var endTime = performance.now()
+
+console.log('calcing necro auto 100,000 times took')
+console.log(endTime - startTime)
+console.log('miliseconds') */

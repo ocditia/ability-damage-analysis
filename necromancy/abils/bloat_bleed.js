@@ -16,6 +16,7 @@ function bloat_bleed(dmgList, settings,AD) {
     const AVG_INS = new Avg();
     const Helper = new NecroHelper(); 
     let abil_val = 'bloat - bleed hit'
+    settings['category'] = construction['abilities'][abil_val]['category'];
 
     const hits = []
    

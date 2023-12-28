@@ -18,6 +18,7 @@ function command_zombie(type, settings, numberOfHits) {
     let abil_val = 'command zombie'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
+    settings['category'] = construction['abilities'][abil_val]['category'];
 
     const hits = []
    
