@@ -5,28 +5,27 @@ const Crit = require('../necromancy_crit')
 const NecroHelper = require('../necromancy_helper')
 const Avg = require('../average_damage')
 const split_soul = require('./split_soul')
-const bloat_bleed = require('./bloat_bleed')
 const construction = require('../necromancy_const')
 const { channel } = require('diagnostics_channel')
 
-function bloat(type, settings, numberOfHits) {
+function volley_of_souls_5(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new NecroHelper(); 
-    let abil_val = 'bloat - initial hit'
+    let abil_val = 'volley of souls'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
 
     const hits = []
-   
+    numberOfHits = 5;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 
         //calculates ability damage
-        let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
+        let AD = AD_INS.calcAd(type,settings);
         
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);
@@ -43,12 +42,8 @@ function bloat(type, settings, numberOfHits) {
 
         //apply on-npc effects and hitcaps
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings);
-        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);   
+        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);       
         
-        //split soul
-        splitSoul = split_soul(damageObject['non-crit']['list'],settings);
-        splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
-
         //split soul
         splitSoul = split_soul(damageObject['non-crit']['list'],settings);
         splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
@@ -56,10 +51,6 @@ function bloat(type, settings, numberOfHits) {
         //apply hit caps
         damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
-
-        //add bleed
-        damageObject['non-crit']['list'] = bloat_bleed(damageObject['non-crit']['list'],settings);
-        damageObject['crit']['list'] = bloat_bleed(damageObject['crit']['list'],settings);
 
         //add up damages
         damageObject['non-crit']['list'] = Helper.listAdder(damageObject['non-crit']['list'],splitSoul);
@@ -74,4 +65,5 @@ function bloat(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = bloat;
+module.exports = volley_of_souls_5;
+
