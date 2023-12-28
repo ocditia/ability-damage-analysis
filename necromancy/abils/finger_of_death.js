@@ -32,6 +32,11 @@ function finger_of_death(type, settings, numberOfHits) {
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
+        
+        if (settings['living death'] === true) {
+            onHit[0] = Math.floor(onHit[0] * 1.5);
+            onHit[1] = Math.floor(onHit[1] * 1.5);
+        }
 
         //sets up for further calculations
         damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);

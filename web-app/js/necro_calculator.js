@@ -49,7 +49,7 @@ function collectSettings() {
     'flanking position': false,
     
     'aura': 'mahjarrat',
-    'split soul': false,
+    'split soul': true,
     'bonus': 0,
     'cap': 30000,
 
@@ -73,7 +73,8 @@ function collectSettings() {
     'ripper demon passive': 0,
     
     //unknown order
-    'berserkers fury': 0,    
+    'berserkers fury': 0,
+    'living death':false,    
 
     //on-crit effects
     'smoke cloud': false,
