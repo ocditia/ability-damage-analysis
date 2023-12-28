@@ -56,7 +56,7 @@ class OnHit {
   }
 
   calcGenocidal(buff,genocidal) {
-    return Math.floor(buff * (1 + genocidal));
+    return Math.floor(buff * (1 + genocidal/100));
   }
 
   calcSalveAmulet(buff,necklace) {
@@ -107,7 +107,7 @@ class OnHit {
         buff = this.calcRuthless(buff,settings['ruthless rank'],settings['ruthless stacks']);
         buff = this.calcSlayerHelmet(buff,settings['slayer helmet']);
         buff = this.calcGuardHouse(buff,settings['fort forinthry guardhouse']);
-        buff = this.calcGenocidal(buff, settings['genocidal']);
+        buff = this.calcGenocidal(buff, settings['genocidal percent']);
         buff = this.calcSalveAmulet(buff,settings['necklace']);
         buff = this.calcRipperPassive(buff,settings['ripper demon passive']);
 
