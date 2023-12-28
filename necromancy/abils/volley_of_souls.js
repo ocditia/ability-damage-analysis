@@ -20,6 +20,7 @@ function volley_of_souls(type, settings, numberOfHits) {
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
 
     const hits = []
+    numberOfHits = 2;
    
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
