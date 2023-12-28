@@ -1,5 +1,33 @@
 const ranged_construction = {
     'two-handed weapons': {
+        "bolg":{
+            "tier": 95,
+            "weaponDmg": 0
+        },
+        "ecb":{
+            "tier": 92,
+            "weaponDmg": 0
+        },
+        "sgb":{
+            "tier": 92,
+            "weaponDmg": 0
+        },
+        "noxious":{
+            "tier": 90,
+            "weaponDmg": 0
+        },
+        "decimation":{
+            "tier": 88,
+            "weaponDmg": 0
+        },
+        "zaryte":{
+            "tier": 80,
+            "weaponDmg": 0
+        },
+        "hex hunter":{
+            "tier": 80,
+            "weaponDmg": 0
+        },
     },
 
     'main-hand weapons': {
@@ -7,6 +35,15 @@ const ranged_construction = {
             "tier": 92,
             "weaponDmg": 0
         },
+        "ascension":{
+            "tier": 90,
+            "weaponDmg": 0
+        },
+        "chaotic":{
+            "tier": 80,
+            "weaponDmg": 0
+        },
+
     },
 
     'off-hand weapons': {
@@ -14,159 +51,256 @@ const ranged_construction = {
             "tier": 92,
             "weaponDmg": 0
         },
+        "ascension":{
+            "tier": 90,
+            "weaponDmg": 0
+        },
+        "chaotic":{
+            "tier": 80,
+            "weaponDmg": 0
+        },
     },
 
     'shields': {
+        "vengeful":{
+            "tier": 90,
+        },
+        "elysian":{
+            "tier": 75,
+        },
     },
 
     'defenders': {
+        "kalphite":{
+            "tier": 90,
+            "weaponDmg": 0
+        },
+        "ancient":{
+            "tier": 80,
+            "weaponDmg": 0
+        },
     },
 
     'helmets': {
-        "Elite Dracolich":{
+        "elite dracolich":{
             "bonus": 24
         },
-        "Elite Sirenic":{
+        "elite sirenic":{
             "bonus": 24
+        },
+        "dracolich":{
+            "bonus": 23
+        },
+        "sirenic":{
+            "bonus": 23
+        },
+        "superior morrigan":{
+            "bonus": 22
+        },
+        "refined anima core":{
+            "bonus": 21
+        },
+        "pernix":{
+            "bonus": 20
         },
     },
 
     'bodies': {
-        "Elite Dracolich":{
+        "elite dracolich":{
             "bonus": 36
         },
-        "Elite Sirenic":{
+        "elite sirenic":{
             "bonus": 36
+        },
+        "dracolich":{
+            "bonus": 34
+        },
+        "sirenic":{
+            "bonus": 34
+        },
+        "superior morrigan":{
+            "bonus": 33
+        },
+        "refined anima core":{
+            "bonus": 32
+        },
+        "pernix":{
+            "bonus": 30
         },
     },
 
     'legs': {
-        "Elite Dracolich":{
+        "elite dracolich":{
+            "bonus": 32
+        },
+        "elite sirenic":{
             "bonus": 31
         },
-        "Elite Sirenic":{
-            "bonus": 31
+        "dracolich":{
+            "bonus": 29
+        },
+        "sirenic":{
+            "bonus": 29
+        },
+        "superior morrigan":{
+            "bonus": 28
+        },
+        "refined anima core":{
+            "bonus": 27
+        },
+        "pernix":{
+            "bonus": 25
         },
     },
 
     'boots': {
-        "Enhanced Fleeting":{
+        "elite dracolich":{
+            "bonus": 15
+        },
+        "enhanced fleeting":{
             "bonus": 14.5
         },
-        "Silverhawk boots (tier 60)":{
+        "dracolich":{
+            "bonus": 14
+        },
+        "flarefrost":{
+            "bonus": 14
+        },
+        "fleeting":{
+            "bonus": 12.7
+        },
+        "pernix":{
+            "bonus": 12
+        },
+        "silverhawk":{
             "bonus": 6.9
         }
     },
 
     'gloves': {
-        "Enhanced Nightmare":{
+        "elite dracolich":{
+            "bonus": 15
+        },
+        "enhanced nightmare":{
             "bonus": 14.5
+        },
+        "deathtouch":{
+            "bonus": 14.5
+        },
+        "dracolich":{
+            "bonus": 14
+        },
+        "nightmare":{
+            "bonus": 13
+        },
+        "pernix":{
+            "bonus": 12
+        },
+        "cinderbane":{
+            "bonus": 11
         },
     },
 
     'necklaces': {
-        "Essence of finality amulet (or)":{
+        "essence of finality amulet (or)":{
             "bonus": 59
         },
-        "Essence of finality amulet":{
+        "essence of finality amulet":{
             "bonus": 56
         },
-        "Amulet of souls (or)":{
+        "amulet of souls (or)":{
             "bonus": 48
         },
-        "Amulet of souls":{
+        "amulet of souls":{
             "bonus": 46.3
         },
-        "Reaper (or)":{
+        "reaper (or)":{
             "bonus": 38.4
         },
-        "Reaper necklace":{
+        "reaper necklace":{
             "bonus": 36.8
         },
-        "Salve (e)":{
+        "salve (e)":{
             "bonus": 4.2
         },
-        "Salve":{
+        "salve":{
             "bonus": 0
-        },
-        "Dragon rider necklace":{
-            "bonus": 30.2
         }
     },
 
     'rings': {
-        "Reavers":{
+        "reavers":{
             "bonus": 27.7
         },
-        "Stalkers":{
+        "stalkers":{
             "bonus": 30.4
         },
-        "Ring of death (i)":{
+        "ring of death (i)":{
             "bonus": 27.7
         },
-        "Ring of death":{
+        "ring of death":{
             "bonus": 25.2
         },
-        "ASR (i)":{
+        "asylum surgeon ring (i)":{
             "bonus": 23.4
         },
-        "ASR":{
+        "asylum surgeon ring":{
             "bonus": 21
         }
     },
 
     'capes': {
-        "Igneous kal-mor":{
+        "igneous kal-xil":{
             "bonus": 43
         },
-        "Completionist":{
+        "completionist":{
             "bonus": 31.5
         },
-        "Tokhaar-kal-mor":{
+        "tokhaar-kal-xil":{
             "bonus": 33
         },
-        "God cape":{
+        "god cape":{
             "bonus": 31.5
         },
-        "Max cape":{
+        "max cape":{
             "bonus": 31.5
         },
-        "Skillcape":{
+        "skillcape":{
             "bonus": 21.6
         }
     },
 
     'pockets': {
-        "Grimoire":{
+        "grimoire":{
             "bonus": 7
         },
-        "Scripture of jas":{
+        "scripture of jas":{
             "bonus": 8
         },
-        "Scripture of ful":{
+        "scripture of ful":{
             "bonus": 8
         },
-        "Scripture of wen":{
+        "scripture of wen":{
             "bonus": 8
         },
-        "Illuminated god book":{
+        "illuminated god book":{
             "bonus": 7
         },
-        "God book":{
+        "god book":{
             "bonus": 5
         }
     },
 
     'auras': {
-        "Mahjarrat":{
+        "mahjarrat":{
             "levels": 0.0,
             "boost": 0.05
         },
-        "Reckless":{
+        "reckless":{
             "levels": 0.1,
             "boost": 0.1
         },
-        "Equilibrium":{
+        "equilibrium":{
             "levels": 0.0,
             "boost": 0.0
         }
@@ -182,13 +316,13 @@ const ranged_construction = {
         "rigour":{
             "boost": 0.08
         },
-        "accelerated decay":{
+        "overpowering force":{
             "boost": 0.06
         },
-        "hastened decay":{
+        "unrelenting force":{
             "boost": 0.06
         },
-        "decay":{
+        "unstoppable force":{
             "boost": 0.02
         }
     },

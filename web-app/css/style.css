@@ -262,7 +262,8 @@ table {
 
 .effect-text {
     padding: 5px 5px;
-    width:fit-content;
+    width: fit-content;
+    white-space: nowrap;
 }
 
 .navbar {
