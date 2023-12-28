@@ -508,7 +508,6 @@ ul.nav-item li ul.nav-dropdown li {
     width: 100% ;
     padding: 1%;
     border: 1px solid #ccc;
-    border-radius: 4px;
     background: #171D21;
     color: inherit;
     margin: 1%;
@@ -518,7 +517,6 @@ ul.nav-item li ul.nav-dropdown li {
     background: #171D21;
     color: inherit;
     border: 1px solid #ccc;
-    border-radius: 4px;
     padding: 1%;
 }
 
@@ -530,7 +528,6 @@ ul.nav-item li ul.nav-dropdown li {
 input[type="number"] {
     padding-left: 5px;
     border: 1px solid #ccc;
-    border-radius: 4px;
     background-color: #171D21;
     width: auto;
 }
