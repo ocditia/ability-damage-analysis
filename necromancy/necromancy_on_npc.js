@@ -45,6 +45,64 @@ class OnNPC {
       }
       return dmg
     }
+
+    calcRedbeam(dmg,flag) {
+      if (flag === true) {
+        dmg += Math.floor(dmg * 0.3);
+      }
+      return dmg;
+    }
+
+    calcBlackbeam(dmg,flag) {
+      if (flag === true) {
+        dmg -= Math.floor(dmg * 0.3);
+      }
+      return dmg;
+    }
+
+    calcInfernalPuzzleBox(dmg,stacks) {
+      return dmg + Math.floor(dmg * 0.01 * stacks);
+    }
+
+    calcTokkulZo(dmg,flag) {
+      if (flag === true) {
+        dmg += Math.floor(dmg * 0.1);
+      }
+      return dmg;
+    }
+
+    calcKBD(dmg,flag) {
+      if (flag === true) {
+        dmg += Math.floor(dmg * 0.1);
+      }
+      return dmg;
+    }
+
+    calcInnerChaos(dmg,flag) {
+      if (flag === true) {
+        dmg += Math.floor(dmg * 0.05);
+      }
+      return dmg;
+    }
+
+    calcGuardiansTriumph(dmg,stacks) {
+      return dmg += Math.floor(dmg * 0.2 * stacks);
+    }
+
+    calcSwordofEdicts(dmg,flag) {
+      if (flag === true) {
+        dmg -= Math.floor(dmg * 0.05);
+      }
+      return dmg;
+    }
+
+    calcBalanceofPower(dmg,stacks) {
+      return dmg + Math.floor(dmg * 0.06 * stacks);
+    }
+
+    calcInnerPower(dmg,stacks) {
+      return dmg + Math.floor(dmg * 0.1 * stacks);
+    }
   
     calcOnNpc(dmg, settings,AD) {
       //buffs applied in order of operations
@@ -56,6 +114,17 @@ class OnNPC {
       //unknown order of buffs
       dmg = this.calcCryptbloom(dmg,settings['death spores']);
       dmg = this.calcHaunted(dmg,settings['haunted'],AD);
+      dmg = this.calcRedbeam(dmg,settings['Telos red beam']);
+      dmg = this.calcBlackbeam(dmg,settings['Telos black beam']);
+      dmg = this.calcInfernalPuzzleBox(dmg,settings['Infernal puzzle box']);
+      dmg = this.calcTokkulZo(dmg,settings['Tokkul-zo']);
+      dmg = this.calcKBD(dmg,settings['King black dragon wilderness portal']);
+      dmg = this.calcInnerChaos(dmg,settings['Zamorak inner chaos']);
+      dmg = this.calcGuardiansTriumph(dmg,settings['Zamorak guardians triumph']);
+      dmg = this.calcSwordofEdicts(dmg,settings['Zamorak sword of edicts']);
+      dmg = this.calcBalanceofPower(dmg,settings['Zamorak balance of power']);
+      dmg = this.calcInnerPower(dmg,settings['Raksha inner power']);
+
 
       //zamorak inner chaos
       //zamorak guardians triumph

@@ -9,7 +9,7 @@ class OnHit {
   }
 
   calcStoneOfJas(buff,jas) {
-    return Math.floor(buff * (1 + jas));
+    return Math.floor(buff * (1 + jas/100));
   }
 
   calcPrayer(buff,prayer) {
