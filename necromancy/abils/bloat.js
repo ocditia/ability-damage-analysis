@@ -42,8 +42,8 @@ function bloat(type, settings, numberOfHits) {
         damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings);
 
         //apply on-npc effects and hitcaps
-        damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings);
-        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);   
+        damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings,AD);
+        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings,AD);    
         
         //split soul
         splitSoul = split_soul(damageObject['non-crit']['list'],settings);
@@ -58,8 +58,8 @@ function bloat(type, settings, numberOfHits) {
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
 
         //add bleed
-        damageObject['non-crit']['list'] = bloat_bleed(damageObject['non-crit']['list'],settings);
-        damageObject['crit']['list'] = bloat_bleed(damageObject['crit']['list'],settings);
+        damageObject['non-crit']['list'] = bloat_bleed(damageObject['non-crit']['list'],settings,AD);
+        damageObject['crit']['list'] = bloat_bleed(damageObject['crit']['list'],settings,AD);
 
         //add up damages
         damageObject['non-crit']['list'] = Helper.listAdder(damageObject['non-crit']['list'],splitSoul);

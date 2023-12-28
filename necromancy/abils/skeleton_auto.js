@@ -41,8 +41,8 @@ function skeleton_auto(type, settings, numberOfHits) {
         damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings);
 
         //apply on-npc effects and hitcaps
-        damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings);
-        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings); 
+        damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings,AD);
+        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings,AD);    
 
         //rage stacks
         for (var i = 0; i<damageObject['non-crit']['list'].length;i++) {

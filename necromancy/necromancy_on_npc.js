@@ -32,8 +32,21 @@ class OnNPC {
       }
       return dmg;
     }
+
+    calcHaunted(dmg,haunted,AD) {
+      if (haunted === true) {
+        let increase = Math.floor(dmg*0.1);
+        if (increase < Math.floor(0.2 * AD)) {
+          return dmg + increase;
+        }
+        else {
+          return dmg + Math.floor(0.2 * AD);
+        }
+      }
+      return dmg
+    }
   
-    calcOnNpc(dmg, settings) {
+    calcOnNpc(dmg, settings,AD) {
       //buffs applied in order of operations
       dmg = this.calcVuln(dmg,settings['vulnerability']);
       dmg = this.calcSlayerPerk(dmg,settings['slayer perk']);
@@ -42,6 +55,7 @@ class OnNPC {
 
       //unknown order of buffs
       dmg = this.calcCryptbloom(dmg,settings['death spores']);
+      dmg = this.calcHaunted(dmg,settings['haunted'],AD);
 
       //zamorak inner chaos
       //zamorak guardians triumph
@@ -55,10 +69,10 @@ class OnNPC {
       return dmg;
     }
 
-    onNpcDamageList(dmgList,settings) {
+    onNpcDamageList(dmgList,settings,AD) {
       const onNpcDmg = [];
       for (const i of dmgList) {
-        onNpcDmg.push(this.calcOnNpc(i,settings));
+        onNpcDmg.push(this.calcOnNpc(i,settings,AD));
       }
       return onNpcDmg;
   }

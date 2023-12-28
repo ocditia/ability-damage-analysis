@@ -8,7 +8,7 @@ const split_soul = require('./split_soul')
 const construction = require('../necromancy_const')
 const { channel } = require('diagnostics_channel')
 
-function bloat_bleed(dmgList, settings) {
+function bloat_bleed(dmgList, settings,AD) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
@@ -25,7 +25,7 @@ function bloat_bleed(dmgList, settings) {
         }
 
         //apply on-npc effects and hitcaps
-        let dmg = NPC_INS.onNpcDamageList(bleedList,settings); 
+        let dmg = NPC_INS.onNpcDamageList(bleedList,settings,AD); 
 
         //split soul
         splitSoul = split_soul(dmg,settings);
