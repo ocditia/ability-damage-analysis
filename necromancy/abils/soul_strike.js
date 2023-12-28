@@ -15,8 +15,13 @@ function soul_strike(type, settings, numberOfHits) {
     const AVG_INS = new Avg();
     const Helper = new NecroHelper(); 
     let abil_val = 'soul strike - main'
-    const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
-    const variablePercent = construction['abilities'][abil_val]['variable percent'];
+    let fixedPercent = construction['abilities'][abil_val]['fixed percent'];
+    let variablePercent = construction['abilities'][abil_val]['variable percent'];
+
+    if (settings['flanking position'] === true) {
+        fixedPercent += fixedPercent * settings['flanking'] * 0.4;
+        variablePercent += variablePercent * settings['flanking'] * 0.4;
+    }
 
     const hits = []
    
@@ -29,7 +34,7 @@ function soul_strike(type, settings, numberOfHits) {
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);
         let variable = Math.floor(AD * variablePercent);
-        
+
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
 

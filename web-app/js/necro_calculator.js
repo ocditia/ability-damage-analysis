@@ -46,6 +46,7 @@ function collectSettings() {
     'slayer perk': false,
     'biting': 4,
     'flanking': 0,
+    'flanking position': false,
     
     'aura': 'mahjarrat',
     'split soul': false,
@@ -63,7 +64,7 @@ function collectSettings() {
 
     //shared
     'Revenge': 0,
-    'prayer': "sorrow",
+    'prayer': "ruination",
 
     //pvn only
     'slayer helmet': 'none',

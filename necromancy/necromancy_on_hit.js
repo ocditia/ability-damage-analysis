@@ -16,6 +16,10 @@ class OnHit {
     return Math.floor(buff * (1 + construction['prayers'][prayer]['boost']));
   }
 
+  calcRubyAurora(buff,aurora) {
+    return Math.floor(buff * (1 + 0.01 * aurora))
+  }
+
   calcRevenge(buff,type,revengeStacks) {
     if (type === 'shield') {
       buff = buff * (1 + 0.05*revengeStacks);
@@ -66,11 +70,11 @@ class OnHit {
   }
 
   calcRipperPassive(buff,ripperPassive) {
-    return Math.floor(buff * (1 + ripperPassive));
+    return Math.floor(buff * (1 + ripperPassive/100));
   }
 
   calcBerserkersFury(buff,fury) {
-    return Math.floor(buff * (1 + fury));
+    return Math.floor(buff * (1 + fury/100));
   }
 
   calcPrecise(fixed, variable, rank) {
@@ -97,6 +101,7 @@ class OnHit {
         buff = this.calcScriptureOfFul(buff,settings['pocket slot']); //assumed on
         buff = this.calcStoneOfJas(buff,settings['stone of jas']);
         buff = this.calcPrayer(buff,settings['prayer']);
+        buff = this.calcRubyAurora(buff,settings['Ruby aurora']);
         buff = this.calcRevenge(buff,type,settings['revenge stacks']);
         buff = this.calcSpendthrift(buff,settings['spendthrift']); //causes a rounding-error
         buff = this.calcRuthless(buff,settings['ruthless rank'],settings['ruthless stacks']);
@@ -115,9 +120,9 @@ class OnHit {
 
         //calculate precise and equilibrium
         let dmg = this.calcPrecise(fixed,variable,settings['precise']);
-        dmg = this.calcEquilibrium(dmg[0],dmg[1],settings['aura'],settings['equilibrium']);
+        dmg = this.calcEquilibrium(dmg[0],dmg[1],settings['equilibrium'],settings['aura']);
       
-        return [fixed,variable];
+        return [dmg[0],dmg[1]];
       }
   }
 }

@@ -504,7 +504,7 @@ ul.nav-item li ul.nav-dropdown li {
 }
 
 .dropdown-select {
-    width: flex-;
+    width: 100% ;
     padding: 1%;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -526,20 +526,12 @@ ul.nav-item li ul.nav-dropdown li {
     width: 35px
 }
 
-input[type="text"] {
-    padding: 1px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #171D21;
-    width: 50px;
-  }
-
 input[type="number"] {
     padding-left: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #171D21;
-    width: flex;
+    width: 100%;
 }
 
 .icon-header{
