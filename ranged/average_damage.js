@@ -20,7 +20,7 @@ class avgDmg {
 
         let fCritChance = 0
         if (Abil[abil_val]["crit effects"] === true) {
-            fCritChance = CRIT_INS.calcFCritChance(0, settings['gconc'], settings['kalg'], settings['kalgSpec'], settings['reavers'], 0, settings['biting']);
+            fCritChance = CRIT_INS.calcFCritChance(settings);
         } 
 
         let dmgAvg = fCritChance * avgCrit + (1 - fCritChance) * avgReg;
