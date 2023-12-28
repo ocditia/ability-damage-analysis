@@ -63,7 +63,7 @@ function collectSettings() {
     'stone of jas': 0,
 
     //shared
-    'Revenge': 0,
+    'revenge stacks': 0,
     'prayer': "ruination",
 
     //pvn only

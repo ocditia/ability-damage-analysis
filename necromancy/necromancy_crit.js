@@ -21,7 +21,7 @@ class Crit {
             modifier = modifier + 0.06;
         }
 
-        return dmg * (1 + modifier);
+        return Math.floor(dmg * (1 + modifier));
     }
 
     critDamageList(dmgList,settings) {
