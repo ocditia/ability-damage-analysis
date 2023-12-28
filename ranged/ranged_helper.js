@@ -15,24 +15,10 @@ class rangedHelper{
 
     baseDamageListCreator(fixed,variable) {
         const dmg = []
-        for (var i = fixed; i <= math.floor(0.95 * (fixed + variable)); i++) {
+        for (var i = fixed; i <= (fixed + variable); i++) {
             dmg.push(i);
         }
         return dmg;
-    }
-
-    naturalCritDamageListCreator(fixed,variable) {
-        const dmg = []
-        for (var i = math.floor(0.95 * (fixed + variable)); i <= (fixed + variable); i++) {
-            dmg.push(i);
-        }
-    }
-
-    forcedCritDamageListCreator(fixed,variable) {
-        const dmg = []
-        for (var i = fixed + math.floor(0.95 * variable); i <= (fixed + variable); i++) {
-            dmg.push(i);
-        }
     }
 
     hitCapApplier(dmg,hitcap) {
@@ -42,18 +28,10 @@ class rangedHelper{
         return dmg
     }
 
-    baseHitCapDmgList(dmgList,settings) {
+    hitCapDmgList(dmgList,settings) {
         const hitCapDmg = [];
         for (const i of dmgList) {
             hitCapDmg.push(this.hitCapApplier(i,settings['hitcap']));
-        }
-        return hitCapDmg;
-    }
-
-    critHitCapDmgList(dmgList,settings) {
-        const hitCapDmg = [];
-        for (const i of dmgList) {
-            hitCapDmg.push(this.hitCapApplier(i,settings['critcap']));
         }
         return hitCapDmg;
     }
@@ -82,4 +60,4 @@ class rangedHelper{
     }
 }
 
-module.exports = necromancyHelper;
+module.exports = rangedHelper;

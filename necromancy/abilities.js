@@ -40,46 +40,46 @@ const abilities = {
   'Ghost Auto': {
     title: 'Ghost auto',
     calc: ghost_auto,
-    icon: 'https://i.imgur.com/9vRoWeK.png',
+    icon: 'https://i.imgur.com/BtZXVGE.png',
     weapons: ['Dw'],
   },
   'Zombie Auto': {
     title: 'Zombie auto',
     calc: zombie_auto,
-    icon: 'https://i.imgur.com/9vRoWeK.png',
+    icon: 'https://i.imgur.com/gCTnzGq.png',
     weapons: ['Dw'],
   },
   'Command zombie': {
     title: 'Command zombie',
     calc: command_zombie,
-    icon: 'https://i.imgur.com/9vRoWeK.png',
+    icon: 'https://i.imgur.com/v0wxt7D.png',
     weapons: ['Dw'],
   },
   'Finger of Death': {
     title: 'Finger of death',
     calc: finger_of_death,
-    icon: 'https://i.imgur.com/9vRoWeK.png',
+    icon: 'https://i.imgur.com/Iipt8AS.png',
     weapons: ['Dw'],
   },
   //1.5x damage finger
   'Death Skulls': { // 3 or 4
     title: 'Death Skulls',
     calc: death_skulls,
-    icon: 'https://i.imgur.com/9vRoWeK.png',
+    icon: 'https://i.imgur.com/M2Jyl28.png',
     weapons: ['Dw'],
   },
   //death skulls 5 or 7
   'Soul strike': { //main
     title: 'Soul strike',
     calc: soul_strike,
-    icon: 'https://i.imgur.com/9vRoWeK.png',
+    icon: 'https://i.imgur.com/vym9cV5.png',
     weapons: ['Dw'],
   },
   //soul strike flank
   'Volley of Souls': { //3 hits
     title: 'Volley of Souls',
     calc: volley_of_souls,
-    icon: 'https://i.imgur.com/9vRoWeK.png',
+    icon: 'https://i.imgur.com/surT83a.png',
     weapons: ['Dw'],
   }
   //volley of souls 4 hit

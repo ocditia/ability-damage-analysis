@@ -2,7 +2,7 @@ const Crit = require('./ranged_crit')
 const construction = require('./ranged_const')
 
 class avgDmg {
-    averageDamage(abil_val,dmg_list,nat_critDmg_list,force_critDmg_list,settings) {
+    averageDamage(abil_val,dmg_list,critDmg_list,settings) {
         const CRIT_INS = new Crit();
 
         //calc average damage
@@ -12,24 +12,16 @@ class avgDmg {
         }
         var avgReg = regTotal / dmg_list.length;
 
-        var natCritTotal = 0;
-        for(var i = 0; i < nat_critDmg_list.length; i++) {
-            natCritTotal += nat_critDmg_list[i];
+        var critTotal = 0;
+        for(var i = 0; i < critDmg_list.length; i++) {
+            critTotal += critDmg_list[i];
         }
-        var avgNatCrit = natCritTotal / nat_critDmg_list.length;
-
-        var forceCritTotal = 0;
-        for(var i = 0; i < force_critDmg_list.length; i++) {
-            forceCritTotal += force_critDmg_list[i];
-        }
-        var avgForceCrit = forceCritTotal / force_critDmg_list.length;
+        var avgCrit = critTotal / critDmg_list.length;
 
         let fCritChance = 0
         if (Abil[abil_val]["crit effects"] === true) {
             fCritChance = CRIT_INS.calcFCritChance(0, settings['gconc'], settings['kalg'], settings['kalgSpec'], settings['reavers'], 0, settings['biting']);
         } 
-
-        let natCritChance = (1-fCritChance) * ((nat_critDmg_list.length))
 
         let dmgAvg = fCritChance * avgCrit + (1 - fCritChance) * avgReg;
 

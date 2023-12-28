@@ -2,7 +2,7 @@ const AbilityDmg = require('../ranged_ad')
 const OnNPC = require('../ranged_on_npc')
 const OnHit = require('../ranged_on_hit')
 const Crit = require('../ranged_crit')
-const NecroHelper = require('../ranged_helper')
+const rangedHelper = require('../ranged_helper')
 const Avg = require('../average_damage')
 const split_soul = require('./split_soul')
 const construction = require('../ranged_const')
@@ -14,8 +14,8 @@ function piercing_shot(type, settings, numberOfHits) {
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
-    const Helper = new NecroHelper(); 
-    let abil_val = 'piercing_shot'
+    const Helper = new rangedHelper(); 
+    let abil_val = 'piercing shot'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
 
@@ -25,7 +25,7 @@ function piercing_shot(type, settings, numberOfHits) {
         const damageObject = Helper.damageObjectCreator(settings);
 
         //calculates ability damage
-        let AD = AD_INS.calcAd(type,settings);
+        let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
         
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);
@@ -38,29 +38,23 @@ function piercing_shot(type, settings, numberOfHits) {
         damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);
 
         //apply crit dmg
-        damageObject['nat crit']['list'] = Helper.naturalCritDamageListCreator(onHit[0],onHit[1]);
-
-        damageObject['forced crit']['list'] = Helper.forcedCritDamageListCreator(onHit[0],onHit[1]);
+        damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings);
 
         //apply on-npc effects and hitcaps
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings);
-        damageObject['nat crit']['list'] = NPC_INS.onNpcDamageList(damageObject['nat crit']['list'],settings);
-        damageObject['forced crit']['list'] = NPC_INS.onNpcDamageList(damageObject['forced crit']['list'],settings);        
+        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);        
 
         //split soul
         splitSoul = split_soul(damageObject['non-crit']['list'],settings);
-        splitSoulNatCrit =  split_soul(damageObject['nat crit']['list'],settings);
-        splitSoulForcedCrit =  split_soul(damageObject['forced crit']['list'],settings);
+        splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
 
         //apply hit caps
-        damageObject['non-crit']['list'] = Helper.baseHitCapDmgList(damageObject['non-crit']['list'],settings);
-        damageObject['nat crit']['list'] = Helper.critHitCapDmgList(damageObject['nat crit']['list'],settings);
-        damageObject['forced crit']['list'] = Helper.critHitCapDmgList(damageObject['forced crit']['list'],settings);
+        damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
+        damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
 
         //add up damages
         damageObject['non-crit']['list'] = Helper.listAdder(damageObject['non-crit']['list'],splitSoul);
-        damageObject['nat crit']['list'] = Helper.listAdder(damageObject['nat crit']['list'],splitSoulNatCrit);
-        damageObject['forced crit']['list'] = Helper.listAdder(damageObject['forced crit']['list'],splitSoulForcedCrit);
+        damageObject['crit']['list'] = Helper.listAdder(damageObject['crit']['list'],splitSoulCrit);
 
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings));
