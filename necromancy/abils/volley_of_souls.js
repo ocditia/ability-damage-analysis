@@ -4,6 +4,7 @@ const OnHit = require('../necromancy_on_hit')
 const Crit = require('../necromancy_crit')
 const NecroHelper = require('../necromancy_helper')
 const Avg = require('../average_damage')
+const split_soul = require('./split_soul')
 const construction = require('../necromancy_const')
 const { channel } = require('diagnostics_channel')
 
@@ -41,11 +42,19 @@ function volley_of_souls(type, settings, numberOfHits) {
 
         //apply on-npc effects and hitcaps
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings);
-        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);        
+        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);       
+        
+        //split soul
+        splitSoul = split_soul(damageObject['non-crit']['list'],settings);
+        splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
 
         //apply hit caps
         damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
+
+        //add up damages
+        damageObject['non-crit']['list'] = Helper.listAdder(damageObject['non-crit']['list'],splitSoul);
+        damageObject['crit']['list'] = Helper.listAdder(damageObject['crit']['list'],splitSoulCrit);
 
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings));

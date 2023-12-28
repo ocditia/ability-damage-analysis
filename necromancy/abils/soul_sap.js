@@ -42,7 +42,11 @@ function soul_sap(type, settings, numberOfHits) {
 
         //apply on-npc effects and hitcaps
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings);
-        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);        
+        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);   
+        
+        //split soul
+        splitSoul = split_soul(damageObject['non-crit']['list'],settings);
+        splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
 
         //split soul
         splitSoul = split_soul(damageObject['non-crit']['list'],settings);

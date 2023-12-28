@@ -2,6 +2,7 @@ const necro_auto = require("./abils/necro_auto");
 const soul_sap = require("./abils/soul_sap");
 const touch_of_death = require("./abils/touch_of_death");
 const skeleton_auto = require("./abils/skeleton_auto");
+const command_skeleton = require("./abils/command_skeleton");
 const ghost_auto = require("./abils/ghost_auto");
 const zombie_auto = require("./abils/zombie_auto");
 const command_zombie = require("./abils/command_zombie");
@@ -9,6 +10,9 @@ const finger_of_death = require("./abils/finger_of_death");
 const death_skulls = require("./abils/death_skulls");
 const soul_strike = require("./abils/soul_strike");
 const volley_of_souls = require("./abils/volley_of_souls");
+const spectral_scythe_1 = require("./abils/spectral_scythe_1");
+const spectral_scythe_2 = require("./abils/spectral_scythe_2");
+const spectral_scythe_3 = require("./abils/spectral_scythe_3");
 
 const abilities = {
   'Necro auto': {
@@ -36,7 +40,12 @@ const abilities = {
     icon: 'https://i.imgur.com/9vRoWeK.png',
     weapons: ['Dw'],
   },
-  //command skeleton
+  'Command skeleton': {
+    title: 'Command skeleton',
+    calc: command_skeleton,
+    icon: 'https://imgur.com/MZgX1vt.png',
+    weapons: ['Dw'],
+  },
   'Ghost Auto': {
     title: 'Ghost auto',
     calc: ghost_auto,
@@ -81,10 +90,27 @@ const abilities = {
     calc: volley_of_souls,
     icon: 'https://i.imgur.com/surT83a.png',
     weapons: ['Dw'],
-  }
+  },
   //volley of souls 4 hit
   //volley of souls 5 hit
-  //scythe 1
+  'Spectral scythe 1': { //3 hits
+    title: 'Spectral scythe 1',
+    calc: spectral_scythe_1,
+    icon: 'https://imgur.com/DV3YTuJ.png',
+    weapons: ['Dw'],
+  },
+  'Spectral scythe 2': { //3 hits
+    title: 'Spectral scythe 2',
+    calc: spectral_scythe_2,
+    icon: 'https://imgur.com/Kx5RUml.png',
+    weapons: ['Dw'],
+  },
+  'Spectral scythe 3': { //3 hits
+    title: 'Spectral scythe 3',
+    calc: spectral_scythe_3,
+    icon: 'https://imgur.com/PCYnBCY.png',
+    weapons: ['Dw'],
+  }
   //scythe 2
   //scythe 3
   //blood siphon

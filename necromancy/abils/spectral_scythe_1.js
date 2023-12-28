@@ -8,21 +8,16 @@ const split_soul = require('./split_soul')
 const construction = require('../necromancy_const')
 const { channel } = require('diagnostics_channel')
 
-function soul_strike(type, settings, numberOfHits) {
+function spectral_scythe_1(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new NecroHelper(); 
-    let abil_val = 'soul strike - main'
-    let fixedPercent = construction['abilities'][abil_val]['fixed percent'];
-    let variablePercent = construction['abilities'][abil_val]['variable percent'];
-
-    if (settings['flanking position'] === true) {
-        fixedPercent += fixedPercent * settings['flanking'] * 0.4;
-        variablePercent += variablePercent * settings['flanking'] * 0.4;
-    }
+    let abil_val = 'spectral scythe - 1'
+    const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
+    const variablePercent = construction['abilities'][abil_val]['variable percent'];
 
     const hits = []
    
@@ -30,12 +25,12 @@ function soul_strike(type, settings, numberOfHits) {
         const damageObject = Helper.damageObjectCreator(settings);
 
         //calculates ability damage
-        let AD = AD_INS.calcAd(type,settings);
+        let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
         
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);
         let variable = Math.floor(AD * variablePercent);
-
+        
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
 
@@ -47,8 +42,8 @@ function soul_strike(type, settings, numberOfHits) {
 
         //apply on-npc effects and hitcaps
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings);
-        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);  
-        
+        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);        
+
         //split soul
         splitSoul = split_soul(damageObject['non-crit']['list'],settings);
         splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
@@ -70,5 +65,5 @@ function soul_strike(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = soul_strike;
+module.exports = spectral_scythe_1;
 
