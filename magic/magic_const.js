@@ -1,34 +1,99 @@
 const necromancy_construction = {
     'two-handed weapons': {
+        'fractured staff of armadyl':{
+            'tier': 95,
+            'weapondmg': 0,
+        },
+        'staff of sliske':{
+            'tier': 92,
+            'weapondmg': 0
+        },
+        'noxious staff':{
+            'tier': 90,
+            'weapondmg': 0
+        },
+        'superior zuriels staff':{
+            'tier': 88,
+            'weapondmg': 0
+        },
+        'obliteration':{
+            'tier': 87,
+            'weapondmg': 0
+        },
+        'noxious staff':{
+            'tier': 90,
+            'weapondmg': 0
+        },
+        'camel staff':{
+            'tier': 85,
+            'weapondmg': 0
+        },
+        'staff of darkness':{
+            'tier': 85,
+            'weapondmg': 0
+        },
+        'limitless staff':{
+            'tier': 82,
+            'weapondmg': 0
+        },
+        'inquisitor staff (e)':{
+            'tier': 80,
+            'weapondmg': 0
+        },
+        'inquisitor staff':{
+            'tier': 80,
+            'weapondmg': 0
+        },
+        'chaotic staff':{
+            'tier': 80,
+            'weapondmg': 0
+        }
+        
     },
 
     'main-hand weapons': {
-        "death guard (tier 80)":{
-            "tier": 80,
-            "weaponDmg": 0
+        'wand of the praesul':{
+            'tier': 92,
+            'weapondmg': 0
         },
-        "death guard (tier 90)":{
-            "tier": 90,
-            "weaponDmg": 0
+        'seismic wand':{
+            'tier': 90,
+            'weapondmg': 0
         },
-        "omni guard":{
-            "tier": 95,
-            "weaponDmg": 0
+        'elite seasinger kiba':{
+            'tier': 88,
+            'weapondmg': 0
+        },
+        'seasinger kiba':{
+            'tier': 85,
+            'weapondmg': 0
+        },
+        'wand of the cywir elders':{
+            'tier': 80,
+            'weapondmg': 0
         }
     },
 
     'off-hand weapons': {
-        "Skull lantern (tier 80)":{
-            "tier": 80,
-            "weaponDmg": 0
+        'imperium core':{
+            'tier': 92,
+            'weapondmg': 0
         },
-        "Skull lantern (tier 90)":{
-            "tier": 90,
-            "weaponDmg": 0
+        'singularity':{
+            'tier': 90,
+            'weapondmg': 0
         },
-        "Soulbound lantern":{
-            "tier": 95,
-            "weaponDmg": 0
+        'elite seasinger makigai':{
+            'tier': 88,
+            'weapondmg': 0
+        },
+        'seasinger makigai':{
+            'tier': 85,
+            'weapondmg': 0
+        },
+        'orb of the cywir elders':{
+            'tier': 80,
+            'weapondmg': 0
         }
     },
 
@@ -36,57 +101,80 @@ const necromancy_construction = {
     },
 
     'defenders': {
+        'kalphite rebounder':{
+            'tier': 90,
+            'weapondmg': 0
+        },
+        'ancient lantern':{
+            'tier': 80,
+            'weapondmg': 0
+        }
     },
 
     'helmets': {
-        "deathdealer hood (tier 80)":{
-            "bonus": 20.3
+        'elite tectonic mask':{
+            'bonus': 24
         },
-        "deathdealer hood (tier 90)":{
-            "bonus": 23.2
+        'tectonic mask':{
+            'bonus': 23.2
         },
-        "crown of the first necromancer":{
-            "bonus": 25
+        'superior zuriels hood':{
+            'bonus': 22.4
+        },
+        'refined anima core helm of seren':{
+            'bonus': 21.6
+        },
+        'anima core helm of seren':{
+            'bonus': 20.3
+        },
+        'virtus mask':{
+            'bonus': 20.3
         }
     },
 
     'bodies': {
-        "deathdealer robe top (tier 80)":{
-            "bonus": 30.5
+        'elite tectonic robe top':{
+            'bonus': 36
         },
-        "deathdealer robe top (tier 90)":{
-            "bonus": 34.8
+        'tectonic robe top':{
+            'bonus': 34.8
         },
-        "robe top of the first necromancer":{
-            "bonus": 37
+        'superior zuriels robe top':{
+            'bonus': 33.6
+        },
+        'refined anima core body of seren':{
+            'bonus': 32.5
+        },
+        'anima core body of seren':{
+            'bonus': 30.5
+        },
+        'virtus rove top':{
+            'bonus': 30.5
         }
     },
 
     'legs': {
-        "deathdealer robe bottom (tier 80)":{
-            "bonus": 25.4
+        'elite tectonic robe bottom':{
+            'bonus': 31
         },
-        "deathdealer robe bottom (tier 90)":{
-            "bonus": 29
+        'tectonic robe bottom':{
+            'bonus': 29
         },
-        "robe bottom of the first necromancer":{
-            "bonus": 32
+        'superior zuriels robe bottom':{
+            'bonus': 28
+        },
+        'refined anima core legs of seren':{
+            'bonus': 27.1
+        },
+        'anima core legs of seren':{
+            'bonus': 25.4
+        },
+        'virtus rove legs':{
+            'bonus': 25.4
         }
     },
 
     'boots': {
-        "deathdealer boots (tier 80)":{
-            "bonus": 12.7
-        },
-        "deathdealer boots (tier 90)":{
-            "bonus": 14.5
-        },
-        "foot wraps of the first necromancer":{
-            "bonus": 16
-        },
-        "silverhawk boots (tier 60)":{
-            "bonus": 6.9
-        }
     },
 
     'gloves': {
@@ -279,126 +367,148 @@ const necromancy_construction = {
             "fixed percent": 0.9,
             "variable percent": 0.2,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'necro auto'
         },
         "skeleton auto":{
             "fixed percent": 0.22,
             "variable percent": 0.06,
             "on hit effects": false,
-            "crit effects": false
+            "crit effects": false,
+            'category': 'conjure'
         },
         "finger of death":{
             "fixed percent": 2.7,
             "variable percent": 0.6,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'abil'
         },
         "touch of death":{
             "fixed percent": 0.9,
             "variable percent": 0.2,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'basic'
         },
         "death skulls":{
             "fixed percent": 2.25,
             "variable percent": 0.5,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'ultimate'
         },
         "blood siphon - siphon":{
             "fixed percent": 0.22,
-            "variable percent": 0.06
+            "variable percent": 0.06,
+            'category': 'abil'
         },
         "blood siphon - hit":{
             "fixed percent": 1.17,
             "variable percent": 0.26,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'abil'
         },
         "zombie auto":{
             "fixed percent": 0.18,
             "variable percent": 0.04,
             "on hit effects": false,
-            "crit effects": false        
+            "crit effects": false,
+            'category': 'conjure'        
         },
         "zombie poison":{
             "fixed percent": 0.08,
-            "variable percent": 0.04
+            "variable percent": 0.04,
+            'category': 'poison'
         },
         "command zombie":{
             "fixed percent": 3.6,
             "variable percent": 0.8,
             "on hit effects": false,
-            "crit effects": false
+            "crit effects": false,
+            'category': 'abil'
         },
         "ghost auto":{
             "fixed percent": 0.18,
             "variable percent": 0.04,
             "on hit effects": false,
-            "crit effects": false
+            "crit effects": false,
+            'category': 'conjure'
         },
         "bloat - initial hit":{
             "fixed percent": 1.35,
             "variable percent": 0.3,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'abil'
         },
         "bloat - bleed hit":{
-            "number of hits": 10
+            "number of hits": 10,
+            'category': 'dot'
         },
         "soul sap":{
             "fixed percent": 0.9,
             "variable percent": 0.2,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'basic'
         },
         "soul strike - main":{
             "fixed percent": 1.35,
             "variable percent": 0.3,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'abil'
         },
         "soul strike - aoe":{
             "fixed percent": 0.9,
             "variable percent": 0.2,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'abil'
         },
         "spectral scythe - 1":{
             "fixed percent": 0.72,
             "variable percent": 0.16,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'abil'
         },
         "spectral scythe - 2":{
             "fixed percent": 1.8,
             "variable percent": 0.4,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'abil'
         },
         "spectral scythe - 3":{
             "fixed percent": 2.25,
             "variable percent": 0.5,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'abil'
         },
         "volley of souls":{
             "fixed percent": 1.35,
             "variable percent": 0.3,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'abil'
         },
         "death grasp":{
             "fixed percent": 4.05,
             "variable percent": 4.95,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'abil'
         },
         "death essence":{
             "fixed percent": 3.6,
             "variable percent": 0.8,
             "on hit effects": true,
-            "crit effects": true
+            "crit effects": true,
+            'category': 'abil'
         }
     }
 }

@@ -9,14 +9,12 @@ class OnHit {
   }
 
   calcStoneOfJas(buff,jas) {
-    return Math.floor(buff * (1 + jas));
+    return Math.floor(buff * (1 + jas/100));
   }
 
   calcPrayer(buff,prayer) {
     return Math.floor(buff * (1 + construction['prayers'][prayer]['boost']));
   }
-
-  //add sun
 
   calcRubyAurora(buff,aurora) {
     return Math.floor(buff * (1 + 0.01 * aurora))
