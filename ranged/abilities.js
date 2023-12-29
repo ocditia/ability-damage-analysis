@@ -20,6 +20,8 @@ const incendiary_shot = require("./abils/incendiary_shot");
 const unload = require("./abils/unload");
 const dark_bow_spec = require("./abils/dark_bow_spec");
 const bolg_spec = require("./abils/bolg_spec");
+const sgb_spec = require("./abils/sgb_spec");
+const magic_shortbow = require("./abils/magic_shortbow.js");
 
 const abilities = {
   'Dazing Shot': {
@@ -50,6 +52,18 @@ const abilities = {
     title: 'Piercing Shot Bound',
     calc: piercing_shot_bound,
     icon: 'https://imgur.com/W1bzoPX.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Ricochet': {
+    title: 'Ricochet',
+    calc: ricochet,
+    icon: 'https://imgur.com/Ym89Yhq.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Greater ricochet': {
+    title: 'Greater ricochet',
+    calc: greater_ricochet,
+    icon: 'https://imgur.com/CT7UsaA.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Corruption Shot': {
@@ -100,18 +114,6 @@ const abilities = {
     icon: 'https://imgur.com/hCqaksE.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
-  'Ricochet': {
-    title: 'Ricochet',
-    calc: ricochet,
-    icon: 'https://imgur.com/Ym89Yhq.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Greater ricochet': {
-    title: 'Greater ricochet',
-    calc: greater_ricochet,
-    icon: 'https://imgur.com/CT7UsaA.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
   'Incendiary shot': {
     title: 'Incendiary shot',
     calc: incendiary_shot,
@@ -134,6 +136,18 @@ const abilities = {
     title: 'Bolg',
     calc: bolg_spec,
     icon: 'https://imgur.com/0BGZGpv.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'SGB': {
+    title: 'SGB',
+    calc: sgb_spec,
+    icon: 'https://imgur.com/DUqERq0.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Magic shortbow': {
+    title: 'Magic shortbow',
+    calc: magic_shortbow,
+    icon: 'https://imgur.com/wvfhltQ.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }
