@@ -10,7 +10,7 @@ class AbilityDmg {
       let AD = 0
       //two-handed AD
       if (type === 'two-hand') {
-        AD = Math.floor(2.5 * this.calcLevel(settings)) + Math.floor(1.25 * this.calcLevel(settings)) + Math.floor(9.6 * this.getTier('two-hand',settings) + this.calcBonus(settings)) + Math.floor(4.8 * this.getTier('two-hand',settings) + 0.5 * this.calcBonus(settings));
+        AD = Math.floor(2.5 * this.calcLevel(settings)) + Math.floor(1.25 * this.calcLevel(settings)) + Math.floor(14.4 * this.getTier('two-hand',settings) + 1.5 * this.calcBonus(settings));
       } 
       
       //dual-wield AD

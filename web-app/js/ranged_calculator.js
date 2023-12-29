@@ -14,24 +14,25 @@ function collectSettings() {
   // Have default settings here
   const settings = {
     'minavgmax': 'avg',
+    'category': 'none',
 
     'ability damage': 0, //for manual override only
     'level': 120,
     'potion': 'elder overload',
     
     'two-handed weapon': 1,
-    'main-hand weapon': 'blightbound crossbow',
-    'off-hand weapon': 'blightbound crossbow',
+    'main-hand weapon': 'blightbound',
+    'off-hand weapon': 'off-hand blightbound',
     'shield': 1,
     'defender': 1,
-    'helmet': 'elite dracolich',
-    'body': 'elite dracolich',
-    'leg': 'elite dracolich',
-    'gloves': 'elite dracolich',
-    'boots': 'elite dracolich',
+    'helmet': 'elite dracolich helmet',
+    'body': 'elite dracolich top',
+    'leg': 'elite dracolich bottom',
+    'gloves': 'elite dracolich gloves',
+    'boots': 'foot wraps of the first necromancer',
     'necklace': 'essence of finality amulet (or)',
-    'ring': 'stalkers',
-    'cape':'igneous kal-xil',
+    'ring': 'reavers',
+    'cape':'igneous kal-mor',
     'pocket slot': 'grimoire',
     'reaper crew': true,
     'level 20 armour': true,
@@ -39,7 +40,7 @@ function collectSettings() {
     //perks
     'precise': 0,
     'equilibrium': 0,
-    'genocidal': 0,
+    'genocidal percent': 0,
     'spendthrift': 0,
     'ruthless rank': 0,
     'ruthless stacks': 0,
@@ -49,7 +50,7 @@ function collectSettings() {
     'flanking position': false,
     
     'aura': 'mahjarrat',
-    'split soul': false,
+    'split soul': true,
     'bonus': 0,
     'cap': 30000,
 
@@ -61,10 +62,9 @@ function collectSettings() {
     //on-hit effects
     //pre-shared effects
     'stone of jas': 0,
-    'swift': false,
 
     //shared
-    'Revenge': 0,
+    'revenge stacks': 0,
     'prayer': "ruination",
 
     //pvn only
@@ -100,11 +100,8 @@ function collectSettings() {
     'Infernal puzzle box': false,
     'King black dragon wilderness portal': false,
     'Tokkul-zo': false,
-
-    'size':3,
-    'blocking':false,
-
-    'enchantment of shadows': false,
+    'skeleton rage stacks': 0,
+    'haunted': false
 };
 
   document.querySelectorAll('.js--setting').forEach(node => {
@@ -149,17 +146,5 @@ function calculateDamages(settings) {
     settings['split soul'] = true;
     damages = abilities[key].calc('', settings, 1);
     row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
-
-    // Recalculate with swift
-    settings['split soul'] = false;
-    settings['swift'] = true;
-    damages = abilities[key].calc('', settings, 1);
-    row.querySelector('.js--ability-swift').textContent = damages[damages.length-1];
-
-    // Recalculate with swift and split soul
-    settings['split soul'] = true;
-    settings['swift'] = true;
-    damages = abilities[key].calc('', settings, 1);
-    row.querySelector('.js--ability-swift-ss').textContent = damages[damages.length-1];
   })
 }

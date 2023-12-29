@@ -1,7 +1,8 @@
-const RangedHelper = require('../ranged_helper')
+const NecroHelper = require('../ranged_helper')
 
 function split_soul(dmgList, settings) {
-    const Helper = new RangedHelper(); 
+    settings['category'] = 'split soul';
+    const Helper = new NecroHelper(); 
     if (settings['split soul'] === true) {
         const splitSoul = [];
         for (var i = 0; i < dmgList.length; i++) {

@@ -1,40 +1,24 @@
 const construction = require('./ranged_const')
 
 class OnHit {
-  calcAdditives(buff,pocket,needle) {
-    if (pocket === 'scripture of ful' && needle === true) {
-      buff = buff * (1.27);
+  calcScriptureOfFul(buff,pocket) {
+    if (pocket === 'scripture of ful') {
+      buff = buff * (1 + 0.2);
     }
-    else if (pocket === 'scripture of ful' && needle === false) {
-      buff = buff * (1.2);
-    }
-    else if (needle === true) {
-      buff = buff * (1.07);
-    }
-    else{
-      buff = buff;
-    }
-    return buff;
+    return Math.floor(buff);
   }
 
   calcStoneOfJas(buff,jas) {
-    return buff * (1 + jas);
+    return Math.floor(buff * (1 + jas/100));
   }
 
   calcPrayer(buff,prayer) {
-    return buff * (1 + construction['prayers'][prayer]['boost']);
+    return Math.floor(buff * (1 + construction['prayers'][prayer]['boost']));
   }
 
   calcRubyAurora(buff,aurora) {
     return Math.floor(buff * (1 + 0.01 * aurora))
   }
-
-  calcSwift(dmg, flag) {
-    if (flag === true) {
-      dmg = Math.floor(dmg * (1.5));
-    }
-    return dmg;
-  } 
 
   calcRevenge(buff,type,revengeStacks) {
     if (type === 'shield') {
@@ -43,19 +27,19 @@ class OnHit {
     else if (type === 'defender') { 
       buff = buff * (1 + 0.025*revengeStacks);
     }
-    return buff;
+    return Math.floor(buff);
   }
 
   calcSpendthrift(buff,spendthriftRank) {
-    return buff * (1 + (spendthriftRank * spendthriftRank)/100);
+    return Math.floor(buff * (1 + (spendthriftRank * spendthriftRank)/10000));
   }
 
   calcRuthless(buff,ruthlessRank, ruthlessStacks) {
-    return buff * (1 + 0.005 * ruthlessRank * ruthlessStacks);
+    return Math.floor(buff * (1 + 0.005 * ruthlessRank * ruthlessStacks));
   }
 
   calcSlayerHelmet(buff,slayerHelmet) {
-    return buff * (1 + construction['slayerHelmets'][slayerHelmet]['boost']);
+    return Math.floor(buff * (1 + construction['slayerHelmets'][slayerHelmet]['boost']));
   }
 
   calcGuardHouse(buff,guardhouse) {
@@ -68,11 +52,11 @@ class OnHit {
     } else if (guardhouse === 'level 3 undead - low target') {
       buff = buff * 1.12;
     }
-    return buff;
+    return Math.floor(buff);
   }
 
   calcGenocidal(buff,genocidal) {
-    return buff * (1 + genocidal);
+    return Math.floor(buff * (1 + genocidal/100));
   }
 
   calcSalveAmulet(buff,necklace) {
@@ -82,15 +66,15 @@ class OnHit {
     else if (necklace === 'Salve amulet (e)') {
       buff = buff * 1.2;
     }
-    return buff;
+    return Math.floor(buff);
   }
 
   calcRipperPassive(buff,ripperPassive) {
-    return buff * (1 + ripperPassive);
+    return Math.floor(buff * (1 + ripperPassive/100));
   }
 
   calcBerserkersFury(buff,fury) {
-    return buff * (1 + fury);
+    return Math.floor(buff * (1 + fury/100));
   }
 
   calcPrecise(fixed, variable, rank) {
@@ -114,17 +98,16 @@ class OnHit {
       else {
         let buff = 10000
         //all buffs in order of application
-        buff = this.calcAdditives(buff,settings['pocket slot'], settings['needle']); //assumed on
+        buff = this.calcScriptureOfFul(buff,settings['pocket slot']); //assumed on
         buff = this.calcStoneOfJas(buff,settings['stone of jas']);
         buff = this.calcPrayer(buff,settings['prayer']);
         buff = this.calcRubyAurora(buff,settings['Ruby aurora']);
-        buff = this.calcSwift(buff, settings['swift']);
         buff = this.calcRevenge(buff,type,settings['revenge stacks']);
-        //buff = this.calcSpendthrift(buff,settings['perks']['spendthrift']); //causes a rounding-error
+        buff = this.calcSpendthrift(buff,settings['spendthrift']); //causes a rounding-error
         buff = this.calcRuthless(buff,settings['ruthless rank'],settings['ruthless stacks']);
         buff = this.calcSlayerHelmet(buff,settings['slayer helmet']);
         buff = this.calcGuardHouse(buff,settings['fort forinthry guardhouse']);
-        buff = this.calcGenocidal(buff, settings['genocidal']);
+        buff = this.calcGenocidal(buff, settings['genocidal percent']);
         buff = this.calcSalveAmulet(buff,settings['necklace']);
         buff = this.calcRipperPassive(buff,settings['ripper demon passive']);
 
@@ -137,9 +120,9 @@ class OnHit {
 
         //calculate precise and equilibrium
         let dmg = this.calcPrecise(fixed,variable,settings['precise']);
-        dmg = this.calcEquilibrium(dmg[0],dmg[1],settings['aura'],settings['equilibrium']);
+        dmg = this.calcEquilibrium(dmg[0],dmg[1],settings['equilibrium'],settings['aura']);
       
-        return [fixed,variable];
+        return [dmg[0],dmg[1]];
       }
   }
 }

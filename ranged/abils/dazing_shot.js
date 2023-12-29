@@ -2,7 +2,7 @@ const AbilityDmg = require('../ranged_ad')
 const OnNPC = require('../ranged_on_npc')
 const OnHit = require('../ranged_on_hit')
 const Crit = require('../ranged_crit')
-const rangedHelper = require('../ranged_helper')
+const RangedHelper = require('../ranged_helper')
 const Avg = require('../average_damage')
 const split_soul = require('./split_soul')
 const construction = require('../ranged_const')
@@ -14,10 +14,11 @@ function dazing_shot(type, settings, numberOfHits) {
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
-    const Helper = new rangedHelper(); 
-    let abil_val = 'Dazing Shot'
+    const Helper = new RangedHelper(); 
+    let abil_val = 'basic attack'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
+    settings['category'] = construction['abilities'][abil_val]['category'];
 
     const hits = []
    
@@ -41,8 +42,8 @@ function dazing_shot(type, settings, numberOfHits) {
         damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings);
 
         //apply on-npc effects and hitcaps
-        damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings);
-        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings);        
+        damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings,AD);
+        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings,AD);        
 
         //split soul
         splitSoul = split_soul(damageObject['non-crit']['list'],settings);
@@ -66,3 +67,4 @@ function dazing_shot(type, settings, numberOfHits) {
 }
 
 module.exports = dazing_shot;
+

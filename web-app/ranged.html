@@ -30,7 +30,7 @@
                         </ul>
                         <ul class="nav-item">
                             <li class="block relative">
-                                <a href="/" class="py-2 px-4 font-normal text-xl text-lb hover:text-link" title="">
+                                <a href="/encounters/" class="py-2 px-4 font-normal text-xl text-lb hover:text-link" title="">
                                     Ability Analysis
                                 </a>
                                 <ul class="nav-dropdown py-2">
@@ -76,13 +76,16 @@
                         <h1 class="text-3xl md:text-4xl xl:text-6xl font-semibold ml-8 mb-0">Ranged Calculator</h1>
                     </div>
                 </div>
-                <div class="bg-gray-600 absolute top-0 left-0 w-full -z-1 h-96 md:h-72 xl:h-112 xl:mt-16 bg-bottom md:bg-top bg-cover" style="background-image:url(./assets/range_background.png)"></div>
+                <div class="bg-gray-600 absolute top-0 left-0 w-full -z-1 h-96 md:h-72 xl:h-112 xl:mt-16 bg-bottom md:bg-top bg-cover" style="background-image:url(./assets/range_background.png)">
+                </div>
             </div>
         </div>
 
+        <!--MAIN-->
         <div class="space-y-14 z-20">
             <div class="responsive-container">
                 <section class="grid xl:grid-cols-12 gap-6 xl:gap-8"> 
+                    <!--DAMAGE TABLE-->
                     <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2 md:pt-6">
                         <div class="flex flex-col">
                             <h1 class="main-header mb-6 ml-3">Damage Values</h1>
@@ -94,9 +97,7 @@
                                                 <th>Ability</th>
                                                 <th></th>
                                                 <th>Regular</th>
-                                                <th>ECB</th>
-                                                <th>Swift</th>
-                                                <th>Swift + ECB</th>
+                                                <th>Split Soul</th>
                                                 <th>Weapon</th>
                                             </tr>
                                         </thead>
@@ -137,34 +138,29 @@
                                                 <div class="card-title mb-1">Ability Damage</div>
                                                 <div class="effect-container">
                                                     <p class="effect-text">Ability Damage:</p>
-                                                    <input class="js--setting" data-setting-name="ability damage" type="number" id="ability damage" name="ability damage" step="1" value="0" min="0" max="9999">
+                                                    <input class="js--setting" data-setting-name="ability damage" type="number" id="ability damage" name="Ability Damage" step="1" value="0" max="9999" min="0">
                                                 </div>
                                                 <div class="effect-container">
-                                                    <p class="effect-text">Base Range Level:</p>
-                                                    <input class="js--setting" data-setting-name="level" type="number" id="level" name="Level" step="1" value="99" max="120" min="1">
+                                                    <p class="effect-text">Base Ranged Level:</p>
+                                                    <input class="js--setting" data-setting-name="level" type="number" id="level" name="Level" step="1" value="120" max="120" min="1">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Elder_overload_salve_(6).webp"></td>
                                                     <p class="effect-text">Potion:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="potion" id="potion">
-                                                        <option value="none">None</option>
+                                                        <option value="none potion">None</option>
                                                         <option value="elder overload" selected>Elder overload</option>
                                                         <option value="supreme overload">Supreme overload</option>
                                                         <option value="overload">Overload</option>
-                                                        <option value="extreme range">Extreme</option>
-                                                        <option value="super range">Super</option>
-                                                        <option value="range potion">Regular</option>
+                                                        <option value="extreme ranged">Extreme</option>
+                                                        <option value="super ranged">Super</option>
+                                                        <option value="ranged potion">Regular</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/death.png">
                                                     <p class="effect-text">Reaper Crew:</p>
                                                     <input class="js--setting" data-setting-name="Reaper crew" type="checkbox" id="reaper crew" name="reaper crew" checked>
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Hexhunter_bow.webp">
-                                                    <p class="effect-text">Hex Hunter:</p>
-                                                    <input class="js--setting" data-setting-name="hex hunter" type="checkbox" id="hex hunter" name="hex hunter">
                                                 </div>
                                             </div>
                                             <!--On Hit Main-->
@@ -175,12 +171,12 @@
                                                     <p class="effect-text">Prayer:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="prayer" id="prayer">
                                                         <option value="none">None</option>
-                                                        <option value="desolation" selected>Desolation</option>
-                                                        <option value="anguish">Anguish</option>
-                                                        <option value="rigour">Rigour</option>
-                                                        <option value="overpowering force">Overpowering Force</option>
-                                                        <option value="unrelenting force">Unrelenting Force</option>
-                                                        <option value="unstoppable force">Unstoppable Force</option>
+                                                        <option value="ruination" selected>Ruination</option>
+                                                        <option value="sorrow">Sorrow</option>
+                                                        <option value="sanctity">Sanctity</option>
+                                                        <option value="accelerated decay">Accelerated Decay</option>
+                                                        <option value="hastened decay">Hastened Decay</option>
+                                                        <option value="decay">Decay</option>
                                                     </select>
                                                 </div>  
                                                 <div class="effect-container">
@@ -191,7 +187,7 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Revenge.png"></td>
                                                     <p class="effect-text">Revenge</p>
-                                                    <input class="js--setting" data-setting-name="Revenge" type="number" id="revenge" name="revenge" step="1" value="0" max="10" min="0">
+                                                    <input class="js--setting" data-setting-name="revenge stacks" type="number" id="revenge" name="revenge" step="1" value="0" max="10" min="0">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Berserker's_Fury.webp"></td>
@@ -209,20 +205,8 @@
                                             <div class="settings-container">
                                                 <div class="card-title mb-1">On-Hit Secondary</div>
                                                 <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/armour_icons/Ammo_slot.png">
-                                                    <p class="effect-text">Ammo:</p>
-                                                    <select class="js--setting dropdown-select" data-setting-name="slayer helmet" id="slayer helmet">
-                                                        <option value="ful"selected>Ful arrows</option>
-                                                        <option value="deathspore">Deathspore arrows</option>
-                                                        <option value="dragonbane">Dragonbane</option>
-                                                        <option value="t95">Tier 95</option>
-                                                        <option value="t90">Tier 90</option>
-                                                        <option value="t80">Tier 80</option>
-                                                    </select>
-                                                </div>
-                                                <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Full_slayer_helmet_(yellow).webp">
-                                                    <p class="effect-text">Slayer helm:</p>
+                                                    <p class="effect-text">Slayer Helm:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="slayer helmet" id="slayer helmet">
                                                         <option value="none" selected>None</option>
                                                         <option value="slayer helmet">Regular</option>
@@ -232,11 +216,6 @@
                                                         <option value="mighty slayer helmet">Mighty</option>
                                                         <option value="corrupted slayer helmet">Corrupted</option>
                                                     </select>
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets//ability_icons/ranged/30x30/needle.png">
-                                                    <p class="effect-text">Needle strike:</p>
-                                                    <input class="js--setting" data-setting-name="needle" type="checkbox" id="needle" name="needle">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Guardhouse_(Tier_3).webp">
@@ -294,9 +273,9 @@
                                                     <img class="effect-icon" src="assets/effect_icons/aura.png"></td>
                                                     <p class="effect-text">Aura:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="aura" id="aura">
-                                                        <option value="none">None</option>
-                                                        <option value="reckless" selected>Reckless</option>
+                                                        <option value="none aura">None</option>
                                                         <option value="mahjarrat">Mahjarrat</option>
+                                                        <option value="reckless" selected>Recless</option>
                                                         <option value="equilibrium">Equilibrium</option>
                                                     </select>
                                                 </div>
@@ -319,11 +298,6 @@
                                                     <p class="effect-text">Crit-i-Kal Spec:</p>
                                                     <input class="js--setting" data-setting-name="crit-i-kal" type="checkbox" id="crit-i-kal" name="crit-i-kal" checked>
                                                 </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/20220809083224!Enchantment_of_shadows.png">
-                                                    <p class="effect-text">Enchantment of Shadows:</p>
-                                                    <input class="js--setting" data-setting-name="enchantment of shadows" type="checkbox" id="enchantment of shadows" name="enchantment of shadows" checked>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -338,77 +312,71 @@
                                                 <div class="card-title mb-1">Armour</div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Head_slot.webp"></td>
-                                                    <p class="effect-text">Helmet:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="helmet" id="helmet">
-                                                        <option value="none">None/Tank</option>
-                                                        <option value="elite dracolich" selected>Elite Dracolich</option>
-                                                        <option value="elite sirenic">Elite Sirenic</option>
-                                                        <option value="dracolich">Dracolich</option>
-                                                        <option value="sirenic">Sirenic</option>
-                                                        <option value="superior morrigan">Superior Morrigan</option>
-                                                        <option value="refined anima core">Refined anima core</option>
-                                                        <option value="pernix">Pernix</option>
+                                                        <option value="none helm">None/Tank</option>
+                                                        <option value="elite dracolich helm" selected>Elite Dracolich</option>
+                                                        <option value="elite sirenic helm">Elite Sirenic</option>
+                                                        <option value="dracolich helm">Dracolich</option>
+                                                        <option value="sirenic helm">Sirenic</option>
+                                                        <option value="superior morrigan helm">Superior Morrigan</option>
+                                                        <option value="refined anima core helm">Refined anima core</option>
+                                                        <option value="pernix helm">Pernix</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Torso_slot.png"></td>
-                                                    <p class="effect-text">Body:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="body" id="body">
-                                                        <option value="none">None/Tank</option>
-                                                        <option value="elite dracolich" selected>Elite Dracolich</option>
-                                                        <option value="elite sirenic">Elite Sirenic</option>
-                                                        <option value="dracolich">Dracolich</option>
-                                                        <option value="sirenic">Sirenic</option>
-                                                        <option value="superior morrigan">Superior Morrigan</option>
-                                                        <option value="refined anima core">Refined anima core</option>
-                                                        <option value="pernix">Pernix</option>
+                                                        <option value="none top">None/Tank</option>
+                                                        <option value="elite dracolich top" selected>Elite Dracolich</option>
+                                                        <option value="elite sirenic top">Elite Sirenic</option>
+                                                        <option value="dracolich top">Dracolich</option>
+                                                        <option value="sirenic top">Sirenic</option>
+                                                        <option value="superior morrigan top">Superior Morrigan</option>
+                                                        <option value="refined anima core top">Refined anima core</option>
+                                                        <option value="pernix top">Pernix</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Legs_slot.png"></td>
-                                                    <p class="effect-text">Legs:</p>
-                                                    <select class="js--setting dropdown-select" data-setting-name="legs" id="leg">
-                                                        <option value="none">None/Tank</option>
-                                                        <option value="elite dracolich" selected>Elite Dracolich</option>
-                                                        <option value="elite sirenic">Elite Sirenic</option>
-                                                        <option value="dracolich">Dracolich</option>
-                                                        <option value="sirenic">Sirenic</option>
-                                                        <option value="superior morrigan">Superior Morrigan</option>
-                                                        <option value="refined anima core">Refined anima core</option>
-                                                        <option value="pernix">Pernix</option>
+                                                    <select class="js--setting dropdown-select" data-setting-name="leg" id="leg">
+                                                        <option value="none bottom">None/Tank</option>
+                                                        <option value="elite dracolich bottom" selected>Elite Dracolich</option>
+                                                        <option value="elite sirenic bottom">Elite Sirenic</option>
+                                                        <option value="dracolich bottom">Dracolich</option>
+                                                        <option value="sirenic bottom">Sirenic</option>
+                                                        <option value="superior morrigan bottom">Superior Morrigan</option>
+                                                        <option value="refined anima core bottom">Refined anima core</option>
+                                                        <option value="pernix bottom">Pernix</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Hands_slot.webp"></td>
-                                                    <p class="effect-text">Gloves:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="gloves" id="gloves">
-                                                        <option value="none">None/Tank</option>
-                                                        <option value="elite dracolich" selected>Elite Dracolich</option>
+                                                        <option value="none gloves">None/Tank</option>
+                                                        <option value="elite dracolich gloves" selected>Elite Dracolich</option>
                                                         <option value="enhanced nightmare">Enhanced Nightmare</option>
                                                         <option value="deathtouch">Deathtouch</option>
-                                                        <option value="dracolich">Dracolich</option>
+                                                        <option value="dracolich gloves">Dracolich</option>
                                                         <option value="nightmare">Nightmare</option>
-                                                        <option value="pernix">Pernix</option>
+                                                        <option value="pernix gloves">Pernix</option>
                                                         <option value="cinderbane">Cinderbane</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Feet_slot.png"></td>
-                                                    <p class="effect-text">Boots:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="boots" id="boots">
-                                                        <option value="none">None/Tank</option>
-                                                        <option value="elite dracolich" selected>Elite Dracolich</option>
+                                                        <option value="none boots">None/Tank</option>
+                                                        <option value="elite dracolich boots" selected>Elite Dracolich</option>
                                                         <option value="enhanced fleeting">Enhanced Fleeting</option>
-                                                        <option value="dracolich">Dracolich</option>
+                                                        <option value="dracolich boots">Dracolich</option>
                                                         <option value="flarefrost">Flarefrost</option>
                                                         <option value="fleeting">Fleeting</option>
-                                                        <option value="pernix">Pernix</option>
+                                                        <option value="pernix boots">Pernix</option>
                                                         <option value="silverhaw">Silverhawk</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Neck_slot.png"></td>
-                                                    <p class="effect-text">Neck:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="necklace" id="necklace">
                                                         <option value="none">None/Tank</option>
                                                         <option value="essence of finality amulet (or)" selected>EOF(or)</option>
@@ -423,11 +391,10 @@
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Back_slot.png"></td>
-                                                    <p class="effect-text">Cape:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="cape" id="cape">
                                                         <option value="none">None</option>
-                                                        <option value="igneous kal-mor" selected>Zuk</option>
-                                                        <option value="tokhaar-kal-mor">Kiln</option>
+                                                        <option value="igneous kal-xil" selected>Zuk</option>
+                                                        <option value="tokhaar-kal-xil">Kiln</option>
                                                         <option value="completionist">Comp cape</option>
                                                         <option value="god cape">God cape</option>
                                                         <option value="max cape">Max cape</option>
@@ -436,9 +403,8 @@
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Ring_slot.png"></td>
-                                                    <p class="effect-text">Ring:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="ring" id="ring">
-                                                        <option value="none">None</option>
+                                                        <option value="none ring">None</option>
                                                         <option value="stalkers" selected>Stalker's</option>
                                                         <option value="reavers">Reaver's</option>
                                                         <option value="ring of death (i)">ROD (i)</option>
@@ -449,7 +415,6 @@
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Pocket_slot.webp"></td>
-                                                    <p class="effect-text">Pocket:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="pocket slot" id="pocket slot">
                                                         <option value="none">None</option>
                                                         <option value="grimoire" selected>Grimoire</option>
@@ -462,55 +427,27 @@
                                                 </div>
                                                 <div class="card-title mb-1">Weapons</div>
                                                 <div class="effect-container text-right">
-                                                    <img class="effect-icon" src="assets/armour_icons/2h_slot.png"></td>
-                                                    <p class="effect-text">2h:</p>
-                                                    <select class="js--setting dropdown-select" data-setting-name="two-hand weapon" id="two-hand weapon">
-                                                        <option value="none">None</option>
-                                                        <option value="bolg" selected>Bow of the Last Guardian</option>
-                                                        <option value="ecb">Eldritch Crossbow</option>
-                                                        <option value="sgb">Seren Godbow</option>
-                                                        <option value="noxious">Noxious Longbow</option>
-                                                        <option value="decimation">Decimation</option>
-                                                        <option value="zaryte">Zaryte</option>
-                                                        <option value="hex hunter">Hex Hunter</option>
-                                                    </select>
-                                                </div>
-                                                <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Main_hand_slot.webp"></td>
-                                                    <p class="effect-text">Mh:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="main-hand weapon" id="main-hand weapon">
                                                         <option value="none">None</option>
-                                                        <option value="blightbound crossbow" selected>Blightbound</option>
+                                                        <option value="blightbound" selected>Blightbound</option>
                                                         <option value="ascension">Ascension</option>
                                                         <option value="chaotic">Chaotic</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Off-hand_slot.webp"></td>
-                                                    <p class="effect-text">Oh:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="off-hand weapon" id="off-hand weapon">
                                                         <option value="none">None</option>
-                                                        <option value="blightbound crossbow" selected>Blightbound</option>
-                                                        <option value="ascension">Ascension</option>
-                                                        <option value="chaotic">Chaotic</option>
+                                                        <option value="off-hand blightbound" selected>Blightbound</option>
+                                                        <option value="off-hand ascension">Ascension</option>
+                                                        <option value="off-hand chaotic">Chaotic</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
                                                     <img class="effect-icon" src="assets/armour_icons/Off-hand_slot.webp"></td>
-                                                    <p class="effect-text">Shield:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="shield" id="shield">
-                                                        <option value="none">None</option>
-                                                        <option value="vengeful" selected>Vengeful</option>
-                                                        <option value="elysian">Elysian</option>
-                                                    </select>
-                                                </div>
-                                                <div class="effect-container text-right">
-                                                    <img class="effect-icon" src="assets/armour_icons/Off-hand_slot.webp"></td>
-                                                    <p class="effect-text">Defender:</p>
-                                                    <select class="js--setting dropdown-select" data-setting-name="shield" id="shield">
-                                                        <option value="none">None</option>
-                                                        <option value="kalphite" selected>kalphite</option>
-                                                        <option value="ancient">Ancient</option>
+                                                        <option value="none" selected>None</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -526,6 +463,11 @@
                                                     <img class="effect-icon" src="assets/effect_icons/Biting.webp"></td>
                                                     <p class="effect-text">Biting:</p>
                                                     <input class="js--setting" data-setting-name="biting" type="number" id="biting" name="biting" step="1" value="4" min="0" max="99">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Crackling.webp"></td>
+                                                    <p class="effect-text">Crackling:</p>
+                                                    <input type="number" id="crackling" name="crackling" step="1" value="4" min="0" max="99">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Precise.webp"></td>
@@ -570,11 +512,6 @@
                                                 <input class="js--setting" data-setting-name="Telos black beam" type="checkbox" id="Telos black beam" name="Telos black beam">
                                             </div>
                                             <div class="effect-container">
-                                                <img class="effect-icon" src="assets/effect_icons/Infernal_Puzzle_Box.png">
-                                                <p class="effect-text">Infernal Puzzle Box:</p>
-                                                <input class="js--setting" data-setting-name="Infernal puzzle box" type="checkbox" id="Infernal puzzle box" name="Infernal puzzle box">
-                                            </div>
-                                            <div class="effect-container">
                                                 <img class="effect-icon" src="assets/effect_icons/TokKul-Zo_(Charged).png">
                                                 <p class="effect-text">Tokkul-zo:</p>
                                                 <input class="js--setting" data-setting-name="Tokkul-zo" type="checkbox" id="Tokkul-zo" name="Tokkul-zo">
@@ -587,7 +524,12 @@
                                             <div class="effect-container">
                                                 <img class="effect-icon" src="assets/effect_icons/Inner_Chaos_(self_status).png"></td>
                                                 <p class="effect-text">Inner Chaos:</p>
-                                                <input class="js--setting" data-setting-name="Zamorak inner chaos" type="number" id="Zamorak inner chaos" name="Zamorak inner chaos" step="1" value="0" min="0" max="6">
+                                                <input class="js--setting" data-setting-name="Zamorak inner chaos" type="checkbox" id="Zamorak inner chaos" name="Zamorak inner chaos">
+                                            </div>
+                                            <div class="effect-container">
+                                                <img class="effect-icon" src="assets/effect_icons/Sword_of_Edicts_(self_status).png"></td>
+                                                <p class="effect-text">Sword of Edicts:</p>
+                                                <input class="js--setting" data-setting-name="Zamorak sword of edicts" type="checkbox" id="Zamorak sword of edicts" name="Zamorak sword of edicts">
                                             </div>
                                             <div class="effect-container">
                                                 <img class="effect-icon" src="assets/effect_icons/Guardian's_Triumph_Edict_(self_status).png"></td>
@@ -595,17 +537,26 @@
                                                 <input class="js--setting" data-setting-name="Zamorak guardians triumph" type="number" id="Zamorak guardians triumph" name="Zamorak guardians triumph" step="1" value="0" min="0" max="6">
                                             </div>
                                             <div class="effect-container">
-                                                <img class="effect-icon" src="assets/effect_icons/Sword_of_Edicts_(self_status).png"></td>
-                                                <p class="effect-text">Sword of Edicts:</p>
-                                                <input class="js--setting" data-setting-name="Zamorak sword of edicts" type="number" id="Zamorak sword of edicts" name="Zamorak sword of edicts" step="1" value="0" min="0" max="6">
+                                                <img class="effect-icon" src="assets/effect_icons/Balance_of_Power_Edict_(self_status).webp"></td>
+                                                <p class="effect-text">Balance of power:</p>
+                                                <input class="js--setting" data-setting-name="Zamorak balance of power" type="number" id="Zamorak balance of power" name="Zamorak balance of power" step="1" value="0" min="0" max="6">
                                             </div>
                                             <div class="effect-container">
-                                                <p class="effect-text">NPC Size:</p>
-                                                <input class="js--setting" data-setting-name="size" type="number" id="size" name="size" step="1" value="3" min="1" max="8">
+                                                <img class="effect-icon" src="assets/effect_icons/Inner_Power_(self_status).webp"></td>
+                                                <p class="effect-text">Inner power (Raksha):</p>
+                                                <input class="js--setting" data-setting-name="Raksha inner power" type="number" id="Raksha inner power" name="Raksha inner power" step="1" value="0" min="0">
                                             </div>
                                             <div class="effect-container">
-                                                <p class="effect-text">Blocking:</p>
-                                                <input class="js--setting" data-setting-name="blocking" type="checkbox" id="blocking" name="blocking">
+                                                <img class="effect-icon" src="assets/effect_icons/Stone_of_Jas_(status).webp">
+                                                <p class="effect-text">Stone of Jas:</p>
+                                                <input class="js--setting" data-setting-name="stone of jas" type="number" id="stone of jas" name="stone of jas" step="1" value="0" min="0">
+                                                <p class="effect-text">%</p>
+                                            </div>
+                                            <div class="effect-container">
+                                                <img class="effect-icon" src="assets/effect_icons/Infernal_Puzzle_Box.png">
+                                                <p class="effect-text">Infernal Puzzle Box:</p>
+                                                <input class="js--setting" data-setting-name="Infernal puzzle box" type="number" id="Infernal puzzle box" name="Infernal puzzle box" step="1" value="0" min="0">
+                                                <p class="effect-text">%</p>
                                             </div>
                                         </div>
                                     </div>
@@ -623,13 +574,11 @@
             <td class="js--ability-title" data-cell="name"></td>
             <td class="js--ability-regular" data-cell="reg"></td>
             <td class="js--ability-splitsoul" data-cell="ss"></td>
-            <td class="js--ability-swift" data-cell="swift"></td>
-            <td class="js--ability-swift-ss" data-cell="swift-ss"></td>
             <td data-cell="weapon">
                 <select class="js--ability-weapon dropdown-select">
                 </select>
             </td>
         </tr>
     </template>
-    <script type="module" src="./js/range_calculator.js"></script>
+    <script type="module" src="./js/ranged_calculator.js"></script>
 </html>
