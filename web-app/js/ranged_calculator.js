@@ -17,10 +17,10 @@ function collectSettings() {
     'category': 'none',
 
     'ability damage': 0, //for manual override only
-    'level': 120,
+    'level': 99,
     'potion': 'elder overload',
     
-    'two-handed weapon': 1,
+    'two-handed weapon': 'bow of the last guardian',
     'main-hand weapon': 'blightbound',
     'off-hand weapon': 'off-hand blightbound',
     'shield': 1,
@@ -29,7 +29,7 @@ function collectSettings() {
     'body': 'elite dracolich top',
     'leg': 'elite dracolich bottom',
     'gloves': 'elite dracolich gloves',
-    'boots': 'foot wraps of the first necromancer',
+    'boots': 'elite dracolich boots',
     'necklace': 'essence of finality amulet (or)',
     'ring': 'reavers',
     'cape':'igneous kal-mor',
@@ -49,7 +49,7 @@ function collectSettings() {
     'flanking': 0,
     'flanking position': false,
     
-    'aura': 'mahjarrat',
+    'aura': 'reckless',
     'split soul': true,
     'bonus': 0,
     'cap': 30000,
@@ -66,6 +66,7 @@ function collectSettings() {
     //shared
     'revenge stacks': 0,
     'prayer': "ruination",
+    'swift':false,
 
     //pvn only
     'slayer helmet': 'none',
@@ -100,8 +101,6 @@ function collectSettings() {
     'Infernal puzzle box': false,
     'King black dragon wilderness portal': false,
     'Tokkul-zo': false,
-    'skeleton rage stacks': 0,
-    'haunted': false
 };
 
   document.querySelectorAll('.js--setting').forEach(node => {
@@ -139,12 +138,24 @@ function calculateDamages(settings) {
   document.querySelectorAll(".js--damages-table tr").forEach(row => {
     const key = row.getAttribute('data-ability-key');
     settings['split soul'] = false;
+    settings['swift'] = false;
     damages = abilities[key].calc('', settings, 1);
     row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
 
     // Recalculate with split soul
     settings['split soul'] = true;
+    settings['swift'] = false;
     damages = abilities[key].calc('', settings, 1);
     row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
+
+    settings['split soul'] = false;
+    settings['swift'] = true;
+    damages = abilities[key].calc('', settings, 1);
+    row.querySelector('.js--ability-swift').textContent = damages[damages.length-1];
+
+    settings['split soul'] = true;
+    settings['swift'] = true;
+    damages = abilities[key].calc('', settings, 1);
+    row.querySelector('.js--ability-swift-ss').textContent = damages[damages.length-1];
   })
 }

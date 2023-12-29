@@ -1,5 +1,29 @@
 const ranged_construction = {
     'two-handed weapons': {
+        "bow of the last guardian":{
+            "tier": 95,
+            "weaponDmg": 0
+        },
+        "eldritch crossbow":{
+            "tier": 92,
+            "weaponDmg": 0
+        },
+        "seren godbow":{
+            "tier": 92,
+            "weaponDmg": 0
+        },
+        "decimation":{
+            "tier": 88,
+            "weaponDmg": 0
+        },
+        "noxious longbow":{
+            "tier": 90,
+            "weaponDmg": 0
+        },
+        "zaryte bow":{
+            "tier": 80,
+            "weaponDmg": 0
+        },
     },
 
     'main-hand weapons': {
@@ -272,12 +296,12 @@ const ranged_construction = {
             "boost": 0.05
         },
         "reckless":{
-            "levels": 0.1,
+            "levels": 0.0,
             "boost": 0.1
         },
         "none aura":{
-            "levels": 0,
-            "boost": 0
+            "levels": 0.0,
+            "boost": 0.0
         },
         "equilibrium":{
             "levels": 0.0,
@@ -366,12 +390,152 @@ const ranged_construction = {
     },
 
     'abilities': {
-        "basic attack":{
+        "dazing shot":{
+            "fixed percent": 0.85,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'abil'
+        },
+        "greater dazing shot":{
+            "fixed percent": 0.85,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'abil'
+        },
+        "needle strike":{
+            "fixed percent": 0.85,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'abil'
+        },
+        "piercing shot":{
+            "fixed percent": 0.4,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'abil'
+        },
+        "piercing shot bound":{
+            "fixed percent": 0.4,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'abil'
+        },
+        "corruption shot":{
+            "fixed percent": 0.12,
+            "variable percent": 0.04,
+            "on hit effects": false,
+            "crit effects": false,
+            'category': 'abil'
+        },
+        "frag shot":{
+            "fixed percent": 0.25,
+            "variable percent": 0.066,
+            "on hit effects": false,
+            "crit effects": false,
+            'category': 'abil'
+        },
+        "snipe":{
+            "fixed percent": 1.5,
+            "variable percent": 0.5,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'abil'
+        },
+        "binding shot":{
             "fixed percent": 0.9,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
-            'category': 'dazing shot'
+            'category': 'abil'
+        },
+        "tight bindings":{
+            "fixed percent": 0.55,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "bombardment":{
+            "fixed percent": 1.2,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "shadow tendrils":{
+            "fixed percent": 3.8,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "snapshot":{
+            "fixed percent": 1.0,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "rapid fire":{
+            "fixed percent": 0.55,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "deadshot":{
+            "fixed percent": 1.0,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'ultimate'
+        },
+        "incendiary shot":{
+            "fixed percent": 2.7,
+            "variable percent": 0.6,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'ultimate'
+        },
+        "unload":{
+            "fixed percent": 1.2,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'ultimate'
+        },
+        "darkbow":{
+            "fixed percent": 2.15,
+            "variable percent": 0.5,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "bolg spec":{
+            "fixed percent": 2.5,
+            "variable percent": 0.5,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "sgb spec":{
+            "fixed percent": 1.25,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "magic shortbow":{
+            "fixed percent": 1.15,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
         },
     }
 }

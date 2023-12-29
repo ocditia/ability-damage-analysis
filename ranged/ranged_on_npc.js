@@ -22,8 +22,17 @@ class OnNPC {
       return dmg;
     }
   
-    calcAura(dmg, boost) {
-      return Math.floor(dmg * (1 + boost));
+    calcAura(dmg, boost, aura, swift) {
+      if (aura === 'reckless' && swift === true) {
+        dmg = dmg
+      }
+      else if (aura === 'reckless' && swift === false) {
+        dmg = Math.floor(dmg * (1 + boost));
+      }
+      else {
+        dmg = Math.floor(dmg * (1 + boost));
+      }
+      return dmg;
     }
 
     calcCryptbloom(dmg,flag) {
@@ -112,7 +121,7 @@ class OnNPC {
       dmg = this.calcVuln(dmg,settings['vulnerability']);
       dmg = this.calcSlayerPerk(dmg,settings['slayer perk']);
       dmg = this.calcSlayerSigil(dmg,settings['slayer sigil']);
-      dmg = this.calcAura(dmg, construction['auras'][settings['aura']]['boost']);
+      dmg = this.calcAura(dmg,construction['auras'][settings['aura']]['boost'],settings['aura'], settings['swift']);
 
       //unknown order of buffs
       dmg = this.calcCryptbloom(dmg,settings['death spores']);

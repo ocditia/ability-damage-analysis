@@ -1,11 +1,46 @@
 const dazing_shot = require("./abils/dazing_shot");
+const greater_dazing_shot = require("./abils/greater_dazing_shot");
+const needle_strike = require("./abils/needle_strike");
+const piercing_shot = require("./abils/piercing_shot");
+const piercing_shot_bound = require("./abils/piercing_shot_bound");
+const corruption_shot = require("./abils/corruption_shot");
 
 const abilities = {
   'Dazing Shot': {
     title: 'Dazing Shot',
     calc: dazing_shot,
-    icon: 'https://imgur.com/MVogErK.png',
+    icon: 'https://i.imgur.com/RgGEGKO.png',
+    weapons: ['2h'],
+  },
+  'Greater Dazing Shot': {
+    title: 'Greater Dazing Shot',
+    calc: greater_dazing_shot,
+    icon: 'https://i.imgur.com/gYyw3Xz.png',
+    weapons: ['2h'],
+  },
+  'Needle Strike': {
+    title: 'Needle Strike',
+    calc: needle_strike,
+    icon: 'https://i.imgur.com/guilxE7.png',
     weapons: ['Dw'],
+  },
+  'Piercing Shot': {
+    title: 'Piercing Shot',
+    calc: piercing_shot,
+    icon: 'https://i.imgur.com/RQcz4di.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Piercing Shot Bound': {
+    title: 'Piercing Shot Bound',
+    calc: piercing_shot_bound,
+    icon: 'https://i.imgur.com/RQcz4di.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Corruption Shot': {
+    title: 'Corruption Shot',
+    calc: corruption_shot,
+    icon: 'https://i.imgur.com/YRLh5SZ.png',
+    weapons: ['2h','Dw','Md','Ms'],
   },
 }
 

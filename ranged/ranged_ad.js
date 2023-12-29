@@ -56,7 +56,7 @@ class AbilityDmg {
       let percentBoost = construction['potions'][settings['potion']]['percent'];
       let flatBoost = construction['potions'][settings['potion']]['levels'];
 
-      return Math.floor(level * (1 + percentBoost)) + flatBoost;
+      return Math.floor(level * (1 + percentBoost) * (1)) + flatBoost;
     }
 
     getTier(type,settings) {
