@@ -130,32 +130,35 @@ function buildDamagesTable(abilities) {
     ability.weapons.forEach(item =>  {
       weaponSelect.add(new Option(item, item))
     })
+
     table.appendChild(copy);
   }
 }
 
-function calculateDamages(settings) {
+function calculateDamages(settings, type) {
   document.querySelectorAll(".js--damages-table tr").forEach(row => {
     const key = row.getAttribute('data-ability-key');
     settings['split soul'] = false;
     settings['swift'] = false;
-    damages = abilities[key].calc('', settings, 1);
+    damages = abilities[key].calc(type, settings, 1);
     row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
 
     // Recalculate with split soul
     settings['split soul'] = true;
     settings['swift'] = false;
-    damages = abilities[key].calc('', settings, 1);
+    damages = abilities[key].calc(type, settings, 1);
     row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
 
+    // Recalculate with swift
     settings['split soul'] = false;
     settings['swift'] = true;
-    damages = abilities[key].calc('', settings, 1);
+    damages = abilities[key].calc(type, settings, 1);
     row.querySelector('.js--ability-swift').textContent = damages[damages.length-1];
 
+    // Recalculate with swift and split soul
     settings['split soul'] = true;
     settings['swift'] = true;
-    damages = abilities[key].calc('', settings, 1);
+    damages = abilities[key].calc(type, settings, 1);
     row.querySelector('.js--ability-swift-ss').textContent = damages[damages.length-1];
   })
 }
