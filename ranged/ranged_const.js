@@ -419,7 +419,7 @@ const ranged_construction = {
             'category': 'abil'
         },
         "piercing shot bound":{
-            "fixed percent": 0.4,
+            "fixed percent": 0.7,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
