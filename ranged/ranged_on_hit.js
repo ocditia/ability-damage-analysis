@@ -20,11 +20,11 @@ class OnHit {
     return Math.floor(buff * (1 + 0.01 * aurora))
   }
 
-  calcSwift(dmg, flag) {
+  calcSwift(buff, flag) {
     if (flag === true) {
-      dmg = Math.floor(dmg * 1.5);
+      buff = Math.floor(buff * (1 + 0.5));
     }
-    return dmg;
+    return buff;
   } 
 
   calcRevenge(buff,type,revengeStacks) {
@@ -129,7 +129,7 @@ class OnHit {
         //calculate precise and equilibrium
         let dmg = this.calcPrecise(fixed,variable,settings['precise']);
         dmg = this.calcEquilibrium(dmg[0],dmg[1],settings['equilibrium'],settings['aura']);
-      
+        
         return [dmg[0],dmg[1]];
       }
   }

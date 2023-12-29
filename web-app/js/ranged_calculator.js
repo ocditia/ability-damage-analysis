@@ -38,8 +38,8 @@ function collectSettings() {
     'level 20 armour': true,
 
     //perks
-    'precise': 0,
-    'equilibrium': 0,
+    'precise': 6,
+    'equilibrium': 2,
     'genocidal percent': 0,
     'spendthrift': 0,
     'ruthless rank': 0,
@@ -67,7 +67,7 @@ function collectSettings() {
     //shared
     'revenge stacks': 0,
     'prayer': "ruination",
-    'swift':false,
+    'swift': false,
 
     //pvn only
     'slayer helmet': 'none',

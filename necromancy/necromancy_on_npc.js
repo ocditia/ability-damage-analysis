@@ -127,16 +127,6 @@ class OnNPC {
       dmg = this.calcSwordofEdicts(dmg,settings['Zamorak sword of edicts']);
       dmg = this.calcBalanceofPower(dmg,settings['Zamorak balance of power']);
       dmg = this.calcInnerPower(dmg,settings['Raksha inner power']);
-
-
-      //zamorak inner chaos
-      //zamorak guardians triumph
-      //zamorak sword of edicts
-      //telos red beam
-      //telos black beam
-      //infernal puzzle box
-      //kbd wildy portal
-      //tokkul-zo
         
       return dmg;
     }
@@ -147,7 +137,7 @@ class OnNPC {
         onNpcDmg.push(this.calcOnNpc(i,settings,AD));
       }
       return onNpcDmg;
-  }
+    }
   }
   
 module.exports = OnNPC;

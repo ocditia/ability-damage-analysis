@@ -296,7 +296,7 @@ const ranged_construction = {
             "boost": 0.05
         },
         "reckless":{
-            "levels": 0.0,
+            "levels": 0.1,
             "boost": 0.1
         },
         "none aura":{

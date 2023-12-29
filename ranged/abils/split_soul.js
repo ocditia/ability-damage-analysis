@@ -8,25 +8,27 @@ function split_soul(dmgList, settings) {
         for (var i = 0; i < dmgList.length; i++) {
             let hit = dmgList[i];
             let soulSplit = 0;
-            //no aos proc
             
             if (hit > 2000) {
                 soulSplit = soulSplit + 200;
                 hit = hit - 2000;
+
                 if (hit > 2000) {
                 soulSplit = soulSplit + 100;
                 hit = hit - 2000;
 
-                soulSplit = soulSplit + Math.floor(0.1 * hit);
+                soulSplit = soulSplit + Math.floor(0.0125 * hit);
                 hit = 0
                 }
+                
                 else {
-                    soulSplit = soulSplit + Math.floor(0.1 * hit);
+                    soulSplit = soulSplit + Math.floor(0.05 * hit);
+                    hit = 0;
                 }
             }
             else {
                 soulSplit = soulSplit + Math.floor(0.1 * hit);
-                hit = hit - hit
+                hit = 0;
             }
 
             if (settings['necklace'] in ["Essence of finality amulet (or)","Essence of finality amulet","Amulet of souls (or)","Amulet of souls"]) {

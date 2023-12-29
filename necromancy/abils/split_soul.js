@@ -17,11 +17,11 @@ function split_soul(dmgList, settings) {
                 soulSplit = soulSplit + 100;
                 hit = hit - 2000;
 
-                soulSplit = soulSplit + Math.floor(0.1 * hit);
+                soulSplit = soulSplit + Math.floor(0.0125 * hit);
                 hit = 0
                 }
                 else {
-                    soulSplit = soulSplit + Math.floor(0.1 * hit);
+                    soulSplit = soulSplit + Math.floor(0.05 * hit);
                 }
             }
             else {

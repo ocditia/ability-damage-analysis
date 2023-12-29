@@ -53,7 +53,7 @@ class AbilityDmg {
     
     calcLevel(settings) {
       let level = settings['level'];
-      let percentBoost = construction['potions'][settings['potion']]['percent'];
+      let percentBoost = construction['potions'][settings['potion']]['percent'] + construction['auras'][settings['aura']]['levels'];
       let flatBoost = construction['potions'][settings['potion']]['levels'];
 
       return Math.floor(level * (1 + percentBoost) * (1)) + flatBoost;
