@@ -16,8 +16,8 @@ function binding_shot(type, settings, numberOfHits) {
     const AVG_INS = new Avg();
     const Helper = new RangedHelper(); 
     let abil_val = 'binding shot'
-    const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
-    const variablePercent = construction['abilities'][abil_val]['variable percent'];
+    let fixedPercent = construction['abilities'][abil_val]['fixed percent'];
+    let variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
 
     if (settings['flanking position'] === true) {

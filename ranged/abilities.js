@@ -77,7 +77,7 @@ const abilities = {
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Tight bindings': {
-    title: 'Binding shot',
+    title: 'tight bindings',
     calc: tight_bindings,
     icon: 'https://imgur.com/YSnjnQm.png',
     weapons: ['2h','Dw','Md','Ms'],

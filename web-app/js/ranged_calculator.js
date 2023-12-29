@@ -138,9 +138,10 @@ function buildDamagesTable(abilities) {
 function calculateDamages(settings, type) {
   document.querySelectorAll(".js--damages-table tr").forEach(row => {
     const key = row.getAttribute('data-ability-key');
+    const weapon = row.querySelector('.js--ability-weapon').value;
     settings['split soul'] = false;
     settings['swift'] = false;
-    damages = abilities[key].calc(type, settings, 1);
+    damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
 
     // Recalculate with split soul
