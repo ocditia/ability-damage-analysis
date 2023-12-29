@@ -15,7 +15,7 @@ function greater_ricochet_1(type, settings, numberOfHits) {
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new RangedHelper(); 
-    let abil_val = 'greater ricochet 1'
+    let abil_val = 'greater ricochet 3'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];

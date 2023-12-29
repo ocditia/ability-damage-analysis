@@ -16,6 +16,10 @@ const snapshot = require("./abils/snapshot");
 const rapid_fire = require("./abils/rapid_fire");
 const ricochet = require("./abils/ricochet");
 const greater_ricochet = require("./abils/greater_ricochet");
+const incendiary_shot = require("./abils/incendiary_shot");
+const unload = require("./abils/unload");
+const dark_bow_spec = require("./abils/dark_bow_spec");
+const bolg_spec = require("./abils/bolg_spec");
 
 const abilities = {
   'Dazing Shot': {
@@ -106,6 +110,30 @@ const abilities = {
     title: 'Greater ricochet',
     calc: greater_ricochet,
     icon: 'https://imgur.com/CT7UsaA.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Incendiary shot': {
+    title: 'Incendiary shot',
+    calc: incendiary_shot,
+    icon: 'https://imgur.com/2VFw7f9.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Unload': {
+    title: 'Unload',
+    calc: unload,
+    icon: 'https://imgur.com/mr7nfle.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Darkbow': {
+    title: 'Darkbow',
+    calc: dark_bow_spec,
+    icon: 'https://imgur.com/LCEvnr6.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Bolg': {
+    title: 'Bolg',
+    calc: bolg_spec,
+    icon: 'https://imgur.com/0BGZGpv.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }
