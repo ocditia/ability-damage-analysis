@@ -496,8 +496,8 @@ const ranged_construction = {
             'category': 'threshold'
         },
         "shadow tendrils":{
-            "fixed percent": 3.8,
-            "variable percent": 0.2,
+            "fixed percent": 0.7,
+            "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
@@ -516,12 +516,19 @@ const ranged_construction = {
             "crit effects": true,
             'category': 'threshold'
         },
-        "deadshot":{
+        "deadshot - initial hit":{
             "fixed percent": 1.0,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'ultimate'
+        },
+        "deadshot - bleed hit":{
+            "fixed percent": 0.7,
+            "variable percent": 0.0,
+            "on hit effects": false,
+            "crit effects": false,
+            'category': 'bleed'
         },
         "incendiary shot":{
             "fixed percent": 2.7,
