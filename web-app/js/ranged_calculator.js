@@ -48,6 +48,7 @@ function collectSettings() {
     'biting': 4,
     'flanking': 0,
     'flanking position': false,
+    'caroming rank': 0,
     
     'aura': 'reckless',
     'split soul': true,
@@ -117,7 +118,6 @@ function collectSettings() {
 }
 
 function buildDamagesTable(abilities) {
-  console.log("here")
   const table = document.querySelector(".js--damages-table")
   const template = document.querySelector("#damage-table-row")
 

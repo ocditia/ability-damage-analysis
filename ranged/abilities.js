@@ -14,6 +14,8 @@ const tight_bindings = require("./abils/tight_bindings");
 const bombardment = require("./abils/bombardment");
 const snapshot = require("./abils/snapshot");
 const rapid_fire = require("./abils/rapid_fire");
+const ricochet = require("./abils/ricochet");
+const greater_ricochet = require("./abils/greater_ricochet");
 
 const abilities = {
   'Dazing Shot': {
@@ -92,6 +94,18 @@ const abilities = {
     title: 'Rapid fire',
     calc: rapid_fire,
     icon: 'https://imgur.com/hCqaksE.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Ricochet': {
+    title: 'Ricochet',
+    calc: ricochet,
+    icon: 'https://imgur.com/Ym89Yhq.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Greater ricochet': {
+    title: 'Greater ricochet',
+    calc: greater_ricochet,
+    icon: 'https://imgur.com/CT7UsaA.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }

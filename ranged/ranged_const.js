@@ -446,6 +446,34 @@ const ranged_construction = {
             "crit effects": true,
             'category': 'abil'
         },
+        "ricochet":{
+            "fixed percent": 0.55,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "greater ricochet 1":{
+            "fixed percent": 0.55,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "greater ricochet 2":{
+            "fixed percent": 0.25,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "greater ricochet 3":{
+            "fixed percent": 0.08,
+            "variable percent": 0.04,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
         "binding shot":{
             "fixed percent": 0.9,
             "variable percent": 0.2,
