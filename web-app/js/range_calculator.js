@@ -20,18 +20,18 @@ function collectSettings() {
     'potion': 'elder overload',
     
     'two-handed weapon': 1,
-    'main-hand weapon': 'omni guard',
-    'off-hand weapon': 'soulbound lantern',
+    'main-hand weapon': 'blightbound crossbow',
+    'off-hand weapon': 'blightbound crossbow',
     'shield': 1,
     'defender': 1,
-    'helmet': 'crown of the first necromancer',
-    'body': 'robe top of the first necromancer',
-    'leg': 'robe bottom of the first necromancer',
-    'gloves': 'hand wraps of the first necromancer',
-    'boots': 'foot wraps of the first necromancer',
+    'helmet': 'elite dracolich',
+    'body': 'elite dracolich',
+    'leg': 'elite dracolich',
+    'gloves': 'elite dracolich',
+    'boots': 'elite dracolich',
     'necklace': 'essence of finality amulet (or)',
-    'ring': 'reavers',
-    'cape':'igneous kal-mor',
+    'ring': 'stalkers',
+    'cape':'igneous kal-xil',
     'pocket slot': 'grimoire',
     'reaper crew': true,
     'level 20 armour': true,
@@ -102,6 +102,8 @@ function collectSettings() {
 
     'size':3,
     'blocking':false,
+
+    'enchantment of shadows': false,
 };
 
   document.querySelectorAll('.js--setting').forEach(node => {

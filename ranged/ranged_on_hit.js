@@ -1,9 +1,18 @@
 const construction = require('./ranged_const')
 
 class OnHit {
-  calcScriptureOfFul(buff,pocket) {
-    if (pocket === 'scripture of ful') {
-      buff = buff * (1 + 0.2);
+  calcAdditives(buff,pocket,needle) {
+    if (pocket === 'scripture of ful' && needle === true) {
+      buff = buff * (1.27);
+    }
+    else if (pocket === 'scripture of ful' && needle === false) {
+      buff = buff * (1.2);
+    }
+    else if (needle === true) {
+      buff = buff * (1.07);
+    }
+    else{
+      buff = buff;
     }
     return buff;
   }
@@ -94,7 +103,7 @@ class OnHit {
       else {
         let buff = 10000
         //all buffs in order of application
-        buff = this.calcScriptureOfFul(buff,settings['pocket slot']); //assumed on
+        buff = this.calcAdditives(buff,settings['pocket slot'], settings['needle']); //assumed on
         buff = this.calcStoneOfJas(buff,settings['stone of jas']);
         buff = this.calcPrayer(buff,settings['prayer']);
         buff = this.calcRevenge(buff,type,settings['revenge stacks']);
