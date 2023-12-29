@@ -6,6 +6,7 @@ const piercing_shot_bound = require("./abils/piercing_shot_bound");
 const corruption_shot = require("./abils/corruption_shot");
 const fragmentation_shot = require("./abils/fragmentation_shot");
 const snipe = require("./abils/snipe");
+const binding_shot = require("./abils/binding_shot");
 
 const abilities = {
   'Dazing Shot': {
@@ -35,7 +36,7 @@ const abilities = {
   'Piercing Shot Bound': {
     title: 'Piercing Shot Bound',
     calc: piercing_shot_bound,
-    icon: 'https://i.imgur.com/RQcz4di.png',
+    icon: 'https://imgur.com/W1bzoPX.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Corruption Shot': {
@@ -54,6 +55,12 @@ const abilities = {
     title: 'Snipe',
     calc: snipe,
     icon: 'https://i.imgur.com/oEOkyfc.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Binding shot': {
+    title: 'Binding shot',
+    calc: binding_shot,
+    icon: 'https://imgur.com/dQu8Pha.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }
