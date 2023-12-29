@@ -475,15 +475,15 @@ const ranged_construction = {
             'category': 'basic'
         },
         "binding shot":{
-            "fixed percent": 0.9,
-            "variable percent": 0.2,
+            "fixed percent": 0.55,
+            "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'abil'
         },
         "tight bindings":{
-            "fixed percent": 0.55,
-            "variable percent": 0.1,
+            "fixed percent": 1.1,
+            "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
