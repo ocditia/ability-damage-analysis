@@ -19,11 +19,6 @@ function piercing_shot(type, settings, numberOfHits) {
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
-
-    if (settings['flanking position'] === true) {
-        fixedPercent += fixedPercent * settings['flanking'] * 0.4;
-        variablePercent += variablePercent * settings['flanking'] * 0.4;
-    }
     
     const hits = []
    

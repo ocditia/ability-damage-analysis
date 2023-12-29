@@ -8,23 +8,18 @@ const split_soul = require('./split_soul')
 const construction = require('../ranged_const')
 const { channel } = require('diagnostics_channel')
 
-function binding_shot(type, settings, numberOfHits) {
+function bombardment(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new RangedHelper(); 
-    let abil_val = 'binding shot'
+    let abil_val = 'bombardment'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
 
-    if (settings['flanking position'] === true) {
-        fixedPercent += fixedPercent * settings['flanking'] * 0.4;
-        variablePercent += variablePercent * settings['flanking'] * 0.4;
-    }
-    
     const hits = []
    
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
@@ -71,5 +66,5 @@ function binding_shot(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = binding_shot;
+module.exports = bombardment;
 

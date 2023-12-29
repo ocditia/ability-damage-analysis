@@ -1,3 +1,6 @@
+import bombardment from "./abils/bombardment";
+import rapid_fire from "./abils/rapid_fire";
+
 const dazing_shot = require("./abils/dazing_shot");
 const greater_dazing_shot = require("./abils/greater_dazing_shot");
 const needle_strike = require("./abils/needle_strike");
@@ -7,6 +10,10 @@ const corruption_shot = require("./abils/corruption_shot");
 const fragmentation_shot = require("./abils/fragmentation_shot");
 const snipe = require("./abils/snipe");
 const binding_shot = require("./abils/binding_shot");
+const tight_bindings = require("./abils/tight_bindings");
+const bombardment = require("./abils/bombardment");
+const snapshot = require("./abils/snapshot");
+const rapid_fire = require("./abils/rapid_fire");
 
 const abilities = {
   'Dazing Shot': {
@@ -61,6 +68,30 @@ const abilities = {
     title: 'Binding shot',
     calc: binding_shot,
     icon: 'https://imgur.com/dQu8Pha.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Tight bindings': {
+    title: 'Binding shot',
+    calc: tight_bindings,
+    icon: 'https://imgur.com/YSnjnQm.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Bombardment': {
+    title: 'Bombardment',
+    calc: bombardment,
+    icon: 'https://imgur.com/ZkNfBkx.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Snapshot': {
+    title: 'Snapshot',
+    calc: snapshot,
+    icon: 'https://imgur.com/H8Ci5w6.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Rapid fire': {
+    title: 'Rapid fire',
+    calc: rapid_fire,
+    icon: 'https://imgur.com/hCqaksE.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }
