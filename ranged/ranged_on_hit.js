@@ -120,11 +120,11 @@ class OnHit {
         buff = this.calcRubyAurora(buff,settings['Ruby aurora']);
         buff = this.calcSwift(buff, settings['swift']);
         buff = this.calcRevenge(buff,type,settings['revenge stacks']);
-        buff = this.calcSpendthrift(buff,settings['perks']['spendthrift']); //causes a rounding-error
-        buff = this.calcRuthless(buff,settings['perks']['ruthless rank'],settings['perks']['ruthless stacks']);
+        //buff = this.calcSpendthrift(buff,settings['perks']['spendthrift']); //causes a rounding-error
+        buff = this.calcRuthless(buff,settings['ruthless rank'],settings['ruthless stacks']);
         buff = this.calcSlayerHelmet(buff,settings['slayer helmet']);
         buff = this.calcGuardHouse(buff,settings['fort forinthry guardhouse']);
-        buff = this.calcGenocidal(buff, settings['perks']['genocidal']);
+        buff = this.calcGenocidal(buff, settings['genocidal']);
         buff = this.calcSalveAmulet(buff,settings['necklace']);
         buff = this.calcRipperPassive(buff,settings['ripper demon passive']);
 
@@ -136,8 +136,8 @@ class OnHit {
         variable = Math.floor((variable * buff)/10000);
 
         //calculate precise and equilibrium
-        let dmg = this.calcPrecise(fixed,variable,settings['perks']['precise']);
-        dmg = this.calcEquilibrium(dmg[0],dmg[1],settings['aura'],settings['perks']['equilibrium']);
+        let dmg = this.calcPrecise(fixed,variable,settings['precise']);
+        dmg = this.calcEquilibrium(dmg[0],dmg[1],settings['aura'],settings['equilibrium']);
       
         return [fixed,variable];
       }
