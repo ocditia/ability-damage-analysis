@@ -99,6 +99,9 @@ function collectSettings() {
     'Infernal puzzle box': false,
     'King black dragon wilderness portal': false,
     'Tokkul-zo': false,
+
+    'size':3,
+    'blocking':false,
 };
 
   document.querySelectorAll('.js--setting').forEach(node => {

@@ -15,7 +15,7 @@ function piercing_shot(type, settings, numberOfHits) {
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new rangedHelper(); 
-    let abil_val = 'piercing shot'
+    let abil_val = 'Piercing Shot'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
 
