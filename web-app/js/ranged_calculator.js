@@ -127,6 +127,9 @@ function buildDamagesTable(abilities) {
     copy.querySelector('.js--ability-title').textContent = ability.title;
     copy.querySelector('.js--ability-icon').setAttribute('src', ability.icon);
     const weaponSelect = copy.querySelector('.js--ability-weapon')
+    weaponSelect.addEventListener('change', (e) => {
+      calculateDamages(collectSettings())
+    });
     ability.weapons.forEach(item =>  {
       weaponSelect.add(new Option(item, item))
     })

@@ -132,6 +132,9 @@ function buildDamagesTable(abilities) {
     copy.querySelector('.js--ability-title').textContent = ability.title;
     copy.querySelector('.js--ability-icon').setAttribute('src', ability.icon);
     const weaponSelect = copy.querySelector('.js--ability-weapon')
+    weaponSelect.addEventListener('change', (e) => {
+      calculateDamages(collectSettings())
+    });
     ability.weapons.forEach(item =>  {
       weaponSelect.add(new Option(item, item))
     })
@@ -141,21 +144,22 @@ function buildDamagesTable(abilities) {
 
 function calculateDamages(settings) {
   document.querySelectorAll(".js--damages-table tr").forEach(row => {
+    const weapon = row.querySelector('.js--ability-weapon').value;
     const key = row.getAttribute('data-ability-key');
     settings['sunshine'] = false;
     settings['metamorphosis'] = false;
-    damages = abilities[key].calc('', settings, 1);
+    damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
 
     // Recalculate with sun
     settings['sunshine'] = true;
-    damages = abilities[key].calc('', settings, 1);
+    damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-sunshine').textContent = damages[damages.length-1];
 
     // Recalculate with meta
     settings['metamorphosis'] = true;
     settings['sunshine'] = false;
-    damages = abilities[key].calc('', settings, 1);
+    damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-metamorphosis').textContent = damages[damages.length-1];
   })
 }
