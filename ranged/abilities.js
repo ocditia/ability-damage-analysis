@@ -4,6 +4,8 @@ const needle_strike = require("./abils/needle_strike");
 const piercing_shot = require("./abils/piercing_shot");
 const piercing_shot_bound = require("./abils/piercing_shot_bound");
 const corruption_shot = require("./abils/corruption_shot");
+const fragmentation_shot = require("./abils/fragmentation_shot");
+const snipe = require("./abils/snipe");
 
 const abilities = {
   'Dazing Shot': {
@@ -40,6 +42,18 @@ const abilities = {
     title: 'Corruption Shot',
     calc: corruption_shot,
     icon: 'https://i.imgur.com/YRLh5SZ.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Fragmentation Shot': {
+    title: 'Fragmentation Shot',
+    calc: fragmentation_shot,
+    icon: 'https://i.imgur.com/n2Yyfn1.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Snipe': {
+    title: 'Snipe',
+    calc: snipe,
+    icon: 'https://i.imgur.com/oEOkyfc.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }

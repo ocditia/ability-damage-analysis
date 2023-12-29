@@ -432,7 +432,7 @@ const ranged_construction = {
             "crit effects": false,
             'category': 'abil'
         },
-        "frag shot":{
+        "fragmentation shot":{
             "fixed percent": 0.25,
             "variable percent": 0.066,
             "on hit effects": false,
