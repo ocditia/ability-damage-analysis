@@ -25,6 +25,17 @@ class OnHit {
     return buff * (1 + construction['prayers'][prayer]['boost']);
   }
 
+  calcRubyAurora(buff,aurora) {
+    return Math.floor(buff * (1 + 0.01 * aurora))
+  }
+
+  calcSwift(dmg, flag) {
+    if (flag === true) {
+      dmg = Math.floor(dmg * (1.5));
+    }
+    return dmg;
+  } 
+
   calcRevenge(buff,type,revengeStacks) {
     if (type === 'shield') {
       buff = buff * (1 + 0.05*revengeStacks);
@@ -106,6 +117,8 @@ class OnHit {
         buff = this.calcAdditives(buff,settings['pocket slot'], settings['needle']); //assumed on
         buff = this.calcStoneOfJas(buff,settings['stone of jas']);
         buff = this.calcPrayer(buff,settings['prayer']);
+        buff = this.calcRubyAurora(buff,settings['Ruby aurora']);
+        buff = this.calcSwift(buff, settings['swift']);
         buff = this.calcRevenge(buff,type,settings['revenge stacks']);
         buff = this.calcSpendthrift(buff,settings['perks']['spendthrift']); //causes a rounding-error
         buff = this.calcRuthless(buff,settings['perks']['ruthless rank'],settings['perks']['ruthless stacks']);

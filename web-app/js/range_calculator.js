@@ -61,6 +61,7 @@ function collectSettings() {
     //on-hit effects
     //pre-shared effects
     'stone of jas': 0,
+    'swift': false,
 
     //shared
     'Revenge': 0,
@@ -148,5 +149,17 @@ function calculateDamages(settings) {
     settings['split soul'] = true;
     damages = abilities[key].calc('', settings, 1);
     row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
+
+    // Recalculate with swift
+    settings['split soul'] = false;
+    settings['swift'] = true;
+    damages = abilities[key].calc('', settings, 1);
+    row.querySelector('.js--ability-swift').textContent = damages[damages.length-1];
+
+    // Recalculate with swift and split soul
+    settings['split soul'] = true;
+    settings['swift'] = true;
+    damages = abilities[key].calc('', settings, 1);
+    row.querySelector('.js--ability-swift-ss').textContent = damages[damages.length-1];
   })
 }
