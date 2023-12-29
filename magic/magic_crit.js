@@ -3,7 +3,9 @@ class Crit {
         let fcrit = 0.1 +
             (0.05 * settings['crit-i-kal']) +
             (0.01 * settings['kalgerion demon familiar']) +
-            (0.02 * settings['biting']);
+            (0.02 * settings['biting']) +
+            (0.04 * settings['channeller stacks']) +
+            (0.05 * ['conc stacks']); 
 
         if (settings['ring'] === 'reavers') {
             fcrit = fcrit + 0.05;
@@ -16,9 +18,9 @@ class Crit {
 
     critDmgBuff(dmg,settings) {
         let modifier = 0.2;
-        modifier = modifier + 0.05 * Math.floor((settings['level'] - 10))/10;
+        modifier = modifier + 0.05 * Math.floor((settings['level'] - 10))/10 + 0.025 * settings['channeller stacks'];
         if (settings['smoke cloud'] === true) {
-            modifier = modifier + 0.06;
+            modifier = modifier + 0.15;
         }
 
         return Math.floor(dmg * (1 + modifier));

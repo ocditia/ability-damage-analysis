@@ -1,4 +1,4 @@
-const construction = require('./necromancy_const')
+const construction = require('./magic_const')
 
 class OnHit {
   calcScriptureOfFul(buff,pocket) {
@@ -14,6 +14,20 @@ class OnHit {
 
   calcPrayer(buff,prayer) {
     return Math.floor(buff * (1 + construction['prayers'][prayer]['boost']));
+  }
+
+  calcSun(buff,flag){
+    if (flag === true) {
+      dmg = Math.floor(dmg * (1 + 0.5));
+    }
+    return dmg;
+  }
+
+  calcExsanguinate(dmg,stacks,category) {
+    if (category === 'basic') {
+      return dmg += Math.floor(dmg * 0.01 * stacks);
+    }
+    return dmg;  
   }
 
   calcRubyAurora(buff,aurora) {
@@ -101,6 +115,8 @@ class OnHit {
         buff = this.calcScriptureOfFul(buff,settings['pocket slot']); //assumed on
         buff = this.calcStoneOfJas(buff,settings['stone of jas']);
         buff = this.calcPrayer(buff,settings['prayer']);
+        buff = this.calcSun(buff,settings['sunshine']);
+        buff = this.calcExsanguinate(buff,settings['exsanguinate stacks'],settings['category'])
         buff = this.calcRubyAurora(buff,settings['Ruby aurora']);
         buff = this.calcRevenge(buff,type,settings['revenge stacks']);
         buff = this.calcSpendthrift(buff,settings['spendthrift']); //causes a rounding-error

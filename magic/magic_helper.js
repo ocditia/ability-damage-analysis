@@ -1,4 +1,4 @@
-class necromancyHelper{
+class magicHelper{
     damageObjectCreator(settings) {
         let obj = {
             'non-crit': {
@@ -60,4 +60,4 @@ class necromancyHelper{
     }
 }
 
-module.exports = necromancyHelper;
+module.exports = magicHelper;

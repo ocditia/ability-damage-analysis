@@ -175,17 +175,26 @@ const necromancy_construction = {
     },
 
     'boots': {
+        'enhanced blast diffusion boots':{
+            'bonus': 14.5
+        },
+        'hailfire boots':{
+            'bonus': 14.5
+        },
+        'virtus boots':{
+            'bonus': 12.7
+        }
     },
 
     'gloves': {
-        "deathdealer gloves (tier 80)":{
-            "bonus": 12.7
+        'kerapacs wrist wraps':{
+            'bonus': 13.5
         },
-        "deathdealer gloves (tier 90)":{
-            "bonus": 14.5
+        'celestial handwraps':{
+            'bonus': 13.5
         },
-        "hand wraps of the first necromancer":{
-            "bonus": 16
+        'virtus gloves':{
+            'bonus': 12.7
         }
     },
 
@@ -284,26 +293,30 @@ const necromancy_construction = {
         "equilibrium":{
             "levels": 0.0,
             "boost": 0.0
+        },
+        'maniacal':{
+            'levels': 0.1,
+            'boost': 0.1
         }
     },
 
     'prayers': {
-        "ruination":{
+        "affliction":{
             "boost": 0.12
         },
-        "sorrow":{
+        "torment":{
             "boost": 0.10
         },
-        "sanctity":{
+        "augury":{
             "boost": 0.08
         },
-        "accelerated decay":{
+        "overcharge":{
             "boost": 0.06
         },
-        "hastened decay":{
+        "super charge":{
             "boost": 0.06
         },
-        "decay":{
+        "charge":{
             "boost": 0.02
         }
     },
@@ -363,152 +376,227 @@ const necromancy_construction = {
     },
 
     'abilities': {
-        "basic attack":{
-            "fixed percent": 0.9,
-            "variable percent": 0.2,
+        "auto attack":{
+            "fixed percent": 0,
+            "variable percent": 0,
             "on hit effects": true,
             "crit effects": true,
-            'category': 'necro auto'
+            'category': 'auto attack'
         },
-        "skeleton auto":{
-            "fixed percent": 0.22,
-            "variable percent": 0.06,
-            "on hit effects": false,
-            "crit effects": false,
-            'category': 'conjure'
-        },
-        "finger of death":{
-            "fixed percent": 2.7,
-            "variable percent": 0.6,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
-        },
-        "touch of death":{
-            "fixed percent": 0.9,
+        "wrack":{
+            "fixed percent": 0.8,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
-        "death skulls":{
+        "wrack bound":{
+            "fixed percent": 1.04,
+            "variable percent": 0.26,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "wrack and ruin":{
+            "fixed percent": 1.6,
+            "variable percent": 0.4,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "wrack and ruin bound":{
+            "fixed percent": 2.2,
+            "variable percent": 0.4,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "magma tempest":{
+            "fixed percent": 0.15,
+            "variable percent": 0.04,
+            'category': 'basic'
+        },
+        "impact":{
+            "fixed percent": 0.55,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "chain":{
+            "fixed percent": 0.55,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'        
+        },
+        "sonic wave":{
+            "fixed percent": 0.85,
+            "variable percent": 0.2,
+            'on hit effects': true,
+            'crit effects': true,
+            'category': 'basic'
+        },
+        "greater sonic wave":{
+            "fixed percent": 1.05,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "concentrated blast 1":{
+            "fixed percent": 0.4,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "concentrated blast 2":{
+            "fixed percent": 0.4,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "concentrated blast 3":{
+            "fixed percent": 0.4,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "greater concentrated blast 1":{
+            "fixed percent": 0.42,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "greater concentrated blast 2":{
+            "fixed percent": 0.42,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "greater concentrated blast 3":{
+            "fixed percent": 0.42,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "dragon breath":{
+            "fixed percent": 1,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "combust":{
+            "fixed percent": 0.313,
+            "variable percent": 0.075,
+            "on hit effects": false,
+            "crit effects": false,
+            'category': 'basic'
+        },
+        "corruption blast":{
+            "fixed percent": 1.8,
+            "variable percent": 0.6,
+            "on hit effects": false,
+            "crit effects": false,
+            'category': 'basic'
+        },
+        "deep impact":{
+            "fixed percent": 1.1,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "detonate":{
+            "fixed percent": 1,
+            "variable percent": 2.5,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "smoke tendrils 1":{
+            "fixed percent": 0.55,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "smoke tendrils 2":{
+            "fixed percent": 0.65,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "smoke tendrils 3":{
+            "fixed percent": 0.75,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "smoke tendrils 4":{
+            "fixed percent": 0.85,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "asphyxiate":{
+            "fixed percent": 1,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "wild magic":{
+            "fixed percent": 1.15,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "tsunami":{
             "fixed percent": 2.25,
             "variable percent": 0.5,
             "on hit effects": true,
             "crit effects": true,
             'category': 'ultimate'
         },
-        "blood siphon - siphon":{
-            "fixed percent": 0.22,
-            "variable percent": 0.06,
-            'category': 'abil'
-        },
-        "blood siphon - hit":{
-            "fixed percent": 1.17,
-            "variable percent": 0.26,
+        "omnipower":{
+            "fixed percent": 2.7,
+            "variable percent": 0.6,
             "on hit effects": true,
             "crit effects": true,
-            'category': 'abil'
+            'category': 'ultimate'
         },
-        "zombie auto":{
-            "fixed percent": 0.18,
-            "variable percent": 0.04,
-            "on hit effects": false,
-            "crit effects": false,
-            'category': 'conjure'        
-        },
-        "zombie poison":{
-            "fixed percent": 0.08,
-            "variable percent": 0.04,
-            'category': 'poison'
-        },
-        "command zombie":{
-            "fixed percent": 3.6,
-            "variable percent": 0.8,
-            "on hit effects": false,
-            "crit effects": false,
-            'category': 'abil'
-        },
-        "ghost auto":{
-            "fixed percent": 0.18,
-            "variable percent": 0.04,
-            "on hit effects": false,
-            "crit effects": false,
-            'category': 'conjure'
-        },
-        "bloat - initial hit":{
-            "fixed percent": 1.35,
-            "variable percent": 0.3,
+        "igneous omnipower":{
+            "fixed percent": 0.9,
+            "variable percent": 0.9,
             "on hit effects": true,
             "crit effects": true,
-            'category': 'abil'
+            'category': 'ultimate'
         },
-        "bloat - bleed hit":{
-            "number of hits": 10,
+        "sunshine dot":{
+            "fixed percent": 0.1,
+            "variable percent": 0.1,
+            "on hit effects": false,
+            "crit effects": false,
             'category': 'dot'
         },
-        "soul sap":{
-            "fixed percent": 0.9,
-            "variable percent": 0.2,
+        "guthix staff":{
+            "fixed percent": 1.4,
+            "variable percent": 1.6,
             "on hit effects": true,
             "crit effects": true,
-            'category': 'basic'
-        },
-        "soul strike - main":{
-            "fixed percent": 1.35,
-            "variable percent": 0.3,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
-        },
-        "soul strike - aoe":{
-            "fixed percent": 0.9,
-            "variable percent": 0.2,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
-        },
-        "spectral scythe - 1":{
-            "fixed percent": 0.72,
-            "variable percent": 0.16,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
-        },
-        "spectral scythe - 2":{
-            "fixed percent": 1.8,
-            "variable percent": 0.4,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
-        },
-        "spectral scythe - 3":{
-            "fixed percent": 2.25,
-            "variable percent": 0.5,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
-        },
-        "volley of souls":{
-            "fixed percent": 1.35,
-            "variable percent": 0.3,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
-        },
-        "death grasp":{
-            "fixed percent": 4.05,
-            "variable percent": 4.95,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
-        },
-        "death essence":{
-            "fixed percent": 3.6,
-            "variable percent": 0.8,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'abil'
+            'category': 'special attack'
         }
     }
 }

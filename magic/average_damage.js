@@ -1,5 +1,5 @@
-const Crit = require('./necromancy_crit')
-const construction = require('./necromancy_const')
+const Crit = require('./magic_crit')
+const construction = require('./magic_const')
 
 class avgDmg {
     averageDamage(abil_val,dmg_list,critDmg_list,settings) {

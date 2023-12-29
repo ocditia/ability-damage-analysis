@@ -1,4 +1,4 @@
-const construction = require('./necromancy_const')
+const construction = require('./magic_const')
 
 class OnNPC {
     calcVuln(dmg, flag) {

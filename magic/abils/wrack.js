@@ -2,117 +2,59 @@ const AbilityDmg = require('../magic_ad')
 const OnNPC = require('../magic_on_npc')
 const OnHit = require('../magic_on_hit')
 const Crit = require('../magic_crit')
-const timeStrike = require('./timestrike')
+const NecroHelper = require('../magic_helper')
+const Avg = require('../average_damage')
+const construction = require('../magic_const')
 const { channel } = require('diagnostics_channel')
 
-function wrack(type, settings) {
-    const numberOfHits = 4
-    const fixedPercent = 0.4;
-    const variablePercent = 1.0;
-    const basic = true;
-    let channeler = 0;
-    const isChannel = true;
+function wrack(type, settings, numberOfHits) {
+    const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
-    const hits = []
-    
-    for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
+    const AVG_INS = new Avg();
+    const Helper = new NecroHelper(); 
+    let abil_val = 'wrack'
+    const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
+    const variablePercent = construction['abilities'][abil_val]['variable percent'];
+    settings['category'] = construction['abilities'][abil_val]['category'];
 
-        if (isChannel === true) {
-            channeler += 1
-        }
+    const hits = []
+   
+    for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
+        const damageObject = Helper.damageObjectCreator(settings);
 
         //calculates ability damage
-        let AD = settings['AD'];
+        let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
         
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);
         let variable = Math.floor(AD * variablePercent);
-
+        
         //applies on-hit effects
-        let onHit = HIT_INS.calcOnHit(fixed, variable, settings['prayer'], settings['boostedLvls'], settings['dharok'], settings['exsang'], settings['ful'], settings['rubyAurora'], settings['salve'], settings['precise'], settings['equilibrium'], settings['aura']['name'], basic);
+        let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
 
         //sets up for further calculations
-        fixed = onHit[0];
-        variable = onHit[1];
+        damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);
 
-        //normal roll calcs
-        const dmg = []
-        minCrit = CRIT_INS.minNCritRoll(fixed,variable);
-        for (var i = fixed; i < (fixed + variable); i++) {
-            let j = i;
-            if (j > minCrit) {
-                j = CRIT_INS.critDmgBuff(i,channeler,true);
-            }
+        //apply crit dmg
+        damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings);
 
-            j = NPC_INS.calcOnNpc(j, settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'],false);
+        //apply on-npc effects and hitcaps
+        damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings,AD);
+        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings,AD);     
 
-            if (j > settings['cap']) {
-                j = settings['cap'];
-            }
+        //apply hit caps
+        damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
+        damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
 
-            dmg.push(j)
-        }
-
-        //forced crit calcs
-        let fcritDmg = []
-        minFCrit = CRIT_INS.calcFCritDmg(fixed,variable);
-        for (var i = minFCrit; i < (fixed + variable); i++) {
-            i = CRIT_INS.critDmgBuff(i,channeler,true);
-            i = NPC_INS.calcOnNpc(i, settings['kww'], settings['enchFlame'], settings['vuln'], settings['cryptbloom'], settings['slayerPerk'], settings['slayerSigil'], settings['aura']['boost'], settings['scrimshaw'], false);
-
-            if (i > settings['cap']) {
-                i = settings['cap'];
-            }
-
-            fcritDmg.push(i)
-        }
-
-        //set min and max damage
-        let dmgMin = dmg[0];
-        let dmgMax = dmg[dmg.length-1];
-
-        //calc average damage
-        var regTotal = 0;
-        for(var i = 0; i < dmg.length; i++) {
-            regTotal += dmg[i];
-        }
-        var avgReg = regTotal / dmg.length;
-
-        var critTotal = 0;
-        for(var i = 0; i < fcritDmg.length; i++) {
-            critTotal += fcritDmg[i];
-        }
-        var avgFCrit = critTotal / fcritDmg.length;
-
-        fCritChance = CRIT_INS.calcFCritChance(0, settings['gconc'], settings['kalg'], settings['kalgSpec'], settings['reavers'], 0, settings['biting']);
-        let dmgAvg = fCritChance * avgFCrit + (1 - fCritChance) * avgReg;
-
-        //adds fsoa damage
-        if (settings['fsoa'] === true) {
-            fsoa = timeStrike(type, settings)
-            dmgMin = dmgMin + fsoa[fsoa.length -1][0];
-            dmgAvg = dmgAvg + fsoa[fsoa.length -1][1];
-            dmgMax = dmgMax + fsoa[fsoa.length -1][2];
-
-    hits.push([dmgMin,dmgAvg,dmgMax])
+        //calc min, avg, or max depending on request
+        hits.push(AVG_INS.returnDecider(damageObject,settings));
     }
-}
-
-    dmgMin = 0;
-    dmgAvg = 0;
-    dmgMax = 0;
-
-    for (i in hits) {
-        dmgMin += hits[i][0];
-        dmgAvg += hits[i][1];
-        dmgMax += hits[i][2];
-    }
-
-    hits.push([dmgMin,dmgAvg,dmgMax])
-    return hits;
+    
+    //calc total damage
+    hits.push(Helper.totalDamageCalc(hits));
+    return Helper.flooredList(hits);
 }
 
 module.exports = wrack;
-
