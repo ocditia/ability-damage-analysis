@@ -421,6 +421,8 @@ const magic_construction = {
         "magma tempest":{
             "fixed percent": 0.15,
             "variable percent": 0.04,
+            "on hit effects": true,
+            "crit effects": false,
             'category': 'basic'
         },
         "impact":{

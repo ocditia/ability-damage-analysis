@@ -63,7 +63,7 @@ function deadshot_initial_hit(type, settings, numberOfHits) {
         damageObject['crit']['list'] = Helper.listAdder(damageObject['crit']['list'],splitSoulCrit);
 
         //calc min, avg, or max depending on request
-        hits.push(AVG_INS.returnDecider(damageObject,settings));
+        hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
     }
     
     //calc total damage

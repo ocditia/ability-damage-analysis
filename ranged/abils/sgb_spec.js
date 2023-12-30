@@ -57,7 +57,7 @@ function sgb_spec(type, settings, numberOfHits) {
         damageObject['crit']['list'] = Helper.listAdder(damageObject['crit']['list'],splitSoulCrit);
 
         //calc min, avg, or max depending on request
-        hits.push(AVG_INS.returnDecider(damageObject,settings));
+        hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
 
         if (hitcount == 1) {
             fixed += Math.floor(fixed * 0.15);

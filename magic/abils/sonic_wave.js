@@ -49,7 +49,7 @@ function sonic_wave(type, settings, numberOfHits) {
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
         
         //calc min, avg, or max depending on request
-        hits.push(AVG_INS.returnDecider(damageObject,settings));
+        hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
     }
     
     //calc total damage
