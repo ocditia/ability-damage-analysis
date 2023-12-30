@@ -23,6 +23,7 @@ const bolg_spec = require("./abils/bolg_spec");
 const magic_short_bow_spec = require("./abils/magic_short_bow_spec");
 const deadshot = require("./abils/deadshot");
 const shadow_tendrils = require("./abils/shadow_tendrils");
+const sgb_spec = require("./abils/sgb_spec");
 
 const abilities = {
   'Dazing Shot': {
@@ -103,6 +104,12 @@ const abilities = {
     icon: 'https://imgur.com/ZkNfBkx.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
+  'Shadow tendrils': {
+    title: 'Shadow tendrils',
+    calc: shadow_tendrils,
+    icon: 'https://imgur.com/J8GLo1s.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
   'Snapshot': {
     title: 'Snapshot',
     calc: snapshot,
@@ -113,6 +120,12 @@ const abilities = {
     title: 'Rapid fire',
     calc: rapid_fire,
     icon: 'https://imgur.com/hCqaksE.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Deadshot': {
+    title: 'Deadshot',
+    calc: deadshot,
+    icon: 'https://imgur.com/5jLviCQ.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Incendiary shot': {
@@ -143,18 +156,6 @@ const abilities = {
     title: 'Magic shortbow',
     calc: magic_short_bow_spec,
     icon: 'https://imgur.com/wvfhltQ.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Deadshot': {
-    title: 'Deadshot',
-    calc: deadshot,
-    icon: 'https://imgur.com/5jLviCQ.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Shadow tendrils': {
-    title: 'Shadow tendrils',
-    calc: shadow_tendrils,
-    icon: 'https://imgur.com/J8GLo1s.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }

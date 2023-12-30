@@ -71,6 +71,13 @@ class OnNPC {
       return dmg;
     }
 
+    calcNope(dmg,flag) {
+      if (flag === true) {
+        dmg += Math.floor(dmg * 0.03);
+      }
+      return dmg;
+    }
+
     calcKBD(dmg,flag) {
       if (flag === true) {
         dmg += Math.floor(dmg * 0.1);
@@ -127,7 +134,8 @@ class OnNPC {
       dmg = this.calcSwordofEdicts(dmg,settings['Zamorak sword of edicts']);
       dmg = this.calcBalanceofPower(dmg,settings['Zamorak balance of power']);
       dmg = this.calcInnerPower(dmg,settings['Raksha inner power']);
-        
+      dmg = this.calcNope(dmg,settings['nopenopenope']);
+
       return dmg;
     }
 

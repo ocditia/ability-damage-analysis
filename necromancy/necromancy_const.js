@@ -14,6 +14,10 @@ const necromancy_construction = {
         "omni guard":{
             "tier": 95,
             "weaponDmg": 0
+        },
+        "none":{
+            "tier": 0,
+            "weaponDmg": 0
         }
     },
 
@@ -29,10 +33,18 @@ const necromancy_construction = {
         "Soulbound lantern":{
             "tier": 95,
             "weaponDmg": 0
+        },
+        "none":{
+            "tier": 0,
+            "weaponDmg": 0
         }
     },
 
     'shields': {
+        "none":{
+            "tier": 0,
+            "weaponDmg": 0
+        }
     },
 
     'defenders': {
@@ -47,6 +59,9 @@ const necromancy_construction = {
         },
         "crown of the first necromancer":{
             "bonus": 25
+        },
+        "none":{
+            "bonus": 0,
         }
     },
 
@@ -59,6 +74,9 @@ const necromancy_construction = {
         },
         "robe top of the first necromancer":{
             "bonus": 37
+        },
+        "none":{
+            "bonus": 0,
         }
     },
 
@@ -71,6 +89,9 @@ const necromancy_construction = {
         },
         "robe bottom of the first necromancer":{
             "bonus": 32
+        },
+        "none":{
+            "bonus": 0,
         }
     },
 
@@ -86,6 +107,9 @@ const necromancy_construction = {
         },
         "silverhawk boots (tier 60)":{
             "bonus": 6.9
+        },
+        "none":{
+            "bonus": 0,
         }
     },
 
@@ -98,6 +122,9 @@ const necromancy_construction = {
         },
         "hand wraps of the first necromancer":{
             "bonus": 16
+        },
+        "none":{
+            "bonus": 0,
         }
     },
 
@@ -125,6 +152,9 @@ const necromancy_construction = {
         },
         "salve":{
             "bonus": 0
+        },
+        "none":{
+            "bonus": 0,
         }
     },
 
@@ -143,6 +173,9 @@ const necromancy_construction = {
         },
         "asylum surgeon ring":{
             "bonus": 21
+        },
+        "none":{
+            "bonus": 0,
         }
     },
 
@@ -164,6 +197,9 @@ const necromancy_construction = {
         },
         "skillcape":{
             "bonus": 21.6
+        },
+        "none":{
+            "bonus": 0,
         }
     },
 
@@ -185,6 +221,9 @@ const necromancy_construction = {
         },
         "god book":{
             "bonus": 5
+        },
+        "none":{
+            "bonus": 0,
         }
     },
 
@@ -194,6 +233,10 @@ const necromancy_construction = {
             "boost": 0.05
         },
         "equilibrium":{
+            "levels": 0.0,
+            "boost": 0.0
+        },
+        "none":{
             "levels": 0.0,
             "boost": 0.0
         }
@@ -217,6 +260,9 @@ const necromancy_construction = {
         },
         "decay":{
             "boost": 0.02
+        },
+        "none":{
+            "boost": 0.0
         }
     },
 
@@ -247,6 +293,11 @@ const necromancy_construction = {
         {
             "levels": 1,
             "percent": 0.08
+        },
+        "none":
+        {
+            "levels": 0,
+            "percent": 0.0
         }
     },
 

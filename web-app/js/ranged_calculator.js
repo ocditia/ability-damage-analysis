@@ -55,6 +55,9 @@ function collectSettings() {
     'bonus': 0,
     'cap': 30000,
 
+    'npc size': 1,
+    'blocking':false,
+
     //on-cast effects
     'Zamorak balance of power': 0,
     'Sophanem corrupted': 0,
@@ -102,7 +105,7 @@ function collectSettings() {
     'Infernal puzzle box': false,
     'King black dragon wilderness portal': false,
     'Tokkul-zo': false,
-};
+  };
 
   document.querySelectorAll('.js--setting').forEach(node => {
     let val = node.value;
