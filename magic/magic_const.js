@@ -1,4 +1,4 @@
-const necromancy_construction = {
+const magic_construction = {
     'two-handed weapons': {
         'fractured staff of armadyl':{
             'tier': 95,
@@ -36,10 +36,6 @@ const necromancy_construction = {
             'tier': 82,
             'weapondmg': 0
         },
-        'inquisitor staff (e)':{
-            'tier': 80,
-            'weapondmg': 0
-        },
         'inquisitor staff':{
             'tier': 80,
             'weapondmg': 0
@@ -47,8 +43,7 @@ const necromancy_construction = {
         'chaotic staff':{
             'tier': 80,
             'weapondmg': 0
-        }
-        
+        } 
     },
 
     'main-hand weapons': {
@@ -148,7 +143,7 @@ const necromancy_construction = {
         'anima core body of seren':{
             'bonus': 30.5
         },
-        'virtus rove top':{
+        'virtus robe top':{
             'bonus': 30.5
         }
     },
@@ -169,7 +164,7 @@ const necromancy_construction = {
         'anima core legs of seren':{
             'bonus': 25.4
         },
-        'virtus rove legs':{
+        'virtus robe legs':{
             'bonus': 25.4
         }
     },
@@ -187,14 +182,26 @@ const necromancy_construction = {
     },
 
     'gloves': {
+        'enhanced kerapacs wrist wraps':{
+            'bonus': 14.5
+        },
         'kerapacs wrist wraps':{
             'bonus': 13.5
+        },
+        "deathtouch":{
+            "bonus": 14.5
         },
         'celestial handwraps':{
             'bonus': 13.5
         },
         'virtus gloves':{
             'bonus': 12.7
+        },
+        "cinderbane":{
+            "bonus": 11
+        },
+        "none gloves":{
+            "bonus": 0
         }
     },
 
@@ -244,13 +251,13 @@ const necromancy_construction = {
     },
 
     'capes': {
-        "igneous kal-mor":{
+        "igneous kal-mej":{
             "bonus": 43
         },
         "completionist":{
             "bonus": 31.5
         },
-        "tokhaar-kal-mor":{
+        "tokhaar-kal-mej":{
             "bonus": 33
         },
         "god cape":{
@@ -601,4 +608,4 @@ const necromancy_construction = {
     }
 }
 
-module.exports = necromancy_construction;
+module.exports = magic_construction;

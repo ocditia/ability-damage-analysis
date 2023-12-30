@@ -9,7 +9,7 @@ class AbilityDmg {
 
       let AD = 0
       //two-handed AD
-      if (type === 'two-hand') {
+      if (type === '2h') {
         AD = Math.floor(2.5 * this.calcLevel(settings)) + Math.floor(1.25 * this.calcLevel(settings)) + Math.floor(14.4 * this.getTier('two-hand',settings) + 1.5 * this.calcBonus(settings));
       } 
       
@@ -17,13 +17,13 @@ class AbilityDmg {
       else { 
         const mhAbilityDmg = Math.floor(2.5 * this.calcLevel(settings)) + Math.floor(9.6 * this.getTier('main-hand',settings) + this.calcBonus(settings));
         let ohAbilityDmg = 0
-        if (type === 'shield') {
+        if (type === 'MS') {
           ohAbilityDmg = 0
         } 
-        else if (type === 'defender') {
+        else if (type === 'MD') {
           ohAbilityDmg = Math.floor(0.5 * (Math.floor(2.5 * this.calcLevel(settings)) + Math.floor(9.6 * Math.floor(0.5 * this.getTier('defender',settings)) + this.calcBonus(settings))));
         } 
-        else if (type === 'dual-wield') {
+        else if (type === 'Dw') {
           ohAbilityDmg = Math.floor(0.5 * (Math.floor(2.5 * this.calcLevel(settings)) + Math.floor(9.6 * this.getTier('off-hand',settings) + this.calcBonus(settings))));        
         }
 
