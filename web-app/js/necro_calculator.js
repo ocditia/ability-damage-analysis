@@ -148,7 +148,7 @@ function calculateDamages(settings) {
 
     // Recalculate with split soul
     settings['split soul'] = true;
-    damages = abilities[key].calc('', settings, 1);
+    damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
   })
 }
