@@ -496,8 +496,8 @@ const ranged_construction = {
             'category': 'threshold'
         },
         "shadow tendrils":{
-            "fixed percent": 3.8,
-            "variable percent": 0.2,
+            "fixed percent": 0.7,
+            "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'

@@ -508,11 +508,11 @@ const magic_construction = {
             'category': 'basic'
         },
         "corruption blast":{
-            "fixed percent": 1.8,
-            "variable percent": 0.6,
+            "fixed percent": 0.12,
+            "variable percent": 0.04,
             "on hit effects": false,
             "crit effects": false,
-            'category': 'basic'
+            'category': 'abil'
         },
         "deep impact":{
             "fixed percent": 1.1,

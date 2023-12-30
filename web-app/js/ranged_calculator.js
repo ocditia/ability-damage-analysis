@@ -53,7 +53,7 @@ function collectSettings() {
     'aura': 'reckless',
     'split soul': true,
     'bonus': 0,
-    'cap': 30000,
+    'hitcap': 30000,
 
     'npc size': 1,
     'blocking':false,

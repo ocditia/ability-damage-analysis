@@ -52,7 +52,7 @@ function collectSettings() {
     'aura': 'mahjarrat',
     'split soul': true,
     'bonus': 0,
-    'cap': 30000,
+    'hitcap': 30000,
 
     'inquisitor': false,
 
