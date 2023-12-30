@@ -30,13 +30,13 @@ class AbilityDmg {
         AD = mhAbilityDmg + ohAbilityDmg;
       }
 
-      AD = AD * (1 + settings['flow stacks']/100);
+      AD = Math.floor(AD * (1 + settings['flow stacks']/100));
 
       if (settings['two-handed weapon'] === 'inquisitor staff' && type === 'two-hand') {
-        AD = AD * (1 + 0.125);
+        AD = Math.floor(AD * (1 + 0.125));
       }
       else if (settings['two-handed weapon'] === 'inquisitor staff (e)' && type === 'two-hand') {
-        AD = AD * (1 + 0.175);
+        AD = Math.floor(AD * (1 + 0.175));
       }
   
       return AD

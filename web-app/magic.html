@@ -93,10 +93,10 @@
                                             <tr>
                                                 <th>Ability</th>
                                                 <th></th>
-                                                <th></th>
                                                 <th>Regular</th>
                                                 <th>Sunshine</th>
                                                 <th>Meta</th>
+                                                <th>Weapon</th>
                                             </tr>
                                         </thead>
                                         <tbody class="js--damages-table"></tbody>
@@ -148,7 +148,7 @@
                                                     <select class="js--setting dropdown-select" data-setting-name="potion" id="potion">
                                                         <option value="none">None</option>
                                                         <option value="elder overload" selected>Elder overload</option>
-                                                        <option value="Supreme overload">Supreme overload</option>
+                                                        <option value="supreme overload">Supreme overload</option>
                                                         <option value="overload">Overload</option>
                                                         <option value="extreme magic">Extreme</option>
                                                         <option value="super magic">Super</option>
@@ -158,17 +158,12 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/ability_icons/magic/Greater_Sonic_Wave.webp"></td>
                                                     <p class="effect-text">Flow stacks:</p>
-                                                    <input type="number" ata-setting-name="flow stacks" step="1" value="0" max="99" min="0">
+                                                    <input class="js--setting" data-setting-name="flow stacks" type="number" id="flow stacks" name="flow stacks" step="1" value="0" max="99" min="0.0">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/death.png">
                                                     <p class="effect-text">Reaper Crew:</p>
-                                                    <input class="js--setting" data-setting-name="reaper crew" type="checkbox" checked>
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Inquisitor_staff.webp">
-                                                    <p class="effect-text">Inquisitor boost:</p>
-                                                    <input class="js--setting" data-setting-name="inquisitor" type="checkbox" checked>
+                                                    <input class="js--setting" data-setting-name="Reaper crew" type="checkbox" id="reaper crew" name="reaper crew" checked>
                                                 </div>
                                             </div>
                                             <!--On Hit Main-->
@@ -177,7 +172,7 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Prayer.webp"></td>
                                                     <p class="effect-text">Prayer:</p>
-                                                    <select class="dropdown-select" id="prayer">
+                                                    <select class="js--setting dropdown-select" data-setting-name="prayer" id="prayer">
                                                         <option value="none">None</option>
                                                         <option value="affliction" selected>Affliction</option>
                                                         <option value="torment">Torment</option>
@@ -189,24 +184,24 @@
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Ruby_Aurora_icon.webp"></td>
-                                                    <p class="effect-text">Ruby Aurora</p>
-                                                    <input type="number" id="ruby-aurora" name="ruby-aurora" step="1" value="0" max="3" min="0">
+                                                    <p class="effect-text">Ruby Aurora:</p>
+                                                    <input class="js--setting" data-setting-name="Ruby aurora" type="number" id="ruby aurora" name="ruby aurora" step="1" value="0" max="3" min="0">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Revenge.png"></td>
-                                                    <p class="effect-text">Revenge</p>
-                                                    <input type="number" id="revenge stacks" name="revenge" step="1" value="0" max="10" min="0">
+                                                    <p class="effect-text">Revenge:</p>
+                                                    <input class="js--setting" data-setting-name="revenge stacks" type="number" id="revenge" name="revenge" step="1" value="0" max="10" min="0">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Berserker's_Fury.webp"></td>
-                                                    <p class="effect-text">Dharok's Momento</p>
-                                                    <input type="number" id="berserkers fury" name="dharok" step="0.5" value="0" max="5.5" min="0.0">
+                                                    <p class="effect-text">Dharok's Momento:</p>
+                                                    <input class="js--setting" data-setting-name="berserkers fury" type="number" id="berserkers fury" name="berserkers fury" step="0.5" value="0" max="5.5" min="0.0">
                                                     <p class="effect-text">%</p>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Ruthless.webp"></td>
-                                                    <p class="effect-text">Ruthless Stacks</p>
-                                                    <input type="number" id="ruthless stacks" name="ruthless" step="1" value="0" max="5" min="0.0">
+                                                    <p class="effect-text">Ruthless Stacks:</p>
+                                                    <input class="js--setting" data-setting-name="ruthless stacks" type="number" id="ruthless stacks" name="ruthless stacks" step="1" value="0" max="5" min="0.0">
                                                 </div>
                                             </div>
                                             <!--On Hit Secondary-->
@@ -215,64 +210,85 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Full_slayer_helmet_(yellow).webp">
                                                     <p class="effect-text">Slayer Helm:</p>
-                                                    <input type="checkbox" id="slayer helmet" name="slayer helmet">
+                                                    <select class="js--setting dropdown-select" data-setting-name="slayer helmet" id="slayer helmet">
+                                                        <option value="none" selected>None</option>
+                                                        <option value="slayer helmet">Regular</option>
+                                                        <option value="full slayer helmet">Full</option>
+                                                        <option value="reinforced slayer helmet">Reinforced</option>
+                                                        <option value="strong slayer helmet">Strong</option>
+                                                        <option value="mighty slayer helmet">Mighty</option>
+                                                        <option value="corrupted slayer helmet">Corrupted</option>
+                                                    </select>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Guardhouse_(Tier_3).webp">
                                                     <p class="effect-text">Guardhouse:</p>
-                                                    <input type="checkbox" id="fort forinthry guardhouse" name="fort forinthry guardhouse">
+                                                    <select class="js--setting dropdown-select" data-setting-name="fort forinthry guardhouse" id="fort forinthry guardhouse">
+                                                        <option value="none" selected>None</option>
+                                                        <option value="level 1">Level 1</option>
+                                                        <option value="level 1 - undead">Level 1 with undead target</option>
+                                                        <option value="level 3">Level 3 with target under 25%</option>
+                                                        <option value="level 3 - undead">Level 3 with undead target under 25%</option>
+                                                    </select>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
                                                     <p class="effect-text">Genocidal:</p>
-                                                    <input type="number" id="genocidal percent" name="genocidal percent" step="0.5" value="0" max="7" min="0">
+                                                    <input class="js--setting" data-setting-name="genocidal percent" type="number" id="genocidal" name="genocidal" step="0.5" value="0" max="5" min="0">
                                                     <p class="effect-text">%</p>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Binding_contract_(ripper_demon).webp"></td>
-                                                    <p class="effect-text">Ripper Passive</p>
-                                                    <input type="number" id="ripper-passive" name="ripper-passive" step="0.5" value="2.5" max="5.0" min="0.0">
+                                                    <p class="effect-text">Ripper Passive:</p>
+                                                    <input class="js--setting" data-setting-name="ripper demon passive" type="number" id="ripper demon passive" name="ripper demon passive" step="0.5" value="0" max="5.0" min="0.0">
                                                     <p class="effect-text">%</p>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Exsanguinate_icon.webp"></td>
+                                                    <p class="effect-text">Exsanguinate:</p>
+                                                    <input class="js--setting" data-setting-name="exsanguinate stacks" type="number" id="exsanguinate stacks" name="exsanguinate stacks" step="1" value="0" max="12" min="0.0">
                                                 </div>
                                             </div>
                                             <!--On NPC-->
                                             <div class="settings-container">
                                                 <div class="card-title mb-1">On-NPC</div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Vulnerability_icon.webp">
-                                                    <p class="effect-text">Vulnerability:</p>
-                                                    <input type="checkbox" id="vuln" name="vuln" checked>
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Smoke_Cloud_icon.webp">
-                                                    <p class="effect-text">Smoke Cloud:</p>
-                                                    <input type="checkbox" id="sc" name="sc" checked>
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Cryptbloom_helm.png">
-                                                    <p class="effect-text">Cryptbloom Vuln:</p>
-                                                    <input type="checkbox" id="crypt" name="crypt">
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
-                                                    <p class="effect-text">Slayer Perk:</p>
-                                                    <input type="checkbox" id="slay-perk" name="slay-perk">
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Undead_slayer_sigil_detail.png">
-                                                    <p class="effect-text">Slayer Sigil:</p>
-                                                    <input type="checkbox" id="slay-sigil" name="slay-perk">
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/aura.png"></td>
-                                                    <p class="effect-text">Aura:</p>
-                                                    <select class="dropdown-select" id="aura">
-                                                        <option value="none">None</option>
-                                                        <option value="maniacal" selected>Maniacal</option>
-                                                        <option value="mahjarrat">Mahjarrat</option>
-                                                        <option value="equilibrium">Equilibrium</option>
-                                                    </select>
-                                                </div>
+                                                <div class="settings-container">
+                                                    <div class="card-title mb-1">On-NPC</div>
+                                                    <div class="effect-container">
+                                                        <img class="effect-icon" src="assets/effect_icons/Vulnerability_icon.webp">
+                                                        <p class="effect-text">Vulnerability:</p>
+                                                        <input class="js--setting" data-setting-name="vulnerability" type="checkbox" id="vulnerability" name="vulnerability" checked>
+                                                    </div>
+                                                    <div class="effect-container">
+                                                        <img class="effect-icon" src="assets/effect_icons/Smoke_Cloud_icon.webp">
+                                                        <p class="effect-text">Smoke Cloud:</p>
+                                                        <input class="js--setting" data-setting-name="smoke cloud" type="checkbox" id="smoke cloud" name="smoke cloud" checked>
+                                                    </div>
+                                                    <div class="effect-container">
+                                                        <img class="effect-icon" src="assets/effect_icons/Cryptbloom_helm.png">
+                                                        <p class="effect-text">Cryptbloom Vuln:</p>
+                                                        <input class="js--setting" data-setting-name="death spores" type="checkbox" id="death spores" name="death spores">
+                                                    </div>
+                                                    <div class="effect-container">
+                                                        <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
+                                                        <p class="effect-text">Slayer Perk:</p>
+                                                        <input class="js--setting" data-setting-name="slayer perk" type="checkbox" id="slayer perk" name="slayer perk">
+                                                    </div>
+                                                    <div class="effect-container">
+                                                        <img class="effect-icon" src="assets/effect_icons/Undead_slayer_sigil_detail.png">
+                                                        <p class="effect-text">Slayer Sigil:</p>
+                                                        <input class="js--setting" data-setting-name="slayer sigil" type="checkbox" id="slayer sigil" name="slayer sigil">
+                                                    </div>
+                                                    <div class="effect-container">
+                                                        <img class="effect-icon" src="assets/effect_icons/aura.png"></td>
+                                                        <p class="effect-text">Aura:</p>
+                                                        <select class="js--setting dropdown-select" data-setting-name="aura" id="aura">
+                                                            <option value="none">None</option>
+                                                            <option value="mahjarrat">Mahjarrat</option>
+                                                            <option value="equilibrium">Equilibrium</option>
+                                                            <option value="maniacal" selected>Maniacal</option>
+                                                        </select>
+                                                    </div>
                                             </div>
                                             <!--Other-->
                                             <div class="settings-container">
@@ -280,17 +296,17 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Araxyte_spider.webp">
                                                     <p class="effect-text">Nope Nope Nope:</p>
-                                                    <input type="checkbox" id="nope" name="nope">
+                                                    <input class="js--setting" data-setting-name="nopenopenope" type="checkbox" id="nopenopenope" name="nopenopenope">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Binding_contract_(kal'gerion_demon).webp">
                                                     <p class="effect-text">Kalg Passive:</p>
-                                                    <input type="checkbox" id="kalg-passive" name="kalg-passive">
+                                                    <input class="js--setting" data-setting-name="kalgerion demon familiar" type="checkbox" id="kalgerion demon familiar" name="kalgerion demon familiar">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Kal'gerion_Demon_scroll_(Crit-i-Kal).webp">
                                                     <p class="effect-text">Crit-i-Kal Spec:</p>
-                                                    <input type="checkbox" id="kalg-spec" name="kalg-spec" checked>
+                                                    <input class="js--setting" data-setting-name="crit-i-kal" type="checkbox" id="crit-i-kal" name="crit-i-kal" checked>
                                                 </div>
                                             </div>
                                         </div>
