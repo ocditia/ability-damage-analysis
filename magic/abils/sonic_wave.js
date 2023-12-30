@@ -19,6 +19,9 @@ function sonic_wave(type, settings, numberOfHits) {
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
 
+    let concStacks = 0;
+    let channellerStacks = 0;
+
     const hits = []
    
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
@@ -38,7 +41,7 @@ function sonic_wave(type, settings, numberOfHits) {
         damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);
 
         //apply crit dmg
-        damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings);
+        damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings, channellerStacks);
         
         //apply on-npc effects and hitcaps
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings,AD);
@@ -49,7 +52,7 @@ function sonic_wave(type, settings, numberOfHits) {
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
         
         //calc min, avg, or max depending on request
-        hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
+        hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val, concStacks, channellerStacks));
     }
     
     //calc total damage

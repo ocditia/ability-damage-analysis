@@ -244,6 +244,9 @@ const magic_construction = {
         "reavers":{
             "bonus": 27.7
         },
+        "channelers":{
+            "bonus": 30.4
+        },
         "ring of death (i)":{
             "bonus": 27.7
         },

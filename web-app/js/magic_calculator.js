@@ -55,6 +55,9 @@ function collectSettings() {
     'hitcap': 30000,
 
     'inquisitor': false,
+    'enchantment flames': true,
+    'enchantment affliction': true,
+    'enchantment metaphysics': true,
 
     //on-cast effects
     'flow stacks': 0,
