@@ -134,6 +134,7 @@ function buildDamagesTable(abilities) {
     ability.weapons.forEach(item =>  {
       weaponSelect.add(new Option(item, item))
     })
+    
     table.appendChild(copy);
   }
 }

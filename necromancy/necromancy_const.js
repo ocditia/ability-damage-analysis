@@ -22,15 +22,15 @@ const necromancy_construction = {
     },
 
     'off-hand weapons': {
-        "Skull lantern (tier 80)":{
+        "skull lantern (tier 80)":{
             "tier": 80,
             "weaponDmg": 0
         },
-        "Skull lantern (tier 90)":{
+        "skull lantern (tier 90)":{
             "tier": 90,
             "weaponDmg": 0
         },
-        "Soulbound lantern":{
+        "soulbound lantern":{
             "tier": 95,
             "weaponDmg": 0
         },
