@@ -1,11 +1,10 @@
-const AbilityDmg = require('../ranged_ad')
-const OnNPC = require('../ranged_on_npc')
-const OnHit = require('../ranged_on_hit')
-const Crit = require('../ranged_crit')
-const RangedHelper = require('../ranged_helper')
+const AbilityDmg = require('../magic_ad')
+const OnNPC = require('../magic_on_npc')
+const OnHit = require('../magic_on_hit')
+const Crit = require('../magic_crit')
+const MagicHelper = require('../magic_helper')
 const Avg = require('../average_damage')
-const split_soul = require('./split_soul')
-const construction = require('../ranged_const')
+const construction = require('../magic_const')
 const { channel } = require('diagnostics_channel')
 
 function corruption_blast(type, settings, numberOfHits) {
@@ -14,7 +13,7 @@ function corruption_blast(type, settings, numberOfHits) {
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
-    const Helper = new RangedHelper(); 
+    const Helper = new MagicHelper(); 
     let abil_val = 'corruption blast'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
@@ -47,18 +46,10 @@ function corruption_blast(type, settings, numberOfHits) {
         //apply on-npc effects and hitcaps
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings,AD);
         damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings,AD);    
-        
-        //split soul
-        splitSoul = split_soul(damageObject['non-crit']['list'],settings);
-        splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
 
         //apply hit caps
         damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
-
-        //add up damages
-        damageObject['non-crit']['list'] = Helper.listAdder(damageObject['non-crit']['list'],splitSoul);
-        damageObject['crit']['list'] = Helper.listAdder(damageObject['crit']['list'],splitSoulCrit);
 
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings));

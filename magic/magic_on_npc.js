@@ -22,10 +22,22 @@ class OnNPC {
       return dmg;
     }
   
-    calcAura(dmg, boost) {
-      return Math.floor(dmg * (1 + boost));
+    calcAura(dmg, settings) {
+      if (settings['aura'] === 'maniacal' && (settings['sunshine'] === true || settings['metamorphosis'] === true)) {
+        dmg = dmg
+      }
+      else {
+        dmg = Math.floor(dmg * (1 + construction['auras'][settings['aura']]['boost']));
+      }
+      return dmg;
     }
 
+    calcMeta(dmg,flag) {
+      if (flag === true) {
+        dmg = Math.floor(dmg * (1 + 0.625));
+      }
+      return dmg;
+    }
     calcCryptbloom(dmg,flag) {
       if (flag === true) {
         dmg = Math.floor(dmg * (1 + 0.1));
@@ -112,9 +124,10 @@ class OnNPC {
       dmg = this.calcVuln(dmg,settings['vulnerability']);
       dmg = this.calcSlayerPerk(dmg,settings['slayer perk']);
       dmg = this.calcSlayerSigil(dmg,settings['slayer sigil']);
-      dmg = this.calcAura(dmg, construction['auras'][settings['aura']]['boost']);
+      dmg = this.calcAura(dmg, settings);
 
       //unknown order of buffs
+      dmg = this.calcMeta(dmg,settings['metamorphosis']);
       dmg = this.calcCryptbloom(dmg,settings['death spores']);
       dmg = this.calcHaunted(dmg,settings['haunted'],AD);
       dmg = this.calcRedbeam(dmg,settings['Telos red beam']);

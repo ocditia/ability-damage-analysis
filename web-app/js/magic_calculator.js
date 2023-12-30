@@ -20,7 +20,7 @@ function collectSettings() {
     'level': 120,
     'potion': 'elder overload',
     
-    'two-handed weapon': 1,
+    'two-handed weapon': 'fractured staff of armadyl',
     'main-hand weapon': 'wand of the praesul',
     'off-hand weapon': 'imperium core',
     'shield': 1,
