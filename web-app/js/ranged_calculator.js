@@ -141,7 +141,7 @@ function buildDamagesTable(abilities) {
   }
 }
 
-function calculateDamages(settings, type) {
+function calculateDamages(settings) {
   document.querySelectorAll(".js--damages-table tr").forEach(row => {
     const key = row.getAttribute('data-ability-key');
     const weapon = row.querySelector('.js--ability-weapon').value;
@@ -153,19 +153,19 @@ function calculateDamages(settings, type) {
     // Recalculate with split soul
     settings['split soul'] = true;
     settings['swift'] = false;
-    damages = abilities[key].calc(type, settings, 1);
+    damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
 
     // Recalculate with swift
     settings['split soul'] = false;
     settings['swift'] = true;
-    damages = abilities[key].calc(type, settings, 1);
+    damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-swift').textContent = damages[damages.length-1];
 
     // Recalculate with swift and split soul
     settings['split soul'] = true;
     settings['swift'] = true;
-    damages = abilities[key].calc(type, settings, 1);
+    damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-swift-ss').textContent = damages[damages.length-1];
   })
 }

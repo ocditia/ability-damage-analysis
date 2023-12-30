@@ -158,6 +158,12 @@ const abilities = {
     icon: 'https://imgur.com/wvfhltQ.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
+  'Seren Godbow': {
+    title: 'Seren Godbow',
+    calc: sgb_spec,
+    icon: 'https://imgur.com/DUqERq0.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
 }
 
 export {abilities}
