@@ -318,22 +318,22 @@ const ranged_construction = {
     },
 
     'prayers': {
-        "ruination":{
+        "desolation":{
             "boost": 0.12
         },
-        "sorrow":{
+        "anguish":{
             "boost": 0.10
         },
-        "sanctity":{
+        "rigour":{
             "boost": 0.08
         },
-        "accelerated decay":{
+        "overpowering force":{
             "boost": 0.06
         },
-        "hastened decay":{
+        "unrelenting force":{
             "boost": 0.06
         },
-        "decay":{
+        "unstoppable force":{
             "boost": 0.02
         }
     },
