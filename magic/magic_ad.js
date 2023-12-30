@@ -17,10 +17,10 @@ class AbilityDmg {
       else { 
         const mhAbilityDmg = Math.floor(2.5 * this.calcLevel(settings)) + Math.floor(9.6 * this.getTier('main-hand',settings) + this.calcBonus(settings));
         let ohAbilityDmg = 0
-        if (type === 'MS') {
+        if (type === 'Ms') {
           ohAbilityDmg = 0
         } 
-        else if (type === 'MD') {
+        else if (type === 'Md') {
           ohAbilityDmg = Math.floor(0.5 * (Math.floor(2.5 * this.calcLevel(settings)) + Math.floor(9.6 * Math.floor(0.5 * this.getTier('defender',settings)) + this.calcBonus(settings))));
         } 
         else if (type === 'Dw') {
