@@ -24,6 +24,10 @@ const ranged_construction = {
             "tier": 80,
             "weaponDmg": 0
         },
+        "none":{
+            "tier": 0,
+            "weaponDmg": 0
+        },
     },
 
     'main-hand weapons': {
@@ -38,7 +42,11 @@ const ranged_construction = {
         "blightbound":{
             "tier": 92,
             "weaponDmg": 0
-        }
+        },
+        "none":{
+            "tier": 0,
+            "weaponDmg": 0
+        },
     },
 
     'off-hand weapons': {
@@ -53,10 +61,26 @@ const ranged_construction = {
         "off-hand blightbound":{
             "tier": 92,
             "weaponDmg": 0
-        }
+        },
+        "none":{
+            "tier": 0,
+            "weaponDmg": 0
+        },
     },
 
     'shields': {
+        "none":{
+            "tier": 0,
+            "weaponDmg": 0
+        },
+        "vengeful kiteshield":{
+            "tier": 90,
+            "weaponDmg": 0
+        },
+        "elysian shield":{
+            "tier": 75,
+            "weaponDmg": 0
+        },
     },
 
     'defenders': {
@@ -66,6 +90,10 @@ const ranged_construction = {
         },
         "ancient defender":{
             "tier": 80,
+            "weaponDmg": 0
+        },
+        "none":{
+            "tier": 0,
             "weaponDmg": 0
         },
     },
@@ -92,7 +120,7 @@ const ranged_construction = {
         "pernix helm":{
             "bonus": 20
         },
-        "none helm":{
+        "none":{
             "bonus": 0
         },
     },
@@ -119,7 +147,7 @@ const ranged_construction = {
         "pernix top":{
             "bonus": 30
         },
-        "none top":{
+        "none":{
             "bonus": 0
         },
     },
@@ -146,7 +174,7 @@ const ranged_construction = {
         "pernix bottom":{
             "bonus": 25
         },
-        "none bottom":{
+        "none":{
             "bonus": 0
         },
     },
@@ -173,7 +201,7 @@ const ranged_construction = {
         "silverhawk":{
             "bonus": 6.9
         },
-        "none boots":{
+        "none":{
             "bonus": 0
         }
     },
@@ -200,7 +228,7 @@ const ranged_construction = {
         "cinderbane":{
             "bonus": 11
         },
-        "none gloves":{
+        "none":{
             "bonus": 0
         },
     },
@@ -229,7 +257,10 @@ const ranged_construction = {
         },
         "salve":{
             "bonus": 0
-        }
+        },
+        "none":{
+            "bonus": 0
+        },
     },
 
     'rings': {
@@ -251,7 +282,7 @@ const ranged_construction = {
         "asylum surgeon ring":{
             "bonus": 21
         },
-        "none ring":{
+        "none":{
             "bonus": 0
         }
     },
@@ -274,7 +305,10 @@ const ranged_construction = {
         },
         "skillcape":{
             "bonus": 21.6
-        }
+        },
+        "none":{
+            "bonus": 0
+        },
     },
 
     'pockets': {
@@ -295,7 +329,10 @@ const ranged_construction = {
         },
         "god book":{
             "bonus": 5
-        }
+        },
+        "none":{
+            "bonus": 0
+        },
     },
 
     'auras': {
@@ -314,7 +351,11 @@ const ranged_construction = {
         "equilibrium":{
             "levels": 0.0,
             "boost": 0.0
-        }
+        },
+        "none":{
+            "levels": 0.0,
+            "boost": 0.0
+        },
     },
 
     'prayers': {
@@ -335,7 +376,10 @@ const ranged_construction = {
         },
         "unstoppable force":{
             "boost": 0.02
-        }
+        },
+        "none":{
+            "boost": 0.0
+        },
     },
 
     'potions': {
@@ -366,7 +410,7 @@ const ranged_construction = {
             "levels": 1,
             "percent": 0.08
         },
-        "none potion":
+        "none":
         {
             "levels": 0,
             "percent": 0
