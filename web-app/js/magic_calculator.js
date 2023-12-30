@@ -32,7 +32,7 @@ function collectSettings() {
     'boots': 'foot wraps of the first necromancer',
     'necklace': 'essence of finality amulet (or)',
     'ring': 'reavers',
-    'cape':'igneous kal-mor',
+    'cape':'igneous kal-mej',
     'pocket slot': 'grimoire',
     'reaper crew': true,
     'level 20 armour': true,
@@ -68,7 +68,7 @@ function collectSettings() {
 
     //shared
     'revenge stacks': 0,
-    'prayer': "ruination",
+    'prayer': "affliction",
     'sunshine': false,
 
     //pvn only
@@ -80,6 +80,7 @@ function collectSettings() {
     //unknown order
     'berserkers fury': 0,
     'living death':false,    
+    'exsanguinate stacks': 0,
 
     //on-crit effects
     'smoke cloud': false,
@@ -125,7 +126,6 @@ function collectSettings() {
 }
 
 function buildDamagesTable(abilities) {
-  console.log("here")
   const table = document.querySelector(".js--damages-table")
   const template = document.querySelector("#damage-table-row")
 

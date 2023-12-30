@@ -341,17 +341,17 @@ const magic_construction = {
             "levels": 3,
             "percent": 0.15
         },
-        "extreme necromancy":
+        "extreme magic":
         {
             "levels": 3,
             "percent": 0.15
         },
-        "super necromancy":
+        "super magic":
         {
             "levels": 2,
             "percent": 0.12
         },
-        "necromancy potion":
+        "magic potion":
         {
             "levels": 1,
             "percent": 0.08

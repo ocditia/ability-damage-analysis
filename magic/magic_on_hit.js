@@ -18,16 +18,16 @@ class OnHit {
 
   calcSun(buff,flag){
     if (flag === true) {
-      dmg = Math.floor(dmg * (1 + 0.5));
+      buff = Math.floor(buff * (1 + 0.5));
     }
-    return dmg;
+    return buff;
   }
 
-  calcExsanguinate(dmg,stacks,category) {
+  calcExsanguinate(buff,stacks,category) {
     if (category === 'basic') {
-      return dmg += Math.floor(dmg * 0.01 * stacks);
+      return buff += Math.floor(buff * 0.01 * stacks);
     }
-    return dmg;  
+    return buff;  
   }
 
   calcRubyAurora(buff,aurora) {
@@ -116,7 +116,7 @@ class OnHit {
         buff = this.calcStoneOfJas(buff,settings['stone of jas']);
         buff = this.calcPrayer(buff,settings['prayer']);
         buff = this.calcSun(buff,settings['sunshine']);
-        buff = this.calcExsanguinate(buff,settings['exsanguinate stacks'],settings['category'])
+        buff = this.calcExsanguinate(buff,settings['exsanguinate stacks'],settings['category']);
         buff = this.calcRubyAurora(buff,settings['Ruby aurora']);
         buff = this.calcRevenge(buff,type,settings['revenge stacks']);
         buff = this.calcSpendthrift(buff,settings['spendthrift']); //causes a rounding-error

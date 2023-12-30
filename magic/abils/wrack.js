@@ -33,21 +33,21 @@ function wrack(type, settings, numberOfHits) {
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
-
+        
         //sets up for further calculations
         damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);
 
         //apply crit dmg
         damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings);
-
+        
         //apply on-npc effects and hitcaps
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings,AD);
         damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings,AD);     
-
+        
         //apply hit caps
         damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
-
+        
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings));
     }

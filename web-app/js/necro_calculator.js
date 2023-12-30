@@ -118,7 +118,6 @@ function collectSettings() {
 }
 
 function buildDamagesTable(abilities) {
-  console.log("here")
   const table = document.querySelector(".js--damages-table")
   const template = document.querySelector("#damage-table-row")
 

@@ -7,14 +7,14 @@ const Avg = require('../average_damage')
 const construction = require('../magic_const')
 const { channel } = require('diagnostics_channel')
 
-function chain(type, settings, numberOfHits) {
+function smoke_tendrils_1(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new NecroHelper(); 
-    let abil_val = 'chain'
+    let abil_val = 'smoke tendrils 1'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
@@ -57,4 +57,4 @@ function chain(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = chain;
+module.exports = smoke_tendrils_1;

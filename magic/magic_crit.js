@@ -5,7 +5,7 @@ class Crit {
             (0.01 * settings['kalgerion demon familiar']) +
             (0.02 * settings['biting']) +
             (0.04 * settings['channeller stacks']) +
-            (0.05 * ['conc stacks']); 
+            (0.05 * settings['conc stacks']); 
 
         if (settings['ring'] === 'reavers') {
             fcrit = fcrit + 0.05;
