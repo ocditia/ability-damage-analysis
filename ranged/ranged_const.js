@@ -60,6 +60,14 @@ const ranged_construction = {
     },
 
     'defenders': {
+        "kalphite defender":{
+            "tier": 90,
+            "weaponDmg": 0
+        },
+        "ancient defender":{
+            "tier": 80,
+            "weaponDmg": 0
+        },
     },
 
     'helmets': {

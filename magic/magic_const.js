@@ -93,6 +93,14 @@ const magic_construction = {
     },
 
     'shields': {
+        'merciless kiteshield':{
+            'tier': 90,
+            'weapondmg': 0
+        },
+        'spectral shield':{
+            'tier': 75,
+            'weapondmg': 0
+        }
     },
 
     'defenders': {

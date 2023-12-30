@@ -80,13 +80,13 @@ const abilities = {
     title: 'Concentrated blast',
     calc: concentrated_blast,
     icon: 'https://i.imgur.com/UJYcqg0.png',
-    weapons: ['Dw'],
+    weapons: ['Dw', 'Md'],
   },
   'Greater concentrated blast': {
     title: 'Greater concentrated blast',
     calc: greater_concentrated_blast,
     icon: 'https://i.imgur.com/3Xhdk2t.png',
-    weapons: ['Dw'],
+    weapons: ['Dw', 'Md'],
   },
   'Dragon breath': {
     title: 'Dragon breath',

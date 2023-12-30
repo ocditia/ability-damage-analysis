@@ -38,6 +38,10 @@ class AbilityDmg {
       else if (settings['two-handed weapon'] === 'inquisitor staff (e)' && type === 'two-hand') {
         AD = Math.floor(AD * (1 + 0.175));
       }
+
+      AD = Math.floor(dmg * 0.06 * settings['Zamorak balance of power']);
+
+      AD = Math.floor(dmg * 0.1 * settings['Raksha inner power']);
   
       return AD
     }
