@@ -54,7 +54,10 @@ function collectSettings() {
     'bonus': 0,
     'cap': 30000,
 
+    'inquisitor': false,
+
     //on-cast effects
+    'flow stacks': 0,
     'Zamorak balance of power': 0,
     'Sophanem corrupted': 0,
     'Raksha inner power': 0,
