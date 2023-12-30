@@ -73,7 +73,7 @@
                         <div class="w-1/12 xl:w-32 md:h-20 xl:h-32">
                             <img class="icon-header mr-2 xl:mr-8" src="./assets/style_icons/magic-white.svg">
                         </div>
-                        <h1 class="text-3xl md:text-4xl xl:text-6xl font-semibold ml-8 mb-0">Magic Calculator</h1>
+                        <h1 class="text-3xl md:text-4xl xl:text-6xl font-semibold ml-8 mb-0">Melee Calculator</h1>
                     </div>
                 </div>
                 <div class="bg-gray-600 absolute top-0 left-0 w-full -z-1 h-96 md:h-72 xl:h-112 xl:mt-16 bg-bottom md:bg-top bg-cover" style="background-image:url(./assets/magic_background.png)"></div>
@@ -94,8 +94,8 @@
                                                 <th>Ability</th>
                                                 <th></th>
                                                 <th>Regular</th>
-                                                <th>Sunshine</th>
-                                                <th>Meta</th>
+                                                <th>ZGS</th>
+                                                <th>Berserk</th>
                                                 <th>Weapon</th>
                                             </tr>
                                         </thead>
@@ -139,8 +139,8 @@
                                                     <input class="js--setting dropdown-select" data-setting-name="ability damage" type="number" id="AD" name="Ability Damage" step="1" value="0" max="9999" min="0">
                                                 </div>
                                                 <div class="effect-container">
-                                                    <p class="effect-text">Base Magic Level:</p>
-                                                    <input class="js--setting" data-setting-name="level" type="number" id="baseMagic" name="Ability Damage" step="1" value="99" max="120" min="1">
+                                                    <p class="effect-text">Base MeleeLevel:</p>
+                                                    <input class="js--setting" data-setting-name="level" type="number" id="baseMelee" name="Ability Damage" step="1" value="99" max="120" min="1">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Elder_overload_salve_(6).webp"></td>
@@ -150,15 +150,10 @@
                                                         <option value="elder overload" selected>Elder overload</option>
                                                         <option value="supreme overload">Supreme overload</option>
                                                         <option value="overload">Overload</option>
-                                                        <option value="extreme magic">Extreme</option>
-                                                        <option value="super magic">Super</option>
-                                                        <option value="magic potion">Normal</option>
+                                                        <option value="extreme melee">Extreme</option>
+                                                        <option value="super melee">Super</option>
+                                                        <option value="melee potion">Normal</option>
                                                     </select>
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/ability_icons/magic/Greater_Sonic_Wave.webp"></td>
-                                                    <p class="effect-text">Flow stacks:</p>
-                                                    <input class="js--setting" data-setting-name="flow stacks" type="number" id="flow stacks" name="flow stacks" step="1" value="0" max="99" min="0.0">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/death.png">
@@ -174,12 +169,13 @@
                                                     <p class="effect-text">Prayer:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="prayer" id="prayer">
                                                         <option value="none">None</option>
-                                                        <option value="affliction" selected>Affliction</option>
-                                                        <option value="torment">Torment</option>
-                                                        <option value="augury">Augury</option>
-                                                        <option value="overcharge">Overcharge</option>
-                                                        <option value="super charge">Super charge</option>
-                                                        <option value="charge">Charge</option>
+                                                        <option value="malevolence" selected>Malevolence</option>
+                                                        <option value="turmoil">Turmoil</option>
+                                                        <option value="piety">Piety</option>
+                                                        <option value="chivalry">Chivalry</option>
+                                                        <option value="ultimate strength">Ultimate strength</option>
+                                                        <option value="superhuman strength">Superhuman strength</option>
+                                                        <option value="burst of strength">Burst of strength</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container">
@@ -243,11 +239,6 @@
                                                     <input class="js--setting" data-setting-name="ripper demon passive" type="number" id="ripper demon passive" name="ripper demon passive" step="0.5" value="0" max="5.0" min="0.0">
                                                     <p class="effect-text">%</p>
                                                 </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Exsanguinate_icon.webp"></td>
-                                                    <p class="effect-text">Exsanguinate:</p>
-                                                    <input class="js--setting" data-setting-name="exsanguinate stacks" type="number" id="exsanguinate stacks" name="exsanguinate stacks" step="1" value="0" max="12" min="0.0">
-                                                </div>
                                             </div>
                                             <!--On NPC-->
                                             <div class="settings-container">
@@ -286,7 +277,7 @@
                                                             <option value="none">None</option>
                                                             <option value="mahjarrat">Mahjarrat</option>
                                                             <option value="equilibrium">Equilibrium</option>
-                                                            <option value="maniacal" selected>Maniacal</option>
+                                                            <option value="berserker" selected>Berserker</option>
                                                         </select>
                                                     </div>
                                             </div>
@@ -325,12 +316,11 @@
                                                     <p class="effect-text">Helmet:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="helmet" id="helmet">
                                                         <option value="none">None</option>
-                                                        <option value="elite tectonic mask" selected>Elite Tectonic</option>
-                                                        <option value="tectonic mask">Tectonic</option>
-                                                        <option value="superior zuriels hood">Superior Zuriel's</option>
-                                                        <option value="refined anima core helm of seren">Refined Anima Core</option>
-                                                        <option value="anima core helm of seren">Anima Core</option>
-                                                        <option value="virtus mask">Virtus</option>                                                        
+                                                        <option value="vestments of havoc hood" selected>Vestments</option>
+                                                        <option value="trimmed masterwork helm">Trimmed masterwork</option>
+                                                        <option value="masterwork helm">Masterwork</option>
+                                                        <option value="jaws of the abyss">Jaws</option>
+                                                        <option value="bandos helmet">Bandos</option>                                                      
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
@@ -338,12 +328,10 @@
                                                     <p class="effect-text">Body:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="body" id="body">
                                                         <option value="none">None</option>
-                                                        <option value="elite tectonic robe top" selected>Elite Tectonic</option>
-                                                        <option value="tectonic robe top">Tectonic</option>
-                                                        <option value="superior zuriels robe top">Superior Zuriel's</option>
-                                                        <option value="refined anima core body of seren">Refined Anima Core</option>
-                                                        <option value="anima core body of seren">Anima Core</option>
-                                                        <option value="virtus robe top">Virtus</option>                                                        
+                                                        <option value="vestments of havoc robe top" selected>Vestments</option>
+                                                        <option value="trimmed masterwork platebody">Trimmed masterwork</option>
+                                                        <option value="masterwork platebody">Masterwork</option>
+                                                        <option value="bandos platebody">Bandos</option>                                                       
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
@@ -351,12 +339,10 @@
                                                     <p class="effect-text">Legs:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="leg" id="leg">
                                                         <option value="none">None</option>
-                                                        <option value="elite tectonic robe bottom" selected>Elite Tectonic</option>
-                                                        <option value="tectonic robe bottom">Tectonic</option>
-                                                        <option value="superior zuriels robe bottom">Superior Zuriel's</option>
-                                                        <option value="refined anima core legs of seren">Refined Anima Core</option>
-                                                        <option value="anima core legs of seren">Anima Core</option>
-                                                        <option value="virtus robe legs">Virtus</option>                                                        
+                                                        <option value="vestments of havoc robe bottom" selected>Vestments</option>
+                                                        <option value="trimmed masterwork platelegs">Trimmed masterwork</option>
+                                                        <option value="masterwork platelegs">Masterwork</option>
+                                                        <option value="bandos tassets">Bandos</option>                                                      
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
@@ -364,13 +350,10 @@
                                                     <p class="effect-text">Gloves:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="gloves" id="gloves">
                                                         <option value="none">None</option>
-                                                        <option value="enhanced kerapacs wrist wraps" selected>Enhanced Kerapac's</option>
-                                                        <option value="kerapacs wrist wraps">Kerapac's</option>
-                                                        <option value="deathtouch">Deathtouch</option>
-                                                        <option value="celestial handwraps">Celestial</option>
-                                                        <option value="virtus gloves">Virtus</option>
-                                                        <option value="cinderbane">Cinderbane</option>
-                                                        <option value="none gloves">None</option>                                                        
+                                                        <option value="cinderbane gloves" selected>Cinderbanes</option>
+                                                        <option value="trimmed masterwork gloves">Trimmed masterwork</option>
+                                                        <option value="masterwork gloves">Masterwork</option>
+                                                        <option value="bandos gloves">Bandos</option>                                                       
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
@@ -378,9 +361,10 @@
                                                     <p class="effect-text">Boots:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="boots" id="boots">
                                                         <option value="none">None</option>
-                                                        <option value="enhanced blast diffusion boots" selected>Enhanced Blast Diffusion</option>
-                                                        <option value="hailfire boots">Hailfire</option>
-                                                        <option value="virtus boots">Virtus</option>                                                        
+                                                        <option value="vestments of havoc boots" selected>Vestments</option>
+                                                        <option value="trimmed masterwork boots">Trimmed masterwork</option>
+                                                        <option value="masterwork boots">Masterwork</option>
+                                                        <option value="bandos boots">Bandos</option>                                                        
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
@@ -403,8 +387,8 @@
                                                     <p class="effect-text">Cape:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="cape" id="cape">
                                                         <option value="none">None</option>
-                                                        <option value="igneous kal-mej" selected>Zuk</option>
-                                                        <option value="tokhaar-kal-mmej">Kiln</option>
+                                                        <option value="igneous kal-ket" selected>Zuk</option>
+                                                        <option value="tokhaar-kal-ket">Kiln</option>
                                                         <option value="completionist">Comp cape</option>
                                                         <option value="god cape">God cape</option>
                                                         <option value="max cape">Max cape</option>
@@ -442,11 +426,12 @@
                                                     <p class="effect-text">Mh:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="main-hand weapon" id="main-hand weapon">
                                                         <option value="none">None</option>
-                                                        <option value="wand of the praesul" selected>Wand of the Praesul</option>
-                                                        <option value="seismic wand">Seismic wand</option>
-                                                        <option value="elite seasinger kiba">Elite seasinger kiba</option>
-                                                        <option value="seasinger kiba">Seasinger kiba</option>
-                                                        <option value="wand of the cywir elders">Cywir wand</option>
+                                                        <option value="dark shard of leng" selected>Dark shard of Leng</option>
+                                                        <option value="abyssal scourge">Scourge</option>
+                                                        <option value="khopesh of tumeken">Khopesh</option>
+                                                        <option value="drygore weapon">Drygore</option>
+                                                        <option value="dark ice shard">Dark ice shard</option>
+                                                        <option value="blade of nymora">Twin blade</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">
@@ -454,11 +439,11 @@
                                                     <p class="effect-text">Oh:</p>
                                                     <select class="js--setting dropdown-select" data-setting-name="off-hand weapon" id="off-hand weapon">
                                                         <option value="none">None</option>
-                                                        <option value="imperium core" selected>Imperium core</option>
-                                                        <option value="singularity">Singularity</option>
-                                                        <option value="elite seasinger makigai">Elite seasinger makigai</option>
-                                                        <option value="seasinger makigai">seasinger makigai</option>
-                                                        <option value="orb of the cywir elders">Cywir orb</option>
+                                                        <option value="dark sliver of leng" selected>Dark sliver of Leng</option>
+                                                        <option value="khopesh of elidnis">Khopesh</option>
+                                                        <option value="drygore weapon">Drygore</option>
+                                                        <option value="dark ice sliver">Dark ice sliver</option>
+                                                        <option value="blade of avaryss">Twin blade</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">

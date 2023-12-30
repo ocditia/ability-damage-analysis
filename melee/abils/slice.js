@@ -33,7 +33,7 @@ function slice(type, settings, numberOfHits) {
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
-        
+
         //sets up for further calculations
         damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);
 
@@ -47,11 +47,11 @@ function slice(type, settings, numberOfHits) {
         //apply hit caps
         damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
-        
+
         //calc min, avg, or max depending on request
-        hits.push(AVG_INS.returnDecider(damageObject,settings));
+        hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
     }
-    
+    console.log(hits)
     //calc total damage
     hits.push(Helper.totalDamageCalc(hits));
     return Helper.flooredList(hits);

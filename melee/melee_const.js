@@ -174,9 +174,6 @@ const melee_construction = {
     },
 
     'gloves': {
-        'vestments of havoc robe top':{
-            'bonus': 42
-        },
         'trimmed masterwork gloves':{
             'bonus': 15
         },
@@ -330,17 +327,17 @@ const melee_construction = {
             "levels": 3,
             "percent": 0.15
         },
-        "extreme magic":
+        "extreme melee":
         {
             "levels": 3,
             "percent": 0.15
         },
-        "super magic":
+        "super melee":
         {
             "levels": 2,
             "percent": 0.12
         },
-        "magic potion":
+        "melee potion":
         {
             "levels": 1,
             "percent": 0.08

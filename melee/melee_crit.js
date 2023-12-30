@@ -19,7 +19,7 @@ class Crit {
         let modifier = 0.2;
         modifier = modifier + 0.05 * Math.floor((settings['level'] - 10))/10;
         if (settings['smoke cloud'] === true) {
-            modifier = modifier + 0.15;
+            modifier = modifier + 0.06;
         }
 
         return Math.floor(dmg * (1 + modifier));

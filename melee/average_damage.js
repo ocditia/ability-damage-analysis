@@ -42,12 +42,18 @@ class avgDmg {
         return [dmgMin,dmgAvg,dmgMax]
     }
 
-    dmgObjectProbabilityCalc(dmgObject, settings) {
+    dmgObjectProbabilityCalc(dmgObject, settings, abil_val) {
         const CRIT_INS = new Crit();
-        let critChance = CRIT_INS.calcFCritChance(settings);
-
+        let critChance = 0;
+        console.log(critChance)
+        if (construction['abilities'][abil_val]["crit effects"] === true) {
+            critChance = CRIT_INS.calcFCritChance(settings);
+            console.log(critChance)
+        } 
+        console.log(critChance)
         dmgObject['non-crit']['probability'] = 1 - critChance;
         dmgObject['crit']['probability'] = critChance;
+        console.log(dmgObject)
         return dmgObject;
     }
 
@@ -69,8 +75,8 @@ class avgDmg {
         return avg;
     }
 
-    returnDecider(dmgObject,settings) {
-        dmgObject = this.dmgObjectProbabilityCalc(dmgObject,settings)
+    returnDecider(dmgObject,settings,abil_val) {
+        dmgObject = this.dmgObjectProbabilityCalc(dmgObject,settings,abil_val)
         if (settings['minavgmax'] === 'min') {
             return 'min';
         }
