@@ -44,7 +44,11 @@ const necromancy_construction = {
         "none":{
             "tier": 0,
             "weaponDmg": 0
-        }
+        },
+        "spectral shield":{
+            "tier": 75,
+            "weaponDmg": 0
+        },
     },
 
     'defenders': {
