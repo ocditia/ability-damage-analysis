@@ -19,6 +19,13 @@ function corruption_blast(type, settings, numberOfHits) {
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
 
+    let concStacks = 0;
+    let channellerStacks = 0;
+
+    if (type === 'Dw') {
+        concStacks = settings['conc stacks'];
+    }
+    
     const hits = []
 
     numberOfHits = 5;
@@ -41,18 +48,18 @@ function corruption_blast(type, settings, numberOfHits) {
         damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);
 
         //apply crit dmg
-        damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings);
-
+        damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings, channellerStacks);
+        
         //apply on-npc effects and hitcaps
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings,AD);
-        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings,AD);    
-
+        damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings,AD);     
+        
         //apply hit caps
         damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
-
+        
         //calc min, avg, or max depending on request
-        hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
+        hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val, concStacks, channellerStacks));
         hitCount+=1;
     }
     
