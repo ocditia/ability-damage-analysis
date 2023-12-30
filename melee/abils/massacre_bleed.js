@@ -7,14 +7,14 @@ const Avg = require('../average_damage')
 const construction = require('../melee_const')
 const { channel } = require('diagnostics_channel')
 
-function slice(type, settings, numberOfHits) {
+function massacre_bleed(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new MeleeHelper(); 
-    let abil_val = 'slice'
+    let abil_val = 'massacre - bleed hit'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
@@ -39,7 +39,7 @@ function slice(type, settings, numberOfHits) {
 
         //apply crit dmg
         damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings);
-        
+
         //apply on-npc effects and hitcaps
         damageObject['non-crit']['list'] = NPC_INS.onNpcDamageList(damageObject['non-crit']['list'],settings,AD);
         damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings,AD);     
@@ -47,7 +47,7 @@ function slice(type, settings, numberOfHits) {
         //apply hit caps
         damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
-
+  
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
     }
@@ -57,4 +57,4 @@ function slice(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = slice;
+module.exports = massacre_bleed;

@@ -7,7 +7,7 @@ const Avg = require('../average_damage')
 const construction = require('../melee_const')
 const { channel } = require('diagnostics_channel')
 
-function slice(type, settings, numberOfHits) {
+function blood_tendrils(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
@@ -21,6 +21,7 @@ function slice(type, settings, numberOfHits) {
 
     const hits = []
    
+    numberOfHits = 5;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 
@@ -33,7 +34,11 @@ function slice(type, settings, numberOfHits) {
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
-
+        if (hitsplat === 1) {
+            onHit[0] = 2 * onHit[0];
+            onHit[1] = 2 * onHit[1];
+        }
+        
         //sets up for further calculations
         damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);
 
@@ -57,4 +62,4 @@ function slice(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = slice;
+module.exports = blood_tendrils;

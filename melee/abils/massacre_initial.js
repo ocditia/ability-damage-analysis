@@ -7,14 +7,14 @@ const Avg = require('../average_damage')
 const construction = require('../melee_const')
 const { channel } = require('diagnostics_channel')
 
-function slice(type, settings, numberOfHits) {
+function massacre_initial(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new MeleeHelper(); 
-    let abil_val = 'slice'
+    let abil_val = 'massacre - initial hit'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
@@ -57,4 +57,4 @@ function slice(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = slice;
+module.exports = massacre_initial;

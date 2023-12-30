@@ -60,7 +60,7 @@ function collectSettings() {
     'flow stacks': 0,
     'Zamorak balance of power': 0,
     'Sophanem corrupted': 0,
-    'Raksha inner power': 0,
+    'Raksha inner power': 0,  
 
     //on-hit effects
     //pre-shared effects

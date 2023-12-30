@@ -45,15 +45,14 @@ class avgDmg {
     dmgObjectProbabilityCalc(dmgObject, settings, abil_val) {
         const CRIT_INS = new Crit();
         let critChance = 0;
-        console.log(critChance)
+
         if (construction['abilities'][abil_val]["crit effects"] === true) {
             critChance = CRIT_INS.calcFCritChance(settings);
-            console.log(critChance)
         } 
-        console.log(critChance)
+
         dmgObject['non-crit']['probability'] = 1 - critChance;
         dmgObject['crit']['probability'] = critChance;
-        console.log(dmgObject)
+
         return dmgObject;
     }
 

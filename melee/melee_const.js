@@ -495,13 +495,6 @@ const melee_construction = {
             "crit effects": true,
             'category': 'threshold'
         },
-        "corruption blast":{
-            "fixed percent": 0.12,
-            "variable percent": 0.04,
-            "on hit effects": false,
-            "crit effects": false,
-            'category': 'threshold'
-        },
         "stomp":{
             "fixed percent": 1.1,
             "variable percent": 0.2,
@@ -596,8 +589,8 @@ const melee_construction = {
         "massacre - bleed hit":{
             "fixed percent": 0.65,
             "variable percent": 0,
-            "on hit effects": true,
-            "crit effects": true,
+            "on hit effects": false,
+            "crit effects": false,
             'category': 'dot'
         }
     }
