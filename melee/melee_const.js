@@ -422,8 +422,8 @@ const melee_construction = {
             'category': 'basic'        
         },
         "bladed dive":{
-            "fixed percent": 2.5,
-            "variable percent": 1,
+            "fixed percent": 0.65,
+            "variable percent": 0.2,
             'on hit effects': true,
             'crit effects': true,
             'category': 'basic'
