@@ -37,19 +37,19 @@ const abilities = {
     title: 'Slice',
     calc: slice,
     icon: 'https://i.imgur.com/6WFgj22.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Chaos roar': {
     title: 'Chaos roar',
     calc: chaos_roar,
     icon: 'https://i.imgur.com/y7hSu7B.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Punish': {
     title: 'Punish',
     calc: punish,
     icon: 'https://i.imgur.com/fTfILfz.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Kick': {
     title: 'Kick',
@@ -61,7 +61,7 @@ const abilities = {
     title: 'Backhand',
     calc: backhand,
     icon: 'https://i.imgur.com/BBg4gTg.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Haovc': {
     title: 'Havoc',
@@ -79,25 +79,25 @@ const abilities = {
     title: 'Bladed dive',
     calc: bladed_dive,
     icon: 'https://i.imgur.com/8mtMBwp.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Greater barge': {
     title: 'Greater barge (9t)',
     calc: greater_barge_9t,
     icon: 'https://i.imgur.com/FqidY8x.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Fury': {
     title: 'Fury',
     calc: fury,
     icon: 'https://i.imgur.com/CcNJ0n9.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Greater fury': {
     title: 'Greatery fury',
     calc: greater_fury,
     icon: 'https://i.imgur.com/7wGyyol.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Decimate': {
     title: 'Decimate',
@@ -115,7 +115,7 @@ const abilities = {
     title: 'Sever',
     calc: sever,
     icon: 'https://i.imgur.com/KnhZj1G.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Dismember': {
     title: 'Dismember',
@@ -127,7 +127,7 @@ const abilities = {
     title: 'Stomp',
     calc: stomp,
     icon: 'https://i.imgur.com/BJ2w8Jr.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Flurry': {
     title: 'Flurry',
@@ -145,7 +145,7 @@ const abilities = {
     title: 'Forceful backhand',
     calc: forceful_backhand,
     icon: 'https://i.imgur.com/Xp8aazI.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Quake': {
     title: 'Quake',
@@ -169,13 +169,13 @@ const abilities = {
     title: 'Assault',
     calc: assault,
     icon: 'https://i.imgur.com/kbhPFCm.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Hurricane': {
     title: 'Hurricane',
     calc: hurricane,
     icon: 'https://i.imgur.com/zurrG1S.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Blood tendrils': {
     title: 'Blood tendrils',
@@ -187,7 +187,7 @@ const abilities = {
     title: 'Overpower',
     calc: overpower,
     icon: 'https://i.imgur.com/99xE1pT.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Pulverise': {
     title: 'Pulverise',
@@ -217,19 +217,19 @@ const abilities = {
     title: 'Dragon Claw',
     calc: dragon_claw,
     icon: 'https://i.imgur.com/ikIIMnK.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Dragon Longsword': {
     title: 'Dragon Longsword',
     calc: dragon_long,
     icon: 'https://i.imgur.com/CnA1HKN.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Granite Maul': {
     title: 'Granite Maul',
     calc: granite_maul,
     icon: 'https://i.imgur.com/vt0e9lV.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
 }
 
