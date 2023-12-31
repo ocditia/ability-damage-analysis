@@ -1,8 +1,8 @@
 const construction = require('./melee_const')
 
 class OnHit {
-  calcScriptureOfFul(buff,pocket) {
-    if (pocket === 'scripture of ful') {
+  calcScriptureOfFul(buff,pocket,flag) {
+    if (pocket === 'scripture of ful' && flag === true) {
       buff = buff * (1 + 0.2);
     }
     return Math.floor(buff);
@@ -21,6 +21,16 @@ class OnHit {
   calcZGS(buff,flag){
     if (flag === true) {
       buff = Math.floor(buff * (1.25));
+    }
+    return buff;
+  }
+
+  calcGOP(buff,flag, enchantment){
+    if (flag === true && enchantment === true) {
+      buff += Math.floor(buff * 0.16);
+    }
+    else if (flag === true && enchantment === false) {
+      buff += Math.floor(buff * 0.1);
     }
     return buff;
   }
@@ -129,11 +139,12 @@ class OnHit {
       else {
         let buff = 10000
         //all buffs in order of application
-        buff = this.calcScriptureOfFul(buff,settings['pocket slot']); //assumed on
+        buff = this.calcScriptureOfFul(buff,settings['pocket slot'], settings['ful']); //assumed on
         buff = this.calcStoneOfJas(buff,settings['stone of jas']);
         buff = this.calcBerserk(buff,settings['berserk']);
         buff = this.calcZGS(buff,settings['zgs']);
         buff = this.calcDBA(buff,settings['dragon battle axe spec']);
+        buff = this.calcGOP(buff,settings['gloves of passage'],settings['enchantment agony']);
         buff = this.calcAnnihilation(buff,settings['annihilation stacks']);
         buff = this.calcPrayer(buff,settings['prayer']);
         buff = this.calcExsanguinate(buff,settings['exsanguinate stacks'],settings['category']);

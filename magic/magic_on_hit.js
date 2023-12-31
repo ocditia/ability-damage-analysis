@@ -1,9 +1,9 @@
 const construction = require('./magic_const')
 
 class OnHit {
-  calcScriptureOfFul(buff,pocket) {
-    if (pocket === 'scripture of ful') {
-      buff = buff * (1 + 0.2);
+  calcScriptureOfFul(buff,pocket,flag) {
+    if (pocket === 'scripture of ful' && flag === true) {
+      buff += buff * 0.2;
     }
     return Math.floor(buff);
   }
@@ -112,7 +112,7 @@ class OnHit {
       else {
         let buff = 10000
         //all buffs in order of application
-        buff = this.calcScriptureOfFul(buff,settings['pocket slot']); //assumed on
+        buff = this.calcScriptureOfFul(buff,settings['pocket slot'],settings['ful']); //assumed on
         buff = this.calcStoneOfJas(buff,settings['stone of jas']);
         buff = this.calcPrayer(buff,settings['prayer']);
         buff = this.calcSun(buff,settings['sunshine']);

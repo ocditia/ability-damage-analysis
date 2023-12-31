@@ -66,6 +66,7 @@ function collectSettings() {
     //shared
     'revenge stacks': 0,
     'prayer': "ruination",
+    'ful': false,
 
     //pvn only
     'slayer helmet': 'none',

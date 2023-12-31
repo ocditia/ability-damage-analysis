@@ -74,6 +74,7 @@ function collectSettings() {
     'prayer': "affliction",
     'sunshine': false,
     'kww': false,
+    'ful': false,
 
     //pvn only
     'slayer helmet': 'none',

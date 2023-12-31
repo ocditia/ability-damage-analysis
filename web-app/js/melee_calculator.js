@@ -38,6 +38,7 @@ function collectSettings() {
     'level 20 armour': true,
     'terrasaur': false,
     'enchantment savagery': true,
+    'enchantment agony': true,
     'chaos roar': false,
 
     //perks
@@ -76,6 +77,8 @@ function collectSettings() {
     'zgs': false,
     'dragon battle axe spec': false,
     'annihilation stacks': 0,
+    'gloves of passage': false,
+    'ful': false,
 
     //pvn only
     'slayer helmet': 'none',
