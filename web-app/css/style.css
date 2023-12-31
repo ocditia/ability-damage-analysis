@@ -549,7 +549,7 @@ label.logo {
     color: rgba(184, 236, 242,var(--tw-border-opacity));
     font-size: 25px;
     font-weight: bold;
-    font-family: palatino;
+    font-family: Roboto, sans-serif;
 }
 
 @media (max-width: 952px) {
