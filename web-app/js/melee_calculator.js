@@ -70,6 +70,7 @@ function collectSettings() {
     'revenge stacks': 0,
     'prayer': "affliction",
     'berserk': false,
+    'zgs': false,
     'dragon battle axe spec': false,
     'annihilation stacks': 0,
 
@@ -154,18 +155,19 @@ function calculateDamages(settings) {
     const weapon = row.querySelector('.js--ability-weapon').value;
     const key = row.getAttribute('data-ability-key');
     settings['berserk'] = false;
-    settings['zaros god sword spec'] = false;
+    settings['zgs'] = false;
     damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
 
     // Recalculate with sun
-    settings['zaros god sword spec'] = true;
+    settings['zgs'] = true;
+    settings['berserk'] = false;
     damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-zgs').textContent = damages[damages.length-1];
 
     // Recalculate with meta
     settings['berserk'] = true;
-    settings['zaros god sword spec'] = false;
+    settings['zgs'] = false;
     damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-berserk').textContent = damages[damages.length-1];
   })

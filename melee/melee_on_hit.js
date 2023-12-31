@@ -18,6 +18,12 @@ class OnHit {
     }
     return buff;
   }
+  calcZGS(buff,flag){
+    if (flag === true) {
+      buff = Math.floor(buff * (1.25));
+    }
+    return buff;
+  }
 
   calcDBA(buff,flag){
     if (flag === true) {
@@ -126,6 +132,7 @@ class OnHit {
         buff = this.calcScriptureOfFul(buff,settings['pocket slot']); //assumed on
         buff = this.calcStoneOfJas(buff,settings['stone of jas']);
         buff = this.calcBerserk(buff,settings['berserk']);
+        buff = this.calcZGS(buff,settings['zgs']);
         buff = this.calcDBA(buff,settings['dragon battle axe spec']);
         buff = this.calcAnnihilation(buff,settings['annihilation stacks']);
         buff = this.calcPrayer(buff,settings['prayer']);
