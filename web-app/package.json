@@ -5,10 +5,13 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "deploy": "gh-pages -d dist",
+    "build": "parcel build --no-optimize",
     "start": "parcel",
-    "build": "parcel build"
+    "predeploy": "rm -rf dist && parcel build index.html --no-optimize --no-source-maps --public-url ./"
   },
   "devDependencies": {
+    "gh-pages": "^6.1.1",
     "parcel": "^2.10.3"
   },
   "dependencies": {
