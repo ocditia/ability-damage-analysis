@@ -36,6 +36,8 @@ function collectSettings() {
     'pocket slot': 'grimoire',
     'reaper crew': true,
     'level 20 armour': true,
+    'tuska might': false,
+    'fsoa': false,
 
     //perks
     'precise': 0,

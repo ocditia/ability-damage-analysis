@@ -22,10 +22,6 @@ function time_strike(type, settings, numberOfHits) {
     let concStacks = 0;
     let channellerStacks = 0;
 
-    if (type === 'Dw') {
-        concStacks = settings['conc stacks'];
-    }
-
     const hits = []
    
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {

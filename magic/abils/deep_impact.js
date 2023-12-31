@@ -4,6 +4,7 @@ const OnHit = require('../magic_on_hit')
 const Crit = require('../magic_crit')
 const NecroHelper = require('../magic_helper')
 const Avg = require('../average_damage')
+const time_strike = require('./time_strike')
 const construction = require('../magic_const')
 const { channel } = require('diagnostics_channel')
 
@@ -54,6 +55,15 @@ function deep_impact(type, settings, numberOfHits) {
         //apply hit caps
         damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
         damageObject['crit']['list'] = Helper.hitCapDmgList(damageObject['crit']['list'],settings);
+
+        //fsoa
+        let proc = 0;
+        if (settings['fsoa'] === true){
+            let fcrit = CRIT_INS.calcFCritChance(settings, concStacks, channellerStacks);
+            proc = time_strike(type, settings, 1);
+            fsoa = proc[0] * fcrit;
+            hits.push(fsoa);
+        }
         
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val, concStacks, channellerStacks));
