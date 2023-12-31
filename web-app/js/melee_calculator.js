@@ -36,6 +36,9 @@ function collectSettings() {
     'pocket slot': 'grimoire',
     'reaper crew': true,
     'level 20 armour': true,
+    'terrasaur': false,
+    'enchantment savagery': true,
+    'chaos roar': false,
 
     //perks
     'precise': 0,

@@ -120,7 +120,7 @@
                                 </div>
                                 <div class="pb-5">
                                     <p>
-                                        The calculator prevents irrational settings from being selected, for example, the revenge does nothing if you do not have mainhand + shield (Ms) as your selected weapon. Be sure to check all settings if effects are not giving the expected results.
+                                        The calculator prevents irrational settings from being selected, for example, revenge does nothing if you do not have mainhand + shield (Ms) as your selected weapon. Be sure to check all settings if effects are not giving the expected results.
                                     </p>
                                 </div>
                                 <div>
@@ -185,6 +185,16 @@
                                                     <img class="effect-icon" src="assets/effect_icons/death.png">
                                                     <p class="effect-text">Reaper Crew:</p>
                                                     <input class="js--setting" data-setting-name="Reaper crew" type="checkbox" id="reaper crew" name="reaper crew" checked>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Terrasaur_maul.webp">
+                                                    <p class="effect-text">Terrasaur Effect:</p>
+                                                    <input class="js--setting" data-setting-name="terrasaur" type="checkbox">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Chaos_Roar.webp">
+                                                    <p class="effect-text">Chaos Roar:</p>
+                                                    <input class="js--setting" data-setting-name="chaos roar" type="checkbox">
                                                 </div>
                                             </div>
                                             <!--On Hit Main-->
@@ -312,6 +322,11 @@
                                                     <img class="effect-icon" src="assets/effect_icons/Ek-ZekKil.webp">
                                                     <p class="effect-text">EZk Bleed:</p>
                                                     <input class="js--setting" data-setting-name="ezk bleed" type="number" value="6" min="6" max="20" step="1">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Enchantment_of_savagery.webp">
+                                                    <p class="effect-text">Enchantment of Savagery:</p>
+                                                    <input class="js--setting" data-setting-name="enchantment savagery" type="checkbox" checked>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Araxyte_spider.webp">
@@ -499,11 +514,6 @@
                                                     <input class="js--setting" data-setting-name="biting" type="number" id="biting" name="biting" step="1" value="4" min="0" max="99">
                                                 </div>
                                                 <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Crackling.webp"></td>
-                                                    <p class="effect-text">Crackling:</p>
-                                                    <input type="number" id="crackling" name="crackling" step="1" value="4" min="0" max="99">
-                                                </div>
-                                                <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Precise.webp"></td>
                                                     <p class="effect-text">Precise:</p>
                                                     <input class="js--setting" data-setting-name="precise" type="number" id="precise" name="precise" step="1" value="6" min="0" max="99">
@@ -578,18 +588,18 @@
                                             <div class="effect-container">
                                                 <img class="effect-icon" src="assets/effect_icons/Inner_Power_(self_status).webp"></td>
                                                 <p class="effect-text">Inner power (Raksha):</p>
-                                                <input class="js--setting" data-setting-name="Raksha inner power" type="number" id="Raksha inner power" name="Raksha inner power" step="1" value="0" min="0">
+                                                <input class="js--setting" data-setting-name="Raksha inner power" type="number" id="Raksha inner power" name="Raksha inner power" step="1" value="0" min="0" max="999">
                                             </div>
                                             <div class="effect-container">
                                                 <img class="effect-icon" src="assets/effect_icons/Stone_of_Jas_(status).webp">
                                                 <p class="effect-text">Stone of Jas:</p>
-                                                <input class="js--setting" data-setting-name="stone of jas" type="number" id="stone of jas" name="stone of jas" step="1" value="0" min="0">
+                                                <input class="js--setting" data-setting-name="stone of jas" type="number" id="stone of jas" name="stone of jas" step="1" value="0" min="0" max="999">
                                                 <p class="effect-text">%</p>
                                             </div>
                                             <div class="effect-container">
                                                 <img class="effect-icon" src="assets/effect_icons/Infernal_Puzzle_Box.png">
                                                 <p class="effect-text">Infernal Puzzle Box:</p>
-                                                <input class="js--setting" data-setting-name="Infernal puzzle box" type="number" id="Infernal puzzle box" name="Infernal puzzle box" step="1" value="0" min="0">
+                                                <input class="js--setting" data-setting-name="Infernal puzzle box" type="number" id="Infernal puzzle box" name="Infernal puzzle box" step="1" value="0" min="0" max="999">
                                                 <p class="effect-text">%</p>
                                             </div>
                                         </div>

@@ -30,16 +30,22 @@ class AbilityDmg {
       AD = mhAbilityDmg + ohAbilityDmg;
     }
 
-    if (settings['two-handed weapon'] === 'terrasaur maul' && type === 'two-hand') {
-      AD = Math.floor(AD * (1 + 0.125));
-    }
-    else if (settings['two-handed weapon'] === 'terrasaur maul (e)' && type === 'two-hand') {
-      AD = Math.floor(AD * (1 + 0.175));
+    if (settings['terrasaur'] === true && settings['two-handed weapon'] === 'terrasaur maul' && type === '2h') {
+      if (settings['enchantment savagery'] === true) {
+        AD += AD * 0.175;
+      }
+      else {
+        AD += AD * 0.125;
+      }
     }
 
     if (settings['chaos roar'] === true) {
       AD = 2 * AD;
     }
+
+    AD += Math.floor(AD * 0.06 * settings['Zamorak balance of power']);
+
+    AD += Math.floor(AD * 0.1 * settings['Raksha inner power']);
 
     return AD
   }

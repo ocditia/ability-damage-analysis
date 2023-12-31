@@ -40,10 +40,6 @@ const melee_construction = {
             'tier': 80,
             'weapondmg': 0
         },
-        'terrasaur maul (e)':{
-            'tier': 80,
-            'weapondmg': 0
-        },
     },
 
     'main-hand weapons': {

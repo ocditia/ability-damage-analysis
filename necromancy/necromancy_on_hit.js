@@ -21,10 +21,10 @@ class OnHit {
   }
 
   calcRevenge(buff,type,revengeStacks) {
-    if (type === 'shield') {
+    if (type === 'Ms') {
       buff = buff * (1 + 0.05*revengeStacks);
     } 
-    else if (type === 'defender') { 
+    else if (type === 'Md') { 
       buff = buff * (1 + 0.025*revengeStacks);
     }
     return Math.floor(buff);
