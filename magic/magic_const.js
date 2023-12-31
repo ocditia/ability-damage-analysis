@@ -300,7 +300,10 @@ const magic_construction = {
         },
         "god book":{
             "bonus": 5
-        }
+        },
+        "none":{
+            "bonus": 0
+        },
     },
 
     'auras': {
