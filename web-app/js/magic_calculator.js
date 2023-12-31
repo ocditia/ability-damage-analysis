@@ -73,6 +73,7 @@ function collectSettings() {
     'revenge stacks': 0,
     'prayer': "affliction",
     'sunshine': false,
+    'kww': false,
 
     //pvn only
     'slayer helmet': 'none',

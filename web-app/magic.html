@@ -83,7 +83,7 @@
         <div class="space-y-14 z-20">
             <div class="responsive-container">
                 <section class="grid xl:grid-cols-12 gap-6 xl:gap-8"> 
-                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2 md:pt-6">
+                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-4 md:pt-6">
                         <div class="flex flex-col">
                             <h1 class="main-header mb-6 ml-3">Damage Values</h1>
                             <div class="card card-magic">
@@ -106,8 +106,34 @@
                         </div>
                     </div>
 
+                    <!--USER GUIDE-->
+                    <div class="xl:col-span-6 xl:row-start-2 xl:col-start-7">
+                        <div class="flex flex-col">
+                            <div class="card card-magic">
+                                <div class="card-title pb-5">
+                                    User Guide
+                                </div>
+                                <div class="pb-5">
+                                    <p>
+                                        Ability damage is automatically calculated based on the settings you have selected, however, you can mannualy override it by entering a value other than zero in the setting field.
+                                    </p>
+                                </div>
+                                <div class="pb-5">
+                                    <p>
+                                        The calculator prevents irrational settings from being selected, for example, the inquisitor staff effect does nothing if you do not have an inquisitor staff selected as your 2h weapon. Be sure to check all settings if effects are not giving the expected results.
+                                    </p>
+                                </div>
+                                <div>
+                                    <p>
+                                        Certain value or stack based effects have higher bounds than what exists in the live game which we have done to allow for more freedom with testing.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!--SETTINGS TABS-->
-                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2">
+                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1">
                         <div class="tabbed md:pt-24">
                             <input type="radio" id="tab-general" name="css-tabs" checked="">
                             <input type="radio" id="tab-equipment" name="css-tabs">
@@ -168,7 +194,7 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Inquisitor_staff.webp">
                                                     <p class="effect-text">Inquisitor effect:</p>
-                                                    <input class="js--setting" data-setting-name="inquisitor" type="checkbox">
+                                                    <input class="js--setting" data-setting-name="inquisitor" type="checkbox" checked>
                                                 </div>
                                             </div>
                                             <!--On Hit Main-->
@@ -320,11 +346,6 @@
                                                     <img class="effect-icon" src="assets/effect_icons/Enchantment_of_affliction_detail.png">
                                                     <p class="effect-text">Enchantment of Affliction:</p>
                                                     <input class="js--setting" data-setting-name="enchantment affliction" type="checkbox" checked>
-                                                </div>
-                                                <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Enchantment_of_flames_detail.png">
-                                                    <p class="effect-text">Enchantment of Flames:</p>
-                                                    <input class="js--setting" data-setting-name="enchantment flames" type="checkbox" checked>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Channeller's_ring.png">

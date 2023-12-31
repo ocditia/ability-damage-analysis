@@ -592,7 +592,63 @@ const melee_construction = {
             "on hit effects": false,
             "crit effects": false,
             'category': 'dot'
-        }
+        },
+        "dragon claw 1":{
+            "fixed percent": 1.8,
+            "variable percent": 0.4,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "dragon claw 2":{
+            "fixed percent": 0.9,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "dragon claw 3":{
+            "fixed percent": 0.45,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "dragon claw 4":{
+            "fixed percent": 0.45,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "ezk - initial hit":{
+            "fixed percent": 1.1,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "ezk - bleed hit":{
+            "fixed percent": 0.55,
+            "variable percent": 0.2,
+            "on hit effects": false,
+            "crit effects": false,
+            'category': 'dot'
+        },
+        "granite maul":{
+            "fixed percent": 1.0,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "dragon longsword":{
+            "fixed percent": 2.5,
+            "variable percent": 0.4,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
     }
 }
 

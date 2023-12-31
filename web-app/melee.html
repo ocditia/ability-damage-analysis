@@ -71,7 +71,7 @@
                 <div class="responsive-container z-10 relative flex items-center h-full text-white">
                     <div class="flex items-center md:items-center flex-row w-full mt-0 md:mb-12 lg:mb-0 lg:mt-0">
                         <div class="w-1/12 xl:w-32 md:h-20 xl:h-32">
-                            <img class="icon-header mr-2 xl:mr-8" src="./assets/style_icons/magic-white.svg">
+                            <img class="icon-header mr-2 xl:mr-8" src="./assets/style_icons/melee-white.svg">
                         </div>
                         <h1 class="text-3xl md:text-4xl xl:text-6xl font-semibold ml-8 mb-0">Melee Calculator</h1>
                     </div>
@@ -83,10 +83,10 @@
         <div class="space-y-14 z-20">
             <div class="responsive-container">
                 <section class="grid xl:grid-cols-12 gap-6 xl:gap-8"> 
-                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2 md:pt-6">
+                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-4 md:pt-6">
                         <div class="flex flex-col">
                             <h1 class="main-header mb-6 ml-3">Damage Values</h1>
-                            <div class="card card-magic">
+                            <div class="card card-melee">
                                 <div class="table-container">
                                     <table>
                                         <thead>
@@ -106,8 +106,34 @@
                         </div>
                     </div>
 
+                    <!--USER GUIDE-->
+                    <div class="xl:col-span-6 xl:row-start-2 xl:col-start-7">
+                        <div class="flex flex-col">
+                            <div class="card card-melee">
+                                <div class="card-title pb-5">
+                                    User Guide
+                                </div>
+                                <div class="pb-5">
+                                    <p>
+                                        Ability damage is automatically calculated based on the settings you have selected, however, you can mannualy override it by entering a value other than zero in the setting field.
+                                    </p>
+                                </div>
+                                <div class="pb-5">
+                                    <p>
+                                        The calculator prevents irrational settings from being selected, for example, the revenge does nothing if you do not have mainhand + shield (Ms) as your selected weapon. Be sure to check all settings if effects are not giving the expected results.
+                                    </p>
+                                </div>
+                                <div>
+                                    <p>
+                                        Certain value or stack based effects have higher bounds than what exists in the live game which we have done to allow for more freedom with testing.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!--SETTINGS TABS-->
-                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-2">
+                    <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1">
                         <div class="tabbed md:pt-24">
                             <input type="radio" id="tab-general" name="css-tabs" checked="">
                             <input type="radio" id="tab-equipment" name="css-tabs">
@@ -243,62 +269,66 @@
                                             <!--On NPC-->
                                             <div class="settings-container">
                                                 <div class="card-title mb-1">On-NPC</div>
-                                                <div class="settings-container">
-                                                    <div class="card-title mb-1">On-NPC</div>
-                                                    <div class="effect-container">
-                                                        <img class="effect-icon" src="assets/effect_icons/Vulnerability_icon.webp">
-                                                        <p class="effect-text">Vulnerability:</p>
-                                                        <input class="js--setting" data-setting-name="vulnerability" type="checkbox" id="vulnerability" name="vulnerability" checked>
-                                                    </div>
-                                                    <div class="effect-container">
-                                                        <img class="effect-icon" src="assets/effect_icons/Smoke_Cloud_icon.webp">
-                                                        <p class="effect-text">Smoke Cloud:</p>
-                                                        <input class="js--setting" data-setting-name="smoke cloud" type="checkbox" id="smoke cloud" name="smoke cloud" checked>
-                                                    </div>
-                                                    <div class="effect-container">
-                                                        <img class="effect-icon" src="assets/effect_icons/Cryptbloom_helm.png">
-                                                        <p class="effect-text">Cryptbloom Vuln:</p>
-                                                        <input class="js--setting" data-setting-name="death spores" type="checkbox" id="death spores" name="death spores">
-                                                    </div>
-                                                    <div class="effect-container">
-                                                        <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
-                                                        <p class="effect-text">Slayer Perk:</p>
-                                                        <input class="js--setting" data-setting-name="slayer perk" type="checkbox" id="slayer perk" name="slayer perk">
-                                                    </div>
-                                                    <div class="effect-container">
-                                                        <img class="effect-icon" src="assets/effect_icons/Undead_slayer_sigil_detail.png">
-                                                        <p class="effect-text">Slayer Sigil:</p>
-                                                        <input class="js--setting" data-setting-name="slayer sigil" type="checkbox" id="slayer sigil" name="slayer sigil">
-                                                    </div>
-                                                    <div class="effect-container">
-                                                        <img class="effect-icon" src="assets/effect_icons/aura.png"></td>
-                                                        <p class="effect-text">Aura:</p>
-                                                        <select class="js--setting dropdown-select" data-setting-name="aura" id="aura">
-                                                            <option value="none">None</option>
-                                                            <option value="mahjarrat">Mahjarrat</option>
-                                                            <option value="equilibrium">Equilibrium</option>
-                                                            <option value="berserker" selected>Berserker</option>
-                                                        </select>
-                                                    </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Vulnerability_icon.webp">
+                                                    <p class="effect-text">Vulnerability:</p>
+                                                    <input class="js--setting" data-setting-name="vulnerability" type="checkbox" id="vulnerability" name="vulnerability" checked>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Smoke_Cloud_icon.webp">
+                                                    <p class="effect-text">Smoke Cloud:</p>
+                                                    <input class="js--setting" data-setting-name="smoke cloud" type="checkbox" id="smoke cloud" name="smoke cloud" checked>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Cryptbloom_helm.png">
+                                                    <p class="effect-text">Cryptbloom Vuln:</p>
+                                                    <input class="js--setting" data-setting-name="death spores" type="checkbox" id="death spores" name="death spores">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/25px-Undead_Slayer.webp">
+                                                    <p class="effect-text">Slayer Perk:</p>
+                                                    <input class="js--setting" data-setting-name="slayer perk" type="checkbox" id="slayer perk" name="slayer perk">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Undead_slayer_sigil_detail.png">
+                                                    <p class="effect-text">Slayer Sigil:</p>
+                                                    <input class="js--setting" data-setting-name="slayer sigil" type="checkbox" id="slayer sigil" name="slayer sigil">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/aura.png"></td>
+                                                    <p class="effect-text">Aura:</p>
+                                                    <select class="js--setting dropdown-select" data-setting-name="aura" id="aura">
+                                                        <option value="none">None</option>
+                                                        <option value="mahjarrat">Mahjarrat</option>
+                                                        <option value="equilibrium">Equilibrium</option>
+                                                        <option value="berserker" selected>Berserker</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                             <!--Other-->
                                             <div class="settings-container">
                                                 <div class="card-title mb-1">Other</div>
                                                 <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Ek-ZekKil.webp">
+                                                    <p class="effect-text">EZk Bleed:</p>
+                                                    <input class="js--setting" data-setting-name="ezk bleed" type="number" value="6" min="6" max="20" step="1">
+                                                </div>
+                                                <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Araxyte_spider.webp">
                                                     <p class="effect-text">Nope Nope Nope:</p>
-                                                    <input class="js--setting" data-setting-name="nopenopenope" type="checkbox" id="nopenopenope" name="nopenopenope">
+                                                    <input class="js--setting" data-setting-name="nopenopenope" type="checkbox">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Binding_contract_(kal'gerion_demon).webp">
                                                     <p class="effect-text">Kalg Passive:</p>
-                                                    <input class="js--setting" data-setting-name="kalgerion demon familiar" type="checkbox" id="kalgerion demon familiar" name="kalgerion demon familiar">
+                                                    <input class="js--setting" data-setting-name="kalgerion demon familiar" type="checkbox">
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Kal'gerion_Demon_scroll_(Crit-i-Kal).webp">
                                                     <p class="effect-text">Crit-i-Kal Spec:</p>
-                                                    <input class="js--setting" data-setting-name="crit-i-kal" type="checkbox" id="crit-i-kal" name="crit-i-kal" checked>
+                                                    <input class="js--setting" data-setting-name="crit-i-kal" type="checkbox" checked>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -576,7 +606,6 @@
         <tr class="js--ability">
             <td data-cell="img"> <img class="job-icon-sm js--ability-icon"> </td>
             <td class="js--ability-title" data-cell="name"></td>
-            <td></td>
             <td class="js--ability-regular" data-cell="reg"></td>
             <td class="js--ability-zgs" data-cell="ss"></td>
             <td class="js--ability-berserk" data-cell="ss"></td>

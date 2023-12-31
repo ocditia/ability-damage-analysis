@@ -111,7 +111,9 @@ function collectSettings() {
     'King black dragon wilderness portal': false,
     'Tokkul-zo': false,
     'skeleton rage stacks': 0,
-    'haunted': false
+    'haunted': false,
+
+    'ezk bleed': 6,
 };
 
   document.querySelectorAll('.js--setting').forEach(node => {
