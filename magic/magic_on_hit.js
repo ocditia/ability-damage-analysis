@@ -2,10 +2,13 @@ const construction = require('./magic_const')
 
 class OnHit {
   calcScriptureOfFul(buff,pocket,flag) {
+    console.log(pocket)
+    console.log(flag)
     if (pocket === 'scripture of ful' && flag === true) {
-      buff += buff * 0.2;
+      buff = Math.floor(buff * (1 + 0.2));
+      console.log(buff)
     }
-    return Math.floor(buff);
+    return buff;
   }
 
   calcStoneOfJas(buff,jas) {
