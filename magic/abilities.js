@@ -21,6 +21,7 @@ const tsunami = require("./abils/tsunami");
 const omnipower = require("./abils/omnipower");
 const guthix_staff = require("./abils/guthix_staff");
 const frost_surge = require("./abils/frost_surge");
+const time_strike = require("./abils/time_strike");
 
 const abilities = {
   'Wrack': {
@@ -159,6 +160,12 @@ const abilities = {
     title: 'Frost Surge',
     calc: frost_surge,
     icon: 'https://i.imgur.com/w8RvYQh.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Time Strike': {
+    title: 'Time Strike',
+    calc: time_strike,
+    icon: 'https://i.imgur.com/vhktD3Y.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }
