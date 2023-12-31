@@ -24,6 +24,10 @@ const ranged_construction = {
             "tier": 80,
             "weaponDmg": 0
         },
+        "hexhunter bow":{
+            "tier": 80,
+            "weaponDmg": 0
+        },
         "none":{
             "tier": 0,
             "weaponDmg": 0

@@ -29,6 +29,15 @@ class AbilityDmg {
 
         AD = mhAbilityDmg + ohAbilityDmg;
       }
+
+      if (settings['hexhunter'] === true && settings['two-handed weapon'] === 'hexhunter bow' && type === '2h') {
+        if (settings['enchantment dispelling'] === true) {
+          AD += AD * 0.175;
+        }
+        else {
+          AD += AD * 0.125;
+        }
+      }
   
       return AD
     }

@@ -6,10 +6,19 @@ class Crit {
             (0.02 * settings['biting']);
 
         if (settings['ring'] === 'reavers') {
-            fcrit = fcrit + 0.05;
+            fcrit += 0.05;
         }
+        else if (settings['ring'] === 'stalkers') {
+            if (settings['enchantment shadows'] === true) {
+                fcrit +=  0.04;
+            }
+            else {
+                fcrit += 0.03;
+            }
+        }
+
         if (settings['pocket slot'] === 'grimoire') {
-            fcrit = fcrit + 0.12;
+            fcrit += 0.12;
         }        
         return fcrit;
     }
@@ -19,6 +28,9 @@ class Crit {
         modifier = modifier + 0.05 * Math.floor((settings['level'] - 10))/10;
         if (settings['smoke cloud'] === true) {
             modifier = modifier + 0.06;
+        }
+        if (settings['enchantment shadows'] === true && settings['ring'] === 'stalkers') {
+            modifier += 0.03;
         }
 
         return Math.floor(dmg * (1 + modifier));

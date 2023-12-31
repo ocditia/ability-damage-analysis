@@ -188,7 +188,12 @@
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/death.png">
                                                     <p class="effect-text">Reaper Crew:</p>
-                                                    <input class="js--setting" data-setting-name="Reaper crew" type="checkbox" id="reaper crew" name="reaper crew" checked>
+                                                    <input class="js--setting" data-setting-name="Reaper crew" type="checkbox"checked>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Hexhunter_bow.webp">
+                                                    <p class="effect-text">Hex Hunter:</p>
+                                                    <input class="js--setting" data-setting-name="hexhunter" type="checkbox">
                                                 </div>
                                             </div>
                                             <!--On Hit Main-->
@@ -312,9 +317,22 @@
                                             <div class="settings-container">
                                                 <div class="card-title mb-1">Other</div>
                                                 <div class="effect-container">
-                                                    <img class="effect-icon" src="assets/effect_icons/Araxyte_spider.webp">
-                                                    <p class="effect-text">Nope Nope Nope:</p>
-                                                    <input class="js--setting" data-setting-name="nopenopenope" type="checkbox" id="nopenopenope" name="nopenopenope">
+                                                    <p class="effect-text">NPC Size:</p>
+                                                    <input class="js--setting" data-setting-name="npc size" type="number" id="npc size" name="npc size" step="1" value="1" max="11" min="1">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <p class="effect-text">Blocking:</p>
+                                                    <input class="js--setting" data-setting-name="blocking" type="checkbox" id="blocking" name="blocking">
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Stalker's_ring.png">
+                                                    <p class="effect-text">Enchantment of Shadows:</p>
+                                                    <input class="js--setting" data-setting-name="enchantment shadows" type="checkbox" checked>
+                                                </div>
+                                                <div class="effect-container">
+                                                    <img class="effect-icon" src="assets/effect_icons/Stalker's_ring.png">
+                                                    <p class="effect-text">Enchantment of Dispelling:</p>
+                                                    <input class="js--setting" data-setting-name="enchantment dispelling" type="checkbox" checked>
                                                 </div>
                                                 <div class="effect-container">
                                                     <img class="effect-icon" src="assets/effect_icons/Binding_contract_(kal'gerion_demon).webp">
@@ -327,12 +345,9 @@
                                                     <input class="js--setting" data-setting-name="crit-i-kal" type="checkbox" id="crit-i-kal" name="crit-i-kal" checked>
                                                 </div>
                                                 <div class="effect-container">
-                                                    <p class="effect-text">NPC Size:</p>
-                                                    <input class="js--setting" data-setting-name="npc size" type="number" id="npc size" name="npc size" step="1" value="1" max="11" min="1">
-                                                </div>
-                                                <div class="effect-container">
-                                                    <p class="effect-text">Blocking:</p>
-                                                    <input class="js--setting" data-setting-name="blocking" type="checkbox" id="blocking" name="blocking">
+                                                    <img class="effect-icon" src="assets/effect_icons/Araxyte_spider.webp">
+                                                    <p class="effect-text">Nope Nope Nope:</p>
+                                                    <input class="js--setting" data-setting-name="nopenopenope" type="checkbox" id="nopenopenope" name="nopenopenope">
                                                 </div>
                                             </div>
                                         </div>
@@ -482,6 +497,7 @@
                                                         <option value="noxious longbow">Noxious Longbow</option>
                                                         <option value="decimation">Decimation</option>
                                                         <option value="zaryte bow">Zaryte Bow</option>
+                                                        <option value="hexhunter bow">Hexhunter Bow</option>
                                                     </select>
                                                 </div>
                                                 <div class="effect-container text-right">

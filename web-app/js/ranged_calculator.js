@@ -36,6 +36,9 @@ function collectSettings() {
     'pocket slot': 'grimoire',
     'reaper crew': true,
     'level 20 armour': true,
+    'enchantment shadows': true,
+    'enchantment dispelling': true,
+    'hexhunter': false,
 
     //perks
     'precise': 6,
