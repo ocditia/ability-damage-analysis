@@ -20,6 +20,7 @@ const wild_magic = require("./abils/wild_magic");
 const tsunami = require("./abils/tsunami");
 const omnipower = require("./abils/omnipower");
 const guthix_staff = require("./abils/guthix_staff");
+const frost_surge = require("./abils/frost_surge");
 
 const abilities = {
   'Wrack': {
@@ -152,6 +153,12 @@ const abilities = {
     title: 'Guthix staff',
     calc: guthix_staff,
     icon: 'https://i.imgur.com/sOXLRLp.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Frost Surge': {
+    title: 'Frost Surge',
+    calc: frost_surge,
+    icon: 'https://i.imgur.com/w8RvYQh.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }

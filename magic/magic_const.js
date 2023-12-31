@@ -617,6 +617,13 @@ const magic_construction = {
             "on hit effects": true,
             "crit effects": true,
             'category': 'special attack'
+        },
+        "frost surge":{
+            "fixed percent": 0.1,
+            "variable percent": 0.5,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'special attack'
         }
     }
 }
