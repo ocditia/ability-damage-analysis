@@ -1,4 +1,4 @@
-import { abilities } from '../../ranged/abilities';
+import { abilities } from '../necromancy/abilities';
 
 buildDamagesTable(abilities);
 calculateDamages(collectSettings())
@@ -17,31 +17,28 @@ function collectSettings() {
     'category': 'none',
 
     'ability damage': 0, //for manual override only
-    'level': 99,
+    'level': 120,
     'potion': 'elder overload',
     
-    'two-handed weapon': 'bow of the last guardian',
-    'main-hand weapon': 'blightbound',
-    'off-hand weapon': 'off-hand blightbound',
+    'two-handed weapon': 1,
+    'main-hand weapon': 'omni guard',
+    'off-hand weapon': 'soulbound lantern',
     'shield': 1,
     'defender': 1,
-    'helmet': 'elite dracolich helmet',
-    'body': 'elite dracolich top',
-    'leg': 'elite dracolich bottom',
-    'gloves': 'elite dracolich gloves',
-    'boots': 'elite dracolich boots',
+    'helmet': 'crown of the first necromancer',
+    'body': 'robe top of the first necromancer',
+    'leg': 'robe bottom of the first necromancer',
+    'gloves': 'hand wraps of the first necromancer',
+    'boots': 'foot wraps of the first necromancer',
     'necklace': 'essence of finality amulet (or)',
     'ring': 'reavers',
     'cape':'igneous kal-mor',
     'pocket slot': 'grimoire',
     'reaper crew': true,
     'level 20 armour': true,
-    'enchantment shadows': true,
-    'enchantment dispelling': true,
-    'hexhunter': false,
 
     //perks
-    'precise': 6,
+    'precise': 0,
     'equilibrium': 0,
     'genocidal percent': 0,
     'spendthrift': 0,
@@ -51,15 +48,11 @@ function collectSettings() {
     'biting': 4,
     'flanking': 0,
     'flanking position': false,
-    'caroming rank': 0,
     
-    'aura': 'reckless',
+    'aura': 'mahjarrat',
     'split soul': true,
     'bonus': 0,
     'hitcap': 30000,
-
-    'npc size': 1,
-    'blocking':false,
 
     //on-cast effects
     'Zamorak balance of power': 0,
@@ -73,7 +66,6 @@ function collectSettings() {
     //shared
     'revenge stacks': 0,
     'prayer': "ruination",
-    'swift': false,
     'ful': false,
 
     //pvn only
@@ -109,7 +101,9 @@ function collectSettings() {
     'Infernal puzzle box': false,
     'King black dragon wilderness portal': false,
     'Tokkul-zo': false,
-  };
+    'skeleton rage stacks': 0,
+    'haunted': false
+};
 
   document.querySelectorAll('.js--setting').forEach(node => {
     let val = node.value;
@@ -140,36 +134,22 @@ function buildDamagesTable(abilities) {
     ability.weapons.forEach(item =>  {
       weaponSelect.add(new Option(item, item))
     })
-
+    
     table.appendChild(copy);
   }
 }
 
 function calculateDamages(settings) {
   document.querySelectorAll(".js--damages-table tr").forEach(row => {
-    const key = row.getAttribute('data-ability-key');
     const weapon = row.querySelector('.js--ability-weapon').value;
+    const key = row.getAttribute('data-ability-key');
     settings['split soul'] = false;
-    settings['swift'] = false;
     damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
 
     // Recalculate with split soul
     settings['split soul'] = true;
-    settings['swift'] = false;
     damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
-
-    // Recalculate with swift
-    settings['split soul'] = false;
-    settings['swift'] = true;
-    damages = abilities[key].calc(weapon, settings, 1);
-    row.querySelector('.js--ability-swift').textContent = damages[damages.length-1];
-
-    // Recalculate with swift and split soul
-    settings['split soul'] = true;
-    settings['swift'] = true;
-    damages = abilities[key].calc(weapon, settings, 1);
-    row.querySelector('.js--ability-swift-ss').textContent = damages[damages.length-1];
   })
 }

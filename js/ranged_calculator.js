@@ -1,4 +1,4 @@
-import { abilities } from '../../melee/abilities';
+import { abilities } from '../ranged/abilities';
 
 buildDamagesTable(abilities);
 calculateDamages(collectSettings())
@@ -17,32 +17,31 @@ function collectSettings() {
     'category': 'none',
 
     'ability damage': 0, //for manual override only
-    'level': 120,
+    'level': 99,
     'potion': 'elder overload',
     
-    'two-handed weapon': 'ek-zekkil',
-    'main-hand weapon': 'dark shard of leng',
-    'off-hand weapon': 'dark sliver of leng',
+    'two-handed weapon': 'bow of the last guardian',
+    'main-hand weapon': 'blightbound',
+    'off-hand weapon': 'off-hand blightbound',
     'shield': 1,
     'defender': 1,
-    'helmet': 'vestments of havoc hood',
-    'body': 'vestments of havoc robe top',
-    'leg': 'vestments of havoc robe bottom',
-    'gloves': 'cinderbane gloves',
-    'boots': 'vestments of havoc boots',
+    'helmet': 'elite dracolich helmet',
+    'body': 'elite dracolich top',
+    'leg': 'elite dracolich bottom',
+    'gloves': 'elite dracolich gloves',
+    'boots': 'elite dracolich boots',
     'necklace': 'essence of finality amulet (or)',
     'ring': 'reavers',
-    'cape':'igneous kal-ket',
+    'cape':'igneous kal-mor',
     'pocket slot': 'grimoire',
     'reaper crew': true,
     'level 20 armour': true,
-    'terrasaur': false,
-    'enchantment savagery': true,
-    'enchantment agony': true,
-    'chaos roar': false,
+    'enchantment shadows': true,
+    'enchantment dispelling': true,
+    'hexhunter': false,
 
     //perks
-    'precise': 0,
+    'precise': 6,
     'equilibrium': 0,
     'genocidal percent': 0,
     'spendthrift': 0,
@@ -52,19 +51,20 @@ function collectSettings() {
     'biting': 4,
     'flanking': 0,
     'flanking position': false,
+    'caroming rank': 0,
     
-    'aura': 'mahjarrat',
+    'aura': 'reckless',
     'split soul': true,
     'bonus': 0,
     'hitcap': 30000,
 
-    'inquisitor': false,
+    'npc size': 1,
+    'blocking':false,
 
     //on-cast effects
-    'flow stacks': 0,
     'Zamorak balance of power': 0,
     'Sophanem corrupted': 0,
-    'Raksha inner power': 0,  
+    'Raksha inner power': 0,
 
     //on-hit effects
     //pre-shared effects
@@ -72,12 +72,8 @@ function collectSettings() {
 
     //shared
     'revenge stacks': 0,
-    'prayer': "affliction",
-    'berserk': false,
-    'zgs': false,
-    'dragon battle axe spec': false,
-    'annihilation stacks': 0,
-    'gloves of passage': false,
+    'prayer': "ruination",
+    'swift': false,
     'ful': false,
 
     //pvn only
@@ -89,20 +85,16 @@ function collectSettings() {
     //unknown order
     'berserkers fury': 0,
     'living death':false,    
-    'exsanguinate stacks': 0,
 
     //on-crit effects
     'smoke cloud': false,
     'kalgerion demon familiar': false,
     'crit-i-kal': false,
-    'conc stacks': 0,
-    'fury stacks': 0,
 
     //on-npc effects
     'vulnerability': false,
     'corrupted wounds': false, //gop bleed buff
     'slayer sigil': false,
-    'metamorphosis': false,
 
     //apply somewhere idk
     'nopenopenope': 0, //poh spider buff
@@ -117,11 +109,7 @@ function collectSettings() {
     'Infernal puzzle box': false,
     'King black dragon wilderness portal': false,
     'Tokkul-zo': false,
-    'skeleton rage stacks': 0,
-    'haunted': false,
-
-    'ezk bleed': 6,
-};
+  };
 
   document.querySelectorAll('.js--setting').forEach(node => {
     let val = node.value;
@@ -152,29 +140,36 @@ function buildDamagesTable(abilities) {
     ability.weapons.forEach(item =>  {
       weaponSelect.add(new Option(item, item))
     })
+
     table.appendChild(copy);
   }
 }
 
 function calculateDamages(settings) {
   document.querySelectorAll(".js--damages-table tr").forEach(row => {
-    const weapon = row.querySelector('.js--ability-weapon').value;
     const key = row.getAttribute('data-ability-key');
-    settings['berserk'] = false;
-    settings['zgs'] = false;
+    const weapon = row.querySelector('.js--ability-weapon').value;
+    settings['split soul'] = false;
+    settings['swift'] = false;
     damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
 
-    // Recalculate with sun
-    settings['zgs'] = true;
-    settings['berserk'] = false;
+    // Recalculate with split soul
+    settings['split soul'] = true;
+    settings['swift'] = false;
     damages = abilities[key].calc(weapon, settings, 1);
-    row.querySelector('.js--ability-zgs').textContent = damages[damages.length-1];
+    row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
 
-    // Recalculate with meta
-    settings['berserk'] = true;
-    settings['zgs'] = false;
+    // Recalculate with swift
+    settings['split soul'] = false;
+    settings['swift'] = true;
     damages = abilities[key].calc(weapon, settings, 1);
-    row.querySelector('.js--ability-berserk').textContent = damages[damages.length-1];
+    row.querySelector('.js--ability-swift').textContent = damages[damages.length-1];
+
+    // Recalculate with swift and split soul
+    settings['split soul'] = true;
+    settings['swift'] = true;
+    damages = abilities[key].calc(weapon, settings, 1);
+    row.querySelector('.js--ability-swift-ss').textContent = damages[damages.length-1];
   })
 }
