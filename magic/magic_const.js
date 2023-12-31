@@ -626,7 +626,7 @@ const magic_construction = {
             "variable percent": 0.5,
             "on hit effects": true,
             "crit effects": true,
-            'category': 'special attack'
+            'category': 'basic'
         }
     }
 }
