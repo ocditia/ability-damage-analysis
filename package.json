@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {    
-    "deploy": "cd-web-apo && yarn deploy",
+    "deploy": "cd web-app && yarn deploy",
     "build": "cd web-app && yarn build",
     "start": "cd web-app && yarn start",
     "predeploy": "cd web-app && yarn predeploy"
