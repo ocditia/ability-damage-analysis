@@ -32,11 +32,13 @@ class AbilityDmg {
 
       AD = Math.floor(AD * (1 + settings['flow stacks']/100));
 
-      if (settings['two-handed weapon'] === 'inquisitor staff' && type === '2h' && settings['inquisitor'] === true && settings['enchantment affliction'] === true) {
-        AD = Math.floor(AD * (1 + 0.175));
-      }
-      else if (settings['two-handed weapon'] === 'inquisitor staff' && type === '2h' && settings['inquisitor'] === true && settings['enchantment affliction'] === false) {
-        AD = Math.floor(AD * (1 + 0.125));
+      if (settings['inquisitor'] === true && settings['two-handed weapon'] === 'inquisitor staff' && type === '2h') {
+        if (settings['enchantment affliction'] === true) {
+          AD += AD * 0.175;
+        }
+        else {
+          AD += AD * 0.125;
+        }
       }
 
       AD += Math.floor(AD * 0.06 * settings['Zamorak balance of power']);
