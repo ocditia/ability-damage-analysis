@@ -1,16 +1,17 @@
 {
   "name": "ability-damage-analysis",
   "version": "0.0.0",
-  "source": "web-app/index.html",
+  "source": "index.html",
   "license": "MIT",
   "private": true,
-  "scripts": {    
-    "deploy": "cd web-app && yarn deploy",
-    "build": "cd web-app && yarn build",
-    "start": "cd web-app && yarn start",
-    "predeploy": "cd web-app && yarn predeploy"
+  "scripts": {
+    "deploy": "gh-pages -d dist",
+    "build": "parcel build --no-optimize",
+    "start": "parcel",
+    "predeploy": "rm -rf dist && parcel build index.html --no-optimize --no-source-maps --public-url ./"
   },
   "devDependencies": {
+    "gh-pages": "^6.1.1",
     "parcel": "^2.10.3"
   },
   "dependencies": {
