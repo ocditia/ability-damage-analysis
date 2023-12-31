@@ -22,6 +22,7 @@ const omnipower = require("./abils/omnipower");
 const guthix_staff = require("./abils/guthix_staff");
 const frost_surge = require("./abils/frost_surge");
 const time_strike = require("./abils/time_strike");
+const armadyl_battlestaff = require("./abils/armadyl_battlestaff");
 
 const abilities = {
   'Wrack': {
@@ -166,6 +167,12 @@ const abilities = {
     title: 'Time Strike',
     calc: time_strike,
     icon: 'https://i.imgur.com/vhktD3Y.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Armadyl Battlestaff': {
+    title: 'Armadyl Battlestaff',
+    calc: armadyl_battlestaff,
+    icon: 'https://i.imgur.com/KG47SN8.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }
