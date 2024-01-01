@@ -1,4 +1,4 @@
-import { abilities } from './magic/abilities';
+import { abilities } from './magic/abilities.js';
 
 buildDamagesTable(abilities);
 calculateDamages(collectSettings())

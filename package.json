@@ -5,8 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "deploy": "gh-pages -d dist",
-    "build": "parcel build --no-optimize",
+    "deploy": "gh-pages -d ./dist",
+    "build": "rm -rf .parcel-cache && parcel build --no-optimize",
     "start": "parcel",
     "predeploy": "rm -rf dist && parcel build index.html --no-optimize --no-source-maps --public-url ./"
   },

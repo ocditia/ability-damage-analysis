@@ -1,4 +1,4 @@
-import { abilities } from './ranged/abilities';
+import { abilities } from './ranged/abilities.js';
 
 buildDamagesTable(abilities);
 calculateDamages(collectSettings())
