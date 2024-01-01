@@ -1,6 +1,6 @@
-import { channel } from 'diagnostics_channel';
-import deadshot_initial_hit from './deadshot_initial_hit';
-import deadshot_bleed_hit from './deadshot_bleed_hit';
+import { channel } from 'diagnostics_channel.js';
+import deadshot_initial_hit from './deadshot_initial_hit.js';
+import deadshot_bleed_hit from './deadshot_bleed_hit.js';
 
 function deadshot(type, settings, numberOfHits) {
     const initial = deadshot_initial_hit(type,settings,1);

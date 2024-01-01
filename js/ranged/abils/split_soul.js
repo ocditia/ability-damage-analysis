@@ -1,7 +1,7 @@
-import NecroHelper from '../ranged_helper';
+import NecroHelper from '../ranged_helper.js';
 
 function split_soul(dmgList, settings) {
-    settings['category'] = 'split soul';
+    settings['category'] = 'split soul.js';
     const Helper = new NecroHelper(); 
     if (settings['split soul'] === true) {
         const splitSoul = [];

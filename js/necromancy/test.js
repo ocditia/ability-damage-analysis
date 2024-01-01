@@ -1,9 +1,9 @@
-import necro_auto from './abils/necro_auto';
-import test_auto from './abils/zzz_test_abil';
-import bloat from './abils/bloat';
-import skeleton_auto from './abils/skeleton_auto';
-import blood_siphon from './abils/blood_siphon';
-import { performance } from 'perf_hooks';
+import necro_auto from './abils/necro_auto.js';
+import test_auto from './abils/zzz_test_abil.js';
+import bloat from './abils/bloat.js';
+import skeleton_auto from './abils/skeleton_auto.js';
+import blood_siphon from './abils/blood_siphon.js';
+import { performance } from 'perf_hooks.js';
 
 const settings = {
     'minavgmax': 'avg',

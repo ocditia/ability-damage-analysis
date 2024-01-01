@@ -1,8 +1,8 @@
-import { channel } from 'diagnostics_channel';
-import smoke_tendrils_1 from './smoke_tendrils_1';
-import smoke_tendrils_2 from './smoke_tendrils_2';
-import smoke_tendrils_3 from './smoke_tendrils_3';
-import smoke_tendrils_4 from './smoke_tendrils_4';
+import { channel } from 'diagnostics_channel.js';
+import smoke_tendrils_1 from './smoke_tendrils_1.js';
+import smoke_tendrils_2 from './smoke_tendrils_2.js';
+import smoke_tendrils_3 from './smoke_tendrils_3.js';
+import smoke_tendrils_4 from './smoke_tendrils_4.js';
 
 function shadow_tendrils(type, settings, numberOfHits) {
     const hitOne = smoke_tendrils_1(type,settings,1);

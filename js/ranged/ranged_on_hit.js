@@ -1,4 +1,4 @@
-import construction from './ranged_const';
+import construction from './ranged_const.js';
 
 class OnHit {
   calcScriptureOfFul(buff,pocket,flag) {

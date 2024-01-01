@@ -1,5 +1,5 @@
-import auto from './skeleton_auto';
-import NecroHelper from '../necromancy_helper';
+import auto from './skeleton_auto.js';
+import NecroHelper from '../necromancy_helper.js';
 
 function command_skeleton(type, settings, numberOfHits) {
     /* const Helper = new NecroHelper(); 

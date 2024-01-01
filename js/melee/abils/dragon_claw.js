@@ -1,8 +1,8 @@
-import { channel } from 'diagnostics_channel';
-import dclaw_1 from './dclaw_1';
-import dclaw_2 from './dclaw_2';
-import dclaw_3 from './dclaw_3';
-import dclaw_4 from './dclaw_4';
+import { channel } from 'diagnostics_channel.js';
+import dclaw_1 from './dclaw_1.js';
+import dclaw_2 from './dclaw_2.js';
+import dclaw_3 from './dclaw_3.js';
+import dclaw_4 from './dclaw_4.js';
 
 function dragon_claw(type, settings, numberOfHits) {
     const hitOne = dclaw_1(type,settings,1);

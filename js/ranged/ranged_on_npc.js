@@ -1,4 +1,4 @@
-import construction from './ranged_const';
+import construction from './ranged_const.js';
 
 class OnNPC {
     calcVuln(dmg, flag) {

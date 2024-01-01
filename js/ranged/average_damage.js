@@ -1,5 +1,5 @@
-import Crit from './ranged_crit';
-import construction from './ranged_const';
+import Crit from './ranged_crit.js';
+import construction from './ranged_const.js';
 
 class avgDmg {
     averageDamage(abil_val,dmg_list,critDmg_list,settings) {
@@ -76,10 +76,10 @@ class avgDmg {
     returnDecider(dmgObject,settings,abil_val) {
         dmgObject = this.dmgObjectProbabilityCalc(dmgObject,settings,abil_val)
         if (settings['minavgmax'] === 'min') {
-            return 'min';
+            return 'min.js';
         }
         else if (settings['minavgmax'] === 'max') {
-            return 'max';
+            return 'max.js';
         }
         else if (settings['minavgmax'] === 'avg') {
             return this.averageDamageObject(dmgObject);

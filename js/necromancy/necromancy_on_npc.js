@@ -1,4 +1,4 @@
-import construction from './necromancy_const';
+import construction from './necromancy_const.js';
 
 class OnNPC {
     calcVuln(dmg, flag) {

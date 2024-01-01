@@ -1,7 +1,7 @@
-import { channel } from 'diagnostics_channel';
-import greater_ricochet_1 from './greater_ricochet_1';
-import greater_ricochet_2 from './greater_ricochet_2';
-import greater_ricochet_3 from './greater_ricochet_3';
+import { channel } from 'diagnostics_channel.js';
+import greater_ricochet_1 from './greater_ricochet_1.js';
+import greater_ricochet_2 from './greater_ricochet_2.js';
+import greater_ricochet_3 from './greater_ricochet_3.js';
 
 function greater_ricochet(type, settings, numberOfHits) {
     const primary = greater_ricochet_1(type,settings,numberOfHits);

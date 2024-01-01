@@ -1,6 +1,6 @@
-import { channel } from 'diagnostics_channel';
-import ezk_initial from './ezk_initial';
-import ezk_bleed from './ezk_bleed';
+import { channel } from 'diagnostics_channel.js';
+import ezk_initial from './ezk_initial.js';
+import ezk_bleed from './ezk_bleed.js';
 
 function ezk(type, settings, numberOfHits) {
     let bleedCount = Math.floor(settings['ezk bleed'])

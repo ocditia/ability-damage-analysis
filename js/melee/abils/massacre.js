@@ -1,6 +1,6 @@
-import { channel } from 'diagnostics_channel';
-import massacre_initial from './massacre_initial';
-import massacre_bleed from './massacre_bleed';
+import { channel } from 'diagnostics_channel.js';
+import massacre_initial from './massacre_initial.js';
+import massacre_bleed from './massacre_bleed.js';
 
 function massacre(type, settings, numberOfHits) {
     const hitOne = massacre_initial(type,settings,1);

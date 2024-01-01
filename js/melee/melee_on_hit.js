@@ -1,4 +1,4 @@
-import construction from './melee_const';
+import construction from './melee_const.js';
 
 class OnHit {
   calcScriptureOfFul(buff,pocket,flag) {

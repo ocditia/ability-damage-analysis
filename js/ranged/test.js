@@ -1,11 +1,11 @@
-import AbilityDmg from './ranged_ad';
-import OnNPC from './ranged_on_npc';
-import OnHit from './ranged_on_hit';
-import Crit from './ranged_crit';
-import RangedHelper from './ranged_helper';
-import Avg from './average_damage';
-import construction from './ranged_const';
-import { channel } from 'diagnostics_channel';
+import AbilityDmg from './ranged_ad.js';
+import OnNPC from './ranged_on_npc.js';
+import OnHit from './ranged_on_hit.js';
+import Crit from './ranged_crit.js';
+import RangedHelper from './ranged_helper.js';
+import Avg from './average_damage.js';
+import construction from './ranged_const.js';
+import { channel } from 'diagnostics_channel.js';
 
 const settings = {
     'minavgmax': 'avg',

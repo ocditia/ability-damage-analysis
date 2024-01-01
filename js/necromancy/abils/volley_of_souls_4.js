@@ -1,12 +1,12 @@
-import AbilityDmg from '../necromancy_ad';
-import OnNPC from '../necromancy_on_npc';
-import OnHit from '../necromancy_on_hit';
-import Crit from '../necromancy_crit';
-import NecroHelper from '../necromancy_helper';
-import Avg from '../average_damage';
-import split_soul from './split_soul';
-import construction from '../necromancy_const';
-import { channel } from 'diagnostics_channel';
+import AbilityDmg from '../necromancy_ad.js';
+import OnNPC from '../necromancy_on_npc.js';
+import OnHit from '../necromancy_on_hit.js';
+import Crit from '../necromancy_crit.js';
+import NecroHelper from '../necromancy_helper.js';
+import Avg from '../average_damage.js';
+import split_soul from './split_soul.js';
+import construction from '../necromancy_const.js';
+import { channel } from 'diagnostics_channel.js';
 
 function volley_of_souls_4(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();

@@ -1,11 +1,11 @@
-import AbilityDmg from '../magic_ad';
-import OnNPC from '../magic_on_npc';
-import OnHit from '../magic_on_hit';
-import Crit from '../magic_crit';
-import NecroHelper from '../magic_helper';
-import Avg from '../average_damage';
-import construction from '../magic_const';
-import { channel } from 'diagnostics_channel';
+import AbilityDmg from '../magic_ad.js';
+import OnNPC from '../magic_on_npc.js';
+import OnHit from '../magic_on_hit.js';
+import Crit from '../magic_crit.js';
+import NecroHelper from '../magic_helper.js';
+import Avg from '../average_damage.js';
+import construction from '../magic_const.js';
+import { channel } from 'diagnostics_channel.js';
 
 function magma_tempest(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();

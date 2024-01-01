@@ -1,4 +1,4 @@
-import construction from './magic_const';
+import construction from './magic_const.js';
 
 class OnHit {
   calcScriptureOfFul(buff,pocket,flag) {

@@ -1,4 +1,4 @@
-import construction from './necromancy_const';
+import construction from './necromancy_const.js';
 
 class OnHit {
   calcScriptureOfFul(buff,pocket,flag) {
