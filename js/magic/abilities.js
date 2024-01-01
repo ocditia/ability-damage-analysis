@@ -69,7 +69,7 @@ const abilities = {
   },
   'Sonic wave': {
     title: 'Sonic wave',
-    calc: wrack_and_ruin,
+    calc: sonic_wave,
     icon: 'https://i.imgur.com/m66Ac4V.png',
     weapons: ['2h'],
   },
