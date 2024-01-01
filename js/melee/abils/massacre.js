@@ -1,4 +1,4 @@
-import { channel } from 'diagnostics_channel.js';
+
 import massacre_initial from './massacre_initial.js';
 import massacre_bleed from './massacre_bleed.js';
 

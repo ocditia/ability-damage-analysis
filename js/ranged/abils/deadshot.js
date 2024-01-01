@@ -1,4 +1,4 @@
-import { channel } from 'diagnostics_channel.js';
+
 import deadshot_initial_hit from './deadshot_initial_hit.js';
 import deadshot_bleed_hit from './deadshot_bleed_hit.js';
 

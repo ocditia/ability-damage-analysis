@@ -5,7 +5,7 @@ import Crit from '../magic_crit.js';
 import MagicHelper from '../magic_helper.js';
 import Avg from '../average_damage.js';
 import construction from '../magic_const.js';
-import { channel } from 'diagnostics_channel.js';
+
 
 function corruption_blast(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();

@@ -6,7 +6,7 @@ import NecroHelper from '../magic_helper.js';
 import Avg from '../average_damage.js';
 import time_strike from './time_strike.js';
 import construction from '../magic_const.js';
-import { channel } from 'diagnostics_channel.js';
+
 
 function chain(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();

@@ -1,4 +1,4 @@
-import { channel } from 'diagnostics_channel.js';
+
 import omnipower_normal from './omnipower_normal.js';
 import omnipower_igneous from './omnipower_igneous.js';
 

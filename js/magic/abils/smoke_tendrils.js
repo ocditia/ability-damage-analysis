@@ -1,4 +1,4 @@
-import { channel } from 'diagnostics_channel.js';
+
 import smoke_tendrils_1 from './smoke_tendrils_1.js';
 import smoke_tendrils_2 from './smoke_tendrils_2.js';
 import smoke_tendrils_3 from './smoke_tendrils_3.js';

@@ -1,4 +1,4 @@
-import { channel } from 'diagnostics_channel.js';
+
 import dclaw_1 from './dclaw_1.js';
 import dclaw_2 from './dclaw_2.js';
 import dclaw_3 from './dclaw_3.js';

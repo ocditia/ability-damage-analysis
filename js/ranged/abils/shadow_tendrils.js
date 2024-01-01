@@ -1,4 +1,4 @@
-import { channel } from 'diagnostics_channel.js';
+
 import shadow_tendrils_hit from './shadow_tendrils_hit.js';
 
 function shadow_tendrils(type, settings, numberOfHits) {

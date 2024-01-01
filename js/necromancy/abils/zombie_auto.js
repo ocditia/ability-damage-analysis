@@ -6,7 +6,7 @@ import NecroHelper from '../necromancy_helper.js';
 import Avg from '../average_damage.js';
 import split_soul from './split_soul.js';
 import construction from '../necromancy_const.js';
-import { channel } from 'diagnostics_channel.js';
+
 
 function zombie_auto(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();

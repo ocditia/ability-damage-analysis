@@ -5,7 +5,7 @@ import Crit from '../magic_crit.js';
 import NecroHelper from '../magic_helper.js';
 import Avg from '../average_damage.js';
 import construction from '../magic_const.js';
-import { channel } from 'diagnostics_channel.js';
+
 
 function magma_tempest(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();

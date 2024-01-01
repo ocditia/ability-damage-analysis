@@ -1,4 +1,4 @@
-import { channel } from 'diagnostics_channel.js';
+
 import hurricane_1 from './hurricane_1.js';
 import hurricane_2 from './hurricane_2.js';
 

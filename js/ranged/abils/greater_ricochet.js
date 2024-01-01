@@ -1,4 +1,4 @@
-import { channel } from 'diagnostics_channel.js';
+
 import greater_ricochet_1 from './greater_ricochet_1.js';
 import greater_ricochet_2 from './greater_ricochet_2.js';
 import greater_ricochet_3 from './greater_ricochet_3.js';

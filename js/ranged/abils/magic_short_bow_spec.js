@@ -6,7 +6,7 @@ import RangedHelper from '../ranged_helper.js';
 import Avg from '../average_damage.js';
 import split_soul from './split_soul.js';
 import construction from '../ranged_const.js';
-import { channel } from 'diagnostics_channel.js';
+
 
 function magic_short_bow_spec(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();

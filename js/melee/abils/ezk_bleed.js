@@ -5,7 +5,7 @@ import Crit from '../melee_crit.js';
 import MeleeHelper from '../melee_helper.js';
 import Avg from '../average_damage.js';
 import construction from '../melee_const.js';
-import { channel } from 'diagnostics_channel.js';
+
 
 function ezk_bleed(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
