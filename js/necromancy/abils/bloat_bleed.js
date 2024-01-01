@@ -29,7 +29,7 @@ function bloat_bleed(dmgList, settings,AD) {
         let dmg = NPC_INS.onNpcDamageList(bleedList,settings,AD); 
 
         //split soul
-        splitSoul = split_soul(dmg,settings);
+        const splitSoul = split_soul(dmg,settings);
 
         //apply hit caps
         dmg = Helper.hitCapDmgList(dmg,settings);

@@ -46,7 +46,7 @@ function greater_ricochet_1(type, settings, numberOfHits) {
         damageObject['crit']['list'] = NPC_INS.onNpcDamageList(damageObject['crit']['list'],settings,AD);        
 
         //split soul
-        splitSoul = split_soul(damageObject['non-crit']['list'],settings);
+        const splitSoul = split_soul(damageObject['non-crit']['list'],settings);
         splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
 
         //apply hit caps

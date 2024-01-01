@@ -158,7 +158,7 @@ function calculateDamages(settings) {
     const key = row.getAttribute('data-ability-key');
     settings['sunshine'] = false;
     settings['metamorphosis'] = false;
-    damages = abilities[key].calc(weapon, settings, 1);
+    let damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
 
     // Recalculate with sun

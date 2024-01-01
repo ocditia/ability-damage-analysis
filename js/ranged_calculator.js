@@ -151,7 +151,7 @@ function calculateDamages(settings) {
     const weapon = row.querySelector('.js--ability-weapon').value;
     settings['split soul'] = false;
     settings['swift'] = false;
-    damages = abilities[key].calc(weapon, settings, 1);
+    let damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
 
     // Recalculate with split soul

@@ -56,7 +56,7 @@ function greater_sonic_wave(type, settings, numberOfHits) {
         if (settings['fsoa'] === true){
             let fcrit = CRIT_INS.calcFCritChance(settings, concStacks, channellerStacks);
             proc = time_strike(type, settings, 1);
-            fsoa = proc[0] * fcrit;
+            const fsoa = proc[0] * fcrit;
             hits.push(fsoa);
         }
         
