@@ -1,8 +1,8 @@
-const { channel } = require('diagnostics_channel')
-const smoke_tendrils_1 = require('./smoke_tendrils_1')
-const smoke_tendrils_2 = require('./smoke_tendrils_2')
-const smoke_tendrils_3 = require('./smoke_tendrils_3')
-const smoke_tendrils_4 = require('./smoke_tendrils_4')
+import { channel } from 'diagnostics_channel';
+import smoke_tendrils_1 from './smoke_tendrils_1';
+import smoke_tendrils_2 from './smoke_tendrils_2';
+import smoke_tendrils_3 from './smoke_tendrils_3';
+import smoke_tendrils_4 from './smoke_tendrils_4';
 
 function shadow_tendrils(type, settings, numberOfHits) {
     const hitOne = smoke_tendrils_1(type,settings,1);
@@ -12,4 +12,4 @@ function shadow_tendrils(type, settings, numberOfHits) {
     return  [hitOne[hitOne.length-1] + hitTwo[hitTwo.length-1] + hitThree[hitThree.length-1] + hitFour[hitFour.length-1]];
 }
 
-module.exports = shadow_tendrils;
+export default shadow_tendrils;

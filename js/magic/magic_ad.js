@@ -1,4 +1,4 @@
-const construction = require('./magic_const')
+import construction from './magic_const';
 
 class AbilityDmg {
     calcAd(type, settings) {
@@ -92,5 +92,5 @@ class AbilityDmg {
       }
     }
   }
-    
-    module.exports = AbilityDmg;
+
+export default AbilityDmg;

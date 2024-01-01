@@ -480,4 +480,4 @@ const necromancy_construction = {
     }
 }
 
-module.exports = necromancy_construction;
+export default necromancy_construction;

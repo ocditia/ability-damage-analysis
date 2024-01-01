@@ -1,12 +1,12 @@
-const AbilityDmg = require('../ranged_ad')
-const OnNPC = require('../ranged_on_npc')
-const OnHit = require('../ranged_on_hit')
-const Crit = require('../ranged_crit')
-const RangedHelper = require('../ranged_helper')
-const Avg = require('../average_damage')
-const split_soul = require('./split_soul')
-const construction = require('../ranged_const')
-const { channel } = require('diagnostics_channel')
+import AbilityDmg from '../ranged_ad';
+import OnNPC from '../ranged_on_npc';
+import OnHit from '../ranged_on_hit';
+import Crit from '../ranged_crit';
+import RangedHelper from '../ranged_helper';
+import Avg from '../average_damage';
+import split_soul from './split_soul';
+import construction from '../ranged_const';
+import { channel } from 'diagnostics_channel';
 
 function tight_bindings(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
@@ -71,5 +71,5 @@ function tight_bindings(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = tight_bindings;
+export default tight_bindings;
 

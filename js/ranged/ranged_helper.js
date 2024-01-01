@@ -60,4 +60,4 @@ class rangedHelper{
     }
 }
 
-module.exports = rangedHelper;
+export default rangedHelper;

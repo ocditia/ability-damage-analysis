@@ -1,11 +1,11 @@
-const AbilityDmg = require('./ranged_ad')
-const OnNPC = require('./ranged_on_npc')
-const OnHit = require('./ranged_on_hit')
-const Crit = require('./ranged_crit')
-const RangedHelper = require('./ranged_helper')
-const Avg = require('./average_damage')
-const construction = require('./ranged_const')
-const { channel } = require('diagnostics_channel')
+import AbilityDmg from './ranged_ad';
+import OnNPC from './ranged_on_npc';
+import OnHit from './ranged_on_hit';
+import Crit from './ranged_crit';
+import RangedHelper from './ranged_helper';
+import Avg from './average_damage';
+import construction from './ranged_const';
+import { channel } from 'diagnostics_channel';
 
 const settings = {
     'minavgmax': 'avg',
@@ -106,7 +106,7 @@ const NPC_INS = new OnNPC();
 const HIT_INS = new OnHit();
 const CRIT_INS = new Crit();
 const AVG_INS = new Avg();
-const Helper = new RangedHelper(); 
+const Helper = new RangedHelper();
 let abil_val = 'sgb spec'
 const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
 const variablePercent = construction['abilities'][abil_val]['variable percent'];

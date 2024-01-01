@@ -1,4 +1,4 @@
-const construction = require('./melee_const')
+import construction from './melee_const';
 
 class OnNPC {
     calcVuln(dmg, flag) {
@@ -155,5 +155,5 @@ class OnNPC {
       return onNpcDmg;
   }
   }
-  
-module.exports = OnNPC;
+
+export default OnNPC;

@@ -1,6 +1,6 @@
-const { channel } = require('diagnostics_channel')
-const ezk_initial = require('./ezk_initial')
-const ezk_bleed = require('./ezk_bleed')
+import { channel } from 'diagnostics_channel';
+import ezk_initial from './ezk_initial';
+import ezk_bleed from './ezk_bleed';
 
 function ezk(type, settings, numberOfHits) {
     let bleedCount = Math.floor(settings['ezk bleed'])
@@ -10,4 +10,4 @@ function ezk(type, settings, numberOfHits) {
     return  [hitOne[hitOne.length-1] + hitTwo[hitTwo.length-1]];
 }
 
-module.exports = ezk;
+export default ezk;

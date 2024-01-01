@@ -648,4 +648,4 @@ const melee_construction = {
     }
 }
 
-module.exports = melee_construction;
+export default melee_construction;

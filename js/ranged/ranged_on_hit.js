@@ -1,4 +1,4 @@
-const construction = require('./ranged_const')
+import construction from './ranged_const';
 
 class OnHit {
   calcScriptureOfFul(buff,pocket,flag) {
@@ -135,4 +135,4 @@ class OnHit {
   }
 }
 
-module.exports = OnHit;
+export default OnHit;

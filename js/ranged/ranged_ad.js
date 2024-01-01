@@ -1,4 +1,4 @@
-const construction = require('./ranged_const')
+import construction from './ranged_const';
 
 class AbilityDmg {
     calcAd(type, settings) {
@@ -90,5 +90,5 @@ class AbilityDmg {
       }
     }
   }
-    
-    module.exports = AbilityDmg;
+
+export default AbilityDmg;

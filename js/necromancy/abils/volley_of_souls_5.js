@@ -1,12 +1,12 @@
-const AbilityDmg = require('../necromancy_ad')
-const OnNPC = require('../necromancy_on_npc')
-const OnHit = require('../necromancy_on_hit')
-const Crit = require('../necromancy_crit')
-const NecroHelper = require('../necromancy_helper')
-const Avg = require('../average_damage')
-const split_soul = require('./split_soul')
-const construction = require('../necromancy_const')
-const { channel } = require('diagnostics_channel')
+import AbilityDmg from '../necromancy_ad';
+import OnNPC from '../necromancy_on_npc';
+import OnHit from '../necromancy_on_hit';
+import Crit from '../necromancy_crit';
+import NecroHelper from '../necromancy_helper';
+import Avg from '../average_damage';
+import split_soul from './split_soul';
+import construction from '../necromancy_const';
+import { channel } from 'diagnostics_channel';
 
 function volley_of_souls_5(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
@@ -66,5 +66,5 @@ function volley_of_souls_5(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = volley_of_souls_5;
+export default volley_of_souls_5;
 

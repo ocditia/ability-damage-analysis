@@ -1,7 +1,7 @@
-const { channel } = require('diagnostics_channel')
-const greater_ricochet_1 = require('./greater_ricochet_1')
-const greater_ricochet_2 = require('./greater_ricochet_2')
-const greater_ricochet_3 = require('./greater_ricochet_3')
+import { channel } from 'diagnostics_channel';
+import greater_ricochet_1 from './greater_ricochet_1';
+import greater_ricochet_2 from './greater_ricochet_2';
+import greater_ricochet_3 from './greater_ricochet_3';
 
 function greater_ricochet(type, settings, numberOfHits) {
     const primary = greater_ricochet_1(type,settings,numberOfHits);
@@ -10,4 +10,4 @@ function greater_ricochet(type, settings, numberOfHits) {
     return  [primary[primary.length-1] + secondary[secondary.length-1] + tertiary[tertiary.length-1]];
 }
 
-module.exports = greater_ricochet;
+export default greater_ricochet;

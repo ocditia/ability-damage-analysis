@@ -1,4 +1,4 @@
-const construction = require('./necromancy_const')
+import construction from './necromancy_const';
 
 class OnHit {
   calcScriptureOfFul(buff,pocket,flag) {
@@ -127,4 +127,4 @@ class OnHit {
   }
 }
 
-module.exports = OnHit;
+export default OnHit;

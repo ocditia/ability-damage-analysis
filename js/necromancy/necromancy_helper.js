@@ -60,4 +60,4 @@ class necromancyHelper{
     }
 }
 
-module.exports = necromancyHelper;
+export default necromancyHelper;

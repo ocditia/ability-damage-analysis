@@ -654,4 +654,4 @@ const magic_construction = {
     }
 }
 
-module.exports = magic_construction;
+export default magic_construction;

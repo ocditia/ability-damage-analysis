@@ -1,4 +1,4 @@
-const construction = require('./magic_const')
+import construction from './magic_const';
 
 class OnHit {
   calcScriptureOfFul(buff,pocket,flag) {
@@ -146,4 +146,4 @@ class OnHit {
   }
 }
 
-module.exports = OnHit;
+export default OnHit;

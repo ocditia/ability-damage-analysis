@@ -1,4 +1,4 @@
-const construction = require('./ranged_const')
+import construction from './ranged_const';
 
 class OnNPC {
     calcVuln(dmg, flag) {
@@ -156,5 +156,5 @@ class OnNPC {
       return onNpcDmg;
   }
   }
-  
-module.exports = OnNPC;
+
+export default OnNPC;

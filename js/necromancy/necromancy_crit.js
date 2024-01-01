@@ -33,4 +33,4 @@ class Crit {
     }
 }
 
-module.exports = Crit;
+export default Crit;

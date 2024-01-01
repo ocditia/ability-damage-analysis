@@ -1,4 +1,4 @@
-const construction = require('./melee_const')
+import construction from './melee_const';
 
 class OnHit {
   calcScriptureOfFul(buff,pocket,flag) {
@@ -174,4 +174,4 @@ class OnHit {
   }
 }
 
-module.exports = OnHit;
+export default OnHit;

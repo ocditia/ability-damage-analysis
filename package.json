@@ -5,8 +5,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "build": "yarn clean && parcel build --no-optimize",
     "deploy": "gh-pages -d ./dist",
-    "build": "rm -rf .parcel-cache && parcel build --no-optimize",
+    "clean": "rm -rf .parcel-cache dist",
     "start": "parcel",
     "predeploy": "rm -rf dist && parcel build index.html --no-optimize --no-source-maps --public-url ./"
   },

@@ -1,13 +1,13 @@
-const AbilityDmg = require('../necromancy_ad')
-const OnNPC = require('../necromancy_on_npc')
-const OnHit = require('../necromancy_on_hit')
-const Crit = require('../necromancy_crit')
-const NecroHelper = require('../necromancy_helper')
-const Avg = require('../average_damage')
-const split_soul = require('./split_soul')
-const bloat_bleed = require('./bloat_bleed')
-const construction = require('../necromancy_const')
-const { channel } = require('diagnostics_channel')
+import AbilityDmg from '../necromancy_ad';
+import OnNPC from '../necromancy_on_npc';
+import OnHit from '../necromancy_on_hit';
+import Crit from '../necromancy_crit';
+import NecroHelper from '../necromancy_helper';
+import Avg from '../average_damage';
+import split_soul from './split_soul';
+import bloat_bleed from './bloat_bleed';
+import construction from '../necromancy_const';
+import { channel } from 'diagnostics_channel';
 
 function bloat(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
@@ -75,4 +75,4 @@ function bloat(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = bloat;
+export default bloat;

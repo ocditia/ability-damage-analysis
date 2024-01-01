@@ -1,8 +1,8 @@
-const { channel } = require('diagnostics_channel')
-const dclaw_1 = require('./dclaw_1')
-const dclaw_2 = require('./dclaw_2')
-const dclaw_3 = require('./dclaw_3')
-const dclaw_4 = require('./dclaw_4')
+import { channel } from 'diagnostics_channel';
+import dclaw_1 from './dclaw_1';
+import dclaw_2 from './dclaw_2';
+import dclaw_3 from './dclaw_3';
+import dclaw_4 from './dclaw_4';
 
 function dragon_claw(type, settings, numberOfHits) {
     const hitOne = dclaw_1(type,settings,1);
@@ -12,4 +12,4 @@ function dragon_claw(type, settings, numberOfHits) {
     return  [hitOne[hitOne.length-1] + hitTwo[hitTwo.length-1] + hitThree[hitThree.length-1] + hitFour[hitFour.length-1]];
 }
 
-module.exports = dragon_claw;
+export default dragon_claw;

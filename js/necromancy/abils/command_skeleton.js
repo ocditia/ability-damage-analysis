@@ -1,5 +1,5 @@
-const auto = require('./skeleton_auto')
-const NecroHelper = require('../necromancy_helper')
+import auto from './skeleton_auto';
+import NecroHelper from '../necromancy_helper';
 
 function command_skeleton(type, settings, numberOfHits) {
     /* const Helper = new NecroHelper(); 
@@ -13,4 +13,4 @@ function command_skeleton(type, settings, numberOfHits) {
     return auto(type,settings,10);
 }
 
-module.exports = command_skeleton;
+export default command_skeleton;

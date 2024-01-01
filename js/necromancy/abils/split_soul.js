@@ -1,4 +1,4 @@
-const NecroHelper = require('../necromancy_helper')
+import NecroHelper from '../necromancy_helper';
 
 function split_soul(dmgList, settings) {
     settings['category'] = 'split soul';
@@ -48,4 +48,4 @@ function split_soul(dmgList, settings) {
     }
 }
 
-module.exports = split_soul;
+export default split_soul;

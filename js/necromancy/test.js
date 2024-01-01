@@ -1,9 +1,9 @@
-const necro_auto = require('./abils/necro_auto')
-const test_auto = require('./abils/zzz_test_abil')
-const bloat = require('./abils/bloat')
-const skeleton_auto = require('./abils/skeleton_auto')
-const blood_siphon = require('./abils/blood_siphon')
-const { performance } = require('perf_hooks');
+import necro_auto from './abils/necro_auto';
+import test_auto from './abils/zzz_test_abil';
+import bloat from './abils/bloat';
+import skeleton_auto from './abils/skeleton_auto';
+import blood_siphon from './abils/blood_siphon';
+import { performance } from 'perf_hooks';
 
 const settings = {
     'minavgmax': 'avg',

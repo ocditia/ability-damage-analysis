@@ -60,4 +60,4 @@ class meleeHelper{
     }
 }
 
-module.exports = meleeHelper;
+export default meleeHelper;

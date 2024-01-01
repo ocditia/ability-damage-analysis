@@ -1,6 +1,6 @@
-const { channel } = require('diagnostics_channel')
-const massacre_initial = require('./massacre_initial')
-const massacre_bleed = require('./massacre_bleed')
+import { channel } from 'diagnostics_channel';
+import massacre_initial from './massacre_initial';
+import massacre_bleed from './massacre_bleed';
 
 function massacre(type, settings, numberOfHits) {
     const hitOne = massacre_initial(type,settings,1);
@@ -8,4 +8,4 @@ function massacre(type, settings, numberOfHits) {
     return  [hitOne[hitOne.length-1] + hitTwo[hitTwo.length-1]];
 }
 
-module.exports = massacre;
+export default massacre;

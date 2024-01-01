@@ -1,6 +1,6 @@
-const { channel } = require('diagnostics_channel')
-const deadshot_initial_hit = require('./deadshot_initial_hit')
-const deadshot_bleed_hit = require('./deadshot_bleed_hit')
+import { channel } from 'diagnostics_channel';
+import deadshot_initial_hit from './deadshot_initial_hit';
+import deadshot_bleed_hit from './deadshot_bleed_hit';
 
 function deadshot(type, settings, numberOfHits) {
     const initial = deadshot_initial_hit(type,settings,1);
@@ -12,4 +12,4 @@ function deadshot(type, settings, numberOfHits) {
     return  [initial[initial.length-1] + bleed[bleed.length-1]];
 }
 
-module.exports = deadshot;
+export default deadshot;

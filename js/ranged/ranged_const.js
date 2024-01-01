@@ -631,4 +631,4 @@ const ranged_construction = {
     }
 }
 
-module.exports = ranged_construction;
+export default ranged_construction;

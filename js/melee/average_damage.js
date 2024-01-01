@@ -1,5 +1,5 @@
-const Crit = require('./melee_crit')
-const construction = require('./melee_const')
+import Crit from './melee_crit';
+import construction from './melee_const';
 
 class avgDmg {
     averageDamage(abil_val,dmg_list,critDmg_list,settings) {
@@ -88,4 +88,4 @@ class avgDmg {
     }
 }
 
-module.exports = avgDmg;
+export default avgDmg;

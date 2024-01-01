@@ -1,4 +1,4 @@
-const construction = require('./melee_const')
+import construction from './melee_const';
 
 class AbilityDmg {
   calcAd(type, settings) {
@@ -94,5 +94,5 @@ class AbilityDmg {
       }
     }
   }
-    
-    module.exports = AbilityDmg;
+
+export default AbilityDmg;

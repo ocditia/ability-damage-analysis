@@ -1,4 +1,4 @@
-const construction = require('./necromancy_const')
+import construction from './necromancy_const';
 
 class AbilityDmg {
     calcAd(type, settings) {
@@ -77,5 +77,5 @@ class AbilityDmg {
       }
     }
   }
-    
-    module.exports = AbilityDmg;
+
+export default AbilityDmg;

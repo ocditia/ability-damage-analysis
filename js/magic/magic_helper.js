@@ -60,4 +60,4 @@ class magicHelper{
     }
 }
 
-module.exports = magicHelper;
+export default magicHelper;

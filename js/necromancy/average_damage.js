@@ -1,5 +1,5 @@
-const Crit = require('./necromancy_crit')
-const construction = require('./necromancy_const')
+import Crit from './necromancy_crit';
+import construction from './necromancy_const';
 
 class avgDmg {
     averageDamage(abil_val,dmg_list,critDmg_list,settings) {
@@ -87,4 +87,4 @@ class avgDmg {
     }
 }
 
-module.exports = avgDmg;
+export default avgDmg;

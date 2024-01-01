@@ -1,5 +1,5 @@
-const Crit = require('./magic_crit')
-const construction = require('./magic_const')
+import Crit from './magic_crit';
+import construction from './magic_const';
 
 class avgDmg {
     averageDamage(abil_val,dmg_list,critDmg_list,settings, concStacks, channellerStacks) {
@@ -87,4 +87,4 @@ class avgDmg {
     }
 }
 
-module.exports = avgDmg;
+export default avgDmg;

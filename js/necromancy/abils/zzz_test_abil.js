@@ -1,11 +1,11 @@
-const AbilityDmg = require('../necromancy_ad')
-const OnNPC = require('../necromancy_on_npc')
-const OnHit = require('../necromancy_on_hit')
-const Crit = require('../necromancy_crit')
-const NecroHelper = require('../necromancy_helper')
-const Avg = require('../average_damage')
-const construction = require('../necromancy_const')
-const { channel } = require('diagnostics_channel')
+import AbilityDmg from '../necromancy_ad';
+import OnNPC from '../necromancy_on_npc';
+import OnHit from '../necromancy_on_hit';
+import Crit from '../necromancy_crit';
+import NecroHelper from '../necromancy_helper';
+import Avg from '../average_damage';
+import construction from '../necromancy_const';
+import { channel } from 'diagnostics_channel';
 
 function test_auto(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
@@ -55,5 +55,5 @@ function test_auto(type, settings, numberOfHits) {
     return Helper.totalDamageCalc(hits);
 }
 
-module.exports = test_auto;
+export default test_auto;
 

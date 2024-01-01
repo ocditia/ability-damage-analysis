@@ -1,5 +1,5 @@
-const Crit = require('./ranged_crit')
-const construction = require('./ranged_const')
+import Crit from './ranged_crit';
+import construction from './ranged_const';
 
 class avgDmg {
     averageDamage(abil_val,dmg_list,critDmg_list,settings) {
@@ -87,4 +87,4 @@ class avgDmg {
     }
 }
 
-module.exports = avgDmg;
+export default avgDmg;

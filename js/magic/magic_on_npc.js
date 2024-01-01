@@ -1,4 +1,4 @@
-const construction = require('./magic_const')
+import construction from './magic_const';
 
 class OnNPC {
     calcVuln(dmg, flag) {
@@ -160,5 +160,5 @@ class OnNPC {
       return onNpcDmg;
   }
   }
-  
-module.exports = OnNPC;
+
+export default OnNPC;

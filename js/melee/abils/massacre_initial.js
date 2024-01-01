@@ -1,11 +1,11 @@
-const AbilityDmg = require('../melee_ad')
-const OnNPC = require('../melee_on_npc')
-const OnHit = require('../melee_on_hit')
-const Crit = require('../melee_crit')
-const MeleeHelper = require('../melee_helper')
-const Avg = require('../average_damage')
-const construction = require('../melee_const')
-const { channel } = require('diagnostics_channel')
+import AbilityDmg from '../melee_ad';
+import OnNPC from '../melee_on_npc';
+import OnHit from '../melee_on_hit';
+import Crit from '../melee_crit';
+import MeleeHelper from '../melee_helper';
+import Avg from '../average_damage';
+import construction from '../melee_const';
+import { channel } from 'diagnostics_channel';
 
 function massacre_initial(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
@@ -57,4 +57,4 @@ function massacre_initial(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = massacre_initial;
+export default massacre_initial;

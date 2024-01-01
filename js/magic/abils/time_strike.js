@@ -1,11 +1,11 @@
-const AbilityDmg = require('../magic_ad')
-const OnNPC = require('../magic_on_npc')
-const OnHit = require('../magic_on_hit')
-const Crit = require('../magic_crit')
-const NecroHelper = require('../magic_helper')
-const Avg = require('../average_damage')
-const construction = require('../magic_const')
-const { channel } = require('diagnostics_channel')
+import AbilityDmg from '../magic_ad';
+import OnNPC from '../magic_on_npc';
+import OnHit from '../magic_on_hit';
+import Crit from '../magic_crit';
+import NecroHelper from '../magic_helper';
+import Avg from '../average_damage';
+import construction from '../magic_const';
+import { channel } from 'diagnostics_channel';
 
 function time_strike(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
@@ -60,4 +60,4 @@ function time_strike(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-module.exports = time_strike;
+export default time_strike;
