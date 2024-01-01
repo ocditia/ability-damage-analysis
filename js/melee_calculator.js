@@ -1,4 +1,4 @@
-import { abilities } from '../melee/abilities';
+import { abilities } from './melee/abilities';
 
 buildDamagesTable(abilities);
 calculateDamages(collectSettings())

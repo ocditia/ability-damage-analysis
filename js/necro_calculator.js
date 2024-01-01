@@ -1,4 +1,4 @@
-import { abilities } from '../necromancy/abilities';
+import { abilities } from './necromancy/abilities';
 
 buildDamagesTable(abilities);
 calculateDamages(collectSettings())
