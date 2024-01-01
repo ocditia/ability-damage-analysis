@@ -14,13 +14,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-      - name: Run install
+      - name: yarn install
         uses: borales/actions-yarn@v4
         with:
-          cmd: install # will run `yarn install` command
+          cmd: install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # if needed
-      - name: Clean and deploy
+      - name: yarn predeploy
         uses: borales/actions-yarn@v4
         with:
-          cmd: clean-and-deploy # will run `yarn clean-and-deploy` command
+          cmd: predeploy
+      - name: deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
