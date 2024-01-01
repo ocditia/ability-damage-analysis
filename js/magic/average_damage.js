@@ -76,10 +76,10 @@ class avgDmg {
     returnDecider(dmgObject,settings,abil_val, concStacks, channellerStacks) {
         dmgObject = this.dmgObjectProbabilityCalc(dmgObject,settings,abil_val, concStacks, channellerStacks)
         if (settings['minavgmax'] === 'min') {
-            return 'min.js';
+            return 'min';
         }
         else if (settings['minavgmax'] === 'max') {
-            return 'max.js';
+            return 'max';
         }
         else if (settings['minavgmax'] === 'avg') {
             return this.averageDamageObject(dmgObject);

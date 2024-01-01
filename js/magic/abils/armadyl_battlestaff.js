@@ -7,7 +7,6 @@ import Avg from '../average_damage.js';
 import time_strike from './time_strike.js';
 import construction from '../magic_const.js';
 
-
 function armadyl_battlestaff(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();

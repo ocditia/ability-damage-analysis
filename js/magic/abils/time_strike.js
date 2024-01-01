@@ -14,7 +14,7 @@ function time_strike(type, settings, numberOfHits) {
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new NecroHelper(); 
-    let abil_val = 'time strike.js';
+    let abil_val = 'time strike';
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
