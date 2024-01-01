@@ -9,7 +9,8 @@
     "deploy": "gh-pages -d ./dist",
     "clean": "rm -rf .parcel-cache dist",
     "start": "parcel",
-    "predeploy": "rm -rf dist && parcel build index.html --no-optimize --no-source-maps --public-url ./"
+    "predeploy": "rm -rf dist && parcel build index.html --no-optimize --no-source-maps --public-url ./",
+    "clean-and-deploy": "yarn predeploy && yarn deploy"
   },
   "devDependencies": {
     "gh-pages": "^6.1.1",

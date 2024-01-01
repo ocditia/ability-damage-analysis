@@ -19,3 +19,11 @@ Run the local server:
 ```sh
 yarn start
 ```
+
+### Deploying
+
+To do a manual deploy from your local branch:
+
+```sh
+yarn clean-and-deploy
+```
