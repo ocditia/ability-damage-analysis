@@ -48,7 +48,7 @@ function volley_of_souls(type, settings, numberOfHits) {
         
         //split soul
         const splitSoul = split_soul(damageObject['non-crit']['list'],settings);
-        splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
+        const splitSoulCrit =  split_soul(damageObject['crit']['list'],settings);
 
         //apply hit caps
         damageObject['non-crit']['list'] = Helper.hitCapDmgList(damageObject['non-crit']['list'],settings);
