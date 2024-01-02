@@ -24,7 +24,7 @@ function sgb_spec(type, settings, numberOfHits) {
     let hits = []
     let fixed = Math.floor(AD * fixedPercent);
     let variable = Math.floor(AD * variablePercent);
-    hitcount = 1;
+    let hitcount = 1;
     numberOfHits = 5;
 
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
