@@ -63,6 +63,18 @@ function sgb_spec(type, settings, numberOfHits) {
             fixed += Math.floor(fixed * 0.15);
             variable += Math.floor(variable * 0.15);
         }
+        else if (hitcount == 2){
+            fixed -= Math.floor(fixed * 0.05);
+            variable -= Math.floor(variable * 0.05);
+        }
+        else if (hitcount == 3){
+            fixed -= Math.floor(fixed * 0.05);
+            variable -= Math.floor(variable * 0.05);
+        }
+        else if (hitcount == 4){
+            fixed -= Math.floor(fixed * 0.05);
+            variable -= Math.floor(variable * 0.05);
+        }
 
         hitcount += 1;
     }
