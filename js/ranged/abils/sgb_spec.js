@@ -24,11 +24,14 @@ function sgb_spec(type, settings, numberOfHits) {
     let hits = []
     let fixed = Math.floor(AD * fixedPercent);
     let variable = Math.floor(AD * variablePercent);
-    let hitcount = 1;
+    let baseFixed = fixed;
+    let baseVariable = variable;
+
+    //the first auxiliary arrow is arrow 1 not the first arrow that always lands
+    let arrowCount = 1;
     numberOfHits = 5;
 
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
-        hitcount = 1;
         const damageObject = Helper.damageObjectCreator(settings);
         
         //applies on-hit effects
@@ -59,21 +62,21 @@ function sgb_spec(type, settings, numberOfHits) {
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
 
-        if (hitcount == 1) {
-            fixed += Math.floor(fixed * 0.15);
-            variable += Math.floor(variable * 0.15);
+        if (arrowCount == 1) {
+            fixed += Math.floor(baseFixed * 0.15);
+            variable += Math.floor(baseVariable * 0.15);
         }
-        else if (hitcount == 2){
-            fixed -= Math.floor(fixed * 0.05);
-            variable -= Math.floor(variable * 0.05);
+        else if (arrowCount == 2){
+            fixed += Math.floor(baseFixed * 0.05);
+            variable += Math.floor(baseVariable * 0.05);
         }
-        else if (hitcount == 3){
-            fixed -= Math.floor(fixed * 0.05);
-            variable -= Math.floor(variable * 0.05);
+        else if (arrowCount == 3){
+            fixed -= Math.floor(baseFixed * 0.05);
+            variable -= Math.floor(baseVariable * 0.05);
         }
-        else if (hitcount == 4){
-            fixed -= Math.floor(fixed * 0.05);
-            variable -= Math.floor(variable * 0.05);
+        else if (arrowCount == 4){
+            fixed -= Math.floor(baseFixed * 0.15);
+            variable -= Math.floor(baseVariable * 0.15);
         }
 
         hitcount += 1;
