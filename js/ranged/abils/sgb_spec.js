@@ -79,7 +79,7 @@ function sgb_spec(type, settings, numberOfHits) {
             variable -= Math.floor(baseVariable * 0.15);
         }
 
-        hitcount += 1;
+        arrowCount += 1;
     }
     
     const nonBlockedArrowProbs = [
