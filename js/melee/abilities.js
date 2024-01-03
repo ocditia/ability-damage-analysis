@@ -94,7 +94,7 @@ const abilities = {
     weapons: ['Dw','2h','Md','Ms'],
   },
   'Greater fury': {
-    title: 'Greatery fury',
+    title: 'Greater fury',
     calc: greater_fury,
     icon: 'https://i.imgur.com/7wGyyol.png',
     weapons: ['Dw','2h','Md','Ms'],
