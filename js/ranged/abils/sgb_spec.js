@@ -62,12 +62,12 @@ function sgb_spec(type, settings, numberOfHits) {
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
 
+        hitcount += 1;
+
         hitcount = Math.min(8,hitcount);
 
         fixed += Math.floor(fixed * (0.15-0.1*(hitcount-1)));
         variable += Math.floor(variable * (0.15-0.1*(hitcount-1)));
-
-        hitcount += 1;
     }
     
     const nonBlockedArrowProbs = [
