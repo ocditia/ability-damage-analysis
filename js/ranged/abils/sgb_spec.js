@@ -22,16 +22,18 @@ function sgb_spec(type, settings, numberOfHits) {
 
     let AD = AD_INS.calcAd(type,settings);
     let hits = []
-    let fixed = Math.floor(AD * fixedPercent);
-    let variable = Math.floor(AD * variablePercent);
     const baseFixed = Math.floor(AD * fixedPercent);
     const baseVariable = Math.floor(AD * variablePercent);
+
+    let fixed = baseFixed;
+    let variable = baseVariable;
 
     //the first auxiliary arrow is arrow 1 not the first arrow that always lands
     let arrowCount = 1;
     numberOfHits = 5;
 
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
+
         const damageObject = Helper.damageObjectCreator(settings);
         
         //applies on-hit effects
