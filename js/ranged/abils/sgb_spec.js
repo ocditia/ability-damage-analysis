@@ -24,8 +24,8 @@ function sgb_spec(type, settings, numberOfHits) {
     let hits = []
     let fixed = Math.floor(AD * fixedPercent);
     let variable = Math.floor(AD * variablePercent);
-    let baseFixed = fixed;
-    let baseVariable = variable;
+    const baseFixed = Math.floor(AD * fixedPercent);
+    const baseVariable = Math.floor(AD * variablePercent);
 
     //the first auxiliary arrow is arrow 1 not the first arrow that always lands
     let arrowCount = 1;
