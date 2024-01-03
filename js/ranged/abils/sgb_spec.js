@@ -22,14 +22,12 @@ function sgb_spec(type, settings, numberOfHits) {
 
     let AD = AD_INS.calcAd(type,settings);
     let hits = []
-    const baseFixed = Math.floor(AD * fixedPercent);
-    const baseVariable = Math.floor(AD * variablePercent);
 
-    let fixed = baseFixed;
-    let variable = baseVariable;
+    let fixed = Math.floor(AD * fixedPercent);
+    let variable = Math.floor(AD * variablePercent);
+    let hitcount = 0;
 
     //the first auxiliary arrow is arrow 1 not the first arrow that always lands
-    let arrowCount = 1;
     numberOfHits = 5;
 
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
@@ -64,24 +62,12 @@ function sgb_spec(type, settings, numberOfHits) {
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
 
-        if (arrowCount == 1) {
-            fixed += Math.floor(baseFixed * 0.15);
-            variable += Math.floor(baseVariable * 0.15);
-        }
-        else if (arrowCount == 2){
-            fixed += Math.floor(baseFixed * 0.05);
-            variable += Math.floor(baseVariable * 0.05);
-        }
-        else if (arrowCount == 3){
-            fixed -= Math.floor(baseFixed * 0.05);
-            variable -= Math.floor(baseVariable * 0.05);
-        }
-        else if (arrowCount == 4){
-            fixed -= Math.floor(baseFixed * 0.15);
-            variable -= Math.floor(baseVariable * 0.15);
-        }
+        hitcount = Math.min(8,hitcount);
 
-        arrowCount += 1;
+        fixed += Math.floor(fixed * (0.15-0.1*(hitcount-1)));
+        variable += Math.floor(variable * (0.15-0.1*(hitcount-1)));
+
+        hitcount += 1;
     }
     
     const nonBlockedArrowProbs = [
