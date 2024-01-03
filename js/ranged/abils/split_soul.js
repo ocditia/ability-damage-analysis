@@ -1,10 +1,12 @@
 import NecroHelper from '../ranged_helper.js';
+import OnNPC from '../ranged_on_npc.js';
 
 function split_soul(dmgList, settings) {
     settings['category'] = 'split soul.js';
     const Helper = new NecroHelper(); 
     if (settings['split soul'] === true) {
-        const splitSoul = [];
+        let splitSoul = [];
+        const NPC_INS = new OnNPC();
         for (var i = 0; i < dmgList.length; i++) {
             let hit = dmgList[i];
             let soulSplit = 0;
@@ -37,6 +39,7 @@ function split_soul(dmgList, settings) {
 
             splitSoul.push(4 * soulSplit)
         }
+        splitSoul = NPC_INS.onNpcDamageList(splitSoul,settings,1000);
         
         return Helper.hitCapDmgList(splitSoul,settings)
     }

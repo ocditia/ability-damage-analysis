@@ -153,6 +153,7 @@ class OnNPC {
       for (const i of dmgList) {
         onNpcDmg.push(this.calcOnNpc(i,settings,AD));
       }
+      console.log(onNpcDmg)
       return onNpcDmg;
   }
   }
