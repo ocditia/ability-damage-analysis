@@ -8,7 +8,7 @@ function deadshot(type, settings, numberOfHits) {
     if (settings['cape'] === 'igneous kal-xil') {
         bleedHits = 8;
     }
-    const bleed = deadshot_bleed_hit(type,settings,2);
+    const bleed = deadshot_bleed_hit(type,settings,bleedHits);
     return  [initial[initial.length-1] + bleed[bleed.length-1]];
 }
 
