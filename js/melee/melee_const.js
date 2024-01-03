@@ -482,7 +482,7 @@ const melee_construction = {
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
-            'category': 'basic'
+            'category': 'threshold'
         },
         "greater flurry":{
             "fixed percent": 0.9,

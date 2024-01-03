@@ -20,7 +20,8 @@ function greater_flurry(type, settings, numberOfHits) {
     settings['category'] = construction['abilities'][abil_val]['category'];
 
     const hits = []
-   
+
+    numberOfHits = 4;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 
