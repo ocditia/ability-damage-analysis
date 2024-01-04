@@ -22,7 +22,7 @@ function ezk_bleed(type, settings, numberOfHits) {
     numberOfHits = Math.floor(settings['ezk bleed']);
 
     //calculates ability damage
-    let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
+    let AD = AD_INS.calcAd(type,settings,1); //AD_INS.calcAd(type,settings);
         
     //sets fixed and variable damage
     let fixed = Math.floor(AD * fixedPercent);

@@ -1,10 +1,13 @@
 class Crit {
-    calcFCritChance(settings) {
+    calcFCritChance(settings, furystacks) {
+        if (furystacks === undefined) {
+            furystacks = 0;
+        }
         let fcrit = 0.1 +
             (0.05 * settings['crit-i-kal']) +
             (0.01 * settings['kalgerion demon familiar']) +
             (0.02 * settings['biting']) +
-            (0.05 * settings['fury stacks']); 
+            (0.05 * furystacks); 
 
         if (settings['ring'] === 'reavers') {
             fcrit = fcrit + 0.05;

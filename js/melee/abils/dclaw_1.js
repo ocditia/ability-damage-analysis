@@ -20,12 +20,12 @@ function dclaw_1(type, settings, numberOfHits) {
     settings['category'] = construction['abilities'][abil_val]['category'];
 
     const hits = []
-   
+    let hitcount = 1;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 
         //calculates ability damage
-        let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
+        let AD = AD_INS.calcAd(type,settings,hitcount);
         
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);

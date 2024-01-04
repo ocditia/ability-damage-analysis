@@ -25,7 +25,7 @@ function chaos_roar(type, settings, numberOfHits) {
         const damageObject = Helper.damageObjectCreator(settings);
 
         //calculates ability damage
-        let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
+        let AD = AD_INS.calcAd(type,settings, 0); //AD_INS.calcAd(type,settings);
         
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);

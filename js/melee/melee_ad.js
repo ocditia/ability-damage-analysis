@@ -1,7 +1,7 @@
 import construction from './melee_const.js';
 
 class AbilityDmg {
-  calcAd(type, settings) {
+  calcAd(type, settings, hitcount) {
     //if manually overwritten use that
     if (settings['ability damage'] != 0) {
       return settings['ability damage'];
@@ -39,7 +39,7 @@ class AbilityDmg {
       }
     }
 
-    if (settings['chaos roar'] === true) {
+    if (settings['chaos roar'] === true && hitcount === 1) {
       AD = 2 * AD;
     }
 

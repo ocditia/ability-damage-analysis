@@ -2,7 +2,7 @@ import Crit from './melee_crit.js';
 import construction from './melee_const.js';
 
 class avgDmg {
-    averageDamage(abil_val,dmg_list,critDmg_list,settings) {
+    averageDamage(abil_val,dmg_list,critDmg_list,settings,furystacks) {
         const CRIT_INS = new Crit();
 
         //calc average damage
@@ -20,7 +20,7 @@ class avgDmg {
 
         let fCritChance = 0
         if (Abil[abil_val]["crit effects"] === true) {
-            fCritChance = CRIT_INS.calcFCritChance(settings);
+            fCritChance = CRIT_INS.calcFCritChance(settings,furystacks);
         } 
 
         let dmgAvg = fCritChance * avgCrit + (1 - fCritChance) * avgReg;
@@ -42,12 +42,12 @@ class avgDmg {
         return [dmgMin,dmgAvg,dmgMax]
     }
 
-    dmgObjectProbabilityCalc(dmgObject, settings, abil_val) {
+    dmgObjectProbabilityCalc(dmgObject, settings, abil_val,furystacks) {
         const CRIT_INS = new Crit();
         let critChance = 0;
 
         if (construction['abilities'][abil_val]["crit effects"] === true) {
-            critChance = CRIT_INS.calcFCritChance(settings);
+            critChance = CRIT_INS.calcFCritChance(settings,furystacks);
         } 
 
         dmgObject['non-crit']['probability'] = 1 - critChance;
@@ -74,8 +74,8 @@ class avgDmg {
         return avg;
     }
 
-    returnDecider(dmgObject,settings,abil_val) {
-        dmgObject = this.dmgObjectProbabilityCalc(dmgObject,settings,abil_val)
+    returnDecider(dmgObject,settings,abil_val,furystacks) {
+        dmgObject = this.dmgObjectProbabilityCalc(dmgObject,settings,abil_val,furystacks)
         if (settings['minavgmax'] === 'min') {
             return 'min';
         }

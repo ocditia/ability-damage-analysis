@@ -22,11 +22,12 @@ function dismember(type, settings, numberOfHits) {
     const hits = []
    
     numberOfHits = 5;
+    let hitcount = 1;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 
         //calculates ability damage
-        let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
+        let AD = AD_INS.calcAd(type,settings,hitcount);
         
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);
@@ -51,6 +52,8 @@ function dismember(type, settings, numberOfHits) {
 
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
+
+        hitcount += 1;
     }
 
     //calc total damage
