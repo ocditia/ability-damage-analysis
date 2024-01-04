@@ -247,6 +247,9 @@ const melee_construction = {
         },
         "skillcape":{
             "bonus": 21.6
+        },
+        "none":{
+            "bonus": 0
         }
     },
 
