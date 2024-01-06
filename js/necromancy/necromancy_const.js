@@ -465,7 +465,7 @@ const necromancy_construction = {
         },
         "death grasp":{
             "fixed percent": 4.05,
-            "variable percent": 4.95,
+            "variable percent": 0.9,
             "on hit effects": true,
             "crit effects": true,
             'category': 'abil'

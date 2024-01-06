@@ -16,7 +16,7 @@ function death_grasp(type, settings, numberOfHits) {
     const AVG_INS = new Avg();
     const Helper = new NecroHelper(); 
     let abil_val = 'death grasp'
-    const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
+    let fixedPercent = construction['abilities'][abil_val]['fixed percent'] + 0.4 * settings['necrosis stacks'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
 

@@ -18,6 +18,8 @@ import spectral_scythe_2 from "./abils/spectral_scythe_2.js";
 import spectral_scythe_3 from "./abils/spectral_scythe_3.js";
 import blood_siphon from "./abils/blood_siphon.js";
 import bloat from "./abils/bloat.js";
+import death_essence from "./abils/death_essence.js";
+import death_grasp from "./abils/death_grasp.js";
 
 const abilities = {
   'Necro auto': {
@@ -145,6 +147,18 @@ const abilities = {
     title: 'Bloat',
     calc: bloat,
     icon: 'https://imgur.com/Aiuhjud.png',
+    weapons: ['Dw'],
+  },
+  'Death Grasp': {
+    title: 'Death Grasp',
+    calc: death_grasp,
+    icon: 'https://i.imgur.com/bLb46IB.png',
+    weapons: ['Dw'],
+  },
+  'Death Essence': {
+    title: 'Death Essence',
+    calc: death_essence,
+    icon: 'https://i.imgur.com/73dbKwP.png',
     weapons: ['Dw'],
   },
 }
