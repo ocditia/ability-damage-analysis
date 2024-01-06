@@ -121,6 +121,10 @@ const melee_construction = {
         },
         'bandos helmet':{
             'bonus': 17.7
+
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -136,6 +140,9 @@ const melee_construction = {
         },
         'bandos platebody':{
             'bonus': 26.5
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -151,6 +158,9 @@ const melee_construction = {
         },
         'bandos tassets':{
             'bonus': 22.1
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -166,6 +176,9 @@ const melee_construction = {
         },
         'bandos boots':{
             'bonus': 11
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -181,6 +194,9 @@ const melee_construction = {
         },
         'cinderbane gloves':{
             'bonus': 11
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -208,6 +224,9 @@ const melee_construction = {
         },
         "salve":{
             "bonus": 0
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -226,6 +245,9 @@ const melee_construction = {
         },
         "asylum surgeon ring":{
             "bonus": 21
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -271,6 +293,9 @@ const melee_construction = {
         },
         "god book":{
             "bonus": 5
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -286,6 +311,10 @@ const melee_construction = {
         'berserker':{
             'levels': 0.1,
             'boost': 0.1
+        },
+        'none':{
+            'levels': 0.0,
+            'boost': 0.0
         }
     },
 
@@ -310,6 +339,9 @@ const melee_construction = {
         },
         "burst of strength":{
             "boost": 0.02
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -340,6 +372,10 @@ const melee_construction = {
         {
             "levels": 1,
             "percent": 0.08
+        },
+        'none':{
+            "levels": 0,
+            "percent": 0
         }
     },
 

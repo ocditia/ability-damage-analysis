@@ -136,6 +136,9 @@ const magic_construction = {
         'sliske helm':{
             'bonus': 0
         },
+        'none':{
+            'bonus': 0.0
+        }
     },
 
     'bodies': {
@@ -160,6 +163,9 @@ const magic_construction = {
         'sliske body':{
             'bonus': 0
         },
+        'none':{
+            'bonus': 0.0
+        }
     },
 
     'legs': {
@@ -184,6 +190,9 @@ const magic_construction = {
         'sliske legs':{
             'bonus': 0
         },
+        'none':{
+            'bonus': 0.0
+        }
     },
 
     'boots': {
@@ -195,6 +204,9 @@ const magic_construction = {
         },
         'virtus boots':{
             'bonus': 12.7
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -219,6 +231,9 @@ const magic_construction = {
         },
         "none gloves":{
             "bonus": 0
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -246,6 +261,9 @@ const magic_construction = {
         },
         "salve":{
             "bonus": 0
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -267,6 +285,9 @@ const magic_construction = {
         },
         "asylum surgeon ring":{
             "bonus": 21
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -330,6 +351,10 @@ const magic_construction = {
         'maniacal':{
             'levels': 0.1,
             'boost': 0.1
+        },
+        'none':{
+            'levels': 0.0,
+            'boost': 0.0
         }
     },
 
@@ -351,6 +376,9 @@ const magic_construction = {
         },
         "charge":{
             "boost": 0.02
+        },
+        'none':{
+            'bonus': 0.0
         }
     },
 
@@ -379,6 +407,10 @@ const magic_construction = {
         },
         "magic potion":
         {
+            "levels": 1,
+            "percent": 0.08
+        },
+        'none':{
             "levels": 1,
             "percent": 0.08
         }
