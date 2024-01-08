@@ -1,4 +1,15 @@
 import { abilities } from './ranged/abilities.js';
+import piercing_shot from './ranged/abils/piercing_shot.js';
+
+// list of abilities that multi hit
+const multiHitAbilities = {
+  'Greater ricochet': '.grico-multi',
+  'Gen Snipe': '.snipe-multi',
+  'Snapshot': '.snap-multi',
+  'Seren Godbow': '.sgb-multi',
+  'Deadshot': '.deadshot-multi',
+  'Shadow tendrils': '.tendril-multi'
+};
 
 buildDamagesTable(abilities);
 calculateDamages(collectSettings())
@@ -130,9 +141,14 @@ function buildDamagesTable(abilities) {
 
   for (const [abilityKey, ability] of Object.entries(abilities)) {
     const copy = template.content.cloneNode(true);
+    copy.querySelector('.js--ability').id = abilityKey;
     copy.querySelector('.js--ability').setAttribute('data-ability-key', abilityKey);
     copy.querySelector('.js--ability-title').textContent = ability.title;
     copy.querySelector('.js--ability-icon').setAttribute('src', ability.icon);
+    // add onclick callback functions and classes to hide multi-hit
+    addOnClickToMultiHit(copy, abilityKey);
+    addClassToMultiHit(copy, abilityKey);
+    addOnClickForBoLG(copy, abilityKey);
     const weaponSelect = copy.querySelector('.js--ability-weapon')
     weaponSelect.addEventListener('change', (e) => {
       calculateDamages(collectSettings())
@@ -145,31 +161,153 @@ function buildDamagesTable(abilities) {
   }
 }
 
+// given a stats object with a key and weapon,
+// calculate the damage and store the results in stats
+function calculateDamage(stats, settings) {
+  const key = stats.key;
+  const weapon = stats.weapon;
+  let calculator;
+  if(key == 'bolg') {
+    calculator = piercing_shot; // TODO: replace with BOLG calc
+  }
+  else {
+    calculator = abilities[key].calc;
+  }
+  settings['split soul'] = false;
+  settings['swift'] = false;
+  let damages = calculator(weapon, settings, 1);
+  stats.ability_regular = damages[damages.length-1];
+
+  // Recalculate with split soul
+  settings['split soul'] = true;
+  settings['swift'] = false;
+  damages = calculator(weapon, settings, 1);
+  stats.ability_splitsoul = damages[damages.length-1];
+
+  // Recalculate with swift
+  settings['split soul'] = false;
+  settings['swift'] = true;
+  damages = calculator(weapon, settings, 1);
+  stats.ability_swift = damages[damages.length-1];
+
+  // Recalculate with swift and split soul
+  settings['split soul'] = true;
+  settings['swift'] = true;
+  damages = calculator(weapon, settings, 1);
+  stats.ability_swift_ss = damages[damages.length-1];
+}
+
+// calculate all the damage for the table
 function calculateDamages(settings) {
   document.querySelectorAll(".js--damages-table tr").forEach(row => {
-    const key = row.getAttribute('data-ability-key');
-    const weapon = row.querySelector('.js--ability-weapon').value;
-    settings['split soul'] = false;
-    settings['swift'] = false;
-    let damages = abilities[key].calc(weapon, settings, 1);
-    row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
-
-    // Recalculate with split soul
-    settings['split soul'] = true;
-    settings['swift'] = false;
-    damages = abilities[key].calc(weapon, settings, 1);
-    row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
-
-    // Recalculate with swift
-    settings['split soul'] = false;
-    settings['swift'] = true;
-    damages = abilities[key].calc(weapon, settings, 1);
-    row.querySelector('.js--ability-swift').textContent = damages[damages.length-1];
-
-    // Recalculate with swift and split soul
-    settings['split soul'] = true;
-    settings['swift'] = true;
-    damages = abilities[key].calc(weapon, settings, 1);
-    row.querySelector('.js--ability-swift-ss').textContent = damages[damages.length-1];
+    const stats = {
+      key: row.getAttribute('data-ability-key'),
+      weapon: row.querySelector('.js--ability-weapon').value,
+      ability_regular: null,
+      ability_splitsoul: null,
+      ability_swift: null,
+      ability_swift_ss: null
+    };
+    calculateDamage(stats, settings);
+    row.querySelector('.js--ability-regular').textContent = stats.ability_regular;
+    row.querySelector('.js--ability-splitsoul').textContent = stats.ability_splitsoul;
+    row.querySelector('.js--ability-swift').textContent = stats.ability_swift;
+    row.querySelector('.js--ability-swift-ss').textContent = stats.ability_swift_ss;
   })
+}
+
+// if the current ability, abilityKey, is an ability 
+// that hits multiple times, add an onClick call back to toggle
+// the visiblity of the damage of the individual hits
+function addOnClickToMultiHit(copy, abilityKey) {
+  if(abilityKey in multiHitAbilities) {
+    copy.querySelector('.js--ability').addEventListener('click', function() {
+      document.querySelectorAll(multiHitAbilities[abilityKey]).forEach(multiRow => {
+        if(multiRow.style.display == 'none') {
+          multiRow.style.display = '';
+        }
+        else {
+          multiRow.style.display = 'none';
+        }
+      });
+    });
+  }
+}
+
+// if the current ability, abilityKey, is an individual
+// hit of a specific ability, hide the row initially,
+// and make it so it can be unhidden by the ability row
+function addClassToMultiHit(copy, abilityKey) {
+  const multiAbilities = {
+    'Grico 1': 'grico-multi',
+    'Grico 2': 'grico-multi',
+    'Grico 3': 'grico-multi',
+    'Snipe': 'snipe-multi',
+    'Nightmare Snipe': 'snipe-multi',
+    'Snap 1': 'snap-multi',
+    'Snap 2': 'snap-multi',
+    'SGB 1': 'sgb-multi',
+    'SGB 2': 'sgb-multi',
+    'SGB 3': 'sgb-multi',
+    'SGB 4': 'sgb-multi',
+    'SGB 5': 'sgb-multi',
+    'SGB 6': 'sgb-multi',
+    'SGB 7': 'sgb-multi',
+    'SGB 8': 'sgb-multi',
+    'Deadshot hit': 'deadshot-multi',
+    'Deadshot bleed': 'deadshot-multi',
+    'Shadow tendrils 2': 'tendril-multi',
+    'Shadow tendrils 3': 'tendril-multi',
+    'Shadow tendrils 4': 'tendril-multi',
+    'Shadow tendrils 5': 'tendril-multi',
+  };
+  if(abilityKey in multiAbilities) {
+    const row = copy.querySelector('.js--ability');
+    row.classList.add(multiAbilities[abilityKey]);
+    row.style.display = 'none';
+  }
+}
+
+// add the onclick callback function for calculating bolg damage
+function addOnClickForBoLG(copy, abilityKey) {
+  if(!(abilityKey in multiHitAbilities)) {
+    copy.querySelector('.js--ability').addEventListener('click', () => {
+      calculateBoLG(abilityKey);
+    }, true);
+  }
+}
+
+// calculate bolg damage callback function
+// hide/show the damage after calculation
+function calculateBoLG(abilityKey) {
+  const element = document.getElementById(abilityKey);
+  const settings = collectSettings();
+  if(settings['two-handed weapon'] == 'bow of the last guardian') { 
+    // if we're already showing the numbers when clicked, remove the numbers
+    if(element.showBoLG) {
+      element.classList.remove('bolg-row');
+      element.querySelector('.js--ability-regular').textContent = element.querySelector('.js--ability-regular').textContent.split('/')[0];
+      element.querySelector('.js--ability-splitsoul').textContent = element.querySelector('.js--ability-splitsoul').textContent.split('/')[0];
+      element.querySelector('.js--ability-swift').textContent = element.querySelector('.js--ability-swift').textContent.split('/')[0];
+      element.querySelector('.js--ability-swift-ss').textContent = element.querySelector('.js--ability-swift-ss').textContent.split('/')[0];
+    }
+    // calculate and show the bolg numbers
+    else {
+      const stats = {
+        key: 'bolg',
+        weapon: element.querySelector('.js--ability-weapon').value,
+        ability_regular: null,
+        ability_splitsoul: null,
+        ability_swift: null,
+        ability_swift_ss: null
+      };
+      calculateDamage(stats, settings);
+      element.classList.add('bolg-row');
+      element.querySelector('.js--ability-regular').textContent += "/" + stats.ability_regular;
+      element.querySelector('.js--ability-splitsoul').textContent += "/" + stats.ability_splitsoul;
+      element.querySelector('.js--ability-swift').textContent += "/" + stats.ability_swift;
+      element.querySelector('.js--ability-swift-ss').textContent += "/" +stats.ability_swift_ss;
+    }
+    element.showBoLG = !element.showBoLG;
+  }
 }

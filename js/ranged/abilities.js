@@ -65,6 +65,26 @@ const abilities = {
     icon: 'https://imgur.com/CT7UsaA.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
+  // ------ TODO: replace calc with individual grico calc -------
+  'Grico 1': {
+    title: 'Grico 1',
+    calc: greater_ricochet,
+    icon: 'https://imgur.com/CT7UsaA.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Grico 2': {
+    title: 'Grico 2',
+    calc: greater_ricochet,
+    icon: 'https://imgur.com/CT7UsaA.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Grico 3': {
+    title: 'Grico 3',
+    calc: greater_ricochet,
+    icon: 'https://imgur.com/CT7UsaA.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  // ------------------------------------------------------------
   'Corruption Shot': {
     title: 'Corruption Shot',
     calc: corruption_shot,
@@ -77,12 +97,26 @@ const abilities = {
     icon: 'https://i.imgur.com/n2Yyfn1.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
-  'Snipe': {
+  'Gen Snipe': {
     title: 'Snipe',
     calc: snipe,
     icon: 'https://i.imgur.com/oEOkyfc.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
+  // ------ TODO: replace calc with snipe and gaunt calc -------
+  'Snipe': {
+    title: 'Snipee',
+    calc: snipe,
+    icon: 'https://i.imgur.com/oEOkyfc.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Nightmare Snipe': {
+    title: 'Nightmare Snipe',
+    calc: snipe,
+    icon: 'https://i.imgur.com/oEOkyfc.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  // ------------------------------------------------------------
   'Binding shot': {
     title: 'Binding shot',
     calc: binding_shot,
@@ -107,12 +141,52 @@ const abilities = {
     icon: 'https://imgur.com/J8GLo1s.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
+  // -------- TODO: replace tendril calc with respective calc -------
+  'Shadow tendrils 2': {
+    title: 'Shadow tendrils 2-hit',
+    calc: shadow_tendrils,
+    icon: 'https://imgur.com/J8GLo1s.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Shadow tendrils 3': {
+    title: 'Shadow tendrils 3-hit',
+    calc: shadow_tendrils,
+    icon: 'https://imgur.com/J8GLo1s.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Shadow tendrils 4': {
+    title: 'Shadow tendrils 4-hit',
+    calc: shadow_tendrils,
+    icon: 'https://imgur.com/J8GLo1s.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Shadow tendrils 5': {
+    title: 'Shadow tendrils 5-hit',
+    calc: shadow_tendrils,
+    icon: 'https://imgur.com/J8GLo1s.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  // ------------------------------------------------------------
   'Snapshot': {
     title: 'Snapshot',
     calc: snapshot,
     icon: 'https://imgur.com/H8Ci5w6.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
+  // -- TODO: replace snap calc with snap 1st and 2nd hit calc --
+  'Snap 1': {
+    title: 'Snap 1',
+    calc: snapshot,
+    icon: 'https://imgur.com/H8Ci5w6.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Snap 2': {
+    title: 'Snap 2',
+    calc: snapshot,
+    icon: 'https://imgur.com/H8Ci5w6.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  // ------------------------------------------------------------
   'Rapid fire': {
     title: 'Rapid fire',
     calc: rapid_fire,
@@ -125,6 +199,20 @@ const abilities = {
     icon: 'https://imgur.com/5jLviCQ.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
+  // ---TODO: replace with deadshot bleed and hit calcs --------
+  'Deadshot hit': {
+    title: 'Deadshot hit',
+    calc: deadshot,
+    icon: 'https://imgur.com/5jLviCQ.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Deadshot bleed': {
+    title: 'Deadshot bleed',
+    calc: deadshot,
+    icon: 'https://imgur.com/5jLviCQ.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  // ------------------------------------------------------------
   'Incendiary shot': {
     title: 'Incendiary shot',
     calc: incendiary_shot,
@@ -161,6 +249,63 @@ const abilities = {
     icon: 'https://imgur.com/DUqERq0.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
+  'Seren Godbow': {
+    title: 'Seren Godbow',
+    calc: sgb_spec,
+    icon: 'https://imgur.com/DUqERq0.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  // - TODO: replace SGB calcs with specific hits, hide 6-8 -----
+  // if necessary
+  'SGB 1': {
+    title: 'SGB 1',
+    calc: sgb_spec,
+    icon: 'https://imgur.com/DUqERq0.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'SGB 2': {
+    title: 'SGB 2',
+    calc: sgb_spec,
+    icon: 'https://imgur.com/DUqERq0.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'SGB 3': {
+    title: 'SGB 3',
+    calc: sgb_spec,
+    icon: 'https://imgur.com/DUqERq0.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'SGB 4': {
+    title: 'SGB 4',
+    calc: sgb_spec,
+    icon: 'https://imgur.com/DUqERq0.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'SGB 5': {
+    title: 'SGB 5',
+    calc: sgb_spec,
+    icon: 'https://imgur.com/DUqERq0.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'SGB 6': {
+    title: 'SGB 6',
+    calc: sgb_spec,
+    icon: 'https://imgur.com/DUqERq0.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'SGB 7': {
+    title: 'SGB 7',
+    calc: sgb_spec,
+    icon: 'https://imgur.com/DUqERq0.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'SGB 8': {
+    title: 'SGB 8',
+    calc: sgb_spec,
+    icon: 'https://imgur.com/DUqERq0.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  // ------------------------------------------------------------
 }
 
 export {abilities}
