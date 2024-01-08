@@ -519,14 +519,14 @@ const magic_construction = {
             'category': 'basic'
         },
         "concentrated blast 2":{
-            "fixed percent": 0.4,
+            "fixed percent": 0.45,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "concentrated blast 3":{
-            "fixed percent": 0.4,
+            "fixed percent": 0.5,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
@@ -540,14 +540,14 @@ const magic_construction = {
             'category': 'basic'
         },
         "greater concentrated blast 2":{
-            "fixed percent": 0.42,
+            "fixed percent": 0.48,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "greater concentrated blast 3":{
-            "fixed percent": 0.42,
+            "fixed percent": 0.54,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,

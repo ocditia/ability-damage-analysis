@@ -16,7 +16,7 @@ function greater_concentrated_blast(type, settings, numberOfHits) {
     const AVG_INS = new Avg();
     const Helper = new NecroHelper(); 
     let abil_val = 'greater concentrated blast 1'
-    const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
+    let fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
     let concStacks = 0;
@@ -72,6 +72,7 @@ function greater_concentrated_blast(type, settings, numberOfHits) {
         if (settings['ring'] === 'channelers') {
             channellerStacks += 1;
         }
+        fixedPercent += 0.06
     }
     
     //calc total damage

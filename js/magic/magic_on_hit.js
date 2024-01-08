@@ -2,8 +2,6 @@ import construction from './magic_const.js';
 
 class OnHit {
   calcScriptureOfFul(buff,pocket,flag) {
-    console.log(pocket)
-    console.log(flag)
     if (pocket === 'scripture of ful' && flag === true) {
       buff = Math.floor(buff * (1 + 0.2));
       console.log(buff)

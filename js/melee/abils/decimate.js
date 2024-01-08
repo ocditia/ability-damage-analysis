@@ -55,7 +55,6 @@ function decimate(type, settings, numberOfHits) {
     //calc total damage
     hits.push(Helper.totalDamageCalc(hits));
 
-    console.log(settings['fury stacks'])
     return Helper.flooredList(hits);
 }
 
