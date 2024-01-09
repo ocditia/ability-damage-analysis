@@ -4,7 +4,6 @@ class OnHit {
   calcScriptureOfFul(buff,pocket,flag) {
     if (pocket === 'scripture of ful' && flag === true) {
       buff = Math.floor(buff * (1 + 0.2));
-      console.log(buff)
     }
     return buff;
   }

@@ -45,7 +45,7 @@ function smoke_tendrils_1(type, settings, numberOfHits) {
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
-        
+
         //sets up for further calculations
         damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);
 
@@ -68,9 +68,9 @@ function smoke_tendrils_1(type, settings, numberOfHits) {
             const fsoa = proc[0] * fcrit;
             hits.push(fsoa);
         }
-        
+
         //calc min, avg, or max depending on request
-        hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val, concStacks, channellerStacks));
+        hits.push(AVG_INS.averageDamageList(damageObject['crit']['list']));
     }
     
     //calc total damage

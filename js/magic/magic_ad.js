@@ -32,6 +32,7 @@ class AbilityDmg {
 
       AD = Math.floor(AD * (1 + settings['flow stacks']/100));
 
+
       if (settings['inquisitor'] === true && settings['two-handed weapon'] === 'inquisitor staff' && type === '2h') {
         if (settings['enchantment affliction'] === true) {
           AD += AD * 0.175;

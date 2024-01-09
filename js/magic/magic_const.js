@@ -378,7 +378,7 @@ const magic_construction = {
             "boost": 0.02
         },
         'none':{
-            'bonus': 0.0
+            'boost': 0.0
         }
     },
 
@@ -411,8 +411,8 @@ const magic_construction = {
             "percent": 0.08
         },
         'none':{
-            "levels": 1,
-            "percent": 0.08
+            "levels": 0,
+            "percent": 0.0
         }
     },
 
@@ -594,24 +594,24 @@ const magic_construction = {
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
-        },
+        },  
         "smoke tendrils 2":{
             "fixed percent": 0.65,
-            "variable percent": 0.1,
+            "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "smoke tendrils 3":{
             "fixed percent": 0.75,
-            "variable percent": 0.1,
+            "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "smoke tendrils 4":{
             "fixed percent": 0.85,
-            "variable percent": 0.1,
+            "variable percent": 0.4,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'

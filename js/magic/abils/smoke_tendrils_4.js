@@ -66,7 +66,7 @@ function smoke_tendrils_4(type, settings, numberOfHits) {
         }
         
         //calc min, avg, or max depending on request
-        hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val, concStacks, channellerStacks));
+        hits.push(AVG_INS.averageDamageList(damageObject['crit']['list']));
     }
     
     //calc total damage
