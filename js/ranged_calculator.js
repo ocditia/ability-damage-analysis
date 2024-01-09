@@ -2,14 +2,41 @@ import { abilities } from './ranged/abilities.js';
 import piercing_shot from './ranged/abils/piercing_shot.js';
 
 // list of abilities that multi hit
-const multiHitAbilities = {
-  'Greater ricochet': '.grico-multi',
-  'Gen Snipe': '.snipe-multi',
-  'Snapshot': '.snap-multi',
-  'Seren Godbow': '.sgb-multi',
-  'Deadshot': '.deadshot-multi',
-  'Shadow tendrils': '.tendril-multi'
-};
+function getMultiHitAbilityClass(abilityKey) {
+  const multiHitAbilities = {
+    'Greater ricochet': '.grico-multi',
+    'Gen Snipe': '.snipe-multi',
+    'Snapshot': '.snap-multi',
+    'Seren Godbow': '.sgb-multi',
+    'Deadshot': '.deadshot-multi',
+    'Shadow tendrils': '.tendril-multi'
+  };
+  if(abilityKey in multiHitAbilities) {
+    return multiHitAbilities[abilityKey];
+  }
+  return null;
+}
+
+// determine whether the row should have a bolg calculator
+// applied. Do not calculate for rows with multi-hits or
+// for bleeds or dw only.
+function shouldCalculateBoLG(abilityKey) {
+  const skipBolg = [
+    'Corruption Shot',
+    'Fragmentation Shot',
+    'Deadshot bleed',
+    'SGB 2',
+    'SGB 3',
+    'SGB 4',
+    'SGB 5',
+    'SGB 6',
+    'SGB 7',
+    'SGB 8',
+    'Needle Strike',
+    'Unload'
+  ];
+  return !getMultiHitAbilityClass(abilityKey) && !skipBolg.includes(abilityKey);
+}
 
 buildDamagesTable(abilities);
 calculateDamages(collectSettings())
@@ -163,11 +190,11 @@ function buildDamagesTable(abilities) {
 
 // given a stats object with a key and weapon,
 // calculate the damage and store the results in stats
-function calculateDamage(stats, settings) {
+function calculateDamage(stats, settings, calculateForBolg) {
   const key = stats.key;
   const weapon = stats.weapon;
   let calculator;
-  if(key == 'bolg') {
+  if(calculateForBolg) {
     calculator = piercing_shot; // TODO: replace with BOLG calc
   }
   else {
@@ -175,25 +202,25 @@ function calculateDamage(stats, settings) {
   }
   settings['split soul'] = false;
   settings['swift'] = false;
-  let damages = calculator(weapon, settings, 1);
+  let damages = calculator(weapon, settings, 1, key);
   stats.ability_regular = damages[damages.length-1];
 
   // Recalculate with split soul
   settings['split soul'] = true;
   settings['swift'] = false;
-  damages = calculator(weapon, settings, 1);
+  damages = calculator(weapon, settings, 1, key);
   stats.ability_splitsoul = damages[damages.length-1];
 
   // Recalculate with swift
   settings['split soul'] = false;
   settings['swift'] = true;
-  damages = calculator(weapon, settings, 1);
+  damages = calculator(weapon, settings, 1, key);
   stats.ability_swift = damages[damages.length-1];
 
   // Recalculate with swift and split soul
   settings['split soul'] = true;
   settings['swift'] = true;
-  damages = calculator(weapon, settings, 1);
+  damages = calculator(weapon, settings, 1, key);
   stats.ability_swift_ss = damages[damages.length-1];
 }
 
@@ -208,7 +235,7 @@ function calculateDamages(settings) {
       ability_swift: null,
       ability_swift_ss: null
     };
-    calculateDamage(stats, settings);
+    calculateDamage(stats, settings, false);
     row.querySelector('.js--ability-regular').textContent = stats.ability_regular;
     row.querySelector('.js--ability-splitsoul').textContent = stats.ability_splitsoul;
     row.querySelector('.js--ability-swift').textContent = stats.ability_swift;
@@ -220,9 +247,10 @@ function calculateDamages(settings) {
 // that hits multiple times, add an onClick call back to toggle
 // the visiblity of the damage of the individual hits
 function addOnClickToMultiHit(copy, abilityKey) {
-  if(abilityKey in multiHitAbilities) {
+  const multiHitClass = getMultiHitAbilityClass(abilityKey);
+  if(multiHitClass) {
     copy.querySelector('.js--ability').addEventListener('click', function() {
-      document.querySelectorAll(multiHitAbilities[abilityKey]).forEach(multiRow => {
+      document.querySelectorAll(multiHitClass).forEach(multiRow => {
         if(multiRow.style.display == 'none') {
           multiRow.style.display = '';
         }
@@ -270,7 +298,7 @@ function addClassToMultiHit(copy, abilityKey) {
 
 // add the onclick callback function for calculating bolg damage
 function addOnClickForBoLG(copy, abilityKey) {
-  if(!(abilityKey in multiHitAbilities)) {
+  if(shouldCalculateBoLG(abilityKey)) {
     copy.querySelector('.js--ability').addEventListener('click', () => {
       calculateBoLG(abilityKey);
     }, true);
@@ -294,14 +322,15 @@ function calculateBoLG(abilityKey) {
     // calculate and show the bolg numbers
     else {
       const stats = {
-        key: 'bolg',
+        key: abilityKey,
         weapon: element.querySelector('.js--ability-weapon').value,
+        bolg_ability: abilityKey,
         ability_regular: null,
         ability_splitsoul: null,
         ability_swift: null,
         ability_swift_ss: null
       };
-      calculateDamage(stats, settings);
+      calculateDamage(stats, settings,true);
       element.classList.add('bolg-row');
       element.querySelector('.js--ability-regular').textContent += "/" + stats.ability_regular;
       element.querySelector('.js--ability-splitsoul').textContent += "/" + stats.ability_splitsoul;

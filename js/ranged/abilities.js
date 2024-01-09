@@ -249,12 +249,6 @@ const abilities = {
     icon: 'https://imgur.com/DUqERq0.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
-  'Seren Godbow': {
-    title: 'Seren Godbow',
-    calc: sgb_spec,
-    icon: 'https://imgur.com/DUqERq0.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
   // - TODO: replace SGB calcs with specific hits, hide 6-8 -----
   // if necessary
   'SGB 1': {
