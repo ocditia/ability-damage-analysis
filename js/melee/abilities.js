@@ -63,7 +63,7 @@ const abilities = {
     icon: 'assets/ability_icons/melee/30x30/backhand.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
-  'Haovc': {
+  'Havoc': {
     title: 'Havoc',
     calc: havoc,
     icon: 'assets/ability_icons/melee/30x30/havoc.png',
