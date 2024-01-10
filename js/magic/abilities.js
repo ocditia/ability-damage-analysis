@@ -56,13 +56,13 @@ const abilities = {
     weapons: ['2h'],
   },
   'Impact': {
-    title: 'impact',
+    title: 'Impact',
     calc: impact,
     icon: 'https://i.imgur.com/etm6PDI.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Chain': {
-    title: 'chain',
+    title: 'Chain',
     calc: chain,
     icon: 'https://i.imgur.com/C45quRI.png',
     weapons: ['2h','Dw','Md','Ms'],

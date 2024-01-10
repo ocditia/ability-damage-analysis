@@ -90,7 +90,7 @@ const abilities = {
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Tight bindings': {
-    title: 'tight bindings',
+    title: 'Tight bindings',
     calc: tight_bindings,
     icon: 'https://imgur.com/YSnjnQm.png',
     weapons: ['2h','Dw','Md','Ms'],
