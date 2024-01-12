@@ -1,5 +1,20 @@
 import { abilities } from './magic/abilities.js';
 
+// list of abilities that multi hit
+function getMultiHitAbilityClass(abilityKey) {
+  const multiHitAbilities = {
+    'Concentrated blast': '.conc-multi',
+    'Greater concentrated blast': '.gconc-multi',
+    'Corruption blast': '.corruptBlast-multi',
+    'Detonate': '.deto-multi',
+    'Smoke tendrils': '.smTendrils-multi'
+  };
+  if(abilityKey in multiHitAbilities) {
+    return multiHitAbilities[abilityKey];
+  }
+  return null;
+}
+
 buildDamagesTable(abilities);
 calculateDamages(collectSettings())
 
@@ -141,6 +156,8 @@ function buildDamagesTable(abilities) {
     copy.querySelector('.js--ability').setAttribute('data-ability-key', abilityKey);
     copy.querySelector('.js--ability-title').textContent = ability.title;
     copy.querySelector('.js--ability-icon').setAttribute('src', ability.icon);
+    addOnClickToMultiHit(copy,abilityKey);
+    addClassToMultiHit(copy,abilityKey);
     const weaponSelect = copy.querySelector('.js--ability-weapon')
     weaponSelect.addEventListener('change', (e) => {
       calculateDamages(collectSettings())
@@ -173,3 +190,53 @@ function calculateDamages(settings) {
     row.querySelector('.js--ability-metamorphosis').textContent = damages[damages.length-1];
   })
 }
+
+// if the current ability, abilityKey, is an ability 
+// that hits multiple times, add an onClick call back to toggle
+// the visiblity of the damage of the individual hits
+function addOnClickToMultiHit(copy, abilityKey) {
+  const multiHitClass = getMultiHitAbilityClass(abilityKey);
+  if(multiHitClass) {
+    copy.querySelector('.js--ability').addEventListener('click', function() {
+      document.querySelectorAll(multiHitClass).forEach(multiRow => {
+        if(multiRow.style.display == 'none') {
+          multiRow.style.display = '';
+        }
+        else {
+          multiRow.style.display = 'none';
+        }
+      });
+    });
+  }
+}
+
+function addClassToMultiHit(copy, abilityKey) {
+  const multiAbilities = {
+    'Conc 1': 'conc-multi',
+    'Conc 2': 'conc-multi',
+    'Conc 3': 'conc-multi',
+    'Gconc 1': 'gconc-multi',
+    'Gconc 2': 'gconc-multi',
+    'Gconc 3': 'gconc-multi',
+    'Corruption blast 1': 'corruptBlast-multi',
+    'Corruption blast 2': 'corruptBlast-multi',
+    'Corruption blast 3': 'corruptBlast-multi',
+    'Corruption blast 4': 'corruptBlast-multi',
+    'Corruption blast 5': 'corruptBlast-multi',
+    'Detonate 20': 'deto-multi',
+    'Detonate 40': 'deto-multi',
+    'Detonate 60': 'deto-multi',
+    'Detonate 80': 'deto-multi',
+    'Detonate 100': 'deto-multi',
+    'Smoke tendrils 1': 'smTendrils-multi',
+    'Smoke tendrils 2': 'smTendrils-multi',
+    'Smoke tendrils 3': 'smTendrils-multi',
+    'Smoke tendrils 4': 'smTendrils-multi'
+  };
+  if(abilityKey in multiAbilities) {
+    const row = copy.querySelector('.js--ability');
+    row.classList.add(multiAbilities[abilityKey]);
+    row.style.display = 'none';
+  }
+}
+

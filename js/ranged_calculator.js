@@ -7,9 +7,10 @@ function getMultiHitAbilityClass(abilityKey) {
     'Greater ricochet': '.grico-multi',
     'Gen Snipe': '.snipe-multi',
     'Snapshot': '.snap-multi',
+    'Corruption Shot': '.corruptShot-multi',
     'Seren Godbow': '.sgb-multi',
     'Deadshot': '.deadshot-multi',
-    'Shadow tendrils': '.tendril-multi'
+    'Shadow tendrils': '.shTendril-multi'
   };
   if(abilityKey in multiHitAbilities) {
     return multiHitAbilities[abilityKey];
@@ -22,7 +23,11 @@ function getMultiHitAbilityClass(abilityKey) {
 // for bleeds or dw only.
 function shouldCalculateBoLG(abilityKey) {
   const skipBolg = [
-    'Corruption Shot',
+    'Corruption Shot 1',
+    'Corruption Shot 2',
+    'Corruption Shot 3',
+    'Corruption Shot 4',
+    'Corruption Shot 5',
     'Fragmentation Shot',
     'Deadshot bleed',
     'SGB 2',
@@ -274,6 +279,11 @@ function addClassToMultiHit(copy, abilityKey) {
     'Nightmare Snipe': 'snipe-multi',
     'Snap 1': 'snap-multi',
     'Snap 2': 'snap-multi',
+    'Corruption Shot 1': 'corruptShot-multi',
+    'Corruption Shot 2': 'corruptShot-multi',
+    'Corruption Shot 3': 'corruptShot-multi',
+    'Corruption Shot 4': 'corruptShot-multi',
+    'Corruption Shot 5': 'corruptShot-multi',
     'SGB 1': 'sgb-multi',
     'SGB 2': 'sgb-multi',
     'SGB 3': 'sgb-multi',
@@ -284,10 +294,10 @@ function addClassToMultiHit(copy, abilityKey) {
     'SGB 8': 'sgb-multi',
     'Deadshot hit': 'deadshot-multi',
     'Deadshot bleed': 'deadshot-multi',
-    'Shadow tendrils 2': 'tendril-multi',
-    'Shadow tendrils 3': 'tendril-multi',
-    'Shadow tendrils 4': 'tendril-multi',
-    'Shadow tendrils 5': 'tendril-multi',
+    'Shadow tendrils 2': 'shTendril-multi',
+    'Shadow tendrils 3': 'shTendril-multi',
+    'Shadow tendrils 4': 'shTendril-multi',
+    'Shadow tendrils 5': 'shTendril-multi',
   };
   if(abilityKey in multiAbilities) {
     const row = copy.querySelector('.js--ability');
@@ -330,7 +340,7 @@ function calculateBoLG(abilityKey) {
         ability_swift: null,
         ability_swift_ss: null
       };
-      calculateDamage(stats, settings,true);
+      calculateDamage(stats, settings, true);
       element.classList.add('bolg-row');
       element.querySelector('.js--ability-regular').textContent += "/" + stats.ability_regular;
       element.querySelector('.js--ability-splitsoul').textContent += "/" + stats.ability_splitsoul;

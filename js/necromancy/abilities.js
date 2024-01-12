@@ -149,6 +149,18 @@ const abilities = {
     icon: 'https://imgur.com/Aiuhjud.png',
     weapons: ['Dw'],
   },
+  'Bloat hit': {
+    title: 'Bloat',
+    calc: bloat,
+    icon: 'https://imgur.com/Aiuhjud.png',
+    weapons: ['Dw'],
+  },
+  'Bloat bleed': {
+    title: 'Bloat',
+    calc: bloat,
+    icon: 'https://imgur.com/Aiuhjud.png',
+    weapons: ['Dw'],
+  },
   'Death Grasp': {
     title: 'Death Grasp',
     calc: death_grasp,

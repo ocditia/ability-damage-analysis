@@ -1,5 +1,16 @@
 import { abilities } from './necromancy/abilities.js';
 
+// list of abilities that multi hit
+function getMultiHitAbilityClass(abilityKey) {
+  const multiHitAbilities = {
+    'Bloat': '.bloat-multi'
+  };
+  if(abilityKey in multiHitAbilities) {
+    return multiHitAbilities[abilityKey];
+  }
+  return null;
+}
+
 buildDamagesTable(abilities);
 calculateDamages(collectSettings())
 
@@ -128,6 +139,8 @@ function buildDamagesTable(abilities) {
     copy.querySelector('.js--ability').setAttribute('data-ability-key', abilityKey);
     copy.querySelector('.js--ability-title').textContent = ability.title;
     copy.querySelector('.js--ability-icon').setAttribute('src', ability.icon);
+    addOnClickToMultiHit(copy, abilityKey);
+    addClassToMultiHit(copy, abilityKey);
     const weaponSelect = copy.querySelector('.js--ability-weapon')
     weaponSelect.addEventListener('change', (e) => {
       calculateDamages(collectSettings())
@@ -153,4 +166,38 @@ function calculateDamages(settings) {
     damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-splitsoul').textContent = damages[damages.length-1];
   })
+}
+
+// if the current ability, abilityKey, is an ability 
+// that hits multiple times, add an onClick call back to toggle
+// the visiblity of the damage of the individual hits
+function addOnClickToMultiHit(copy, abilityKey) {
+  const multiHitClass = getMultiHitAbilityClass(abilityKey);
+  if(multiHitClass) {
+    copy.querySelector('.js--ability').addEventListener('click', function() {
+      document.querySelectorAll(multiHitClass).forEach(multiRow => {
+        if(multiRow.style.display == 'none') {
+          multiRow.style.display = '';
+        }
+        else {
+          multiRow.style.display = 'none';
+        }
+      });
+    });
+  }
+}
+
+// if the current ability, abilityKey, is an individual
+// hit of a specific ability, hide the row initially,
+// and make it so it can be unhidden by the ability row
+function addClassToMultiHit(copy, abilityKey) {
+  const multiAbilities = {
+    'Bloat hit': 'bloat-multi',
+    'Bloat bleed': 'bloat-multi'
+  };
+  if(abilityKey in multiAbilities) {
+    const row = copy.querySelector('.js--ability');
+    row.classList.add(multiAbilities[abilityKey]);
+    row.style.display = 'none';
+  }
 }

@@ -91,6 +91,42 @@ const abilities = {
     icon: 'https://i.imgur.com/YRLh5SZ.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
+  'Corruption Shot': {
+    title: 'Corruption Shot',
+    calc: corruption_shot,
+    icon: 'https://i.imgur.com/YRLh5SZ.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Corruption Shot 1': {
+    title: 'Corruption Shot',
+    calc: corruption_shot,
+    icon: 'https://i.imgur.com/YRLh5SZ.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Corruption Shot 2': {
+    title: 'Corruption Shot',
+    calc: corruption_shot,
+    icon: 'https://i.imgur.com/YRLh5SZ.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Corruption Shot 3': {
+    title: 'Corruption Shot',
+    calc: corruption_shot,
+    icon: 'https://i.imgur.com/YRLh5SZ.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Corruption Shot 4': {
+    title: 'Corruption Shot',
+    calc: corruption_shot,
+    icon: 'https://i.imgur.com/YRLh5SZ.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Corruption Shot 5': {
+    title: 'Corruption Shot',
+    calc: corruption_shot,
+    icon: 'https://i.imgur.com/YRLh5SZ.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
   'Fragmentation Shot': {
     title: 'Fragmentation Shot',
     calc: fragmentation_shot,

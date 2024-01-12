@@ -1,5 +1,21 @@
 import { abilities } from './melee/abilities.js';
 
+// list of abilities that multi hit
+function getMultiHitAbilityClass(abilityKey) {
+  const multiHitAbilities = {
+    'Fury': '.fury-multi',
+    'Hurricane': '.hurricane-multi',
+    'Blood tendrils': '.blTendril-multi',
+    'Massacre': '.massacre-multi',
+    'Ek-ZekKil Spec': '.ezk-multi',
+    'Dragon Claw': '.claws-multi'
+  };
+  if(abilityKey in multiHitAbilities) {
+    return multiHitAbilities[abilityKey];
+  }
+  return null;
+}
+
 buildDamagesTable(abilities);
 calculateDamages(collectSettings())
 
@@ -145,6 +161,9 @@ function buildDamagesTable(abilities) {
     copy.querySelector('.js--ability').setAttribute('data-ability-key', abilityKey);
     copy.querySelector('.js--ability-title').textContent = ability.title;
     copy.querySelector('.js--ability-icon').setAttribute('src', ability.icon);
+    // add onclick callback functions and classes to hide multi-hit
+    addOnClickToMultiHit(copy, abilityKey);
+    addClassToMultiHit(copy, abilityKey);
     const weaponSelect = copy.querySelector('.js--ability-weapon')
     weaponSelect.addEventListener('change', (e) => {
       calculateDamages(collectSettings())
@@ -177,4 +196,59 @@ function calculateDamages(settings) {
     damages = abilities[key].calc(weapon, settings, 1);
     row.querySelector('.js--ability-berserk').textContent = damages[damages.length-1];
   })
+}
+
+// if the current ability, abilityKey, is an ability 
+// that hits multiple times, add an onClick call back to toggle
+// the visiblity of the damage of the individual hits
+function addOnClickToMultiHit(copy, abilityKey) {
+  const multiHitClass = getMultiHitAbilityClass(abilityKey);
+  if(multiHitClass) {
+    copy.querySelector('.js--ability').addEventListener('click', function() {
+      document.querySelectorAll(multiHitClass).forEach(multiRow => {
+        if(multiRow.style.display == 'none') {
+          multiRow.style.display = '';
+        }
+        else {
+          multiRow.style.display = 'none';
+        }
+      });
+    });
+  }
+}
+
+function addClassToMultiHit(copy, abilityKey) {
+  const multiAbilities = {
+    'Fury 1': 'fury-multi',
+    'Fury 2': 'fury-multi',
+    'Fury 3': 'fury-multi',
+    'Cane 1': 'hurricane-multi',
+    'Cane 2': 'hurricane-multi',
+    'Blood tendrils initial': 'blTendril-multi',
+    'Blood tendrils secondary': 'blTendril-multi',
+    'Massacre hit': 'massacre-multi',
+    'Massacre bleed': 'massacre-multi',
+    'EZK 1': 'ezk-multi',
+    'EZK 2': 'ezk-multi',
+    'EZK 3': 'ezk-multi',
+    'EZK 4': 'ezk-multi',
+    'EZK 5': 'ezk-multi',
+    'EZK 6': 'ezk-multi',
+    'EZK 7': 'ezk-multi',
+    'EZK 8': 'ezk-multi',
+    'EZK 9': 'ezk-multi',
+    'EZK 10': 'ezk-multi',
+    'EZK 11': 'ezk-multi',
+    'EZK 12': 'ezk-multi',
+    'EZK 13': 'ezk-multi',
+    'EZK 14': 'ezk-multi',
+    'Dragon Claw 1': 'claws-multi', 
+    'Dragon Claw 2': 'claws-multi',
+    'Dragon Claw 3-4': 'claws-multi'
+  };
+  if(abilityKey in multiAbilities) {
+    const row = copy.querySelector('.js--ability');
+    row.classList.add(multiAbilities[abilityKey]);
+    row.style.display = 'none';
+  }
 }
