@@ -23,7 +23,7 @@ class OnNPC {
     }
   
     calcAura(dmg, settings) {
-      if (settings['aura'] === 'berserk' && (settings['berserk'] || settings['zaros god sword spec'] === true)) {
+      if (settings['aura'] === 'berserker' && (settings['berserk'] === true || settings['zgs'] === true)) {
         dmg = dmg
       }
       else {
