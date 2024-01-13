@@ -27,19 +27,19 @@ const abilities = {
     title: 'Dazing Shot',
     calc: dazing_shot,
     icon: 'assets/ability_icons/ranged/30x30/dazing.png',
-    weapons: ['2h'],
+    weapons: ['2h','Dw','Md','Ms'],
   },
   'Greater Dazing Shot': {
     title: 'Greater Dazing Shot',
     calc: greater_dazing_shot,
     icon: 'assets/ability_icons/ranged/30x30/MDS.png',
-    weapons: ['2h'],
+    weapons: ['2h','Dw','Md','Ms'],
   },
   'Needle Strike': {
     title: 'Needle Strike',
     calc: needle_strike,
     icon: 'assets/ability_icons/ranged/30x30/needle.png',
-    weapons: ['Dw'],
+    weapons: ['2h','Dw','Md','Ms'],
   },
   'Piercing Shot': {
     title: 'Piercing Shot',
@@ -135,7 +135,7 @@ const abilities = {
     title: 'Unload',
     calc: unload,
     icon: 'assets/ability_icons/ranged/30x30/unload.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','Md','Ms'],
   },
   'Darkbow': {
     title: 'Darkbow',

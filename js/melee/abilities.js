@@ -67,13 +67,13 @@ const abilities = {
     title: 'Havoc',
     calc: havoc,
     icon: 'assets/ability_icons/melee/30x30/havoc.png',
-    weapons: ['Dw','Md'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Smash': {
     title: 'Smash',
     calc: smash,
     icon: 'assets/ability_icons/melee/30x30/smash.png',
-    weapons: ['2h'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Bladed dive': {
     title: 'Bladed dive',
@@ -103,13 +103,13 @@ const abilities = {
     title: 'Decimate',
     calc: decimate,
     icon: 'assets/ability_icons/melee/30x30/deci.png',
-    weapons: ['Dw','Md'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Cleave': {
     title: 'Cleave',
     calc: cleave,
     icon: 'assets/ability_icons/melee/30x30/cleave.png',
-    weapons: ['2h'],
+    weapons: ['2h','Dw','Md','Ms'],
   },
   'Sever': {
     title: 'Sever',
@@ -133,13 +133,13 @@ const abilities = {
     title: 'Flurry',
     calc: flurry,
     icon: 'assets/ability_icons/melee/30x30/flurry.png',
-    weapons: ['Dw','Md'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Greater flurry': {
     title: 'Greater flurry',
     calc: greater_flurry,
     icon: 'assets/ability_icons/melee/30x30/gflurry.png',
-    weapons: ['Dw','Md'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Forceful backhand': {
     title: 'Forceful backhand',
@@ -151,7 +151,7 @@ const abilities = {
     title: 'Quake',
     calc: quake,
     icon: 'assets/ability_icons/melee/30x30/quake.png',
-    weapons: ['2h'],
+    weapons: ['2h','Dw','Md','Ms'],
   },
   'Slaughter': {
     title: 'Slaughter',
@@ -163,7 +163,7 @@ const abilities = {
     title: 'Destroy',
     calc: destroy,
     icon: 'assets/ability_icons/melee/30x30/destroy.png',
-    weapons: ['Dw','Md'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Assault': {
     title: 'Assault',
@@ -193,19 +193,19 @@ const abilities = {
     title: 'Pulverise',
     calc: pulverise,
     icon: 'assets/ability_icons/melee/30x30/pulverise.png',
-    weapons: ['2h'],
+    weapons: ['2h','Dw','Md','Ms'],
   },
   'Frenzy': {
     title: 'Frenzy',
     calc: frenzy,
     icon: 'assets/ability_icons/melee/30x30/frenzy.png',
-    weapons: ['Dw','Md'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Massacre': {
     title: 'Massacre',
     calc: massacre,
     icon: 'assets/ability_icons/melee/30x30/massacre.png',
-    weapons: ['Dw','Md'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Ek-ZekKil Spec': {
     title: 'Ek-ZekKil Spec',
