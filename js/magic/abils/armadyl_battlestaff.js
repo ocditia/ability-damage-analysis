@@ -31,7 +31,7 @@ function armadyl_battlestaff(type, settings, numberOfHits) {
 
     const hits = []
    
-    numberOfHits = 4;
+    numberOfHits = 5;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 

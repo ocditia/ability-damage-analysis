@@ -28,7 +28,7 @@ function combust(type, settings, numberOfHits) {
 
     const hits = []
    
-    numberOfHits = 6;
+    numberOfHits = 5;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 
