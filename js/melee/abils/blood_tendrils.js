@@ -14,7 +14,7 @@ function blood_tendrils(type, settings, numberOfHits) {
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new MeleeHelper(); 
-    let abil_val = 'slice'
+    let abil_val = 'blood tendrils'
     const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
     const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
