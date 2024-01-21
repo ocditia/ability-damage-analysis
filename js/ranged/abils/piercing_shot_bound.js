@@ -22,6 +22,7 @@ function piercing_shot_bound(type, settings, numberOfHits) {
 
     const hits = []
    
+    numberOfHits = 2;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 

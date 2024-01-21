@@ -21,7 +21,8 @@ function piercing_shot(type, settings, numberOfHits) {
     settings['category'] = construction['abilities'][abil_val]['category'];
     
     const hits = []
-   
+
+   numberOfHits = 2;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 
