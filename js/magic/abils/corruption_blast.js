@@ -31,15 +31,14 @@ function corruption_blast(type, settings, numberOfHits) {
     numberOfHits = 5;
    
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
-        let hitCount=1;
         const damageObject = Helper.damageObjectCreator(settings);
 
         //calculates ability damage
         let AD = AD_INS.calcAd(type,settings);
         
         //sets fixed and variable damage
-        let fixed = Math.floor(AD * fixedPercent * hitCount);
-        let variable = Math.floor(AD * variablePercent * hitCount);
+        let fixed = Math.floor(AD * fixedPercent) * (hitsplat + 1);
+        let variable = Math.floor(AD * variablePercent) * (hitsplat + 1);
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
@@ -60,7 +59,6 @@ function corruption_blast(type, settings, numberOfHits) {
         
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val, concStacks, channellerStacks));
-        hitCount+=1;
     }
     
     //calc total damage
