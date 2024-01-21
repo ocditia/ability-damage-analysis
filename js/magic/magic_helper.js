@@ -58,6 +58,14 @@ class magicHelper{
         }
         return returnList;
     }
+
+    addSingleValueToList(list,value) {
+        const returnList = []
+        for (var i = 0; i<list.length; i++) {
+            returnList.push(list[i] + value);
+        }
+        return returnList;
+    }
 }
 
 export default magicHelper;

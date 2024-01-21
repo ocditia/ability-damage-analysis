@@ -63,10 +63,8 @@ function smoke_tendrils_1(type, settings, numberOfHits) {
         //fsoa
         let proc = 0;
         if (settings['fsoa'] === true){
-            let fcrit = CRIT_INS.calcFCritChance(settings, concStacks, channellerStacks);
             proc = time_strike(type, settings, 1);
-            const fsoa = proc[0] * fcrit;
-            hits.push(fsoa);
+            damageObject['crit']['list'] = Helper.addSingleValueToList(damageObject['crit']['list'],proc[proc.length-1])
         }
 
         //calc min, avg, or max depending on request
