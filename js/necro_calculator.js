@@ -48,6 +48,7 @@ function collectSettings() {
     'biting': 4,
     'flanking': 0,
     'flanking position': false,
+    'eruptive': 0,
     
     'aura': 'mahjarrat',
     'split soul': true,

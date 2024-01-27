@@ -29,6 +29,8 @@ class AbilityDmg {
 
         AD = mhAbilityDmg + ohAbilityDmg;
       }
+
+      AD = AD * (1 + 0.005 * settings['eruptive'])
   
       return AD
     }
