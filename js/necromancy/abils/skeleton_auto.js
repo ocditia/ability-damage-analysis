@@ -22,6 +22,7 @@ function skeleton_auto(type, settings, numberOfHits) {
 
     const hits = []
    
+    let rageStacks = settings['skeleton rage stacks'];
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 
@@ -47,8 +48,8 @@ function skeleton_auto(type, settings, numberOfHits) {
 
         //rage stacks
         for (var i = 0; i<damageObject['non-crit']['list'].length;i++) {
-            damageObject['non-crit']['list'][i] = damageObject['non-crit']['list'][i] * (1 + settings['skeleton rage stacks'] * 0.03);
-            damageObject['crit']['list'][i] = damageObject['crit']['list'][i] * (1 + settings['skeleton rage stacks'] * 0.03);
+            damageObject['non-crit']['list'][i] = damageObject['non-crit']['list'][i] * (1 + rageStacks * 0.03);
+            damageObject['crit']['list'][i] = damageObject['crit']['list'][i] * (1 + rageStacks * 0.03);
         }
 
         //apply hit caps
@@ -58,8 +59,8 @@ function skeleton_auto(type, settings, numberOfHits) {
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val));
 
-        if (settings['skeleton rage stacks'] < 25) {
-            settings['skeleton rage stacks'] = settings['skeleton rage stacks'] + 1;
+        if (rageStacks < 25) {
+            rageStacks = rageStacks + 1;
         }
     }
     
