@@ -22,7 +22,6 @@ function bolg_spec(type, settings, numberOfHits) {
 
     const hits = []
    
-    numberOfHits = 2;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 
