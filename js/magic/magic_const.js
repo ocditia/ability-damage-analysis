@@ -449,63 +449,63 @@ const magic_construction = {
             'category': 'auto attack'
         },
         "wrack":{
-            "fixed percent": 0.8,
+            "fixed percent": 0.9,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "wrack bound":{
-            "fixed percent": 1.04,
+            "fixed percent": 1.17,
             "variable percent": 0.26,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "wrack and ruin":{
-            "fixed percent": 1.6,
+            "fixed percent": 1.8,
             "variable percent": 0.4,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "wrack and ruin bound":{
-            "fixed percent": 2.2,
-            "variable percent": 0.4,
+            "fixed percent": 2.34,
+            "variable percent": 0.52,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "magma tempest":{
-            "fixed percent": 0.15,
+            "fixed percent": 0.23,
             "variable percent": 0.04,
             "on hit effects": true,
             "crit effects": false,
             'category': 'basic'
         },
         "impact":{
-            "fixed percent": 0.55,
+            "fixed percent": 0.65,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "chain":{
-            "fixed percent": 0.55,
+            "fixed percent": 0.65,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'        
         },
         "sonic wave":{
-            "fixed percent": 0.85,
+            "fixed percent": 0.95,
             "variable percent": 0.2,
             'on hit effects': true,
             'crit effects': true,
             'category': 'basic'
         },
         "greater sonic wave":{
-            "fixed percent": 1.05,
+            "fixed percent": 1.15,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
@@ -533,28 +533,28 @@ const magic_construction = {
             'category': 'basic'
         },
         "greater concentrated blast 1":{
-            "fixed percent": 0.42,
+            "fixed percent": 0.45,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "greater concentrated blast 2":{
-            "fixed percent": 0.48,
+            "fixed percent": 0.51,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "greater concentrated blast 3":{
-            "fixed percent": 0.54,
+            "fixed percent": 0.57,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "dragon breath":{
-            "fixed percent": 1,
+            "fixed percent": 1.1,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
@@ -575,7 +575,7 @@ const magic_construction = {
             'category': 'abil'
         },
         "deep impact":{
-            "fixed percent": 1.1,
+            "fixed percent": 1.2,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
@@ -617,14 +617,14 @@ const magic_construction = {
             'category': 'threshold'
         },
         "asphyxiate":{
-            "fixed percent": 1,
+            "fixed percent": 1.1,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "wild magic":{
-            "fixed percent": 1.15,
+            "fixed percent": 1.25,
             "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
@@ -645,8 +645,8 @@ const magic_construction = {
             'category': 'ultimate'
         },
         "igneous omnipower":{
-            "fixed percent": 0.9,
-            "variable percent": 0.9,
+            "fixed percent": 1.2,
+            "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
             'category': 'ultimate'
