@@ -447,35 +447,35 @@ const ranged_construction = {
 
     'abilities': {
         "dazing shot":{
-            "fixed percent": 0.85,
+            "fixed percent": 0.95,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'abil'
         },
         "greater dazing shot":{
-            "fixed percent": 0.85,
+            "fixed percent": 0.95,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'abil'
         },
         "needle strike":{
-            "fixed percent": 0.85,
+            "fixed percent": 0.95,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'abil'
         },
         "piercing shot":{
-            "fixed percent": 0.4,
+            "fixed percent": 0.45,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'abil'
         },
         "piercing shot bound":{
-            "fixed percent": 0.7,
+            "fixed percent": 0.75,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
@@ -496,84 +496,84 @@ const ranged_construction = {
             'category': 'abil'
         },
         "snipe":{
-            "fixed percent": 1.5,
+            "fixed percent": 1.6,
             "variable percent": 0.5,
             "on hit effects": true,
             "crit effects": true,
             'category': 'abil'
         },
         "ricochet":{
-            "fixed percent": 0.55,
+            "fixed percent": 0.65,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "greater ricochet 1":{
-            "fixed percent": 0.55,
+            "fixed percent": 0.65,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "greater ricochet 2":{
-            "fixed percent": 0.25,
+            "fixed percent": 0.30,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "greater ricochet 3":{
-            "fixed percent": 0.08,
-            "variable percent": 0.04,
+            "fixed percent": 0.1,
+            "variable percent": 0.05,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "binding shot":{
-            "fixed percent": 0.55,
+            "fixed percent": 0.65,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'abil'
         },
         "tight bindings":{
-            "fixed percent": 1.1,
-            "variable percent": 0.2,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'threshold'
-        },
-        "bombardment":{
             "fixed percent": 1.2,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
+        "bombardment":{
+            "fixed percent": 1.3,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
         "shadow tendrils":{
-            "fixed percent": 0.7,
-            "variable percent": 0.42,
+            "fixed percent": 1.5,
+            "variable percent": 3.0,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "snapshot":{
-            "fixed percent": 1.0,
+            "fixed percent": 1.1,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "rapid fire":{
-            "fixed percent": 0.55,
+            "fixed percent": 0.65,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "deadshot - initial hit":{
-            "fixed percent": 1.0,
+            "fixed percent": 1.1,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
@@ -594,7 +594,7 @@ const ranged_construction = {
             'category': 'ultimate'
         },
         "unload":{
-            "fixed percent": 1.2,
+            "fixed percent": 1.3,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
