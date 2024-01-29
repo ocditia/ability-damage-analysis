@@ -561,8 +561,8 @@ const magic_construction = {
             'category': 'basic'
         },
         "combust":{
-            "fixed percent": 0.313,
-            "variable percent": 0.075,
+            "fixed percent": 0.25,
+            "variable percent": 0.06,
             "on hit effects": false,
             "crit effects": false,
             'category': 'basic'
