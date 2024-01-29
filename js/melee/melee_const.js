@@ -412,64 +412,64 @@ const melee_construction = {
             'category': 'auto attack'
         },
         "chaos roar":{
-            "fixed percent": 0.75,
+            "fixed percent": 0.85,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "punish":{
-            "fixed percent": 0.65,
+            "fixed percent": 0.75,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "kick":{
-            "fixed percent": 0.55,
+            "fixed percent": 0.65,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "backhand":{
-            "fixed percent": 0.55,
+            "fixed percent": 0.65,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "slice":{
-            "fixed percent": 0.85,
+            "fixed percent": 0.95,
             "variable percent": 0.2,
             'on hit effects': true,
             'crit effects': true,
             'category': 'basic'
         },
         "havoc":{
-            "fixed percent": 0.85,
+            "fixed percent": 0.95,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "smash":{
-            "fixed percent": 0.85,
+            "fixed percent": 0.95,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'        
         },
         "bladed dive":{
-            "fixed percent": 0.65,
+            "fixed percent": 0.75,
             "variable percent": 0.2,
             'on hit effects': true,
             'crit effects': true,
             'category': 'basic'
         },
         "greater barge - 9t":{
-            "fixed percent": 0.85,
-            "variable percent": 0.2,
+            "fixed percent": 0.102,
+            "variable percent": 0.308,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
@@ -482,28 +482,28 @@ const melee_construction = {
             'category': 'basic'
         },
         "greater fury":{
-            "fixed percent": 0.85,
+            "fixed percent": 0.95,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "decimate":{
-            "fixed percent": 1,
+            "fixed percent": 1.1,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "cleave":{
-            "fixed percent": 1,
+            "fixed percent": 1.1,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "sever":{
-            "fixed percent": 1,
+            "fixed percent": 1.1,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
@@ -517,35 +517,35 @@ const melee_construction = {
             'category': 'basic'
         },
         "flurry":{
-            "fixed percent": 0.6,
+            "fixed percent": 0.7,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "greater flurry":{
-            "fixed percent": 0.9,
+            "fixed percent": 1.0,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "stomp":{
-            "fixed percent": 1.1,
+            "fixed percent": 1.2,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "forceful backhand":{
-            "fixed percent": 1.1,
+            "fixed percent": 1.2,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "quake":{
-            "fixed percent": 1.2,
+            "fixed percent": 1.3,
             "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
@@ -559,28 +559,28 @@ const melee_construction = {
             'category': 'threshold'
         },
         "destroy":{
-            "fixed percent": 1.1,
+            "fixed percent": 1.2,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "assault":{
-            "fixed percent": 1.15,
+            "fixed percent": 1.25,
             "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "hurricane 1":{
-            "fixed percent": 1.1,
+            "fixed percent": 1.2,
             "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "hurricane 2":{
-            "fixed percent": 1.25,
+            "fixed percent": 1.35,
             "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
