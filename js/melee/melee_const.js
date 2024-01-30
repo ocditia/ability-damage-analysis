@@ -468,7 +468,7 @@ const melee_construction = {
             'category': 'basic'
         },
         "greater barge - 9t":{
-            "fixed percent": 0.12,
+            "fixed percent": 1.2,
             "variable percent": 0.38,
             "on hit effects": true,
             "crit effects": true,
