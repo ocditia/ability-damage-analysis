@@ -63,6 +63,46 @@ class avgDmg {
         return total / dmgList.length;
     }
 
+    minHitDamageList(dmgList) {
+        return dmgList[0];
+    }
+
+    maxHitDamageList(dmgList) {
+        return dmgList[dmgList.length-1];
+    }
+
+    minNonCritDamageObject(dmgObject) {
+        let minHits = []
+        for (let key in dmgObject) {
+            minHits.push(this.minHitDamageList(dmgObject[key]['list']));
+         }
+        return Math.min(...minHits);
+    }
+
+    minCritDamageObject(dmgObject) {
+        let minHits = []
+        for (let key in dmgObject) {
+            minHits.push(this.minHitDamageList(dmgObject[key]['list']));
+         }
+        return Math.max(...minHits);
+    }
+
+    maxNonCritDamageObject(dmgObject) {
+        let maxHits = []
+        for (let key in dmgObject) {
+            maxHits.push(this.maxHitDamageList(dmgObject[key]['list']));
+         }
+        return Math.min(...maxHits);
+    }
+
+    maxCritDamageObject(dmgObject) {
+        let maxHits = []
+        for (let key in dmgObject) {
+            maxHits.push(this.maxHitDamageList(dmgObject[key]['list']));
+         }
+        return Math.max(...maxHits);
+    }
+    
     averageDamageObject(dmgObject) {
         let avg = 0;
         for (let key in dmgObject) {
@@ -75,11 +115,17 @@ class avgDmg {
 
     returnDecider(dmgObject,settings,abil_val) {
         dmgObject = this.dmgObjectProbabilityCalc(dmgObject,settings,abil_val)
-        if (settings['minavgmax'] === 'min') {
-            return 'min';
+        if (settings['minavgmax'] === 'min no crit') {
+            return this.minNonCritDamageObject(dmgObject);
         }
-        else if (settings['minavgmax'] === 'max') {
-            return 'max';
+        else if (settings['minavgmax'] === 'min crit') {
+            return this.minCritDamageObject(dmgObject);
+        }
+        else if (settings['minavgmax'] === 'max no crit') {
+            return this.maxNonCritDamageObject(dmgObject);
+        }
+        else if (settings['minavgmax'] === 'max crit') {
+            return this.maxCritDamageObject(dmgObject);
         }
         else if (settings['minavgmax'] === 'avg') {
             return this.averageDamageObject(dmgObject);
