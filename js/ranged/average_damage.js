@@ -74,7 +74,9 @@ class avgDmg {
     minNonCritDamageObject(dmgObject) {
         let minHits = []
         for (let key in dmgObject) {
-            minHits.push(this.minHitDamageList(dmgObject[key]['list']));
+            if (dmgObject[key]['probability'] > 0) {
+                minHits.push(this.minHitDamageList(dmgObject[key]['list']));
+            }
          }
         return Math.min(...minHits);
     }
@@ -82,7 +84,9 @@ class avgDmg {
     minCritDamageObject(dmgObject) {
         let minHits = []
         for (let key in dmgObject) {
-            minHits.push(this.minHitDamageList(dmgObject[key]['list']));
+            if (dmgObject[key]['probability'] > 0) {
+                minHits.push(this.minHitDamageList(dmgObject[key]['list']));
+            }
          }
         return Math.max(...minHits);
     }
@@ -90,7 +94,9 @@ class avgDmg {
     maxNonCritDamageObject(dmgObject) {
         let maxHits = []
         for (let key in dmgObject) {
-            maxHits.push(this.maxHitDamageList(dmgObject[key]['list']));
+            if (dmgObject[key]['probability'] > 0) {
+                maxHits.push(this.maxHitDamageList(dmgObject[key]['list']));
+            }
          }
         return Math.min(...maxHits);
     }
@@ -98,7 +104,9 @@ class avgDmg {
     maxCritDamageObject(dmgObject) {
         let maxHits = []
         for (let key in dmgObject) {
-            maxHits.push(this.maxHitDamageList(dmgObject[key]['list']));
+            if (dmgObject[key]['probability'] > 0) {
+                maxHits.push(this.maxHitDamageList(dmgObject[key]['list']));
+            }
          }
         return Math.max(...maxHits);
     }
