@@ -1,4 +1,5 @@
 import necro_auto from "./abils/necro_auto.js";
+import necro_auto_tx from "./abils/necro_auto_2x.js";
 import soul_sap from "./abils/soul_sap.js";
 import touch_of_death from "./abils/touch_of_death.js";
 import skeleton_auto from "./abils/skeleton_auto.js";
@@ -7,6 +8,7 @@ import ghost_auto from "./abils/ghost_auto.js";
 import zombie_auto from "./abils/zombie_auto.js";
 import command_zombie from "./abils/command_zombie.js";
 import finger_of_death from "./abils/finger_of_death.js";
+import finger_of_death_ld from "./abils/finger_of_death_ld.js";
 import death_skulls from "./abils/death_skulls.js";
 import soul_strike from "./abils/soul_strike.js";
 import volley_of_souls from "./abils/volley_of_souls.js";
@@ -25,6 +27,12 @@ const abilities = {
   'Necro auto': {
     title: 'Necro auto',
     calc: necro_auto,
+    icon: 'assets/ability_icons/necro/30x30/auto.png',
+    weapons: ['Dw'],
+  },
+  'Necro auto 2x': {
+    title: 'Necro auto (2x)',
+    calc: necro_auto_tx,
     icon: 'assets/ability_icons/necro/30x30/auto.png',
     weapons: ['Dw'],
   },
@@ -77,7 +85,12 @@ const abilities = {
     icon: 'assets/ability_icons/necro/30x30/FOD.png',
     weapons: ['Dw'],
   },
-  //1.5x damage finger
+  'Finger of Death in LD': {
+    title: 'Finger of Death (1.5x)',
+    calc: finger_of_death_ld,
+    icon: 'assets/ability_icons/necro/30x30/FOD.png',
+    weapons: ['Dw'],
+  },
   'Death Skulls': { // 3 or 4
     title: 'Death Skulls',
     calc: death_skulls,
