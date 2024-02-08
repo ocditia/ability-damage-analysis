@@ -151,10 +151,10 @@ const necromancy_construction = {
         "reaper necklace":{
             "bonus": 36.8
         },
-        "salve (e)":{
+        "salve amulet (e)":{
             "bonus": 4.2
         },
-        "salve":{
+        "salve amulet":{
             "bonus": 0
         },
         "none":{

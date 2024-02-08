@@ -101,10 +101,10 @@ class OnHit {
   }
 
   calcSalveAmulet(buff,necklace) {
-    if (necklace === 'Salve amulet') {
+    if (necklace === 'salve amulet') {
       buff = buff * 1.15;
     } 
-    else if (necklace === 'Salve amulet (e)') {
+    else if (necklace === 'salve amulet (e)') {
       buff = buff * 1.2;
     }
     return Math.floor(buff);
