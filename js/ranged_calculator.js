@@ -34,6 +34,7 @@ function collectSettings() {
     'ring': 'reavers',
     'cape':'igneous kal-mor',
     'pocket slot': 'grimoire',
+    'ammo': 'ful arrows',
     'reaper crew': true,
     'level 20 armour': true,
     'enchantment shadows': true,

@@ -601,15 +601,15 @@ const ranged_construction = {
             'category': 'ultimate'
         },
         "darkbow":{
-            "fixed percent": 2.15,
-            "variable percent": 0.5,
+            "fixed percent": 1.9,
+            "variable percent": 0.4,
             "on hit effects": true,
             "crit effects": true,
             'category': 'spec'
         },
         "bolg spec":{
-            "fixed percent": 2.5,
-            "variable percent": 0.5,
+            "fixed percent": 1.8,
+            "variable percent": 0.4,
             "on hit effects": true,
             "crit effects": true,
             'category': 'spec'

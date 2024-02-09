@@ -1,6 +1,13 @@
 import construction from './ranged_const.js';
 
 class OnHit {
+  calcAmmo(buff,ammo) {
+    if (ammo === 'ful arrows') {
+      buff = buff * (1 + 0.15);
+    }
+    return Math.floor(buff);
+  }
+
   calcScriptureOfFul(buff,pocket,flag) {
     if (pocket === 'scripture of ful' && flag === true) {
       buff = buff * (1 + 0.2);
@@ -105,6 +112,7 @@ class OnHit {
       else {
         let buff = 10000
         //all buffs in order of application
+        buff = this.calcAmmo(buff,settings['ammo']);
         buff = this.calcScriptureOfFul(buff,settings['pocket slot'], settings['ful']); //assumed on
         buff = this.calcStoneOfJas(buff,settings['stone of jas']);
         buff = this.calcPrayer(buff,settings['prayer']);
