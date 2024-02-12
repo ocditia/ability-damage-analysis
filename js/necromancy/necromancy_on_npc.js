@@ -33,11 +33,18 @@ class OnNPC {
       return dmg;
     }
 
+    calcMoonstoneAmulet(dmg,settings) {
+      if (settings['necklace'] === "conjurers raising amulet" && settings['category'] === 'conjure')  {
+        dmg = Math.floor(dmg * (1 + 0.05));
+      }
+      return dmg;
+    }
+
     calcHaunted(dmg,haunted,AD) {
       if (haunted === true) {
         let increase = Math.floor(dmg*0.1);
         if (increase < Math.floor(0.2 * AD)) {
-          return dmg + increase;
+          return dmg + increase;  
         }
         else {
           return dmg + Math.floor(0.2 * AD);
@@ -123,6 +130,7 @@ class OnNPC {
 
       //unknown order of buffs
       dmg = this.calcCryptbloom(dmg,settings['death spores']);
+      dmg = this.calcMoonstoneAmulet(dmg,settings);
       dmg = this.calcHaunted(dmg,settings['haunted'],AD);
       dmg = this.calcRedbeam(dmg,settings['Telos red beam']);
       dmg = this.calcBlackbeam(dmg,settings['Telos black beam']);

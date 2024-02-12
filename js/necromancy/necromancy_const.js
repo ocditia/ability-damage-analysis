@@ -157,6 +157,9 @@ const necromancy_construction = {
         "salve amulet":{
             "bonus": 0
         },
+        "conjurers raising amulet":{
+            "bonus": 44
+        },
         "none":{
             "bonus": 0,
         }
