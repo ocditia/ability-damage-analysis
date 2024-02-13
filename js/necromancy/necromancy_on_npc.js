@@ -33,11 +33,35 @@ class OnNPC {
       return dmg;
     }
 
-    calcMoonstoneAmulet(dmg,settings) {
-      if (settings['necklace'] === "conjurers raising amulet" && settings['category'] === 'conjure')  {
-        dmg = Math.floor(dmg * (1 + 0.05));
+    calcConjureBuffs(dmg,settings) {
+      let modifier = 0;
+      if (settings['category'] === 'conjure') {
+        if (settings['necklace'] === "conjurers raising amulet")  {
+          modifier += 0.05;
+        }
+
+        let TFNpieces = 0;
+        if (settings['helmet'] === "crown of the first necromancer") {
+          console.log("here")
+          TFNpieces += 1;
+        }
+        if (settings['body'] === "robe top of the first necromancer") {
+          TFNpieces += 1;
+        }
+        if (settings['leg'] === "robe bottom of the first necromancer") {
+          TFNpieces += 1;
+        }
+        if (settings['gloves'] === "hand wraps of the first necromancer") {
+          TFNpieces += 1;
+        }
+        if (settings['boots'] === "foot wraps of the first necromancer") {
+          TFNpieces += 1;
+        }
+        if (TFNpieces >= 2) {
+          modifier = modifier + 0.07 * TFNpieces;
+        }
       }
-      return dmg;
+      return Math.floor(dmg * (1 + modifier));
     }
 
     calcHaunted(dmg,haunted,AD) {
@@ -130,7 +154,7 @@ class OnNPC {
 
       //unknown order of buffs
       dmg = this.calcCryptbloom(dmg,settings['death spores']);
-      dmg = this.calcMoonstoneAmulet(dmg,settings);
+      dmg = this.calcConjureBuffs(dmg,settings);
       dmg = this.calcHaunted(dmg,settings['haunted'],AD);
       dmg = this.calcRedbeam(dmg,settings['Telos red beam']);
       dmg = this.calcBlackbeam(dmg,settings['Telos black beam']);
