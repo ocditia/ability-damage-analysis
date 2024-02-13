@@ -42,7 +42,6 @@ class OnNPC {
 
         let TFNpieces = 0;
         if (settings['helmet'] === "crown of the first necromancer") {
-          console.log("here")
           TFNpieces += 1;
         }
         if (settings['body'] === "robe top of the first necromancer") {
