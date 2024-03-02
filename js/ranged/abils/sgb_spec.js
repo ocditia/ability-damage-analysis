@@ -18,7 +18,7 @@ function sgb_spec(type, settings, numberOfHits) {
     const AVG_INS = new Avg();
     const Helper = new RangedHelper(); 
 
-    sgbArrowDamage = sgb_spec_1(type,settings,numberOfHits);
+    let sgbArrowDamage = sgb_spec_1(type,settings,numberOfHits);
     sgbArrowDamage = sgbArrowDamage[sgbArrowDamage.length-1];
     console.log(sgbArrowDamage)
 
