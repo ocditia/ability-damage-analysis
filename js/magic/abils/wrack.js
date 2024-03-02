@@ -34,14 +34,14 @@ function wrack(type, settings, numberOfHits) {
 
         //calculates ability damage
         let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
-        
+
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);
         let variable = Math.floor(AD * variablePercent);
-        
+
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
-        
+
         //sets up for further calculations
         damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);
 

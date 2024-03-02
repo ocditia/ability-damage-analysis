@@ -29,7 +29,7 @@ class AbilityDmg {
 
         AD = mhAbilityDmg + ohAbilityDmg;
       }
-
+      AD = Math.floor(AD * (1 + 0.05*settings['eruptive']))
       AD = Math.floor(AD * (1 + settings['flow stacks']/100));
 
 
@@ -45,7 +45,7 @@ class AbilityDmg {
       AD += Math.floor(AD * 0.06 * settings['Zamorak balance of power']);
 
       AD += Math.floor(AD * 0.1 * settings['Raksha inner power']);
-  
+
       return AD
     }
     

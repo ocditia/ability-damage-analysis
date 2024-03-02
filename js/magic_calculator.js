@@ -41,7 +41,7 @@ function collectSettings() {
 
     //perks
     'precise': 0,
-    'equilibrium': 0,
+    'eruptive': 0,
     'genocidal percent': 0,
     'spendthrift': 0,
     'ruthless rank': 0,
