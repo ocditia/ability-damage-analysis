@@ -23,6 +23,8 @@ import guthix_staff from "./abils/guthix_staff.js";
 import frost_surge from "./abils/frost_surge.js";
 import time_strike from "./abils/time_strike.js";
 import armadyl_battlestaff from "./abils/armadyl_battlestaff.js";
+import ibans_staff_spec from "./abils/ibans_staff_spec.js";
+import penance_trident_spec from "./abils/penance_trident_spec.js";
 
 const abilities = {
   'Wrack': {
@@ -172,6 +174,18 @@ const abilities = {
   'Armadyl Battlestaff': {
     title: 'Armadyl Battlestaff',
     calc: armadyl_battlestaff,
+    icon: 'assets/ability_icons/magic/30x30/armadyl_battlestaff-bg.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Ibans staff spec': {
+    title: 'Ibans staff spec',
+    calc: ibans_staff_spec,
+    icon: 'assets/ability_icons/magic/30x30/armadyl_battlestaff-bg.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Penance Trident spec': {
+    title: 'Penance Trident spec',
+    calc: penance_trident_spec,
     icon: 'assets/ability_icons/magic/30x30/armadyl_battlestaff-bg.png',
     weapons: ['2h','Dw','Md','Ms'],
   },

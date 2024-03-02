@@ -686,6 +686,20 @@ const magic_construction = {
             "crit effects": true,
             'category': 'special attack'
         },
+        "ibans staff":{
+            "fixed percent": 3.2,
+            "variable percent": 0.6,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'special attack'
+        },
+        "penance trident":{
+            "fixed percent": 2.7,
+            "variable percent": 0.4,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'special attack'
+        },
     }
 }
 
