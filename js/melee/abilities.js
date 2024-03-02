@@ -36,6 +36,7 @@ import armadyl_godsword_spec from "./abils/armadyl_godsword_spec.js";
 import vestas_longsword_spec from "./abils/vestas_longsword_spec.js";
 import dragon_mace_spec from "./abils/dragon_mace_spec.js";
 import dragon_dagger_spec from "./abils/dragon_dagger_spec.js";
+import vine_whip_spec from "./abils/vine_whip_spec.js";
 
 const abilities = {
   'Slice': {
@@ -263,6 +264,12 @@ const abilities = {
   'Vestas Longsword': {
     title: 'Vestas Longsword',
     calc: vestas_longsword_spec,
+    icon: 'assets/ability_icons/melee/30x30/gmaul-bg.png',
+    weapons: ['Dw','2h','Md','Ms'],
+  },
+  'Vine Whip spec': {
+    title: 'Vine Whip spec',
+    calc: vine_whip_spec,
     icon: 'assets/ability_icons/melee/30x30/gmaul-bg.png',
     weapons: ['Dw','2h','Md','Ms'],
   },

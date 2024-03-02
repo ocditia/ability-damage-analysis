@@ -726,6 +726,20 @@ const melee_construction = {
             "crit effects": true,
             'category': 'spec'
         },
+        "vinewhip - initial":{
+            "fixed percent": 0.2,
+            "variable percent": 0.8,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "vinewhip - dot":{
+            "fixed percent": 0.065,
+            "variable percent": 0.265,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
     }
 }
 
