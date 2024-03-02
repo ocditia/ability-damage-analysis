@@ -21,6 +21,8 @@ import magic_short_bow_spec from "./abils/magic_short_bow_spec.js";
 import deadshot from "./abils/deadshot.js";
 import shadow_tendrils from "./abils/shadow_tendrils.js";
 import sgb_spec from "./abils/sgb_spec.js";
+import zamorak_bow_spec from "./abils/zamorak_bow_spec.js";
+import morrigans_javelin from "./abils/morrigans_javelin.js";
 
 const abilities = {
   'Dazing Shot': {
@@ -158,6 +160,18 @@ const abilities = {
   'Seren Godbow': {
     title: 'Seren Godbow',
     calc: sgb_spec,
+    icon: 'assets/ability_icons/ranged/30x30/sgb-bg.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Zamorak godbow': {
+    title: 'Zamorak godbow spec',
+    calc: zamorak_bow_spec,
+    icon: 'assets/ability_icons/ranged/30x30/sgb-bg.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Morrigans javelin': {
+    title: 'Morrigans javelin',
+    calc: morrigans_javelin,
     icon: 'assets/ability_icons/ranged/30x30/sgb-bg.png',
     weapons: ['2h','Dw','Md','Ms'],
   },

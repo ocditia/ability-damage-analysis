@@ -684,6 +684,27 @@ const ranged_construction = {
             "crit effects": true,
             'category': 'passive'
         },
+        "morrigans javelin - initial":{
+            "fixed percent": 1.2,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'passive'
+        },
+        "morrigans javelin - bleed":{
+            "fixed percent": 0.3,
+            "variable percent": 0.1,
+            "on hit effects": false,
+            "crit effects": false,
+            'category': 'passive'
+        },
+        "zamorak bow":{
+            "fixed percent": 1.6,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'passive'
+        },
     }
 }
 
