@@ -4,6 +4,7 @@ import soul_sap from "./abils/soul_sap.js";
 import touch_of_death from "./abils/touch_of_death.js";
 import skeleton_auto from "./abils/skeleton_auto.js";
 import command_skeleton from "./abils/command_skeleton.js";
+import command_skeleton_8 from "./abils/command_skeleton_8.js";
 import ghost_auto from "./abils/ghost_auto.js";
 import zombie_auto from "./abils/zombie_auto.js";
 import command_zombie from "./abils/command_zombie.js";
@@ -53,6 +54,12 @@ const abilities = {
     title: 'Skeleton auto',
     calc: skeleton_auto,
     icon: 'assets/ability_icons/necro/30x30/conj-skele.png',
+    weapons: ['Dw'],
+  },
+  'Command skeleton 8': {
+    title: 'Command skeleton 8 autos',
+    calc: command_skeleton_8,
+    icon: 'assets/ability_icons/necro/30x30/comm-skele.png',
     weapons: ['Dw'],
   },
   'Command skeleton': {
