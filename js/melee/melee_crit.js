@@ -1,5 +1,9 @@
 class Crit {
     calcFCritChance(settings, furystacks) {
+        if (settings['aura'] === 'equilibrium') {
+            return 0;
+          }
+          
         if (furystacks === undefined) {
             furystacks = 0;
         }

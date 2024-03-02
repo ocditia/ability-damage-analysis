@@ -1,5 +1,9 @@
 class Crit {
     calcFCritChance(settings, concStacks, channellerStacks) {
+        if (settings['aura'] === 'equilibrium') {
+            return 0;
+          }
+
         let fcrit = 0.1 +
             (0.05 * settings['crit-i-kal']) +
             (0.01 * settings['kalgerion demon familiar']) +

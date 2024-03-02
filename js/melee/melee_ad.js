@@ -32,6 +32,10 @@ class AbilityDmg {
 
     AD = Math.floor(AD * (1 + 0.005 * settings['eruptive']));
 
+    if (settings['aura'] === 'equilibrium') {
+      AD = Math.floor(1.12 * AD);
+    }
+
     if (settings['terrasaur'] === true && settings['two-handed weapon'] === 'terrasaur maul' && type === '2h') {
       if (settings['enchantment savagery'] === true) {
         AD += AD * 0.175;

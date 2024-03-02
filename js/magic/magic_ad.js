@@ -29,7 +29,13 @@ class AbilityDmg {
 
         AD = mhAbilityDmg + ohAbilityDmg;
       }
-      AD = Math.floor(AD * (1 + 0.005*settings['eruptive']))
+      
+      AD = Math.floor(AD * (1 + 0.005*settings['eruptive']));
+
+      if (settings['aura'] === 'equilibrium') {
+        AD = Math.floor(1.12 * AD);
+      }
+
       AD = Math.floor(AD * (1 + settings['flow stacks']/100));
 
 

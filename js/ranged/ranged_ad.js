@@ -32,6 +32,10 @@ class AbilityDmg {
 
       AD = Math.floor(AD * (1 + 0.005 * settings['eruptive']));
 
+      if (settings['aura'] === 'equilibrium') {
+        AD = Math.floor(1.12 * AD);
+      }
+
       if (settings['hexhunter'] === true && settings['two-handed weapon'] === 'hexhunter bow' && type === '2h') {
         if (settings['enchantment dispelling'] === true) {
           AD += AD * 0.175;
