@@ -119,7 +119,7 @@ class OnHit {
   }
 
   calcCustom(buff,settings) {
-    return Math.floor(buff * (1 + setting['custom on-hit']/10));
+    return Math.floor(buff * (1 + settings['custom on-hit']/10));
   }
 
   calcPrecise(fixed, variable, rank) {
