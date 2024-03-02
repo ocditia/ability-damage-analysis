@@ -61,7 +61,6 @@ function collectSettings() {
     'hitcap': 30000,
 
     'npc size': 1,
-    'blocking':false,
 
     //on-cast effects
     'Zamorak balance of power': 0,

@@ -614,7 +614,56 @@ const ranged_construction = {
             "crit effects": true,
             'category': 'spec'
         },
-        "sgb spec":{
+        "sgb spec 1":{
+            "fixed percent": 1.25,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "sgb spec 2":{
+            "fixed percent": 1.25,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "sgb spec 3":{
+            "fixed percent": 1.25,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "sgb spec 4":{
+            "fixed percent": 1.25,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "sgb spec 5":{
+            "fixed percent": 1.25,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "sgb spec 6":{
+            "fixed percent": 1.15,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "sgb spec 7":{
+            "fixed percent": 1.25,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "sgb spec 8":{
             "fixed percent": 1.25,
             "variable percent": 0.3,
             "on hit effects": true,
