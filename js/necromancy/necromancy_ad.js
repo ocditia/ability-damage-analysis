@@ -31,6 +31,12 @@ class AbilityDmg {
       }
 
       AD = AD * (1 + 0.005 * settings['eruptive'])
+
+      if (settings['aura'] === 'equilibrium') {
+        AD = Math.floor(1.12 * AD);
+      }
+
+      AD = Math.floor(AD * (1 + setting['custom on ad']/10));
   
       return AD
     }

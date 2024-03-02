@@ -110,6 +110,10 @@ function collectSettings() {
     'Infernal puzzle box': false,
     'King black dragon wilderness portal': false,
     'Tokkul-zo': false,
+
+    'custom on ad': 0,
+    'custom on-hit': 0,
+    'custom on-npc': 0
   };
 
   document.querySelectorAll('.js--setting').forEach(node => {

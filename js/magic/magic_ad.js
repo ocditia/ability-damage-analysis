@@ -36,6 +36,8 @@ class AbilityDmg {
         AD = Math.floor(1.12 * AD);
       }
 
+      AD = Math.floor(AD * (1 + setting['custom on ad']/10));
+
       AD = Math.floor(AD * (1 + settings['flow stacks']/100));
 
 

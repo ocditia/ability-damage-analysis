@@ -104,7 +104,11 @@ function collectSettings() {
     'Tokkul-zo': false,
     'skeleton rage stacks': 0,
     'haunted': false,
-    'necrosis stacks': 0
+    'necrosis stacks': 0,
+
+    'custom on ad': 0,
+    'custom on-hit': 0,
+    'custom on-npc': 0
 };
 
   document.querySelectorAll('.js--setting').forEach(node => {

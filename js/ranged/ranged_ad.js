@@ -36,6 +36,8 @@ class AbilityDmg {
         AD = Math.floor(1.12 * AD);
       }
 
+      AD = Math.floor(AD * (1 + setting['custom on ad']/10));
+
       if (settings['hexhunter'] === true && settings['two-handed weapon'] === 'hexhunter bow' && type === '2h') {
         if (settings['enchantment dispelling'] === true) {
           AD += AD * 0.175;

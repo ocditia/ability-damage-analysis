@@ -77,18 +77,15 @@ class OnHit {
     return Math.floor(buff * (1 + fury/100));
   }
 
+  calcCustom(buff,settings) {
+    return Math.floor(buff * (1 + setting['custom on-hit']/10));
+  }
+
   calcPrecise(fixed, variable, rank) {
     let maxHit = fixed + variable;
     return [fixed + Math.floor(maxHit * 0.015 * rank), variable - Math.floor(maxHit * 0.015 * rank)];
   }
 
-  calcEquilibrium(fixed, variable, rank, aura) {
-    if (aura === 'equilibrium') {
-      return [fixed + Math.floor(variable * 0.25), variable - Math.floor(variable * 0.5)];
-    } else {
-      return [Math.floor(fixed + variable * rank * 0.03), Math.floor(variable - variable * rank * 0.04)];
-    }
-  }
 
   calcOnHit(fixed, variable, type, apply, settings) {
       if (apply == false) {
@@ -113,6 +110,7 @@ class OnHit {
 
         //unknown order
         buff = this.calcBerserkersFury(buff,settings['berserkers fury']);
+        buff = this.calcCustom(buff,settings);
 
         //apply scaling to damage
         fixed = Math.floor((fixed * buff)/10000);
@@ -120,7 +118,6 @@ class OnHit {
 
         //calculate precise and equilibrium
         let dmg = this.calcPrecise(fixed,variable,settings['precise']);
-        dmg = this.calcEquilibrium(dmg[0],dmg[1],settings['equilibrium'],settings['aura']);
       
         return [dmg[0],dmg[1]];
       }

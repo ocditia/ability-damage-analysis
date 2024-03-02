@@ -122,6 +122,10 @@ function collectSettings() {
     'haunted': false,
 
     'ezk bleed': 6,
+
+    'custom on ad': 0,
+    'custom on-hit': 0,
+    'custom on-npc': 0
 };
 
   document.querySelectorAll('.js--setting').forEach(node => {

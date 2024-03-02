@@ -116,7 +116,11 @@ function collectSettings() {
     'King black dragon wilderness portal': false,
     'Tokkul-zo': false,
     'skeleton rage stacks': 0,
-    'haunted': false
+    'haunted': false,
+
+    'custom on ad': 0,
+    'custom on-hit': 0,
+    'custom on-npc': 0
 };
 
   document.querySelectorAll('.js--setting').forEach(node => {

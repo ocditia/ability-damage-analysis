@@ -58,6 +58,10 @@ class OnNPC {
       return dmg
     }
 
+    calcCustom(dmg,settings) {
+      return Math.floor(dmg * (1 + setting['custom on-npc']/10));
+    }
+
     calcRedbeam(dmg,flag) {
       if (flag === true) {
         dmg += Math.floor(dmg * 0.3);
@@ -128,6 +132,7 @@ class OnNPC {
       //unknown order of buffs
       dmg = this.calcMeta(dmg,settings['metamorphosis']);
       dmg = this.calcCryptbloom(dmg,settings['death spores']);
+      dmg = this.calcCustom(dmg,settings);  
       dmg = this.calcHaunted(dmg,settings['haunted'],AD);
       dmg = this.calcRedbeam(dmg,settings['Telos red beam']);
       dmg = this.calcBlackbeam(dmg,settings['Telos black beam']);

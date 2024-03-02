@@ -118,6 +118,10 @@ class OnHit {
     return Math.floor(buff * (1 + fury/100));
   }
 
+  calcCustom(buff,settings) {
+    return Math.floor(buff * (1 + setting['custom on-hit']/10));
+  }
+
   calcPrecise(fixed, variable, rank) {
     let maxHit = fixed + variable;
     return [fixed + Math.floor(maxHit * 0.015 * rank), variable - Math.floor(maxHit * 0.015 * rank)];
@@ -152,6 +156,7 @@ class OnHit {
 
         //unknown order
         buff = this.calcBerserkersFury(buff,settings['berserkers fury']);
+        buff = this.calcCustom(buff,settings);
 
         //apply scaling to damage
         fixed = Math.floor((fixed * buff)/10000);
