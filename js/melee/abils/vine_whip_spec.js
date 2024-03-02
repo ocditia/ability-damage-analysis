@@ -9,11 +9,11 @@ import vine_whip_initial from './vine_whip_initial.js';
 import vine_whip_dot from './vine_whip_dot.js';
 
 
-function vine_whip_initial(type, settings, numberOfHits) {
-    initial = vine_whip_initial(type,settings,1);
-    dot = vine_whip_dot(type,settings,10);
+function vine_whip_spec(type, settings, numberOfHits) {
+    let initial = vine_whip_initial(type,settings,1);
+    let dot = vine_whip_dot(type,settings,10);
 
     return [initial[initial.length-1] + dot[dot.length-1]];
 }
 
-export default vine_whip_initial;
+export default vine_whip_spec;
