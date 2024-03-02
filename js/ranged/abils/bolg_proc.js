@@ -5,44 +5,31 @@ import Crit from '../ranged_crit.js';
 import RangedHelper from '../ranged_helper.js';
 import Avg from '../average_damage.js';
 import split_soul from './split_soul.js';
-import bolg_proc from './bolg_proc.js';
 import construction from '../ranged_const.js';
 
 
-function greater_ricochet_1(type, settings, numberOfHits) {
+function bolg_proc(type, settings, fixed, variable) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new RangedHelper(); 
-    let abil_val = 'greater ricochet 3'
-    const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
-    const variablePercent = construction['abilities'][abil_val]['variable percent'];
-    settings['category'] = construction['abilities'][abil_val]['category'];
+    let abil_val = 'bolg proc'
 
     const hits = []
-   
-    for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
+    
+    for(var proccingHit = fixed; proccingHit <= fixed + variable; proccingHit++) {
         const damageObject = Helper.damageObjectCreator(settings);
 
         //calculates ability damage
         let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
-        
-        //sets fixed and variable damage
-        let fixed = Math.floor(AD * fixedPercent);
-        let variable = Math.floor(AD * variablePercent);
-        
-        //applies on-hit effects
-        let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
 
-        //bolg procs
-        if (settings['bolg proc'] === true) {
-            return bolg_proc(type,settings,onHit[0],onHit[1]);
-        }
+        let minHit = Math.floor(construction['abilities'][abil_val]['fixed percent'] * proccingHit);
+        let varHit = Math.floor(construction['abilities'][abil_val]['variable percent'] * proccingHit);
 
         //sets up for further calculations
-        damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);
+        damageObject['non-crit']['list'] = Helper.baseDamageListCreator(minHit,varHit);
 
         //apply crit dmg
         damageObject['crit']['list'] = CRIT_INS.critDamageList(damageObject['non-crit']['list'], settings);
@@ -68,9 +55,9 @@ function greater_ricochet_1(type, settings, numberOfHits) {
     }
     
     //calc total damage
-    hits.push(Helper.totalDamageCalc(hits));
+    hits.push(AVG_INS.averageDamageList(hits));
     return Helper.flooredList(hits);
 }
 
-export default greater_ricochet_1;
+export default bolg_proc;
 

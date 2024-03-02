@@ -5,6 +5,7 @@ import Crit from '../ranged_crit.js';
 import RangedHelper from '../ranged_helper.js';
 import Avg from '../average_damage.js';
 import split_soul from './split_soul.js';
+import bolg_proc from './bolg_proc.js';
 import construction from '../ranged_const.js';
 
 
@@ -35,6 +36,11 @@ function snapshot(type, settings, numberOfHits) {
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
+
+        //bolg procs
+        if (settings['bolg proc'] === true) {
+            return bolg_proc(type,settings,onHit[0],onHit[1]);
+        }
 
         //sets up for further calculations
         damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);

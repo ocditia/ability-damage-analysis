@@ -15,6 +15,7 @@ function collectSettings() {
   const settings = {
     'minavgmax': 'avg',
     'category': 'none',
+    'bolg proc': false,
 
     'ability damage': 0, //for manual override only
     'level': 99,
