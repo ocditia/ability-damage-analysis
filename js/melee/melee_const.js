@@ -698,6 +698,34 @@ const melee_construction = {
             "crit effects": true,
             'category': 'spec'
         },
+        "armadyl godsword":{
+            "fixed percent": 3.6,
+            "variable percent": 0.8,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "vestas longsword":{
+            "fixed percent": 2.3,
+            "variable percent": 0.4,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "dragon mace":{
+            "fixed percent": 2.1,
+            "variable percent": 0.4,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
+        "dragon dagger":{
+            "fixed percent": 1.1,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'spec'
+        },
     }
 }
 

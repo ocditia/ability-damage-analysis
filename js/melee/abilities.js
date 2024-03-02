@@ -32,6 +32,10 @@ import ezk from "./abils/ezk.js";
 import dragon_long from "./abils/dragon_long.js";
 import granite_maul from "./abils/granite_maul.js";
 import icy_tempest from "./abils/icy_tempest.js";
+import armadyl_godsword_spec from "./abils/armadyl_godsword_spec.js";
+import vestas_longsword_spec from "./abils/vestas_longsword_spec.js";
+import dragon_mace_spec from "./abils/dragon_mace_spec.js";
+import dragon_dagger_spec from "./abils/dragon_dagger_spec.js";
 
 const abilities = {
   'Slice': {
@@ -226,6 +230,18 @@ const abilities = {
     icon: 'assets/ability_icons/melee/30x30/dlong-bg.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
+  'Dragon Mace': {
+    title: 'Dragon Mace',
+    calc: dragon_mace_spec,
+    icon: 'assets/ability_icons/melee/30x30/dlong-bg.png',
+    weapons: ['Dw','2h','Md','Ms'],
+  },
+  'Dragon Dagger': {
+    title: 'Dragon Dagger',
+    calc: dragon_dagger,
+    icon: 'assets/ability_icons/melee/30x30/dlong-bg.png',
+    weapons: ['Dw','2h','Md','Ms'],
+  },
   'Granite Maul': {
     title: 'Granite Maul',
     calc: granite_maul,
@@ -235,6 +251,18 @@ const abilities = {
   'Icy Tempest': {
     title: 'Icy Tempest',
     calc: icy_tempest,
+    icon: 'assets/ability_icons/melee/30x30/gmaul-bg.png',
+    weapons: ['Dw','2h','Md','Ms'],
+  },
+  'Armadyl Godsword': {
+    title: 'Armadyl Godsword',
+    calc: armadyl_godsword_spec,
+    icon: 'assets/ability_icons/melee/30x30/gmaul-bg.png',
+    weapons: ['Dw','2h','Md','Ms'],
+  },
+  'Vestas Longsword': {
+    title: 'Vestas Longsword',
+    calc: vestas_longsword_spec,
     icon: 'assets/ability_icons/melee/30x30/gmaul-bg.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
