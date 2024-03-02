@@ -65,6 +65,7 @@ function collectSettings() {
     'Zamorak balance of power': 0,
     'Sophanem corrupted': 0,
     'Raksha inner power': 0,  
+    'primordial ice': false,
 
     //on-hit effects
     //pre-shared effects

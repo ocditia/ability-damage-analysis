@@ -31,6 +31,7 @@ import dragon_claw from "./abils/dragon_claw.js";
 import ezk from "./abils/ezk.js";
 import dragon_long from "./abils/dragon_long.js";
 import granite_maul from "./abils/granite_maul.js";
+import icy_tempest from "./abils/icy_tempest.js";
 
 const abilities = {
   'Slice': {
@@ -228,6 +229,12 @@ const abilities = {
   'Granite Maul': {
     title: 'Granite Maul',
     calc: granite_maul,
+    icon: 'assets/ability_icons/melee/30x30/gmaul-bg.png',
+    weapons: ['Dw','2h','Md','Ms'],
+  },
+  'Icy Tempest': {
+    title: 'Icy Tempest',
+    calc: icy_tempest,
     icon: 'assets/ability_icons/melee/30x30/gmaul-bg.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
