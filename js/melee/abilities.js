@@ -238,7 +238,7 @@ const abilities = {
   },
   'Dragon Dagger': {
     title: 'Dragon Dagger',
-    calc: dragon_dagger,
+    calc: dragon_dagger_spec,
     icon: 'assets/ability_icons/melee/30x30/dlong-bg.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
