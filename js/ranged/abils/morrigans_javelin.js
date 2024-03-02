@@ -10,8 +10,8 @@ import morrigans_javelin_initial from './morrigans_javelin_initial.js';
 import morrigans_javelin_bleed from './morrigans_javelin_bleed.js';
 
 function morrigans_javelin(type, settings, numberOfHits) {
-    initial = morrigans_javelin_initial(type,settings,1);
-    bleed = morrigans_javelin_bleed(type,settings,5);
+    let initial = morrigans_javelin_initial(type,settings,1);
+    let bleed = morrigans_javelin_bleed(type,settings,5);
 
     return [initial[initial.length-1] + bleed[bleed.length-1]];
 }
