@@ -490,7 +490,7 @@ const ranged_construction = {
         },
         "fragmentation shot":{
             "fixed percent": 0.25,
-            "variable percent": 0.066,
+            "variable percent": 0.06,
             "on hit effects": false,
             "crit effects": false,
             'category': 'abil'
@@ -552,15 +552,22 @@ const ranged_construction = {
             'category': 'threshold'
         },
         "shadow tendrils":{
-            "fixed percent": 0.35,
+            "fixed percent": 0.32,
             "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
-        "snapshot":{
+        "snapshot 1":{
             "fixed percent": 1.1,
             "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'threshold'
+        },
+        "snapshot 2":{
+            "fixed percent": 1.5,
+            "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
@@ -573,7 +580,14 @@ const ranged_construction = {
             'category': 'threshold'
         },
         "deadshot - initial hit":{
-            "fixed percent": 1.1,
+            "fixed percent": 1.15,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'ultimate'
+        },
+        "igneous deadshot - initial hit":{
+            "fixed percent": 1.15,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
@@ -615,55 +629,6 @@ const ranged_construction = {
             'category': 'spec'
         },
         "sgb spec 1":{
-            "fixed percent": 1.25,
-            "variable percent": 0.3,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'spec'
-        },
-        "sgb spec 2":{
-            "fixed percent": 1.25,
-            "variable percent": 0.3,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'spec'
-        },
-        "sgb spec 3":{
-            "fixed percent": 1.25,
-            "variable percent": 0.3,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'spec'
-        },
-        "sgb spec 4":{
-            "fixed percent": 1.25,
-            "variable percent": 0.3,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'spec'
-        },
-        "sgb spec 5":{
-            "fixed percent": 1.25,
-            "variable percent": 0.3,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'spec'
-        },
-        "sgb spec 6":{
-            "fixed percent": 1.15,
-            "variable percent": 0.3,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'spec'
-        },
-        "sgb spec 7":{
-            "fixed percent": 1.25,
-            "variable percent": 0.3,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'spec'
-        },
-        "sgb spec 8":{
             "fixed percent": 1.25,
             "variable percent": 0.3,
             "on hit effects": true,

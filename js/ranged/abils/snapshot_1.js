@@ -9,25 +9,21 @@ import bolg_proc from './bolg_proc.js';
 import construction from '../ranged_const.js';
 
 
-function deadshot_initial_hit(type, settings, numberOfHits) {
+function snapshot_1(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
     const CRIT_INS = new Crit();
     const AVG_INS = new Avg();
     const Helper = new RangedHelper(); 
-    let abil_val = 'deadshot - initial hit'
-    let fixedPercent = construction['abilities'][abil_val]['fixed percent'];
-    let variablePercent = construction['abilities'][abil_val]['variable percent'];
+    let abil_val = 'snapshot 1'
+    const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
+    const variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
-
-    if (settings['cape'] === 'igneous kal-xil') {
-        fixedPercent = 1.25;
-        variablePercent = 0.2;
-    }
 
     const hits = []
    
+    numberOfHits = 1;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
         const damageObject = Helper.damageObjectCreator(settings);
 
@@ -77,5 +73,5 @@ function deadshot_initial_hit(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-export default deadshot_initial_hit;
+export default snapshot_1;
 

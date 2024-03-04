@@ -477,8 +477,8 @@ const magic_construction = {
             'category': 'basic'
         },
         "magma tempest":{
-            "fixed percent": 0.23,
-            "variable percent": 0.04,
+            "fixed percent": 0.25,
+            "variable percent": 0.05,
             "on hit effects": true,
             "crit effects": false,
             'category': 'basic'
@@ -512,21 +512,21 @@ const magic_construction = {
             'category': 'basic'
         },
         "concentrated blast 1":{
-            "fixed percent": 0.4,
-            "variable percent": 0.1,
-            "on hit effects": true,
-            "crit effects": true,
-            'category': 'basic'
-        },
-        "concentrated blast 2":{
             "fixed percent": 0.45,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
-        "concentrated blast 3":{
+        "concentrated blast 2":{
             "fixed percent": 0.5,
+            "variable percent": 0.1,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
+        "concentrated blast 3":{
+            "fixed percent": 0.55,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
@@ -582,35 +582,35 @@ const magic_construction = {
             'category': 'threshold'
         },
         "detonate":{
-            "fixed percent": 1,
-            "variable percent": 2.5,
+            "fixed percent": 2.25,
+            "variable percent": 0.5,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "smoke tendrils 1":{
-            "fixed percent": 0.55,
+            "fixed percent": 0.6,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },  
         "smoke tendrils 2":{
-            "fixed percent": 0.65,
+            "fixed percent": 0.7,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "smoke tendrils 3":{
-            "fixed percent": 0.75,
+            "fixed percent": 0.8,
             "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
             'category': 'threshold'
         },
         "smoke tendrils 4":{
-            "fixed percent": 0.85,
+            "fixed percent": 0.9,
             "variable percent": 0.4,
             "on hit effects": true,
             "crit effects": true,
@@ -667,28 +667,28 @@ const magic_construction = {
         },
         "frost surge":{
             "fixed percent": 0.1,
-            "variable percent": 0.5,
+            "variable percent": 0.4,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "time strike":{
-            "fixed percent": 0.8,
+            "fixed percent": 0.9    ,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "armadyl battlestaff":{
-            "fixed percent": 0.5,
-            "variable percent": 0.1,
+            "fixed percent": 0.45,
+            "variable percent": 0.55,
             "on hit effects": true,
             "crit effects": true,
             'category': 'special attack'
         },
         "ibans staff":{
-            "fixed percent": 3.2,
-            "variable percent": 0.6,
+            "fixed percent": 3.4,
+            "variable percent": 0.5,
             "on hit effects": true,
             "crit effects": true,
             'category': 'special attack'

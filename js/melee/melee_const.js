@@ -447,14 +447,14 @@ const melee_construction = {
             'category': 'basic'
         },
         "havoc":{
-            "fixed percent": 0.95,
+            "fixed percent": 1,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "smash":{
-            "fixed percent": 0.95,
+            "fixed percent": 1,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
@@ -475,14 +475,14 @@ const melee_construction = {
             'category': 'basic'
         },
         "fury":{
-            "fixed percent": 0.4,
-            "variable percent": 0.1,
+            "fixed percent": 1.1,
+            "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'basic'
         },
         "greater fury":{
-            "fixed percent": 0.95,
+            "fixed percent": 1.2,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
@@ -608,7 +608,7 @@ const melee_construction = {
             'category': 'ultimate'
         },
         "frenzy":{
-            "fixed percent": 1.35,
+            "fixed percent": 1.45,
             "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
