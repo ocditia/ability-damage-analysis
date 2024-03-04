@@ -9,6 +9,7 @@ import construction from '../ranged_const.js';
 
 
 function bolg_proc(type, settings, fixed, variable) {
+    //still need to add base value
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();

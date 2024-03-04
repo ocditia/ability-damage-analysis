@@ -685,15 +685,15 @@ const melee_construction = {
             'category': 'spec'
         },
         "icy tempest - main":{
-            "fixed percent": 1.1,
-            "variable percent": 0.0,
+            "fixed percent": 1.0,
+            "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'spec'
         },
         "icy tempest - aoe":{
-            "fixed percent": 1.65,
-            "variable percent": 0.0,
+            "fixed percent": 1.5,
+            "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
             'category': 'spec'
