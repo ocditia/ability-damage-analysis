@@ -35,7 +35,7 @@ function bolg_spec(type, settings, numberOfHits) {
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
-
+        console.log(onHit)
         //bolg procs
         if (settings['bolg proc'] === true) {
             return bolg_proc(type,settings,onHit[0],onHit[1]);

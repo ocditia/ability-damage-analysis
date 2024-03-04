@@ -134,7 +134,7 @@ class OnHit {
         //calculate precise and equilibrium
         let dmg = this.calcPrecise(fixed,variable,settings['precise']);
         
-        return [dmg[0],dmg[1]];
+        return [dmg[0],Math.max(dmg[1],0)];
       }
   }
 }
