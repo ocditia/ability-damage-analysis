@@ -29,14 +29,16 @@ class Crit {
 
     critDmgBuff(dmg,settings) {
         let modifier = 0;
-        modifier = modifier + Math.min(Math.floor(0.05 * Math.floor(settings['level']/10)),0.5)
+        let level_mod = 0.05 * (1 + Math.floor(settings['level']/10));
+        modifier = modifier + Math.min(level_mod,0.5);
+        
         if (settings['smoke cloud'] === true) {
             modifier = modifier + 0.06;
         }
         if (settings['enchantment shadows'] === true && settings['ring'] === 'stalkers') {
             modifier += 0.03;
         }
-
+        
         return Math.floor(dmg * (1 + modifier));
     }
 

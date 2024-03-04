@@ -32,7 +32,8 @@ class Crit {
 
     critDmgBuff(dmg,settings, channellerStacks) {
         let modifier = 0.2;
-        modifier += Math.min(0.05 * Math.floor((settings['level'] - 10)/10),0.5);
+        let level_mod = 0.05 * (1 + Math.floor(settings['level']/10));
+        modifier = modifier + Math.min(level_mod,0.5);
 
         if (settings['enchantment metaphysics'] === true) {
             modifier += 0.025 * channellerStacks;
