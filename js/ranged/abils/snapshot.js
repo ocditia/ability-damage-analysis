@@ -12,8 +12,8 @@ import construction from '../ranged_const.js';
 
 
 function snapshot_2(type, settings, numberOfHits) {
-    first = snapshot_1(type,settings,numberOfHits);
-    second = snapshot_2(type,settings,numberOfHits);
+    let first = snapshot_1(type,settings,numberOfHits);
+    let second = snapshot_2(type,settings,numberOfHits);
 
     return [first[first.length-1] + second[second.length-1]];
 }
