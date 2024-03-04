@@ -39,8 +39,8 @@ function armadyl_battlestaff(type, settings, numberOfHits) {
         let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
         
         //sets fixed and variable damage
-        let fixed = Math.floor(AD * (fixedPercent - 0.05 + 0.05 * numberOfHits));
-        let variable = Math.floor(AD * (variablePercent - 0.05 + 0.05 * numberOfHits));
+        let fixed = Math.floor(AD * (fixedPercent + 0.05 * hitsplat));
+        let variable = Math.floor(AD * (variablePercent  0.05 * hitsplat));
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
