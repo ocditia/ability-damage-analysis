@@ -120,6 +120,7 @@ function collectSettings() {
     'Tokkul-zo': false,
     'skeleton rage stacks': 0,
     'haunted': false,
+    'str cape': true,
 
     'ezk bleed': 6,
 
