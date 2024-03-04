@@ -659,8 +659,8 @@ const magic_construction = {
             'category': 'dot'
         },
         "guthix staff":{
-            "fixed percent": 1.4,
-            "variable percent": 1.6,
+            "fixed percent": 2,
+            "variable percent": 0.4,
             "on hit effects": true,
             "crit effects": true,
             'category': 'special attack'
