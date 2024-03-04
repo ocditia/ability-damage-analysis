@@ -59,7 +59,7 @@ class OnNPC {
     }
 
     calcCustom(dmg,settings) {
-      return Math.floor(dmg * (1 + settings['custom on-npc']/10));
+      return Math.floor(dmg * (1 + settings['custom on-npc']/100));
     }
 
     calcRedbeam(dmg,flag) {
