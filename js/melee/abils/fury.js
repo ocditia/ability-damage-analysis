@@ -21,7 +21,6 @@ function fury(type, settings, numberOfHits) {
 
     const hits = []
 
-    numberOfHits = 3;
     let hitcount = 1;
     let furystacks = 0;
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
