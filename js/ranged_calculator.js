@@ -113,7 +113,8 @@ function collectSettings() {
 
     'custom on ad': 0,
     'custom on-hit': 0,
-    'custom on-npc': 0
+    'custom on-npc': 0,
+    'custom crit chance': 0
   };
 
   document.querySelectorAll('.js--setting').forEach(node => {

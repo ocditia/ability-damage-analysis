@@ -15,7 +15,8 @@ class Crit {
         if (settings['pocket slot'] === 'grimoire') {
             fcrit = fcrit + 0.12;
         }        
-        return fcrit;
+        fcrit += settings['custom crit chance']/100;
+        return Math.min(fcrit,1);
     }
 
     critDmgBuff(dmg,settings) {

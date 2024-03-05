@@ -27,7 +27,9 @@ class Crit {
         else if (settings['level 20 armour'] === false) {
             fcrit += 0.02 * settings['biting'];
         }
-        return fcrit;
+
+        fcrit += settings['custom crit chance']/100;
+        return Math.min(fcrit,1);
     }
 
     critDmgBuff(dmg,settings, channellerStacks) {
