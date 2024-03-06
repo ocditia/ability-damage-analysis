@@ -55,7 +55,6 @@ function greater_sonic_wave(type, settings, numberOfHits) {
         let proc = 0;
         if (settings['fsoa'] === true){
             proc = time_strike(type, settings, 1);
-            console.log(proc) 
             for (i=0;i<damageObject['crit']['list'].length-1;i++) {
                 damageObject['crit']['list'][i] += proc[proc.length-1]
             }
