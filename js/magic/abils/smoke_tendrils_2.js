@@ -60,7 +60,7 @@ function smoke_tendrils_2(type, settings, numberOfHits) {
         let proc = 0;
         if (settings['fsoa'] === true){
             proc = time_strike(type, settings, 1);
-            for (i=0;i<damageObject['crit']['list'].length-1;i++) {
+            for (var i=0;i<damageObject['crit']['list'].length-1;i++) {
                 damageObject['crit']['list'][i] += proc[proc.length-1]
             }
         }
