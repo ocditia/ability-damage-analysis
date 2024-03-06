@@ -673,7 +673,7 @@ const magic_construction = {
             'category': 'basic'
         },
         "time strike":{
-            "fixed percent": 0.9    ,
+            "fixed percent": 0.9,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,

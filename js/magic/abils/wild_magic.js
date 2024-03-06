@@ -60,10 +60,11 @@ function wild_magic(type, settings, numberOfHits) {
         //fsoa
         let proc = 0;
         if (settings['fsoa'] === true){
-            let fcrit = CRIT_INS.calcFCritChance(settings, concStacks, channellerStacks);
             proc = time_strike(type, settings, 1);
-            const fsoa = proc[0] * fcrit;
-            hits.push(fsoa);
+            console.log(proc) 
+            for (i=0;i<damageObject['crit']['list'].length-1;i++) {
+                damageObject['crit']['list'][i] += proc[proc.length-1]
+            }
         }
         
         //calc min, avg, or max depending on request
@@ -73,6 +74,7 @@ function wild_magic(type, settings, numberOfHits) {
     //calc total damage
     hits.push(Helper.totalDamageCalc(hits));
     return Helper.flooredList(hits);
+    concStacks = 0;
 }
 
 export default wild_magic;

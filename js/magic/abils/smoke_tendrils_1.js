@@ -64,7 +64,10 @@ function smoke_tendrils_1(type, settings, numberOfHits) {
         let proc = 0;
         if (settings['fsoa'] === true){
             proc = time_strike(type, settings, 1);
-            damageObject['crit']['list'] = Helper.addSingleValueToList(damageObject['crit']['list'],proc[proc.length-1])
+            console.log(proc) 
+            for (i=0;i<damageObject['crit']['list'].length-1;i++) {
+                damageObject['crit']['list'][i] += proc[proc.length-1]
+            }
         }
 
         //calc min, avg, or max depending on request
