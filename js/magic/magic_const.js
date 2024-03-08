@@ -681,7 +681,7 @@ const magic_construction = {
         },
         "armadyl battlestaff":{
             "fixed percent": 0.45,
-            "variable percent": 0.55,
+            "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'special attack'
