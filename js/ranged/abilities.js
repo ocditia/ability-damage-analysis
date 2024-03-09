@@ -173,13 +173,13 @@ const abilities = {
   'Zamorak godbow': {
     title: 'Zamorak godbow spec',
     calc: zamorak_bow_spec,
-    icon: 'assets/ability_icons/ranged/30x30/sgb-bg.png',
+    icon: 'assets/ability_icons/ranged/zbow.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Morrigans javelin': {
     title: 'Morrigans javelin',
     calc: morrigans_javelin,
-    icon: 'assets/ability_icons/ranged/30x30/sgb-bg.png',
+    icon: 'assets/ability_icons/ranged/mor-jav.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }

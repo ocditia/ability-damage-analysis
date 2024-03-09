@@ -242,13 +242,13 @@ const abilities = {
   'Dragon Mace': {
     title: 'Dragon Mace',
     calc: dragon_mace_spec,
-    icon: 'assets/ability_icons/melee/30x30/dlong-bg.png',
+    icon: 'assets/ability_icons/melee/dmace.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
   'Dragon Dagger': {
     title: 'Dragon Dagger',
     calc: dragon_dagger_spec,
-    icon: 'assets/ability_icons/melee/30x30/dlong-bg.png',
+    icon: 'assets/ability_icons/melee/dds.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
   'Dragon Halberd': {
@@ -266,25 +266,25 @@ const abilities = {
   'Icy Tempest': {
     title: 'Icy Tempest',
     calc: icy_tempest,
-    icon: 'assets/ability_icons/melee/30x30/gmaul-bg.png',
+    icon: 'assets/ability_icons/melee/leng.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
   'Armadyl Godsword': {
     title: 'Armadyl Godsword',
     calc: armadyl_godsword_spec,
-    icon: 'assets/ability_icons/melee/30x30/gmaul-bg.png',
+    icon: 'assets/ability_icons/melee/ags.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
   'Vestas Longsword': {
     title: 'Vestas Longsword',
     calc: vestas_longsword_spec,
-    icon: 'assets/ability_icons/melee/30x30/gmaul-bg.png',
+    icon: 'assets/ability_icons/melee/vesta.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
   'Vine Whip spec': {
     title: 'Vine Whip spec',
     calc: vine_whip_spec,
-    icon: 'assets/ability_icons/melee/30x30/gmaul-bg.png',
+    icon: 'assets/ability_icons/melee/vine-whip.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
 }

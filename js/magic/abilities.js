@@ -193,7 +193,7 @@ const abilities = {
   'Penance Trident spec': {
     title: 'Penance Trident spec',
     calc: penance_trident_spec,
-    icon: 'assets/ability_icons/magic/30x30/armadyl_battlestaff-bg.png',
+    icon: 'assets/ability_icons/magic/trident.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }
