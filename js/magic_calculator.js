@@ -110,6 +110,7 @@ function collectSettings() {
     'Zamorak inner chaos': 0,
     'Zamorak guardians triumph': 0,
     'Zamorak sword of edicts': 0,
+    'zamorak choke stacks': 0,
     'Telos red beam': false,
     'Telos black beam': false,
     'Infernal puzzle box': false,

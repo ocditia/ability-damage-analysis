@@ -116,6 +116,10 @@ class OnNPC {
     calcInnerPower(dmg,stacks) {
       return dmg + Math.floor(dmg * 0.1 * stacks);
     }
+
+    calcZamorakChoke(dmg,settings) {
+      return Math.floor(dmg * (1 - settings['zamorak choke stacks']/100));
+    }
   
     calcOnNpc(dmg, settings, AD, category) {
       //buffs applied in order of operations
@@ -136,8 +140,8 @@ class OnNPC {
       dmg = this.calcInnerChaos(dmg,settings['Zamorak inner chaos']);
       dmg = this.calcGuardiansTriumph(dmg,settings['Zamorak guardians triumph'],settings['category']);
       dmg = this.calcSwordofEdicts(dmg,settings['Zamorak sword of edicts']);
-      dmg = this.calcBalanceofPower(dmg,settings['Zamorak balance of power']);
       dmg = this.calcInnerPower(dmg,settings['Raksha inner power']);
+      dmg = this.calcZamorakChoke(dmg,settings);
 
 
       //zamorak inner chaos

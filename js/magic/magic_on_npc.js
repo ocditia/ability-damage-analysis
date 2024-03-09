@@ -121,6 +121,10 @@ class OnNPC {
       }
       return dmg;
     }
+
+    calcZamorakChoke(dmg,settings) {
+      return Math.floor(dmg * (1 - settings['zamorak choke stacks']/100));
+    }
   
     calcOnNpc(dmg, settings, AD, category) {
       //buffs applied in order of operations
@@ -143,17 +147,7 @@ class OnNPC {
       dmg = this.calcGuardiansTriumph(dmg,settings['Zamorak guardians triumph'],settings['category']);
       dmg = this.calcSwordofEdicts(dmg,settings['Zamorak sword of edicts']);
       dmg = this.calcNope(dmg,settings['nopenopenope']);
-
-
-      //zamorak inner chaos
-      //zamorak guardians triumph
-      //zamorak sword of edicts
-      //telos red beam
-      //telos black beam
-      //infernal puzzle box
-      //kbd wildy portal
-      //tokkul-zo
-        
+      dmg = this.calcZamorakChoke(dmg,settings);        
       return dmg;
     }
 

@@ -147,6 +147,10 @@ class OnNPC {
     calcInnerPower(dmg,stacks) {
       return dmg + Math.floor(dmg * 0.1 * stacks);
     }
+
+    calcZamorakChoke(dmg,settings) {
+      return Math.floor(dmg * (1 - settings['zamorak choke stacks']/100));
+    }
   
     calcOnNpc(dmg, settings, AD, category) {
       //buffs applied in order of operations
@@ -171,6 +175,7 @@ class OnNPC {
       dmg = this.calcBalanceofPower(dmg,settings['Zamorak balance of power']);
       dmg = this.calcInnerPower(dmg,settings['Raksha inner power']);
       dmg = this.calcNope(dmg,settings['nopenopenope']);
+      dmg = this.calcZamorakChoke(dmg,settings);
 
       return dmg;
     }
