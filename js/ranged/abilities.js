@@ -5,6 +5,7 @@ import piercing_shot from "./abils/piercing_shot.js";
 import piercing_shot_bound from "./abils/piercing_shot_bound.js";
 import corruption_shot from "./abils/corruption_shot.js";
 import fragmentation_shot from "./abils/fragmentation_shot.js";
+import fragmentation_shot_walked from "./abils/fragmentation_shot_walked.js";
 import snipe from "./abils/snipe.js";
 import binding_shot from "./abils/binding_shot.js";
 import tight_bindings from "./abils/tight_bindings.js";
@@ -76,6 +77,12 @@ const abilities = {
   'Fragmentation Shot': {
     title: 'Fragmentation Shot',
     calc: fragmentation_shot,
+    icon: 'assets/ability_icons/ranged/30x30/frag.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Fragmentation Shot (Walked)': {
+    title: 'Fragmentation Shot (Walked)',
+    calc: fragmentation_shot_walked,
     icon: 'assets/ability_icons/ranged/30x30/frag.png',
     weapons: ['2h','Dw','Md','Ms'],
   },

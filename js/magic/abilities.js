@@ -11,6 +11,7 @@ import concentrated_blast from "./abils/concentrated_blast.js";
 import greater_concentrated_blast from "./abils/greater_concentrated_blast.js";
 import dragon_breath from "./abils/dragon_breath.js";
 import combust from "./abils/combust.js";
+import combust_walked from "./abils/combust_walked.js";
 import corruption_blast from "./abils/corruption_blast.js";
 import deep_impact from "./abils/deep_impact.js";
 import detonate from "./abils/detonate.js";
@@ -102,6 +103,12 @@ const abilities = {
   'Combust': {
     title: 'Combust',
     calc: combust,
+    icon: 'assets/ability_icons/magic/30x30/combust.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Combust (Walked)': {
+    title: 'Combust (Walked)',
+    calc: combust_walked,
     icon: 'assets/ability_icons/magic/30x30/combust.png',
     weapons: ['2h','Dw','Md','Ms'],
   },

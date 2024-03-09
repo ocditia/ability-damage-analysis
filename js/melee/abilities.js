@@ -19,6 +19,7 @@ import stomp from "./abils/stomp.js";
 import forceful_backhand from "./abils/forceful_backhand.js";
 import quake from "./abils/quake.js";
 import slaughter from "./abils/slaughter.js";
+import slaughter_walked from "./abils/slaughter_walked.js";
 import destroy from "./abils/destroy.js";
 import assault from "./abils/assault.js";
 import hurricane from "./abils/hurricane.js";
@@ -163,6 +164,12 @@ const abilities = {
   'Slaughter': {
     title: 'Slaughter',
     calc: slaughter,
+    icon: 'assets/ability_icons/melee/30x30/slaughter.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Slaughter (Walked)': {
+    title: 'Slaughter (Walked)',
+    calc: slaughter_walked,
     icon: 'assets/ability_icons/melee/30x30/slaughter.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
