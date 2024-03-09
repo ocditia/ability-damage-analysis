@@ -68,12 +68,12 @@ function wild_magic(type, settings, numberOfHits) {
         
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val, concStacks, channellerStacks));
+        concStacks = 0;
     }
     
     //calc total damage
     hits.push(Helper.totalDamageCalc(hits));
     return Helper.flooredList(hits);
-    concStacks = 0;
 }
 
 export default wild_magic;

@@ -27,7 +27,7 @@ function omnipower_igneous(type, settings, numberOfHits) {
     if (type === 'Dw') {
         concStacks = settings['conc stacks'];
     }
-    
+
     const hits = []
    
     for(var hitsplat = 0; hitsplat < numberOfHits; hitsplat++) {
@@ -68,12 +68,12 @@ function omnipower_igneous(type, settings, numberOfHits) {
         
         //calc min, avg, or max depending on request
         hits.push(AVG_INS.returnDecider(damageObject,settings,abil_val, concStacks, channellerStacks));
+        concStacks = 0;
     }
     
     //calc total damage
     hits.push(Helper.totalDamageCalc(hits));
-    return Helper.flooredList(hits);
-    concStacks = 0;
+    return Helper.flooredList(hits); 
 }
 
 export default omnipower_igneous;
