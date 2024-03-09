@@ -36,6 +36,7 @@ function collectSettings() {
     'cape':'igneous kal-mor',
     'pocket slot': 'grimoire',
     'ammo': 'ful arrows',
+    'ammo stacks': 15,
     'reaper crew': true,
     'level 20 armour': true,
     'enchantment shadows': true,

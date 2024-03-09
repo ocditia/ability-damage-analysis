@@ -47,6 +47,10 @@ class AbilityDmg {
         }
       }
 
+      if (settings['ammo'] === 'wen arrows') {
+        AD = AD * (1 + 0.03 * settings['ammo stacks']);
+      }
+      
       AD += Math.floor(AD * 0.06 * settings['Zamorak balance of power']);
 
       AD += Math.floor(AD * 0.1 * settings['Raksha inner power']);

@@ -5,6 +5,9 @@ class OnHit {
     if (ammo === 'ful arrows') {
       buff = buff * (1 + 0.15);
     }
+    if (ammo === 'jas arrows') {
+      buff = buff * (1 + 0.30);
+    }
     return Math.floor(buff);
   }
 
