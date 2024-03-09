@@ -341,7 +341,7 @@ const melee_construction = {
             "boost": 0.02
         },
         'none':{
-            'bonus': 0.0
+            "boost": 0.0
         }
     },
 
