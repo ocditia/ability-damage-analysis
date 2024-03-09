@@ -741,8 +741,8 @@ const melee_construction = {
             'category': 'spec'
         },
         "dragon halberd":{
-            "fixed percent": 0.5,
-            "variable percent": 1.4,
+            "fixed percent": 1.05,
+            "variable percent": 0.3,
             "on hit effects": true,
             "crit effects": true,
             'category': 'spec'
