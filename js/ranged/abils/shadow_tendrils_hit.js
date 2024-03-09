@@ -62,7 +62,7 @@ function shadow_tendrils_hit(type, settings, numberOfHits) {
         //add up damages
         damageObject['non-crit']['list'] = Helper.listAdder(damageObject['non-crit']['list'],splitSoul);
         damageObject['crit']['list'] = Helper.listAdder(damageObject['crit']['list'],splitSoulCrit);
-        console.log(damageObject['crit']['list'])
+        
         //calc min, avg, or max depending on request
         
         if (settings['minavgmax'] === 'min no crit') {
