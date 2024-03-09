@@ -37,6 +37,7 @@ import vestas_longsword_spec from "./abils/vestas_longsword_spec.js";
 import dragon_mace_spec from "./abils/dragon_mace_spec.js";
 import dragon_dagger_spec from "./abils/dragon_dagger_spec.js";
 import vine_whip_spec from "./abils/vine_whip_spec.js";
+import dragon_halberd from "./abils/dragon_halberd.js";
 
 const abilities = {
   'Slice': {
@@ -240,6 +241,12 @@ const abilities = {
   'Dragon Dagger': {
     title: 'Dragon Dagger',
     calc: dragon_dagger_spec,
+    icon: 'assets/ability_icons/melee/30x30/dlong-bg.png',
+    weapons: ['Dw','2h','Md','Ms'],
+  },
+  'Dragon Halberd': {
+    title: 'Dragon halberd',
+    calc: dragon_halberd,
     icon: 'assets/ability_icons/melee/30x30/dlong-bg.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
