@@ -23,6 +23,10 @@ class avgDmg {
             fCritChance = CRIT_INS.calcFCritChance(settings, concStacks, channellerStacks);
         } 
 
+        if (abil_val === 'smoke tendrils') {
+            return avgCrit
+        }
+
         let dmgAvg = fCritChance * avgCrit + (1 - fCritChance) * avgReg;
 
         return dmgAvg
