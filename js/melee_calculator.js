@@ -1,13 +1,38 @@
 import { abilities } from './melee/abilities.js';
 
 buildDamagesTable(abilities);
+loadSettings();
 calculateDamages(collectSettings())
 
 const settings = document.getElementsByClassName('js--setting');
 for (let setting of settings) {
   setting.addEventListener('change', (e) => {
-    calculateDamages(collectSettings())
+    const settingValues = collectSettings();
+    saveSettings(settingValues)
+    calculateDamages(settingValues)
   });
+}
+
+function saveSettings(settings) {
+  localStorage.setItem('preset-melee', JSON.stringify(settings));
+}
+
+function loadSettings() {
+  let savedSettings = localStorage.getItem('preset-melee');
+  if (!savedSettings) {
+    return;
+  }
+
+  savedSettings = JSON.parse(savedSettings);
+  document.querySelectorAll('.js--setting').forEach(node => {
+    const setting = node.getAttribute('data-setting-name');
+
+    if (node.getAttribute('type') === 'checkbox') {
+      node.checked = savedSettings[setting];
+    }
+    
+    node.value = savedSettings[setting];
+  }); 
 }
 
 function collectSettings() {
