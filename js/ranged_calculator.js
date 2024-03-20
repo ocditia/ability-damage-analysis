@@ -79,7 +79,7 @@ function collectSettings() {
     'biting': 4,
     'flanking': 0,
     'flanking position': false,
-    'caroming rank': 0,
+    'caroming rank': 4,
     
     'aura': 'reckless',
     'split soul': true,
