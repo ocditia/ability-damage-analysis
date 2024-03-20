@@ -46,10 +46,6 @@ class AbilityDmg {
           AD += AD * 0.125;
         }
       }
-
-      if (settings['ammo'] === 'wen arrows') {
-        AD = AD * (1 + 0.03 * settings['ammo stacks']);
-      }
       
       AD += Math.floor(AD * 0.06 * settings['Zamorak balance of power']);
 

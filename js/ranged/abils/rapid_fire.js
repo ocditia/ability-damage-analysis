@@ -29,6 +29,10 @@ function rapid_fire(type, settings, numberOfHits) {
 
         //calculates ability damage
         let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
+
+        if (settings['ammo'] === 'wen arrows') {
+            AD = AD * (1 + 0.03 * settings['ammo stacks']);
+          }
         
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);
