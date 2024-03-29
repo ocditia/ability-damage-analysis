@@ -25,6 +25,7 @@ import assault from "./abils/assault.js";
 import hurricane from "./abils/hurricane.js";
 import blood_tendrils from "./abils/blood_tendrils.js";
 import overpower from "./abils/overpower.js";
+import meteor_strike from "./abils/meteor_strike.js";
 import pulverise from "./abils/pulverise.js";
 import frenzy from "./abils/frenzy.js";
 import massacre from "./abils/massacre.js";
@@ -202,6 +203,12 @@ const abilities = {
     calc: overpower,
     icon: 'assets/ability_icons/melee/30x30/overpower.png',
     weapons: ['Dw','2h','Md','Ms'],
+  },
+  'Meteor Strike': {
+    title: 'Meteor Strike',
+    calc: meteor_strike,
+    icon: 'assets/ability_icons/melee/Meteor_Strike.webp',
+    weapons: ['2h','Dw','Md','Ms'],
   },
   'Pulverise': {
     title: 'Pulverise',

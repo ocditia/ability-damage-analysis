@@ -747,6 +747,13 @@ const melee_construction = {
             "crit effects": true,
             'category': 'spec'
         },
+        "meteor strike":{
+            "fixed percent": 2.7,
+            "variable percent": 0.6,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'ultimate'
+        },
     }
 }
 
