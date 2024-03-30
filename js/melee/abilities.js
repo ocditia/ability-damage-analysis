@@ -207,7 +207,7 @@ const abilities = {
   'Meteor Strike': {
     title: 'Meteor Strike',
     calc: meteor_strike,
-    icon: 'assets/ability_icons/melee/Meteor_Strike.webp',
+    icon: 'assets/ability_icons/melee/30x30/meteor.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Pulverise': {
@@ -261,7 +261,7 @@ const abilities = {
   'Dragon Halberd': {
     title: 'Dragon halberd',
     calc: dragon_halberd,
-    icon: 'assets/ability_icons/melee/30x30/dlong-bg.png',
+    icon: 'assets/ability_icons/melee/30x30/dhally.png',
     weapons: ['Dw','2h','Md','Ms'],
   },
   'Granite Maul': {

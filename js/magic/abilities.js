@@ -187,7 +187,7 @@ const abilities = {
   'Ibans staff spec': {
     title: 'Ibans staff spec',
     calc: ibans_staff_spec,
-    icon: 'assets/ability_icons/magic/30x30/armadyl_battlestaff-bg.png',
+    icon: 'assets/ability_icons/magic/30x30/iban_staff.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Penance Trident spec': {

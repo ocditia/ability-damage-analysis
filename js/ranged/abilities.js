@@ -179,7 +179,7 @@ const abilities = {
   'Morrigans javelin': {
     title: 'Morrigans javelin',
     calc: morrigans_javelin,
-    icon: 'assets/ability_icons/ranged/mor-jav.png',
+    icon: 'assets/ability_icons/ranged/30x30/morrigan_jav.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
 }
