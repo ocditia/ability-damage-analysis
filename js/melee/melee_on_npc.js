@@ -131,7 +131,7 @@ class OnNPC {
       //unknown order of buffs
       dmg = this.calcCryptbloom(dmg,settings['death spores']);
       dmg = this.calcCustom(dmg,settings);
-      dmg = this.calcHaunted(dmg,settings['haunted'],AD);
+      dmg = this.calcHaunted(dmg,settings['haunted'],settings['haunted AD']);
       dmg = this.calcRedbeam(dmg,settings['Telos red beam']);
       dmg = this.calcBlackbeam(dmg,settings['Telos black beam']);
       dmg = this.calcInfernalPuzzleBox(dmg,settings['Infernal puzzle box']);

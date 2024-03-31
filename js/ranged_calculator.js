@@ -43,6 +43,7 @@ function collectSettings() {
     'bolg proc': false,
 
     'ability damage': 0, //for manual override only
+    'haunted AD': 2345,
     'level': 99,
     'potion': 'elder overload',
     

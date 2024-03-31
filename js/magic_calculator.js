@@ -42,6 +42,7 @@ function collectSettings() {
     'category': 'none',
 
     'ability damage': 0, //for manual override only
+    'haunted AD': 2345,
     'level': 120,
     'potion': 'elder overload',
     
