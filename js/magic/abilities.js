@@ -179,19 +179,19 @@ const abilities = {
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Armadyl Battlestaff': {
-    title: 'Armadyl Battlestaff',
+    title: 'Armadyl Battlestaff (50%)',
     calc: armadyl_battlestaff,
     icon: 'assets/ability_icons/magic/30x30/armadyl_battlestaff-bg.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Ibans staff spec': {
-    title: 'Ibans staff spec',
+    title: 'Ibans staff spec (50%)',
     calc: ibans_staff_spec,
     icon: 'assets/ability_icons/magic/30x30/iban_staff.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Penance Trident spec': {
-    title: 'Penance Trident spec',
+    title: 'Penance Trident spec (45%)',
     calc: penance_trident_spec,
     icon: 'assets/ability_icons/magic/30x30/trident.png',
     weapons: ['2h','Dw','Md','Ms'],
