@@ -36,8 +36,12 @@ function combust_walked(type, settings, numberOfHits) {
         let AD = AD_INS.calcAd(type,settings); //AD_INS.calcAd(type,settings);
         
         //sets fixed and variable damage
-        let fixed = 2 * Math.floor(AD * fixedPercent);
-        let variable = 2 * Math.floor(AD * variablePercent);
+        let walk_modifier = 2;
+        if (settings['lunging'] != 0) {
+            walk_modifier = 1 + 0.06 * settings['lunging'] * 1.5;
+        }
+        let fixed = Math.floor(walk_modifier * Math.floor(AD * fixedPercent));
+        let variable = Math.floor(walk_modifier * Math.floor(AD * variablePercent));
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);

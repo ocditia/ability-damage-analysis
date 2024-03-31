@@ -31,8 +31,8 @@ function fragmentation_shot(type, settings, numberOfHits) {
         let AD = AD_INS.calcAd(type,settings);
         
         //sets fixed and variable damage
-        let fixed = Math.floor(AD * fixedPercent);
-        let variable = Math.floor(AD * variablePercent);
+        let fixed = Math.floor((1 + 0.06 * settings['lunging']) * AD * fixedPercent);
+        let variable = Math.floor((1 + 0.06 * settings['lunging']) * AD * variablePercent);
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);

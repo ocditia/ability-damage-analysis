@@ -81,6 +81,7 @@ function collectSettings() {
     'flanking': 0,
     'flanking position': false,
     'caroming rank': 4,
+    'lunging': 0,
     
     'aura': 'reckless',
     'split soul': true,
