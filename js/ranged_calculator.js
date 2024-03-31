@@ -89,6 +89,7 @@ function collectSettings() {
     'npc size': 1,
 
     //on-cast effects
+    'hit chance': 100,
     'Zamorak balance of power': 0,
     'Sophanem corrupted': 0,
     'Raksha inner power': 0,

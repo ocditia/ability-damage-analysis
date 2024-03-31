@@ -36,6 +36,7 @@ class AbilityDmg {
         AD = Math.floor(1.12 * AD);
       }
 
+      AD = Math.floor(AD * Math.min(1,settings['hit chance']/100));
       AD = Math.floor(AD * (1 + settings['custom on ad']/100));
   
       return AD

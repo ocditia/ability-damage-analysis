@@ -35,7 +35,8 @@ class AbilityDmg {
     if (settings['aura'] === 'equilibrium') {
       AD = Math.floor(1.12 * AD);
     }
-
+    
+    AD = Math.floor(AD * Math.min(1,settings['hit chance']/100));
     AD = Math.floor(AD * (1 + settings['custom on ad']/100));
 
     if (settings['terrasaur'] === true && settings['two-handed weapon'] === 'terrasaur maul' && type === '2h') {

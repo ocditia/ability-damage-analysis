@@ -86,6 +86,7 @@ function collectSettings() {
     'inquisitor': false,
 
     //on-cast effects
+    'hit chance': 100,
     'flow stacks': 0,
     'Zamorak balance of power': 0,
     'Sophanem corrupted': 0,

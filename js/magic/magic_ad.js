@@ -29,12 +29,14 @@ class AbilityDmg {
 
         AD = mhAbilityDmg + ohAbilityDmg;
       }
-      
+
       AD = Math.floor(AD * (1 + 0.005*settings['eruptive']));
 
       if (settings['aura'] === 'equilibrium') {
         AD = Math.floor(1.12 * AD);
       }
+
+      AD = Math.floor(AD * Math.min(1,settings['hit chance']/100));
 
       AD = Math.floor(AD * (1 + settings['custom on ad']/100));
 
