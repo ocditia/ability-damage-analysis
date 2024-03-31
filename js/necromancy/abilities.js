@@ -57,16 +57,16 @@ const abilities = {
     weapons: ['Dw'],
   },
   'Command skeleton 8': {
-    title: 'Command skeleton 8 autos',
+    title: 'Command skeleton (autos 2-10)',
     calc: command_skeleton_8,
     icon: 'assets/ability_icons/necro/30x30/comm-skele.png',
     weapons: ['Dw'],
   },
   'Command skeleton': {
-    title: 'Command skeleton',
+    title: 'Command skeleton (all 10 autos)',
     calc: command_skeleton,
     icon: 'assets/ability_icons/necro/30x30/comm-skele.png',
-    weapons: ['Dw'],
+    weapons: ['Dw'],  
   },
   'Ghost Auto': {
     title: 'Ghost auto',
