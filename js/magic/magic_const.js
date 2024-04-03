@@ -89,6 +89,10 @@ const magic_construction = {
         'orb of the cywir elders':{
             'tier': 80,
             'weapondmg': 0
+        },
+        'none':{
+            'tier': 0,
+            'weapondmg': 0
         }
     },
 
