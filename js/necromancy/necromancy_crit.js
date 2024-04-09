@@ -20,7 +20,7 @@ class Crit {
     }
 
     critDmgBuff(dmg,settings) {
-        let modifier = 0.2;
+        let modifier = 0.0;
         let level_mod = 0.05 * (1 + Math.floor(settings['level']/10));
         modifier = modifier + Math.min(level_mod,0.5);
         if (settings['smoke cloud'] === true) {
