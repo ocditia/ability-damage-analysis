@@ -629,28 +629,28 @@ const melee_construction = {
             'category': 'dot'
         },
         "dragon claw 1":{
-            "fixed percent": 1.8,
+            "fixed percent": 1.6,
             "variable percent": 0.4,
             "on hit effects": true,
             "crit effects": true,
             'category': 'spec'
         },
         "dragon claw 2":{
-            "fixed percent": 0.9,
+            "fixed percent": 0.8,
             "variable percent": 0.2,
             "on hit effects": true,
             "crit effects": true,
             'category': 'spec'
         },
         "dragon claw 3":{
-            "fixed percent": 0.45,
+            "fixed percent": 0.4,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
             'category': 'spec'
         },
         "dragon claw 4":{
-            "fixed percent": 0.45,
+            "fixed percent": 0.4,
             "variable percent": 0.1,
             "on hit effects": true,
             "crit effects": true,
