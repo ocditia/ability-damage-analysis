@@ -25,6 +25,10 @@ function loadSettings() {
 
   savedSettings = JSON.parse(savedSettings);
   document.querySelectorAll('.js--setting').forEach(node => {
+    if (savedSettings[setting] === undefined) {
+      return;
+    }
+
     const setting = node.getAttribute('data-setting-name');
 
     if (node.getAttribute('type') === 'checkbox') {
