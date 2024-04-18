@@ -7,7 +7,7 @@ import Avg from '../average_damage.js';
 import construction from '../melee_const.js';
 
 
-function d2h(type, settings, numberOfHits) {
+function dragon_2h(type, settings, numberOfHits) {
     const AD_INS = new AbilityDmg();
     const NPC_INS = new OnNPC();
     const HIT_INS = new OnHit();
@@ -57,4 +57,4 @@ function d2h(type, settings, numberOfHits) {
     return Helper.flooredList(hits);
 }
 
-export default d2h;
+export default dragon_2h;

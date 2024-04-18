@@ -38,7 +38,7 @@ import armadyl_godsword_spec from "./abils/armadyl_godsword_spec.js";
 import vestas_longsword_spec from "./abils/vestas_longsword_spec.js";
 import dragon_mace_spec from "./abils/dragon_mace_spec.js";
 import dragon_dagger_spec from "./abils/dragon_dagger_spec.js";
-import d2h from "./abils/d2h";
+import dragon_2h from "./abils/dragon_2h";
 import vine_whip_spec from "./abils/vine_whip_spec.js";
 import dragon_halberd from "./abils/dragon_halberd.js";
 
@@ -249,7 +249,7 @@ const abilities = {
   },
   'Dragon 2h sword': {
     title: 'Dragon 2h sword (50%)',
-    calc: d2h,
+    calc: dragon_2h,
     icon: 'assets/ability_icons/melee/30x30/dlong-bg.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
