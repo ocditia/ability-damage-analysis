@@ -32,8 +32,8 @@ function icy_tempest_main(type, settings, numberOfHits) {
           }
         
         //sets fixed and variable damage
-        let fixed = Math.floor(AD * fixedPercent);
-        let variable = Math.floor(AD * variablePercent);
+        let fixed = Math.floor(AD * (fixedPercent + 0.18*settings['primordial ice']));
+        let variable = Math.floor(AD * (variablePercent + 0.04*settings['primordial ice']));
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
