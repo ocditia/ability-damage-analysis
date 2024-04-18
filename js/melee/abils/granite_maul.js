@@ -27,6 +27,11 @@ function granite_maul(type, settings, numberOfHits) {
 
         //calculates ability damage
         let AD = AD_INS.calcAd(type,settings,hitcount);
+
+
+        if (settings['chaos roar'] === true) {
+            AD = 2 * AD;
+          }
         
         //sets fixed and variable damage
         let fixed = Math.floor(AD * fixedPercent);

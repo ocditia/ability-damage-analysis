@@ -31,6 +31,10 @@ function slaughter_walked(type, settings, numberOfHits) {
 
         //calculates ability damage
         let AD = AD_INS.calcAd(type,settings,hitcount);
+
+        if (settings['chaos roar'] === true) {
+            AD = 2 * AD;
+          }
         
         //sets fixed and variable damage
         let fixed = 3 * Math.floor(AD * fixedPercent);

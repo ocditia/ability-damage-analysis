@@ -48,9 +48,6 @@ class AbilityDmg {
       }
     }
 
-    if (settings['chaos roar'] === true && hitcount === 1) {
-      AD = 2 * AD;
-    }
 
     AD += Math.floor(AD * 0.06 * settings['Zamorak balance of power']);
 
