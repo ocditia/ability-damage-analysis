@@ -670,6 +670,13 @@ const ranged_construction = {
             "crit effects": true,
             'category': 'passive'
         },
+        "bolg proc base":{
+            "fixed percent": 0.12,
+            "variable percent": 0.04,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'passive'
+        },
     }
 }
 

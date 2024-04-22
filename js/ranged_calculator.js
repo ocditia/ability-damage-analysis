@@ -43,6 +43,8 @@ function loadSettings() {
 function collectSettings() {
   // Have default settings here
   const settings = {
+    'bolg damage dirty': 10000, //only used till proper bolg is implemented
+
     'minavgmax': 'avg',
     'category': 'none',
     'bolg proc': false,
