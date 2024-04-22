@@ -181,6 +181,12 @@ const necromancy_construction = {
         "asylum surgeon ring":{
             "bonus": 21
         },
+        "zorgoths soul ring":{
+            "bonus": 30.4
+        },
+        "zorgoths ring":{
+            "bonus": 25.2
+        },
         "none":{
             "bonus": 0,
         }
