@@ -37,6 +37,11 @@ function split_soul(dmgList, settings) {
                 soulSplit = Math.floor(soulSplit * 1.1875)
             }
 
+            if (settings['Zamorak balance of power'] > 0)
+            {
+                soulSplit = Math.floor((1-settings['Zamorak balance of power']) * soulSplit)
+            }
+
             splitSoul.push(4 * soulSplit)
         }
         splitSoul = NPC_INS.onNpcDamageList(splitSoul,settings,1000);

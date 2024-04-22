@@ -32,6 +32,11 @@ function split_soul(dmgList, settings) {
             if (settings['necklace'] in ["Essence of finality amulet (or)","Essence of finality amulet","Amulet of souls (or)","Amulet of souls"]) {
                 soulSplit = Math.floor(soulSplit * 1.1875)
             }
+            
+            if (settings['Zamorak balance of power'] > 0)
+            {
+                soulSplit = Math.floor((1-settings['Zamorak balance of power']) * soulSplit)
+            }
 
             splitSoul.push(4 * soulSplit)
         }
