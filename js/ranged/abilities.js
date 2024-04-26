@@ -25,6 +25,7 @@ import sgb_spec from "./abils/sgb_spec.js";
 import zamorak_bow_spec from "./abils/zamorak_bow_spec.js";
 import morrigans_javelin from "./abils/morrigans_javelin.js";
 import bolg_proc_dirty from "./abils/bolg_proc_dirty.js";
+import bolg_proc_dirty_no_swift from "./abils/bolg_proc_dirty_no_swift.js";
 
 const abilities = {
   'Dazing Shot': {
@@ -184,8 +185,14 @@ const abilities = {
     weapons: ['2h','Dw','Md','Ms'],
   },
   'Bolg proc dirty': {
-    title: 'Bolg proc (based on input)',
+    title: 'Bolg proc (apply swift to input)',
     calc: bolg_proc_dirty,
+    icon: 'assets/ability_icons/ranged/30x30/botlg-bg.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Bolg proc dirty no swift': {
+    title: 'Bolg proc (no extra swift applied)',
+    calc: bolg_proc_dirty_no_swift,
     icon: 'assets/ability_icons/ranged/30x30/botlg-bg.png',
     weapons: ['2h','Dw','Md','Ms'],
   },

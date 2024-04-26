@@ -34,13 +34,11 @@ function bolg_base_dirty(proccingHit, type, settings, numberOfHits) {
           }
         
         //sets fixed and variable damage
-        let fixed = Math.floor(AD * fixedPercent);
-        let variable = Math.floor(AD * variablePercent);
+        let fixed = Math.floor(AD * fixedPercent) + Math.floor(construction['abilities']["bolg proc"]['fixed percent'] * proccingHit);
+        let variable = Math.floor(AD * variablePercent) + Math.floor(construction['abilities']["bolg proc"]['variable percent'] * proccingHit);
         
         //applies on-hit effects
         let onHit = HIT_INS.calcOnHit(fixed, variable, type, construction['abilities'][abil_val]['on hit effects'],settings);
-        onHit[0] += Math.floor(construction['abilities']["bolg proc"]['fixed percent'] * proccingHit);
-        onHit[1] += Math.floor(construction['abilities']["bolg proc"]['variable percent'] * proccingHit);
 
         //sets up for further calculations
         damageObject['non-crit']['list'] = Helper.baseDamageListCreator(onHit[0],onHit[1]);
