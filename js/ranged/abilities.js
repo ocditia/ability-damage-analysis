@@ -44,7 +44,7 @@ const abilities = {
     title: 'Needle Strike',
     calc: needle_strike,
     icon: 'assets/ability_icons/ranged/30x30/needle.png',
-    weapons: ['2h','Dw','Md','Ms'],
+    weapons: ['Dw','2h','Md','Ms'],
   },
   'Piercing Shot': {
     title: 'Piercing Shot',
