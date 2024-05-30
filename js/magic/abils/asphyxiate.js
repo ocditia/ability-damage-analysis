@@ -23,9 +23,10 @@ function asphyxiate(type, settings, numberOfHits) {
     let concStacks = 0;
     let channellerStacks = 0;
 
-    if (type === 'Dw') {
+    /*if (type === 'Dw') {
         concStacks = settings['conc stacks'];
-    }
+    }*/
+    concStacks = settings['conc stacks'];
     if (settings['ring'] === 'channelers') {
         channellerStacks += 1;
     }
