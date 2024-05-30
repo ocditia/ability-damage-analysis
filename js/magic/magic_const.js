@@ -70,7 +70,11 @@ const magic_construction = {
         'wand of the cywir elders':{
             'tier': 80,
             'weapondmg': 0
-        }
+        },
+        't95 mh':{
+            'tier': 95,
+            'weapondmg': 0
+        },
     },
 
     'off-hand weapons': {
@@ -97,7 +101,11 @@ const magic_construction = {
         'none':{
             'tier': 0,
             'weapondmg': 0
-        }
+        },
+        't95 oh':{
+            'tier': 95,
+            'weapondmg': 0
+        },
     },
 
     'shields': {
