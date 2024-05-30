@@ -15,9 +15,15 @@ function backhand(type, settings, numberOfHits) {
     const AVG_INS = new Avg();
     const Helper = new MeleeHelper(); 
     let abil_val = 'backhand'
-    const fixedPercent = construction['abilities'][abil_val]['fixed percent'];
-    const variablePercent = construction['abilities'][abil_val]['variable percent'];
+    let fixedPercent = construction['abilities'][abil_val]['fixed percent'];
+    let variablePercent = construction['abilities'][abil_val]['variable percent'];
     settings['category'] = construction['abilities'][abil_val]['category'];
+
+
+    if (settings['flanking position'] === true) {
+        fixedPercent += fixedPercent * settings['flanking'] * 0.4;
+        variablePercent += variablePercent * settings['flanking'] * 0.4;
+    }
 
     const hits = []
     let hitcount = 1;
