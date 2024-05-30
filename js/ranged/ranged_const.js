@@ -32,6 +32,10 @@ const ranged_construction = {
             "tier": 0,
             "weaponDmg": 0
         },
+        'tier 100 vanilla':{
+            'tier': 100,
+            'weapondmg': 0
+        }
     },
 
     'main-hand weapons': {

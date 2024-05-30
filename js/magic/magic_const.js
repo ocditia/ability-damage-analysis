@@ -43,6 +43,10 @@ const magic_construction = {
         'chaotic staff':{
             'tier': 80,
             'weapondmg': 0
+        },
+        'tier 100 vanilla':{
+            'tier': 100,
+            'weapondmg': 0
         } 
     },
 
