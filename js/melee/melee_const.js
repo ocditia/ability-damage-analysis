@@ -1,5 +1,9 @@
 const melee_construction = {
     'two-handed weapons': {
+        'masterwork 2h sword':{
+            'tier': 100,
+            'weapondmg': 0,
+        },
         'ek-zekkil':{
             'tier': 95,
             'weapondmg': 0,
