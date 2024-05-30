@@ -519,6 +519,13 @@ const magic_construction = {
             "crit effects": true,
             'category': 'basic'
         },
+        "greater sonic wave beta":{
+            "fixed percent": 1.15,
+            "variable percent": 0.2,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'basic'
+        },
         "concentrated blast 1":{
             "fixed percent": 0.45,
             "variable percent": 0.1,

@@ -26,6 +26,7 @@ import time_strike from "./abils/time_strike.js";
 import armadyl_battlestaff from "./abils/armadyl_battlestaff.js";
 import ibans_staff_spec from "./abils/ibans_staff_spec.js";
 import penance_trident_spec from "./abils/penance_trident_spec.js";
+import greater_sonic_wave_beta from "./abils/greater_sonic_wave_beta.js";
 
 const abilities = {
   'Wrack': {
@@ -82,6 +83,12 @@ const abilities = {
     icon: 'assets/ability_icons/magic/30x30/greater_sonic_wave.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
+  'Greater sonic wave beta': {
+    title: 'Greater sonic wave beta',
+    calc: greater_sonic_wave_beta,
+    icon: 'assets/ability_icons/magic/30x30/greater_sonic_wave.png',
+    weapons: ['Dw','2h','Md','Ms'],
+  },
   'Concentrated blast': {
     title: 'Concentrated blast',
     calc: concentrated_blast,
@@ -92,7 +99,7 @@ const abilities = {
     title: 'Greater concentrated blast',
     calc: greater_concentrated_blast,
     icon: 'assets/ability_icons/magic/30x30/greater_concentrated_blast.png',
-    weapons: ['Dw', 'Md','Ms'],
+    weapons: ['Dw','Md','Ms','2h'],
   },
   'Dragon breath': {
     title: 'Dragon breath',
