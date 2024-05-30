@@ -35,7 +35,7 @@ function split_soul(dmgList, settings) {
             
             if (settings['Zamorak balance of power'] > 0)
             {
-                soulSplit = Math.floor((1-settings['Zamorak balance of power']) * soulSplit)
+                soulSplit = Math.floor((1-0.1*settings['Zamorak balance of power']) * soulSplit)
             }
 
             splitSoul.push(4 * soulSplit)
