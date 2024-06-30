@@ -3,10 +3,13 @@ import calc_damage from "./damage_calc";
 function wrack(a, b) {
     // temp hard override of settings
     const settingss = {
-        'weapon type': 'two-hand', // 'two-hand' or 'main-hand'
-        'main_style': 'magic',
+        'weapon type': 'main-hand', // 'two-hand' or 'main-hand'
+        'main_style': 'ranged',
         'ability': 'wrack',
         'magic level': 99,
+        'strength level': 95,
+        'ranged level': 90,
+        'necromancy level': 110,
         'hit chance': 100,
 
         // gear
@@ -14,7 +17,6 @@ function wrack(a, b) {
         'main-hand weapon': 'wand of the praesul',
         'off-hand weapon': 'imperium core',
         'aura': 'none',
-        'flow stacks': 4,
         'necklace': 'none',
         'pocket': 'none',
 
@@ -24,6 +26,11 @@ function wrack(a, b) {
         'ruthless rank': 0,
         'precise': 3,
         'genocidal': 0.5, // percent gained from genocidal
+
+        // AD buffs
+        'flow stacks': 4,
+        'chaos roar': false,
+        'icy precision': 4,
 
         // additive boosts
         'stone of jas': 0,

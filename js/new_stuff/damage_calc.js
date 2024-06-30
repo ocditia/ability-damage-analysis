@@ -7,31 +7,84 @@ function calc_base_ad(settings) {
 
     if (settings['main_style'] === 'magic') {
         if (settings['weapon type'] === 'main-hand') {
-            let AD_mh = Math.floor(2.5 * settings['magic level'])+ Math.floor(9.6 * Math.min(weapons[settings['main-hand weapon']]['tier'], spell_tier) + calc_bonus(settings));
+            let AD_mh = Math.floor(2.5 * settings['magic level'])
+            + Math.floor(9.6 * Math.min(weapons[settings['main-hand weapon']]['tier'], spell_tier) + calc_bonus(settings));
             
             let AD_oh = 0
             if (weapons[settings['off-hand weapon']]['weapon type'] === 'off-hand') {
-                AD_oh = Math.floor( 0.5 * Math.floor(2.5 * settings['magic level']) + Math.floor(9.6 * Math.min(weapons[settings['off-hand weapon']]['tier'], spell_tier) + calc_bonus(settings)));
+                AD_oh = Math.floor( 0.5 * Math.floor(2.5 * settings['magic level']) 
+                + Math.floor(9.6 * Math.min(weapons[settings['off-hand weapon']]['tier'], spell_tier) + calc_bonus(settings)));
             }
             
             base_AD = AD_mh + AD_oh;
         }
 
         else if (settings['weapon type'] === 'two-hand') {
-            base_AD = Math.floor(2.5 * settings['magic level']) + Math.floor(1.25 * settings['magic level']) + Math.floor(14.4 * Math.min(weapons[settings['two-hand weapon']]['tier'], spell_tier) + 1.5 * calc_bonus(settings));
+            base_AD = Math.floor(2.5 * settings['magic level']) 
+            + Math.floor(1.25 * settings['magic level']) 
+            + Math.floor(14.4 * Math.min(weapons[settings['two-hand weapon']]['tier'], spell_tier) + 1.5 * calc_bonus(settings));
         }
     }
 
     else if (settings['main_style'] === 'melee') {
-        base_AD = 0;
+        if (settings['weapon type'] === 'main-hand') {
+            let AD_mh = Math.floor(2.5 * settings['strength level']) 
+            + Math.floor(9.6 * weapons[settings['main-hand weapon']]['tier'] + calc_bonus(settings));
+            
+            let AD_oh = 0
+            if (weapons[settings['off-hand weapon']]['weapon type'] === 'off-hand') {
+                AD_oh = Math.floor( 0.5 * Math.floor(2.5 * settings['strength level']) 
+                + Math.floor(9.6 * weapons[settings['off-hand weapon']]['tier'] + calc_bonus(settings)));
+            }
+            
+            base_AD = AD_mh + AD_oh;
+        }
+
+        else if (settings['weapon type'] === 'two-hand') {
+            base_AD = Math.floor(2.5 * settings['strength level']) 
+            + Math.floor(1.25 * settings['strength level']) 
+            + Math.floor(9.6 * weapons[settings['two-hand weapon']]['tier'])
+            + calc_bonus(settings) 
+            + Math.floor(4.8 * weapons[settings['two-hand weapon']]['tier'] + 0.5 * calc_bonus(settings));
+        }
     }
 
     else if (settings['main_style'] === 'ranged') {
-        base_AD = 0;
+        if (settings['weapon type'] === 'main-hand') {
+            let AD_mh = Math.floor(2.5 * settings['ranged level']) 
+            + Math.floor(9.6 * weapons[settings['main-hand weapon']]['tier'] + calc_bonus(settings));
+            
+            let AD_oh = 0
+            if (weapons[settings['off-hand weapon']]['weapon type'] === 'off-hand') {
+                AD_oh = Math.floor( 0.5 * Math.floor(2.5 * settings['ranged level']) 
+                + Math.floor(9.6 * weapons[settings['off-hand weapon']]['tier'] + calc_bonus(settings)));
+            }
+            
+            base_AD = AD_mh + AD_oh;
+        }
+
+        else if (settings['weapon type'] === 'two-hand') {
+            base_AD = Math.floor(2.5 * settings['ranged level']) 
+            + Math.floor(1.25 * settings['ranged level']) 
+            + Math.floor(9.6 * weapons[settings['two-hand weapon']]['tier'])
+            + calc_bonus(settings) 
+            + Math.floor(4.8 * weapons[settings['two-hand weapon']]['tier'] + 0.5 * calc_bonus(settings));
+        }
     }
 
     else if (settings['main_style'] === 'necromancy') {
-        base_AD = 0;
+        if (settings['weapon type'] === 'main-hand') {
+            let AD_mh = Math.floor(2.5 * settings['necromancy level']) 
+            + Math.floor(9.6 * weapons[settings['main-hand weapon']]['tier'] + calc_bonus(settings));
+            
+            let AD_oh = 0
+            if (weapons[settings['off-hand weapon']]['weapon type'] === 'off-hand') {
+                AD_oh = Math.floor( 0.5 * Math.floor(2.5 * settings['necromancy level']) 
+                + Math.floor(9.6 * weapons[settings['off-hand weapon']]['tier'] + calc_bonus(settings)));
+            }
+            
+            base_AD = AD_mh + AD_oh;
+        }
     }
 
     // eruptive perk
@@ -76,6 +129,43 @@ function calc_boosted_ad(settings) {
         boosted_AD = Math.floor(boosted_AD * (1 + 0.01 * settings['flow stacks']));
     }
 
+    if (settings['main_style'] === 'melee') {
+        // terrasaur maul
+        if (settings['two-hand weapon'] === 'terrasaur maul') {
+            boosted_AD = Math.floor(boosted_AD * 1.125);
+        }
+
+        // terrasaur maul upgraded
+        else if (settings['two-hand weapon'] === 'terrasaur maul+') {
+            boosted_AD = Math.floor(boosted_AD * 1.175);
+        }
+
+        // chaos roar
+        if (settings['chaos roar'] === true) {
+            boosted_AD = 2*boosted_AD;
+        }
+    }
+
+    if (settings['main_style'] === 'ranged') {
+        // hex bow
+        if (settings['two-hand weapon'] === 'hexhunter bow') {
+            boosted_AD = Math.floor(boosted_AD * 1.125);
+        }
+
+        // hex bow upgraded
+        else if (settings['two-hand weapon'] === 'hexhunter bow+') {
+            boosted_AD = Math.floor(boosted_AD * 1.175);
+        }
+
+        // icy precision (wen arrows)
+        const wen_arrow_abil_types_buffed = ['threshold', 'ultimate', 'special attack'];
+        if (wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type'])) {
+            boosted_AD = Math.floor(boosted_AD * (1 + 0.03 * settings['icy precision']))
+        }
+    }
+
+    // necromancy has no (known) buffs of this type
+
     return boosted_AD
 }
 
@@ -92,9 +182,7 @@ function set_min_var(settings) {
 
 function calc_precise(settings) {
     // calculate precise
-    // exact location disputed
     let max_hit = settings['min hit'] + setting['max hit'];
-
     let min_hit = settings['min hit'] + Math.floor(0.015 * settings['precise'] * max_hit)
 
     return min_hit
@@ -135,6 +223,10 @@ function calc_additive_boosts(settings) {
         boost += 0.16;
     }
 
+    if (settings['needle strike'] === true && settings['main_style'] === 'ranged') {
+        boost += 0.07;
+    }
+
     // add ruby aurora
     boost += settings['ruby aurora'] * 0.01;
 
@@ -170,16 +262,54 @@ function calc_multiplicative_shared_buffs(settings) {
         boost = Math.floor(boost * (1 + settings['blood tithe']/100))
     }
 
+    // apply melee unique boosts
+    if (settings['main_style'] === 'melee') {
+        // prayer boost
+        boost = Math.floor(boost * (1 + prayers[settings['prayer']]['boost']));
+
+        // berserk
+        if (settings['berserk'] === true) { 
+            boost = Math.floor(boost * 2);
+        }
+
+        // zaros godsword
+        if (settings['zaros godsword'] === true) { 
+            boost = Math.floor(boost * 1.25);
+        }
+
+        // dragon battleaxe
+        if (settings['dragon battleaxe'] === true) { 
+            boost = Math.floor(boost * 1.2);
+        }
+    }
+
+    // apply ranged unique boosts
+    if (settings['main_style'] === 'ranged') {
+        // prayer boost
+        boost = Math.floor(boost * (1 + prayers[settings['prayer']]['boost']));
+
+        // death swiftness
+        if (settings['death swiftness'] === true) { 
+            boost = Math.floor(boost * 1.5);
+        }
+    }
+
+    // apply necro unique boosts
+    if (settings['main_style'] === 'necromancy') {
+        // prayer boost
+        boost = Math.floor(boost * (1 + prayers[settings['prayer']]['boost']));
+    }
+
     // apply revenge
     if (settings['main_style'] === 'main-hand' && weapons[settings['off-hand weapon']]['weapon type'] in ['shield', 'defender']) {
         revenge = 0.025 * settings['revenge stacks'];
         
         // boost is twice as big if done with a shield
         if (weapons[settings['off-hand weapon']]['weapon type'] === 'shield') {
-            revenge = revenge * 2
+            revenge = revenge * 2;
         }
 
-        boost = Math.floor(boost * (1 + revenge))
+        boost = Math.floor(boost * (1 + revenge));
 
         // crystal weapons
 
@@ -201,6 +331,14 @@ function calc_multiplicative_pve_buffs(settings) {
     // apply magic unique buffs
     if (settings['main_style'] === 'magic') {
         // spellcaster gloves
+        boost = boost;
+    }
+
+    // apply melee unique buffs
+    if (settings['main_style'] === 'melee') {
+        // spellcaster gloves
+
+        //bane gear
         boost = boost;
     }
 

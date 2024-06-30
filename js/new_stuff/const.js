@@ -40,7 +40,8 @@ abils = {
     'on-hit effects': true, // does the ability get on-hit effects
     'crit effects': true, // can the ability crit
     'damage potential effects': true, // is the ability affected by damage potential
-    'ability classification': 'regular' // bleed, dot, burn, etc
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
     },
 }
 
