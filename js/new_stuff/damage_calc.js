@@ -223,7 +223,7 @@ function calc_additive_boosts(settings) {
         boost += 0.16;
     }
 
-    if (settings['needle strike'] === true && settings['main_style'] === 'ranged') {
+    if ((settings['needle strike'] === true || settings['needle strike'] === 'fleeting') && settings['main_style'] === 'ranged') {
         boost += 0.07;
     }
 
@@ -399,6 +399,10 @@ function calc_core(settings) {
     // dharock's gear
 
     // store damage into bolg
+    if (settings['bolg proc'] === true) {
+        settings['boosted_AD'] = Math.floor(settings['min hit'] + settings['var hit']/2);
+        return calc_bolg(settings);
+    }
 
     // crits
     min_hit = Math.floor(min_hit * (1 + calc_crit_damage(settings)));
@@ -487,10 +491,22 @@ function calc_damage(settings) {
     if (abils[settings['ability']]['on-hit effects']) {
         [settings['min hit'], settings['var hit']] = calc_core(settings);
     }
-    
+
+    // on npc
     [settings['min hit'], settings['var hit']] = calc_on_npc(settings);
 
     return settings
+}
+
+function calc_bolg(settings) {
+    settings['bolg proc'] = false;
+    settings['ability'] = 'bolg proc';
+
+    // calc on hit effects]
+    [settings['min hit'], settings['var hit']] = calc_on_hit(settings);
+   
+    // roll damage
+    return [settings['min hit'], settings['var hit']]
 }
 
 export default calc_damage;

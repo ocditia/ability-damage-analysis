@@ -11,6 +11,7 @@ function wrack(a, b) {
         'ranged level': 90,
         'necromancy level': 110,
         'hit chance': 100,
+        'bolg proc': false,
 
         // gear
         'two-hand weapon': 'inquisitor staff',
