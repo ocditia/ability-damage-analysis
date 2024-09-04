@@ -27,6 +27,7 @@ import armadyl_battlestaff from "./abils/armadyl_battlestaff.js";
 import ibans_staff_spec from "./abils/ibans_staff_spec.js";
 import penance_trident_spec from "./abils/penance_trident_spec.js";
 import greater_sonic_wave_beta from "./abils/greater_sonic_wave_beta.js";
+import soulfire from "./abils/soulfire.js";
 
 const abilities = {
   'Wrack': {
@@ -202,6 +203,12 @@ const abilities = {
     calc: penance_trident_spec,
     icon: 'assets/ability_icons/magic/30x30/trident.png',
     weapons: ['2h','Dw','Md','Ms'],
+  },
+  'Soulfire': {
+    title: 'Soulfire (35%)',
+    calc: soulfire,
+    icon: 'assets/ability_icons/magic/30x30/trident.png',
+    weapons: ['Dw','2h','Md','Ms'],
   },
 }
 
