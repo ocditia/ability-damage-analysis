@@ -723,6 +723,20 @@ const magic_construction = {
             "crit effects": true,
             'category': 'special attack'
         },
+        "soulfire - initial":{
+            "fixed percent": 1.3,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'special attack'
+        },
+        "soulfire - dot":{
+            "fixed percent": 1.7,
+            "variable percent": 0.3,
+            "on hit effects": false,
+            "crit effects": false,
+            'category': 'special attack'
+        },
     }
 }
 
