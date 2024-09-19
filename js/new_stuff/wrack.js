@@ -1,9 +1,12 @@
-import calc_damage from "./damage_calc";
+import hit_damage_calculation from "./damage_calc";
+import calc_damage_object from "./damage_calc";
 
 function wrack(a, b) {
     // temp hard override of settings
     const settingss = {
-        'weapon type': 'main-hand', // 'two-hand' or 'main-hand'
+        'user value': 'mean',
+
+        'weapon type': 'two-hand', // 'two-hand' or 'main-hand'
         'main_style': 'ranged',
         'ability': 'wrack',
         'magic level': 99,
@@ -11,10 +14,10 @@ function wrack(a, b) {
         'ranged level': 90,
         'necromancy level': 110,
         'hit chance': 100,
-        'bolg proc': false,
+        
 
         // gear
-        'two-hand weapon': 'inquisitor staff',
+        'two-hand weapon': 'bow of the last guardian',
         'main-hand weapon': 'wand of the praesul',
         'off-hand weapon': 'imperium core',
         'aura': 'none',
@@ -68,16 +71,18 @@ function wrack(a, b) {
         'haunted AD': 1000,
         'vulnerability': 'vulnerability',
         'enduring ruin - bleed': 0,
-        
-        // calc variables
-        'base_AD': 0,
-        'boosted_AD': 0,
-        'min hit': 0,
-        'var hit':0
+
+
+        'nopenopenope': 0,
+        'anachronia slayer lodge buff': 0,
+
+        // bolg
+        'bolg spec': true,
+        'bolg stacks': 3,
     };
-    
-    let damage = calc_damage(settingss);
-    return [damage['min hit']];
+
+    let damage = hit_damage_calculation(settingss);
+    return damage;
 }
 
 export default wrack;
