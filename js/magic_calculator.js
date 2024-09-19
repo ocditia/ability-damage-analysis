@@ -198,17 +198,17 @@ function calculateDamages(settings) {
     settings['sunshine'] = false;
     settings['metamorphosis'] = false;
     let damages = abilities[key].calc(weapon, settings, 1);
-    row.querySelector('.js--ability-regular').textContent = damages[damages.length-1];
+    row.querySelector('.js--ability-regular').textContent = damages;
 
     // Recalculate with sun
     settings['sunshine'] = true;
     damages = abilities[key].calc(weapon, settings, 1);
-    row.querySelector('.js--ability-sunshine').textContent = damages[damages.length-1];
+    row.querySelector('.js--ability-sunshine').textContent = damages;
 
     // Recalculate with meta
     settings['metamorphosis'] = true;
     settings['sunshine'] = false;
     damages = abilities[key].calc(weapon, settings, 1);
-    row.querySelector('.js--ability-metamorphosis').textContent = damages[damages.length-1];
+    row.querySelector('.js--ability-metamorphosis').textContent = damages;
   })
 }
