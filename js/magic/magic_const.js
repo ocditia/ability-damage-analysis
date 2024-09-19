@@ -323,7 +323,7 @@ const magic_construction = {
         "max cape":{
             "bonus": 31.5
         },
-        "skillcape":{
+        "skill cape":{
             "bonus": 21.6
         },
         "none":{
@@ -721,6 +721,20 @@ const magic_construction = {
             "variable percent": 0.4,
             "on hit effects": true,
             "crit effects": true,
+            'category': 'special attack'
+        },
+        "soulfire - initial":{
+            "fixed percent": 1.3,
+            "variable percent": 0.3,
+            "on hit effects": true,
+            "crit effects": true,
+            'category': 'special attack'
+        },
+        "soulfire - dot":{
+            "fixed percent": 1.7,
+            "variable percent": 0.3,
+            "on hit effects": false,
+            "crit effects": false,
             'category': 'special attack'
         },
     }

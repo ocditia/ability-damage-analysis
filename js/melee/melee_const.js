@@ -271,7 +271,7 @@ const melee_construction = {
         "max cape":{
             "bonus": 31.5
         },
-        "skillcape":{
+        "skill cape":{
             "bonus": 21.6
         },
         "none":{
