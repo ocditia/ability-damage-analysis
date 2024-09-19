@@ -22,6 +22,12 @@ weapons = {
         'weapon type': 'two-hand',
         'tier': 80
     },
+
+    'bow of the last guardian':{
+        'style': 'ranged',
+        'weapon type': 'two-hand',
+        'tier': 95
+    },
 }
 
 gear = {
@@ -258,7 +264,16 @@ abils = {
     'crit effects': true, // can the ability crit
     'damage potential effects': true, // is the ability affected by damage potential
     'ability classification': 'regular', // bleed, dot, burn, etc
-    'ability type': 'threshold' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'ability type': 'proc' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'bolg proc percentages':{ // ability name
+        'min hit': 0.33, // min % of abil expressed as a decimal
+        'var hit': 0.04,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, etc
+        'ability type': 'proc' // basic, threshold, special attack, abilility (necromancy classification), ultimate
     },
 }
 
