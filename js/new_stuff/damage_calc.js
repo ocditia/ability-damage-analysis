@@ -1026,6 +1026,11 @@ function hit_damage_calculation(settings) {
         }
 
     // handle bloat logic
+
+    // handle soul split logic
+    if (settings['split soul'] === true) {
+        total_damage += 1000;
+    }
     return total_damage;
 }
 

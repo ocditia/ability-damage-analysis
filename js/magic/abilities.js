@@ -8,12 +8,5 @@ const abilities = {
     icon: 'assets/ability_icons/magic/30x30/wrack.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
-  'Rapid Fire': {
-    title: 'Rapid Fire',
-    calc: rapid_fire,
-    icon: 'assets/ability_icons/ranged/30x30/rapid_fire.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-}
 
 export {abilities}
