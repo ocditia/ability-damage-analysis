@@ -81,7 +81,7 @@ function wrack(a, b) {
         'bolg stacks': 3,
 
         // soul split
-        'soul split': false,
+        'split soul': false,
     };
 
     let damage = hit_damage_calculation(settingss);
