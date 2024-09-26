@@ -7,8 +7,7 @@ function wrack(a, b) {
         'user value': 'mean',
 
         'weapon type': 'two-hand', // 'two-hand' or 'main-hand'
-        'main_style': 'ranged',
-        'ability': 'wrack',
+        'ability': 'rapid fire',
         'magic level': 99,
         'strength level': 95,
         'ranged level': 90,
@@ -30,6 +29,9 @@ function wrack(a, b) {
         'ruthless rank': 0,
         'precise': 3,
         'genocidal': 0.5, // percent gained from genocidal
+        'biting level': 4,
+        'level 20 armour': true,
+
 
         // AD buffs
         'flow stacks': 4,
@@ -81,7 +83,10 @@ function wrack(a, b) {
         'bolg stacks': 3,
 
         // soul split
-        'split soul': false,
+        'split soul': true,
+
+        // fsoa
+        'instability': true,
     };
 
     let damage = hit_damage_calculation(settingss);
