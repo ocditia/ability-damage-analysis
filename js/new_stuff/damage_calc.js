@@ -3,18 +3,17 @@ import {create_object, calc_crit_chance} from "./object_helper";
 
 function calc_base_ad(settings) {
     // see wiki page /ability_damage for more info
-    let spell_tier = 999;
     let base_AD = 0;
 
     if (abils[settings['ability']]['main style'] === 'magic') {
         if (settings['weapon type'] === 'main-hand') {
             let AD_mh = Math.floor(2.5 * settings['magic level'])
-            + Math.floor(9.6 * Math.min(weapons[settings['main-hand weapon']]['tier'], spell_tier) + calc_bonus(settings));
+            + Math.floor(9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings));
             
             let AD_oh = 0
             if (weapons[settings['off-hand weapon']]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor( 0.5 * Math.floor(2.5 * settings['magic level']) 
-                + Math.floor(9.6 * Math.min(weapons[settings['off-hand weapon']]['tier'], spell_tier) + calc_bonus(settings)));
+                + Math.floor(9.6 * calc_weapon_tier(settings, 'off-hand weapon') + calc_bonus(settings)));
             }
             
             base_AD = AD_mh + AD_oh;
@@ -23,7 +22,7 @@ function calc_base_ad(settings) {
         else if (settings['weapon type'] === 'two-hand') {
             base_AD = Math.floor(2.5 * settings['magic level']) 
             + Math.floor(1.25 * settings['magic level']) 
-            + Math.floor(14.4 * Math.min(weapons[settings['two-hand weapon']]['tier'], spell_tier) + 1.5 * calc_bonus(settings));
+            + Math.floor(14.4 * calc_weapon_tier(settings, 'two-hand weapon') + 1.5 * calc_bonus(settings));
         }
     }
 
@@ -99,6 +98,24 @@ function calc_base_ad(settings) {
     return base_AD;
 }   
 
+function calc_weapon_tier(settings, hand) {
+    const spell_tier = 999;
+    let tier = 0;
+    // custom weapon tier
+    if (settings[hand] === 'custom ' + hand) {
+        tier = settings['custom weapon tier ' + hand];
+    }
+    // standard weapon
+    else {let tier = Math.min(weapons[settings[hand]]['tier'], spell_tier);
+
+        // innate mastery (shard of genesis essence)
+        if (weapons[settings[hand]]['tier'] && settings['innate mastery'] === true) {
+            tier += 5;
+        }
+    }
+    return tier;  
+}
+
 // bonus from gear and reaper crew
 function calc_bonus(settings) {
     let bonus = 0;
@@ -106,7 +123,6 @@ function calc_bonus(settings) {
     if (settings['reaper crew'] === true) {
         bonus += 12;
     }
-    console.log(style_str)
 
     bonus += armour[settings['helmet']][style_str];
     bonus += armour[settings['body']][style_str];

@@ -1,4 +1,25 @@
 weapons = {
+    'custom main-hand weapon': {
+        'style': 'hybrid',
+        'weapon type': 'main-hand',
+        'tier': 1,
+        'type': 'none',
+        'classification': 'none',
+    },
+    'custom off-hand weapon': {
+        'style': 'hybrid',
+        'weapon type': 'off-hand',
+        'tier': 1,
+        'type': 'none',
+        'classification': 'none',
+    },
+    'custom two-hand weapon': {
+        'style': 'hybrid',
+        'weapon type': 'two-hand',
+        'tier': 1,
+        'type': 'none',
+        'classification': 'none',
+    },
     'wand of the praesul': {
         'style': 'magic',
         'weapon type': 'main-hand',
@@ -6,7 +27,6 @@ weapons = {
         'type': 'wand',
         'classification': 'none',
     },
-
     'imperium core': {
         'style': 'magic',
         'weapon type': 'off-hand',
@@ -14,7 +34,6 @@ weapons = {
         'type': 'core',
         'classification': 'none',
     },
-
     'inquisitor staff': {   
         'style': 'magic',
         'weapon type': 'two-hand',
@@ -22,15 +41,13 @@ weapons = {
         'type': 'staff',
         'classification': 'none',
     },
-
-    'inquisitor staff+': {
+     'inquisitor staff+': {
         'style': 'magic',
         'weapon type': 'two-hand',
         'tier': 80,
         'type': 'staff',
         'classification': 'none',
     },
-
     'bow of the last guardian':{
         'style': 'ranged',
         'weapon type': 'two-hand',
