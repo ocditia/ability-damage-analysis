@@ -3,35 +3,40 @@ weapons = {
         'style': 'magic',
         'weapon type': 'main-hand',
         'tier': 92,
-        'category': 'wand',
+        'type': 'wand',
+        'classification': 'none',
     },
 
     'imperium core': {
         'style': 'magic',
         'weapon type': 'off-hand',
         'tier': 92,
-        'category': 'core',
+        'type': 'core',
+        'classification': 'none',
     },
 
     'inquisitor staff': {   
         'style': 'magic',
         'weapon type': 'two-hand',
         'tier': 80,
-        'category': 'staff',
+        'type': 'staff',
+        'classification': 'none',
     },
 
     'inquisitor staff+': {
         'style': 'magic',
         'weapon type': 'two-hand',
         'tier': 80,
-        'category': 'staff',
+        'type': 'staff',
+        'classification': 'none',
     },
 
     'bow of the last guardian':{
         'style': 'ranged',
         'weapon type': 'two-hand',
         'tier': 95,
-        'category': 'bow',
+        'type': 'bow',
+        'classification': 'none',
     },
 }
 
@@ -346,6 +351,15 @@ abils = {
 }
 
 armour = {
+    /* example armour piece
+    'name lower case': {
+        'necromancy strength': 23.2, strength value with decimal
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        'slot': 'helmet', options are helmet, body, legs, gloves, boots, pocket, necklace, ring, cape
+        'style': 'necromancy', options are necromancy, ranged, melee, magic, hybrid
+    },*/
     'deathdealer hood (tier 90)': {
         'necromancy strength': 23.2,
         'magic strength': 0,
@@ -464,6 +478,38 @@ armour = {
         'melee strength': 0,
         'ranged strength': 0,
         'slot': 'boots',
+        'style': 'hybrid',
+    },
+    'none necklace': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        'slot': 'necklace',
+        'style': 'hybrid',
+    },
+    'none ring': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        'slot': 'ring',
+        'style': 'hybrid',
+    },
+    'none pocket': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        'slot': 'pocket',
+        'style': 'hybrid',
+    },
+    'none cape': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        'slot': 'cape',
         'style': 'hybrid',
     },
     'sirenic mask': {
