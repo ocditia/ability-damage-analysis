@@ -1,4 +1,4 @@
-import {weapons, gear, abils, prayers} from "./const";
+import {weapons, gear, armour, abils, prayers} from "./const";
 import {create_object, calc_crit_chance} from "./object_helper";
 
 function calc_base_ad(settings) {
@@ -101,7 +101,23 @@ function calc_base_ad(settings) {
 
 // bonus from gear and reaper crew
 function calc_bonus(settings) {
-    return 0;
+    let bonus = 0;
+    const style_str = abils[settings['ability']]['main style'] + ' strength';
+    if (settings['reaper crew'] === true) {
+        bonus += 12;
+    }
+    console.log(style_str)
+
+    bonus += armour[settings['helmet']][style_str];
+    bonus += armour[settings['body']][style_str];
+    bonus += armour[settings['legs']][style_str];
+    bonus += armour[settings['gloves']][style_str];
+    bonus += armour[settings['boots']][style_str];
+    bonus += armour[settings['necklace']][style_str];
+    bonus += armour[settings['ring']][style_str];
+    bonus += armour[settings['cape']][style_str];
+    bonus += armour[settings['pocket']][style_str];
+    return bonus;
 }
 
 // modify boosted AD by damage potential (hit chance)

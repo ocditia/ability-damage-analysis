@@ -20,8 +20,18 @@ function wrack(a, b) {
         'main-hand weapon': 'wand of the praesul',
         'off-hand weapon': 'imperium core',
         'aura': 'none',
-        'necklace': 'none',
-        'pocket': 'none',
+        
+        
+
+        'helmet': 'tectonic mask',
+        'body': 'tectonic robe top',
+        'legs': 'tectonic robe bottom',
+        'gloves': 'none gloves',
+        'boots': 'none boots',
+        'necklace': 'none necklace',
+        'ring': 'none ring',
+        'pocket': 'none pocket',
+        'cape': 'none cape',
 
         // perks
         'eruptive': 0,
