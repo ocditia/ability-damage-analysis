@@ -1,85 +1,106 @@
-import calc_damage_object from './damage_calc';
+import hit_damage_calculation from "./damage_calc";
+import calc_damage_object from "./damage_calc";
 
 function wrack(a, b) {
-	// temp hard override of settings
-	const settingss = {
-		'user value': 'mean',
+    // temp hard override of settings
+    const settingss = {
+        'user value': 'mean',
 
-		'weapon type': 'main-hand', // 'two-hand' or 'main-hand'
-		main_style: 'ranged',
-		ability: 'wrack',
-		'magic level': 99,
-		'strength level': 95,
-		'ranged level': 90,
-		'necromancy level': 110,
-		'hit chance': 100,
-		'bolg proc': false,
+        'weapon type': 'two-hand', // 'two-hand' or 'main-hand'
+        'ability': 'rapid fire',
+        'magic level': 99,
+        'strength level': 95,
+        'ranged level': 90,
+        'necromancy level': 110,
+        'hit chance': 100,
+        
 
-		// gear
-		'two-hand weapon': 'inquisitor staff',
-		'main-hand weapon': 'wand of the praesul',
-		'off-hand weapon': 'imperium core',
-		aura: 'none',
-		necklace: 'none',
-		pocket: 'none',
+        // gear
+        'two-hand weapon': 'bow of the last guardian',
+        'main-hand weapon': 'wand of the praesul',
+        'off-hand weapon': 'imperium core',
+        'aura': 'none',
+        
+        
 
-		// perks
-		eruptive: 0,
-		'ruthless stacks': 0,
-		'ruthless rank': 0,
-		precise: 3,
-		genocidal: 0.5, // percent gained from genocidal
+        'helmet': 'tectonic mask',
+        'body': 'tectonic robe top',
+        'legs': 'tectonic robe bottom',
+        'gloves': 'none gloves',
+        'boots': 'none boots',
+        'necklace': 'none necklace',
+        'ring': 'none ring',
+        'pocket': 'none pocket',
+        'cape': 'none cape',
 
-		// AD buffs
-		'flow stacks': 4,
-		'chaos roar': false,
-		'icy precision': 4,
+        // perks
+        'eruptive': 0,
+        'ruthless stacks': 0,
+        'ruthless rank': 0,
+        'precise': 3,
+        'genocidal': 0.5, // percent gained from genocidal
+        'biting level': 4,
+        'level 20 armour': true,
 
-		// additive boosts
-		'stone of jas': 0,
-		'void gear': 'none',
-		'enduring ruin - hit': false,
-		'ruby aurora': 0,
-		gravitate: 0,
 
-		// multiplicative boosts
-		// shared
-		// magic specific
-		prayer: 'affliction',
-		sunshine: false,
-		'blood tithe': 0,
+        // AD buffs
+        'flow stacks': 4,
+        'chaos roar': false,
+        'icy precision': 4,
 
-		// all styles
-		'revenge stacks': 0,
+        // additive boosts
+        'stone of jas': 0,
+        'void gear': 'none',
+        'enduring ruin - hit': false,
+        'ruby aurora': 0,
+        'gravitate': 0,
 
-		// PvE only
-		// magic specific
+        // multiplicative boosts
+        // shared
+        // magic specific
+        'prayer': 'affliction',
+        'sunshine': false,
+        'blood tithe': 0,
 
-		// all styles
-		'slayer helm': 'corrupted slayer helmet',
-		'guardhouse task': 1,
-		'guardhouse low hp': 0,
+        // all styles
+        'revenge stacks': 0,
 
-		// bonus damage
-		frostblades: false,
+        // PvE only
+        // magic specific
 
-		// core boosts
-		'berserkers fury': 1,
+        // all styles
+        'slayer helm': 'corrupted slayer helmet',
+        'guardhouse task': 1,
+        'guardhouse low hp': 0,
 
-		// on-npc boosts
-		'haunted AD': 1000,
-		vulnerability: 'vulnerability',
-		'enduring ruin - bleed': 0,
+        // bonus damage
+        'frostblades': false,
 
-		// calc variables
-		base_AD: 0,
-		boosted_AD: 0,
-		'min hit': 0,
-		'var hit': 0
-	};
+        // core boosts
+        'berserkers fury': 1,
 
-	let damage = calc_damage_object(settingss);
-	return [damage];
+        // on-npc boosts
+        'haunted AD': 1000,
+        'vulnerability': 'vulnerability',
+        'enduring ruin - bleed': 0,
+
+
+        'nopenopenope': 0,
+        'anachronia slayer lodge buff': 0,
+
+        // bolg
+        'bolg spec': true,
+        'bolg stacks': 3,
+
+        // soul split
+        'split soul': true,
+
+        // fsoa
+        'instability': true,
+    };
+
+    let damage = hit_damage_calculation(settingss);
+    return damage;
 }
 
 export default wrack;
