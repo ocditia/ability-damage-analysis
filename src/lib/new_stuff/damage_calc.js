@@ -294,8 +294,8 @@ function ability_specific_effects(settings, dmgObject) {
 
 function set_min_var(settings, dmgObject) {
     // set initial min and var values
-    min_percent = abils[settings['ability']]['min hit'];
-    var_percent = abils[settings['ability']]['var hit'];
+    let min_percent = abils[settings['ability']]['min hit'];
+    let var_percent = abils[settings['ability']]['var hit'];
 
     if (abils[settings['ability']]['main style'] === 'magic') {
         // detonate
@@ -328,8 +328,8 @@ function set_min_var(settings, dmgObject) {
         }
     }
     
-    min_hit = Math.max(Math.floor(min_percent * dmgObject['boosted AD']),0);
-    var_hit = Math.max(Math.floor(var_percent * dmgObject['boosted AD']),0);
+    let min_hit = Math.max(Math.floor(min_percent * dmgObject['boosted AD']),0);
+    let var_hit = Math.max(Math.floor(var_percent * dmgObject['boosted AD']),0);
     return [min_hit, var_hit];
 }
 
@@ -438,9 +438,9 @@ function calc_additive_boosts(settings, dmgObject) {
     }
     
     // zerk necklace
-    if ((weapons[settings['main-hand weapon']]['category'] === 'obsidian' && settings['weapon type'] === 'main-hand') || (weapons[settings['two-hand weapon']]['category'] === 'obsidian' && settings['weapon type'] === 'two-hand')) {
-        boost += 0.05;
-    }
+    // if ((weapons[settings['main-hand weapon']]['category'] === 'obsidian' && settings['weapon type'] === 'main-hand') || (weapons[settings['two-hand weapon']]['category'] === 'obsidian' && settings['weapon type'] === 'two-hand')) {
+    //     boost += 0.05;
+    // }
 
     // dominion marker (wtf does this do lol?)
 
@@ -481,8 +481,8 @@ function calc_additive_boosts(settings, dmgObject) {
         boost = boost + 0.01 * settings['desperado'];
     }
 
-    min_hit = Math.floor(dmgObject['min hit'] * (1 + boost));
-    var_hit = Math.floor(dmgObject['var hit'] * (1 + boost));
+    let min_hit = Math.floor(dmgObject['min hit'] * (1 + boost));
+    let var_hit = Math.floor(dmgObject['var hit'] * (1 + boost));
 
     return [min_hit, var_hit];
 }
@@ -576,8 +576,8 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
         boost = Math.floor(boost * settings['ruthless stacks'] * settings['ruthless rank'] * 0.005);
     }
 
-    min_hit = Math.floor(dmgObject['min hit'] * boost / 10000);
-    var_hit = Math.floor(dmgObject['var hit'] * boost / 10000);
+    let min_hit = Math.floor(dmgObject['min hit'] * boost / 10000);
+    let var_hit = Math.floor(dmgObject['var hit'] * boost / 10000);
 
     return [min_hit, var_hit];
 }
@@ -645,8 +645,8 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
         boost = Math.floor(boost + 0.05 * (1 - settings['target hp percent']));
     }
 
-    min_hit = Math.floor(dmgObject['min hit'] * boost / 10000);
-    var_hit = Math.floor(dmgObject['var hit'] * boost / 10000);
+    let min_hit = Math.floor(dmgObject['min hit'] * boost / 10000);
+    let var_hit = Math.floor(dmgObject['var hit'] * boost / 10000);
 
     return [min_hit, var_hit];
 }
@@ -848,7 +848,7 @@ function calc_on_npc(settings, dmgObject) {
         }
         
         // anachronia slayer lodge buff
-        dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * (1 + settings['anachronia slayer lodge buff']));
+        // dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * (1 + settings['anachronia slayer lodge buff']));
         
         // store damage into soul split
         settings['soul split'] = dmgObject;
@@ -879,7 +879,7 @@ function calc_on_hit(settings, dmgObject) {
 }
 
 function calc_damage_object(settings) { 
-    dmgObject = create_object(settings);
+    const dmgObject = create_object(settings);
     for (let key in dmgObject) {
         // calc base AD
         dmgObject[key]['base AD'] = calc_base_ad(settings);
@@ -999,7 +999,7 @@ function calc_soul_split_hit(hit, settings) {
     }
  
     // amulet of souls bonus healing
-    aos_amulets = ['amulet of souls', 'amulet of souls (or)', 'essence of finality', 'essence of finality (or)'];
+    const aos_amulets = ['amulet of souls', 'amulet of souls (or)', 'essence of finality', 'essence of finality (or)'];
     if (aos_amulets.includes(settings['amulet'])) {
         heal = heal * 1.1875
     }

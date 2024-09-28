@@ -1111,6 +1111,11 @@ const armour = {
     },
 }
 
+const ABILITIES = {
+  NECRO_AUTO: 'necromancy auto',
+  TOUCH_OF_DEATH: 'touch of death'
+};
+
 const abils = { 
     'slice': { // ability name
     'min hit': 0.95, // min % of abil expressed as a decimal
@@ -1687,7 +1692,7 @@ const abils = {
     'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
     },
 
-    'necromancy auto': { // ability name
+    [ABILITIES.NECRO_AUTO]: { // ability name
     'min hit': 0.9, // min % of abil expressed as a decimal
     'var hit': 0.2,
     'on-hit effects': true, // does the ability get on-hit effects
@@ -1698,7 +1703,7 @@ const abils = {
     'main style': 'necromancy',
     'damage type': 'necrotic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
     },
-    'touch of death': { // ability name
+    [ABILITIES.TOUCH_OF_DEATH]: { // ability name
     'min hit': 0.9, // min % of abil expressed as a decimal
     'var hit': 0.2,
     'on-hit effects': true, // does the ability get on-hit effects
@@ -2434,4 +2439,4 @@ const prayers = {
     },
 }
 
-export {weapons, gear, abils, armour, prayers};
+export {ABILITIES, weapons, gear, abils, armour, prayers};

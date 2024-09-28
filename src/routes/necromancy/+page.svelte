@@ -20,10 +20,15 @@
     updateDamages();
 
     function updateDamages() {
-        console.log('update damages', settings);
-        Object.values(damages).forEach(ability => {
-            ability.regular = ability.calc(settings);
-            console.log(`Calcing damage for : ${ability.regular}`);
+        Object.entries(damages).forEach(([abilityKey, ability]) => {
+            const adaptedSettings = Object.fromEntries(
+                Object.entries(settings).map(([key, value]) => [key, value.value])
+            );
+            adaptedSettings['ability'] = abilityKey;
+            adaptedSettings['haunted AD'] = 2345;
+            ability.regular = ability.calc(adaptedSettings);
+            adaptedSettings['split soul'] = true;
+            ability.ss = ability.calc(adaptedSettings);
         });
     }
 </script>

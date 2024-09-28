@@ -1,14 +1,14 @@
 const SETTINGS = {
-  MODE: 'mode',
+  MODE: 'user value',
   MODE_VALUES: {
-    MEAN: 'avg',
+    MEAN: 'mean',
     MIN_NO_CRIT: 'min no crit',
     MIN_CRIT: 'min crit',
     MAX_NO_CRIT: 'max no crit',
     MAX_CRIT: 'max crit',
   },
   ABILITY_DAMAGE: 'ability damage',
-  LEVEL: 'level',
+  LEVEL: 'necromancy level',
   POTION: 'potion',
   POTION_VALUES: {
     NONE: 'none',
@@ -86,36 +86,36 @@ const SETTINGS = {
   BODY: 'body',
   BODY_VALUES: {
     NONE: 'none',
-    TFN: 'crown of the first necromancer',
-    T90DD: 'deathdealer hood (tier 90)',
-    T80DD: 'deathdealer hood (tier 80)'
+    TFN: 'robe top of the first necromancer',
+    T90DD: 'deathdealer robe top (tier 90)',
+    T80DD: 'deathdealer robe top (tier 80)'
   },
-  LEGS: 'leg',
+  LEGS: 'legs',
   LEGS_VALUES: {
     NONE: 'none',
-    TFN: 'crown of the first necromancer',
-    T90DD: 'deathdealer hood (tier 90)',
-    T80DD: 'deathdealer hood (tier 80)'
+    TFN: 'robe bottom of the first necromancer',
+    T90DD: 'deathdealer robe bottom (tier 90)',
+    T80DD: 'deathdealer robe bottom (tier 80)'
   },
   GLOVES: 'gloves',
   GLOVES_VALUES: {
     NONE: 'none',
-    TFN: 'crown of the first necromancer',
-    T90DD: 'deathdealer hood (tier 90)',
-    T80DD: 'deathdealer hood (tier 80)'
+    TFN: 'hand wrap of the first necromancer',
+    T90DD: 'deathdealer gloves (tier 90)',
+    T80DD: 'deathdealer gloves (tier 80)'
   },
   BOOTS: 'boots',
   BOOTS_VALUES: {
     NONE: 'none',
-    TFN: 'crown of the first necromancer',
-    T90DD: 'deathdealer hood (tier 90)',
-    T80DD: 'deathdealer hood (tier 80)'
+    TFN: 'foot wraps of the first necromancer',
+    T90DD: 'deathdealer boots (tier 90)',
+    T80DD: 'deathdealer boots (tier 80)'
   },
   NECKLACE: 'necklace',
   NECKLACE_VALUES: {
     NONE: 'none',
-    EOFOR: 'essence of finality amulet (or)',
-    EOF: 'essence of finality amulet',
+    EOFOR: 'eof (or)',
+    EOF: 'eof',
     MOONSTONE: 'conjurers raising amulet',
     AOSOR: 'amulet of souls (or)',
     AOS: 'amulet of souls',
@@ -137,7 +137,7 @@ const SETTINGS = {
   RING: 'ring',
   RING_VALUES: {
     NONE: 'none',
-    REAVERS: 'reavers',
+    REAVERS: 'reavers ring',
     ZORGOTH: 'zorgoths soul ring',
     RODI: 'ring of death (i)',
     ROD: 'ring of death',
@@ -147,21 +147,21 @@ const SETTINGS = {
   POCKET: 'pocket',
   POCKET_VALUES: {
     NONE: 'none',
-    GRIM: 'grimoire',
+    GRIM: 'erethdors grimoire',
     FUL: 'scripture of ful',
     GWD3: 'gwd3 scripture',
     IGOD: 'illuminated god book',
     GOD: 'god book',
   },
-  WEAPON: 'weapon',
+  WEAPON: 'weapon type',
   WEAPON_VALUES: {
-    DW: 'dw',
+    DW: 'main-hand',
     MS: 'ms'
   },
   MH: 'main-hand weapon',
   MH_VALUES: {
     NONE: 'none',
-    OMNI: 'omni guard',
+    OMNI: 'omniguard',
     DG90: 'death guard (tier 90)',
     DG80: 'death guard (tier 80)',
   },
