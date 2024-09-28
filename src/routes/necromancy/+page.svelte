@@ -23,15 +23,16 @@
 	updateDamages();
 
 	function updateDamages() {
+        const adaptedSettings = Object.fromEntries(
+            Object.entries(settings).map(([key, value]) => [key, value.value])
+        );
+        adaptedSettings['haunted AD'] = 2345;
+       
 		Object.entries(damages).forEach(([abilityKey, ability]) => {
-			const adaptedSettings = Object.fromEntries(
-				Object.entries(settings).map(([key, value]) => [key, value.value])
-			);
-			adaptedSettings['ability'] = abilityKey;
-			adaptedSettings['haunted AD'] = 2345;
-			ability.regular = ability.calc(adaptedSettings);
-			adaptedSettings['split soul'] = true;
-			ability.ss = ability.calc(adaptedSettings);
+            adaptedSettings['ability'] = abilityKey;
+            damages[abilityKey].regular = ability.calc(adaptedSettings);
+            adaptedSettings['split soul'] = true;
+			damages[abilityKey].ss = ability.calc(adaptedSettings);
 		});
 	}
 </script>
