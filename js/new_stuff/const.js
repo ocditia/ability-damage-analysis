@@ -1549,6 +1549,7 @@ abils = {
     'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
     'main style': 'magic',
     'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'hit ticks': [1, 3, 5, 7],
     },
     'deep impact': { // ability name
     'min hit': 1.2, // min % of abil expressed as a decimal

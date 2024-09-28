@@ -110,6 +110,12 @@ const abilities = {
     icon: 'assets/ability_icons/magic/30x30/wrack.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
+  'rapid': {
+    title: 'Rapid',
+    calc: rapid_fire,
+    icon: 'assets/ability_icons/magic/30x30/wrack.png',
+    weapons: ['2h','Dw','Md','Ms'],
+  },
 }  
 
 export {abilities}

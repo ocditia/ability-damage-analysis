@@ -1,3 +1,4 @@
+import { next_tick } from "./ability_helper";
 import hit_damage_calculation from "./damage_calc";
 import calc_damage_object from "./damage_calc";
 
@@ -100,6 +101,7 @@ function wrack(a, b) {
     };
 
     let damage = hit_damage_calculation(settingss);
+    
     return damage;
 }
 
