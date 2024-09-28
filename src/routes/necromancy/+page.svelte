@@ -17,11 +17,13 @@
 		Object.entries(settingsConfig).map(([key, value]) => [key, { ...value, key: key, value: value.default }])
 	);
 
-    function updateDamages(event) {
+    updateDamages();
+
+    function updateDamages() {
         console.log('update damages', settings);
         Object.values(damages).forEach(ability => {
-            // ability.regular = ability.calc('dw', settings, 1);
-            // console.log(`Calcing damage for : ${ability.regular}`);
+            ability.regular = ability.calc(settings);
+            console.log(`Calcing damage for : ${ability.regular}`);
         });
     }
 </script>
