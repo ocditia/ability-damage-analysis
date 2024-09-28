@@ -1,5 +1,6 @@
 import { weapons, gear, armour, abils, prayers } from './const';
 import { create_object, calc_crit_chance } from './object_helper';
+import { settingsConfig, SETTINGS } from '$lib/necromancy/settings';
 
 function calc_base_ad(settings) {
 	// see wiki page /ability_damage for more info
@@ -424,10 +425,10 @@ function calc_style_specific(settings, dmgObject) {
 	return dmgObject;
 }
 
-function calc_precise(settings) {
+function calc_precise(settings, dmgObject) {
 	// calculate precise
 	let max_hit = dmgObject['min hit'] + dmgObject['var hit'];
-	let min_hit = dmgObject['min hit'] + Math.floor(0.015 * settings['precise'] * max_hit);
+	let min_hit = dmgObject['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
 
 	return min_hit;
 }
@@ -1007,6 +1008,8 @@ function calc_damage_object(settings) {
 		dmgObject[key] = calc_style_specific(settings, dmgObject[key]);
 		// set min var
 		[dmgObject[key]['min hit'], dmgObject[key]['var hit']] = set_min_var(settings, dmgObject[key]);
+		// precise
+		dmgObject[key]['min hit'] = calc_precise(settings, dmgObject[key])
 		// calc on hit effects
 		if (abils[settings['ability']]['on-hit effects']) {
 			[dmgObject[key]['min hit'], dmgObject[key]['var hit']] = calc_on_hit(
