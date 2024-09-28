@@ -1,14 +1,14 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
-    export let setting;
+	export let setting;
 	export let img;
 
-    const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 
-    function settingUpdated() {
-        dispatch('settingsUpdated');
-    }
+	function settingUpdated() {
+		dispatch('settingsUpdated');
+	}
 </script>
 
 <div class="md:flex md:items-center mt-4">
@@ -24,9 +24,9 @@
 		<input
 			class="bg-[#171d21] appearance-none border-2 border-slate-600 rounded w-full py-2 px-4 leading-tight focus:outline-none"
 			id={setting.key}
-            type="number"
-            bind:value={setting.value}
-            on:change={settingUpdated}
+			type="number"
+			bind:value={setting.value}
+			on:change={settingUpdated}
 			{...$$restProps}
 		/>
 	</div>
