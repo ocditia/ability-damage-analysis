@@ -55,9 +55,35 @@ weapons = {
         'type': 'bow',
         'classification': 'none',
     },
+    'omniguard':{
+        'style': 'necromancy',
+        'weapon type': 'main-hand',
+        'tier': 95,
+        'type': 'armguard',
+        'classification': 'none',
+    },
+    'soulbound lantern':{
+        'style': 'necromancy',
+        'weapon type': 'off-hand',
+        'tier': 95,
+        'type': 'conduit',
+        'classification': 'none',
+    },
 }
 
 gear = {
+    'full slayer helmet': { // base helmet is the same as full helmet for melee
+        'boost': 0.075
+    },
+    'reinforced slayer helmet': {
+        'boost': 0.08
+    },
+    'strong slayer helmet': {
+        'boost': 0.085
+    },
+    'mighty slayer helmet': {
+        'boost': 0.09
+    },
     'corrupted slayer helmet': {
         'boost': 0.095
     },
@@ -1340,6 +1366,445 @@ abils = {
     'main style': 'magic',
     'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
     },
+    'wrack and ruin': { // ability name
+    'min hit': 1.8, // min % of abil expressed as a decimal
+    'var hit': 0.4,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'impact': { // ability name
+    'min hit': 0.65, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'dragon breath': { // ability name
+    'min hit': 1.1, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'sonic wave': { // ability name
+    'min hit': 0.95, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'shock': { // ability name
+    'min hit': 0.65, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'concentrated blast 1': { // ability name
+    'min hit': 0.45, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'channel', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'concentrated blast 2': { // ability name
+    'min hit': 0.5, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'channel', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'concentrated blast 3': { // ability name
+    'min hit': 0.55, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'channel', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'greater concentrated blast 1': { // ability name
+    'min hit': 0.45, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'channel', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'greater concentrated blast 2': { // ability name
+    'min hit': 0.51, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'channel', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'greater concentrated blast 3': { // ability name
+    'min hit': 0.57, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'channel', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'combust': { // ability name
+    'min hit': 0.25, // min % of abil expressed as a decimal
+    'var hit': 0.06,
+    'on-hit effects': false, // does the ability get on-hit effects
+    'crit effects': false, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'burn', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'chain': { // ability name
+    'min hit': 0.65, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'greater chain': { // ability name
+    'min hit': 0.65, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'magma tempest': { // ability name
+    'min hit': 0.25, // min % of abil expressed as a decimal
+    'var hit': 0.05,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': false, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'corruption blast': { // ability name
+    'min hit': 0.6, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': false, // does the ability get on-hit effects
+    'crit effects': false, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'dot', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'greater sonic wave': { // ability name
+    'min hit': 1.15, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'asphyxiate': { // ability name
+    'min hit': 1.1, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'channel', // bleed, dot, burn, etc
+    'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'hit ticks': [1, 3, 5, 7],
+    },
+    'deep impact': { // ability name
+    'min hit': 1.2, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'horror': { // ability name
+    'min hit': 1.2, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'wild magic': { // ability name
+    'min hit': 1.25, // min % of abil expressed as a decimal
+    'var hit': 0.3,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'smoke tendrils 1': { // ability name
+    'min hit': 0.6, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'channel', // bleed, dot, burn, etc
+    'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'smoke tendrils 2': { // ability name
+    'min hit': 0.7, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'channel', // bleed, dot, burn, etc
+    'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'smoke tendrils 3': { // ability name
+    'min hit': 0.8, // min % of abil expressed as a decimal
+    'var hit': 0.3,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'channel', // bleed, dot, burn, etc
+    'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'smoke tendrils 4': { // ability name
+    'min hit': 0.9, // min % of abil expressed as a decimal
+    'var hit': 0.4,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'channel', // bleed, dot, burn, etc
+    'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'omnipower': { // ability name
+    'min hit': 2.7, // min % of abil expressed as a decimal
+    'var hit': 0.6,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'omnipower igenous': { // ability name
+    'min hit': 1.2, // min % of abil expressed as a decimal
+    'var hit': 0.3,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'tsunami': { // ability name
+    'min hit': 2.25, // min % of abil expressed as a decimal
+    'var hit': 0.5,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'sunshine dot': { // ability name
+    'min hit': 0.1, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': false, // does the ability get on-hit effects
+    'crit effects': false, // can the ability crit
+    'damage potential effects': false, // is the ability affected by damage potential
+    'ability classification': 'dot', // bleed, dot, burn, etc
+    'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'magic',
+    'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+
+    'necromancy auto': { // ability name
+    'min hit': 0.9, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'necromancy',
+    'damage type': 'necrotic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'touch of death': { // ability name
+    'min hit': 0.9, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'necromancy',
+    'damage type': 'necrotic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'soul sap': { // ability name
+    'min hit': 0.9, // min % of abil expressed as a decimal
+    'var hit': 0.2,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'basic attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'necromancy',
+    'damage type': 'necrotic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'skeleton warrior auto': { // ability name
+    'min hit': 0.22, // min % of abil expressed as a decimal
+    'var hit': 0.06,
+    'on-hit effects': false, // does the ability get on-hit effects
+    'crit effects': false, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'conjure', // bleed, dot, burn, etc
+    'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'necromancy',
+    'damage type': 'spirit', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'vengeful ghost auto': { // ability name
+    'min hit': 0.18, // min % of abil expressed as a decimal
+    'var hit': 0.04,
+    'on-hit effects': false, // does the ability get on-hit effects
+    'crit effects': false, // can the ability crit
+    'damage potential effects': false, // is the ability affected by damage potential
+    'ability classification': 'conjure', // bleed, dot, burn, etc
+    'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'necromancy',
+    'damage type': 'spirit', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'putrid zombie auto': { // ability name
+    'min hit': 0.18, // min % of abil expressed as a decimal
+    'var hit': 0.04,
+    'on-hit effects': false, // does the ability get on-hit effects
+    'crit effects': false, // can the ability crit
+    'damage potential effects': false, // is the ability affected by damage potential
+    'ability classification': 'conjure', // bleed, dot, burn, etc
+    'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'necromancy',
+    'damage type': 'spirit', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'command vengeful ghost auto': { // ability name
+    'min hit': 3.6, // min % of abil expressed as a decimal
+    'var hit': 0.8,
+    'on-hit effects': false, // does the ability get on-hit effects
+    'crit effects': false, // can the ability crit
+    'damage potential effects': false, // is the ability affected by damage potential
+    'ability classification': 'conjure', // bleed, dot, burn, etc
+    'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'necromancy',
+    'damage type': 'spirit', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'command phantom guardian': { // ability name
+    'min hit': 0.45, // min % of abil expressed as a decimal
+    'var hit': 0.1,
+    'on-hit effects': false, // does the ability get on-hit effects
+    'crit effects': false, // can the ability crit
+    'damage potential effects': false, // is the ability affected by damage potential
+    'ability classification': 'conjure', // bleed, dot, burn, etc
+    'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'necromancy',
+    'damage type': 'spirit', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'bloat - full damage': { // ability name
+    'min hit': 1.35, // min % of abil expressed as a decimal
+    'var hit': 0.3,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'necromancy',
+    'damage type': 'necrotic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    'death skulls': { // ability name
+    'min hit': 2.25, // min % of abil expressed as a decimal
+    'var hit': 0.5,
+    'on-hit effects': true, // does the ability get on-hit effects
+    'crit effects': true, // can the ability crit
+    'damage potential effects': true, // is the ability affected by damage potential
+    'ability classification': 'regular', // bleed, dot, burn, etc
+    'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    'main style': 'necromancy',
+    'damage type': 'necrotic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+    },
+    
+
+
+
+
+
+
+
     'time strike': { // ability name
     'min hit': 0.9, // min % of abil expressed as a decimal
     'var hit': 0.2,
@@ -1351,7 +1816,7 @@ abils = {
     'main style': 'magic',
     'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
     },
-    'rapid fire': { // ability name
+    'rapid fire necro': { // ability name
     'min hit': 0.33, // min % of abil expressed as a decimal
     'var hit': 0.04,
     'on-hit effects': true, // does the ability get on-hit effects
@@ -1759,10 +2224,214 @@ armour = {
 }
 
 prayers = {
+    'charge': {
+        'boost': 0.02,
+        'style': 'magic',
+        'category': 'single-stat boosting',
+    },
+    'super charge': {
+        'boost': 0.04,
+        'style': 'magic',
+        'category': 'single-stat boosting',
+    },
+    'overcharge': {
+        'boost': 0.06,
+        'style': 'magic',
+        'category': 'single-stat boosting',
+    },
+    'augury': {
+        'boost': 0.08,
+        'style': 'magic',
+        'category': 'multi-stat boosting',
+    },
+    'leech magic strength 2': {
+        'boost': 0.02,
+        'style': 'magic',
+        'category': 'leech curse',
+    },
+    'leech magic strength 4': {
+        'boost': 0.04,
+        'style': 'magic',
+        'category': 'leech curse',
+    },
+    'leech magic strength 6': {
+        'boost': 0.06,
+        'style': 'magic',
+        'category': 'leech curse',
+    },
+    'leech magic strength 8': {
+        'boost': 0.08,
+        'style': 'magic',
+        'category': 'leech curse',
+    },
+    'torment': {
+        'boost': 0.1,
+        'style': 'magic',
+        'category': 'multi-stat boosting'
+    },
     'affliction': {
         'boost': 0.12,
-        'style': 'magic'
-    }
+        'style': 'magic',
+        'category': 'multi-stat boosting'
+    },
+
+    'burst of strength': {
+        'boost': 0.02,
+        'style': 'melee',
+        'category': 'single-stat boosting',
+    },
+    'superhuman strength': {
+        'boost': 0.04,
+        'style': 'melee',
+        'category': 'single-stat boosting',
+    },
+    'ultimate strength': {
+        'boost': 0.06,
+        'style': 'melee',
+        'category': 'single-stat boosting',
+    },
+    'chivlary': {
+        'boost': 0.07,
+        'style': 'melee',
+        'category': 'multi-stat boosting',
+    },
+    'piety': {
+        'boost': 0.08,
+        'style': 'melee',
+        'category': 'multi-stat boosting',
+    },
+    'leech melee strength 2': {
+        'boost': 0.02,
+        'style': 'melee',
+        'category': 'leech curse',
+    },
+    'leech melee strength 4': {
+        'boost': 0.04,
+        'style': 'melee',
+        'category': 'leech curse',
+    },
+    'leech melee strength 6': {
+        'boost': 0.06,
+        'style': 'melee',
+        'category': 'leech curse',
+    },
+    'leech melee strength 8': {
+        'boost': 0.08,
+        'style': 'melee',
+        'category': 'leech curse',
+    },
+    'turmoil': {
+        'boost': 0.1,
+        'style': 'melee',
+        'category': 'multi-stat boosting'
+    },
+    'malevolence': {
+        'boost': 0.12,
+        'style': 'melee',
+        'category': 'multi-stat boosting'
+    },
+
+    'unstoppable force': {
+        'boost': 0.02,
+        'style': 'ranged',
+        'category': 'single-stat boosting',
+    },
+    'unrelenting force': {
+        'boost': 0.04,
+        'style': 'ranged',
+        'category': 'single-stat boosting',
+    },
+    'overpowering force': {
+        'boost': 0.06,
+        'style': 'ranged',
+        'category': 'single-stat boosting',
+    },
+    'rigour': {
+        'boost': 0.08,
+        'style': 'ranged',
+        'category': 'multi-stat boosting',
+    },
+    'leech ranged strength 2': {
+        'boost': 0.02,
+        'style': 'ranged',
+        'category': 'leech curse',
+    },
+    'leech ranged strength 4': {
+        'boost': 0.04,
+        'style': 'ranged',
+        'category': 'leech curse',
+    },
+    'leech ranged strength 6': {
+        'boost': 0.06,
+        'style': 'ranged',
+        'category': 'leech curse',
+    },
+    'leech ranged strength 8': {
+        'boost': 0.08,
+        'style': 'ranged',
+        'category': 'leech curse',
+    },
+    'anguish': {
+        'boost': 0.1,
+        'style': 'ranged',
+        'category': 'multi-stat boosting'
+    },
+    'desolation': {
+        'boost': 0.12,
+        'style': 'ranged',
+        'category': 'multi-stat boosting'
+    },
+
+    'decay': {
+        'boost': 0.02,
+        'style': 'necromancy',
+        'category': 'single-stat boosting',
+    },
+    'hastened decay': {
+        'boost': 0.04,
+        'style': 'necromancy',
+        'category': 'single-stat boosting',
+    },
+    'accelerated decay': {
+        'boost': 0.06,
+        'style': 'necromancy',
+        'category': 'single-stat boosting',
+    },
+    'sanctity': {
+        'boost': 0.08,
+        'style': 'necromancy',
+        'category': 'multi-stat boosting',
+    },
+    'leech necromancy strength 2': {
+        'boost': 0.02,
+        'style': 'necromancy',
+        'category': 'leech curse',
+    },
+    'leech necromancy strength 4': {
+        'boost': 0.04,
+        'style': 'necromancy',
+        'category': 'leech curse',
+    },
+    'leech necromancy strength 6': {
+        'boost': 0.06,
+        'style': 'necromancy',
+        'category': 'leech curse',
+    },
+    'leech necromancy strength 8': {
+        'boost': 0.08,
+        'style': 'necromancy',
+        'category': 'leech curse',
+    },
+    'sorrow': {
+        'boost': 0.1,
+        'style': 'necromancy',
+        'category': 'multi-stat boosting'
+    },
+    'ruination': {
+        'boost': 0.12,
+        'style': 'necromancy',
+        'category': 'multi-stat boosting'
+    },
 }
 
 export {weapons, gear, abils, armour, prayers};
