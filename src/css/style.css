@@ -45,16 +45,6 @@ ul.nav-item li ul.nav-dropdown li {
 	width: 100%;
 }
 
-.text-link {
-	--tw-text-opacity: 1;
-	color: #968a5c;
-}
-
-.hover\:text-link:hover {
-	--tw-text-opacity: 1;
-	color: #968a5c;
-}
-
 .responsive-container {
 	width: 100%;
 }
@@ -542,18 +532,6 @@ ul.nav-item li ul.nav-dropdown li {
 .abil-icon {
 	height: 35px;
 	width: 35px;
-}
-
-.icon-header {
-	width: 60x;
-	height: 60px;
-}
-
-@media (min-width: 768px) {
-	.icon-header {
-		width: 100%;
-		height: 100%;
-	}
 }
 
 @media (max-width: 952px) {

@@ -76,7 +76,125 @@ const SETTINGS = {
   CUSTOM_ON_HIT: 'custom on hit',
   CUSTOM_ON_NPC: 'custom on npc',
   CUSTOM_CRIT: 'custom crit',
-  WEIRD_SETTING: 'weird setting'
+  HELMET: 'helmet',
+  HELMET_VALUES: {
+    NONE: 'none',
+    TFN: 'crown of the first necromancer',
+    T90DD: 'deathdealer hood (tier 90)',
+    T80DD: 'deathdealer hood (tier 80)'
+  },
+  BODY: 'body',
+  BODY_VALUES: {
+    NONE: 'none',
+    TFN: 'crown of the first necromancer',
+    T90DD: 'deathdealer hood (tier 90)',
+    T80DD: 'deathdealer hood (tier 80)'
+  },
+  LEGS: 'leg',
+  LEGS_VALUES: {
+    NONE: 'none',
+    TFN: 'crown of the first necromancer',
+    T90DD: 'deathdealer hood (tier 90)',
+    T80DD: 'deathdealer hood (tier 80)'
+  },
+  GLOVES: 'gloves',
+  GLOVES_VALUES: {
+    NONE: 'none',
+    TFN: 'crown of the first necromancer',
+    T90DD: 'deathdealer hood (tier 90)',
+    T80DD: 'deathdealer hood (tier 80)'
+  },
+  BOOTS: 'boots',
+  BOOTS_VALUES: {
+    NONE: 'none',
+    TFN: 'crown of the first necromancer',
+    T90DD: 'deathdealer hood (tier 90)',
+    T80DD: 'deathdealer hood (tier 80)'
+  },
+  NECKLACE: 'necklace',
+  NECKLACE_VALUES: {
+    NONE: 'none',
+    EOFOR: 'essence of finality amulet (or)',
+    EOF: 'essence of finality amulet',
+    MOONSTONE: 'conjurers raising amulet',
+    AOSOR: 'amulet of souls (or)',
+    AOS: 'amulet of souls',
+    REAPEROR: 'reaper (or)',
+    REAPER: 'reaper',
+    SALVEE: 'salve amulet (e)',
+    SALVE: 'salve amulet',
+  },
+  CAPE: 'cape',
+  CAPE_VALUES: {
+    NONE: 'none',
+    ZUK: 'igneous kal-mor',
+    KILN: 'tokhaar-kal-mor',
+    COMP: 'completionist',
+    GOD: 'god cape',
+    MAX: 'max cape',
+    SKILL: 'skill cape',
+  },
+  RING: 'ring',
+  RING_VALUES: {
+    NONE: 'none',
+    REAVERS: 'reavers',
+    ZORGOTH: 'zorgoths soul ring',
+    RODI: 'ring of death (i)',
+    ROD: 'ring of death',
+    ASRI: 'asylum surgeon ring (i)',
+    ASR: 'asylum surgeon ring',
+  },
+  POCKET: 'pocket',
+  POCKET_VALUES: {
+    NONE: 'none',
+    GRIM: 'grimoire',
+    FUL: 'scripture of ful',
+    GWD3: 'gwd3 scripture',
+    IGOD: 'illuminated god book',
+    GOD: 'god book',
+  },
+  WEAPON: 'weapon',
+  WEAPON_VALUES: {
+    DW: 'dw',
+    MS: 'ms'
+  },
+  MH: 'main-hand weapon',
+  MH_VALUES: {
+    NONE: 'none',
+    OMNI: 'omni guard',
+    DG90: 'death guard (tier 90)',
+    DG80: 'death guard (tier 80)',
+  },
+  OH: 'off-hand weapon',
+  OH_VALUES: {
+    NONE: 'none',
+    SOULBOUND: 'soulbound lantern',
+    SL90: 'skull lantern (tier 90)',
+    SL80: 'skull lantern (tier 80)',
+  },
+  SHIELD: 'shield',
+  SHIELD_VALUES: {
+    NONE: 'none',
+    SPECTRAL: 'spectral shield',
+  },
+  LVL20ARMOUR: 'level 20 armour',
+  BITING: 'biting',
+  PRECISE: 'precise',
+  ERUPTIVE: 'eruptive',
+  FLANKING: 'flanking',
+  RUTHLESS: 'ruthless rank',
+  TELOS_RED_BEAM: 'Telos red beam',
+  TELOS_BLACK_BEAM: 'Telos black beam',
+  TOKKUL_ZO: 'Tokkul-zo',
+  KBD_ARTEFACT: 'King black dragon wilderness portal',
+  INNER_CHAOS: 'Zamorak inner chaos',
+  SWORD_OF_EDICTS: 'Zamorak sword of edicts',
+  GUARDIANS_TRIUMPH: 'Zamorak guardians triumph',
+  BALANCE_OF_POWER: 'Zamorak balance of power',
+  ZAMORAK_CHOKE_STACKS: 'zamorak choke stacks',
+  RAKSHA_INNER_POWER: 'Raksha inner power',
+  STONE_OF_JAS: 'stone of jas',
+  INFERNAL_PUZZLE_BOX: 'Infernal puzzle box',
 }
 
 const settingsConfig = {
@@ -250,9 +368,217 @@ const settingsConfig = {
     label: 'Additional crit chance %',
     default: 0
   },
-  [SETTINGS.WEIRD_SETTING]: {
-    label: 'Wrid',
-    default: 50
+  [SETTINGS.HELMET]: {
+    label: 'Helmet',
+    default: SETTINGS.HELMET_VALUES.TFN,
+    options: [
+      { text: 'None/Tank', value: SETTINGS.HELMET_VALUES.NONE},
+      { text: 'TFN', value: SETTINGS.HELMET_VALUES.TFN},
+      { text: 't90 deathdealer', value: SETTINGS.HELMET_VALUES.T90DD},
+      { text: 't80 deathdealer', value: SETTINGS.HELMET_VALUES.T80DD},
+    ]
+  },
+  [SETTINGS.BODY]: {
+    label: 'Body',
+    default: SETTINGS.BODY_VALUES.TFN,
+    options: [
+      { text: 'None/Tank', value: SETTINGS.BODY_VALUES.NONE},
+      { text: 'TFN', value: SETTINGS.BODY_VALUES.TFN},
+      { text: 't90 deathdealer', value: SETTINGS.BODY_VALUES.T90DD},
+      { text: 't80 deathdealer', value: SETTINGS.BODY_VALUES.T80DD},
+    ]
+  },
+  [SETTINGS.LEGS]: {
+    label: 'Legs',
+    default: SETTINGS.LEGS_VALUES.TFN,
+    options: [
+      { text: 'None/Tank', value: SETTINGS.LEGS_VALUES.NONE},
+      { text: 'TFN', value: SETTINGS.LEGS_VALUES.TFN},
+      { text: 't90 deathdealer', value: SETTINGS.LEGS_VALUES.T90DD},
+      { text: 't80 deathdealer', value: SETTINGS.LEGS_VALUES.T80DD},
+    ]
+  },
+  [SETTINGS.GLOVES]: {
+    label: 'Gloves',
+    default: SETTINGS.GLOVES_VALUES.TFN,
+    options: [
+      { text: 'None/Tank', value: SETTINGS.GLOVES_VALUES.NONE},
+      { text: 'TFN', value: SETTINGS.GLOVES_VALUES.TFN},
+      { text: 't90 deathdealer', value: SETTINGS.GLOVES_VALUES.T90DD},
+      { text: 't80 deathdealer', value: SETTINGS.GLOVES_VALUES.T80DD},
+    ]
+  },
+  [SETTINGS.BOOTS]: {
+    label: 'Boots',
+    default: SETTINGS.BOOTS_VALUES.TFN,
+    options: [
+      { text: 'None/Tank', value: SETTINGS.BOOTS_VALUES.NONE},
+      { text: 'TFN', value: SETTINGS.BOOTS_VALUES.TFN},
+      { text: 't90 deathdealer', value: SETTINGS.BOOTS_VALUES.T90DD},
+      { text: 't80 deathdealer', value: SETTINGS.BOOTS_VALUES.T80DD},
+    ]
+  },
+  [SETTINGS.NECKLACE]: {
+    label: 'Necklace',
+    default: SETTINGS.NECKLACE_VALUES.EOFOR,
+    options: [
+      { text: 'None/Tank', value: SETTINGS.NECKLACE_VALUES.NONE},
+      { text: 'EOF(or)', value: SETTINGS.NECKLACE_VALUES.EOFOR},
+      { text: 'EOF', value: SETTINGS.NECKLACE_VALUES.EOF},
+      { text: 'Moonstone amulet', value: SETTINGS.NECKLACE_VALUES.MOONSTONE},
+      { text: 'AOS(or)', value: SETTINGS.NECKLACE_VALUES.AOSOR},
+      { text: 'AOS', value: SETTINGS.NECKLACE_VALUES.AOS},
+      { text: 'Reaper(or)', value: SETTINGS.NECKLACE_VALUES.REAPEROR},
+      { text: 'Reaper', value: SETTINGS.NECKLACE_VALUES.REAPER},
+      { text: 'Salve (e)', value: SETTINGS.NECKLACE_VALUES.SALVEE},
+      { text: 'Salve', value: SETTINGS.NECKLACE_VALUES.SALVE},
+    ]
+  },
+  [SETTINGS.CAPE]: {
+    label: 'Cape',
+    default: SETTINGS.CAPE_VALUES.ZUK,
+    options: [
+      { text: 'None', value: SETTINGS.CAPE_VALUES.NONE},
+      { text: 'Zuk', value: SETTINGS.CAPE_VALUES.ZUK},
+      { text: 'Kiln', value: SETTINGS.CAPE_VALUES.KILN},
+      { text: 'Comp cape', value: SETTINGS.CAPE_VALUES.COMP},
+      { text: 'God cape', value: SETTINGS.CAPE_VALUES.GOD},
+      { text: 'Max cape', value: SETTINGS.CAPE_VALUES.MAX},
+      { text: 'Skill cape', value: SETTINGS.CAPE_VALUES.SKILL},
+    ]
+  },
+  [SETTINGS.RING]: {
+    label: 'Ring',
+    default: SETTINGS.RING_VALUES.REAVERS,
+    options: [
+      { text: 'None', value: SETTINGS.RING_VALUES.NONE},
+      { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS},
+      { text: "Zorgoth's", value: SETTINGS.RING_VALUES.ZORGOTH},
+      { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI},
+      { text: 'ROD', value: SETTINGS.RING_VALUES.ROD},
+      { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI},
+      { text: 'ASR', value: SETTINGS.RING_VALUES.ASR},
+    ]
+  },
+  [SETTINGS.POCKET]: {
+    label: 'Pocket',
+    default: SETTINGS.POCKET_VALUES.GRIM,
+    options: [
+      { text: 'None', value: SETTINGS.POCKET_VALUES.NONE},
+      { text: 'Grimoire', value: SETTINGS.POCKET_VALUES.GRIM},
+      { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL},
+      { text: 'GWD3 book', value: SETTINGS.POCKET_VALUES.GWD3},
+      { text: 'Illuminated god book', value: SETTINGS.POCKET_VALUES.IGOD},
+      { text: 'God book', value: SETTINGS.POCKET_VALUES.GOD},
+    ]
+  },
+  [SETTINGS.WEAPON]: {
+    label: 'Weapon type',
+    default: SETTINGS.WEAPON_VALUES.DW,
+    options: [
+      { text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW},
+      { text: 'Mainhand shield', value: SETTINGS.WEAPON_VALUES.MS},
+    ]
+  },
+  [SETTINGS.MH]: {
+    label: 'Mh',
+    default: SETTINGS.MH_VALUES.OMNI,
+    options: [
+      { text: 'None', value: SETTINGS.MH_VALUES.NONE},
+      { text: 'Omni Guard', value: SETTINGS.MH_VALUES.OMNI},
+      { text: 'Death guard (t90)', value: SETTINGS.MH_VALUES.DG90},
+      { text: 'Death guard (t80)', value: SETTINGS.MH_VALUES.DG80},
+    ]
+  },
+  [SETTINGS.OH]: {
+    label: 'Oh',
+    default: SETTINGS.OH_VALUES.SOULBOUND,
+    options: [
+      { text: 'None', value: SETTINGS.OH_VALUES.NONE},
+      { text: 'Soulbound Lantern', value: SETTINGS.OH_VALUES.SOULBOUND},
+      { text: 'Skull lantern (t90)', value: SETTINGS.OH_VALUES.SL90},
+      { text: 'Skull lantern (t80)', value: SETTINGS.OH_VALUES.SL80},
+    ]
+  },
+  [SETTINGS.SHIELD]: {
+    label: 'Shield',
+    default: SETTINGS.SHIELD_VALUES.SPECTRAL,
+    options: [
+      { text: 'None', value: SETTINGS.SHIELD_VALUES.NONE},
+      { text: 'Spectral', value: SETTINGS.SHIELD_VALUES.SPECTRAL},
+    ]
+  },
+  [SETTINGS.LVL20ARMOUR]: {
+    label: 'Level 20 Armour',
+    default: true
+  },
+  [SETTINGS.BITING]: {
+    label: 'Biting',
+    default: 4
+  },
+  [SETTINGS.PRECISE]: {
+    label: 'Precise',
+    default: 6
+  },
+  [SETTINGS.ERUPTIVE]: {
+    label: 'Eruptive',
+    default: 2
+  },
+  [SETTINGS.FLANKING]: {
+    label: 'Flanking',
+    default: 0
+  },
+  [SETTINGS.RUTHLESS]: {
+    label: 'Ruthless',
+    default: 0
+  },
+  [SETTINGS.TELOS_RED_BEAM]: {
+    label: 'Red Beam',
+    default: false
+  },
+  [SETTINGS.TELOS_BLACK_BEAM]: {
+    label: 'Black Beam',
+    default: false
+  },
+  [SETTINGS.TOKKUL_ZO]: {
+    label: 'Tokkul-zo',
+    default: false
+  },
+  [SETTINGS.KBD_ARTEFACT]: {
+    label: 'KBD Artefact',
+    default: false
+  },
+  [SETTINGS.INNER_CHAOS]: {
+    label: 'Inner Chaos',
+    default: false
+  },
+  [SETTINGS.SWORD_OF_EDICTS]: {
+    label: 'Sword of Edicts',
+    default: false
+  },
+  [SETTINGS.GUARDIANS_TRIUMPH]: {
+    label: 'Guardians Triumph',
+    default: 0
+  },
+  [SETTINGS.BALANCE_OF_POWER]: {
+    label: 'Balance of power',
+    default: 0
+  },
+  [SETTINGS.ZAMORAK_CHOKE_STACKS]: {
+    label: 'Zamorak choke stacks',
+    default: 0
+  },
+  [SETTINGS.RAKSHA_INNER_POWER]: {
+    label: 'Inner power (Raksha)',
+    default: 0
+  },
+  [SETTINGS.STONE_OF_JAS]: {
+    label: 'Stone of Jas %',
+    default: 0
+  },
+  [SETTINGS.INFERNAL_PUZZLE_BOX]: {
+    label: 'Infernal Puzzle Box %',
+    default: 0
   },
 }
 
