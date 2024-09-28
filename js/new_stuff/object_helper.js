@@ -10,14 +10,16 @@ function create_object(settings) {
                 'var_hit': 0,
                 'crit': false,
 
-                'probability': 1 - crit_chance
+                'probability': 1 - crit_chance,
+                'damage list': [],
             },
             crit: {
                 min_hit: 0,
                 var_hit: 0,
                 crit: true,
 
-                'probability': crit_chance
+                'probability': crit_chance,
+                'damage list': [],
             }
         }
     }
@@ -29,7 +31,8 @@ function create_object(settings) {
                 var_hit: 0,
                 crit: false,
 
-                'probability': 1
+                'probability': 1,
+                'damage list': [],
                 },
         }
     }

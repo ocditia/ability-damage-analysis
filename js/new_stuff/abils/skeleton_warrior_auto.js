@@ -1,14 +1,14 @@
-import { next_tick } from "./ability_helper";
-import hit_damage_calculation from "./damage_calc";
-import calc_damage_object from "./damage_calc";
+import { next_tick } from "../ability_helper";
+import hit_damage_calculation from "../damage_calc";
+import calc_damage_object from "../damage_calc";
 
-function wrack(a, b) {
+function skeleton_warrior_auto(a, b) {
     // temp hard override of settings
     const settingss = {
         'user value': 'mean',
 
-        'weapon type': 'two-hand', // 'two-hand' or 'main-hand'
-        'ability': 'rapid fire',
+        'weapon type': 'main-hand', // 'two-hand' or 'main-hand'
+        'ability': 'skeleton warrior auto',
         'magic level': 99,
         'strength level': 95,
         'ranged level': 90,
@@ -18,15 +18,15 @@ function wrack(a, b) {
 
         // gear
         'two-hand weapon': 'bow of the last guardian',
-        'main-hand weapon': 'wand of the praesul',
-        'off-hand weapon': 'imperium core',
+        'main-hand weapon': 'omniguard',
+        'off-hand weapon': 'soulbound lantern',
         'aura': 'none',
         
         
 
-        'helmet': 'tectonic mask',
-        'body': 'tectonic robe top',
-        'legs': 'tectonic robe bottom',
+        'helmet': 'none helmet',
+        'body': 'none body',
+        'legs': 'none legs',
         'gloves': 'none gloves',
         'boots': 'none boots',
         'necklace': 'none necklace',
@@ -98,6 +98,9 @@ function wrack(a, b) {
 
         // fsoa
         'instability': true,
+
+        // conjures
+        'skeleton warrior stacks': 2,
     };
 
     let damage = hit_damage_calculation(settingss);
@@ -105,4 +108,4 @@ function wrack(a, b) {
     return damage;
 }
 
-export default wrack;
+export default skeleton_warrior_auto;

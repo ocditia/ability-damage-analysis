@@ -1,112 +1,31 @@
-import wrack from "../new_stuff/wrack.js";
-import rapid_fire from "../new_stuff/rapid_fire.js";
+import wrack from "../new_stuff/abils/wrack.js";
+import soul_sap from "../new_stuff/abils/soul_sap.js";
+import bloat from "../new_stuff/abils/bloat.js";
+import skeleton_warrior_auto from "../new_stuff/abils/skeleton_warrior_auto.js";
+import rapid_fire_necro from "../new_stuff/abils/rapid_fire_necro.js";
 
 const abilities = {
-  'Wrack': {
-    title: 'Wrack',
-    calc: wrack,
+  'Soul sap': {
+    title: 'Soul sap',
+    calc: soul_sap,
     icon: 'assets/ability_icons/magic/30x30/wrack.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
-  'Wrackdfs5': {
-    title: 'Wrack',
-    calc: wrack,
+  'Bloat': {
+    title: 'Bloat',
+    calc: bloat,
     icon: 'assets/ability_icons/magic/30x30/wrack.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
-  'Wrackj54': {
-    title: 'Wrack',
-    calc: wrack,
+  'Skeleton warrior auto': {
+    title: 'Skeleton warrior auto',
+    calc: skeleton_warrior_auto,
     icon: 'assets/ability_icons/magic/30x30/wrack.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
-  'Wracksr6': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrack56u': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrackfgj': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wracke53': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrack46dr': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrack6342': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrack34': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wracksdfher': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrackgsfg': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrackewdfs': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrackywet': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrackwrt': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrackgdf': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrack2': {
-    title: 'Wrack',
-    calc: wrack,
-    icon: 'assets/ability_icons/magic/30x30/wrack.png',
-    weapons: ['2h','Dw','Md','Ms'],
-  },
-  'Wrackasd': {
-    title: 'Wrack',
-    calc: wrack,
+  'Rapid fire necro': {
+    title: 'rapid fire necro',
+    calc: rapid_fire_necro,
     icon: 'assets/ability_icons/magic/30x30/wrack.png',
     weapons: ['2h','Dw','Md','Ms'],
   },
