@@ -8,10 +8,7 @@ const SETTINGS = {
 		MAX_CRIT: 'max crit'
 	},
 	ABILITY_DAMAGE: 'ability damage',
-	NECROMANCY_LEVEL: 'necromancy level',
-	MAGIC_LEVEL: 'magic level',
-	MELEE_LEVEL: 'melee level',
-	RANGED_LEVEL: 'ranged level',
+	LEVEL: 'necromancy level',
 	POTION: 'potion',
 	POTION_VALUES: {
 		NONE: 'none',
@@ -52,19 +49,13 @@ const SETTINGS = {
 	GUARDHOUSE: 'guardhouse',
 	GUARDHOUSE_VALUES: {
 		NONE: 'none',
-		LVL1: 'tier 1',
-		LVL1_UNDEAD: 'tier 1 undead',
-		LVL3: 'tier 3',
-		LVL3_UNDEAD: 'tier 3 undead'
+		LVL1: 'level 1',
+		LVL1_UNDEAD: 'level 1 - undead',
+		LVL3: 'level 3',
+		LVL3_UNDEAD: 'level 3 - undead'
 	},
-	TARGET_HP_PERCENT: 'target hp percent',
 	GENOCIDAL: 'genocidal',
-	FAMILIAR: 'familiar',
-	FAMILIAR_VALUES: {
-		NONE: 'none',
-		RIPPER: 'ripper demon',
-		KALGERION_DEMON: 'kalgerion demon'
-	},
+	RIPPER: 'ripper passive',
 	AURA: 'aura',
 	AURA_VALUES: {
 		NONE: 'none',
@@ -72,11 +63,6 @@ const SETTINGS = {
 		EQUILIBRIUM: 'equilibrium'
 	},
 	VULN: 'vulnerability',
-	VULN_VALUES: {
-		NONE: 'none',
-		CURSE: 'curse',
-		VULN: 'vulnerability'
-	},
 	SMOKE_CLOUD: 'smoke cloud',
 	CRYPTBLOOM: 'cryptbloom',
 	SLAYER_PERK: 'slayer perk',
@@ -213,7 +199,7 @@ const SETTINGS = {
 
 const settingsConfig = {
 	[SETTINGS.MODE]: {
-		label: 'user value',
+		label: 'Mode',
 		default: SETTINGS.MODE_VALUES.MEAN,
 		options: [
 			{ text: 'Mean', value: SETTINGS.MODE_VALUES.MEAN },
@@ -227,7 +213,7 @@ const settingsConfig = {
 		label: 'Ability Damage',
 		default: 0
 	},
-	[SETTINGS.NECROMANCY_LEVEL]: {
+	[SETTINGS.LEVEL]: {
 		label: 'Base Necromancy Level',
 		default: 120
 	},
@@ -305,26 +291,20 @@ const settingsConfig = {
 			{ text: 'None', value: SETTINGS.GUARDHOUSE_VALUES.NONE },
 			{ text: 'Level 1', value: SETTINGS.GUARDHOUSE_VALUES.LVL1 },
 			{ text: 'Level 1 with undead target', value: SETTINGS.GUARDHOUSE_VALUES.LVL1_UNDEAD },
-			{ text: 'Level 3', value: SETTINGS.GUARDHOUSE_VALUES.LVL3 },
-			{ text: 'Level 3 with undead target', value: SETTINGS.GUARDHOUSE_VALUES.LVL3_UNDEAD }
+			{ text: 'Level 3 with target under 25%', value: SETTINGS.GUARDHOUSE_VALUES.LVL3 },
+			{
+				text: 'Level 3 with undead target under 25%',
+				value: SETTINGS.GUARDHOUSE_VALUES.LVL3_UNDEAD
+			}
 		]
-	},
-	[SETTINGS.TARGET_HP_PERCENT]: {
-		label: 'target hp %',
-		default: 100,
 	},
 	[SETTINGS.GENOCIDAL]: {
 		label: 'Genocidal %',
 		default: 0
 	},
-	[SETTINGS.FAMILIAR]: {
-		label: 'familiar',
-		default: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON	,
-		options: [
-			{ text: 'none', value: SETTINGS.FAMILIAR_VALUES.NONE },
-			{ text: 'ripper demon', value: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON },
-			{ text: 'kalgerion demon', value: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON }
-		]
+	[SETTINGS.RIPPER]: {
+		label: 'Ripper Passive %',
+		default: 0
 	},
 	[SETTINGS.AURA]: {
 		label: 'Aura',
@@ -337,12 +317,7 @@ const settingsConfig = {
 	},
 	[SETTINGS.VULN]: {
 		label: 'Vulnerability',
-		default: SETTINGS.VULN_VALUES.VULN,
-		options: [
-			{ text: 'None', value: SETTINGS.VULN_VALUES.NONE },
-			{ text: 'curse', value: SETTINGS.VULN_VALUES.CURSE },
-			{ text: 'vulnerability', value: SETTINGS.VULN_VALUES.VULN },
-		]
+		default: true
 	},
 	[SETTINGS.SMOKE_CLOUD]: {
 		label: 'Smoke Cloud',

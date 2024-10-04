@@ -116,10 +116,10 @@
 									min="0"
 								/>
 								<Number
-									setting={settings[SETTINGS.NECROMANCY_LEVEL]}
+									setting={settings[SETTINGS.LEVEL]}
 									on:settingsUpdated={updateDamages}
 									step="1"
-									max="150"
+									max="120"
 									min="1"
 								/>
 								<Select
@@ -201,14 +201,6 @@
 									img="/effect_icons/Guardhouse_(Tier_3).webp"
 								/>
 								<Number
-									setting={settings[SETTINGS.TARGET_HP_PERCENT]}
-									on:settingsUpdated={updateDamages}
-									img="/effect_icons/25px-Undead_Slayer.webp"
-									step="1"
-									max="100"
-									min="0"
-								/>
-								<Number
 									setting={settings[SETTINGS.GENOCIDAL]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/25px-Undead_Slayer.webp"
@@ -216,10 +208,13 @@
 									max="5"
 									min="0"
 								/>
-								<Select
-									setting={settings[SETTINGS.FAMILIAR]}
+								<Number
+									setting={settings[SETTINGS.RIPPER]}
 									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Guardhouse_(Tier_3).webp"
+									img="/effect_icons/Binding_contract_(ripper_demon).webp"
+									step="0.5"
+									max="5"
+									min="0"
 								/>
 							</div>
 							<div class="md:col-span-1">
@@ -229,11 +224,11 @@
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/aura.png"
 								/>
-								<Select
+								<Checkbox
 									setting={settings[SETTINGS.VULN]}
 									on:settingsUpdated={updateDamages}
-									img="/effect_icons/aura.png"
-								/>	
+									img="/effect_icons/Vulnerability_icon.webp"
+								/>
 								<Checkbox
 									setting={settings[SETTINGS.SMOKE_CLOUD]}
 									on:settingsUpdated={updateDamages}
