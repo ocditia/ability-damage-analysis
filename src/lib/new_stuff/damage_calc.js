@@ -1289,13 +1289,9 @@ function hit_damage_calculation(settings) {
 function ability_damage_calculation(settings) {
 	let damage = 0;
 	for (let key in abils[settings['ability']]['hits']) {
-		let settings_copy = {...settings};
-		settings_copy['ability'] = abils[settings['ability']]['hits'][key];
-		damage += hit_damage_calculation(settings_copy);
+		damage += hit_damage_calculation({...settings, ability: abils[settings['ability']]['hits'][key]});
 	}
 	return damage;
 }
 
 export { ability_damage_calculation, hit_damage_calculation }
-
-//export default {hit_damage_calculation, ability_damage_calculation}
