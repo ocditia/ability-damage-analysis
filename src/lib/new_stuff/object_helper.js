@@ -1,3 +1,4 @@
+import { SETTINGS } from '../necromancy/settings';
 import { weapons, gear, abils, prayers } from './const';
 
 function create_object(settings) {
@@ -47,11 +48,11 @@ function calc_crit_chance(settings) {
 	}
 
 	// biting
-	crit_chance += 0.02 * settings['biting level'];
+	crit_chance += 0.02 * settings[SETTINGS.BITING];
 
 	// level 20 armour
-	if (settings['level 20 armour'] === true) {
-		crit_chance += 0.002 * settings['biting level'];
+	if (settings[SETTINGS.LVL20ARMOUR] === true) {
+		crit_chance += 0.002 * settings[SETTINGS.BITING];
 	}
 
 	// warpriest of tuska

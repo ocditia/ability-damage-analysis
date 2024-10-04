@@ -29,6 +29,7 @@
         adaptedSettings['haunted AD'] = 2345;
        
 		Object.entries(damages).forEach(([abilityKey, ability]) => {
+			adaptedSettings['split soul'] = false;
             adaptedSettings['ability'] = abilityKey;
             damages[abilityKey].regular = ability.calc(adaptedSettings);
             adaptedSettings['split soul'] = true;
@@ -116,7 +117,7 @@
 									min="0"
 								/>
 								<Number
-									setting={settings[SETTINGS.LEVEL]}
+									setting={settings[SETTINGS.NECROMANCY_LEVEL]}
 									on:settingsUpdated={updateDamages}
 									step="1"
 									max="120"
@@ -151,7 +152,7 @@
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">On-Hit Main</h5>
 								<Select
-									setting={settings[SETTINGS.PRAYER]}
+									setting={settings[SETTINGS.NECROMANCY_PRAYER]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Prayer.webp"
 								/>
@@ -201,6 +202,14 @@
 									img="/effect_icons/Guardhouse_(Tier_3).webp"
 								/>
 								<Number
+									setting={settings[SETTINGS.TARGET_HP_PERCENT]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Ruby_Aurora_icon.webp"
+									step="1"
+									max="100"
+									min="0"
+								/>
+								<Number
 									setting={settings[SETTINGS.GENOCIDAL]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/25px-Undead_Slayer.webp"
@@ -208,13 +217,10 @@
 									max="5"
 									min="0"
 								/>
-								<Number
-									setting={settings[SETTINGS.RIPPER]}
+								<Select
+									setting={settings[SETTINGS.FAMILIAR]}
 									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Binding_contract_(ripper_demon).webp"
-									step="0.5"
-									max="5"
-									min="0"
+									img="/effect_icons/Full_slayer_helmet_(yellow).webp"
 								/>
 							</div>
 							<div class="md:col-span-1">
@@ -224,7 +230,7 @@
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/aura.png"
 								/>
-								<Checkbox
+								<Select
 									setting={settings[SETTINGS.VULN]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Vulnerability_icon.webp"
@@ -240,7 +246,17 @@
 									img="/effect_icons/Cryptbloom_helm.png"
 								/>
 								<Checkbox
-									setting={settings[SETTINGS.SLAYER_PERK]}
+									setting={settings[SETTINGS.SLAYER_PERK_UNDEAD]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/25px-Undead_Slayer.webp"
+								/>
+								<Checkbox
+									setting={settings[SETTINGS.SLAYER_PERK_DRAGON]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/25px-Undead_Slayer.webp"
+								/>
+								<Checkbox
+									setting={settings[SETTINGS.SLAYER_PERK_DEMON]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/25px-Undead_Slayer.webp"
 								/>
@@ -250,12 +266,22 @@
 									img="/effect_icons/Undead_slayer_sigil_detail.png"
 								/>
 								<Checkbox
+									setting={settings[SETTINGS.SLAYER_DRAGON]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Undead_slayer_sigil_detail.png"
+								/>
+								<Checkbox
+									setting={settings[SETTINGS.SLAYER_DEMON]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Undead_slayer_sigil_detail.png"
+								/>
+								<Checkbox
 									setting={settings[SETTINGS.HAUNTED]}
 									on:settingsUpdated={updateDamages}
 									img="https://imgur.com/9U5ghz2.png"
 								/>
 								<Number
-									setting={settings[SETTINGS.RAGE_STACKS]}
+									setting={settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]}
 									on:settingsUpdated={updateDamages}
 									img="https://i.imgur.com/9vRoWeK.png"
 									step="1"
@@ -269,11 +295,6 @@
 									setting={settings[SETTINGS.NOPE]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Araxyte_spider.webp"
-								/>
-								<Checkbox
-									setting={settings[SETTINGS.KALG_PASSIVE]}
-									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Binding_contract_(kal'gerion_demon).webp"
 								/>
 								<Checkbox
 									setting={settings[SETTINGS.KALG_SPEC]}
@@ -397,7 +418,7 @@
 									min="0"
 								/>
 								<Number
-									setting={settings[SETTINGS.RUTHLESS]}
+									setting={settings[SETTINGS.RUTHLESS_RANK]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Ruthless.webp"
 									step="1"
@@ -418,11 +439,6 @@
 								/>
 								<Select
 									setting={settings[SETTINGS.OH]}
-									on:settingsUpdated={updateDamages}
-									img="/armour_icons/Off-hand_slot.webp"
-								/>
-								<Select
-									setting={settings[SETTINGS.SHIELD]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Off-hand_slot.webp"
 								/>

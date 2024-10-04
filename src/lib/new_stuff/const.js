@@ -1114,7 +1114,10 @@ const armour = {
 
 const ABILITIES = {
 	NECRO_AUTO: 'necromancy auto',
-	TOUCH_OF_DEATH: 'touch of death'
+	TOUCH_OF_DEATH: 'touch of death',
+	SOUL_SAP: 'soul sap',
+	SKELETON_WARRIOR_AUTO: 'skeleton warrior auto',
+	SKELETON_WARRIOR_AUTO_10: 'skeleton warrior auto 10,'
 };
 
 const abils = {
@@ -1769,7 +1772,7 @@ const abils = {
 		'main style': 'necromancy',
 		'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
 	},
-	'soul sap': {
+	[ABILITIES.SOUL_SAP]: {
 		// ability name
 		'min hit': 0.9, // min % of abil expressed as a decimal
 		'var hit': 0.2,
@@ -1781,7 +1784,7 @@ const abils = {
 		'main style': 'necromancy',
 		'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
 	},
-	'skeleton warrior auto': {
+	[ABILITIES.SKELETON_WARRIOR_AUTO]: {
 		// ability name
 		'min hit': 0.22, // min % of abil expressed as a decimal
 		'var hit': 0.06,
@@ -1792,6 +1795,28 @@ const abils = {
 		'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'spirit' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+	},
+	[ABILITIES.SKELETON_WARRIOR_AUTO_10]: {
+		// ability name
+		'min hit': 0.22, // min % of abil expressed as a decimal
+		'var hit': 0.06,
+		'on-hit effects': false, // does the ability get on-hit effects
+		'crit effects': false, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'conjure', // bleed, dot, burn, etc
+		'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'spirit',
+		'hits': {1: ABILITIES.SKELETON_WARRIOR_AUTO,
+			     2: ABILITIES.SKELETON_WARRIOR_AUTO,
+				 3: ABILITIES.SKELETON_WARRIOR_AUTO,
+				 4: ABILITIES.SKELETON_WARRIOR_AUTO,
+				 5: ABILITIES.SKELETON_WARRIOR_AUTO,
+				 6: ABILITIES.SKELETON_WARRIOR_AUTO,
+				 7: ABILITIES.SKELETON_WARRIOR_AUTO,
+				 8: ABILITIES.SKELETON_WARRIOR_AUTO,
+				 9: ABILITIES.SKELETON_WARRIOR_AUTO,
+				 10: ABILITIES.SKELETON_WARRIOR_AUTO,},
 	},
 	'vengeful ghost auto': {
 		// ability name
