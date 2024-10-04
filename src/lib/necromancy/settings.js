@@ -236,11 +236,13 @@ const settingsConfig = {
 	},
 	[SETTINGS.NECROMANCY_LEVEL]: {
 		label: 'Necromancy Level',
-		default: 120
+		default: 120,
+		style: 'necromancy'
 	},
 	[SETTINGS.MAGIC_LEVEL]: {
 		label: 'Magic Level',
-		default: 99
+		default: 99,
+		style: 'magic'
 	},
 	[SETTINGS.STRENGTH_LEVEL]: {
 		label: 'Strength Level',

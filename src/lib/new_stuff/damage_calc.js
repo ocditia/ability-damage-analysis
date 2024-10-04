@@ -1287,9 +1287,11 @@ function hit_damage_calculation(settings) {
 }
 
 function ability_damage_calculation(settings) {
+	let rotation = abils[settings['ability']]['hits'];
 	let damage = 0;
-	for (let key in abils[settings['ability']]['hits']) {
-		damage += hit_damage_calculation({...settings, ability: abils[settings['ability']]['hits'][key]});
+	for (let key in rotation) {
+		settings['ability'] = rotation[key]
+		damage += hit_damage_calculation(settings);
 	}
 	return damage;
 }
