@@ -1090,10 +1090,7 @@ function calc_fsoa(settings) {
 
 function add_split_soul(settings, dmgObject) {
 	for (let i = 0; i < dmgObject['damage list'].length; i++) {
-		dmgObject['damage list'][i] += calc_split_soul_hit(
-			settings['soul split']['damage list'][i],
-			settings
-		);
+		dmgObject['damage list'][i] += calc_split_soul_hit(settings['soul split']['damage list'][i], settings);
 	}
 	return dmgObject;
 }
@@ -1287,11 +1284,12 @@ function hit_damage_calculation(settings) {
 }
 
 function ability_damage_calculation(settings) {
+	let local_settings = {...settings};
 	let rotation = abils[settings['ability']]['hits'];
 	let damage = 0;
 	for (let key in rotation) {
-		settings['ability'] = rotation[key]
-		damage += hit_damage_calculation(settings);
+		local_settings['ability'] = rotation[key]
+		damage += hit_damage_calculation(local_settings);
 	}
 	return damage;
 }
