@@ -2,13 +2,18 @@ const SETTINGS = {
 	MODE: 'user value',
 	MODE_VALUES: {
 		MEAN: 'mean',
+		MEAN_NO_CRIT: 'mean no crit',
+		MEAN_CRIT: 'mean crit',
 		MIN_NO_CRIT: 'min no crit',
 		MIN_CRIT: 'min crit',
 		MAX_NO_CRIT: 'max no crit',
 		MAX_CRIT: 'max crit'
 	},
 	ABILITY_DAMAGE: 'ability damage',
-	LEVEL: 'necromancy level',
+	NECROMANCY_LEVEL: 'necromancy level',
+	MAGIC_LEVEL: 'magic level',
+	STRENGTH_LEVEL: 'strength level',
+	RANGED_LEVEL: 'ranged level',
 	POTION: 'potion',
 	POTION_VALUES: {
 		NONE: 'none',
@@ -22,11 +27,15 @@ const SETTINGS = {
 	HIT_CHANCE: 'hit chance',
 	NECROSIS_STACKS: 'necrosis stacks',
 	REAPER_CREW: 'reaper crew',
-	PRAYER: 'prayer',
-	PRAYER_VALUES: {
+	NECROMANCY_PRAYER: 'prayer',
+	NECROMANCY_PRAYER_VALUES: {
 		NONE: 'none',
 		RUINATION: 'ruination',
 		SORROW: 'sorrow',
+		LEECH_NECRO_STRENGTH_2: 'leech necromancy strength 2',
+		LEECH_NECRO_STRENGTH_4: 'leech necromancy strength 4',
+		LEECH_NECRO_STRENGTH_6: 'leech necromancy strength 6',
+		LEECH_NECRO_STRENGTH_8: 'leech necromancy strength 8',
 		SANCTITY: 'sanctity',
 		ACCELERATED_DECAY: 'accelerated decay',
 		HASTENED_DECAY: 'hastened decay',
@@ -49,13 +58,19 @@ const SETTINGS = {
 	GUARDHOUSE: 'guardhouse',
 	GUARDHOUSE_VALUES: {
 		NONE: 'none',
-		LVL1: 'level 1',
-		LVL1_UNDEAD: 'level 1 - undead',
-		LVL3: 'level 3',
-		LVL3_UNDEAD: 'level 3 - undead'
+		LVL1: 'tier 1',
+		LVL1_UNDEAD: 'tier 1 undead',
+		LVL3: 'tier 3',
+		LVL3_UNDEAD: 'tier 3 undead'
 	},
+	TARGET_HP_PERCENT: 'target hp percent',
 	GENOCIDAL: 'genocidal',
-	RIPPER: 'ripper passive',
+	FAMILIAR: 'familiar',
+	FAMILIAR_VALUES: {
+		NONE: 'none',
+		RIPPER_DEMON: 'ripper demon',
+		KALGERION_DEMON: 'kalgerion demon'
+	},
 	AURA: 'aura',
 	AURA_VALUES: {
 		NONE: 'none',
@@ -63,14 +78,22 @@ const SETTINGS = {
 		EQUILIBRIUM: 'equilibrium'
 	},
 	VULN: 'vulnerability',
+	VULN_VALUES: {
+		NONE: 'none',
+		CURSE: 'curse',
+		VULNERABILITY: 'vuln'
+	},
 	SMOKE_CLOUD: 'smoke cloud',
 	CRYPTBLOOM: 'cryptbloom',
-	SLAYER_PERK: 'slayer perk',
-	SLAYER_SIGIL: 'slayer sigil',
+	SLAYER_PERK_UNDEAD: 'undead slayer perk',
+	SLAYER_PERK_DRAGON: 'dragon slayer perk',
+	SLAYER_PERK_DEMON: 'demon slayer perk',
+	SLAYER_SIGIL_UNDEAD: 'undead slayer sigil',
+	SLAYER_SIGIL_DRAGON: 'dragon slayer sigil',
+	SLAYER_SIGIL_DEMON: 'demon slayer sigil',
 	HAUNTED: 'haunted',
-	RAGE_STACKS: 'skeleton rage stacks',
+	SKELETON_WARRIOR_RAGE_STACKS: 'skeleton rage stacks',
 	NOPE: 'nopenopenope',
-	KALG_PASSIVE: 'kalg',
 	KALG_SPEC: 'kalg spec',
 	CUSTOM_ON_AD: 'custom on ad',
 	CUSTOM_ON_HIT: 'custom on hit',
@@ -156,7 +179,7 @@ const SETTINGS = {
 	WEAPON: 'weapon type',
 	WEAPON_VALUES: {
 		DW: 'main-hand',
-		MS: 'ms'
+		TH: 'two-hand'
 	},
 	MH: 'main-hand weapon',
 	MH_VALUES: {
@@ -170,11 +193,7 @@ const SETTINGS = {
 		NONE: 'none',
 		SOULBOUND: 'soulbound lantern',
 		SL90: 'skull lantern (tier 90)',
-		SL80: 'skull lantern (tier 80)'
-	},
-	SHIELD: 'shield',
-	SHIELD_VALUES: {
-		NONE: 'none',
+		SL80: 'skull lantern (tier 80)',
 		SPECTRAL: 'spectral shield'
 	},
 	LVL20ARMOUR: 'level 20 armour',
@@ -182,7 +201,7 @@ const SETTINGS = {
 	PRECISE: 'precise',
 	ERUPTIVE: 'eruptive',
 	FLANKING: 'flanking',
-	RUTHLESS: 'ruthless rank',
+	RUTHLESS_RANK: 'ruthless rank',
 	TELOS_RED_BEAM: 'Telos red beam',
 	TELOS_BLACK_BEAM: 'Telos black beam',
 	TOKKUL_ZO: 'Tokkul-zo',
@@ -203,6 +222,8 @@ const settingsConfig = {
 		default: SETTINGS.MODE_VALUES.MEAN,
 		options: [
 			{ text: 'Mean', value: SETTINGS.MODE_VALUES.MEAN },
+			{ text: 'Mean no crit', value: SETTINGS.MODE_VALUES.MEAN_NO_CRIT },
+			{ text: 'Mean crit', value: SETTINGS.MODE_VALUES.MEAN_CRIT },
 			{ text: 'Min no crit', value: SETTINGS.MODE_VALUES.MIN_NO_CRIT },
 			{ text: 'Min crit', value: SETTINGS.MODE_VALUES.MIN_CRIT },
 			{ text: 'Max no crit', value: SETTINGS.MODE_VALUES.MAX_NO_CRIT },
@@ -213,9 +234,23 @@ const settingsConfig = {
 		label: 'Ability Damage',
 		default: 0
 	},
-	[SETTINGS.LEVEL]: {
-		label: 'Base Necromancy Level',
-		default: 120
+	[SETTINGS.NECROMANCY_LEVEL]: {
+		label: 'Necromancy Level',
+		default: 120,
+		style: 'necromancy'
+	},
+	[SETTINGS.MAGIC_LEVEL]: {
+		label: 'Magic Level',
+		default: 99,
+		style: 'magic'
+	},
+	[SETTINGS.STRENGTH_LEVEL]: {
+		label: 'Strength Level',
+		default: 99
+	},
+	[SETTINGS.RANGED_LEVEL]: {
+		label: 'Ranged Level',
+		default: 99
 	},
 	[SETTINGS.POTION]: {
 		label: 'Potion',
@@ -242,17 +277,21 @@ const settingsConfig = {
 		label: 'Reaper Crew',
 		default: true
 	},
-	[SETTINGS.PRAYER]: {
+	[SETTINGS.NECROMANCY_PRAYER]: {
 		label: 'Prayer',
-		default: SETTINGS.PRAYER_VALUES.RUINATION,
+		default: SETTINGS.NECROMANCY_PRAYER_VALUES.RUINATION,
 		options: [
-			{ text: 'None', value: SETTINGS.PRAYER_VALUES.NONE },
-			{ text: 'Ruination', value: SETTINGS.PRAYER_VALUES.RUINATION },
-			{ text: 'Sorrow', value: SETTINGS.PRAYER_VALUES.SORROW },
-			{ text: 'Sanctity', value: SETTINGS.PRAYER_VALUES.SANCTITY },
-			{ text: 'Accelerated Decay', value: SETTINGS.PRAYER_VALUES.ACCELERATED_DECAY },
-			{ text: 'Hastened Decay', value: SETTINGS.PRAYER_VALUES.HASTENED_DECAY },
-			{ text: 'Decay', value: SETTINGS.PRAYER_VALUES.DECAY }
+			{ text: 'None', value: SETTINGS.NECROMANCY_PRAYER_VALUES.NONE },
+			{ text: 'Ruination', value: SETTINGS.NECROMANCY_PRAYER_VALUES.RUINATION },
+			{ text: 'Sorrow', value: SETTINGS.NECROMANCY_PRAYER_VALUES.SORROW },
+			{ text: 'Leech necromancy strength 2', value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_2 },
+			{ text: 'Leech necromancy strength 4', value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_4 },
+			{ text: 'Leech necromancy strength 6', value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_6 },
+			{ text: 'Leech necromancy strength 8', value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_8 },
+			{ text: 'Sanctity', value: SETTINGS.NECROMANCY_PRAYER_VALUES.SANCTITY },
+			{ text: 'Accelerated Decay', value: SETTINGS.NECROMANCY_PRAYER_VALUES.ACCELERATED_DECAY },
+			{ text: 'Hastened Decay', value: SETTINGS.NECROMANCY_PRAYER_VALUES.HASTENED_DECAY },
+			{ text: 'Decay', value: SETTINGS.NECROMANCY_PRAYER_VALUES.DECAY }
 		]
 	},
 	[SETTINGS.RUBY_AURORA]: {
@@ -289,22 +328,28 @@ const settingsConfig = {
 		default: SETTINGS.GUARDHOUSE_VALUES.NONE,
 		options: [
 			{ text: 'None', value: SETTINGS.GUARDHOUSE_VALUES.NONE },
-			{ text: 'Level 1', value: SETTINGS.GUARDHOUSE_VALUES.LVL1 },
-			{ text: 'Level 1 with undead target', value: SETTINGS.GUARDHOUSE_VALUES.LVL1_UNDEAD },
-			{ text: 'Level 3 with target under 25%', value: SETTINGS.GUARDHOUSE_VALUES.LVL3 },
-			{
-				text: 'Level 3 with undead target under 25%',
-				value: SETTINGS.GUARDHOUSE_VALUES.LVL3_UNDEAD
-			}
+			{ text: 'Tier 1', value: SETTINGS.GUARDHOUSE_VALUES.LVL1 },
+			{ text: 'Tier 1 with undead target', value: SETTINGS.GUARDHOUSE_VALUES.LVL1_UNDEAD },
+			{ text: 'Tier 3', value: SETTINGS.GUARDHOUSE_VALUES.LVL3 },
+			{ text: 'Tier 3 with undead target', value: SETTINGS.GUARDHOUSE_VALUES.LVL3_UNDEAD }
 		]
+	},
+	[SETTINGS.TARGET_HP_PERCENT]: {
+		label: 'Target hp %',
+		default: 100
 	},
 	[SETTINGS.GENOCIDAL]: {
 		label: 'Genocidal %',
 		default: 0
 	},
-	[SETTINGS.RIPPER]: {
+	[SETTINGS.FAMILIAR]: {
 		label: 'Ripper Passive %',
-		default: 0
+		default: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON,
+		options: [
+			{ text: 'None', value: SETTINGS.FAMILIAR_VALUES.NONE },
+			{ text: 'Ripper demon', value: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON },
+			{ text: 'Kalgerion demon', value: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON },
+		]
 	},
 	[SETTINGS.AURA]: {
 		label: 'Aura',
@@ -317,7 +362,12 @@ const settingsConfig = {
 	},
 	[SETTINGS.VULN]: {
 		label: 'Vulnerability',
-		default: true
+		default: SETTINGS.VULN_VALUES.VULNERABILITY,
+		options: [
+			{ text: 'None', value: SETTINGS.VULN_VALUES.NONE },
+			{ text: 'Curse', value: SETTINGS.VULN_VALUES.CURSE },
+			{ text: 'Vuln', value: SETTINGS.VULN_VALUES.VULNERABILITY },
+		]
 	},
 	[SETTINGS.SMOKE_CLOUD]: {
 		label: 'Smoke Cloud',
@@ -327,28 +377,40 @@ const settingsConfig = {
 		label: 'Cryptbloom Vuln',
 		default: false
 	},
-	[SETTINGS.SLAYER_PERK]: {
-		label: 'Slayer Perk',
+	[SETTINGS.SLAYER_PERK_UNDEAD]: {
+		label: 'Undead slayer Perk',
 		default: false
 	},
-	[SETTINGS.SLAYER_SIGIL]: {
-		label: 'Slayer Sigil',
+	[SETTINGS.SLAYER_PERK_DRAGON]: {
+		label: 'Dragon slayer Perk',
+		default: false
+	},
+	[SETTINGS.SLAYER_PERK_DEMON]: {
+		label: 'Demon slayer Perk',
+		default: false
+	},
+	[SETTINGS.UNDEAD_SLAYER_SIGIL]: {
+		label: 'Undead slayer Sigil',
+		default: false
+	},
+	[SETTINGS.DRAGON_SLAYER_SIGIL]: {
+		label: 'Dragon slayer Sigil',
+		default: false
+	},
+	[SETTINGS.DEMON_SLAYER_SIGIL]: {
+		label: 'Demon slayer Sigil',
 		default: false
 	},
 	[SETTINGS.HAUNTED]: {
 		label: 'Haunted',
 		default: true
 	},
-	[SETTINGS.RAGE_STACKS]: {
+	[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]: {
 		label: 'Skeleton rage stacks',
 		default: 0
 	},
 	[SETTINGS.NOPE]: {
 		label: 'Nope Nope Nope',
-		default: false
-	},
-	[SETTINGS.KALG_PASSIVE]: {
-		label: 'Kalg Passive',
 		default: false
 	},
 	[SETTINGS.KALG_SPEC]: {
@@ -480,7 +542,7 @@ const settingsConfig = {
 		default: SETTINGS.WEAPON_VALUES.DW,
 		options: [
 			{ text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW },
-			{ text: 'Mainhand shield', value: SETTINGS.WEAPON_VALUES.MS }
+			{ text: 'Two handed', value: SETTINGS.WEAPON_VALUES.TH }
 		]
 	},
 	[SETTINGS.MH]: {
@@ -500,15 +562,8 @@ const settingsConfig = {
 			{ text: 'None', value: SETTINGS.OH_VALUES.NONE },
 			{ text: 'Soulbound Lantern', value: SETTINGS.OH_VALUES.SOULBOUND },
 			{ text: 'Skull lantern (t90)', value: SETTINGS.OH_VALUES.SL90 },
-			{ text: 'Skull lantern (t80)', value: SETTINGS.OH_VALUES.SL80 }
-		]
-	},
-	[SETTINGS.SHIELD]: {
-		label: 'Shield',
-		default: SETTINGS.SHIELD_VALUES.SPECTRAL,
-		options: [
-			{ text: 'None', value: SETTINGS.SHIELD_VALUES.NONE },
-			{ text: 'Spectral', value: SETTINGS.SHIELD_VALUES.SPECTRAL }
+			{ text: 'Skull lantern (t80)', value: SETTINGS.OH_VALUES.SL80 },
+			{ text: 'Spectral shield', value: SETTINGS.OH_VALUES.SPECTRAL }
 		]
 	},
 	[SETTINGS.LVL20ARMOUR]: {
@@ -531,8 +586,8 @@ const settingsConfig = {
 		label: 'Flanking',
 		default: 0
 	},
-	[SETTINGS.RUTHLESS]: {
-		label: 'Ruthless',
+	[SETTINGS.RUTHLESS_RANK]: {
+		label: 'Ruthless rank',
 		default: 0
 	},
 	[SETTINGS.TELOS_RED_BEAM]: {

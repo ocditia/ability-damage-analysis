@@ -9,7 +9,7 @@ function next_tick(settings, ability_used) {
 		}
 	}
 
-	if (settings['needle strike'] === 'fleeting') {
+	else if (settings['needle strike'] === 'fleeting') {
 		settings['needle strike'] = false;
 	}
 
@@ -22,8 +22,7 @@ function next_tick(settings, ability_used) {
 			settings['enduring ruin - hit'] = 'fleeting';
 		}
 	}
-
-	if (settings['enduring ruin - hit'] === 'fleeting') {
+	else if (settings['enduring ruin - hit'] === 'fleeting') {
 		settings['enduring ruin - hit'] = false;
 	}
 

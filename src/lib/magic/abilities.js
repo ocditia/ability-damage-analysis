@@ -1,13 +1,8 @@
-import wrack from '../new_stuff/wrack.js';
-import rapid_fire from '../new_stuff/rapid_fire.js';
+import hit_damage_calculation from '../new_stuff/damage_calc.js';
+import { ABILITIES } from '../new_stuff/const.js';
 
 const abilities = {
-	Wrack: {
-		title: 'Wrack',
-		calc: wrack,
-		icon: 'assets/ability_icons/magic/30x30/wrack.png',
-		weapons: ['2h', 'Dw', 'Md', 'Ms']
-	}
+    
 };
 
 export { abilities };
