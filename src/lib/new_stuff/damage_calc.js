@@ -753,7 +753,7 @@ function calc_core(settings, dmgObject, key) {
 
 		// store damage into bolg
 		if (settings['two-hand weapon'] === 'bow of the last guardian') {
-			settings['bolg damage'] = dmgObject;
+			settings['bolg damage'][key] = dmgObject;
 		}
 
 		// crits
@@ -1254,19 +1254,19 @@ function hit_damage_calculation(settings) {
 		settings['bloat damage'] = create_object(settings);
 	}
 
+	// initialise bolg
+	if (abils[settings['ability']]['main style'] === 'ranged' && settings['two-hand weapon'] === 'bow of the last guardian' && settings[SETTINGS.WEAPON] === 'two-hand') {
+		if (settings['bolg stacks'] === 7 || (settings['bolg stacks'] === 3 && settings['bolg spec'] === true)) {
+			settings['bolg damage'] = create_object(settings);
+		}
+	}
+
 	let total_damage = calc_damage_object(settings); // calculate the ability
 
 	// handle bolg logic
-	if (
-		abils[settings['ability']]['main style'] === 'ranged' &&
-		settings['two-hand weapon'] === 'bow of the last guardian' &&
-		settings[SETTINGS.WEAPON] === 'two-hand'
-	) {
+	if (abils[settings['ability']]['main style'] === 'ranged' && settings['two-hand weapon'] === 'bow of the last guardian' && settings[SETTINGS.WEAPON] === 'two-hand') {
 		// bolg proc conditions
-		if (
-			settings['bolg stacks'] === 7 ||
-			(settings['bolg stacks'] === 3 && settings['bolg spec'] === true)
-		) {
+		if (settings['bolg stacks'] === 7 || (settings['bolg stacks'] === 3 && settings['bolg spec'] === true)) {
 			total_damage += calc_bolg(settings);
 		}
 	}
