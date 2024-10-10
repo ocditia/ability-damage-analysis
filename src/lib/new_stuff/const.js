@@ -1117,7 +1117,26 @@ const ABILITIES = {
 	TOUCH_OF_DEATH: 'touch of death',
 	SOUL_SAP: 'soul sap',
 	SKELETON_WARRIOR_AUTO: 'skeleton warrior auto',
-	SKELETON_WARRIOR_AUTO_10: 'skeleton warrior auto 10,'
+	SKELETON_WARRIOR_AUTO_10: 'skeleton warrior auto 10',
+	VENGEFUL_GHOST_AUTO: 'vengeful ghost auto',
+	PUTRID_ZOMBIE_AUTO: 'putrid zombie auto',
+	COMMAND_PUTRID_ZOMBIE: 'command putrid zombie',
+	FINGER_OF_DEATH: 'finger of death',
+	DEATHSKULLS_4: 'death skulls 4',
+	DEATHSKULLS_7: 'death skulls 7',
+	SOUL_STRIKE: 'soul strike',
+	SOUL_STRIKE_AOE: 'soul strike aoe',
+	VOLLEY_OF_SOULS_2: 'volley of souls 2',
+	VOLLEY_OF_SOULS_3: 'volley of souls 3',
+	VOLLEY_OF_SOULS_4: 'volley of souls 4',
+	VOLLEY_OF_SOULS_5: 'volley of souls 5',
+	SPECTRAL_SCYTHE_1: 'spectral scythe 1',
+	SPECTRAL_SCYTHE_2: 'spectral scythe 2',
+	SPECTRAL_SCYTHE_3: 'spectral scythe 3',
+	BLOOD_SIPHON: 'blood siphon',
+	BLOAT: 'bloat',
+	DEATH_GRASP: 'death grasp',
+	DEATH_ESSENCE: 'death essence'
 };
 
 const abils = {
@@ -1818,7 +1837,7 @@ const abils = {
 				 9: [ABILITIES.SKELETON_WARRIOR_AUTO],
 				 10: [ABILITIES.SKELETON_WARRIOR_AUTO],},
 	},
-	'vengeful ghost auto': {
+	[]: {
 		// ability name
 		'min hit': 0.18, // min % of abil expressed as a decimal
 		'var hit': 0.04,

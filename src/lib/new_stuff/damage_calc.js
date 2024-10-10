@@ -105,6 +105,10 @@ function calc_base_ad(settings) {
 	return base_AD;
 }
 
+function calc_levels(settings) {
+	
+}
+
 function calc_weapon_tier(settings, hand) {
 	const spell_tier = 999;
 	let tier = 0;
@@ -713,8 +717,8 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
 	// ripper claws buff (quantity of buff unknown)
 
 	// ripper demon familiar buff
-	if (settings[SETTINGS.FAMILIAR] === 'ripper demon') {
-		boost = Math.floor(boost + 0.05 * (1 - settings[SETTINGS.TARGET_HP_PERCENT]));
+	if (settings[SETTINGS.FAMILIAR] === SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON) {
+		boost = Math.floor(boost + 0.05 * (1 - settings[SETTINGS.TARGET_HP_PERCENT]/100));
 	}
 
 	let min_hit = Math.floor((dmgObject['min hit'] * boost) / 10000);
