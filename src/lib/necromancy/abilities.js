@@ -3,7 +3,7 @@ import { hit_damage_calculation, ability_damage_calculation } from '../new_stuff
 import { ABILITIES } from '../new_stuff/const.js';
 
 const abilities = {
-	[ABILITIES.NECRO_AUTO]: {
+	/*[ABILITIES.NECRO_AUTO]: {
 		title: 'Necro auto',
 		calc: hit_damage_calculation,
 		icon: '/ability_icons/necro/30x30/auto.png'
@@ -17,7 +17,7 @@ const abilities = {
 		title: 'Soul sap',
 		calc: hit_damage_calculation,
 		icon: '/ability_icons/necro/30x30/auto.png'
-	},
+	},*/
 	[ABILITIES.SKELETON_WARRIOR_AUTO]: {
 		title: 'Skeleton warrior auto',
 		calc: hit_damage_calculation,

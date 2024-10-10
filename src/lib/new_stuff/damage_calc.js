@@ -1,6 +1,7 @@
 import { SETTINGS } from '../necromancy/settings';
 import { weapons, gear, armour, abils, prayers } from './const';
 import { create_object, calc_crit_chance } from './object_helper';
+import { next_tick, next_hit, next_cast } from './ability_helper';
 
 function calc_base_ad(settings) {
 	// see wiki page /ability_damage for more info
@@ -1284,12 +1285,22 @@ function hit_damage_calculation(settings) {
 }
 
 function ability_damage_calculation(settings) {
-	let local_settings = {...settings};
 	let rotation = abils[settings['ability']]['hits'];
 	let damage = 0;
 	for (let key in rotation) {
-		local_settings['ability'] = rotation[key]
-		damage += hit_damage_calculation(local_settings);
+		for (let iter=0; iter < rotation[key].length; iter++) {
+			if (rotation[key][iter] === "next cast") {
+				settings = next_cast(settings);
+			}
+			else if (rotation[key][iter] === "next hit") {
+				settings = next_hit(settings);
+			}
+			else {
+				settings['ability'] = rotation[key][iter]
+				damage += hit_damage_calculation(settings);
+			}
+		}
+		settings = next_tick(settings);
 	}
 	return damage;
 }
