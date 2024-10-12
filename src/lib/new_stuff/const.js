@@ -1,3 +1,5 @@
+import { abilities } from "../necromancy/abilities";
+
 const weapons = {
 	'custom main-hand weapon': {
 		style: 'hybrid',
@@ -1117,7 +1119,29 @@ const ABILITIES = {
 	TOUCH_OF_DEATH: 'touch of death',
 	SOUL_SAP: 'soul sap',
 	SKELETON_WARRIOR_AUTO: 'skeleton warrior auto',
-	SKELETON_WARRIOR_AUTO_10: 'skeleton warrior auto 10,'
+	SKELETON_WARRIOR_AUTO_10: 'skeleton warrior auto 10',
+	VENGEFUL_GHOST_AUTO: 'vengeful ghost auto',
+	PUTRID_ZOMBIE_AUTO: 'putrid zombie auto',
+	COMMAND_PUTRID_ZOMBIE: 'command putrid zombie',
+	COMMAND_PHANTOM_GUARDIAN: 'command phantom guardian',
+	FINGER_OF_DEATH: 'finger of death',
+	DEATHSKULLS: 'death skulls',
+	DEATHSKULLS_4: 'death skulls 4',
+	DEATHSKULLS_7: 'death skulls 7',
+	SOUL_STRIKE: 'soul strike',
+	SOUL_STRIKE_AOE: 'soul strike aoe',
+	VOLLEY_OF_SOULS: 'volley of souls',
+	VOLLEY_OF_SOULS_2: 'volley of souls 2',
+	VOLLEY_OF_SOULS_3: 'volley of souls 3',
+	VOLLEY_OF_SOULS_4: 'volley of souls 4',
+	VOLLEY_OF_SOULS_5: 'volley of souls 5',
+	SPECTRAL_SCYTHE_1: 'spectral scythe 1',
+	SPECTRAL_SCYTHE_2: 'spectral scythe 2',
+	SPECTRAL_SCYTHE_3: 'spectral scythe 3',
+	BLOOD_SIPHON: 'blood siphon',
+	BLOAT: 'bloat',
+	DEATH_GRASP: 'death grasp',
+	DEATH_ESSENCE: 'death essence'
 };
 
 const abils = {
@@ -1772,6 +1796,18 @@ const abils = {
 		'main style': 'necromancy',
 		'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
 	},
+	[ABILITIES.FINGER_OF_DEATH]: {
+		// ability name
+		'min hit': 2.7, // min % of abil expressed as a decimal
+		'var hit': 0.6,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+	},
 	[ABILITIES.SOUL_SAP]: {
 		// ability name
 		'min hit': 0.9, // min % of abil expressed as a decimal
@@ -1807,18 +1843,18 @@ const abils = {
 		'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'spirit',
-		'hits': {1: ABILITIES.SKELETON_WARRIOR_AUTO,
-			     2: ABILITIES.SKELETON_WARRIOR_AUTO,
-				 3: ABILITIES.SKELETON_WARRIOR_AUTO,
-				 4: ABILITIES.SKELETON_WARRIOR_AUTO,
-				 5: ABILITIES.SKELETON_WARRIOR_AUTO,
-				 6: ABILITIES.SKELETON_WARRIOR_AUTO,
-				 7: ABILITIES.SKELETON_WARRIOR_AUTO,
-				 8: ABILITIES.SKELETON_WARRIOR_AUTO,
-				 9: ABILITIES.SKELETON_WARRIOR_AUTO,
-				 10: ABILITIES.SKELETON_WARRIOR_AUTO,},
+		'hits': {1: [ABILITIES.SKELETON_WARRIOR_AUTO],
+			     2: [ABILITIES.SKELETON_WARRIOR_AUTO],
+				 3: [ABILITIES.SKELETON_WARRIOR_AUTO],
+				 4: [ABILITIES.SKELETON_WARRIOR_AUTO],
+				 5: [ABILITIES.SKELETON_WARRIOR_AUTO],
+				 6: [ABILITIES.SKELETON_WARRIOR_AUTO],
+				 7: [ABILITIES.SKELETON_WARRIOR_AUTO],
+				 8: [ABILITIES.SKELETON_WARRIOR_AUTO],
+				 9: [ABILITIES.SKELETON_WARRIOR_AUTO],
+				 10: [ABILITIES.SKELETON_WARRIOR_AUTO],},
 	},
-	'vengeful ghost auto': {
+	[ABILITIES.VENGEFUL_GHOST_AUTO]: {
 		// ability name
 		'min hit': 0.18, // min % of abil expressed as a decimal
 		'var hit': 0.04,
@@ -1830,7 +1866,7 @@ const abils = {
 		'main style': 'necromancy',
 		'damage type': 'spirit' // basic, threshold, special attack, abilility (necromancy classification), ultimate
 	},
-	'putrid zombie auto': {
+	[ABILITIES.PUTRID_ZOMBIE_AUTO]: {
 		// ability name
 		'min hit': 0.18, // min % of abil expressed as a decimal
 		'var hit': 0.04,
@@ -1842,7 +1878,7 @@ const abils = {
 		'main style': 'necromancy',
 		'damage type': 'spirit' // basic, threshold, special attack, abilility (necromancy classification), ultimate
 	},
-	'command vengeful ghost auto': {
+	[ABILITIES.COMMAND_PUTRID_ZOMBIE]: {
 		// ability name
 		'min hit': 3.6, // min % of abil expressed as a decimal
 		'var hit': 0.8,
@@ -1854,7 +1890,7 @@ const abils = {
 		'main style': 'necromancy',
 		'damage type': 'spirit' // basic, threshold, special attack, abilility (necromancy classification), ultimate
 	},
-	'command phantom guardian': {
+	[ABILITIES.COMMAND_PHANTOM_GUARDIAN]: {
 		// ability name
 		'min hit': 0.45, // min % of abil expressed as a decimal
 		'var hit': 0.1,
@@ -1866,7 +1902,7 @@ const abils = {
 		'main style': 'necromancy',
 		'damage type': 'spirit' // basic, threshold, special attack, abilility (necromancy classification), ultimate
 	},
-	'bloat - full damage': {
+	[ABILITIES.BLOAT]: {
 		// ability name
 		'min hit': 1.35, // min % of abil expressed as a decimal
 		'var hit': 0.3,
@@ -1878,7 +1914,7 @@ const abils = {
 		'main style': 'necromancy',
 		'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
 	},
-	'death skulls': {
+	[ABILITIES.DEATHSKULLS]: {
 		// ability name
 		'min hit': 2.25, // min % of abil expressed as a decimal
 		'var hit': 0.5,
@@ -1889,6 +1925,204 @@ const abils = {
 		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+	},
+	[ABILITIES.DEATHSKULLS_4]: {
+		// ability name
+		'min hit': 2.25, // min % of abil expressed as a decimal
+		'var hit': 0.5,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic',
+		'hits': {
+			1: [ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS]
+		}
+	},
+	[ABILITIES.DEATHSKULLS_7]: {
+		// ability name
+		'min hit': 2.25, // min % of abil expressed as a decimal
+		'var hit': 0.5,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic',
+		'hits': {
+			1: [ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS]
+		}
+	},
+	[ABILITIES.SOUL_STRIKE]: {
+		// ability name
+		'min hit': 1.35, // min % of abil expressed as a decimal
+		'var hit': 0.3,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+	},
+	[ABILITIES.SOUL_STRIKE_AOE]: {
+		// ability name
+		'min hit': 0.9, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+	},
+	[ABILITIES.VOLLEY_OF_SOULS]: {
+		// ability name
+		'min hit': 1.35, // min % of abil expressed as a decimal
+		'var hit': 0.3,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic' 
+	},
+	[ABILITIES.VOLLEY_OF_SOULS_2]: {
+		// ability name
+		'min hit': 1.35, // min % of abil expressed as a decimal
+		'var hit': 0.3,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic',
+		'hits': {
+			1: [ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS]
+		}
+	},
+	[ABILITIES.VOLLEY_OF_SOULS_3]: {
+		// ability name
+		'min hit': 1.35, // min % of abil expressed as a decimal
+		'var hit': 0.3,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic',
+		'hits': {
+			1: [ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS]
+		}
+	},
+	[ABILITIES.VOLLEY_OF_SOULS_4]: {
+		// ability name
+		'min hit': 1.35, // min % of abil expressed as a decimal
+		'var hit': 0.3,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic',
+		'hits': {
+			1: [ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS]
+		}
+	},
+	[ABILITIES.VOLLEY_OF_SOULS_5]: {
+		// ability name
+		'min hit': 1.35, // min % of abil expressed as a decimal
+		'var hit': 0.3,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic',
+		'hits': {
+			1: [ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS]
+		}
+	},
+	[ABILITIES.BLOOD_SIPHON]: {
+		// ability name
+		'min hit': 1.17, // min % of abil expressed as a decimal
+		'var hit': 0.26,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic' 
+	},
+	[ABILITIES.SPECTRAL_SCYTHE_1]: {
+		// ability name
+		'min hit': 0.72, // min % of abil expressed as a decimal
+		'var hit': 0.16,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic' 
+	},
+	[ABILITIES.SPECTRAL_SCYTHE_2]: {
+		// ability name
+		'min hit': 1.8, // min % of abil expressed as a decimal
+		'var hit': 0.4,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic' 
+	},
+	[ABILITIES.SPECTRAL_SCYTHE_3]: {
+		// ability name
+		'min hit': 2.25, // min % of abil expressed as a decimal
+		'var hit': 0.5,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic' 
+	},
+	[ABILITIES.DEATH_GRASP]: {
+		// ability name
+		'min hit': 4.05, // min % of abil expressed as a decimal
+		'var hit': 0.9,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'special attack', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic' 
+	},
+	[ABILITIES.DEATH_ESSENCE]: {
+		// ability name
+		'min hit': 3.6, // min % of abil expressed as a decimal
+		'var hit': 0.8,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'special attack', // bleed, dot, burn, etc
+		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'necromancy',
+		'damage type': 'necrotic' 
 	},
 
 	'time strike': {

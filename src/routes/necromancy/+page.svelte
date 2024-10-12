@@ -31,9 +31,9 @@
 		Object.entries(damages).forEach(([abilityKey, ability]) => {
 			adaptedSettings['split soul'] = false;
             adaptedSettings['ability'] = abilityKey;
-            damages[abilityKey].regular = ability.calc(adaptedSettings);
+            damages[abilityKey].regular = ability.calc({...adaptedSettings});
             adaptedSettings['split soul'] = true;
-			damages[abilityKey].ss = ability.calc(adaptedSettings);
+			damages[abilityKey].ss = ability.calc({...adaptedSettings});
 		});
 	}
 </script>

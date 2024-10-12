@@ -1,6 +1,7 @@
 import { SETTINGS } from '../necromancy/settings';
 import { weapons, gear, armour, abils, prayers } from './const';
 import { create_object, calc_crit_chance } from './object_helper';
+import { next_tick, next_hit, next_cast } from './ability_helper';
 
 function calc_base_ad(settings) {
 	// see wiki page /ability_damage for more info
@@ -102,6 +103,10 @@ function calc_base_ad(settings) {
 	}
 
 	return base_AD;
+}
+
+function calc_levels(settings) {
+	
 }
 
 function calc_weapon_tier(settings, hand) {
@@ -712,8 +717,8 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
 	// ripper claws buff (quantity of buff unknown)
 
 	// ripper demon familiar buff
-	if (settings[SETTINGS.FAMILIAR] === 'ripper demon') {
-		boost = Math.floor(boost + 0.05 * (1 - settings[SETTINGS.TARGET_HP_PERCENT]));
+	if (settings[SETTINGS.FAMILIAR] === SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON) {
+		boost = Math.floor(boost + 0.05 * (1 - settings[SETTINGS.TARGET_HP_PERCENT]/100));
 	}
 
 	let min_hit = Math.floor((dmgObject['min hit'] * boost) / 10000);
@@ -752,7 +757,7 @@ function calc_core(settings, dmgObject, key) {
 
 		// store damage into bolg
 		if (settings['two-hand weapon'] === 'bow of the last guardian') {
-			settings['bolg damage'] = dmgObject;
+			settings['bolg damage'][key] = dmgObject;
 		}
 
 		// crits
@@ -1253,19 +1258,19 @@ function hit_damage_calculation(settings) {
 		settings['bloat damage'] = create_object(settings);
 	}
 
+	// initialise bolg
+	if (abils[settings['ability']]['main style'] === 'ranged' && settings['two-hand weapon'] === 'bow of the last guardian' && settings[SETTINGS.WEAPON] === 'two-hand') {
+		if (settings['bolg stacks'] === 7 || (settings['bolg stacks'] === 3 && settings['bolg spec'] === true)) {
+			settings['bolg damage'] = create_object(settings);
+		}
+	}
+
 	let total_damage = calc_damage_object(settings); // calculate the ability
 
 	// handle bolg logic
-	if (
-		abils[settings['ability']]['main style'] === 'ranged' &&
-		settings['two-hand weapon'] === 'bow of the last guardian' &&
-		settings[SETTINGS.WEAPON] === 'two-hand'
-	) {
+	if (abils[settings['ability']]['main style'] === 'ranged' && settings['two-hand weapon'] === 'bow of the last guardian' && settings[SETTINGS.WEAPON] === 'two-hand') {
 		// bolg proc conditions
-		if (
-			settings['bolg stacks'] === 7 ||
-			(settings['bolg stacks'] === 3 && settings['bolg spec'] === true)
-		) {
+		if (settings['bolg stacks'] === 7 || (settings['bolg stacks'] === 3 && settings['bolg spec'] === true)) {
 			total_damage += calc_bolg(settings);
 		}
 	}
@@ -1284,12 +1289,22 @@ function hit_damage_calculation(settings) {
 }
 
 function ability_damage_calculation(settings) {
-	let local_settings = {...settings};
 	let rotation = abils[settings['ability']]['hits'];
 	let damage = 0;
 	for (let key in rotation) {
-		local_settings['ability'] = rotation[key]
-		damage += hit_damage_calculation(local_settings);
+		for (let iter=0; iter < rotation[key].length; iter++) {
+			if (rotation[key][iter] === "next cast") {
+				settings = next_cast(settings);
+			}
+			else if (rotation[key][iter] === "next hit") {
+				settings = next_hit(settings);
+			}
+			else {
+				settings['ability'] = rotation[key][iter]
+				damage += hit_damage_calculation(settings);
+			}
+		}
+		settings = next_tick(settings);
 	}
 	return damage;
 }
