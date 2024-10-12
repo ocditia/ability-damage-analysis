@@ -1141,7 +1141,62 @@ const ABILITIES = {
 	BLOOD_SIPHON: 'blood siphon',
 	BLOAT: 'bloat',
 	DEATH_GRASP: 'death grasp',
-	DEATH_ESSENCE: 'death essence'
+	DEATH_ESSENCE: 'death essence',
+	
+	PIERCING_SHOT_HIT: 'piercing shot hit',
+	PIERCING_SHOT: 'piercing shot',
+	BINDING_SHOT: 'binding shot',
+	SNIPE: 'snipe',
+	DAZING_SHOT: 'dazing shot',
+	GREATER_DAZING_SHOT: 'greater dazing shot',
+	DEMORALISE: 'demoralise',
+	NEEDLE_STRIKE: 'needle strike',
+	FRAGMENTATION_SHOT_HIT: 'fragmentation shot hit',
+	FRAGMENTATION_SHOT: 'fragmentation shot',
+	RICOCHET: 'ricochet',
+	GREATER_RICOCHET_1: 'greater ricochet 1',
+	GREATER_RICOCHET_2: 'greater ricochet 2',
+	GREATER_RICOCHET_3: 'greater ricochet 3',
+	GREATER_RICOCHET: 'greater ricochet',
+	CORRUPTION_SHOT: 'corruption shot',
+	SNAP_SHOT_1: 'snap shot 1',
+	SNAP_SHOT_2: 'snap shot 2',
+	SNAP_SHOT: 'snap shot',
+	TIGHT_BINDINGS: 'tight bindings',
+	ROUT: 'rout',
+	RAPID_FIRE_HIT: 'rapid fire hit',
+	RAPID_FIRE: 'rapid fire',
+	BOMBARDMENT: 'bombardment',
+	SALT_THE_WOUND: 'salt the wound',
+	SHADOW_TENDRILS: 'shadow tendrils',
+	DEADSHOT_INITIAL: 'deadshot initial',
+	DEADSHOT_BLEED: 'deadshot bleed',
+	DEADSHOT: 'deadshot',
+	INCENDIARY_SHOT: 'incendiary shot',
+	UNLOAD_HIT: 'unload hit',
+	UNLOAD: 'unload',
+	BALANCE_BY_FORCE: 'balance by force',
+	DESCENT_OF_DARKNESS_HIT: 'descent of darkness hit',
+	DESCENT_OF_DARKNESS: 'descent of darkness',
+	BALANCED_SHOT: 'balanced shot',
+	AIMED_SHOT: 'aimed shot',
+	POWER_SHOT: 'power shot',
+	TWIN_FANG_HIT: 'twin fang hit',
+	TWIN_FANG: 'twin fang',
+	PHANTOM_STRIKE_INITIAL: 'phantom strike initial',
+	PHANTOM_STRIKE_BLEED: 'phantom strike bleed',
+	PHANTOM_STRIKE: 'phantom strike',
+	HAMSTRING: 'hamstring',
+	TWIN_SHOT_HIT: 'twin shot hit',
+	TWIN_SHOT: 'twin shot',
+	CHAIN_HIT: 'chain hit',
+	RESTORATIVE_SHOT: 'restorative shot',
+	SOUL_SHOT: 'soul shot',
+	CRYSTAL_RAIN: 'crystal rain',
+	DEEP_BURN: 'deep burn',
+	DESTRUCTIVE_SHOT_HIT: 'destructive shot hit',
+	DESTRUCTIVE_SHOT: 'destructive shot',
+	DEFIANCE: 'defiance'
 };
 
 const abils = {
@@ -2107,8 +2162,8 @@ const abils = {
 		'on-hit effects': true, // does the ability get on-hit effects
 		'crit effects': true, // can the ability crit
 		'damage potential effects': true, // is the ability affected by damage potential
-		'ability classification': 'special attack', // bleed, dot, burn, etc
-		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic' 
 	},
@@ -2119,10 +2174,717 @@ const abils = {
 		'on-hit effects': true, // does the ability get on-hit effects
 		'crit effects': true, // can the ability crit
 		'damage potential effects': true, // is the ability affected by damage potential
-		'ability classification': 'special attack', // bleed, dot, burn, etc
-		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic' 
+	},
+
+	[ABILITIES.PIERCING_SHOT_HIT]: {
+		// ability name
+		'min hit': 0.45, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.PIERCING_SHOT]: {
+		// ability name
+		'min hit': 0.45, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged',
+		'hits': {
+			1: [ABILITIES.PIERCING_SHOT, "next cast", ABILITIES.PIERCING_SHOT]
+		}
+	},
+	[ABILITIES.BINDING_SHOT]: {
+		// ability name
+		'min hit': 0.65, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.SNIPE]: {
+		// ability name
+		'min hit': 0.95, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'channel', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.DAZING_SHOT]: {
+		// ability name
+		'min hit': 0.95, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.GREATER_DAZING_SHOT]: {
+		// ability name
+		'min hit': 0.95, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.DEMORALISE]: {
+		// ability name
+		'min hit': 0.65, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.NEEDLE_STRIKE]: {
+		// ability name
+		'min hit': 0.95, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.FRAGMENTATION_SHOT_HIT]: {
+		// ability name
+		'min hit': 0.25, // min % of abil expressed as a decimal
+		'var hit': 0.06,
+		'on-hit effects': false, // does the ability get on-hit effects
+		'crit effects': false, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'bleed', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.FRAGMENTATION_SHOT]: {
+		// ability name
+		'min hit': 0.45, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'bleed', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged',
+		'hits': {
+			1: [ABILITIES.FRAGMENTATION_SHOT, ABILITIES.FRAGMENTATION_SHOT, ABILITIES.FRAGMENTATION_SHOT, ABILITIES.FRAGMENTATION_SHOT, ABILITIES.FRAGMENTATION_SHOT]
+		}
+	},
+	[ABILITIES.RICOCHET]: {
+		// ability name
+		'min hit': 0.65, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.GREATER_RICOCHET_1]: {
+		// ability name
+		'min hit': 0.65, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.GREATER_RICOCHET_2]: {
+		// ability name
+		'min hit': 0.3, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.GREATER_RICOCHET_3]: {
+		// ability name
+		'min hit': 0.1, // min % of abil expressed as a decimal
+		'var hit': 0.05,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.GREATER_RICOCHET]: {
+		// ability name
+		'min hit': 0.45, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged',
+		'hits': {
+			1: [ABILITIES.GREATER_RICOCHET_1, "next hit", ABILITIES.GREATER_RICOCHET_2, "next hit", ABILITIES.GREATER_RICOCHET_2]
+		} 
+	},
+	[ABILITIES.CORRUPTION_SHOT]: {
+		// ability name
+		'min hit': 0.6, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': false, // does the ability get on-hit effects
+		'crit effects': false, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'dot', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.SNAP_SHOT_1]: {
+		// ability name
+		'min hit': 1.1, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.SNAP_SHOT_2]: {
+		// ability name
+		'min hit': 1.5, // min % of abil expressed as a decimal
+		'var hit': 0.3,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.SNAP_SHOT]: {
+		// ability name
+		'min hit': 0.45, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' ,
+		'hits': {
+			1: [ABILITIES.SNAP_SHOT_1, "next hit", ABILITIES.SNAP_SHOT_2]
+		}
+	},
+	[ABILITIES.TIGHT_BINDINGS]: {
+		// ability name
+		'min hit': 1.2, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.ROUT]: {
+		// ability name
+		'min hit': 1.2, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.RAPID_FIRE_HIT]: {
+		// ability name
+		'min hit': 0.65, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.RAPID_FIRE]: {
+		// ability name
+		'min hit': 0.45, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' ,
+		'hits': {
+			1: [ABILITIES.RAPID_FIRE_HIT],
+			2: [ABILITIES.RAPID_FIRE_HIT],
+			3: [ABILITIES.RAPID_FIRE_HIT],
+			4: [ABILITIES.RAPID_FIRE_HIT],
+			5: [ABILITIES.RAPID_FIRE_HIT],
+			6: [ABILITIES.RAPID_FIRE_HIT],
+			7: [ABILITIES.RAPID_FIRE_HIT],
+			8: [ABILITIES.RAPID_FIRE_HIT],
+		}
+	},
+	[ABILITIES.BOMBARDMENT]: {
+		// ability name
+		'min hit': 1.3, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.SALT_THE_WOUND]: {
+		// ability name
+		'min hit': 1.1, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.SHADOW_TENDRILS]: {
+		// ability name
+		'min hit': 2.0, // min % of abil expressed as a decimal
+		'var hit': 0.7,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.DEADSHOT_INITIAL]: {
+		// ability name
+		'min hit': 1.15, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.DEADSHOT_BLEED]: {
+		// ability name
+		'min hit': 0.7, // min % of abil expressed as a decimal
+		'var hit': 0.0,
+		'on-hit effects': false, // does the ability get on-hit effects
+		'crit effects': false, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'bleed', // bleed, dot, burn, etc
+		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.INCENDIARY_SHOT]: {
+		// ability name
+		'min hit': 2.7, // min % of abil expressed as a decimal
+		'var hit': 0.6,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.UNLOAD_HIT]: {
+		// ability name
+		'min hit': 1.3, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.UNLOAD]: {
+		// ability name
+		'min hit': 0.65, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged',
+		'hits': {
+			1: [ABILITIES.UNLOAD_HIT],
+			2: [],
+			3: [ABILITIES.UNLOAD_HIT],
+			4: [],
+			5: [ABILITIES.UNLOAD_HIT],
+			6: [],
+			7: [ABILITIES.UNLOAD_HIT],
+		}
+	},
+	[ABILITIES.BALANCE_BY_FORCE]: {
+		// ability name
+		'min hit': 2.35, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.DESCENT_OF_DARKNESS_HIT]: {
+		// ability name
+		'min hit': 1.9, // min % of abil expressed as a decimal
+		'var hit': 0.4,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.DESCENT_OF_DARKNESS]: {
+		// ability name
+		'min hit': 1.9, // min % of abil expressed as a decimal
+		'var hit': 0.4,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged',
+		'hits': {
+			1: [ABILITIES.DESCENT_OF_DARKNESS_HIT, "next hit", ABILITIES.DESCENT_OF_DARKNESS_HIT]
+		}
+	},
+	[ABILITIES.BALANCED_SHOT]: {
+		// ability name
+		'min hit': 1.7, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.AIMED_SHOT]: {
+		// ability name
+		'min hit': 3.0, // min % of abil expressed as a decimal
+		'var hit': 0.6,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'channel', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.POWER_SHOT]: {
+		// ability name
+		'min hit': 2.1, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.TWIN_FANG_HIT]: {
+		// ability name
+		'min hit': 1.15, // min % of abil expressed as a decimal
+		'var hit': 0.3,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.TWIN_FANG]: {
+		// ability name
+		'min hit': 1.9, // min % of abil expressed as a decimal
+		'var hit': 0.4,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged',
+		'hits': {
+			1: [ABILITIES.TWIN_FANG_HIT, "next hit", ABILITIES.TWIN_FANG_HIT]
+		}
+	},
+	[ABILITIES.PHANTOM_STRIKE_INITIAL]: {
+		// ability name
+		'min hit': 1.2, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.PHANTOM_STRIKE_BLEED]: {
+		// ability name
+		'min hit': 0.3, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': false, // does the ability get on-hit effects
+		'crit effects': false, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'bleed', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.PHANTOM_STRIKE]: {
+		// ability name
+		'min hit': 1.9, // min % of abil expressed as a decimal
+		'var hit': 0.4,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged',
+		'hits': {
+			1: [ABILITIES.PHANTOM_STRIKE_INITIAL, ABILITIES.PHANTOM_STRIKE_BLEED, ABILITIES.PHANTOM_STRIKE_BLEED, ABILITIES.PHANTOM_STRIKE_BLEED, ABILITIES.PHANTOM_STRIKE_BLEED, ABILITIES.PHANTOM_STRIKE_BLEED, ABILITIES.PHANTOM_STRIKE_BLEED]
+		}
+	},
+	[ABILITIES.HAMSTRING]: {
+		// ability name
+		'min hit': 1.5, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.TWIN_SHOT_HIT]: {
+		// ability name
+		'min hit': 0.55, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.TWIN_SHOT]: {
+		// ability name
+		'min hit': 0.55, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged',
+		'hits': {
+			1: [ABILITIES.TWIN_SHOT_HIT, "next hit", ABILITIES.TWIN_SHOT_HIT]
+		}
+	},
+	[ABILITIES.CHAIN_HIT]: {
+		// ability name
+		'min hit': 0.55, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.TWIN_SHOT_HIT]: {
+		// ability name
+		'min hit': 0.55, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.RESTORATIVE_SHOT]: {
+		// ability name
+		'min hit': 1.35, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.TWIN_SHOT_HIT]: {
+		// ability name
+		'min hit': 0.55, // min % of abil expressed as a decimal
+		'var hit': 0.1,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.SOUL_SHOT]: {
+		// ability name
+		'min hit': 1.0, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.CRYSTAL_RAIN]: {
+		// ability name
+		'min hit': 1.25, // min % of abil expressed as a decimal
+		'var hit': 0.3,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.DEEP_BURN]: {
+		// ability name
+		'min hit': 1.8, // min % of abil expressed as a decimal
+		'var hit': 0.3,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.DESTRUCTIVE_SHOT_HIT]: {
+		// ability name
+		'min hit': 1.6, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
+	},
+	[ABILITIES.DESTRUCTIVE_SHOT]: {
+		// ability name
+		'min hit': 1.6, // min % of abil expressed as a decimal
+		'var hit': 0.2,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged',
+		'hits': {
+			1: [ABILITIES.DESTRUCTIVE_SHOT_HIT, "next hit", ABILITIES.DESTRUCTIVE_SHOT_HIT]
+		} 
+	},
+	[ABILITIES.DEFIANCE]: {
+		// ability name
+		'min hit': 2.25, // min % of abil expressed as a decimal
+		'var hit': 0.5,
+		'on-hit effects': true, // does the ability get on-hit effects
+		'crit effects': true, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'regular', // bleed, dot, burn, etc
+		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'ranged',
+		'damage type': 'ranged' 
 	},
 
 	'time strike': {
@@ -2172,7 +2934,7 @@ const abils = {
 		'ability type': 'proc', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged' // basic, threshold, special attack, abilility (necromancy classification), ultimate
-	}
+	},
 };
 
 const prayers = {

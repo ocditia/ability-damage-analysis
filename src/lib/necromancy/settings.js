@@ -213,7 +213,9 @@ const SETTINGS = {
 	ZAMORAK_CHOKE_STACKS: 'zamorak choke stacks',
 	RAKSHA_INNER_POWER: 'Raksha inner power',
 	STONE_OF_JAS: 'stone of jas',
-	INFERNAL_PUZZLE_BOX: 'Infernal puzzle box'
+	INFERNAL_PUZZLE_BOX: 'Infernal puzzle box',
+	ICY_PRECISION: 'icy precision',
+	PUNCTURE_STACKS: 'puncture stacks',
 };
 
 const settingsConfig = {
@@ -637,7 +639,15 @@ const settingsConfig = {
 	[SETTINGS.INFERNAL_PUZZLE_BOX]: {
 		label: 'Infernal Puzzle Box %',
 		default: 0
-	}
+	},
+	[SETTINGS.ICY_PRECISION]: {
+		label: 'Icy Precision stacks',
+		default: 0
+	},
+	[SETTINGS.PUNCTURE_STACKS]: {
+		label: 'Puncture Stacks',
+		default: 0
+	},
 };
 
 export { SETTINGS, settingsConfig };
