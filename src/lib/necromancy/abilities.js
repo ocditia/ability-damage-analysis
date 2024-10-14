@@ -131,7 +131,7 @@ const abilities = {
 		title: 'Death essence',
 		calc: hit_damage_calculation,
 		icon: '/ability_icons/necro/30x30/auto.png'
-	},
+	}
 };
 
 export { abilities };

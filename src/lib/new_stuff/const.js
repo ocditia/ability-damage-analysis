@@ -1,4 +1,4 @@
-import { abilities } from "../necromancy/abilities";
+import { abilities } from '../necromancy/abilities';
 
 const weapons = {
 	'custom main-hand weapon': {
@@ -1142,7 +1142,7 @@ const ABILITIES = {
 	BLOAT: 'bloat',
 	DEATH_GRASP: 'death grasp',
 	DEATH_ESSENCE: 'death essence',
-	
+
 	PIERCING_SHOT_HIT: 'piercing shot hit',
 	PIERCING_SHOT: 'piercing shot',
 	BINDING_SHOT: 'binding shot',
@@ -1898,16 +1898,18 @@ const abils = {
 		'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'spirit',
-		'hits': {1: [ABILITIES.SKELETON_WARRIOR_AUTO],
-			     2: [ABILITIES.SKELETON_WARRIOR_AUTO],
-				 3: [ABILITIES.SKELETON_WARRIOR_AUTO],
-				 4: [ABILITIES.SKELETON_WARRIOR_AUTO],
-				 5: [ABILITIES.SKELETON_WARRIOR_AUTO],
-				 6: [ABILITIES.SKELETON_WARRIOR_AUTO],
-				 7: [ABILITIES.SKELETON_WARRIOR_AUTO],
-				 8: [ABILITIES.SKELETON_WARRIOR_AUTO],
-				 9: [ABILITIES.SKELETON_WARRIOR_AUTO],
-				 10: [ABILITIES.SKELETON_WARRIOR_AUTO],},
+		hits: {
+			1: [ABILITIES.SKELETON_WARRIOR_AUTO],
+			2: [ABILITIES.SKELETON_WARRIOR_AUTO],
+			3: [ABILITIES.SKELETON_WARRIOR_AUTO],
+			4: [ABILITIES.SKELETON_WARRIOR_AUTO],
+			5: [ABILITIES.SKELETON_WARRIOR_AUTO],
+			6: [ABILITIES.SKELETON_WARRIOR_AUTO],
+			7: [ABILITIES.SKELETON_WARRIOR_AUTO],
+			8: [ABILITIES.SKELETON_WARRIOR_AUTO],
+			9: [ABILITIES.SKELETON_WARRIOR_AUTO],
+			10: [ABILITIES.SKELETON_WARRIOR_AUTO]
+		}
 	},
 	[ABILITIES.VENGEFUL_GHOST_AUTO]: {
 		// ability name
@@ -1992,8 +1994,13 @@ const abils = {
 		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		'hits': {
-			1: [ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS]
+		hits: {
+			1: [
+				ABILITIES.DEATHSKULLS,
+				ABILITIES.DEATHSKULLS,
+				ABILITIES.DEATHSKULLS,
+				ABILITIES.DEATHSKULLS
+			]
 		}
 	},
 	[ABILITIES.DEATHSKULLS_7]: {
@@ -2007,8 +2014,16 @@ const abils = {
 		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		'hits': {
-			1: [ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS]
+		hits: {
+			1: [
+				ABILITIES.DEATHSKULLS,
+				ABILITIES.DEATHSKULLS,
+				ABILITIES.DEATHSKULLS,
+				ABILITIES.DEATHSKULLS,
+				ABILITIES.DEATHSKULLS,
+				ABILITIES.DEATHSKULLS,
+				ABILITIES.DEATHSKULLS
+			]
 		}
 	},
 	[ABILITIES.SOUL_STRIKE]: {
@@ -2045,7 +2060,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
-		'damage type': 'necrotic' 
+		'damage type': 'necrotic'
 	},
 	[ABILITIES.VOLLEY_OF_SOULS_2]: {
 		// ability name
@@ -2058,8 +2073,8 @@ const abils = {
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		'hits': {
-			1: [ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS]
+		hits: {
+			1: [ABILITIES.VOLLEY_OF_SOULS, 'next hit', ABILITIES.VOLLEY_OF_SOULS]
 		}
 	},
 	[ABILITIES.VOLLEY_OF_SOULS_3]: {
@@ -2073,8 +2088,14 @@ const abils = {
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		'hits': {
-			1: [ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS]
+		hits: {
+			1: [
+				ABILITIES.VOLLEY_OF_SOULS,
+				'next hit',
+				ABILITIES.VOLLEY_OF_SOULS,
+				'next hit',
+				ABILITIES.VOLLEY_OF_SOULS
+			]
 		}
 	},
 	[ABILITIES.VOLLEY_OF_SOULS_4]: {
@@ -2088,8 +2109,16 @@ const abils = {
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		'hits': {
-			1: [ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS]
+		hits: {
+			1: [
+				ABILITIES.VOLLEY_OF_SOULS,
+				'next hit',
+				ABILITIES.VOLLEY_OF_SOULS,
+				'next hit',
+				ABILITIES.VOLLEY_OF_SOULS,
+				'next hit',
+				ABILITIES.VOLLEY_OF_SOULS
+			]
 		}
 	},
 	[ABILITIES.VOLLEY_OF_SOULS_5]: {
@@ -2103,8 +2132,18 @@ const abils = {
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		'hits': {
-			1: [ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS, "next hit", ABILITIES.VOLLEY_OF_SOULS]
+		hits: {
+			1: [
+				ABILITIES.VOLLEY_OF_SOULS,
+				'next hit',
+				ABILITIES.VOLLEY_OF_SOULS,
+				'next hit',
+				ABILITIES.VOLLEY_OF_SOULS,
+				'next hit',
+				ABILITIES.VOLLEY_OF_SOULS,
+				'next hit',
+				ABILITIES.VOLLEY_OF_SOULS
+			]
 		}
 	},
 	[ABILITIES.BLOOD_SIPHON]: {
@@ -2117,7 +2156,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
-		'damage type': 'necrotic' 
+		'damage type': 'necrotic'
 	},
 	[ABILITIES.SPECTRAL_SCYTHE_1]: {
 		// ability name
@@ -2129,7 +2168,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
-		'damage type': 'necrotic' 
+		'damage type': 'necrotic'
 	},
 	[ABILITIES.SPECTRAL_SCYTHE_2]: {
 		// ability name
@@ -2141,7 +2180,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
-		'damage type': 'necrotic' 
+		'damage type': 'necrotic'
 	},
 	[ABILITIES.SPECTRAL_SCYTHE_3]: {
 		// ability name
@@ -2153,7 +2192,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
-		'damage type': 'necrotic' 
+		'damage type': 'necrotic'
 	},
 	[ABILITIES.DEATH_GRASP]: {
 		// ability name
@@ -2165,7 +2204,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
-		'damage type': 'necrotic' 
+		'damage type': 'necrotic'
 	},
 	[ABILITIES.DEATH_ESSENCE]: {
 		// ability name
@@ -2177,7 +2216,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
-		'damage type': 'necrotic' 
+		'damage type': 'necrotic'
 	},
 
 	[ABILITIES.PIERCING_SHOT_HIT]: {
@@ -2190,7 +2229,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.PIERCING_SHOT]: {
 		// ability name
@@ -2203,8 +2242,8 @@ const abils = {
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		'hits': {
-			1: [ABILITIES.PIERCING_SHOT, "next cast", ABILITIES.PIERCING_SHOT]
+		hits: {
+			1: [ABILITIES.PIERCING_SHOT, 'next cast', ABILITIES.PIERCING_SHOT]
 		}
 	},
 	[ABILITIES.BINDING_SHOT]: {
@@ -2217,7 +2256,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.SNIPE]: {
 		// ability name
@@ -2229,7 +2268,7 @@ const abils = {
 		'ability classification': 'channel', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.DAZING_SHOT]: {
 		// ability name
@@ -2241,7 +2280,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.GREATER_DAZING_SHOT]: {
 		// ability name
@@ -2253,7 +2292,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.DEMORALISE]: {
 		// ability name
@@ -2265,7 +2304,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.NEEDLE_STRIKE]: {
 		// ability name
@@ -2277,7 +2316,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.FRAGMENTATION_SHOT_HIT]: {
 		// ability name
@@ -2289,7 +2328,7 @@ const abils = {
 		'ability classification': 'bleed', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.FRAGMENTATION_SHOT]: {
 		// ability name
@@ -2302,8 +2341,14 @@ const abils = {
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		'hits': {
-			1: [ABILITIES.FRAGMENTATION_SHOT, ABILITIES.FRAGMENTATION_SHOT, ABILITIES.FRAGMENTATION_SHOT, ABILITIES.FRAGMENTATION_SHOT, ABILITIES.FRAGMENTATION_SHOT]
+		hits: {
+			1: [
+				ABILITIES.FRAGMENTATION_SHOT,
+				ABILITIES.FRAGMENTATION_SHOT,
+				ABILITIES.FRAGMENTATION_SHOT,
+				ABILITIES.FRAGMENTATION_SHOT,
+				ABILITIES.FRAGMENTATION_SHOT
+			]
 		}
 	},
 	[ABILITIES.RICOCHET]: {
@@ -2316,7 +2361,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.GREATER_RICOCHET_1]: {
 		// ability name
@@ -2328,7 +2373,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.GREATER_RICOCHET_2]: {
 		// ability name
@@ -2340,7 +2385,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.GREATER_RICOCHET_3]: {
 		// ability name
@@ -2352,7 +2397,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.GREATER_RICOCHET]: {
 		// ability name
@@ -2365,9 +2410,15 @@ const abils = {
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		'hits': {
-			1: [ABILITIES.GREATER_RICOCHET_1, "next hit", ABILITIES.GREATER_RICOCHET_2, "next hit", ABILITIES.GREATER_RICOCHET_2]
-		} 
+		hits: {
+			1: [
+				ABILITIES.GREATER_RICOCHET_1,
+				'next hit',
+				ABILITIES.GREATER_RICOCHET_2,
+				'next hit',
+				ABILITIES.GREATER_RICOCHET_2
+			]
+		}
 	},
 	[ABILITIES.CORRUPTION_SHOT]: {
 		// ability name
@@ -2379,7 +2430,7 @@ const abils = {
 		'ability classification': 'dot', // bleed, dot, burn, etc
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.SNAP_SHOT_1]: {
 		// ability name
@@ -2391,7 +2442,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.SNAP_SHOT_2]: {
 		// ability name
@@ -2403,7 +2454,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.SNAP_SHOT]: {
 		// ability name
@@ -2415,9 +2466,9 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' ,
-		'hits': {
-			1: [ABILITIES.SNAP_SHOT_1, "next hit", ABILITIES.SNAP_SHOT_2]
+		'damage type': 'ranged',
+		hits: {
+			1: [ABILITIES.SNAP_SHOT_1, 'next hit', ABILITIES.SNAP_SHOT_2]
 		}
 	},
 	[ABILITIES.TIGHT_BINDINGS]: {
@@ -2430,7 +2481,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.ROUT]: {
 		// ability name
@@ -2442,7 +2493,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.RAPID_FIRE_HIT]: {
 		// ability name
@@ -2454,7 +2505,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.RAPID_FIRE]: {
 		// ability name
@@ -2466,8 +2517,8 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' ,
-		'hits': {
+		'damage type': 'ranged',
+		hits: {
 			1: [ABILITIES.RAPID_FIRE_HIT],
 			2: [ABILITIES.RAPID_FIRE_HIT],
 			3: [ABILITIES.RAPID_FIRE_HIT],
@@ -2475,7 +2526,7 @@ const abils = {
 			5: [ABILITIES.RAPID_FIRE_HIT],
 			6: [ABILITIES.RAPID_FIRE_HIT],
 			7: [ABILITIES.RAPID_FIRE_HIT],
-			8: [ABILITIES.RAPID_FIRE_HIT],
+			8: [ABILITIES.RAPID_FIRE_HIT]
 		}
 	},
 	[ABILITIES.BOMBARDMENT]: {
@@ -2488,7 +2539,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.SALT_THE_WOUND]: {
 		// ability name
@@ -2500,7 +2551,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.SHADOW_TENDRILS]: {
 		// ability name
@@ -2512,7 +2563,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.DEADSHOT_INITIAL]: {
 		// ability name
@@ -2524,7 +2575,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.DEADSHOT_BLEED]: {
 		// ability name
@@ -2536,7 +2587,7 @@ const abils = {
 		'ability classification': 'bleed', // bleed, dot, burn, etc
 		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.INCENDIARY_SHOT]: {
 		// ability name
@@ -2548,7 +2599,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.UNLOAD_HIT]: {
 		// ability name
@@ -2560,7 +2611,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.UNLOAD]: {
 		// ability name
@@ -2573,14 +2624,14 @@ const abils = {
 		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		'hits': {
+		hits: {
 			1: [ABILITIES.UNLOAD_HIT],
 			2: [],
 			3: [ABILITIES.UNLOAD_HIT],
 			4: [],
 			5: [ABILITIES.UNLOAD_HIT],
 			6: [],
-			7: [ABILITIES.UNLOAD_HIT],
+			7: [ABILITIES.UNLOAD_HIT]
 		}
 	},
 	[ABILITIES.BALANCE_BY_FORCE]: {
@@ -2593,7 +2644,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.DESCENT_OF_DARKNESS_HIT]: {
 		// ability name
@@ -2605,7 +2656,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.DESCENT_OF_DARKNESS]: {
 		// ability name
@@ -2618,8 +2669,8 @@ const abils = {
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		'hits': {
-			1: [ABILITIES.DESCENT_OF_DARKNESS_HIT, "next hit", ABILITIES.DESCENT_OF_DARKNESS_HIT]
+		hits: {
+			1: [ABILITIES.DESCENT_OF_DARKNESS_HIT, 'next hit', ABILITIES.DESCENT_OF_DARKNESS_HIT]
 		}
 	},
 	[ABILITIES.BALANCED_SHOT]: {
@@ -2632,7 +2683,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.AIMED_SHOT]: {
 		// ability name
@@ -2644,7 +2695,7 @@ const abils = {
 		'ability classification': 'channel', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.POWER_SHOT]: {
 		// ability name
@@ -2656,7 +2707,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.TWIN_FANG_HIT]: {
 		// ability name
@@ -2668,7 +2719,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.TWIN_FANG]: {
 		// ability name
@@ -2681,8 +2732,8 @@ const abils = {
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		'hits': {
-			1: [ABILITIES.TWIN_FANG_HIT, "next hit", ABILITIES.TWIN_FANG_HIT]
+		hits: {
+			1: [ABILITIES.TWIN_FANG_HIT, 'next hit', ABILITIES.TWIN_FANG_HIT]
 		}
 	},
 	[ABILITIES.PHANTOM_STRIKE_INITIAL]: {
@@ -2695,7 +2746,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.PHANTOM_STRIKE_BLEED]: {
 		// ability name
@@ -2707,7 +2758,7 @@ const abils = {
 		'ability classification': 'bleed', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.PHANTOM_STRIKE]: {
 		// ability name
@@ -2720,8 +2771,16 @@ const abils = {
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		'hits': {
-			1: [ABILITIES.PHANTOM_STRIKE_INITIAL, ABILITIES.PHANTOM_STRIKE_BLEED, ABILITIES.PHANTOM_STRIKE_BLEED, ABILITIES.PHANTOM_STRIKE_BLEED, ABILITIES.PHANTOM_STRIKE_BLEED, ABILITIES.PHANTOM_STRIKE_BLEED, ABILITIES.PHANTOM_STRIKE_BLEED]
+		hits: {
+			1: [
+				ABILITIES.PHANTOM_STRIKE_INITIAL,
+				ABILITIES.PHANTOM_STRIKE_BLEED,
+				ABILITIES.PHANTOM_STRIKE_BLEED,
+				ABILITIES.PHANTOM_STRIKE_BLEED,
+				ABILITIES.PHANTOM_STRIKE_BLEED,
+				ABILITIES.PHANTOM_STRIKE_BLEED,
+				ABILITIES.PHANTOM_STRIKE_BLEED
+			]
 		}
 	},
 	[ABILITIES.HAMSTRING]: {
@@ -2734,7 +2793,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.TWIN_SHOT_HIT]: {
 		// ability name
@@ -2746,7 +2805,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.TWIN_SHOT]: {
 		// ability name
@@ -2759,8 +2818,8 @@ const abils = {
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		'hits': {
-			1: [ABILITIES.TWIN_SHOT_HIT, "next hit", ABILITIES.TWIN_SHOT_HIT]
+		hits: {
+			1: [ABILITIES.TWIN_SHOT_HIT, 'next hit', ABILITIES.TWIN_SHOT_HIT]
 		}
 	},
 	[ABILITIES.CHAIN_HIT]: {
@@ -2773,7 +2832,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.TWIN_SHOT_HIT]: {
 		// ability name
@@ -2785,7 +2844,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.RESTORATIVE_SHOT]: {
 		// ability name
@@ -2797,7 +2856,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.TWIN_SHOT_HIT]: {
 		// ability name
@@ -2809,7 +2868,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.SOUL_SHOT]: {
 		// ability name
@@ -2821,7 +2880,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.CRYSTAL_RAIN]: {
 		// ability name
@@ -2833,7 +2892,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.DEEP_BURN]: {
 		// ability name
@@ -2845,7 +2904,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.DESTRUCTIVE_SHOT_HIT]: {
 		// ability name
@@ -2857,7 +2916,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 	[ABILITIES.DESTRUCTIVE_SHOT]: {
 		// ability name
@@ -2870,9 +2929,9 @@ const abils = {
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		'hits': {
-			1: [ABILITIES.DESTRUCTIVE_SHOT_HIT, "next hit", ABILITIES.DESTRUCTIVE_SHOT_HIT]
-		} 
+		hits: {
+			1: [ABILITIES.DESTRUCTIVE_SHOT_HIT, 'next hit', ABILITIES.DESTRUCTIVE_SHOT_HIT]
+		}
 	},
 	[ABILITIES.DEFIANCE]: {
 		// ability name
@@ -2884,7 +2943,7 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
-		'damage type': 'ranged' 
+		'damage type': 'ranged'
 	},
 
 	'time strike': {
@@ -2934,7 +2993,7 @@ const abils = {
 		'ability type': 'proc', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged' // basic, threshold, special attack, abilility (necromancy classification), ultimate
-	},
+	}
 };
 
 const prayers = {
@@ -3096,7 +3155,7 @@ const prayers = {
 		category: 'multi-stat boosting'
 	},
 
-	'decay': {
+	decay: {
 		boost: 0.02,
 		style: 'necromancy',
 		category: 'single-stat boosting'
@@ -3111,7 +3170,7 @@ const prayers = {
 		style: 'necromancy',
 		category: 'single-stat boosting'
 	},
-	'sanctity': {
+	sanctity: {
 		boost: 0.08,
 		style: 'necromancy',
 		category: 'multi-stat boosting'
@@ -3136,12 +3195,12 @@ const prayers = {
 		style: 'necromancy',
 		category: 'leech curse'
 	},
-	'sorrow': {
+	sorrow: {
 		boost: 0.1,
 		style: 'necromancy',
 		category: 'multi-stat boosting'
 	},
-	'ruination': {
+	ruination: {
 		boost: 0.12,
 		style: 'necromancy',
 		category: 'multi-stat boosting'

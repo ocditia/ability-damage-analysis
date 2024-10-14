@@ -215,7 +215,7 @@ const SETTINGS = {
 	STONE_OF_JAS: 'stone of jas',
 	INFERNAL_PUZZLE_BOX: 'Infernal puzzle box',
 	ICY_PRECISION: 'icy precision',
-	PUNCTURE_STACKS: 'puncture stacks',
+	PUNCTURE_STACKS: 'puncture stacks'
 };
 
 const settingsConfig = {
@@ -286,10 +286,22 @@ const settingsConfig = {
 			{ text: 'None', value: SETTINGS.NECROMANCY_PRAYER_VALUES.NONE },
 			{ text: 'Ruination', value: SETTINGS.NECROMANCY_PRAYER_VALUES.RUINATION },
 			{ text: 'Sorrow', value: SETTINGS.NECROMANCY_PRAYER_VALUES.SORROW },
-			{ text: 'Leech necromancy strength 2', value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_2 },
-			{ text: 'Leech necromancy strength 4', value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_4 },
-			{ text: 'Leech necromancy strength 6', value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_6 },
-			{ text: 'Leech necromancy strength 8', value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_8 },
+			{
+				text: 'Leech necromancy strength 2',
+				value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_2
+			},
+			{
+				text: 'Leech necromancy strength 4',
+				value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_4
+			},
+			{
+				text: 'Leech necromancy strength 6',
+				value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_6
+			},
+			{
+				text: 'Leech necromancy strength 8',
+				value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_8
+			},
 			{ text: 'Sanctity', value: SETTINGS.NECROMANCY_PRAYER_VALUES.SANCTITY },
 			{ text: 'Accelerated Decay', value: SETTINGS.NECROMANCY_PRAYER_VALUES.ACCELERATED_DECAY },
 			{ text: 'Hastened Decay', value: SETTINGS.NECROMANCY_PRAYER_VALUES.HASTENED_DECAY },
@@ -350,7 +362,7 @@ const settingsConfig = {
 		options: [
 			{ text: 'None', value: SETTINGS.FAMILIAR_VALUES.NONE },
 			{ text: 'Ripper demon', value: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON },
-			{ text: 'Kalgerion demon', value: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON },
+			{ text: 'Kalgerion demon', value: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON }
 		]
 	},
 	[SETTINGS.AURA]: {
@@ -368,7 +380,7 @@ const settingsConfig = {
 		options: [
 			{ text: 'None', value: SETTINGS.VULN_VALUES.NONE },
 			{ text: 'Curse', value: SETTINGS.VULN_VALUES.CURSE },
-			{ text: 'Vuln', value: SETTINGS.VULN_VALUES.VULNERABILITY },
+			{ text: 'Vuln', value: SETTINGS.VULN_VALUES.VULNERABILITY }
 		]
 	},
 	[SETTINGS.SMOKE_CLOUD]: {
@@ -647,7 +659,7 @@ const settingsConfig = {
 	[SETTINGS.PUNCTURE_STACKS]: {
 		label: 'Puncture Stacks',
 		default: 0
-	},
+	}
 };
 
 export { SETTINGS, settingsConfig };

@@ -2,7 +2,7 @@ import { hit_damage_calculation, ability_damage_calculation } from '../new_stuff
 import { ABILITIES } from '../new_stuff/const.js';
 
 const abilities = {
-    /*[ABILITIES.PIERCING_SHOT]: {
+	/*[ABILITIES.PIERCING_SHOT]: {
 		title: 'piercing shot',
 		calc: ability_damage_calculation,
 		icon: '/ability_icons/necro/30x30/auto.png'
