@@ -15,7 +15,7 @@
 	<div class="md:w-2/3">
 		<label class="block md:text-right mb-1 md:mb-0 pr-4" for={setting.key}>
 			{#if img}
-				<img class="inline w-auto h-6 leading-6" src={img} />
+				<img class="inline w-auto h-6 leading-6" src={img} alt="" />
 			{/if}
 			{setting.label}
 		</label>

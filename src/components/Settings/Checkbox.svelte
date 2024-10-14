@@ -14,7 +14,7 @@
 <div class="md:flex md:items-center mt-4">
 	<label class="block ml-auto text-right" for={setting.key}>
 		{#if img}
-			<img class="inline w-auto h-6 leading-6" src={img} />
+			<img class="inline w-auto h-6 leading-6" src={img} alt="" />
 		{/if}
 		{setting.label}
 		<input

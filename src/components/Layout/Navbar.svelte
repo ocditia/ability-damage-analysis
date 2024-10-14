@@ -9,16 +9,6 @@
 	const handleNavDropdownClick = () => {
 		isNavDropdownOpen = !isNavDropdownOpen;
 	};
-
-	const handleDropdownFocusLoss = ({ relatedTarget, currentTarget }) => {
-		if (relatedTarget instanceof HTMLElement && currentTarget.contains(relatedTarget)) return;
-		isDropdownOpen = false;
-	};
-
-	const handleNavDropdownFocusLoss = ({ relatedTarget, currentTarget }) => {
-		if (relatedTarget instanceof HTMLElement && currentTarget.contains(relatedTarget)) return;
-		isNavDropdownOpen = false;
-	};
 </script>
 
 <nav class="bg-card border-gray-200">
