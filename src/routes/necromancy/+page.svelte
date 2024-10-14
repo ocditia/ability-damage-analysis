@@ -26,7 +26,6 @@
 		const adaptedSettings = Object.fromEntries(
 			Object.entries(settings).map(([key, value]) => [key, value.value])
 		);
-		adaptedSettings['haunted AD'] = 2345;
 
 		Object.entries(damages).forEach(([abilityKey, ability]) => {
 			adaptedSettings['split soul'] = false;
@@ -279,6 +278,10 @@
 									setting={settings[SETTINGS.HAUNTED]}
 									on:settingsUpdated={updateDamages}
 									img="https://imgur.com/9U5ghz2.png"
+								/>
+                                <Number
+									setting={settings[SETTINGS.HAUNTED_AD]}
+									on:settingsUpdated={updateDamages}
 								/>
 								<Number
 									setting={settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]}

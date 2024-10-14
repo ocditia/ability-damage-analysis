@@ -92,6 +92,7 @@ const SETTINGS = {
 	SLAYER_SIGIL_DRAGON: 'dragon slayer sigil',
 	SLAYER_SIGIL_DEMON: 'demon slayer sigil',
 	HAUNTED: 'haunted',
+	HAUNTED_AD: 'haunted AD',
 	SKELETON_WARRIOR_RAGE_STACKS: 'skeleton rage stacks',
 	NOPE: 'nopenopenope',
 	KALG_SPEC: 'kalg spec',
@@ -418,6 +419,10 @@ const settingsConfig = {
 	[SETTINGS.HAUNTED]: {
 		label: 'Haunted',
 		default: true
+	},
+  [SETTINGS.HAUNTED_AD]: {
+		label: 'Haunted AD',
+		default: 2345
 	},
 	[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]: {
 		label: 'Skeleton rage stacks',
