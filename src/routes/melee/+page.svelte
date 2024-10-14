@@ -8,7 +8,10 @@
 	import Select from '../../components/Settings/Select.svelte';
 
 	let damages = Object.fromEntries(
-		Object.entries(abilities).map(([key, value]) => [key, { ...value, regular: 0, zgs: 0, berserk: 0 }])
+		Object.entries(abilities).map(([key, value]) => [
+			key,
+			{ ...value, regular: 0, zgs: 0, berserk: 0 }
+		])
 	);
 
 	let tab = 'general';
@@ -23,7 +26,7 @@
 	updateDamages();
 
 	function updateDamages() {
-        const adaptedSettings = Object.fromEntries(
+		const adaptedSettings = Object.fromEntries(
 			Object.entries(settings).map(([key, value]) => [key, value.value])
 		);
 
@@ -31,26 +34,22 @@
 			adaptedSettings['ability'] = abilityKey;
 
 			adaptedSettings['zgs'] = false;
-            adaptedSettings['berserk'] = false;
+			adaptedSettings['berserk'] = false;
 			damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
 
 			adaptedSettings['zgs'] = true;
-            adaptedSettings['berserk'] = false;
+			adaptedSettings['berserk'] = false;
 			damages[abilityKey].zgs = ability.calc({ ...adaptedSettings });
 
-            adaptedSettings['zgs'] = false;
-            adaptedSettings['berserk'] = true;
+			adaptedSettings['zgs'] = false;
+			adaptedSettings['berserk'] = true;
 			damages[abilityKey].berserk = ability.calc({ ...adaptedSettings });
 		});
 	}
 </script>
 
 <Navbar />
-<Header
-	img="/melee-background.png"
-	text="Melee Calculator"
-	icon="/style_icons/melee-white.svg"
-/>
+<Header img="/melee-background.png" text="Melee Calculator" icon="/style_icons/melee-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
 	<div class="responsive-container">

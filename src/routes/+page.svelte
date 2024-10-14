@@ -114,11 +114,7 @@
 						<div class="effect-container">
 							<img class="effect-icon" src="google_icons/book-blue.svg" alt="" />
 							<li class="block transition-all duration-75 relative">
-								<a
-									href="/research"
-									class="py-2 font-normal text-xl hover:text-link"
-									title=""
-								>
+								<a href="/research" class="py-2 font-normal text-xl hover:text-link" title="">
 									Research
 								</a>
 							</li>
@@ -126,11 +122,7 @@
 						<div class="effect-container">
 							<img class="effect-icon" src="google_icons/hammer-blue.svg" alt="" />
 							<li class="block transition-all duration-75 relative">
-								<a
-									href="/projects"
-									class="py-2 font-normal text-xl hover:text-link"
-									title=""
-								>
+								<a href="/projects" class="py-2 font-normal text-xl hover:text-link" title="">
 									Upcoming Projects
 								</a>
 							</li>
@@ -150,9 +142,7 @@
 						<div class="effect-container">
 							<img class="effect-icon" src="google_icons/faq-blue.svg" alt="" />
 							<li class="block transition-all duration-75 relative">
-								<a href="/faq" class="py-2 font-normal text-xl hover:text-link" title="">
-									FAQ
-								</a>
+								<a href="/faq" class="py-2 font-normal text-xl hover:text-link" title=""> FAQ </a>
 							</li>
 						</div>
 					</div>

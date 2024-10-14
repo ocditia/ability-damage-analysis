@@ -1196,7 +1196,7 @@ const ABILITIES = {
 	DESTRUCTIVE_SHOT: 'destructive shot',
 	DEFIANCE: 'defiance',
 
-  WRACK: 'wrack'
+	WRACK: 'wrack'
 };
 
 const abils = {

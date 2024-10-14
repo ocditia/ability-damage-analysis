@@ -8,7 +8,10 @@
 	import Select from '../../components/Settings/Select.svelte';
 
 	let damages = Object.fromEntries(
-		Object.entries(abilities).map(([key, value]) => [key, { ...value, regular: 0, sunshine: 0, meta: 0 }])
+		Object.entries(abilities).map(([key, value]) => [
+			key,
+			{ ...value, regular: 0, sunshine: 0, meta: 0 }
+		])
 	);
 
 	let tab = 'general';
@@ -31,26 +34,22 @@
 			adaptedSettings['ability'] = abilityKey;
 
 			adaptedSettings['sunshine'] = false;
-            adaptedSettings['meta'] = false;
+			adaptedSettings['meta'] = false;
 			damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
 
 			adaptedSettings['sunshine'] = true;
-            adaptedSettings['meta'] = false;
+			adaptedSettings['meta'] = false;
 			damages[abilityKey].sunshine = ability.calc({ ...adaptedSettings });
 
-            adaptedSettings['sunshine'] = false;
-            adaptedSettings['meta'] = true;
+			adaptedSettings['sunshine'] = false;
+			adaptedSettings['meta'] = true;
 			damages[abilityKey].meta = ability.calc({ ...adaptedSettings });
 		});
 	}
 </script>
 
 <Navbar />
-<Header
-	img="/magic_background.png"
-	text="Magic Calculator"
-	icon="/style_icons/magic-white.svg"
-/>
+<Header img="/magic_background.png" text="Magic Calculator" icon="/style_icons/magic-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
 	<div class="responsive-container">

@@ -6,8 +6,8 @@ const abilities = {
 		title: 'piercing shot',
 		calc: hit_damage_calculation,
 		icon: '/ability_icons/ranged/30x30/piercing.png'
-	},
-  /*
+	}
+	/*
 	[ABILITIES.BINDING_SHOT]: {
 		title: 'Binding shot',
 		calc: hit_damage_calculation,

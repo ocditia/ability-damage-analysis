@@ -2,11 +2,11 @@ import { hit_damage_calculation, ability_damage_calculation } from '../calc/dama
 import { ABILITIES } from '../calc/const.js';
 
 const abilities = {
-  [ABILITIES.WRACK]: {
+	[ABILITIES.WRACK]: {
 		title: 'Wrack',
 		calc: hit_damage_calculation,
 		icon: '/ability_icons/magic/30x30/wrack.png'
-	},
+	}
 };
 
 export { abilities };

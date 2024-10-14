@@ -420,7 +420,7 @@ const settingsConfig = {
 		label: 'Haunted',
 		default: true
 	},
-  [SETTINGS.HAUNTED_AD]: {
+	[SETTINGS.HAUNTED_AD]: {
 		label: 'Haunted AD',
 		default: 2345
 	},

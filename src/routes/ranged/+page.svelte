@@ -8,7 +8,10 @@
 	import Select from '../../components/Settings/Select.svelte';
 
 	let damages = Object.fromEntries(
-		Object.entries(abilities).map(([key, value]) => [key, { ...value, regular: 0, ss: 0, swift: 0, ssSwift: 0 }])
+		Object.entries(abilities).map(([key, value]) => [
+			key,
+			{ ...value, regular: 0, ss: 0, swift: 0, ssSwift: 0 }
+		])
 	);
 
 	let tab = 'general';
@@ -31,18 +34,18 @@
 			adaptedSettings['ability'] = abilityKey;
 
 			adaptedSettings['split soul'] = false;
-            adaptedSettings['death swiftness'] = false;
+			adaptedSettings['death swiftness'] = false;
 			damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
 
 			adaptedSettings['split soul'] = true;
-            adaptedSettings['death swiftness'] = false;
+			adaptedSettings['death swiftness'] = false;
 			damages[abilityKey].ss = ability.calc({ ...adaptedSettings });
 
-            adaptedSettings['split soul'] = false;
+			adaptedSettings['split soul'] = false;
 			adaptedSettings['death swiftness'] = true;
 			damages[abilityKey].swift = ability.calc({ ...adaptedSettings });
 
-            adaptedSettings['split soul'] = true;
+			adaptedSettings['split soul'] = true;
 			adaptedSettings['death swiftness'] = true;
 			damages[abilityKey].ssSwift = ability.calc({ ...adaptedSettings });
 		});
@@ -50,11 +53,7 @@
 </script>
 
 <Navbar />
-<Header
-	img="/range_background.png"
-	text="Ranged Calculator"
-	icon="/style_icons/ranged-white.svg"
-/>
+<Header img="/range_background.png" text="Ranged Calculator" icon="/style_icons/ranged-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
 	<div class="responsive-container">

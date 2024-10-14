@@ -281,7 +281,7 @@
 									on:settingsUpdated={updateDamages}
 									img="https://imgur.com/9U5ghz2.png"
 								/>
-                                <Number
+								<Number
 									setting={settings[SETTINGS.HAUNTED_AD]}
 									on:settingsUpdated={updateDamages}
 								/>
