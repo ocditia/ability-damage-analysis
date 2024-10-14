@@ -1,12 +1,13 @@
-import { hit_damage_calculation, ability_damage_calculation } from '../new_stuff/damage_calc.js';
-import { ABILITIES } from '../new_stuff/const.js';
+import { hit_damage_calculation, ability_damage_calculation } from '../calc/damage_calc.js';
+import { ABILITIES } from '../calc/const.js';
 
 const abilities = {
-	/*[ABILITIES.PIERCING_SHOT]: {
+	[ABILITIES.PIERCING_SHOT]: {
 		title: 'piercing shot',
-		calc: ability_damage_calculation,
-		icon: '/ability_icons/necro/30x30/auto.png'
+		calc: hit_damage_calculation,
+		icon: '/ability_icons/ranged/30x30/piercing.png'
 	},
+  /*
 	[ABILITIES.BINDING_SHOT]: {
 		title: 'Binding shot',
 		calc: hit_damage_calculation,

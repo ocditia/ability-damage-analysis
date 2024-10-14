@@ -1,5 +1,3 @@
-import { abilities } from '../necromancy/abilities';
-
 const weapons = {
 	'custom main-hand weapon': {
 		style: 'hybrid',
@@ -1196,7 +1194,9 @@ const ABILITIES = {
 	DEEP_BURN: 'deep burn',
 	DESTRUCTIVE_SHOT_HIT: 'destructive shot hit',
 	DESTRUCTIVE_SHOT: 'destructive shot',
-	DEFIANCE: 'defiance'
+	DEFIANCE: 'defiance',
+
+  WRACK: 'wrack'
 };
 
 const abils = {

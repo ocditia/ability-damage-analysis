@@ -1,14 +1,14 @@
 <script>
 	import Navbar from '$components/Layout/Navbar.svelte';
 	import Header from '$components/Layout/Header.svelte';
-	import { abilities } from '$lib/necromancy/abilities';
+	import { abilities } from '$lib/magic/abilities';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings';
 	import Checkbox from '../../components/Settings/Checkbox.svelte';
 	import Number from '../../components/Settings/Number.svelte';
 	import Select from '../../components/Settings/Select.svelte';
 
 	let damages = Object.fromEntries(
-		Object.entries(abilities).map(([key, value]) => [key, { ...value, regular: 0, ss: 0 }])
+		Object.entries(abilities).map(([key, value]) => [key, { ...value, regular: 0, sunshine: 0, meta: 0 }])
 	);
 
 	let tab = 'general';
@@ -30,27 +30,33 @@
 		Object.entries(damages).forEach(([abilityKey, ability]) => {
 			adaptedSettings['ability'] = abilityKey;
 
-			adaptedSettings['split soul'] = false;
+			adaptedSettings['sunshine'] = false;
+            adaptedSettings['meta'] = false;
 			damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
 
-			adaptedSettings['split soul'] = true;
-			damages[abilityKey].ss = ability.calc({ ...adaptedSettings });
+			adaptedSettings['sunshine'] = true;
+            adaptedSettings['meta'] = false;
+			damages[abilityKey].sunshine = ability.calc({ ...adaptedSettings });
+
+            adaptedSettings['sunshine'] = false;
+            adaptedSettings['meta'] = true;
+			damages[abilityKey].meta = ability.calc({ ...adaptedSettings });
 		});
 	}
 </script>
 
 <Navbar />
 <Header
-	img="/necro_background.png"
-	text="Necromancy Calculator"
-	icon="/style_icons/necro-white.svg"
+	img="/magic_background.png"
+	text="Magic Calculator"
+	icon="/style_icons/magic-white.svg"
 />
 
 <div class="space-y-14 mt-10 z-20">
 	<div class="responsive-container">
 		<section class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8">
 			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-4">
-				<div class="card card-necro">
+				<div class="card card-magic">
 					<h1 class="main-header mb-6 ml-3">Damage Values</h1>
 					<div class="table-container">
 						<table>
@@ -59,7 +65,8 @@
 									<th class="p-0 min-w-[30px]"></th>
 									<th class="p-3 text-left">Ability</th>
 									<th class="p-3 text-left">Regular</th>
-									<th class="p-3 text-left">Split Soul</th>
+									<th class="p-3 text-left">Sunshine</th>
+									<th class="p-3 text-left">Meta</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -68,7 +75,8 @@
 										<td class="p-0"><img src={damage.icon} alt="" /></td>
 										<td class="p-3 text-left">{damage.title}</td>
 										<td class="p-3 text-left">{damage.regular}</td>
-										<td class="p-3 text-left">{damage.ss}</td>
+										<td class="p-3 text-left">{damage.sunshine}</td>
+										<td class="p-3 text-left">{damage.meta}</td>
 									</tr>
 								{/each}
 							</tbody>
@@ -77,7 +85,7 @@
 				</div>
 			</div>
 
-			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-necro">
+			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-magic">
 				<ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
 					<li class="flex-grow me-2">
 						<button
@@ -280,10 +288,6 @@
 									setting={settings[SETTINGS.HAUNTED]}
 									on:settingsUpdated={updateDamages}
 									img="https://imgur.com/9U5ghz2.png"
-								/>
-                                <Number
-									setting={settings[SETTINGS.HAUNTED_AD]}
-									on:settingsUpdated={updateDamages}
 								/>
 								<Number
 									setting={settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]}
@@ -530,7 +534,7 @@
 
 			<div class="xl:col-span-6 xl:row-start-2 xl:col-start-7">
 				<div class="flex flex-col">
-					<div class="card card-necro">
+					<div class="card card-magic">
 						<div class="card-title pb-5">User Guide</div>
 						<div class="pb-5">
 							<p>

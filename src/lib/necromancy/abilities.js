@@ -1,5 +1,5 @@
-import { hit_damage_calculation, ability_damage_calculation } from '../new_stuff/damage_calc.js';
-import { ABILITIES } from '../new_stuff/const.js';
+import { hit_damage_calculation, ability_damage_calculation } from '../calc/damage_calc.js';
+import { ABILITIES } from '../calc/const.js';
 
 const abilities = {
 	[ABILITIES.NECRO_AUTO]: {

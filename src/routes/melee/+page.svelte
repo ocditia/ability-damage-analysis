@@ -1,14 +1,14 @@
 <script>
 	import Navbar from '$components/Layout/Navbar.svelte';
 	import Header from '$components/Layout/Header.svelte';
-	import { abilities } from '$lib/necromancy/abilities';
+	import { abilities } from '$lib/melee/abilities';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings';
 	import Checkbox from '../../components/Settings/Checkbox.svelte';
 	import Number from '../../components/Settings/Number.svelte';
 	import Select from '../../components/Settings/Select.svelte';
 
 	let damages = Object.fromEntries(
-		Object.entries(abilities).map(([key, value]) => [key, { ...value, regular: 0, ss: 0 }])
+		Object.entries(abilities).map(([key, value]) => [key, { ...value, regular: 0, zgs: 0, berserk: 0 }])
 	);
 
 	let tab = 'general';
@@ -23,34 +23,40 @@
 	updateDamages();
 
 	function updateDamages() {
-		const adaptedSettings = Object.fromEntries(
+        const adaptedSettings = Object.fromEntries(
 			Object.entries(settings).map(([key, value]) => [key, value.value])
 		);
 
 		Object.entries(damages).forEach(([abilityKey, ability]) => {
 			adaptedSettings['ability'] = abilityKey;
 
-			adaptedSettings['split soul'] = false;
+			adaptedSettings['zgs'] = false;
+            adaptedSettings['berserk'] = false;
 			damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
 
-			adaptedSettings['split soul'] = true;
-			damages[abilityKey].ss = ability.calc({ ...adaptedSettings });
+			adaptedSettings['zgs'] = true;
+            adaptedSettings['berserk'] = false;
+			damages[abilityKey].zgs = ability.calc({ ...adaptedSettings });
+
+            adaptedSettings['zgs'] = false;
+            adaptedSettings['berserk'] = true;
+			damages[abilityKey].berserk = ability.calc({ ...adaptedSettings });
 		});
 	}
 </script>
 
 <Navbar />
 <Header
-	img="/necro_background.png"
-	text="Necromancy Calculator"
-	icon="/style_icons/necro-white.svg"
+	img="/melee-background.png"
+	text="Melee Calculator"
+	icon="/style_icons/melee-white.svg"
 />
 
 <div class="space-y-14 mt-10 z-20">
 	<div class="responsive-container">
 		<section class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8">
 			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-4">
-				<div class="card card-necro">
+				<div class="card card-melee">
 					<h1 class="main-header mb-6 ml-3">Damage Values</h1>
 					<div class="table-container">
 						<table>
@@ -59,7 +65,8 @@
 									<th class="p-0 min-w-[30px]"></th>
 									<th class="p-3 text-left">Ability</th>
 									<th class="p-3 text-left">Regular</th>
-									<th class="p-3 text-left">Split Soul</th>
+									<th class="p-3 text-left">ZGS</th>
+									<th class="p-3 text-left">Berserk</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -68,7 +75,8 @@
 										<td class="p-0"><img src={damage.icon} alt="" /></td>
 										<td class="p-3 text-left">{damage.title}</td>
 										<td class="p-3 text-left">{damage.regular}</td>
-										<td class="p-3 text-left">{damage.ss}</td>
+										<td class="p-3 text-left">{damage.zgs}</td>
+										<td class="p-3 text-left">{damage.berserk}</td>
 									</tr>
 								{/each}
 							</tbody>
@@ -77,7 +85,7 @@
 				</div>
 			</div>
 
-			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-necro">
+			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-melee">
 				<ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
 					<li class="flex-grow me-2">
 						<button
@@ -118,7 +126,7 @@
 									min="0"
 								/>
 								<Number
-									setting={settings[SETTINGS.NECROMANCY_LEVEL]}
+									setting={settings[SETTINGS.STRENGTH_LEVEL]}
 									on:settingsUpdated={updateDamages}
 									step="1"
 									max="120"
@@ -280,10 +288,6 @@
 									setting={settings[SETTINGS.HAUNTED]}
 									on:settingsUpdated={updateDamages}
 									img="https://imgur.com/9U5ghz2.png"
-								/>
-                                <Number
-									setting={settings[SETTINGS.HAUNTED_AD]}
-									on:settingsUpdated={updateDamages}
 								/>
 								<Number
 									setting={settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]}
@@ -530,7 +534,7 @@
 
 			<div class="xl:col-span-6 xl:row-start-2 xl:col-start-7">
 				<div class="flex flex-col">
-					<div class="card card-necro">
+					<div class="card card-melee">
 						<div class="card-title pb-5">User Guide</div>
 						<div class="pb-5">
 							<p>

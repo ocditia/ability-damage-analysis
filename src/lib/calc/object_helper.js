@@ -1,4 +1,4 @@
-import { SETTINGS } from '../necromancy/settings';
+import { SETTINGS } from './settings';
 import { weapons, gear, abils, prayers } from './const';
 
 function create_object(settings) {

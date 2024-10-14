@@ -1,4 +1,4 @@
-import { SETTINGS } from '../necromancy/settings';
+import { SETTINGS } from './settings';
 import { weapons, gear, armour, abils, prayers } from './const';
 import { create_object, calc_crit_chance } from './object_helper';
 import { next_tick, next_hit, next_cast } from './ability_helper';
@@ -243,9 +243,9 @@ function ability_specific_effects(settings, dmgObject) {
 		}
 
 		// song of destruction 2 item set effect
-		song_of_destruction_effects = ['bleed', 'burn', 'dot'];
+		const song_of_destruction_effects = ['bleed', 'burn', 'dot'];
 		if (
-			song_of_destruction_effects.contains(abils[settings['ability']]['ability classification'])
+			song_of_destruction_effects.includes(abils[settings['ability']]['ability classification'])
 		) {
 			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.3);
 		}
@@ -281,9 +281,9 @@ function ability_specific_effects(settings, dmgObject) {
 		}
 
 		// greater chain half damage
-		gchain_not_halved = ['bleed', 'burn', 'dot'];
+		const gchain_not_halved = ['bleed', 'burn', 'dot'];
 		if (
-			gchain_not_halved.contains(abils[settings['ability']][['ability classification']] === false)
+			gchain_not_halved.includes(abils[settings['ability']][['ability classification']] === false)
 		) {
 			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 0.5);
 		}
