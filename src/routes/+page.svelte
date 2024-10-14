@@ -116,7 +116,7 @@
 							<li class="block transition-all duration-75 relative">
 								<a
 									href="/research"
-									class="py-2 font-normal text-xl text-lb hover:text-link"
+									class="py-2 font-normal text-xl hover:text-link"
 									title=""
 								>
 									Research
@@ -128,7 +128,7 @@
 							<li class="block transition-all duration-75 relative">
 								<a
 									href="/projects"
-									class="py-2 font-normal text-xl text-lb hover:text-link"
+									class="py-2 font-normal text-xl hover:text-link"
 									title=""
 								>
 									Upcoming Projects
@@ -140,7 +140,7 @@
 							<li class="block transition-all duration-75 relative">
 								<a
 									href="https://discord.gg/rsanalysis"
-									class="py-2 font-normal text-xl text-lb hover:text-link"
+									class="py-2 font-normal text-xl hover:text-link"
 									title=""
 								>
 									Discord
@@ -150,7 +150,7 @@
 						<div class="effect-container">
 							<img class="effect-icon" src="google_icons/faq-blue.svg" alt="" />
 							<li class="block transition-all duration-75 relative">
-								<a href="/faq" class="py-2 font-normal text-xl text-lb hover:text-link" title="">
+								<a href="/faq" class="py-2 font-normal text-xl hover:text-link" title="">
 									FAQ
 								</a>
 							</li>
@@ -246,7 +246,7 @@
 									</a>
 									<a
 										href="https://discord.gg/rsanalysis"
-										class="py-2 font-normal text-xl text-lb hover:text-link"
+										class="py-2 font-normal text-xl hover:text-link"
 										title=""
 									>
 										<h2 class="text-md sm:text-2xl font-bold mb-0">discord.gg/rsanalysis</h2>
@@ -265,7 +265,7 @@
 								<li class="block transition-all duration-75 relative">
 									<a
 										href="https://discord.gg/pvme"
-										class="py-2 font-normal text-xl text-lb hover:text-link"
+										class="py-2 font-normal text-xl hover:text-link"
 										title=""
 									>
 										PvM Encyclopedia
@@ -281,7 +281,7 @@
 								<li class="block transition-all duration-75 relative">
 									<a
 										href="https://discord.gg/BGjvs8Y28n"
-										class="py-2 font-normal text-xl text-lb hover:text-link"
+										class="py-2 font-normal text-xl hover:text-link"
 										title=""
 									>
 										RS Math Discord
