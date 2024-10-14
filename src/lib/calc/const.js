@@ -1196,11 +1196,13 @@ const ABILITIES = {
 	DESTRUCTIVE_SHOT: 'destructive shot',
 	DEFIANCE: 'defiance',
 
-	WRACK: 'wrack'
+	WRACK: 'wrack',
+
+  SLICE: 'slice'
 };
 
 const abils = {
-	slice: {
+	[ABILITIES.SLICE]: {
 		// ability name
 		'min hit': 0.95, // min % of abil expressed as a decimal
 		'var hit': 0.2,
@@ -1465,7 +1467,7 @@ const abils = {
 		'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
 	},
 
-	wrack: {
+	[ABILITIES.WRACK]: {
 		// ability name
 		'min hit': 0.95, // min % of abil expressed as a decimal
 		'var hit': 0.2,

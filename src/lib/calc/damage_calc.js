@@ -682,9 +682,9 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
 		// spellcaster gloves (proc based, so added later)
 
 		//bane gear
-		if (weapons[settings['main-hand']]['category'] === 'bane') {
-			boost = Math.floor(boost * 1.25);
-		}
+		// if (weapons[settings['main-hand']]['category'] === 'bane') {
+		// 	boost = Math.floor(boost * 1.25);
+		// }
 	}
 
 	// slayer helm
