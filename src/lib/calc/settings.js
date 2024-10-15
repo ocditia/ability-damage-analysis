@@ -105,35 +105,30 @@ const SETTINGS = {
 		NONE: 'none',
 		TFN: 'crown of the first necromancer',
 		T90DD: 'deathdealer hood (tier 90)',
-		T80DD: 'deathdealer hood (tier 80)'
 	},
 	BODY: 'body',
 	BODY_VALUES: {
 		NONE: 'none',
 		TFN: 'robe top of the first necromancer',
 		T90DD: 'deathdealer robe top (tier 90)',
-		T80DD: 'deathdealer robe top (tier 80)'
 	},
 	LEGS: 'legs',
 	LEGS_VALUES: {
 		NONE: 'none',
 		TFN: 'robe bottom of the first necromancer',
 		T90DD: 'deathdealer robe bottom (tier 90)',
-		T80DD: 'deathdealer robe bottom (tier 80)'
 	},
 	GLOVES: 'gloves',
 	GLOVES_VALUES: {
 		NONE: 'none',
 		TFN: 'hand wrap of the first necromancer',
 		T90DD: 'deathdealer gloves (tier 90)',
-		T80DD: 'deathdealer gloves (tier 80)'
 	},
 	BOOTS: 'boots',
 	BOOTS_VALUES: {
 		NONE: 'none',
 		TFN: 'foot wraps of the first necromancer',
 		T90DD: 'deathdealer boots (tier 90)',
-		T80DD: 'deathdealer boots (tier 80)'
 	},
 	NECKLACE: 'necklace',
 	NECKLACE_VALUES: {
@@ -187,14 +182,12 @@ const SETTINGS = {
 		NONE: 'none',
 		OMNI: 'omniguard',
 		DG90: 'death guard (tier 90)',
-		DG80: 'death guard (tier 80)'
 	},
 	OH: 'off-hand weapon',
 	OH_VALUES: {
 		NONE: 'none',
 		SOULBOUND: 'soulbound lantern',
 		SL90: 'skull lantern (tier 90)',
-		SL80: 'skull lantern (tier 80)',
 		SPECTRAL: 'spectral shield'
 	},
 	LVL20ARMOUR: 'level 20 armour',
@@ -216,7 +209,41 @@ const SETTINGS = {
 	STONE_OF_JAS: 'stone of jas',
 	INFERNAL_PUZZLE_BOX: 'Infernal puzzle box',
 	ICY_PRECISION: 'icy precision',
-	PUNCTURE_STACKS: 'puncture stacks'
+	PUNCTURE_STACKS: 'puncture stacks',
+	FLOW_STACKS: 'flow stacks',
+	CONFLAGRATE: 'conflagrate',
+	KERAPACS_WRIST_WRAPS: 'kerapacs wrist wraps',
+	KERAPACS_WRIST_WRAPS_VALUES: {
+		NONE: 'none',
+		REGULAR: 'regular',
+		ENCHANTED: 'enchanted'
+	},
+	TARGET_DISABILITY: 'target disability',
+	TARGET_DISABILITY_VALUES: {
+		NONE: 'none',
+		BOUND: 'bound',
+		STUNNED: 'stunned',
+		BOUND_STUNNED: 'bound and stunned'
+	},
+	DRACONIC_FRUIT: 'draconic fruit',
+	ENDURING_RUIN_HIT: 'enduring ruin hit',
+	ENDURING_RUIN_HIT_VALUES: {
+		NONE: 'none',
+		REGULAR: 'regular',
+		ENCHANTED: 'enchanted'
+	},
+	ENDURING_RUIN_BLEED: 'enduring ruin bleed',
+	ENDURING_RUIN_BLEED_VALUES: {
+		NONE: 'none',
+		REGULAR: 'regular',
+		ENCHANTED: 'enchanted'
+	},
+	NEEDLE_STRIKE: 'needle strike',
+	GRAVITATE: 'gravitate',
+	BLOOD_TITHE: 'blood tithe',
+	DEATH_SPARK: 'death spark',
+	LIVING_DEATH: 'living death',
+	SWIFTNESS_OF_THE_AVIANSIE: 'swiftness of the avianse',
 };
 
 const settingsConfig = {
@@ -234,12 +261,12 @@ const settingsConfig = {
 		]
 	},
 	[SETTINGS.ABILITY_DAMAGE]: {
-		label: 'Ability Damage',
+		label: 'Override base damage',
 		default: 0
 	},
 	[SETTINGS.NECROMANCY_LEVEL]: {
 		label: 'Necromancy Level',
-		default: 120,
+		default: 145,
 		style: 'necromancy'
 	},
 	[SETTINGS.MAGIC_LEVEL]: {
@@ -318,7 +345,7 @@ const settingsConfig = {
 		default: 0
 	},
 	[SETTINGS.BERSERKERS_FURY]: {
-		label: "Dharok's Momento %",
+		label: "Dharok's Momento (relic)",
 		default: 0
 	},
 	[SETTINGS.RUTHLESS_STACKS]: {
@@ -430,7 +457,7 @@ const settingsConfig = {
 	},
 	[SETTINGS.NOPE]: {
 		label: 'Nope Nope Nope',
-		default: false
+		default: 0
 	},
 	[SETTINGS.KALG_SPEC]: {
 		label: 'Crit-i-Kal Spec',
@@ -459,7 +486,6 @@ const settingsConfig = {
 			{ text: 'None/Tank', value: SETTINGS.HELMET_VALUES.NONE },
 			{ text: 'TFN', value: SETTINGS.HELMET_VALUES.TFN },
 			{ text: 't90 deathdealer', value: SETTINGS.HELMET_VALUES.T90DD },
-			{ text: 't80 deathdealer', value: SETTINGS.HELMET_VALUES.T80DD }
 		]
 	},
 	[SETTINGS.BODY]: {
@@ -469,7 +495,6 @@ const settingsConfig = {
 			{ text: 'None/Tank', value: SETTINGS.BODY_VALUES.NONE },
 			{ text: 'TFN', value: SETTINGS.BODY_VALUES.TFN },
 			{ text: 't90 deathdealer', value: SETTINGS.BODY_VALUES.T90DD },
-			{ text: 't80 deathdealer', value: SETTINGS.BODY_VALUES.T80DD }
 		]
 	},
 	[SETTINGS.LEGS]: {
@@ -479,7 +504,6 @@ const settingsConfig = {
 			{ text: 'None/Tank', value: SETTINGS.LEGS_VALUES.NONE },
 			{ text: 'TFN', value: SETTINGS.LEGS_VALUES.TFN },
 			{ text: 't90 deathdealer', value: SETTINGS.LEGS_VALUES.T90DD },
-			{ text: 't80 deathdealer', value: SETTINGS.LEGS_VALUES.T80DD }
 		]
 	},
 	[SETTINGS.GLOVES]: {
@@ -489,7 +513,6 @@ const settingsConfig = {
 			{ text: 'None/Tank', value: SETTINGS.GLOVES_VALUES.NONE },
 			{ text: 'TFN', value: SETTINGS.GLOVES_VALUES.TFN },
 			{ text: 't90 deathdealer', value: SETTINGS.GLOVES_VALUES.T90DD },
-			{ text: 't80 deathdealer', value: SETTINGS.GLOVES_VALUES.T80DD }
 		]
 	},
 	[SETTINGS.BOOTS]: {
@@ -499,7 +522,6 @@ const settingsConfig = {
 			{ text: 'None/Tank', value: SETTINGS.BOOTS_VALUES.NONE },
 			{ text: 'TFN', value: SETTINGS.BOOTS_VALUES.TFN },
 			{ text: 't90 deathdealer', value: SETTINGS.BOOTS_VALUES.T90DD },
-			{ text: 't80 deathdealer', value: SETTINGS.BOOTS_VALUES.T80DD }
 		]
 	},
 	[SETTINGS.NECKLACE]: {
@@ -571,7 +593,6 @@ const settingsConfig = {
 			{ text: 'None', value: SETTINGS.MH_VALUES.NONE },
 			{ text: 'Omni Guard', value: SETTINGS.MH_VALUES.OMNI },
 			{ text: 'Death guard (t90)', value: SETTINGS.MH_VALUES.DG90 },
-			{ text: 'Death guard (t80)', value: SETTINGS.MH_VALUES.DG80 }
 		]
 	},
 	[SETTINGS.OH]: {
@@ -581,7 +602,6 @@ const settingsConfig = {
 			{ text: 'None', value: SETTINGS.OH_VALUES.NONE },
 			{ text: 'Soulbound Lantern', value: SETTINGS.OH_VALUES.SOULBOUND },
 			{ text: 'Skull lantern (t90)', value: SETTINGS.OH_VALUES.SL90 },
-			{ text: 'Skull lantern (t80)', value: SETTINGS.OH_VALUES.SL80 },
 			{ text: 'Spectral shield', value: SETTINGS.OH_VALUES.SPECTRAL }
 		]
 	},
@@ -664,7 +684,80 @@ const settingsConfig = {
 	[SETTINGS.PUNCTURE_STACKS]: {
 		label: 'Puncture Stacks',
 		default: 0
-	}
+	},
+	[SETTINGS.FLOW_STACKS]: {
+		label: 'Flow stacks',
+		default: 0
+	},
+	[SETTINGS.CONFLAGRATE]: {
+		label: 'Conflagrate',
+		default: false
+	},
+	[SETTINGS.KERAPACS_WRIST_WRAPS]: {
+		label: 'Kerapacs wristwraps',
+		default: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.NONE,
+		options: [
+			{ text: 'None', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.NONE },
+			{ text: 'Regular', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR },
+			{ text: 'Enchanted', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED },
+		]
+	},
+	[SETTINGS.TARGET_DISABILITY]: {
+		label: 'Disability',
+		default: SETTINGS.TARGET_DISABILITY_VALUES.NONE,
+		options: [
+			{ text: 'None', value: SETTINGS.TARGET_DISABILITY_VALUES.NONE },
+			{ text: 'Bound', value: SETTINGS.TARGET_DISABILITY_VALUES.BOUND },
+			{ text: 'Stunned', value: SETTINGS.TARGET_DISABILITY_VALUES.STUNNED },
+			{ text: 'Bound and stunned', value: SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED },
+		]
+	},
+	[SETTINGS.DRACONIC_FRUIT]: {
+		label: 'Draconic fruit',
+		default: false
+	},
+	[SETTINGS.ENDURING_RUIN_HIT]: {
+		label: 'Enduring ruin on-hit',
+		default: SETTINGS.ENDURING_RUIN_HIT_VALUES.NONE,
+		options: [
+			{ text: 'None', value: SETTINGS.ENDURING_RUIN_HIT_VALUES.NONE },
+			{ text: 'Regular', value: SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR },
+			{ text: 'Enchanted', value: SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED },
+		]
+	},
+	[SETTINGS.ENDURING_RUIN_BLEED]: {
+		label: 'Enduring ruin bleed',
+		default: SETTINGS.ENDURING_RUIN_BLEED_VALUES.NONE,
+		options: [
+			{ text: 'None', value: SETTINGS.ENDURING_RUIN_BLEED_VALUES.NONE },
+			{ text: 'Regular', value: SETTINGS.ENDURING_RUIN_BLEED_VALUES.REGULAR },
+			{ text: 'Enchanted', value: SETTINGS.ENDURING_RUIN_BLEED_VALUES.ENCHANTED },
+		]
+	},
+	[SETTINGS.NEEDLE_STRIKE]: {
+		label: 'Needle Strike',
+		default: false
+	},
+	[SETTINGS.GRAVITATE]: {
+		label: 'Gravitate',
+		default: 0
+	},
+	[SETTINGS.BLOOD_TITHE]: {
+		label: 'Blood tithe',
+		default: 0
+	},
+	[SETTINGS.DEATH_SPARK]: {
+		label: 'Death spark',
+		default: false
+	},
+	[SETTINGS.LIVING_DEATH]: {
+		label: 'Living Death',
+		default: false
+	},
+	[SETTINGS.SWIFTNESS_OF_THE_AVIANSIE]: {
+		label: 'Swiftness of the Aviansie',
+		default: false
+	},
 };
 
 export { SETTINGS, settingsConfig };

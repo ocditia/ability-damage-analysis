@@ -114,9 +114,12 @@
 				<form class="w-full">
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
 						{#if tab === 'general'}
+						<div class="md:col-span-1">
+							<h5 class="uppercase font-bold text-lg text-center">General</h5>
+							<Select setting={settings[SETTINGS.MODE]} on:settingsUpdated={updateDamages} />
+						</div>
 							<div class="md:col-span-1">
-								<h5 class="uppercase font-bold text-lg text-center">Ability Damage</h5>
-								<Select setting={settings[SETTINGS.MODE]} on:settingsUpdated={updateDamages} />
+								<h5 class="uppercase font-bold text-lg text-center">Base damage</h5>
 								<Number
 									setting={settings[SETTINGS.ABILITY_DAMAGE]}
 									on:settingsUpdated={updateDamages}
@@ -125,31 +128,11 @@
 									min="0"
 								/>
 								<Number
-									setting={settings[SETTINGS.STRENGTH_LEVEL]}
+									setting={settings[SETTINGS.NECROMANCY_LEVEL]}
 									on:settingsUpdated={updateDamages}
 									step="1"
-									max="120"
+									max="150"
 									min="1"
-								/>
-								<Select
-									setting={settings[SETTINGS.POTION]}
-									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Elder_overload_salve_(6).webp"
-								/>
-								<Number
-									setting={settings[SETTINGS.HIT_CHANCE]}
-									on:settingsUpdated={updateDamages}
-									step="1"
-									max="100"
-									min="1"
-								/>
-								<Number
-									setting={settings[SETTINGS.NECROSIS_STACKS]}
-									on:settingsUpdated={updateDamages}
-									img="https://imgur.com/P88Qb7z.png"
-									step="1"
-									max="12"
-									min="0"
 								/>
 								<Checkbox
 									setting={settings[SETTINGS.REAPER_CREW]}
@@ -158,11 +141,52 @@
 								/>
 							</div>
 							<div class="md:col-span-1">
-								<h5 class="uppercase font-bold text-lg text-center">On-Hit Main</h5>
-								<Select
-									setting={settings[SETTINGS.NECROMANCY_PRAYER]}
+								<h5 class="uppercase font-bold text-lg text-center">Invisible base damage</h5>
+								<Number
+									setting={settings[SETTINGS.HIT_CHANCE]}
 									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Prayer.webp"
+									step="1"
+									max="100"
+									min="0"
+								/>
+							</div>
+							<div class="md:col-span-1">
+								<h5 class="uppercase font-bold text-lg text-center">Ability specific</h5>
+								<Checkbox
+									setting={settings[SETTINGS.DEATH_SPARK]}
+									on:settingsUpdated={updateDamages}
+								/>
+								<Checkbox
+									setting={settings[SETTINGS.LIVING_DEATH]}
+									on:settingsUpdated={updateDamages}
+								/>
+								<Number
+									setting={settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="25"
+									min="0"
+								/>
+							</div>
+							<div class="md:col-span-1">
+								<h5 class="uppercase font-bold text-lg text-center">Style specific</h5>
+							</div>
+							<div class="md:col-span-1">
+								<h5 class="uppercase font-bold text-lg text-center">Additive</h5>
+								<Number
+									setting={settings[SETTINGS.STONE_OF_JAS]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="6"
+									min="0"
+								/>
+								<Checkbox
+									setting={settings[SETTINGS.DRACONIC_FRUIT]}
+									on:settingsUpdated={updateDamages}
+								/>
+								<Select
+									setting={settings[SETTINGS.ENDURING_RUIN_HIT]}
+									on:settingsUpdated={updateDamages}
 								/>
 								<Number
 									setting={settings[SETTINGS.RUBY_AURORA]}
@@ -173,80 +197,71 @@
 									min="0"
 								/>
 								<Number
-									setting={settings[SETTINGS.REVENGE]}
+									setting={settings[SETTINGS.GRAVITATE]}
 									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Revenge.png"
 									step="1"
-									max="10"
+									max="20"
 									min="0"
-								/>
-								<Number
-									setting={settings[SETTINGS.BERSERKERS_FURY]}
-									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Berserker's_Fury.webp"
-									step="0.5"
-									max="5.5"
-									min="0.0"
-								/>
-								<Number
-									setting={settings[SETTINGS.RUTHLESS_STACKS]}
-									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Ruthless.webp"
-									step="1"
-									max="5"
-									min="0.0"
 								/>
 							</div>
 							<div class="md:col-span-1">
-								<h5 class="uppercase font-bold text-lg text-center">On-Hit Secondary</h5>
+								<h5 class="uppercase font-bold text-lg text-center">Multiplicative (shared)</h5>
+								<Select
+									setting={settings[SETTINGS.NECROMANCY_PRAYER]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Prayer.webp"
+								/>
+									<Number
+										setting={settings[SETTINGS.REVENGE]}
+										on:settingsUpdated={updateDamages}
+										step="1"
+										max="10"
+										min="0"
+									/>
+							</div>
+							<div class="md:col-span-1">
+								<h5 class="uppercase font-bold text-lg text-center">Multiplicative (PvE)</h5>
 								<Select
 									setting={settings[SETTINGS.SLAYER_HELM]}
 									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Full_slayer_helmet_(yellow).webp"
 								/>
 								<Select
 									setting={settings[SETTINGS.GUARDHOUSE]}
 									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Guardhouse_(Tier_3).webp"
 								/>
-								<Number
-									setting={settings[SETTINGS.TARGET_HP_PERCENT]}
+								<Checkbox
+									setting={settings[SETTINGS.SWIFTNESS_OF_THE_AVIANSIE]}
 									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Ruby_Aurora_icon.webp"
-									step="1"
-									max="100"
-									min="0"
 								/>
-								<Number
-									setting={settings[SETTINGS.GENOCIDAL]}
+							</div>
+							<div class="md:col-span-1">
+								<h5 class="uppercase font-bold text-lg text-center">Core</h5>
+								<Checkbox
+									setting={settings[SETTINGS.BERSERKERS_FURY]}
 									on:settingsUpdated={updateDamages}
-									img="/effect_icons/25px-Undead_Slayer.webp"
-									step="0.5"
-									max="5"
-									min="0"
 								/>
-								<Select
-									setting={settings[SETTINGS.FAMILIAR]}
+								<Checkbox
+									setting={settings[SETTINGS.SMOKE_CLOUD]}
 									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Full_slayer_helmet_(yellow).webp"
 								/>
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">On-NPC</h5>
 								<Select
-									setting={settings[SETTINGS.AURA]}
-									on:settingsUpdated={updateDamages}
-									img="/effect_icons/aura.png"
-								/>
-								<Select
 									setting={settings[SETTINGS.VULN]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Vulnerability_icon.webp"
 								/>
-								<Checkbox
-									setting={settings[SETTINGS.SMOKE_CLOUD]}
+								<Select
+									setting={settings[SETTINGS.ENDURING_RUIN_BLEED]}
 									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Smoke_Cloud_icon.webp"
+								/>
+								<Number
+									setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="6"
+									min="0"
 								/>
 								<Checkbox
 									setting={settings[SETTINGS.CRYPTBLOOM]}
@@ -283,62 +298,21 @@
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Undead_slayer_sigil_detail.png"
 								/>
+								<Number
+									setting={settings[SETTINGS.NOPE]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="3"
+									min="0"
+								/>
 								<Checkbox
 									setting={settings[SETTINGS.HAUNTED]}
 									on:settingsUpdated={updateDamages}
 									img="https://imgur.com/9U5ghz2.png"
 								/>
 								<Number
-									setting={settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]}
+									setting={settings[SETTINGS.HAUNTED_AD]}
 									on:settingsUpdated={updateDamages}
-									img="https://i.imgur.com/9vRoWeK.png"
-									step="1"
-									max="25"
-									min="0.0"
-								/>
-							</div>
-							<div class="md:col-span-1">
-								<h5 class="uppercase font-bold text-lg text-center">Other</h5>
-								<Checkbox
-									setting={settings[SETTINGS.NOPE]}
-									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Araxyte_spider.webp"
-								/>
-								<Checkbox
-									setting={settings[SETTINGS.KALG_SPEC]}
-									on:settingsUpdated={updateDamages}
-									img="/effect_icons/Kal'gerion_Demon_scroll_(Crit-i-Kal).webp"
-								/>
-							</div>
-							<div class="md:col-span-1">
-								<h5 class="uppercase font-bold text-lg text-center">Custom Buffs</h5>
-								<Number
-									setting={settings[SETTINGS.CUSTOM_ON_AD]}
-									on:settingsUpdated={updateDamages}
-									step="1"
-									max="999"
-									min="0"
-								/>
-								<Number
-									setting={settings[SETTINGS.CUSTOM_ON_HIT]}
-									on:settingsUpdated={updateDamages}
-									step="1"
-									max="999"
-									min="0"
-								/>
-								<Number
-									setting={settings[SETTINGS.CUSTOM_ON_NPC]}
-									on:settingsUpdated={updateDamages}
-									step="1"
-									max="999"
-									min="0"
-								/>
-								<Number
-									setting={settings[SETTINGS.CUSTOM_CRIT]}
-									on:settingsUpdated={updateDamages}
-									step="1"
-									max="100"
-									min="0"
 								/>
 							</div>
 						{:else if tab === 'equipment'}

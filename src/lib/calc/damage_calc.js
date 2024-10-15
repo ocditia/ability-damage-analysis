@@ -1,5 +1,5 @@
 import { SETTINGS } from './settings';
-import { weapons, gear, armour, abils, prayers } from './const';
+import { weapons, gear, armour, abils, prayers, ABILITIES } from './const';
 import { create_object, calc_crit_chance } from './object_helper';
 import { next_tick, next_hit, next_cast } from './ability_helper';
 
@@ -174,7 +174,7 @@ function calc_boosted_ad(settings, dmgObject) {
 		}
 
 		// flow stacks
-		boosted_AD = Math.floor(boosted_AD * (1 + 0.01 * settings['flow stacks']));
+		boosted_AD = Math.floor(boosted_AD * (1 + 0.01 * settings[SETTINGS.FLOW_STACKS]));
 	}
 
 	if (abils[settings['ability']]['main style'] === 'melee') {
@@ -238,34 +238,34 @@ function ability_specific_effects(settings, dmgObject) {
 	// order of these effects in unknown and should be researched properly still.
 	if (abils[settings['ability']]['main style'] === 'magic') {
 		// conflagrate
-		if (settings['ability'] === 'combust' && settings['conflagrate'] === true) {
+		if (settings['ability'] === 'combust' && settings[SETTINGS.CONFLAGRATE] === true) {
 			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.4);
 		}
 
 		// song of destruction 2 item set effect
-		const song_of_destruction_effects = ['bleed', 'burn', 'dot'];
+		/*const song_of_destruction_effects = ['bleed', 'burn', 'dot'];
 		if (
 			song_of_destruction_effects.includes(abils[settings['ability']]['ability classification'])
 		) {
 			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.3);
-		}
+		}*/
 
 		// essence corruption 1 stack effect
 		// proc based effect to be added later
 
 		// kerapac's wristwraps
-		if (settings['kerapacs wristwraps'] === 'regular') {
+		if (settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR) {
 			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.25);
-		} else if (settings['kerapacs wristwraps'] === 'enhcanted') {
+		} else if (settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED) {
 			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.4);
 		}
 
 		// wrack bound
 		if (
 			settings['ability'] === 'wrack' &&
-			(settings['target disability'] === 'stunned' ||
-				settings['target disability'] === 'bound' ||
-				settings['target disability'] === 'stunned and bound')
+			(settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
+				settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
+				settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
 		) {
 			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.3);
 		}
@@ -273,20 +273,20 @@ function ability_specific_effects(settings, dmgObject) {
 		// wrack and ruin bound
 		if (
 			settings['ability'] === 'wrack and ruin' &&
-			(settings['target disability'] === 'stunned' ||
-				settings['target disability'] === 'bound' ||
-				settings['target disability'] === 'stunned and bound')
+			(settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
+				settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
+				settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
 		) {
 			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.6);
 		}
 
 		// greater chain half damage
-		const gchain_not_halved = ['bleed', 'burn', 'dot'];
+		/*const gchain_not_halved = ['bleed', 'burn', 'dot'];
 		if (
 			gchain_not_halved.includes(abils[settings['ability']][['ability classification']] === false)
 		) {
 			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 0.5);
-		}
+		}*/
 	}
 
 	if (abils[settings['ability']]['main style'] === 'melee') {
@@ -351,12 +351,12 @@ function set_min_var(settings, dmgObject) {
 
 	if (abils[settings['ability']]['main style'] === 'magic') {
 		// detonate
-		if (settings['ability'] === 'detonate') {
-			min_percent = min_percent + 0.45 * settings['detonate charge ticks'];
-			var_percent = var_percent + 0.1 * settings['detonate charge ticks'];
+		if (settings['ability'] === ABILITIES.DETONATE) {
+			min_percent = min_percent + 0.45 * settings[SETTINGS.DETONATE];
+			var_percent = var_percent + 0.1 * settings[SETTINGS.DETONATE];
 		}
 	}
-
+	
 	if (abils[settings['ability']]['main style'] === 'melee') {
 		// greater barge tick bonus
 		if (settings['ability'] === 'greater barge') {
@@ -378,11 +378,11 @@ function set_min_var(settings, dmgObject) {
 		if (settings['ability'] === 'death grasp') {
 			min_percent = min_percent + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
 		}
-	}
-
-	let min_hit = Math.max(Math.floor(min_percent * dmgObject['boosted AD']), 0);
-	let var_hit = Math.max(Math.floor(var_percent * dmgObject['boosted AD']), 0);
-	return [min_hit, var_hit];
+	}	
+	
+	dmgObject['min hit'] = Math.max(Math.floor(min_percent * dmgObject['boosted AD']), 0);
+	dmgObject['var hit'] = Math.max(Math.floor(var_percent * dmgObject['boosted AD']), 0);
+	return dmgObject;
 }
 
 function calc_style_specific(settings, dmgObject) {
@@ -434,9 +434,9 @@ function calc_style_specific(settings, dmgObject) {
 function calc_precise(settings, dmgObject) {
 	// calculate precise
 	let max_hit = dmgObject['min hit'] + dmgObject['var hit'];
-	let min_hit = dmgObject['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
+	dmgObject['min hit'] = dmgObject['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
 
-	return min_hit;
+	return dmgObject;
 }
 
 function calc_additive_boosts(settings, dmgObject) {
@@ -444,7 +444,7 @@ function calc_additive_boosts(settings, dmgObject) {
 	let boost = 0;
 
 	// add stone of jas boost
-	boost += settings['stone of jas'] / 100;
+	boost += settings[SETTINGS.STONE_OF_JAS] / 100;
 
 	// void armour
 	// count the number of non-helmet void pieces
@@ -502,7 +502,7 @@ function calc_additive_boosts(settings, dmgObject) {
 	}
 
 	// draconic fruit
-	if (settings['draconic fruit'] === true) {
+	if (settings[SETTINGS.DRACONIC_FRUIT] === true) {
 		boost += 0.02;
 	}
 
@@ -512,12 +512,12 @@ function calc_additive_boosts(settings, dmgObject) {
 
 	// regular gloves of passive next abil boost if style is melee
 	if (
-		settings['enduring ruin - hit'] === 'regular' &&
+		settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR &&
 		abils[settings['ability']]['main style'] === 'melee'
 	) {
 		boost += 0.1;
 	} else if (
-		settings['enduring ruin - hit'] === 'enhanced' &&
+		settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED &&
 		abils[settings['ability']]['main style'] === 'melee'
 	) {
 		boost += 0.16;
@@ -525,7 +525,7 @@ function calc_additive_boosts(settings, dmgObject) {
 
 	// needle strike next abil boost if style is ranged
 	if (
-		(settings['needle strike'] === true || settings['needle strike'] === 'fleeting') &&
+		(settings[SETTINGS.NEEDLE_STRIKE] === true || settings[SETTINGS.NEEDLE_STRIKE] === 'fleeting') &&
 		abils[settings['ability']]['main style'] === 'ranged'
 	) {
 		boost += 0.07;
@@ -535,30 +535,30 @@ function calc_additive_boosts(settings, dmgObject) {
 	boost += settings[SETTINGS.RUBY_AURORA] * 0.01;
 
 	// gorajan trailblazer
-	if (settings['gorajan trailblazer effect'] === true) {
+	/*if (settings['gorajan trailblazer effect'] === true) {
 		boost += 0.07;
-	}
+	}*/
 
 	// gravitate (annihilation spec)
 	if (abils[settings['ability']]['main style'] === 'melee') {
-		boost += settings['gravitate'] / 100;
+		boost += settings[SETTINGS.GRAVITATE] / 100;
 	}
 
 	// scripture of ful
-	if (settings[SETTINGS.POCKET] === 'scripture of ful') {
+	if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.FUL) {
 		boost += 0.2;
 	}
 
 	// desperado (ring of kinship ranged boost)
-	if (settings['desperado'] > 0 && abils[settings['ability']]['main style'] === 'ranged') {
+	/*if (settings['desperado'] > 0 && abils[settings['ability']]['main style'] === 'ranged') {
 		boost += 0.1;
 		boost = boost + 0.01 * settings['desperado'];
-	}
+	}*/
 
-	let min_hit = Math.floor(dmgObject['min hit'] * (1 + boost));
-	let var_hit = Math.floor(dmgObject['var hit'] * (1 + boost));
+	dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * (1 + boost));
+	dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * (1 + boost));
 
-	return [min_hit, var_hit];
+	return dmgObject;
 }
 
 function calc_prayer(settings) {
@@ -597,7 +597,7 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
 		}
 
 		// blood tithe (exsanguinate)
-		boost = Math.floor(boost * (1 + settings['blood tithe'] / 100));
+		boost = Math.floor(boost * (1 + settings[SETTINGS.BLOOD_TITHE] / 100));
 	}
 
 	// apply melee unique boosts
@@ -650,22 +650,19 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
 			revenge = revenge * 2;
 		}
 
-		boost = Math.floor(boost * (1 + revenge));
-
-		// crystal weapons (proc based, so added later)
+		boost = Math.floor(boost * (1 + revenge));		
+	}
+	// crystal weapons (proc based, so added later)
 
 		// spendthrift (proc based, so added later)
 
 		// ruthless
-		boost = Math.floor(
-			boost * settings[SETTINGS.RUTHLESS_STACKS] * settings[SETTINGS.RUTHLESS_RANK] * 0.005
-		);
-	}
+		boost = Math.floor(boost * (1 + settings[SETTINGS.RUTHLESS_STACKS] * settings[SETTINGS.RUTHLESS_RANK] * 0.005));
 
-	let min_hit = Math.floor((dmgObject['min hit'] * boost) / 10000);
-	let var_hit = Math.floor((dmgObject['var hit'] * boost) / 10000);
+	dmgObject['min hit'] = Math.floor((dmgObject['min hit'] * boost) / 10000);
+	dmgObject['var hit'] = Math.floor((dmgObject['var hit'] * boost) / 10000);
 
-	return [min_hit, var_hit];
+	return dmgObject;
 }
 
 function calc_multiplicative_pve_buffs(settings, dmgObject) {
@@ -735,10 +732,10 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
 		boost = Math.floor(boost + 0.05 * (1 - settings[SETTINGS.TARGET_HP_PERCENT] / 100));
 	}
 
-	let min_hit = Math.floor((dmgObject['min hit'] * boost) / 10000);
-	let var_hit = Math.floor((dmgObject['var hit'] * boost) / 10000);
+	dmgObject['min hit'] = Math.floor((dmgObject['min hit'] * boost) / 10000);
+	dmgObject['var hit'] = Math.floor((dmgObject['var hit'] * boost) / 10000);
 
-	return [min_hit, var_hit];
+	return dmgObject;
 }
 
 function calc_bonus_damage(settings, dmgObject) {
@@ -757,7 +754,10 @@ function calc_bonus_damage(settings, dmgObject) {
 		}
 	}
 
-	return [min_hit, var_hit];
+	dmgObject['min hit'] = min_hit;
+	dmgObject['var hit'] = var_hit;
+
+	return dmgObject;
 }
 
 function calc_core(settings, dmgObject, key) {
@@ -1010,16 +1010,13 @@ function roll_damage(settings, dmgObject) {
 }
 
 function calc_on_hit(settings, dmgObject) {
-	dmgObject['min hit'] = calc_precise(settings, dmgObject);
-	[dmgObject['min hit'], dmgObject['var hit']] = calc_additive_boosts(settings, dmgObject);
-	[dmgObject['min hit'], dmgObject['var hit']] = calc_multiplicative_shared_buffs(
-		settings,
-		dmgObject
-	);
-	[dmgObject['min hit'], dmgObject['var hit']] = calc_multiplicative_pve_buffs(settings, dmgObject);
-	[dmgObject['min hit'], dmgObject['var hit']] = calc_bonus_damage(settings, dmgObject);
+	dmgObject = calc_precise(settings, dmgObject);
+	dmgObject = calc_additive_boosts(settings, dmgObject);
+	dmgObject = calc_multiplicative_shared_buffs(settings,dmgObject);
+	dmgObject = calc_multiplicative_pve_buffs(settings, dmgObject);
+	dmgObject = calc_bonus_damage(settings, dmgObject);
 
-	return [dmgObject['min hit'], dmgObject['var hit']];
+	return dmgObject;
 }
 
 function calc_damage_object(settings) {
@@ -1034,15 +1031,12 @@ function calc_damage_object(settings) {
 		// style specific
 		dmgObject[key] = calc_style_specific(settings, dmgObject[key]);
 		// set min var
-		[dmgObject[key]['min hit'], dmgObject[key]['var hit']] = set_min_var(settings, dmgObject[key]);
+		dmgObject[key] = set_min_var(settings, dmgObject[key]);
 		// calc on hit effects
-		if (abils[settings['ability']]['on-hit effects']) {
-			[dmgObject[key]['min hit'], dmgObject[key]['var hit']] = calc_on_hit(
-				settings,
-				dmgObject[key]
-			);
+		if (abils[settings['ability']]['on-hit effects']) {	
+			dmgObject[key] = calc_on_hit(settings,dmgObject[key]);
 		}
-		// roll damage
+		// roll damage	
 		dmgObject[key]['damage list'] = roll_damage(settings, dmgObject[key]);
 		// calc core
 		if (abils[settings['ability']]['on-hit effects']) {
