@@ -7,16 +7,16 @@ function create_object(settings) {
 		const crit_chance = calc_crit_chance(settings);
 		damage_object = {
 			non_crit: {
-				min_hit: 0,
-				var_hit: 0,
+				"min hit": 0,
+				"var hit": 0,
 				crit: false,
 
 				probability: 1 - crit_chance,
 				'damage list': []
 			},
 			crit: {
-				min_hit: 0,
-				var_hit: 0,
+				"min hit": 0,
+				"var hit": 0,
 				crit: true,
 
 				probability: crit_chance,
@@ -26,8 +26,8 @@ function create_object(settings) {
 	} else {
 		damage_object = {
 			non_crit: {
-				min_hit: 0,
-				var_hit: 0,
+				"min hit": 0,
+				"var hit": 0,
 				crit: false,
 
 				probability: 1,

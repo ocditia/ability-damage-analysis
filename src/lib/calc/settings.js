@@ -216,7 +216,32 @@ const SETTINGS = {
 	STONE_OF_JAS: 'stone of jas',
 	INFERNAL_PUZZLE_BOX: 'Infernal puzzle box',
 	ICY_PRECISION: 'icy precision',
-	PUNCTURE_STACKS: 'puncture stacks'
+	PUNCTURE_STACKS: 'puncture stacks',
+	FLOW_STACKS: 'flow stacks',
+	CONFLAGRATE: 'conflagrate',
+	KERAPACS_WRIST_WRAPS: 'kerapacs wrist wraps',
+	KERAPACS_WRIST_WRAPS_VALUES: {
+		NONE: 'none',
+		REGULAR: 'regular',
+		ENCHANTED: 'enchanted'
+	},
+	TARGET_DISABILITY: 'target disability',
+	TARGET_DISABILITY_VALUES: {
+		NONE: 'none',
+		BOUND: 'bound',
+		STUNNED: 'stunned',
+		BOUND_STUNNED: 'bound and stunned'
+	},
+	DRACONIC_FRUIT: 'draconic fruit',
+	ENDURING_RUIN_HIT: 'enduring ruin',
+	ENDURING_RUIN_HIT_VALUES: {
+		NONE: 'none',
+		REGULAR: 'regular',
+		ENCHANTED: 'enchanted'
+	},
+	NEEDLE_STRIKE: 'needle strike',
+	GRAVITATE: 'gravitate',
+	BLOOD_TITHE: 'blood tithe',
 };
 
 const settingsConfig = {
@@ -664,7 +689,59 @@ const settingsConfig = {
 	[SETTINGS.PUNCTURE_STACKS]: {
 		label: 'Puncture Stacks',
 		default: 0
-	}
+	},
+	[SETTINGS.FLOW_STACKS]: {
+		label: 'Flow stacks',
+		default: 0
+	},
+	[SETTINGS.CONFLAGRATE]: {
+		label: 'Conflagrate',
+		default: false
+	},
+	[SETTINGS.KERAPACS_WRIST_WRAPS_VALUES]: {
+		label: 'Kerapacs wristwraps',
+		default: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.NONE,
+		options: [
+			{ text: 'None', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.NONE },
+			{ text: 'Regular', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR },
+			{ text: 'Enchanted', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED },
+		]
+	},
+	[SETTINGS.TARGET_DISABILITY_VALUES]: {
+		label: 'Disability',
+		default: SETTINGS.TARGET_DISABILITY_VALUES.NONE,
+		options: [
+			{ text: 'None', value: SETTINGS.TARGET_DISABILITY_VALUES.NONE },
+			{ text: 'Bound', value: SETTINGS.TARGET_DISABILITY_VALUES.BOUND },
+			{ text: 'Stunned', value: SETTINGS.TARGET_DISABILITY_VALUES.STUNNED },
+			{ text: 'Bound and stunned', value: SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED },
+		]
+	},
+	[SETTINGS.DRACONIC_FRUIT]: {
+		label: 'Draconic fruit',
+		default: false
+	},
+	[SETTINGS.ENDURING_RUIN_HIT_VALUES]: {
+		label: 'Enduring ruin on-hit',
+		default: SETTINGS.ENDURING_RUIN_HIT_VALUES.NONE,
+		options: [
+			{ text: 'None', value: SETTINGS.ENDURING_RUIN_HIT_VALUES.NONE },
+			{ text: 'Regular', value: SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR },
+			{ text: 'Enchanted', value: SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED },
+		]
+	},
+	[SETTINGS.NEEDLE_STRIKE]: {
+		label: 'Needle Strike',
+		default: false
+	},
+	[SETTINGS.GRAVITATE]: {
+		label: 'Gravitate',
+		default: 0
+	},
+	[SETTINGS.BLOOD_TITHE]: {
+		label: 'Blood tithe',
+		default: 0
+	},
 };
 
 export { SETTINGS, settingsConfig };
