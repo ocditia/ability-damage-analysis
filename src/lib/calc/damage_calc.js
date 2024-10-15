@@ -650,17 +650,14 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
 			revenge = revenge * 2;
 		}
 
-		boost = Math.floor(boost * (1 + revenge));
-
-		// crystal weapons (proc based, so added later)
+		boost = Math.floor(boost * (1 + revenge));		
+	}
+	// crystal weapons (proc based, so added later)
 
 		// spendthrift (proc based, so added later)
 
 		// ruthless
-		boost = Math.floor(
-			boost * settings[SETTINGS.RUTHLESS_STACKS] * settings[SETTINGS.RUTHLESS_RANK] * 0.005
-		);
-	}
+		boost = Math.floor(boost * (1 + settings[SETTINGS.RUTHLESS_STACKS] * settings[SETTINGS.RUTHLESS_RANK] * 0.005));
 
 	dmgObject['min hit'] = Math.floor((dmgObject['min hit'] * boost) / 10000);
 	dmgObject['var hit'] = Math.floor((dmgObject['var hit'] * boost) / 10000);

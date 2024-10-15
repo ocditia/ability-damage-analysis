@@ -396,6 +396,15 @@
 									setting={settings[SETTINGS.RUTHLESS_RANK]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Ruthless.webp"
+									max="3"
+									step="1"
+									min="0"
+								/>
+								<Number
+									setting={settings[SETTINGS.RUTHLESS_STACKS]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Ruthless.webp"
+									max ="5"
 									step="1"
 									min="0"
 								/>
