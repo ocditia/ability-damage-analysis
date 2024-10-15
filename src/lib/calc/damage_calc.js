@@ -1039,7 +1039,6 @@ function calc_damage_object(settings) {
 		if (abils[settings['ability']]['on-hit effects']) {	
 			dmgObject[key] = calc_on_hit(settings,dmgObject[key]);
 		}
-		console.log({...dmgObject[key]})
 		// roll damage	
 		dmgObject[key]['damage list'] = roll_damage(settings, dmgObject[key]);
 		// calc core

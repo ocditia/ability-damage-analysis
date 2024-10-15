@@ -233,8 +233,14 @@ const SETTINGS = {
 		BOUND_STUNNED: 'bound and stunned'
 	},
 	DRACONIC_FRUIT: 'draconic fruit',
-	ENDURING_RUIN_HIT: 'enduring ruin',
+	ENDURING_RUIN_HIT: 'enduring ruin hit',
 	ENDURING_RUIN_HIT_VALUES: {
+		NONE: 'none',
+		REGULAR: 'regular',
+		ENCHANTED: 'enchanted'
+	},
+	ENDURING_RUIN_BLEED: 'enduring ruin bleed',
+	ENDURING_RUIN_BLEED_VALUES: {
 		NONE: 'none',
 		REGULAR: 'regular',
 		ENCHANTED: 'enchanted'
@@ -242,6 +248,9 @@ const SETTINGS = {
 	NEEDLE_STRIKE: 'needle strike',
 	GRAVITATE: 'gravitate',
 	BLOOD_TITHE: 'blood tithe',
+	DEATH_SPARK: 'death spark',
+	LIVING_DEATH: 'living death',
+	SWIFTNESS_OF_THE_AVIANSIE: 'swiftness of the avianse',
 };
 
 const settingsConfig = {
@@ -259,12 +268,12 @@ const settingsConfig = {
 		]
 	},
 	[SETTINGS.ABILITY_DAMAGE]: {
-		label: 'Ability Damage',
+		label: 'Override base damage',
 		default: 0
 	},
 	[SETTINGS.NECROMANCY_LEVEL]: {
 		label: 'Necromancy Level',
-		default: 120,
+		default: 145,
 		style: 'necromancy'
 	},
 	[SETTINGS.MAGIC_LEVEL]: {
@@ -343,7 +352,7 @@ const settingsConfig = {
 		default: 0
 	},
 	[SETTINGS.BERSERKERS_FURY]: {
-		label: "Dharok's Momento %",
+		label: "Dharok's Momento (relic)",
 		default: 0
 	},
 	[SETTINGS.RUTHLESS_STACKS]: {
@@ -455,7 +464,7 @@ const settingsConfig = {
 	},
 	[SETTINGS.NOPE]: {
 		label: 'Nope Nope Nope',
-		default: false
+		default: 0
 	},
 	[SETTINGS.KALG_SPEC]: {
 		label: 'Crit-i-Kal Spec',
@@ -698,7 +707,7 @@ const settingsConfig = {
 		label: 'Conflagrate',
 		default: false
 	},
-	[SETTINGS.KERAPACS_WRIST_WRAPS_VALUES]: {
+	[SETTINGS.KERAPACS_WRIST_WRAPS]: {
 		label: 'Kerapacs wristwraps',
 		default: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.NONE,
 		options: [
@@ -707,7 +716,7 @@ const settingsConfig = {
 			{ text: 'Enchanted', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED },
 		]
 	},
-	[SETTINGS.TARGET_DISABILITY_VALUES]: {
+	[SETTINGS.TARGET_DISABILITY]: {
 		label: 'Disability',
 		default: SETTINGS.TARGET_DISABILITY_VALUES.NONE,
 		options: [
@@ -721,13 +730,22 @@ const settingsConfig = {
 		label: 'Draconic fruit',
 		default: false
 	},
-	[SETTINGS.ENDURING_RUIN_HIT_VALUES]: {
+	[SETTINGS.ENDURING_RUIN_HIT]: {
 		label: 'Enduring ruin on-hit',
 		default: SETTINGS.ENDURING_RUIN_HIT_VALUES.NONE,
 		options: [
 			{ text: 'None', value: SETTINGS.ENDURING_RUIN_HIT_VALUES.NONE },
 			{ text: 'Regular', value: SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR },
 			{ text: 'Enchanted', value: SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED },
+		]
+	},
+	[SETTINGS.ENDURING_RUIN_BLEED]: {
+		label: 'Enduring ruin bleed',
+		default: SETTINGS.ENDURING_RUIN_BLEED_VALUES.NONE,
+		options: [
+			{ text: 'None', value: SETTINGS.ENDURING_RUIN_BLEED_VALUES.NONE },
+			{ text: 'Regular', value: SETTINGS.ENDURING_RUIN_BLEED_VALUES.REGULAR },
+			{ text: 'Enchanted', value: SETTINGS.ENDURING_RUIN_BLEED_VALUES.ENCHANTED },
 		]
 	},
 	[SETTINGS.NEEDLE_STRIKE]: {
@@ -741,6 +759,18 @@ const settingsConfig = {
 	[SETTINGS.BLOOD_TITHE]: {
 		label: 'Blood tithe',
 		default: 0
+	},
+	[SETTINGS.DEATH_SPARK]: {
+		label: 'Death spark',
+		default: false
+	},
+	[SETTINGS.LIVING_DEATH]: {
+		label: 'Living Death',
+		default: false
+	},
+	[SETTINGS.SWIFTNESS_OF_THE_AVIANSIE]: {
+		label: 'Swiftness of the Aviansie',
+		default: false
 	},
 };
 
