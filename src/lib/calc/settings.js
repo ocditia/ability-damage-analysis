@@ -292,7 +292,7 @@ const settingsConfig = {
 	},
 	[SETTINGS.RANGED_LEVEL]: {
 		label: 'Ranged Level',
-		default: 99
+		default: 130
 	},
 	[SETTINGS.POTION]: {
 		label: 'Potion',

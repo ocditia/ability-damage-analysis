@@ -90,7 +90,7 @@
 				</div>
 			</div>
 
-			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-ranged">
+			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-necro">
 				<ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
 					<li class="flex-grow me-2">
 						<button
@@ -134,7 +134,7 @@
 									min="0"
 								/>
 								<Number
-									setting={settings[SETTINGS.NECROMANCY_LEVEL]}
+									setting={settings[SETTINGS.RANGED_LEVEL]}
 									on:settingsUpdated={updateDamages}
 									step="1"
 									max="150"
@@ -155,27 +155,24 @@
 									max="100"
 									min="0"
 								/>
-							</div>
-							<div class="md:col-span-1">
-								<h5 class="uppercase font-bold text-lg text-center">Ability specific</h5>
-								<Checkbox
-									setting={settings[SETTINGS.DEATH_SPARK]}
-									on:settingsUpdated={updateDamages}
-								/>
-								<Checkbox
-									setting={settings[SETTINGS.LIVING_DEATH]}
-									on:settingsUpdated={updateDamages}
-								/>
 								<Number
-									setting={settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]}
+									setting={settings[SETTINGS.ICY_PRECISION]}
 									on:settingsUpdated={updateDamages}
 									step="1"
-									max="25"
+									max="15"
 									min="0"
 								/>
 							</div>
 							<div class="md:col-span-1">
-								<h5 class="uppercase font-bold text-lg text-center">Style specific</h5>
+								<h5 class="uppercase font-bold text-lg text-center">Ability specific</h5>
+								<Checkbox
+									setting={settings[SETTINGS.WALKED_TARGET]}
+									on:settingsUpdated={updateDamages}
+								/>
+								<Checkbox
+									setting={settings[SETTINGS.NEEDLE_STRIKE]}
+									on:settingsUpdated={updateDamages}
+								/>
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Additive</h5>
@@ -188,10 +185,6 @@
 								/>
 								<Checkbox
 									setting={settings[SETTINGS.DRACONIC_FRUIT]}
-									on:settingsUpdated={updateDamages}
-								/>
-								<Select
-									setting={settings[SETTINGS.ENDURING_RUIN_HIT]}
 									on:settingsUpdated={updateDamages}
 								/>
 								<Number
@@ -217,13 +210,13 @@
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Prayer.webp"
 								/>
-									<Number
-										setting={settings[SETTINGS.REVENGE]}
-										on:settingsUpdated={updateDamages}
-										step="1"
-										max="10"
-										min="0"
-									/>
+								<Number
+									setting={settings[SETTINGS.REVENGE]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="10"
+									min="0"
+								/>
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Multiplicative (PvE)</h5>
@@ -406,9 +399,26 @@
 									min="0"
 								/>
 								<Number
+									setting={settings[SETTINGS.GENOCIDAL]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Ruthless.webp"
+									max="4.9"
+									step="0.1"
+									min="0"
+								/>
+								<Number
 									setting={settings[SETTINGS.RUTHLESS_RANK]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Ruthless.webp"
+									max="3"
+									step="1"
+									min="0"
+								/>
+								<Number
+									setting={settings[SETTINGS.RUTHLESS_STACKS]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Ruthless.webp"
+									max ="5"
 									step="1"
 									min="0"
 								/>
@@ -510,7 +520,6 @@
 					</div>
 				</form>
 			</div>
-
 			<div class="xl:col-span-6 xl:row-start-2 xl:col-start-7">
 				<div class="flex flex-col">
 					<div class="card card-ranged">

@@ -168,9 +168,6 @@
 								/>
 							</div>
 							<div class="md:col-span-1">
-								<h5 class="uppercase font-bold text-lg text-center">Style specific</h5>
-							</div>
-							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Additive</h5>
 								<Number
 									setting={settings[SETTINGS.STONE_OF_JAS]}
