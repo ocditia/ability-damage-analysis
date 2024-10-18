@@ -84,7 +84,7 @@
 				</div>
 			</div>
 
-			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-magic">
+			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-necro">
 				<ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
 					<li class="flex-grow me-2">
 						<button
@@ -117,6 +117,13 @@
 						<div class="md:col-span-1">
 							<h5 class="uppercase font-bold text-lg text-center">General</h5>
 							<Select setting={settings[SETTINGS.MODE]} on:settingsUpdated={updateDamages} />
+							<Number
+									setting={settings[SETTINGS.ESSENCE_CORRUPTION]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="100"
+									min="0"
+								/>
 						</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Base damage</h5>
@@ -128,7 +135,7 @@
 									min="0"
 								/>
 								<Number
-									setting={settings[SETTINGS.NECROMANCY_LEVEL]}
+									setting={settings[SETTINGS.MAGIC_LEVEL]}
 									on:settingsUpdated={updateDamages}
 									step="1"
 									max="150"
@@ -149,24 +156,32 @@
 									max="100"
 									min="0"
 								/>
+								<Number
+									setting={settings[SETTINGS.FLOW_STACKS]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="100"
+									min="0"
+								/>
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Ability specific</h5>
 								<Checkbox
-									setting={settings[SETTINGS.DEATH_SPARK]}
+									setting={settings[SETTINGS.CONFLAGRATE]}
 									on:settingsUpdated={updateDamages}
 								/>
+								<Select setting={settings[SETTINGS.KERAPACS_WRIST_WRAPS]} on:settingsUpdated={updateDamages} />
 								<Checkbox
-									setting={settings[SETTINGS.LIVING_DEATH]}
+									setting={settings[SETTINGS.WALKED_TARGET]}
 									on:settingsUpdated={updateDamages}
 								/>
 								<Number
-									setting={settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]}
+									setting={settings[SETTINGS.CONCENTRATED_BLAST_STACKS]}
 									on:settingsUpdated={updateDamages}
 									step="1"
-									max="25"
+									max="3"
 									min="0"
-								/>
+								/>	
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Style specific</h5>
@@ -211,13 +226,20 @@
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Prayer.webp"
 								/>
-									<Number
-										setting={settings[SETTINGS.REVENGE]}
-										on:settingsUpdated={updateDamages}
-										step="1"
-										max="10"
-										min="0"
-									/>
+								<Number
+									setting={settings[SETTINGS.BLOOD_TITHE]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="12"
+									min="0"
+								/>
+								<Number
+									setting={settings[SETTINGS.REVENGE]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="10"
+									min="0"
+								/>
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Multiplicative (PvE)</h5>
@@ -400,9 +422,26 @@
 									min="0"
 								/>
 								<Number
+									setting={settings[SETTINGS.GENOCIDAL]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Ruthless.webp"
+									max="4.9"
+									step="0.1"
+									min="0"
+								/>
+								<Number
 									setting={settings[SETTINGS.RUTHLESS_RANK]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Ruthless.webp"
+									max="3"
+									step="1"
+									min="0"
+								/>
+								<Number
+									setting={settings[SETTINGS.RUTHLESS_STACKS]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Ruthless.webp"
+									max ="5"
 									step="1"
 									min="0"
 								/>

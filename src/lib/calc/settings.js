@@ -244,6 +244,10 @@ const SETTINGS = {
 	DEATH_SPARK: 'death spark',
 	LIVING_DEATH: 'living death',
 	SWIFTNESS_OF_THE_AVIANSIE: 'swiftness of the avianse',
+	ESSENCE_CORRUPTION: 'essence corruption',
+	CONFLAGRATE: 'conflagrate',
+	WALKED_TARGET: 'walked target',
+	CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
 };
 
 const settingsConfig = {
@@ -271,7 +275,7 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_LEVEL]: {
 		label: 'Magic Level',
-		default: 99,
+		default: 130,
 		style: 'magic'
 	},
 	[SETTINGS.STRENGTH_LEVEL]: {
@@ -757,6 +761,22 @@ const settingsConfig = {
 	[SETTINGS.SWIFTNESS_OF_THE_AVIANSIE]: {
 		label: 'Swiftness of the Aviansie',
 		default: false
+	},
+	[SETTINGS.ESSENCE_CORRUPTION]: {
+		label: 'Essence corruption',
+		default: 0
+	},
+	[SETTINGS.CONFLAGRATE]: {
+		label: 'Conflagrate',
+		default: false
+	},
+	[SETTINGS.WALKED_TARGET]: {
+		label: 'Walked',
+		default: true
+	},
+	[SETTINGS.CONCENTRATED_BLAST_STACKS]: {
+		label: 'conc stacks',
+		default: 0
 	},
 };
 
