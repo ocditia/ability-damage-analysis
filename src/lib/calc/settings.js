@@ -248,6 +248,14 @@ const SETTINGS = {
 	CONFLAGRATE: 'conflagrate',
 	WALKED_TARGET: 'walked target',
 	CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
+	CHAOS_ROAR: 'chaos roar',
+	FURY_BUFF: 'fury buff',
+	FURY_BUFF_VALUES: {
+		NONE: 'none',
+		REGULAR: 'regular',
+		GREATER: 'greater'
+	},
+	RAMPAGE: 'rampage',
 };
 
 const settingsConfig = {
@@ -280,7 +288,7 @@ const settingsConfig = {
 	},
 	[SETTINGS.STRENGTH_LEVEL]: {
 		label: 'Strength Level',
-		default: 99
+		default: 130
 	},
 	[SETTINGS.RANGED_LEVEL]: {
 		label: 'Ranged Level',
@@ -775,8 +783,25 @@ const settingsConfig = {
 		default: true
 	},
 	[SETTINGS.CONCENTRATED_BLAST_STACKS]: {
-		label: 'conc stacks',
+		label: 'Conc stacks',
 		default: 0
+	},
+	[SETTINGS.CHAOS_ROAR]: {
+		label: 'Chaos roar',
+		default: false
+	},
+	[SETTINGS.FURY_BUFF]: {
+		label: 'Fury buff',
+		default: SETTINGS.FURY_BUFF_VALUES.NONE,
+		options: [
+			{ text: 'None', value: SETTINGS.POTION_VALUES.NONE },
+			{ text: 'Regular', value: SETTINGS.FURY_BUFF_VALUES.REGULAR },
+			{ text: 'Greater', value: SETTINGS.FURY_BUFF_VALUES.GREATER },
+		]
+	},
+	[SETTINGS.RAMPAGE]: {
+		label: 'Rampage',
+		default: false
 	},
 };
 
