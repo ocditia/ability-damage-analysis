@@ -204,13 +204,13 @@
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Prayer.webp"
 								/>
-									<Number
-										setting={settings[SETTINGS.REVENGE]}
-										on:settingsUpdated={updateDamages}
-										step="1"
-										max="10"
-										min="0"
-									/>
+								<Number
+									setting={settings[SETTINGS.REVENGE]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="10"
+									min="0"
+								/>
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Multiplicative (PvE)</h5>
@@ -390,6 +390,14 @@
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Flanking.webp"
 									step="1"
+									min="0"
+								/>
+								<Number
+									setting={settings[SETTINGS.GENOCIDAL]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Ruthless.webp"
+									max="4.9"
+									step="0.1"
 									min="0"
 								/>
 								<Number
