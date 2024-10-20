@@ -399,6 +399,14 @@
 									setting={settings[SETTINGS.ERUPTIVE]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Eruptive.webp"
+									max="4"
+									step="1"
+									min="0"
+								/>
+								<Number
+									setting={settings[SETTINGS.CAROMING]}
+									on:settingsUpdated={updateDamages}
+									max="4"
 									step="1"
 									min="0"
 								/>

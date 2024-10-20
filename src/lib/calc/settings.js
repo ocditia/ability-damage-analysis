@@ -200,6 +200,7 @@ const SETTINGS = {
 	PRECISE: 'precise',
 	ERUPTIVE: 'eruptive',
 	FLANKING: 'flanking',
+	CAROMING: 'caroming',
 	RUTHLESS_RANK: 'ruthless rank',
 	TELOS_RED_BEAM: 'Telos red beam',
 	TELOS_BLACK_BEAM: 'Telos black beam',
@@ -825,6 +826,10 @@ const settingsConfig = {
 	[SETTINGS.BALANCE_BY_FORCE]: {
 		label: 'Balance by force',
 		default: true
+	},
+	[SETTINGS.CAROMING]: {
+		label: 'Caroming',
+		default: 4
 	},
 };
 

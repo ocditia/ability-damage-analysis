@@ -799,10 +799,16 @@ function calc_core(settings, dmgObject, key) {
 }
 
 function calc_crit_damage(settings) {
-	let crit_buff = 0.5;
+	let crit_buff = 0.5; // base
 
-	if (abils[settings['ability']]['main style'] + ' level' >= 90) {
-		crit_buff += 0.5;
+	// smoke cloud
+	if (settings[SETTINGS.SMOKE_CLOUD] === true) {
+		if (abils[settings['ability']]['main style'] == 'magic') {
+			crit_buff += 0.15;
+		}
+		else {
+			crit_buff += 0.06;
+		}
 	}
 
 	return crit_buff;
@@ -1344,7 +1350,7 @@ function hit_damage_calculation(settings) {
 }
 
 function ability_damage_calculation(settings) {
-	let rotation = abils[settings['ability']]['hits'];
+	let rotation = get_rotation(settings);
 	let damage = 0;
 	for (let key in rotation) {
 		for (let iter = 0; iter < rotation[key].length; iter++) {
@@ -1360,6 +1366,18 @@ function ability_damage_calculation(settings) {
 		settings = next_tick(settings);
 	}
 	return damage;
+}
+
+function get_rotation(settings) {
+	let rotation = JSON.parse(JSON.stringify(abils[settings['ability']]['hits']));
+
+	if (settings['ability'] === ABILITIES.GREATER_RICOCHET) {
+		for (let i=1; i<=settings[SETTINGS.CAROMING]; i++) {
+			rotation[1].push("next hit");
+			rotation[1].push(ABILITIES.GREATER_RICOCHET_3);
+		}
+	}
+	return rotation;
 }
 
 export { ability_damage_calculation, hit_damage_calculation };
