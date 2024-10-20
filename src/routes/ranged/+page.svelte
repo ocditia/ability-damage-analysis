@@ -123,6 +123,17 @@
 						<div class="md:col-span-1">
 							<h5 class="uppercase font-bold text-lg text-center">General</h5>
 							<Select setting={settings[SETTINGS.MODE]} on:settingsUpdated={updateDamages} />
+							<Checkbox
+								setting={settings[SETTINGS.BALANCE_BY_FORCE]}
+								on:settingsUpdated={updateDamages}
+							/>
+							<Number
+								setting={settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]}
+								on:settingsUpdated={updateDamages}
+								step="1"
+								max="7"
+								min="0"
+							/>
 						</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Base damage</h5>

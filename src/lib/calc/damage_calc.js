@@ -68,13 +68,12 @@ function calc_base_ad(settings) {
 			}
 
 			base_AD = AD_mh + AD_oh;
-		} else if (settings[SETTINGS.WEAPON] === 'two-hand') {
+		} else if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
 			base_AD =
 				Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
 				Math.floor(1.25 * settings[SETTINGS.RANGED_LEVEL]) +
-				Math.floor(9.6 * weapons[settings['two-hand weapon']]['tier']) +
-				calc_bonus(settings) +
-				Math.floor(4.8 * weapons[settings['two-hand weapon']]['tier'] + 0.5 * calc_bonus(settings));
+				Math.floor(9.6 * weapons[settings[SETTINGS.TH]]['tier'] + calc_bonus(settings)) +
+				Math.floor(4.8 * weapons[settings[SETTINGS.TH]]['tier'] + 0.5 * calc_bonus(settings));
 		}
 	} else if (abils[settings['ability']]['main style'] === 'necromancy') {
 		if (settings[SETTINGS.WEAPON] === 'main-hand') {
@@ -330,12 +329,12 @@ function ability_specific_effects(settings, dmgObject) {
 		}
 
 		// living dead - finger of death
-		if (settings['living dead'] === true && settings['ability'] === 'finger of death') {
+		if (settings[SETTINGS.LIVING_DEATH] === true && settings['ability'] === ABILITIES.FINGER_OF_DEATH) {
 			dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
 		}
 
 		// skeleton warrior stacks
-		if (settings['ability'] === 'skeleton warrior auto') {
+		if (settings['ability'] === ABILITIES.SKELETON_WARRIOR_AUTO) {
 			dmgObject['boosted AD'] = Math.floor(
 				dmgObject['boosted AD'] * (1 + 0.03 * settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS])
 			);
@@ -770,8 +769,15 @@ function calc_core(settings, dmgObject, key) {
 		// dharock's gear (proc based, so added later)
 
 		// store damage into bolg
-		if (settings['two-hand weapon'] === 'bow of the last guardian') {
-			settings['bolg damage'][key] = dmgObject;
+		if (settings[SETTINGS.TH] === SETTINGS.TH_VALUES.BOLG &&
+			settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+			(settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 7 ||
+			(settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 3 && settings[SETTINGS.BALANCE_BY_FORCE] === true))
+		) {
+			if (!('bolg damage' in settings)) {
+				settings['bolg damage'] = create_object(settings);
+			}
+			settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
 		}
 
 		// crits
@@ -782,7 +788,10 @@ function calc_core(settings, dmgObject, key) {
 		}
 
 		// store bloat damages
-		if (settings['ability'] === 'bloat - full damage') {
+		if (settings['ability'] === ABILITIES.BLOAT) {
+			if (!('bloat damage' in settings)) {
+				settings['bloat damage'] = create_object(settings);
+			}
 			settings['bloat damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
 		}
 	}
@@ -1048,7 +1057,7 @@ function calc_damage_object(settings) {
 		// add split soul damage
 		if (
 			settings['split soul'] === true &&
-			abils[settings['ability']]['damage type'] in ['magic', 'melee', 'ranged', 'necrotic']
+			['magic', 'melee', 'ranged', 'necrotic'].includes(abils[settings['ability']]['damage type'])
 		) {
 			dmgObject[key] = add_split_soul(settings, dmgObject[key]);
 		}
@@ -1061,38 +1070,34 @@ function calc_bolg(settings) {
 	settings['ability'] = 'bolg proc';
 
 	// calc base bolg damage
-	bolg_base = calc_damage_object(settings);
+	let bolg_base = calc_damage_object(settings);
 
 	settings['ability'] = 'bolg proc percentages';
-	bolg_damage_based = create_object(settings);
+	let bolg_damage_based = create_object(settings);
 
 	// calc the damage based proc
 	for (let key in bolg_damage_based) {
 		bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
 		bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
-		dmg_list = [];
+		let dmg_list = [];
 		// take every single element of dmgobject and add the relevant percentage ranges as individual hits to bolg_damage_based with the same key
-		for (let element in settings['bolg damage']) {
-			bolg_damage_based[key]['min hit'] = abils[settings['ability']]['min hit'] * element;
-			bolg_damage_based[key]['var hit'] = abils[settings['ability']]['var hit'] * element;
-			[bolg_damage_based[key]['min hit'], bolg_damage_based[key]['var hit']] = calc_on_hit(
-				settings,
-				bolg_damage_based[key]
-			);
-			bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based[key]);
+		for (let element in settings['bolg damage'][key]['damage list']) {
+			bolg_damage_based[key]['min hit'] = Math.floor(element * abils[settings['ability']]['min hit']);
+			bolg_damage_based[key]['var hit']= Math.floor(element * abils[settings['ability']]['var hit']);
+			bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
 
-			for (let dmg in bolg_damage_based[key]['damage list']) {
-				dmg_list.push(dmg);
+			for (let i=bolg_damage_based[key]['min hit']; i<=bolg_damage_based[key]['var hit']; i++) {
+				dmg_list.push(i);
 			}
-
-			bolg_damage_based[key]['damage list'] = dmg_list;
 		}
-		bolg_damage_based[key] = calc_core(settings, bolg_damage_based[key]);
+		bolg_damage_based[key]['damage list'] = dmg_list;
+
+		bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
 		bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
 		bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
 	}
 
-	bolg_perc_damage = get_user_value(settings, bolg_damage_based);
+	const bolg_perc_damage = get_user_value(settings, bolg_damage_based);
 
 	return bolg_perc_damage + bolg_base;
 }
@@ -1281,45 +1286,18 @@ function get_max_crit(dmgObject) {
 }
 
 function hit_damage_calculation(settings) {
-	// initialise bloat
-	if (settings['ability'] === 'bloat - full damage') {
-		settings['bloat damage'] = create_object(settings);
-	}
-
-	// initialise bolg
-	if (
-		abils[settings['ability']]['main style'] === 'ranged' &&
-		settings['two-hand weapon'] === 'bow of the last guardian' &&
-		settings[SETTINGS.WEAPON] === 'two-hand'
-	) {
-		if (
-			settings['bolg stacks'] === 7 ||
-			(settings['bolg stacks'] === 3 && settings['bolg spec'] === true)
-		) {
-			settings['bolg damage'] = create_object(settings);
-		}
-	}
-
 	let total_damage = calc_damage_object(settings); // calculate the ability
 
 	// handle bolg logic
-	if (
-		abils[settings['ability']]['main style'] === 'ranged' &&
-		settings['two-hand weapon'] === 'bow of the last guardian' &&
-		settings[SETTINGS.WEAPON] === 'two-hand'
-	) {
-		// bolg proc conditions
-		if (
-			settings['bolg stacks'] === 7 ||
-			(settings['bolg stacks'] === 3 && settings['bolg spec'] === true)
-		) {
-			total_damage += calc_bolg(settings);
-		}
+	if ('bolg damage' in settings) {
+		total_damage += calc_bolg(settings);
+		delete settings['bolg damage'];
 	}
 
 	// handle bloat logic
-	if (settings['ability'] === 'bloat - full damage') {
+	if (settings['ability'] === SETTINGS.BLOAT) {
 		total_damage += calc_bloat(settings);
+		delete settings['bloat damage'];
 	}
 
 	// handle instability (fsoa)

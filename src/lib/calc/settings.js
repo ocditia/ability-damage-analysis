@@ -190,6 +190,11 @@ const SETTINGS = {
 		SL90: 'skull lantern (tier 90)',
 		SPECTRAL: 'spectral shield'
 	},
+	TH: 'two-hand weapon',
+	TH_VALUES: {
+		NONE: 'none',
+		BOLG: 'bow of the last guardian',
+	},
 	LVL20ARMOUR: 'level 20 armour',
 	BITING: 'biting',
 	PRECISE: 'precise',
@@ -256,6 +261,8 @@ const SETTINGS = {
 		GREATER: 'greater'
 	},
 	RAMPAGE: 'rampage',
+	PERFECT_EQUILIBRIUM_STACKS: 'perfect equilibrium stacks',
+	BALANCE_BY_FORCE: 'balance by force',
 };
 
 const settingsConfig = {
@@ -592,7 +599,7 @@ const settingsConfig = {
 	},
 	[SETTINGS.WEAPON]: {
 		label: 'Weapon type',
-		default: SETTINGS.WEAPON_VALUES.DW,
+		default: SETTINGS.WEAPON_VALUES.TH,
 		options: [
 			{ text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW },
 			{ text: 'Two handed', value: SETTINGS.WEAPON_VALUES.TH }
@@ -615,6 +622,14 @@ const settingsConfig = {
 			{ text: 'Soulbound Lantern', value: SETTINGS.OH_VALUES.SOULBOUND },
 			{ text: 'Skull lantern (t90)', value: SETTINGS.OH_VALUES.SL90 },
 			{ text: 'Spectral shield', value: SETTINGS.OH_VALUES.SPECTRAL }
+		]
+	},
+	[SETTINGS.TH]: {
+		label: '2h',
+		default: SETTINGS.TH_VALUES.BOLG,
+		options: [
+			{ text: 'None', value: SETTINGS.TH_VALUES.NONE },
+			{ text: 'Bow of the Last Guardian', value: SETTINGS.TH_VALUES.BOLG },
 		]
 	},
 	[SETTINGS.LVL20ARMOUR]: {
@@ -802,6 +817,14 @@ const settingsConfig = {
 	[SETTINGS.RAMPAGE]: {
 		label: 'Rampage',
 		default: false
+	},
+	[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
+		label: 'Bolg stacks',
+		default: 3
+	},
+	[SETTINGS.BALANCE_BY_FORCE]: {
+		label: 'Balance by force',
+		default: true
 	},
 };
 
