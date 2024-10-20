@@ -1008,12 +1008,20 @@ function calc_on_npc(settings, dmgObject) {
 	return dmgObject;
 }
 
-function roll_damage(settings, dmgObject) {
-	let min_hit = dmgObject['min hit'];
-	let var_hit = dmgObject['var hit'];
+function roll_damage(settings, dmgObject, key) {
+	let min_hit = dmgObject[key]['min hit'];
+	let var_hit = dmgObject[key]['var hit'];
 	let dmg_list = [];
 	for (let i = 0; i <= var_hit; i++) {
 		dmg_list.push(min_hit + i);
+	}
+
+	// store corruption shot/blast damage
+	if ([ABILITIES.CORRUPTION_BLAST, ABILITIES.CORRUPTION_SHOT].includes(settings['ability'])){
+		if (!('corruption damage' in settings)) {
+			settings['corruption damage'] = create_object(settings);
+		}
+		settings['corruption damage'][key]['damage list'] = dmg_list;
 	}
 	return dmg_list;
 }
@@ -1046,7 +1054,7 @@ function calc_damage_object(settings) {
 			dmgObject[key] = calc_on_hit(settings,dmgObject[key]);
 		}
 		// roll damage	
-		dmgObject[key]['damage list'] = roll_damage(settings, dmgObject[key]);
+		dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
 		// calc core
 		if (abils[settings['ability']]['on-hit effects']) {
 			dmgObject[key] = calc_core(settings, dmgObject, key);
@@ -1107,13 +1115,34 @@ function calc_bloat(settings) {
 	for (let key in settings['bloat damage']) {
 		for (let dmg in settings['bloat damage'][key]['damage list']) {
 			bloat_dot[key]['damage list'].push(
-				Math.floor(settings['bloat damage'][key]['damage list'][dmg])
+				Math.floor(settings['bloat damage'][key]['damage list'][dmg]/4)
 			);
 		}
 		bloat_dot[key] = calc_on_npc(settings, bloat_dot[key]);
 	}
 	dmg = get_user_value(settings, bloat_dot);
 	return 10 * dmg;
+}
+
+function calc_corruption(settings) {
+	let total_dmg = 0;
+	let previous_splat = {...settings['corruption damage']};
+	for (let splat=1; splat<=4; splat++) {
+		let corruption_splat = create_object(settings);
+		let dmg_list = [];
+		for (let key in corruption_splat) {
+			for (let dmg_loc=0; dmg_loc < previous_splat[key]['damage list'].length; dmg_loc++) {
+				let dmg = previous_splat[key]['damage list'][dmg_loc] -
+					Math.floor(0.2*settings['corruption damage'][key]['damage list'][dmg_loc]);
+				dmg_list.push(dmg);
+			}
+			corruption_splat[key]['damage list'] = dmg_list;
+			corruption_splat[key] = calc_on_npc(settings, corruption_splat[key]);
+			total_dmg += get_user_value(settings, corruption_splat);
+			previous_splat = corruption_splat;
+		}
+	}
+	return total_dmg;
 }
 
 function calc_fsoa(settings) {
@@ -1298,6 +1327,12 @@ function hit_damage_calculation(settings) {
 	if (settings['ability'] === SETTINGS.BLOAT) {
 		total_damage += calc_bloat(settings);
 		delete settings['bloat damage'];
+	}
+
+	// handle corruption shot/blast
+	if ('corruption damage' in settings) {
+		total_damage += calc_corruption(settings);
+		delete settings['corruption damage'];
 	}
 
 	// handle instability (fsoa)
