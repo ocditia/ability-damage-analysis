@@ -79,7 +79,7 @@ const abilities = {
 	},
 	[ABILITIES.MASSACRE]: {
 		title: 'Massacre',
-		calc: ability_damage_calculation,
+		calc: hit_damage_calculation,
 		icon: '/ability_icons/melee/30x30/slice.png'
 	},
 	[ABILITIES.METEOR_STRIKE]: {
@@ -224,7 +224,7 @@ const abilities = {
 	},
 	[ABILITIES.SWEEP]: {
 		title: 'Sweep',
-		calc: ability_damage_calculation,
+		calc: hit_damage_calculation,
 		icon: '/ability_icons/melee/30x30/slice.png'
 	},
 	[ABILITIES.DRACONIC_CLEAVE]: {
@@ -249,7 +249,7 @@ const abilities = {
 	},
 	[ABILITIES.IGNEOUS_CLEAVE]: {
 		title: 'Igenous cleave',
-		calc: ability_damage_calculation,
+		calc: hit_damage_calculation,
 		icon: '/ability_icons/melee/30x30/slice.png'
 	},
 	[ABILITIES.QUICK_SMASH]: {
