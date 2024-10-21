@@ -195,6 +195,12 @@ const SETTINGS = {
 		NONE: 'none',
 		BOLG: 'bow of the last guardian',
 	},
+	AMMO: 'ammo',
+	AMMO_VALUES: {
+		NONE: 'none',
+		FUL_ARROWS: 'ful arrows',
+		WEN_ARROWS: 'wen arrows',
+	},
 	LVL20ARMOUR: 'level 20 armour',
 	BITING: 'biting',
 	PRECISE: 'precise',
@@ -600,7 +606,7 @@ const settingsConfig = {
 	},
 	[SETTINGS.WEAPON]: {
 		label: 'Weapon type',
-		default: SETTINGS.WEAPON_VALUES.TH,
+		default: SETTINGS.WEAPON_VALUES.DW,
 		options: [
 			{ text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW },
 			{ text: 'Two handed', value: SETTINGS.WEAPON_VALUES.TH }
@@ -631,6 +637,15 @@ const settingsConfig = {
 		options: [
 			{ text: 'None', value: SETTINGS.TH_VALUES.NONE },
 			{ text: 'Bow of the Last Guardian', value: SETTINGS.TH_VALUES.BOLG },
+		]
+	},
+	[SETTINGS.AMMO]: {
+		label: 'Ammo',
+		default: SETTINGS.AMMO_VALUES.FUL_ARROWS,
+		options: [
+			{ text: 'None', value: SETTINGS.AMMO_VALUES.NONE },
+			{ text: 'Ful', value: SETTINGS.AMMO_VALUES.FUL_ARROWS },
+			{ text: 'Wen', value: SETTINGS.AMMO_VALUES.WEN_ARROWS },
 		]
 	},
 	[SETTINGS.LVL20ARMOUR]: {

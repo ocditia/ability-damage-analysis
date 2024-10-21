@@ -218,7 +218,7 @@ function calc_boosted_ad(settings, dmgObject) {
 
 		// icy precision (wen arrows)
 		const wen_arrow_abil_types_buffed = ['threshold', 'ultimate', 'special attack'];
-		if (wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type'])) {
+		if (wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type']) && settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS) {
 			boosted_AD = Math.floor(boosted_AD * (1 + 0.03 * settings['icy precision']));
 		}
 	}
@@ -1344,7 +1344,7 @@ function get_max_crit(dmgObject) {
 
 function hit_damage_calculation(settings) {
 	let total_damage = calc_damage_object(settings); // calculate the ability
-
+	
 	// handle bolg logic
 	if ('bolg damage' in settings) {
 		total_damage += calc_bolg(settings);
@@ -1356,7 +1356,7 @@ function hit_damage_calculation(settings) {
 		total_damage += calc_bloat(settings);
 		delete settings['bloat damage'];
 	}
-
+	
 	// handle corruption shot/blast
 	if ('corruption damage' in settings) {
 		total_damage += calc_corruption(settings);
