@@ -1029,6 +1029,14 @@ function roll_damage(settings, dmgObject, key) {
 		}
 		settings['corruption damage'][key]['damage list'] = dmg_list;
 	}
+
+	// store deadshot damage
+	if ([ABILITIES.DEADSHOT_INITIAL, ABILITIES.MASSACRE_INITIAL].includes(settings['ability'])){
+		if (!('deadshot massacre damage' in settings)) {
+			settings['deadshot massacre damage'] = create_object(settings);
+		}
+		settings['deadshot massacre damage'][key]['damage list'] = dmg_list;
+	}
 	return dmg_list;
 }
 
@@ -1128,6 +1136,20 @@ function calc_bloat(settings) {
 	}
 	dmg = get_user_value(settings, bloat_dot);
 	return 10 * dmg;
+}
+
+function calc_deadshot_massacre(settings) {
+	settings['ability'] = ABILITIES.DEADSHOT_BLEED;
+	let dmgObject = create_object(settings);
+	for (let key in dmgObject) {
+		dmgObject[key]['base AD'] = calc_base_ad(settings);
+		dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
+		dmgObject[key] = set_min_var(settings, dmgObject[key]);
+		dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
+	}
+	
+	dmgObject = get_user_value(settings, dmgObject);
+	return 1;
 }
 
 function calc_corruption(settings) {
@@ -1339,6 +1361,12 @@ function hit_damage_calculation(settings) {
 	if ('corruption damage' in settings) {
 		total_damage += calc_corruption(settings);
 		delete settings['corruption damage'];
+	}
+
+	// handle bloat/massacre
+	if ('deadshot massacre damage' in settings) {
+		total_damage += calc_deadshot_massacre(settings);
+		delete settings['deadshot massacre damage'];
 	}
 
 	// handle instability (fsoa)
