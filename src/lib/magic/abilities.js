@@ -137,7 +137,7 @@ const abilities = {
 		calc: hit_damage_calculation,
 		icon: '/ability_icons/magic/30x30/wrack.png'
 	},
-	[ABILITIES.SOULFIRE_BURN]: {
+	[ABILITIES.SOULFIRE]: {
 		title: 'Soulfire',
 		calc: ability_damage_calculation,
 		icon: '/ability_icons/magic/30x30/wrack.png'

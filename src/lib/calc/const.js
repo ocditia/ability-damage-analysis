@@ -2653,7 +2653,7 @@ const abils = {
 			3: [ABILITIES.GREATER_CONCENTRATED_BLAST_3]
 		}
 	},
-	[ABILITIES.COMBUST]: {
+	[ABILITIES.COMBUST_HIT]: {
 		// ability name
 		'min hit': 0.25, // min % of abil expressed as a decimal
 		'var hit': 0.06,
@@ -2664,6 +2664,21 @@ const abils = {
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'magic',
 		'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+	},
+	[ABILITIES.COMBUST]: {
+		// ability name
+		'min hit': 0.25, // min % of abil expressed as a decimal
+		'var hit': 0.06,
+		'on-hit effects': false, // does the ability get on-hit effects
+		'crit effects': false, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'burn', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'magic',
+		'damage type': 'magic',
+		'hits': {
+			1: [ABILITIES.COMBUST_HIT, ABILITIES.COMBUST_HIT, ABILITIES.COMBUST_HIT, ABILITIES.COMBUST_HIT, ABILITIES.COMBUST_HIT]
+		}
 	},
 	[ABILITIES.CHAIN]: {
 		// ability name
