@@ -217,7 +217,7 @@
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Multiplicative (shared)</h5>
 								<Select
-									setting={settings[SETTINGS.NECROMANCY_PRAYER]}
+									setting={settings[SETTINGS.RANGED_PRAYER]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Prayer.webp"
 								/>
@@ -329,27 +329,27 @@
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Armour</h5>
 								<Select
-									setting={settings[SETTINGS.HELMET]}
+									setting={settings[SETTINGS.RANGED_HELMET]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Head_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.BODY]}
+									setting={settings[SETTINGS.RANGED_BODY]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Torso_slot.png"
 								/>
 								<Select
-									setting={settings[SETTINGS.LEGS]}
+									setting={settings[SETTINGS.RANGED_LEGS]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Legs_slot.png"
 								/>
 								<Select
-									setting={settings[SETTINGS.GLOVES]}
+									setting={settings[SETTINGS.RANGED_GLOVES]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Hands_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.BOOTS]}
+									setting={settings[SETTINGS.RANGED_BOOTS]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Feet_slot.png"
 								/>
@@ -450,12 +450,17 @@
 									img="/armour_icons/Main_hand_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.MH]}
+									setting={settings[SETTINGS.RANGED_MH]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Main_hand_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.OH]}
+									setting={settings[SETTINGS.RANGED_OH]}
+									on:settingsUpdated={updateDamages}
+									img="/armour_icons/Off-hand_slot.webp"
+								/>
+								<Select
+									setting={settings[SETTINGS.RANGED_TH]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Off-hand_slot.webp"
 								/>

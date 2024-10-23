@@ -50,7 +50,7 @@ function next_hit(settings) {
 	settings['conc stacks'] = 0; // this does not properly handle conc buffing itself
 
 	// bolg stack tracker
-	if ( settings[SETTINGS.TH] === SETTINGS.TH_VALUES.BOLG &&
+	if ( settings[SETTINGS.TH] === 'bolg' &&
 		settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
 	) {
 		settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] += 1;

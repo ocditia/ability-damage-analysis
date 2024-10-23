@@ -564,13 +564,13 @@ function calc_prayer(settings) {
 	let boost = 0;
 	if (
 		abils[settings['ability']]['main style'] ===
-		prayers[settings[SETTINGS.NECROMANCY_PRAYER]]['style']
+		prayers[settings[SETTINGS.PRAYER]]['style']
 	) {
-		boost += prayers[settings[SETTINGS.NECROMANCY_PRAYER]]['boost'];
+		boost += prayers[settings[SETTINGS.PRAYER]]['boost'];
 
 		if (
 			settings[SETTINGS.NECKLACE] === 'amulet of zealots' &&
-			prayers[settings[SETTINGS.NECROMANCY_PRAYER]]['category'] in
+			prayers[settings[SETTINGS.PRAYER]]['category'] in
 				['single-stat boosting', 'leech curse']
 		) {
 			boost += 0.1;
@@ -769,7 +769,7 @@ function calc_core(settings, dmgObject, key) {
 		// dharock's gear (proc based, so added later)
 
 		// store damage into bolg
-		if (settings[SETTINGS.TH] === SETTINGS.TH_VALUES.BOLG &&
+		if (settings[SETTINGS.TH] === 'bolg' &&
 			settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
 			(settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 7 ||
 			(settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 3 && settings[SETTINGS.BALANCE_BY_FORCE] === true))
@@ -1342,7 +1342,56 @@ function get_max_crit(dmgObject) {
 	return max_hit;
 }
 
+function style_specific_unification(settings) {
+	if (abils[settings['ability']]['main style'] === 'magic'){
+		settings[SETTINGS.MH] = settings[SETTINGS.MAGIC_MH];
+		settings[SETTINGS.OH] = settings[SETTINGS.MAGIC_OH];
+		settings[SETTINGS.TH] = settings[SETTINGS.MAGIC_TH];
+		settings[SETTINGS.HELMET] = settings[SETTINGS.MAGIC_HELMET];
+		settings[SETTINGS.BODY] = settings[SETTINGS.MAGIC_BODY];
+		settings[SETTINGS.LEGS] = settings[SETTINGS.MAGIC_LEGS];
+		settings[SETTINGS.GLOVES] = settings[SETTINGS.MAGIC_GLOVES];
+		settings[SETTINGS.BOOTS] = settings[SETTINGS.MAGIC_BOOTS];
+		settings[SETTINGS.PRAYER] = settings[SETTINGS.MAGIC_PRAYER];
+	}
+	else if (abils[settings['ability']]['main style'] === 'ranged'){
+		settings[SETTINGS.MH] = settings[SETTINGS.RANGED_MH];
+		settings[SETTINGS.OH] = settings[SETTINGS.RANGED_OH];
+		settings[SETTINGS.TH] = settings[SETTINGS.RANGED_TH];
+		settings[SETTINGS.HELMET] = settings[SETTINGS.RANGED_HELMET];
+		settings[SETTINGS.BODY] = settings[SETTINGS.RANGED_BODY];
+		settings[SETTINGS.LEGS] = settings[SETTINGS.RANGED_LEGS];
+		settings[SETTINGS.GLOVES] = settings[SETTINGS.RANGED_GLOVES];
+		settings[SETTINGS.BOOTS] = settings[SETTINGS.RANGED_BOOTS];
+		settings[SETTINGS.PRAYER] = settings[SETTINGS.RANGED_PRAYER];
+	}
+	else if (abils[settings['ability']]['main style'] === 'melee'){
+		settings[SETTINGS.MH] = settings[SETTINGS.MELEE_MH];
+		settings[SETTINGS.OH] = settings[SETTINGS.MELEE_OH];
+		settings[SETTINGS.TH] = settings[SETTINGS.MELEE_TH];
+		settings[SETTINGS.HELMET] = settings[SETTINGS.MELEE_HELMET];
+		settings[SETTINGS.BODY] = settings[SETTINGS.MELEE_BODY];
+		settings[SETTINGS.LEGS] = settings[SETTINGS.MELEE_LEGS];
+		settings[SETTINGS.GLOVES] = settings[SETTINGS.MELEE_GLOVES];
+		settings[SETTINGS.BOOTS] = settings[SETTINGS.MELEE_BOOTS];
+		settings[SETTINGS.PRAYER] = settings[SETTINGS.MELEE_PRAYER];
+	}
+	else if (abils[settings['ability']]['main style'] === 'necromancy'){
+		settings[SETTINGS.MH] = settings[SETTINGS.NECRO_MH];
+		settings[SETTINGS.OH] = settings[SETTINGS.NECRO_OH];
+		settings[SETTINGS.TH] = settings[SETTINGS.NECRO_TH];
+		settings[SETTINGS.HELMET] = settings[SETTINGS.NECRO_HELMET];
+		settings[SETTINGS.BODY] = settings[SETTINGS.NECRO_BODY];
+		settings[SETTINGS.LEGS] = settings[SETTINGS.NECRO_LEGS];
+		settings[SETTINGS.GLOVES] = settings[SETTINGS.NECRO_GLOVES];
+		settings[SETTINGS.BOOTS] = settings[SETTINGS.NECRO_BOOTS];
+		settings[SETTINGS.PRAYER] = settings[SETTINGS.NECRO_PRAYER];
+	}
+	return settings
+}
+
 function hit_damage_calculation(settings) {
+	settings = style_specific_unification(settings); // initialise some settings
 	let total_damage = calc_damage_object(settings); // calculate the ability
 	
 	// handle bolg logic

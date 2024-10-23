@@ -197,7 +197,7 @@
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Multiplicative (shared)</h5>
 								<Select
-									setting={settings[SETTINGS.NECROMANCY_PRAYER]}
+									setting={settings[SETTINGS.NECRO_PRAYER]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Prayer.webp"
 								/>
@@ -309,27 +309,27 @@
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Armour</h5>
 								<Select
-									setting={settings[SETTINGS.HELMET]}
+									setting={settings[SETTINGS.NECRO_HELMET]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Head_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.BODY]}
+									setting={settings[SETTINGS.NECRO_BODY]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Torso_slot.png"
 								/>
 								<Select
-									setting={settings[SETTINGS.LEGS]}
+									setting={settings[SETTINGS.NECRO_LEGS]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Legs_slot.png"
 								/>
 								<Select
-									setting={settings[SETTINGS.GLOVES]}
+									setting={settings[SETTINGS.NECRO_GLOVES]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Hands_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.BOOTS]}
+									setting={settings[SETTINGS.NECRO_BOOTS]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Feet_slot.png"
 								/>
@@ -422,12 +422,12 @@
 									img="/armour_icons/Main_hand_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.MH]}
+									setting={settings[SETTINGS.NECRO_MH]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Main_hand_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.OH]}
+									setting={settings[SETTINGS.NECRO_OH]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Off-hand_slot.webp"
 								/>
