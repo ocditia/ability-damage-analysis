@@ -84,7 +84,7 @@
 				</div>
 			</div>
 
-			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-melee">
+			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-necro">
 				<ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
 					<li class="flex-grow me-2">
 						<button
@@ -128,7 +128,7 @@
 									min="0"
 								/>
 								<Number
-									setting={settings[SETTINGS.NECROMANCY_LEVEL]}
+									setting={settings[SETTINGS.STRENGTH_LEVEL]}
 									on:settingsUpdated={updateDamages}
 									step="1"
 									max="150"
@@ -149,27 +149,23 @@
 									max="100"
 									min="0"
 								/>
+								<Checkbox
+									setting={settings[SETTINGS.CHAOS_ROAR]}
+									on:settingsUpdated={updateDamages}
+								/>
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Ability specific</h5>
+								<Select setting={settings[SETTINGS.ENDURING_RUIN_HIT]} on:settingsUpdated={updateDamages} />
 								<Checkbox
-									setting={settings[SETTINGS.DEATH_SPARK]}
+									setting={settings[SETTINGS.WALKED_TARGET]}
 									on:settingsUpdated={updateDamages}
 								/>
+								<Select setting={settings[SETTINGS.FURY_BUFF]} on:settingsUpdated={updateDamages} />
 								<Checkbox
-									setting={settings[SETTINGS.LIVING_DEATH]}
+									setting={settings[SETTINGS.RAMPAGE]}
 									on:settingsUpdated={updateDamages}
 								/>
-								<Number
-									setting={settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]}
-									on:settingsUpdated={updateDamages}
-									step="1"
-									max="25"
-									min="0"
-								/>
-							</div>
-							<div class="md:col-span-1">
-								<h5 class="uppercase font-bold text-lg text-center">Style specific</h5>
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Additive</h5>
@@ -207,17 +203,24 @@
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Multiplicative (shared)</h5>
 								<Select
-									setting={settings[SETTINGS.NECROMANCY_PRAYER]}
+									setting={settings[SETTINGS.MELEE_PRAYER]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Prayer.webp"
 								/>
-									<Number
-										setting={settings[SETTINGS.REVENGE]}
-										on:settingsUpdated={updateDamages}
-										step="1"
-										max="10"
-										min="0"
-									/>
+								<Number
+									setting={settings[SETTINGS.BLOOD_TITHE]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="12"
+									min="0"
+								/>
+								<Number
+									setting={settings[SETTINGS.REVENGE]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="10"
+									min="0"
+								/>
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Multiplicative (PvE)</h5>
@@ -319,27 +322,27 @@
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Armour</h5>
 								<Select
-									setting={settings[SETTINGS.HELMET]}
+									setting={settings[SETTINGS.MELEE_HELMET]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Head_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.BODY]}
+									setting={settings[SETTINGS.MELEE_BODY]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Torso_slot.png"
 								/>
 								<Select
-									setting={settings[SETTINGS.LEGS]}
+									setting={settings[SETTINGS.MELEE_LEGS]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Legs_slot.png"
 								/>
 								<Select
-									setting={settings[SETTINGS.GLOVES]}
+									setting={settings[SETTINGS.MELEE_GLOVES]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Hands_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.BOOTS]}
+									setting={settings[SETTINGS.MELEE_BOOTS]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Feet_slot.png"
 								/>
@@ -400,9 +403,26 @@
 									min="0"
 								/>
 								<Number
+									setting={settings[SETTINGS.GENOCIDAL]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Ruthless.webp"
+									max="4.9"
+									step="0.1"
+									min="0"
+								/>
+								<Number
 									setting={settings[SETTINGS.RUTHLESS_RANK]}
 									on:settingsUpdated={updateDamages}
 									img="/effect_icons/Ruthless.webp"
+									max="3"
+									step="1"
+									min="0"
+								/>
+								<Number
+									setting={settings[SETTINGS.RUTHLESS_STACKS]}
+									on:settingsUpdated={updateDamages}
+									img="/effect_icons/Ruthless.webp"
+									max ="5"
 									step="1"
 									min="0"
 								/>
@@ -415,12 +435,17 @@
 									img="/armour_icons/Main_hand_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.MH]}
+									setting={settings[SETTINGS.MELEE_MH]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Main_hand_slot.webp"
 								/>
 								<Select
-									setting={settings[SETTINGS.OH]}
+									setting={settings[SETTINGS.MELEE_OH]}
+									on:settingsUpdated={updateDamages}
+									img="/armour_icons/Off-hand_slot.webp"
+								/>
+								<Select
+									setting={settings[SETTINGS.MELEE_TH]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Off-hand_slot.webp"
 								/>
@@ -503,7 +528,7 @@
 						{/if}
 					</div>
 				</form>
-			</div>
+			</div>	
 
 			<div class="xl:col-span-6 xl:row-start-2 xl:col-start-7">
 				<div class="flex flex-col">

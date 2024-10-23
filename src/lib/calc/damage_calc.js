@@ -68,13 +68,12 @@ function calc_base_ad(settings) {
 			}
 
 			base_AD = AD_mh + AD_oh;
-		} else if (settings[SETTINGS.WEAPON] === 'two-hand') {
+		} else if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
 			base_AD =
 				Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
 				Math.floor(1.25 * settings[SETTINGS.RANGED_LEVEL]) +
-				Math.floor(9.6 * weapons[settings['two-hand weapon']]['tier']) +
-				calc_bonus(settings) +
-				Math.floor(4.8 * weapons[settings['two-hand weapon']]['tier'] + 0.5 * calc_bonus(settings));
+				Math.floor(9.6 * weapons[settings[SETTINGS.TH]]['tier'] + calc_bonus(settings)) +
+				Math.floor(4.8 * weapons[settings[SETTINGS.TH]]['tier'] + 0.5 * calc_bonus(settings));
 		}
 	} else if (abils[settings['ability']]['main style'] === 'necromancy') {
 		if (settings[SETTINGS.WEAPON] === 'main-hand') {
@@ -219,7 +218,7 @@ function calc_boosted_ad(settings, dmgObject) {
 
 		// icy precision (wen arrows)
 		const wen_arrow_abil_types_buffed = ['threshold', 'ultimate', 'special attack'];
-		if (wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type'])) {
+		if (wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type']) && settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS) {
 			boosted_AD = Math.floor(boosted_AD * (1 + 0.03 * settings['icy precision']));
 		}
 	}
@@ -330,12 +329,12 @@ function ability_specific_effects(settings, dmgObject) {
 		}
 
 		// living dead - finger of death
-		if (settings['living dead'] === true && settings['ability'] === 'finger of death') {
+		if (settings[SETTINGS.LIVING_DEATH] === true && settings['ability'] === ABILITIES.FINGER_OF_DEATH) {
 			dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
 		}
 
 		// skeleton warrior stacks
-		if (settings['ability'] === 'skeleton warrior auto') {
+		if (settings['ability'] === ABILITIES.SKELETON_WARRIOR_AUTO) {
 			dmgObject['boosted AD'] = Math.floor(
 				dmgObject['boosted AD'] * (1 + 0.03 * settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS])
 			);
@@ -565,13 +564,13 @@ function calc_prayer(settings) {
 	let boost = 0;
 	if (
 		abils[settings['ability']]['main style'] ===
-		prayers[settings[SETTINGS.NECROMANCY_PRAYER]]['style']
+		prayers[settings[SETTINGS.PRAYER]]['style']
 	) {
-		boost += prayers[settings[SETTINGS.NECROMANCY_PRAYER]]['boost'];
+		boost += prayers[settings[SETTINGS.PRAYER]]['boost'];
 
 		if (
 			settings[SETTINGS.NECKLACE] === 'amulet of zealots' &&
-			prayers[settings[SETTINGS.NECROMANCY_PRAYER]]['category'] in
+			prayers[settings[SETTINGS.PRAYER]]['category'] in
 				['single-stat boosting', 'leech curse']
 		) {
 			boost += 0.1;
@@ -770,8 +769,15 @@ function calc_core(settings, dmgObject, key) {
 		// dharock's gear (proc based, so added later)
 
 		// store damage into bolg
-		if (settings['two-hand weapon'] === 'bow of the last guardian') {
-			settings['bolg damage'][key] = dmgObject;
+		if (settings[SETTINGS.TH] === 'bolg' &&
+			settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+			(settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 7 ||
+			(settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 3 && settings[SETTINGS.BALANCE_BY_FORCE] === true))
+		) {
+			if (!('bolg damage' in settings)) {
+				settings['bolg damage'] = create_object(settings);
+			}
+			settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
 		}
 
 		// crits
@@ -782,7 +788,10 @@ function calc_core(settings, dmgObject, key) {
 		}
 
 		// store bloat damages
-		if (settings['ability'] === 'bloat - full damage') {
+		if (settings['ability'] === ABILITIES.BLOAT) {
+			if (!('bloat damage' in settings)) {
+				settings['bloat damage'] = create_object(settings);
+			}
 			settings['bloat damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
 		}
 	}
@@ -790,10 +799,16 @@ function calc_core(settings, dmgObject, key) {
 }
 
 function calc_crit_damage(settings) {
-	let crit_buff = 0.5;
+	let crit_buff = 0.5; // base
 
-	if (abils[settings['ability']]['main style'] + ' level' >= 90) {
-		crit_buff += 0.5;
+	// smoke cloud
+	if (settings[SETTINGS.SMOKE_CLOUD] === true) {
+		if (abils[settings['ability']]['main style'] == 'magic') {
+			crit_buff += 0.15;
+		}
+		else {
+			crit_buff += 0.06;
+		}
 	}
 
 	return crit_buff;
@@ -999,12 +1014,28 @@ function calc_on_npc(settings, dmgObject) {
 	return dmgObject;
 }
 
-function roll_damage(settings, dmgObject) {
-	let min_hit = dmgObject['min hit'];
-	let var_hit = dmgObject['var hit'];
+function roll_damage(settings, dmgObject, key) {
+	let min_hit = dmgObject[key]['min hit'];
+	let var_hit = dmgObject[key]['var hit'];
 	let dmg_list = [];
 	for (let i = 0; i <= var_hit; i++) {
 		dmg_list.push(min_hit + i);
+	}
+
+	// store corruption shot/blast damage
+	if ([ABILITIES.CORRUPTION_BLAST, ABILITIES.CORRUPTION_SHOT].includes(settings['ability'])){
+		if (!('corruption damage' in settings)) {
+			settings['corruption damage'] = create_object(settings);
+		}
+		settings['corruption damage'][key]['damage list'] = dmg_list;
+	}
+
+	// store deadshot damage
+	if ([ABILITIES.DEADSHOT_INITIAL, ABILITIES.MASSACRE_INITIAL].includes(settings['ability'])){
+		if (!('deadshot massacre damage' in settings)) {
+			settings['deadshot massacre damage'] = create_object(settings);
+		}
+		settings['deadshot massacre damage'][key]['damage list'] = dmg_list;
 	}
 	return dmg_list;
 }
@@ -1037,7 +1068,7 @@ function calc_damage_object(settings) {
 			dmgObject[key] = calc_on_hit(settings,dmgObject[key]);
 		}
 		// roll damage	
-		dmgObject[key]['damage list'] = roll_damage(settings, dmgObject[key]);
+		dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
 		// calc core
 		if (abils[settings['ability']]['on-hit effects']) {
 			dmgObject[key] = calc_core(settings, dmgObject, key);
@@ -1048,7 +1079,7 @@ function calc_damage_object(settings) {
 		// add split soul damage
 		if (
 			settings['split soul'] === true &&
-			abils[settings['ability']]['damage type'] in ['magic', 'melee', 'ranged', 'necrotic']
+			['magic', 'melee', 'ranged', 'necrotic'].includes(abils[settings['ability']]['damage type'])
 		) {
 			dmgObject[key] = add_split_soul(settings, dmgObject[key]);
 		}
@@ -1061,38 +1092,34 @@ function calc_bolg(settings) {
 	settings['ability'] = 'bolg proc';
 
 	// calc base bolg damage
-	bolg_base = calc_damage_object(settings);
+	let bolg_base = calc_damage_object(settings);
 
 	settings['ability'] = 'bolg proc percentages';
-	bolg_damage_based = create_object(settings);
+	let bolg_damage_based = create_object(settings);
 
 	// calc the damage based proc
 	for (let key in bolg_damage_based) {
 		bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
 		bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
-		dmg_list = [];
+		let dmg_list = [];
 		// take every single element of dmgobject and add the relevant percentage ranges as individual hits to bolg_damage_based with the same key
-		for (let element in settings['bolg damage']) {
-			bolg_damage_based[key]['min hit'] = abils[settings['ability']]['min hit'] * element;
-			bolg_damage_based[key]['var hit'] = abils[settings['ability']]['var hit'] * element;
-			[bolg_damage_based[key]['min hit'], bolg_damage_based[key]['var hit']] = calc_on_hit(
-				settings,
-				bolg_damage_based[key]
-			);
-			bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based[key]);
+		for (let element in settings['bolg damage'][key]['damage list']) {
+			bolg_damage_based[key]['min hit'] = Math.floor(element * abils[settings['ability']]['min hit']);
+			bolg_damage_based[key]['var hit']= Math.floor(element * abils[settings['ability']]['var hit']);
+			bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
 
-			for (let dmg in bolg_damage_based[key]['damage list']) {
-				dmg_list.push(dmg);
+			for (let i=bolg_damage_based[key]['min hit']; i<=bolg_damage_based[key]['var hit']; i++) {
+				dmg_list.push(i);
 			}
-
-			bolg_damage_based[key]['damage list'] = dmg_list;
 		}
-		bolg_damage_based[key] = calc_core(settings, bolg_damage_based[key]);
+		bolg_damage_based[key]['damage list'] = dmg_list;
+
+		bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
 		bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
 		bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
 	}
 
-	bolg_perc_damage = get_user_value(settings, bolg_damage_based);
+	const bolg_perc_damage = get_user_value(settings, bolg_damage_based);
 
 	return bolg_perc_damage + bolg_base;
 }
@@ -1102,13 +1129,48 @@ function calc_bloat(settings) {
 	for (let key in settings['bloat damage']) {
 		for (let dmg in settings['bloat damage'][key]['damage list']) {
 			bloat_dot[key]['damage list'].push(
-				Math.floor(settings['bloat damage'][key]['damage list'][dmg])
+				Math.floor(settings['bloat damage'][key]['damage list'][dmg]/4)
 			);
 		}
 		bloat_dot[key] = calc_on_npc(settings, bloat_dot[key]);
 	}
 	dmg = get_user_value(settings, bloat_dot);
 	return 10 * dmg;
+}
+
+function calc_deadshot_massacre(settings) {
+	settings['ability'] = ABILITIES.DEADSHOT_BLEED;
+	let dmgObject = create_object(settings);
+	for (let key in dmgObject) {
+		dmgObject[key]['base AD'] = calc_base_ad(settings);
+		dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
+		dmgObject[key] = set_min_var(settings, dmgObject[key]);
+		dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
+	}
+	
+	dmgObject = get_user_value(settings, dmgObject);
+	return 1;
+}
+
+function calc_corruption(settings) {
+	let total_dmg = 0;
+	let previous_splat = {...settings['corruption damage']};
+	for (let splat=1; splat<=4; splat++) {
+		let corruption_splat = create_object(settings);
+		let dmg_list = [];
+		for (let key in corruption_splat) {
+			for (let dmg_loc=0; dmg_loc < previous_splat[key]['damage list'].length; dmg_loc++) {
+				let dmg = previous_splat[key]['damage list'][dmg_loc] -
+					Math.floor(0.2*settings['corruption damage'][key]['damage list'][dmg_loc]);
+				dmg_list.push(dmg);
+			}
+			corruption_splat[key]['damage list'] = dmg_list;
+			corruption_splat[key] = calc_on_npc(settings, corruption_splat[key]);
+			total_dmg += get_user_value(settings, corruption_splat);
+			previous_splat = corruption_splat;
+		}
+	}
+	return total_dmg;
 }
 
 function calc_fsoa(settings) {
@@ -1280,46 +1342,80 @@ function get_max_crit(dmgObject) {
 	return max_hit;
 }
 
+function style_specific_unification(settings) {
+	if (abils[settings['ability']]['main style'] === 'magic'){
+		settings[SETTINGS.MH] = settings[SETTINGS.MAGIC_MH];
+		settings[SETTINGS.OH] = settings[SETTINGS.MAGIC_OH];
+		settings[SETTINGS.TH] = settings[SETTINGS.MAGIC_TH];
+		settings[SETTINGS.HELMET] = settings[SETTINGS.MAGIC_HELMET];
+		settings[SETTINGS.BODY] = settings[SETTINGS.MAGIC_BODY];
+		settings[SETTINGS.LEGS] = settings[SETTINGS.MAGIC_LEGS];
+		settings[SETTINGS.GLOVES] = settings[SETTINGS.MAGIC_GLOVES];
+		settings[SETTINGS.BOOTS] = settings[SETTINGS.MAGIC_BOOTS];
+		settings[SETTINGS.PRAYER] = settings[SETTINGS.MAGIC_PRAYER];
+	}
+	else if (abils[settings['ability']]['main style'] === 'ranged'){
+		settings[SETTINGS.MH] = settings[SETTINGS.RANGED_MH];
+		settings[SETTINGS.OH] = settings[SETTINGS.RANGED_OH];
+		settings[SETTINGS.TH] = settings[SETTINGS.RANGED_TH];
+		settings[SETTINGS.HELMET] = settings[SETTINGS.RANGED_HELMET];
+		settings[SETTINGS.BODY] = settings[SETTINGS.RANGED_BODY];
+		settings[SETTINGS.LEGS] = settings[SETTINGS.RANGED_LEGS];
+		settings[SETTINGS.GLOVES] = settings[SETTINGS.RANGED_GLOVES];
+		settings[SETTINGS.BOOTS] = settings[SETTINGS.RANGED_BOOTS];
+		settings[SETTINGS.PRAYER] = settings[SETTINGS.RANGED_PRAYER];
+	}
+	else if (abils[settings['ability']]['main style'] === 'melee'){
+		settings[SETTINGS.MH] = settings[SETTINGS.MELEE_MH];
+		settings[SETTINGS.OH] = settings[SETTINGS.MELEE_OH];
+		settings[SETTINGS.TH] = settings[SETTINGS.MELEE_TH];
+		settings[SETTINGS.HELMET] = settings[SETTINGS.MELEE_HELMET];
+		settings[SETTINGS.BODY] = settings[SETTINGS.MELEE_BODY];
+		settings[SETTINGS.LEGS] = settings[SETTINGS.MELEE_LEGS];
+		settings[SETTINGS.GLOVES] = settings[SETTINGS.MELEE_GLOVES];
+		settings[SETTINGS.BOOTS] = settings[SETTINGS.MELEE_BOOTS];
+		settings[SETTINGS.PRAYER] = settings[SETTINGS.MELEE_PRAYER];
+	}
+	else if (abils[settings['ability']]['main style'] === 'necromancy'){
+		settings[SETTINGS.MH] = settings[SETTINGS.NECRO_MH];
+		settings[SETTINGS.OH] = settings[SETTINGS.NECRO_OH];
+		settings[SETTINGS.TH] = settings[SETTINGS.NECRO_TH];
+		settings[SETTINGS.HELMET] = settings[SETTINGS.NECRO_HELMET];
+		settings[SETTINGS.BODY] = settings[SETTINGS.NECRO_BODY];
+		settings[SETTINGS.LEGS] = settings[SETTINGS.NECRO_LEGS];
+		settings[SETTINGS.GLOVES] = settings[SETTINGS.NECRO_GLOVES];
+		settings[SETTINGS.BOOTS] = settings[SETTINGS.NECRO_BOOTS];
+		settings[SETTINGS.PRAYER] = settings[SETTINGS.NECRO_PRAYER];
+	}
+	return settings
+}
+
 function hit_damage_calculation(settings) {
-	// initialise bloat
-	if (settings['ability'] === 'bloat - full damage') {
-		settings['bloat damage'] = create_object(settings);
-	}
-
-	// initialise bolg
-	if (
-		abils[settings['ability']]['main style'] === 'ranged' &&
-		settings['two-hand weapon'] === 'bow of the last guardian' &&
-		settings[SETTINGS.WEAPON] === 'two-hand'
-	) {
-		if (
-			settings['bolg stacks'] === 7 ||
-			(settings['bolg stacks'] === 3 && settings['bolg spec'] === true)
-		) {
-			settings['bolg damage'] = create_object(settings);
-		}
-	}
-
+	settings = style_specific_unification(settings); // initialise some settings
 	let total_damage = calc_damage_object(settings); // calculate the ability
-
+	
 	// handle bolg logic
-	if (
-		abils[settings['ability']]['main style'] === 'ranged' &&
-		settings['two-hand weapon'] === 'bow of the last guardian' &&
-		settings[SETTINGS.WEAPON] === 'two-hand'
-	) {
-		// bolg proc conditions
-		if (
-			settings['bolg stacks'] === 7 ||
-			(settings['bolg stacks'] === 3 && settings['bolg spec'] === true)
-		) {
-			total_damage += calc_bolg(settings);
-		}
+	if ('bolg damage' in settings) {
+		total_damage += calc_bolg(settings);
+		delete settings['bolg damage'];
 	}
 
 	// handle bloat logic
-	if (settings['ability'] === 'bloat - full damage') {
+	if (settings['ability'] === SETTINGS.BLOAT) {
 		total_damage += calc_bloat(settings);
+		delete settings['bloat damage'];
+	}
+	
+	// handle corruption shot/blast
+	if ('corruption damage' in settings) {
+		total_damage += calc_corruption(settings);
+		delete settings['corruption damage'];
+	}
+
+	// handle bloat/massacre
+	if ('deadshot massacre damage' in settings) {
+		total_damage += calc_deadshot_massacre(settings);
+		delete settings['deadshot massacre damage'];
 	}
 
 	// handle instability (fsoa)
@@ -1331,7 +1427,7 @@ function hit_damage_calculation(settings) {
 }
 
 function ability_damage_calculation(settings) {
-	let rotation = abils[settings['ability']]['hits'];
+	let rotation = get_rotation(settings);
 	let damage = 0;
 	for (let key in rotation) {
 		for (let iter = 0; iter < rotation[key].length; iter++) {
@@ -1347,6 +1443,18 @@ function ability_damage_calculation(settings) {
 		settings = next_tick(settings);
 	}
 	return damage;
+}
+
+function get_rotation(settings) {
+	let rotation = JSON.parse(JSON.stringify(abils[settings['ability']]['hits']));
+
+	if (settings['ability'] === ABILITIES.GREATER_RICOCHET) {
+		for (let i=1; i<=settings[SETTINGS.CAROMING]; i++) {
+			rotation[1].push("next hit");
+			rotation[1].push(ABILITIES.GREATER_RICOCHET_3);
+		}
+	}
+	return rotation;
 }
 
 export { ability_damage_calculation, hit_damage_calculation };

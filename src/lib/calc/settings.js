@@ -27,8 +27,51 @@ const SETTINGS = {
 	HIT_CHANCE: 'hit chance',
 	NECROSIS_STACKS: 'necrosis stacks',
 	REAPER_CREW: 'reaper crew',
-	NECROMANCY_PRAYER: 'prayer',
-	NECROMANCY_PRAYER_VALUES: {
+	PRAYER: 'prayer',
+	MAGIC_PRAYER: 'magic prayer',
+	MAGIC_PRAYER_VALUES: {
+		NONE: 'none',
+		RUINATION: 'ruination',
+		SORROW: 'sorrow',
+		LEECH_NECRO_STRENGTH_2: 'leech necromancy strength 2',
+		LEECH_NECRO_STRENGTH_4: 'leech necromancy strength 4',
+		LEECH_NECRO_STRENGTH_6: 'leech necromancy strength 6',
+		LEECH_NECRO_STRENGTH_8: 'leech necromancy strength 8',
+		SANCTITY: 'sanctity',
+		ACCELERATED_DECAY: 'accelerated decay',
+		HASTENED_DECAY: 'hastened decay',
+		DECAY: 'decay'
+	},
+	RANGED_PRAYER: 'ranged prayer',
+	RANGED_PRAYER_VALUES: {
+		NONE: 'none',
+		RUINATION: 'ruination',
+		SORROW: 'sorrow',
+		LEECH_NECRO_STRENGTH_2: 'leech necromancy strength 2',
+		LEECH_NECRO_STRENGTH_4: 'leech necromancy strength 4',
+		LEECH_NECRO_STRENGTH_6: 'leech necromancy strength 6',
+		LEECH_NECRO_STRENGTH_8: 'leech necromancy strength 8',
+		SANCTITY: 'sanctity',
+		ACCELERATED_DECAY: 'accelerated decay',
+		HASTENED_DECAY: 'hastened decay',
+		DECAY: 'decay'
+	},
+	MELEE_PRAYER: 'melee prayer',
+	MELEE_PRAYER_VALUES: {
+		NONE: 'none',
+		RUINATION: 'ruination',
+		SORROW: 'sorrow',
+		LEECH_NECRO_STRENGTH_2: 'leech necromancy strength 2',
+		LEECH_NECRO_STRENGTH_4: 'leech necromancy strength 4',
+		LEECH_NECRO_STRENGTH_6: 'leech necromancy strength 6',
+		LEECH_NECRO_STRENGTH_8: 'leech necromancy strength 8',
+		SANCTITY: 'sanctity',
+		ACCELERATED_DECAY: 'accelerated decay',
+		HASTENED_DECAY: 'hastened decay',
+		DECAY: 'decay'
+	},
+	NECRO_PRAYER: 'necromancy prayer',
+	NECRO_PRAYER_VALUES: {
 		NONE: 'none',
 		RUINATION: 'ruination',
 		SORROW: 'sorrow',
@@ -101,31 +144,126 @@ const SETTINGS = {
 	CUSTOM_ON_NPC: 'custom on npc',
 	CUSTOM_CRIT: 'custom crit',
 	HELMET: 'helmet',
-	HELMET_VALUES: {
+	MAGIC_HALMET: 'magic helmet',
+	MAGIC_HELMET_VALUES: {
+		NONE: 'none',
+		TFN: 'crown of the first necromancer',
+		T90DD: 'deathdealer hood (tier 90)',
+	},
+	RANGED_HELMET: 'ranged helmet',
+	RANGED_HELMET_VALUES: {
+		NONE: 'none',
+		TFN: 'crown of the first necromancer',
+		T90DD: 'deathdealer hood (tier 90)',
+	},
+	MELEE_HELMET: 'melee helmet',
+	MELEE_HELMET_VALUES: {
+		NONE: 'none',
+		TFN: 'crown of the first necromancer',
+		T90DD: 'deathdealer hood (tier 90)',
+	},
+	NECRO_HELMET: 'necro helmet',
+	NECRO_HELMET_VALUES: {
 		NONE: 'none',
 		TFN: 'crown of the first necromancer',
 		T90DD: 'deathdealer hood (tier 90)',
 	},
 	BODY: 'body',
-	BODY_VALUES: {
+	MAGIC_BODY: 'magic body',
+	MAGIC_BODY_VALUES: {
+		NONE: 'none',
+		TFN: 'robe top of the first necromancer',
+		T90DD: 'deathdealer robe top (tier 90)',
+	},
+	RANGED_BODY: 'ranged body',
+	RANGED_BODY_VALUES: {
+		NONE: 'none',
+		TFN: 'robe top of the first necromancer',
+		T90DD: 'deathdealer robe top (tier 90)',
+	},
+	MELEE_BODY: 'melee body',
+	MELEE_BODY_VALUES: {
+		NONE: 'none',
+		TFN: 'robe top of the first necromancer',
+		T90DD: 'deathdealer robe top (tier 90)',
+	},
+	NECRO_BODY: 'necro body',
+	NECRO_BODY_VALUES: {
 		NONE: 'none',
 		TFN: 'robe top of the first necromancer',
 		T90DD: 'deathdealer robe top (tier 90)',
 	},
 	LEGS: 'legs',
-	LEGS_VALUES: {
+	MAGIC_LEGS: 'magic legs',
+	MAGIC_LEGS_VALUES: {
+		NONE: 'none',
+		TFN: 'robe bottom of the first necromancer',
+		T90DD: 'deathdealer robe bottom (tier 90)',
+	},
+	RANGED_LEGS: 'ranged legs',
+	RANGED_LEGS_VALUES: {
+		NONE: 'none',
+		TFN: 'robe bottom of the first necromancer',
+		T90DD: 'deathdealer robe bottom (tier 90)',
+	},
+	MELEE_LEGS: 'melee legs',
+	MELEE_LEGS_VALUES: {
+		NONE: 'none',
+		TFN: 'robe bottom of the first necromancer',
+		T90DD: 'deathdealer robe bottom (tier 90)',
+	},
+	NECRO_LEGS: 'necro legs',
+	NECRO_LEGS_VALUES: {
 		NONE: 'none',
 		TFN: 'robe bottom of the first necromancer',
 		T90DD: 'deathdealer robe bottom (tier 90)',
 	},
 	GLOVES: 'gloves',
-	GLOVES_VALUES: {
+	MAGIC_GLOVES: 'magic gloves',
+	MAGIC_GLOVES_VALUES: {
+		NONE: 'none',
+		TFN: 'hand wrap of the first necromancer',
+		T90DD: 'deathdealer gloves (tier 90)',
+	},
+	RANGED_GLOVES: 'ranged gloves',
+	RANGED_GLOVES_VALUES: {
+		NONE: 'none',
+		TFN: 'hand wrap of the first necromancer',
+		T90DD: 'deathdealer gloves (tier 90)',
+	},
+	MELEE_GLOVES: 'melee gloves',
+	MELEE_GLOVES_VALUES: {
+		NONE: 'none',
+		TFN: 'hand wrap of the first necromancer',
+		T90DD: 'deathdealer gloves (tier 90)',
+	},
+	NECRO_GLOVES: 'necro gloves',
+	NECRO_GLOVES_VALUES: {
 		NONE: 'none',
 		TFN: 'hand wrap of the first necromancer',
 		T90DD: 'deathdealer gloves (tier 90)',
 	},
 	BOOTS: 'boots',
-	BOOTS_VALUES: {
+	MAGIC_BOOTS: 'magic boots',
+	MAGIC_BOOTS_VALUES: {
+		NONE: 'none',
+		TFN: 'foot wraps of the first necromancer',
+		T90DD: 'deathdealer boots (tier 90)',
+	},
+	RANGED_BOOTS: 'ranged boots',
+	RANGED_BOOTS_VALUES: {
+		NONE: 'none',
+		TFN: 'foot wraps of the first necromancer',
+		T90DD: 'deathdealer boots (tier 90)',
+	},
+	MELEE_BOOTS: 'necro boots',
+	MELEE_BOOTS_VALUES: {
+		NONE: 'none',
+		TFN: 'foot wraps of the first necromancer',
+		T90DD: 'deathdealer boots (tier 90)',
+	},
+	NECRO_BOOTS: 'necro boots',
+	NECRO_BOOTS_VALUES: {
 		NONE: 'none',
 		TFN: 'foot wraps of the first necromancer',
 		T90DD: 'deathdealer boots (tier 90)',
@@ -178,23 +316,92 @@ const SETTINGS = {
 		TH: 'two-hand'
 	},
 	MH: 'main-hand weapon',
-	MH_VALUES: {
+	MAGIC_MH: 'magic main-hand weapon',
+	MAGIC_MH_VALUES: {
+		NONE: 'none',
+		OMNI: 'omniguard',
+		DG90: 'death guard (tier 90)',
+	},
+	RANGED_MH: 'ranged main-hand weapon',
+	RANGED_MH_VALUES: {
+		NONE: 'none',
+		OMNI: 'omniguard',
+		DG90: 'death guard (tier 90)',
+	},
+	MELEE_MH: 'melee main-hand weapon',
+	MELEE_MH_VALUES: {
+		NONE: 'none',
+		OMNI: 'omniguard',
+		DG90: 'death guard (tier 90)',
+	},
+	NECRO_MH: 'necro main-hand weapon',
+	NECRO_MH_VALUES: {
 		NONE: 'none',
 		OMNI: 'omniguard',
 		DG90: 'death guard (tier 90)',
 	},
 	OH: 'off-hand weapon',
-	OH_VALUES: {
+	MAGIC_OH: 'magic off-hand weapon',
+	MAGIC_OH_VALUES: {
 		NONE: 'none',
 		SOULBOUND: 'soulbound lantern',
 		SL90: 'skull lantern (tier 90)',
 		SPECTRAL: 'spectral shield'
+	},
+	RANGED_OH: 'ranged off-hand weapon',
+	RANGED_OH_VALUES: {
+		NONE: 'none',
+		SOULBOUND: 'soulbound lantern',
+		SL90: 'skull lantern (tier 90)',
+		SPECTRAL: 'spectral shield'
+	},
+	MELEE_OH: 'melee off-hand weapon',
+	MELEE_OH_VALUES: {
+		NONE: 'none',
+		SOULBOUND: 'soulbound lantern',
+		SL90: 'skull lantern (tier 90)',
+		SPECTRAL: 'spectral shield'
+	},
+	NECRO_OH: 'necro off-hand weapon',
+	NECRO_OH_VALUES: {
+		NONE: 'none',
+		SOULBOUND: 'soulbound lantern',
+		SL90: 'skull lantern (tier 90)',
+		SPECTRAL: 'spectral shield'
+	},
+	TH: 'two-hand weapon',
+	MAGIC_TH: 'magic two-hand weapon',
+	MAGIC_TH_VALUES: {
+		NONE: 'none',
+		BOLG: 'bow of the last guardian',
+	},
+	RANGED_TH: 'ranged two-hand weapon',
+	RANGED_TH_VALUES: {
+		NONE: 'none',
+		BOLG: 'bow of the last guardian',
+	},
+	MELEE_TH: 'melee two-hand weapon',
+	MELEE_TH_VALUES: {
+		NONE: 'none',
+		BOLG: 'bow of the last guardian',
+	},
+	NECRO_TH: 'necro two-hand weapon',
+	NECRO_TH_VALUES: {
+		NONE: 'none',
+		BOLG: 'bow of the last guardian',
+	},
+	AMMO: 'ammo',
+	AMMO_VALUES: {
+		NONE: 'none',
+		FUL_ARROWS: 'ful arrows',
+		WEN_ARROWS: 'wen arrows',
 	},
 	LVL20ARMOUR: 'level 20 armour',
 	BITING: 'biting',
 	PRECISE: 'precise',
 	ERUPTIVE: 'eruptive',
 	FLANKING: 'flanking',
+	CAROMING: 'caroming',
 	RUTHLESS_RANK: 'ruthless rank',
 	TELOS_RED_BEAM: 'Telos red beam',
 	TELOS_BLACK_BEAM: 'Telos black beam',
@@ -244,6 +451,20 @@ const SETTINGS = {
 	DEATH_SPARK: 'death spark',
 	LIVING_DEATH: 'living death',
 	SWIFTNESS_OF_THE_AVIANSIE: 'swiftness of the avianse',
+	ESSENCE_CORRUPTION: 'essence corruption',
+	CONFLAGRATE: 'conflagrate',
+	WALKED_TARGET: 'walked target',
+	CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
+	CHAOS_ROAR: 'chaos roar',
+	FURY_BUFF: 'fury buff',
+	FURY_BUFF_VALUES: {
+		NONE: 'none',
+		REGULAR: 'regular',
+		GREATER: 'greater'
+	},
+	RAMPAGE: 'rampage',
+	PERFECT_EQUILIBRIUM_STACKS: 'perfect equilibrium stacks',
+	BALANCE_BY_FORCE: 'balance by force',
 };
 
 const settingsConfig = {
@@ -271,16 +492,16 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_LEVEL]: {
 		label: 'Magic Level',
-		default: 99,
+		default: 130,
 		style: 'magic'
 	},
 	[SETTINGS.STRENGTH_LEVEL]: {
 		label: 'Strength Level',
-		default: 99
+		default: 130
 	},
 	[SETTINGS.RANGED_LEVEL]: {
 		label: 'Ranged Level',
-		default: 99
+		default: 130
 	},
 	[SETTINGS.POTION]: {
 		label: 'Potion',
@@ -307,33 +528,120 @@ const settingsConfig = {
 		label: 'Reaper Crew',
 		default: true
 	},
-	[SETTINGS.NECROMANCY_PRAYER]: {
+	[SETTINGS.MAGIC_PRAYER]: {
 		label: 'Prayer',
-		default: SETTINGS.NECROMANCY_PRAYER_VALUES.RUINATION,
+		default: SETTINGS.MAGIC_PRAYER_VALUES.RUINATION,
 		options: [
-			{ text: 'None', value: SETTINGS.NECROMANCY_PRAYER_VALUES.NONE },
-			{ text: 'Ruination', value: SETTINGS.NECROMANCY_PRAYER_VALUES.RUINATION },
-			{ text: 'Sorrow', value: SETTINGS.NECROMANCY_PRAYER_VALUES.SORROW },
+			{ text: 'None', value: SETTINGS.MAGIC_PRAYER_VALUES.NONE },
+			{ text: 'Ruination', value: SETTINGS.MAGIC_PRAYER_VALUES.RUINATION },
+			{ text: 'Sorrow', value: SETTINGS.MAGIC_PRAYER_VALUES.SORROW },
 			{
 				text: 'Leech necromancy strength 2',
-				value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_2
+				value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_NECRO_STRENGTH_2
 			},
 			{
 				text: 'Leech necromancy strength 4',
-				value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_4
+				value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_NECRO_STRENGTH_4
 			},
 			{
 				text: 'Leech necromancy strength 6',
-				value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_6
+				value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_NECRO_STRENGTH_6
 			},
 			{
 				text: 'Leech necromancy strength 8',
-				value: SETTINGS.NECROMANCY_PRAYER_VALUES.LEECH_NECRO_STRENGTH_8
+				value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_NECRO_STRENGTH_8
 			},
-			{ text: 'Sanctity', value: SETTINGS.NECROMANCY_PRAYER_VALUES.SANCTITY },
-			{ text: 'Accelerated Decay', value: SETTINGS.NECROMANCY_PRAYER_VALUES.ACCELERATED_DECAY },
-			{ text: 'Hastened Decay', value: SETTINGS.NECROMANCY_PRAYER_VALUES.HASTENED_DECAY },
-			{ text: 'Decay', value: SETTINGS.NECROMANCY_PRAYER_VALUES.DECAY }
+			{ text: 'Sanctity', value: SETTINGS.MAGIC_PRAYER_VALUES.SANCTITY },
+			{ text: 'Accelerated Decay', value: SETTINGS.MAGIC_PRAYER_VALUES.ACCELERATED_DECAY },
+			{ text: 'Hastened Decay', value: SETTINGS.MAGIC_PRAYER_VALUES.HASTENED_DECAY },
+			{ text: 'Decay', value: SETTINGS.MAGIC_PRAYER_VALUES.DECAY }
+		]
+	},
+	[SETTINGS.RANGED_PRAYER]: {
+		label: 'Prayer',
+		default: SETTINGS.RANGED_PRAYER_VALUES.RUINATION,
+		options: [
+			{ text: 'None', value: SETTINGS.RANGED_PRAYER_VALUES.NONE },
+			{ text: 'Ruination', value: SETTINGS.RANGED_PRAYER_VALUES.RUINATION },
+			{ text: 'Sorrow', value: SETTINGS.RANGED_PRAYER_VALUES.SORROW },
+			{
+				text: 'Leech necromancy strength 2',
+				value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_NECRO_STRENGTH_2
+			},
+			{
+				text: 'Leech necromancy strength 4',
+				value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_NECRO_STRENGTH_4
+			},
+			{
+				text: 'Leech necromancy strength 6',
+				value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_NECRO_STRENGTH_6
+			},
+			{
+				text: 'Leech necromancy strength 8',
+				value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_NECRO_STRENGTH_8
+			},
+			{ text: 'Sanctity', value: SETTINGS.RANGED_PRAYER_VALUES.SANCTITY },
+			{ text: 'Accelerated Decay', value: SETTINGS.RANGED_PRAYER_VALUES.ACCELERATED_DECAY },
+			{ text: 'Hastened Decay', value: SETTINGS.RANGED_PRAYER_VALUES.HASTENED_DECAY },
+			{ text: 'Decay', value: SETTINGS.RANGED_PRAYER_VALUES.DECAY }
+		]
+	},
+	[SETTINGS.MELEE_PRAYER]: {
+		label: 'Prayer',
+		default: SETTINGS.MELEE_PRAYER_VALUES.RUINATION,
+		options: [
+			{ text: 'None', value: SETTINGS.MELEE_PRAYER_VALUES.NONE },
+			{ text: 'Ruination', value: SETTINGS.MELEE_PRAYER_VALUES.RUINATION },
+			{ text: 'Sorrow', value: SETTINGS.MELEE_PRAYER_VALUES.SORROW },
+			{
+				text: 'Leech necromancy strength 2',
+				value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_NECRO_STRENGTH_2
+			},
+			{
+				text: 'Leech necromancy strength 4',
+				value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_NECRO_STRENGTH_4
+			},
+			{
+				text: 'Leech necromancy strength 6',
+				value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_NECRO_STRENGTH_6
+			},
+			{
+				text: 'Leech necromancy strength 8',
+				value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_NECRO_STRENGTH_8
+			},
+			{ text: 'Sanctity', value: SETTINGS.MELEE_PRAYER_VALUES.SANCTITY },
+			{ text: 'Accelerated Decay', value: SETTINGS.MELEE_PRAYER_VALUES.ACCELERATED_DECAY },
+			{ text: 'Hastened Decay', value: SETTINGS.MELEE_PRAYER_VALUES.HASTENED_DECAY },
+			{ text: 'Decay', value: SETTINGS.MELEE_PRAYER_VALUES.DECAY }
+		]
+	},
+	[SETTINGS.NECRO_PRAYER]: {
+		label: 'Prayer',
+		default: SETTINGS.NECRO_PRAYER_VALUES.RUINATION,
+		options: [
+			{ text: 'None', value: SETTINGS.NECRO_PRAYER_VALUES.NONE },
+			{ text: 'Ruination', value: SETTINGS.NECRO_PRAYER_VALUES.RUINATION },
+			{ text: 'Sorrow', value: SETTINGS.NECRO_PRAYER_VALUES.SORROW },
+			{
+				text: 'Leech necromancy strength 2',
+				value: SETTINGS.NECRO_PRAYER_VALUES.LEECH_NECRO_STRENGTH_2
+			},
+			{
+				text: 'Leech necromancy strength 4',
+				value: SETTINGS.NECRO_PRAYER_VALUES.LEECH_NECRO_STRENGTH_4
+			},
+			{
+				text: 'Leech necromancy strength 6',
+				value: SETTINGS.NECRO_PRAYER_VALUES.LEECH_NECRO_STRENGTH_6
+			},
+			{
+				text: 'Leech necromancy strength 8',
+				value: SETTINGS.NECRO_PRAYER_VALUES.LEECH_NECRO_STRENGTH_8
+			},
+			{ text: 'Sanctity', value: SETTINGS.NECRO_PRAYER_VALUES.SANCTITY },
+			{ text: 'Accelerated Decay', value: SETTINGS.NECRO_PRAYER_VALUES.ACCELERATED_DECAY },
+			{ text: 'Hastened Decay', value: SETTINGS.NECRO_PRAYER_VALUES.HASTENED_DECAY },
+			{ text: 'Decay', value: SETTINGS.NECRO_PRAYER_VALUES.DECAY }
 		]
 	},
 	[SETTINGS.RUBY_AURORA]: {
@@ -479,49 +787,175 @@ const settingsConfig = {
 		label: 'Additional crit chance %',
 		default: 0
 	},
-	[SETTINGS.HELMET]: {
+	[SETTINGS.MAGIC_HELMET]: {
 		label: 'Helmet',
-		default: SETTINGS.HELMET_VALUES.TFN,
+		default: SETTINGS.MAGIC_HELMET_VALUES.TFN,
 		options: [
-			{ text: 'None/Tank', value: SETTINGS.HELMET_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.HELMET_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.HELMET_VALUES.T90DD },
+			{ text: 'None/Tank', value: SETTINGS.MAGIC_HELMET_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.MAGIC_HELMET_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.MAGIC_HELMET_VALUES.T90DD },
 		]
 	},
-	[SETTINGS.BODY]: {
+	[SETTINGS.RANGED_HELMET]: {
+		label: 'Helmet',
+		default: SETTINGS.RANGED_HELMET_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.RANGED_HELMET_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.RANGED_HELMET_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.RANGED_HELMET_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.MELEE_HELMET]: {
+		label: 'Helmet',
+		default: SETTINGS.MELEE_HELMET_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.MELEE_HELMET_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.MELEE_HELMET_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.MELEE_HELMET_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.NECRO_HELMET]: {
+		label: 'Helmet',
+		default: SETTINGS.NECRO_HELMET_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.NECRO_HELMET_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.NECRO_HELMET_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.NECRO_HELMET_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.MAGIC_BODY]: {
 		label: 'Body',
-		default: SETTINGS.BODY_VALUES.TFN,
+		default: SETTINGS.MAGIC_BODY_VALUES.TFN,
 		options: [
-			{ text: 'None/Tank', value: SETTINGS.BODY_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.BODY_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.BODY_VALUES.T90DD },
+			{ text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.MAGIC_BODY_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.MAGIC_BODY_VALUES.T90DD },
 		]
 	},
-	[SETTINGS.LEGS]: {
+	[SETTINGS.RANGED_BODY]: {
+		label: 'Body',
+		default: SETTINGS.RANGED_BODY_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.RANGED_BODY_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.RANGED_BODY_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.RANGED_BODY_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.MELEE_BODY]: {
+		label: 'Body',
+		default: SETTINGS.MELEE_BODY_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.MELEE_BODY_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.MELEE_BODY_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.MELEE_BODY_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.NECRO_BODY]: {
+		label: 'Body',
+		default: SETTINGS.NECRO_BODY_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.NECRO_BODY_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.NECRO_BODY_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.NECRO_BODY_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.MAGIC_LEGS]: {
 		label: 'Legs',
-		default: SETTINGS.LEGS_VALUES.TFN,
+		default: SETTINGS.MAGIC_LEGS_VALUES.TFN,
 		options: [
-			{ text: 'None/Tank', value: SETTINGS.LEGS_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.LEGS_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.LEGS_VALUES.T90DD },
+			{ text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.MAGIC_LEGS_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.MAGIC_LEGS_VALUES.T90DD },
 		]
 	},
-	[SETTINGS.GLOVES]: {
+	[SETTINGS.RANGED_LEGS]: {
+		label: 'Legs',
+		default: SETTINGS.RANGED_LEGS_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.RANGED_LEGS_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.RANGED_LEGS_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.RANGED_LEGS_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.MELEE_LEGS]: {
+		label: 'Legs',
+		default: SETTINGS.MELEE_LEGS_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.MELEE_LEGS_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.MELEE_LEGS_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.MELEE_LEGS_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.NECRO_LEGS]: {
+		label: 'Legs',
+		default: SETTINGS.NECRO_LEGS_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.NECRO_LEGS_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.NECRO_LEGS_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.NECRO_LEGS_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.MAGIC_GLOVES]: {
 		label: 'Gloves',
-		default: SETTINGS.GLOVES_VALUES.TFN,
+		default: SETTINGS.MAGIC_GLOVES_VALUES.TFN,
 		options: [
-			{ text: 'None/Tank', value: SETTINGS.GLOVES_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.GLOVES_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.GLOVES_VALUES.T90DD },
+			{ text: 'None/Tank', value: SETTINGS.MAGIC_GLOVES_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.MAGIC_GLOVES_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.MAGIC_GLOVES_VALUES.T90DD },
 		]
 	},
-	[SETTINGS.BOOTS]: {
-		label: 'Boots',
-		default: SETTINGS.BOOTS_VALUES.TFN,
+	[SETTINGS.RANGED_GLOVES]: {
+		label: 'Gloves',
+		default: SETTINGS.RANGED_GLOVES_VALUES.TFN,
 		options: [
-			{ text: 'None/Tank', value: SETTINGS.BOOTS_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.BOOTS_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.BOOTS_VALUES.T90DD },
+			{ text: 'None/Tank', value: SETTINGS.RANGED_GLOVES_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.RANGED_GLOVES_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.RANGED_GLOVES_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.MELEE_GLOVES]: {
+		label: 'Gloves',
+		default: SETTINGS.MELEE_GLOVES_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.MELEE_GLOVES_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.MELEE_GLOVES_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.MELEE_GLOVES_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.NECRO_GLOVES]: {
+		label: 'Gloves',
+		default: SETTINGS.NECRO_GLOVES_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.NECRO_GLOVES_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.NECRO_GLOVES_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.NECRO_GLOVES_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.MAGIC_BOOTS]: {
+		label: 'Boots',
+		default: SETTINGS.MAGIC_BOOTS_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.MAGIC_BOOTS_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.MAGIC_BOOTS_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.MAGIC_BOOTS_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.RANGED_BOOTS]: {
+		label: 'Boots',
+		default: SETTINGS.RANGED_BOOTS_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.RANGED_BOOTS_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.RANGED_BOOTS_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.RANGED_BOOTS_VALUES.T90DD },
+		]
+	},
+	[SETTINGS.NECRO_BOOTS]: {
+		label: 'Boots',
+		default: SETTINGS.NECRO_BOOTS_VALUES.TFN,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.NECRO_BOOTS_VALUES.NONE },
+			{ text: 'TFN', value: SETTINGS.NECRO_BOOTS_VALUES.TFN },
+			{ text: 't90 deathdealer', value: SETTINGS.NECRO_BOOTS_VALUES.T90DD },
 		]
 	},
 	[SETTINGS.NECKLACE]: {
@@ -586,23 +1020,121 @@ const settingsConfig = {
 			{ text: 'Two handed', value: SETTINGS.WEAPON_VALUES.TH }
 		]
 	},
-	[SETTINGS.MH]: {
+	[SETTINGS.MAGIC_MH]: {
 		label: 'Mh',
-		default: SETTINGS.MH_VALUES.OMNI,
+		default: SETTINGS.MAGIC_MH_VALUES.OMNI,
 		options: [
-			{ text: 'None', value: SETTINGS.MH_VALUES.NONE },
-			{ text: 'Omni Guard', value: SETTINGS.MH_VALUES.OMNI },
-			{ text: 'Death guard (t90)', value: SETTINGS.MH_VALUES.DG90 },
+			{ text: 'None', value: SETTINGS.MAGIC_MH_VALUES.NONE },
+			{ text: 'Omni Guard', value: SETTINGS.MAGIC_MH_VALUES.OMNI },
+			{ text: 'Death guard (t90)', value: SETTINGS.MAGIC_MH_VALUES.DG90 },
 		]
 	},
-	[SETTINGS.OH]: {
-		label: 'Oh',
-		default: SETTINGS.OH_VALUES.SOULBOUND,
+	[SETTINGS.RANGED_MH]: {
+		label: 'Mh',
+		default: SETTINGS.RANGED_MH_VALUES.OMNI,
 		options: [
-			{ text: 'None', value: SETTINGS.OH_VALUES.NONE },
-			{ text: 'Soulbound Lantern', value: SETTINGS.OH_VALUES.SOULBOUND },
-			{ text: 'Skull lantern (t90)', value: SETTINGS.OH_VALUES.SL90 },
-			{ text: 'Spectral shield', value: SETTINGS.OH_VALUES.SPECTRAL }
+			{ text: 'None', value: SETTINGS.RANGED_MH_VALUES.NONE },
+			{ text: 'Omni Guard', value: SETTINGS.RANGED_MH_VALUES.OMNI },
+			{ text: 'Death guard (t90)', value: SETTINGS.RANGED_MH_VALUES.DG90 },
+		]
+	},
+	[SETTINGS.MELEE_MH]: {
+		label: 'Mh',
+		default: SETTINGS.MELEE_MH_VALUES.OMNI,
+		options: [
+			{ text: 'None', value: SETTINGS.MELEE_MH_VALUES.NONE },
+			{ text: 'Omni Guard', value: SETTINGS.MELEE_MH_VALUES.OMNI },
+			{ text: 'Death guard (t90)', value: SETTINGS.MELEE_MH_VALUES.DG90 },
+		]
+	},
+	[SETTINGS.NECRO_MH]: {
+		label: 'Mh',
+		default: SETTINGS.NECRO_MH_VALUES.OMNI,
+		options: [
+			{ text: 'None', value: SETTINGS.NECRO_MH_VALUES.NONE },
+			{ text: 'Omni Guard', value: SETTINGS.NECRO_MH_VALUES.OMNI },
+			{ text: 'Death guard (t90)', value: SETTINGS.NECRO_MH_VALUES.DG90 },
+		]
+	},
+	[SETTINGS.MAGIC_OH]: {
+		label: 'Oh',
+		default: SETTINGS.MAGIC_OH_VALUES.SOULBOUND,
+		options: [
+			{ text: 'None', value: SETTINGS.MAGIC_OH_VALUES.NONE },
+			{ text: 'Soulbound Lantern', value: SETTINGS.MAGIC_OH_VALUES.SOULBOUND },
+			{ text: 'Skull lantern (t90)', value: SETTINGS.MAGIC_OH_VALUES.SL90 },
+			{ text: 'Spectral shield', value: SETTINGS.MAGIC_OH_VALUES.SPECTRAL }
+		]
+	},
+	[SETTINGS.RANGED_OH]: {
+		label: 'Oh',
+		default: SETTINGS.RANGED_OH_VALUES.SOULBOUND,
+		options: [
+			{ text: 'None', value: SETTINGS.RANGED_OH_VALUES.NONE },
+			{ text: 'Soulbound Lantern', value: SETTINGS.RANGED_OH_VALUES.SOULBOUND },
+			{ text: 'Skull lantern (t90)', value: SETTINGS.RANGED_OH_VALUES.SL90 },
+			{ text: 'Spectral shield', value: SETTINGS.RANGED_OH_VALUES.SPECTRAL }
+		]
+	},
+	[SETTINGS.MELEE_OH]: {
+		label: 'Oh',
+		default: SETTINGS.MELEE_OH_VALUES.SOULBOUND,
+		options: [
+			{ text: 'None', value: SETTINGS.MELEE_OH_VALUES.NONE },
+			{ text: 'Soulbound Lantern', value: SETTINGS.MELEE_OH_VALUES.SOULBOUND },
+			{ text: 'Skull lantern (t90)', value: SETTINGS.MELEE_OH_VALUES.SL90 },
+			{ text: 'Spectral shield', value: SETTINGS.MELEE_OH_VALUES.SPECTRAL }
+		]
+	},
+	[SETTINGS.NECRO_OH]: {
+		label: 'Oh',
+		default: SETTINGS.NECRO_OH_VALUES.SOULBOUND,
+		options: [
+			{ text: 'None', value: SETTINGS.NECRO_OH_VALUES.NONE },
+			{ text: 'Soulbound Lantern', value: SETTINGS.NECRO_OH_VALUES.SOULBOUND },
+			{ text: 'Skull lantern (t90)', value: SETTINGS.NECRO_OH_VALUES.SL90 },
+			{ text: 'Spectral shield', value: SETTINGS.NECRO_OH_VALUES.SPECTRAL }
+		]
+	},
+	[SETTINGS.MAGIC_TH]: {
+		label: '2h',
+		default: SETTINGS.MAGIC_TH_VALUES.BOLG,
+		options: [
+			{ text: 'None', value: SETTINGS.MAGIC_TH_VALUES.NONE },
+			{ text: 'Bow of the Last Guardian', value: SETTINGS.MAGIC_TH_VALUES.BOLG },
+		]
+	},
+	[SETTINGS.RANGED_TH]: {
+		label: '2h',
+		default: SETTINGS.RANGED_TH_VALUES.BOLG,
+		options: [
+			{ text: 'None', value: SETTINGS.RANGED_TH_VALUES.NONE },
+			{ text: 'Bow of the Last Guardian', value: SETTINGS.RANGED_TH_VALUES.BOLG },
+		]
+	},
+	[SETTINGS.MELEE_TH]: {
+		label: '2h',
+		default: SETTINGS.MELEE_TH_VALUES.BOLG,
+		options: [
+			{ text: 'None', value: SETTINGS.MELEE_TH_VALUES.NONE },
+			{ text: 'Bow of the Last Guardian', value: SETTINGS.MELEE_TH_VALUES.BOLG },
+		]
+	},
+	[SETTINGS.NECRO_TH]: {
+		label: '2h',
+		default: SETTINGS.NECRO_TH_VALUES.BOLG,
+		options: [
+			{ text: 'None', value: SETTINGS.NECRO_TH_VALUES.NONE },
+			{ text: 'Bow of the Last Guardian', value: SETTINGS.NECRO_TH_VALUES.BOLG },
+		]
+	},
+	[SETTINGS.AMMO]: {
+		label: 'Ammo',
+		default: SETTINGS.AMMO_VALUES.FUL_ARROWS,
+		options: [
+			{ text: 'None', value: SETTINGS.AMMO_VALUES.NONE },
+			{ text: 'Ful', value: SETTINGS.AMMO_VALUES.FUL_ARROWS },
+			{ text: 'Wen', value: SETTINGS.AMMO_VALUES.WEN_ARROWS },
 		]
 	},
 	[SETTINGS.LVL20ARMOUR]: {
@@ -757,6 +1289,51 @@ const settingsConfig = {
 	[SETTINGS.SWIFTNESS_OF_THE_AVIANSIE]: {
 		label: 'Swiftness of the Aviansie',
 		default: false
+	},
+	[SETTINGS.ESSENCE_CORRUPTION]: {
+		label: 'Essence corruption',
+		default: 0
+	},
+	[SETTINGS.CONFLAGRATE]: {
+		label: 'Conflagrate',
+		default: false
+	},
+	[SETTINGS.WALKED_TARGET]: {
+		label: 'Walked',
+		default: true
+	},
+	[SETTINGS.CONCENTRATED_BLAST_STACKS]: {
+		label: 'Conc stacks',
+		default: 0
+	},
+	[SETTINGS.CHAOS_ROAR]: {
+		label: 'Chaos roar',
+		default: false
+	},
+	[SETTINGS.FURY_BUFF]: {
+		label: 'Fury buff',
+		default: SETTINGS.FURY_BUFF_VALUES.NONE,
+		options: [
+			{ text: 'None', value: SETTINGS.POTION_VALUES.NONE },
+			{ text: 'Regular', value: SETTINGS.FURY_BUFF_VALUES.REGULAR },
+			{ text: 'Greater', value: SETTINGS.FURY_BUFF_VALUES.GREATER },
+		]
+	},
+	[SETTINGS.RAMPAGE]: {
+		label: 'Rampage',
+		default: false
+	},
+	[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
+		label: 'Bolg stacks',
+		default: 3
+	},
+	[SETTINGS.BALANCE_BY_FORCE]: {
+		label: 'Balance by force',
+		default: true
+	},
+	[SETTINGS.CAROMING]: {
+		label: 'Caroming',
+		default: 4
 	},
 };
 

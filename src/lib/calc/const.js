@@ -1979,7 +1979,36 @@ const abils = {
 		'main style': 'melee',
 		'damage type': 'melee',
 		'hits': {
-			1: [ABILITIES.VINE_CALL_INTIAL]
+			1: [ABILITIES.VINE_CALL_INTIAL],
+			2: [],
+			3: [ABILITIES.VINE_CALL_AOE],
+			4: [],
+			5: [],
+			6: [ABILITIES.VINE_CALL_AOE],
+			7: [],
+			8: [],
+			9: [ABILITIES.VINE_CALL_AOE],
+			10: [],
+			11: [],
+			12: [ABILITIES.VINE_CALL_AOE],
+			13: [],
+			14: [],
+			15: [ABILITIES.VINE_CALL_AOE],
+			16: [],
+			17: [],
+			18: [ABILITIES.VINE_CALL_AOE],
+			19: [],
+			20: [],
+			21: [ABILITIES.VINE_CALL_AOE],
+			22: [],
+			23: [],
+			24: [ABILITIES.VINE_CALL_AOE],
+			25: [],
+			26: [],
+			27: [ABILITIES.VINE_CALL_AOE],
+			28: [],
+			29: [],
+			30: [ABILITIES.VINE_CALL_AOE],
 		}
 	},
 	[ABILITIES.ENERGY_DRAIN]: {
@@ -2591,7 +2620,7 @@ const abils = {
 		'crit effects': true, // can the ability crit
 		'damage potential effects': true, // is the ability affected by damage potential
 		'ability classification': 'channel', // bleed, dot, burn, etc
-		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'ability type': 'basiC', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'magic',
 		'damage type': 'magic',
 		'hits': {
@@ -2653,7 +2682,7 @@ const abils = {
 			3: [ABILITIES.GREATER_CONCENTRATED_BLAST_3]
 		}
 	},
-	[ABILITIES.COMBUST]: {
+	[ABILITIES.COMBUST_HIT]: {
 		// ability name
 		'min hit': 0.25, // min % of abil expressed as a decimal
 		'var hit': 0.06,
@@ -2664,6 +2693,21 @@ const abils = {
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'magic',
 		'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+	},
+	[ABILITIES.COMBUST]: {
+		// ability name
+		'min hit': 0.25, // min % of abil expressed as a decimal
+		'var hit': 0.06,
+		'on-hit effects': false, // does the ability get on-hit effects
+		'crit effects': false, // can the ability crit
+		'damage potential effects': true, // is the ability affected by damage potential
+		'ability classification': 'burn', // bleed, dot, burn, etc
+		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+		'main style': 'magic',
+		'damage type': 'magic',
+		'hits': {
+			1: [ABILITIES.COMBUST_HIT, ABILITIES.COMBUST_HIT, ABILITIES.COMBUST_HIT, ABILITIES.COMBUST_HIT, ABILITIES.COMBUST_HIT]
+		}
 	},
 	[ABILITIES.CHAIN]: {
 		// ability name
@@ -3213,7 +3257,7 @@ const abils = {
 		'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'spirit',
-		hits: {
+		'hits': {
 			1: [ABILITIES.SKELETON_WARRIOR_AUTO],
 			2: [ABILITIES.SKELETON_WARRIOR_AUTO],
 			3: [ABILITIES.SKELETON_WARRIOR_AUTO],
@@ -3309,7 +3353,7 @@ const abils = {
 		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		hits: {
+		'hits': {
 			1: [
 				ABILITIES.DEATHSKULLS,
 				ABILITIES.DEATHSKULLS,
@@ -3329,7 +3373,7 @@ const abils = {
 		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		hits: {
+		'hits': {
 			1: [
 				ABILITIES.DEATHSKULLS,
 				ABILITIES.DEATHSKULLS,
@@ -3388,7 +3432,7 @@ const abils = {
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		hits: {
+		'hits': {
 			1: [ABILITIES.VOLLEY_OF_SOULS, 'next hit', ABILITIES.VOLLEY_OF_SOULS]
 		}
 	},
@@ -3403,7 +3447,7 @@ const abils = {
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		hits: {
+		'hits': {
 			1: [
 				ABILITIES.VOLLEY_OF_SOULS,
 				'next hit',
@@ -3424,7 +3468,7 @@ const abils = {
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		hits: {
+		'hits': {
 			1: [
 				ABILITIES.VOLLEY_OF_SOULS,
 				'next hit',
@@ -3447,7 +3491,7 @@ const abils = {
 		'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'necromancy',
 		'damage type': 'necrotic',
-		hits: {
+		'hits': {
 			1: [
 				ABILITIES.VOLLEY_OF_SOULS,
 				'next hit',
@@ -3557,7 +3601,7 @@ const abils = {
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		hits: {
+		'hits': {
 			1: [ABILITIES.PIERCING_SHOT, 'next cast', ABILITIES.PIERCING_SHOT]
 		}
 	},
@@ -3656,7 +3700,7 @@ const abils = {
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		hits: {
+		'hits': {
 			1: [
 				ABILITIES.FRAGMENTATION_SHOT,
 				ABILITIES.FRAGMENTATION_SHOT,
@@ -3725,7 +3769,7 @@ const abils = {
 		'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		hits: {
+		'hits': {
 			1: [
 				ABILITIES.GREATER_RICOCHET_1,
 				'next hit',
@@ -3782,7 +3826,7 @@ const abils = {
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		hits: {
+		'hits': {
 			1: [ABILITIES.SNAP_SHOT_1, 'next hit', ABILITIES.SNAP_SHOT_2]
 		}
 	},
@@ -3833,7 +3877,7 @@ const abils = {
 		'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		hits: {
+		'hits': {
 			1: [ABILITIES.RAPID_FIRE_HIT],
 			2: [ABILITIES.RAPID_FIRE_HIT],
 			3: [ABILITIES.RAPID_FIRE_HIT],
@@ -3939,7 +3983,7 @@ const abils = {
 		'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		hits: {
+		'hits': {
 			1: [ABILITIES.UNLOAD_HIT],
 			2: [],
 			3: [ABILITIES.UNLOAD_HIT],
@@ -3984,7 +4028,7 @@ const abils = {
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		hits: {
+		'hits': {
 			1: [ABILITIES.DESCENT_OF_DARKNESS_HIT, 'next hit', ABILITIES.DESCENT_OF_DARKNESS_HIT]
 		}
 	},
@@ -4047,7 +4091,7 @@ const abils = {
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		hits: {
+		'hits': {
 			1: [ABILITIES.TWIN_FANG_HIT, 'next hit', ABILITIES.TWIN_FANG_HIT]
 		}
 	},
@@ -4086,7 +4130,7 @@ const abils = {
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		hits: {
+		'hits': {
 			1: [
 				ABILITIES.PHANTOM_STRIKE_INITIAL,
 				ABILITIES.PHANTOM_STRIKE_BLEED,
@@ -4133,7 +4177,7 @@ const abils = {
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		hits: {
+		'hits': {
 			1: [ABILITIES.TWIN_SHOT_HIT, 'next hit', ABILITIES.TWIN_SHOT_HIT]
 		}
 	},
@@ -4244,7 +4288,7 @@ const abils = {
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'ranged',
 		'damage type': 'ranged',
-		hits: {
+		'hits': {
 			1: [ABILITIES.DESTRUCTIVE_SHOT_HIT, 'next hit', ABILITIES.DESTRUCTIVE_SHOT_HIT]
 		}
 	},
@@ -4313,8 +4357,8 @@ const abils = {
 	},
 	'bolg proc': {
 		// ability name
-		'min hit': 0.95, // min % of abil expressed as a decimal
-		'var hit': 0.2,
+		'min hit': 0.12, // min % of abil expressed as a decimal
+		'var hit': 0.04,
 		'on-hit effects': true, // does the ability get on-hit effects
 		'crit effects': true, // can the ability crit
 		'damage potential effects': true, // is the ability affected by damage potential
