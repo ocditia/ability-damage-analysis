@@ -144,23 +144,24 @@ const SETTINGS = {
 	CUSTOM_ON_NPC: 'custom on npc',
 	CUSTOM_CRIT: 'custom crit',
 	HELMET: 'helmet',
-	MAGIC_HALMET: 'magic helmet',
+	MAGIC_HELMET: 'magic helmet',
 	MAGIC_HELMET_VALUES: {
 		NONE: 'none',
-		TFN: 'crown of the first necromancer',
-		T90DD: 'deathdealer hood (tier 90)',
+		TECTONIC: 'tectonic mask',
+		ELITE_TECTONIC: 'elite tectonic mask',
+		SLISKE: 'anima core helm of sliske',
 	},
 	RANGED_HELMET: 'ranged helmet',
 	RANGED_HELMET_VALUES: {
 		NONE: 'none',
-		TFN: 'crown of the first necromancer',
-		T90DD: 'deathdealer hood (tier 90)',
+		SIRENIC: 'sirenic mask',
+		ELITE_SIRENIC: 'elite sirenic mask',
+		DRACOLICH: 'dracolich coif',
+		ELITE_DRACOLICH: 'elite dracolich coif'
 	},
 	MELEE_HELMET: 'melee helmet',
 	MELEE_HELMET_VALUES: {
 		NONE: 'none',
-		TFN: 'crown of the first necromancer',
-		T90DD: 'deathdealer hood (tier 90)',
 	},
 	NECRO_HELMET: 'necro helmet',
 	NECRO_HELMET_VALUES: {
@@ -172,20 +173,21 @@ const SETTINGS = {
 	MAGIC_BODY: 'magic body',
 	MAGIC_BODY_VALUES: {
 		NONE: 'none',
-		TFN: 'robe top of the first necromancer',
-		T90DD: 'deathdealer robe top (tier 90)',
+		TECTONIC: 'tectonic robe top',
+		ELITE_TECTONIC: 'elite tectonic robe top',
+		SLISKE: 'anima core body of sliske',
 	},
 	RANGED_BODY: 'ranged body',
 	RANGED_BODY_VALUES: {
 		NONE: 'none',
-		TFN: 'robe top of the first necromancer',
-		T90DD: 'deathdealer robe top (tier 90)',
+		SIRENIC: 'sirenic hauberk',
+		ELITE_SIRENIC: 'elite sirenic hauberk',
+		DRACOLICH: 'dracolich hauberk',
+		ELITE_DRACOLICH: 'elite dracolich hauberk'
 	},
 	MELEE_BODY: 'melee body',
 	MELEE_BODY_VALUES: {
 		NONE: 'none',
-		TFN: 'robe top of the first necromancer',
-		T90DD: 'deathdealer robe top (tier 90)',
 	},
 	NECRO_BODY: 'necro body',
 	NECRO_BODY_VALUES: {
@@ -197,20 +199,21 @@ const SETTINGS = {
 	MAGIC_LEGS: 'magic legs',
 	MAGIC_LEGS_VALUES: {
 		NONE: 'none',
-		TFN: 'robe bottom of the first necromancer',
-		T90DD: 'deathdealer robe bottom (tier 90)',
+		TECTONIC: 'tectonic robe bottom',
+		ELITE_TECTONIC: 'elite tectonic robe bottom',
+		SLISKE: 'anima core legs of sliske'
 	},
 	RANGED_LEGS: 'ranged legs',
 	RANGED_LEGS_VALUES: {
 		NONE: 'none',
-		TFN: 'robe bottom of the first necromancer',
-		T90DD: 'deathdealer robe bottom (tier 90)',
+		SIRENIC: 'sirenic chaps',
+		ELITE_SIRENIC: 'elite sirenic chaps',
+		DRACOLICH: 'dracolich chaps',
+		ELITE_DRACOLICH: 'elite dracolich chaps'
 	},
 	MELEE_LEGS: 'melee legs',
 	MELEE_LEGS_VALUES: {
 		NONE: 'none',
-		TFN: 'robe bottom of the first necromancer',
-		T90DD: 'deathdealer robe bottom (tier 90)',
 	},
 	NECRO_LEGS: 'necro legs',
 	NECRO_LEGS_VALUES: {
@@ -222,45 +225,49 @@ const SETTINGS = {
 	MAGIC_GLOVES: 'magic gloves',
 	MAGIC_GLOVES_VALUES: {
 		NONE: 'none',
-		TFN: 'hand wrap of the first necromancer',
-		T90DD: 'deathdealer gloves (tier 90)',
+		DTB: 'deathtouch bracelet',
+		CINDERS: 'cinderbane gloves',
 	},
 	RANGED_GLOVES: 'ranged gloves',
 	RANGED_GLOVES_VALUES: {
 		NONE: 'none',
-		TFN: 'hand wrap of the first necromancer',
-		T90DD: 'deathdealer gloves (tier 90)',
+		DRACOLICH: 'dracolich vambraces',
+		ELITE_DRACOLICH: 'elite dracolich vambraces',
+		DTB: 'deathtouch bracelet',
+		CINDERS: 'cinderbane gloves',
 	},
 	MELEE_GLOVES: 'melee gloves',
 	MELEE_GLOVES_VALUES: {
 		NONE: 'none',
-		TFN: 'hand wrap of the first necromancer',
-		T90DD: 'deathdealer gloves (tier 90)',
+		DTB: 'deathtouch bracelet',
+		CINDERS: 'cinderbane gloves',
 	},
 	NECRO_GLOVES: 'necro gloves',
 	NECRO_GLOVES_VALUES: {
 		NONE: 'none',
 		TFN: 'hand wrap of the first necromancer',
 		T90DD: 'deathdealer gloves (tier 90)',
+		DTB: 'deathtouch bracelet',
+		CINDERS: 'cinderbane gloves',
 	},
 	BOOTS: 'boots',
 	MAGIC_BOOTS: 'magic boots',
 	MAGIC_BOOTS_VALUES: {
 		NONE: 'none',
-		TFN: 'foot wraps of the first necromancer',
-		T90DD: 'deathdealer boots (tier 90)',
 	},
 	RANGED_BOOTS: 'ranged boots',
 	RANGED_BOOTS_VALUES: {
 		NONE: 'none',
-		TFN: 'foot wraps of the first necromancer',
-		T90DD: 'deathdealer boots (tier 90)',
+		DRACOLICH: 'dracolich boots',
+		ELITE_DRACOLICH: 'elite dracolich boots',
+		FLEETING: 'fleeting boots',
+		ENHANCED_FLEETING: 'enhanced fleeting boots'
 	},
 	MELEE_BOOTS: 'necro boots',
 	MELEE_BOOTS_VALUES: {
 		NONE: 'none',
-		TFN: 'foot wraps of the first necromancer',
-		T90DD: 'deathdealer boots (tier 90)',
+		LACERATION: 'laceration boots',
+		ENHANCED_LACERATION: 'enhanced laceration boots',
 	},
 	NECRO_BOOTS: 'necro boots',
 	NECRO_BOOTS_VALUES: {
@@ -320,6 +327,7 @@ const SETTINGS = {
 	MAGIC_MH: 'magic main-hand weapon',
 	MAGIC_MH_VALUES: {
 		CUSTOM: 'custom',
+		ROAR_OF_AWAKENING: 'roar of awakening'
 	},
 	RANGED_MH: 'ranged main-hand weapon',
 	RANGED_MH_VALUES: {
@@ -338,6 +346,7 @@ const SETTINGS = {
 	MAGIC_OH: 'magic off-hand weapon',
 	MAGIC_OH_VALUES: {
 		CUSTOM: 'custom oh',
+		ODE_TO_DECEIT: 'ode to deceit',
 		CUSTOM_SHIELD: 'custom shield',
 	},
 	RANGED_OH: 'ranged off-hand weapon',
@@ -774,20 +783,23 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_HELMET]: {
 		label: 'Helmet',
-		default: SETTINGS.MAGIC_HELMET_VALUES.TFN,
+		default: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MAGIC_HELMET_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.MAGIC_HELMET_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.MAGIC_HELMET_VALUES.T90DD },
+			{ text: 'Tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.TECTONIC },
+			{ text: 'Tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC },
+			{ text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.SLISKE },
 		]
 	},
 	[SETTINGS.RANGED_HELMET]: {
 		label: 'Helmet',
-		default: SETTINGS.RANGED_HELMET_VALUES.TFN,
+		default: SETTINGS.RANGED_HELMET_VALUES.ELITE_DRACOLICH,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.RANGED_HELMET_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.RANGED_HELMET_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.RANGED_HELMET_VALUES.T90DD },
+			{ text: 'Sirenic', value: SETTINGS.RANGED_HELMET_VALUES.SIRENIC },
+			{ text: 'Elite sirenic', value: SETTINGS.RANGED_HELMET_VALUES.ELITE_SIRENIC },
+			{ text: 'Dracolich', value: SETTINGS.RANGED_HELMET_VALUES.DRACOLICH },
+			{ text: 'Elite dracolich', value: SETTINGS.RANGED_HELMET_VALUES.ELITE_DRACOLICH },
 		]
 	},
 	[SETTINGS.MELEE_HELMET]: {
@@ -795,8 +807,6 @@ const settingsConfig = {
 		default: SETTINGS.MELEE_HELMET_VALUES.TFN,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MELEE_HELMET_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.MELEE_HELMET_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.MELEE_HELMET_VALUES.T90DD },
 		]
 	},
 	[SETTINGS.NECRO_HELMET]: {
@@ -810,20 +820,23 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_BODY]: {
 		label: 'Body',
-		default: SETTINGS.MAGIC_BODY_VALUES.TFN,
+		default: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.MAGIC_BODY_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.MAGIC_BODY_VALUES.T90DD },
+			{ text: 'Tectonic', value: SETTINGS.MAGIC_BODY_VALUES.TECTONIC },
+			{ text: 'Tectonic', value: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC },
+			{ text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.SLISKE },
 		]
 	},
 	[SETTINGS.RANGED_BODY]: {
 		label: 'Body',
-		default: SETTINGS.RANGED_BODY_VALUES.TFN,
+		default: SETTINGS.RANGED_BODY_VALUES.ELITE_DRACOLICH,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.RANGED_BODY_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.RANGED_BODY_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.RANGED_BODY_VALUES.T90DD },
+			{ text: 'Sirenic', value: SETTINGS.RANGED_BODY_VALUES.SIRENIC },
+			{ text: 'Elite sirenic', value: SETTINGS.RANGED_BODY_VALUES.ELITE_SIRENIC },
+			{ text: 'Dracolich', value: SETTINGS.RANGED_BODY_VALUES.DRACOLICH },
+			{ text: 'Elite dracolich', value: SETTINGS.RANGED_BODY_VALUES.ELITE_DRACOLICH },
 		]
 	},
 	[SETTINGS.MELEE_BODY]: {
@@ -831,8 +844,6 @@ const settingsConfig = {
 		default: SETTINGS.MELEE_BODY_VALUES.TFN,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MELEE_BODY_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.MELEE_BODY_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.MELEE_BODY_VALUES.T90DD },
 		]
 	},
 	[SETTINGS.NECRO_BODY]: {
@@ -846,20 +857,23 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_LEGS]: {
 		label: 'Legs',
-		default: SETTINGS.MAGIC_LEGS_VALUES.TFN,
+		default: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.MAGIC_LEGS_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.MAGIC_LEGS_VALUES.T90DD },
+			{ text: 'Tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.TECTONIC },
+			{ text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC },
+			{ text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.SLISKE },
 		]
 	},
 	[SETTINGS.RANGED_LEGS]: {
 		label: 'Legs',
-		default: SETTINGS.RANGED_LEGS_VALUES.TFN,
+		default: SETTINGS.RANGED_LEGS_VALUES.ELITE_DRACOLICH,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.RANGED_LEGS_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.RANGED_LEGS_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.RANGED_LEGS_VALUES.T90DD },
+			{ text: 'Sirenic', value: SETTINGS.RANGED_LEGS_VALUES.SIRENIC },
+			{ text: 'Elite sirenic', value: SETTINGS.RANGED_LEGS_VALUES.ELITE_SIRENIC },
+			{ text: 'Dracolich', value: SETTINGS.RANGED_LEGS_VALUES.DRACOLICH },
+			{ text: 'Elite dracolich', value: SETTINGS.RANGED_LEGS_VALUES.ELITE_DRACOLICH },
 		]
 	},
 	[SETTINGS.MELEE_LEGS]: {
@@ -867,8 +881,6 @@ const settingsConfig = {
 		default: SETTINGS.MELEE_LEGS_VALUES.TFN,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MELEE_LEGS_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.MELEE_LEGS_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.MELEE_LEGS_VALUES.T90DD },
 		]
 	},
 	[SETTINGS.NECRO_LEGS]: {
@@ -882,20 +894,22 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_GLOVES]: {
 		label: 'Gloves',
-		default: SETTINGS.MAGIC_GLOVES_VALUES.TFN,
+		default: SETTINGS.MAGIC_GLOVES_VALUES.NONE,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MAGIC_GLOVES_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.MAGIC_GLOVES_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.MAGIC_GLOVES_VALUES.T90DD },
+			{ text: 'DTB', value: SETTINGS.MAGIC_GLOVES_VALUES.DTB },
+			{ text: 'Cinderbanes', value: SETTINGS.MAGIC_GLOVES_VALUES.CINDERS },
 		]
 	},
 	[SETTINGS.RANGED_GLOVES]: {
 		label: 'Gloves',
-		default: SETTINGS.RANGED_GLOVES_VALUES.TFN,
+		default: SETTINGS.RANGED_GLOVES_VALUES.ELITE_DRACOLICH,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.RANGED_GLOVES_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.RANGED_GLOVES_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.RANGED_GLOVES_VALUES.T90DD },
+			{ text: 'Dracolich', value: SETTINGS.RANGED_GLOVES_VALUES.DRACOLICH },
+			{ text: 'Elite dracolich', value: SETTINGS.RANGED_GLOVES_VALUES.ELITE_DRACOLICH },
+			{ text: 'DTB', value: SETTINGS.RANGED_GLOVES_VALUES.DTB },
+			{ text: 'Cinderbanes', value: SETTINGS.RANGED_GLOVES_VALUES.CINDERS },
 		]
 	},
 	[SETTINGS.MELEE_GLOVES]: {
@@ -903,8 +917,8 @@ const settingsConfig = {
 		default: SETTINGS.MELEE_GLOVES_VALUES.TFN,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MELEE_GLOVES_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.MELEE_GLOVES_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.MELEE_GLOVES_VALUES.T90DD },
+			{ text: 'DTB', value: SETTINGS.RANGED_GLOVES_VALUES.DTB },
+			{ text: 'cinderbanes', value: SETTINGS.RANGED_GLOVES_VALUES.CINDERS },
 		]
 	},
 	[SETTINGS.NECRO_GLOVES]: {
@@ -914,24 +928,35 @@ const settingsConfig = {
 			{ text: 'None/Tank', value: SETTINGS.NECRO_GLOVES_VALUES.NONE },
 			{ text: 'TFN', value: SETTINGS.NECRO_GLOVES_VALUES.TFN },
 			{ text: 't90 deathdealer', value: SETTINGS.NECRO_GLOVES_VALUES.T90DD },
+			{ text: 'None/Tank', value: SETTINGS.RANGED_GLOVES_VALUES.DTB },
+			{ text: 'None/Tank', value: SETTINGS.RANGED_GLOVES_VALUES.CINDERS },
 		]
 	},
 	[SETTINGS.MAGIC_BOOTS]: {
 		label: 'Boots',
-		default: SETTINGS.MAGIC_BOOTS_VALUES.TFN,
+		default: SETTINGS.MAGIC_BOOTS_VALUES.NONE,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MAGIC_BOOTS_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.MAGIC_BOOTS_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.MAGIC_BOOTS_VALUES.T90DD },
 		]
 	},
 	[SETTINGS.RANGED_BOOTS]: {
 		label: 'Boots',
-		default: SETTINGS.RANGED_BOOTS_VALUES.TFN,
+		default: SETTINGS.RANGED_BOOTS_VALUES.ELITE_DRACOLICH,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.RANGED_BOOTS_VALUES.NONE },
-			{ text: 'TFN', value: SETTINGS.RANGED_BOOTS_VALUES.TFN },
-			{ text: 't90 deathdealer', value: SETTINGS.RANGED_BOOTS_VALUES.T90DD },
+			{ text: 'Dracolich', value: SETTINGS.RANGED_BOOTS_VALUES.DRACOLICH },
+			{ text: 'Elite dracolich', value: SETTINGS.RANGED_BOOTS_VALUES.ELITE_DRACOLICH },
+			{ text: 'Fleeting', value: SETTINGS.RANGED_BOOTS_VALUES.FLEETING },
+			{ text: 'Enhanced fleeting', value: SETTINGS.RANGED_BOOTS_VALUES.ENHANCED_FLEETING },
+		]
+	},
+	[SETTINGS.MELEE_BOOTS]: {
+		label: 'Boots',
+		default: SETTINGS.MELEE_BOOTS_VALUES.NONE,
+		options: [
+			{ text: 'None/Tank', value: SETTINGS.MAGIC_BOOTS_VALUES.NONE },
+			{ text: 'Laceration', value: SETTINGS.MAGIC_BOOTS_VALUES.LACERATION },
+			{ text: 'Enhanced lac', value: SETTINGS.MAGIC_BOOTS_VALUES.ENHANCED_LACERATION },
 		]
 	},
 	[SETTINGS.NECRO_BOOTS]: {
@@ -1007,9 +1032,10 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_MH]: {
 		label: 'Mh',
-		default: SETTINGS.MAGIC_MH_VALUES.CUSTOM,
+		default: SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING,
 		options: [
 			{ text: 'Custom', value: SETTINGS.MAGIC_MH_VALUES.CUSTOM },
+			{ text: 'Roar of Awakening', value: SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING },
 		]
 	},
 	[SETTINGS.RANGED_MH]: {
@@ -1035,9 +1061,10 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_OH]: {
 		label: 'Oh',
-		default: SETTINGS.MAGIC_OH_VALUES.CUSTOM,
+		default: SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT,
 		options: [
 			{ text: 'Custom', value: SETTINGS.MAGIC_OH_VALUES.CUSTOM },
+			{ text: 'Ode to Deceit', value: SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT},
 			{ text: 'Custom shield', value: SETTINGS.MAGIC_OH_VALUES.CUSTOM_SHIELD },
 		]
 	},

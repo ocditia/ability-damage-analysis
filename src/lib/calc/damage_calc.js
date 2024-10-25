@@ -238,25 +238,19 @@ function ability_specific_effects(settings, dmgObject) {
 	if (abils[settings['ability']]['main style'] === 'magic') {
 		// conflagrate
 		if (settings['ability'] === 'combust' && settings[SETTINGS.CONFLAGRATE] === true) {
-			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.4);
+			dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
 		}
 
 		// song of destruction 2 item set effect
-		/*const song_of_destruction_effects = ['bleed', 'burn', 'dot'];
-		if (
-			song_of_destruction_effects.includes(abils[settings['ability']]['ability classification'])
-		) {
-			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.3);
-		}*/
-
-		// essence corruption 1 stack effect
-		// proc based effect to be added later
+		if (['bleed', 'burn', 'dot'].includes(abils[settings['ability']]['ability classification'])) {
+			dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
+		}
 
 		// kerapac's wristwraps
 		if (settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR) {
-			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.25);
+			dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.25);
 		} else if (settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED) {
-			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.4);
+			dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
 		}
 
 		// wrack bound
@@ -988,13 +982,13 @@ function calc_on_npc(settings, dmgObject) {
 
 		// essence corruption 25 stack bonus
 		if (
-			abils[settings['ability']]['main style'] === 'magic' &&
-			settings['essence corruption'] >= 25
+			abils[settings['ability']]['damage type'] === 'magic' &&
+			settings[SETTINGS.ESSENCE_CORRUPTION] >= 25
 		) {
 			dmgObject['damage list'][i] =
 				dmgObject['damage list'][i] +
 				settings[SETTINGS.MAGIC_LEVEL] +
-				settings['essence corruption'];
+				settings[SETTINGS.ESSENCE_CORRUPTION];
 		}
 
 		// necklace of salamancy

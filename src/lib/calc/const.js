@@ -79,6 +79,20 @@ const weapons = {
 		'weapon type': 'two-hand',
 		'tier': 0,
 	},
+	'roar of awakening': {
+		'style': 'magic',
+		'weapon type': 'main-hand',
+		'tier': 95,
+		'type': 'wand',
+		'classification': 'none',
+	},
+	'ode to deceit': {
+		'style': 'magic',
+		'weapon type': 'off-hand',
+		'tier': 95,
+		'type': 'orbp',
+		'classification': 'none',
+	},
 };
 
 const gear = {
@@ -304,7 +318,7 @@ const armour = {
 		slot: 'legs',
 		style: 'hybrid'
 	},
-	'deathtouch braclet': {
+	'deathtouch bracelet': {
 		'necromancy strength': 14.5,
 		'magic strength': 14.5,
 		'melee strength': 14.5,
@@ -472,6 +486,7 @@ const armour = {
 		slot: 'boots',
 		style: 'ranged'
 	},
+	// up till here done
 	'blast diffusion boots': {
 		'necromancy strength': 0,
 		'magic strength': 12.7,
