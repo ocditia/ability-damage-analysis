@@ -338,31 +338,24 @@ const SETTINGS = {
 	OH_TIER_CUSTOM: 'off-hand weapon custom tier',
 	MAGIC_OH: 'magic off-hand weapon',
 	MAGIC_OH_VALUES: {
-		NONE: 'none',
-		SOULBOUND: 'soulbound lantern',
-		SL90: 'skull lantern (tier 90)',
-		SPECTRAL: 'spectral shield'
+		CUSTOM: 'custom',
+		CUSTOM_SHIELD: 'custom shield',
 	},
 	RANGED_OH: 'ranged off-hand weapon',
 	RANGED_OH_VALUES: {
-		NONE: 'none',
-		SOULBOUND: 'soulbound lantern',
-		SL90: 'skull lantern (tier 90)',
-		SPECTRAL: 'spectral shield'
+		CUSTOM: 'custom',
+		CUSTOM_SHIELD: 'custom shield',
 	},
 	MELEE_OH: 'melee off-hand weapon',
 	MELEE_OH_VALUES: {
-		NONE: 'none',
-		SOULBOUND: 'soulbound lantern',
-		SL90: 'skull lantern (tier 90)',
-		SPECTRAL: 'spectral shield'
+		CUSTOM: 'custom',
+		CUSTOM_SHIELD: 'custom shield',
 	},
 	NECRO_OH: 'necro off-hand weapon',
 	NECRO_OH_VALUES: {
-		NONE: 'none',
-		SOULBOUND: 'soulbound lantern',
-		SL90: 'skull lantern (tier 90)',
-		SPECTRAL: 'spectral shield'
+		CUSTOM: 'custom',
+		CUSTOM_SHIELD: 'custom shield',
+		SPECTRAL: 'spectral shield',
 	},
 	TH: 'two-hand weapon',
 	TH_TIER_CUSTOM: 'two-hand weapon custom tier',
@@ -1047,41 +1040,34 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_OH]: {
 		label: 'Oh',
-		default: SETTINGS.MAGIC_OH_VALUES.SOULBOUND,
+		default: SETTINGS.MAGIC_OH_VALUES.CUSTOM,
 		options: [
-			{ text: 'None', value: SETTINGS.MAGIC_OH_VALUES.NONE },
-			{ text: 'Soulbound Lantern', value: SETTINGS.MAGIC_OH_VALUES.SOULBOUND },
-			{ text: 'Skull lantern (t90)', value: SETTINGS.MAGIC_OH_VALUES.SL90 },
-			{ text: 'Spectral shield', value: SETTINGS.MAGIC_OH_VALUES.SPECTRAL }
+			{ text: 'Custom', value: SETTINGS.MAGIC_OH_VALUES.CUSTOM },
+			{ text: 'Custom shield', value: SETTINGS.MAGIC_OH_VALUES.CUSTOM_SHIELD },
 		]
 	},
 	[SETTINGS.RANGED_OH]: {
 		label: 'Oh',
-		default: SETTINGS.RANGED_OH_VALUES.SOULBOUND,
+		default: SETTINGS.RANGED_OH_VALUES.CUSTOM,
 		options: [
-			{ text: 'None', value: SETTINGS.RANGED_OH_VALUES.NONE },
-			{ text: 'Soulbound Lantern', value: SETTINGS.RANGED_OH_VALUES.SOULBOUND },
-			{ text: 'Skull lantern (t90)', value: SETTINGS.RANGED_OH_VALUES.SL90 },
-			{ text: 'Spectral shield', value: SETTINGS.RANGED_OH_VALUES.SPECTRAL }
+			{ text: 'Custom', value: SETTINGS.RANGED_OH_VALUES.CUSTOM },
+			{ text: 'Custom shield', value: SETTINGS.RANGED_OH_VALUES.CUSTOM_SHIELD },
 		]
 	},
 	[SETTINGS.MELEE_OH]: {
 		label: 'Oh',
-		default: SETTINGS.MELEE_OH_VALUES.SOULBOUND,
+		default: SETTINGS.MELEE_OH_VALUES.CUSTOM,
 		options: [
-			{ text: 'None', value: SETTINGS.MELEE_OH_VALUES.NONE },
-			{ text: 'Soulbound Lantern', value: SETTINGS.MELEE_OH_VALUES.SOULBOUND },
-			{ text: 'Skull lantern (t90)', value: SETTINGS.MELEE_OH_VALUES.SL90 },
-			{ text: 'Spectral shield', value: SETTINGS.MELEE_OH_VALUES.SPECTRAL }
+			{ text: 'Custom', value: SETTINGS.MELEE_OH_VALUES.CUSTOM },
+			{ text: 'Custom shield', value: SETTINGS.MELEE_OH_VALUES.CUSTOM_SHIELD },
 		]
 	},
 	[SETTINGS.NECRO_OH]: {
 		label: 'Oh',
-		default: SETTINGS.NECRO_OH_VALUES.SOULBOUND,
+		default: SETTINGS.NECRO_OH_VALUES.CUSTOM,
 		options: [
-			{ text: 'None', value: SETTINGS.NECRO_OH_VALUES.NONE },
-			{ text: 'Soulbound Lantern', value: SETTINGS.NECRO_OH_VALUES.SOULBOUND },
-			{ text: 'Skull lantern (t90)', value: SETTINGS.NECRO_OH_VALUES.SL90 },
+			{ text: 'Custom', value: SETTINGS.NECRO_OH_VALUES.CUSTOM },
+			{ text: 'Custom shield', vaule: SETTINGS.NECRO_OH_VALUES.CUSTOM_SHIELD},
 			{ text: 'Spectral shield', value: SETTINGS.NECRO_OH_VALUES.SPECTRAL }
 		]
 	},

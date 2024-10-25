@@ -466,10 +466,24 @@
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Off-hand_slot.webp"
 								/>
+								<Number
+									setting={settings[SETTINGS.OH_TIER_CUSTOM]}
+									on:settingsUpdated={updateDamages}
+									max ="100"
+									step="1"
+									min="0"
+								/>
 								<Select
 									setting={settings[SETTINGS.RANGED_TH]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Off-hand_slot.webp"
+								/>
+								<Number
+									setting={settings[SETTINGS.TH_TIER_CUSTOM]}
+									on:settingsUpdated={updateDamages}
+									max ="100"
+									step="1"
+									min="0"
 								/>
 							</div>
 						{:else if tab === 'bosses'}

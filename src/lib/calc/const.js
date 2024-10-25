@@ -68,6 +68,11 @@ const weapons = {
 		tier: 95,
 		type: 'conduit',
 		classification: 'none'
+	},
+	'custom': {
+		'style': 'hybrid',
+		'weapon type': 'off-hand',
+		'tier': 95,
 	}
 };
 
