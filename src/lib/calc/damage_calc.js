@@ -110,7 +110,7 @@ function calc_weapon_tier(settings, hand) {
 	const spell_tier = 999;
 	let tier = 0;
 	// custom weapon tier
-	if (settings[hand] === 'custom') {
+	if (settings[hand] === 'custom' || settings[hand] === 'custom oh' || settings[hand] === 'custom th') {
 		tier = Math.min(settings[hand + ' custom tier'], spell_tier);
 	}
 	// standard weapon

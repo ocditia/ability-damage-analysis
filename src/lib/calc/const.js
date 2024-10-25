@@ -69,11 +69,16 @@ const weapons = {
 		type: 'conduit',
 		classification: 'none'
 	},
-	'custom': {
+	'custom oh': {
 		'style': 'hybrid',
 		'weapon type': 'off-hand',
-		'tier': 95,
-	}
+		'tier': 0,
+	},
+	'custom th': {
+		'style': 'hybrid',
+		'weapon type': 'two-hand',
+		'tier': 0,
+	},
 };
 
 const gear = {

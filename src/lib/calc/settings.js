@@ -332,28 +332,27 @@ const SETTINGS = {
 	NECRO_MH: 'necro main-hand weapon',
 	NECRO_MH_VALUES: {
 		CUSTOM: 'custom',
-		OMNI: 'omniguard',
 	},
 	OH: 'off-hand weapon',
 	OH_TIER_CUSTOM: 'off-hand weapon custom tier',
 	MAGIC_OH: 'magic off-hand weapon',
 	MAGIC_OH_VALUES: {
-		CUSTOM: 'custom',
+		CUSTOM: 'custom oh',
 		CUSTOM_SHIELD: 'custom shield',
 	},
 	RANGED_OH: 'ranged off-hand weapon',
 	RANGED_OH_VALUES: {
-		CUSTOM: 'custom',
+		CUSTOM: 'custom oh',
 		CUSTOM_SHIELD: 'custom shield',
 	},
 	MELEE_OH: 'melee off-hand weapon',
 	MELEE_OH_VALUES: {
-		CUSTOM: 'custom',
+		CUSTOM: 'custom oh',
 		CUSTOM_SHIELD: 'custom shield',
 	},
 	NECRO_OH: 'necro off-hand weapon',
 	NECRO_OH_VALUES: {
-		CUSTOM: 'custom',
+		CUSTOM: 'custom oh',
 		CUSTOM_SHIELD: 'custom shield',
 		SPECTRAL: 'spectral shield',
 	},
@@ -361,23 +360,20 @@ const SETTINGS = {
 	TH_TIER_CUSTOM: 'two-hand weapon custom tier',
 	MAGIC_TH: 'magic two-hand weapon',
 	MAGIC_TH_VALUES: {
-		NONE: 'none',
-		BOLG: 'bow of the last guardian',
+		CUSTOM: 'custom th',
 	},
 	RANGED_TH: 'ranged two-hand weapon',
 	RANGED_TH_VALUES: {
-		NONE: 'none',
-		BOLG: 'bow of the last guardian',
+		CUSTOM: 'custom th',
+		BOLG: 'bow of the last guardian'
 	},
 	MELEE_TH: 'melee two-hand weapon',
 	MELEE_TH_VALUES: {
-		NONE: 'none',
-		BOLG: 'bow of the last guardian',
+		CUSTOM: 'custom th',
 	},
 	NECRO_TH: 'necro two-hand weapon',
 	NECRO_TH_VALUES: {
 		NONE: 'none',
-		BOLG: 'bow of the last guardian',
 	},
 	AMMO: 'ammo',
 	AMMO_VALUES: {
@@ -1032,10 +1028,9 @@ const settingsConfig = {
 	},
 	[SETTINGS.NECRO_MH]: {
 		label: 'Mh',
-		default: SETTINGS.NECRO_MH_VALUES.OMNI,
+		default: SETTINGS.NECRO_MH_VALUES.CUSTOM,
 		options: [
 			{ text: 'Custom', value: SETTINGS.NECRO_MH_VALUES.CUSTOM },
-			{ text: 'Omni Guard', value: SETTINGS.NECRO_MH_VALUES.OMNI },
 		]
 	},
 	[SETTINGS.MAGIC_OH]: {
@@ -1073,34 +1068,31 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_TH]: {
 		label: '2h',
-		default: SETTINGS.MAGIC_TH_VALUES.BOLG,
+		default: SETTINGS.MAGIC_TH_VALUES.CUSTOM,
 		options: [
-			{ text: 'None', value: SETTINGS.MAGIC_TH_VALUES.NONE },
-			{ text: 'Bow of the Last Guardian', value: SETTINGS.MAGIC_TH_VALUES.BOLG },
+			{ text: 'Custom', value: SETTINGS.MAGIC_TH_VALUES.CUSTOM },
 		]
 	},
 	[SETTINGS.RANGED_TH]: {
 		label: '2h',
 		default: SETTINGS.RANGED_TH_VALUES.BOLG,
 		options: [
-			{ text: 'None', value: SETTINGS.RANGED_TH_VALUES.NONE },
+			{ text: 'Custom', value: SETTINGS.RANGED_TH_VALUES.CUSTOM },
 			{ text: 'Bow of the Last Guardian', value: SETTINGS.RANGED_TH_VALUES.BOLG },
 		]
 	},
 	[SETTINGS.MELEE_TH]: {
 		label: '2h',
-		default: SETTINGS.MELEE_TH_VALUES.BOLG,
+		default: SETTINGS.MELEE_TH_VALUES.CUSTOM,
 		options: [
-			{ text: 'None', value: SETTINGS.MELEE_TH_VALUES.NONE },
-			{ text: 'Bow of the Last Guardian', value: SETTINGS.MELEE_TH_VALUES.BOLG },
+			{ text: 'Custom', value: SETTINGS.MELEE_TH_VALUES.CUSTOM },
 		]
 	},
 	[SETTINGS.NECRO_TH]: {
 		label: '2h',
-		default: SETTINGS.NECRO_TH_VALUES.BOLG,
+		default: SETTINGS.NECRO_TH_VALUES.NONE,
 		options: [
 			{ text: 'None', value: SETTINGS.NECRO_TH_VALUES.NONE },
-			{ text: 'Bow of the Last Guardian', value: SETTINGS.NECRO_TH_VALUES.BOLG },
 		]
 	},
 	[SETTINGS.AMMO]: {
