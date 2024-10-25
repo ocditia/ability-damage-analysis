@@ -34,13 +34,13 @@ function calc_base_ad(settings) {
 		if (settings[SETTINGS.WEAPON] === 'main-hand') {
 			let AD_mh =
 				Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
-				Math.floor(9.6 * weapons[settings[SETTINGS.MH]]['tier'] + calc_bonus(settings));
+				Math.floor(9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings));
 
 			let AD_oh = 0;
 			if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
 				AD_oh = Math.floor(
 					0.5 * Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
-						Math.floor(9.6 * weapons[settings[SETTINGS.OH]]['tier'] + calc_bonus(settings))
+						Math.floor(9.6 * calc_weapon_tier(settings, 'off-hand weapon') + calc_bonus(settings))
 				);
 			}
 
@@ -49,21 +49,21 @@ function calc_base_ad(settings) {
 			base_AD =
 				Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
 				Math.floor(1.25 * settings[SETTINGS.STRENGTH_LEVEL]) +
-				Math.floor(9.6 * weapons[settings['two-hand weapon']]['tier']) +
+				Math.floor(9.6 * calc_weapon_tier(settings, 'two-hand weapon')) +
 				calc_bonus(settings) +
-				Math.floor(4.8 * weapons[settings['two-hand weapon']]['tier'] + 0.5 * calc_bonus(settings));
+				Math.floor(4.8 * calc_weapon_tier(settings, 'two-hand weapon') + 0.5 * calc_bonus(settings));
 		}
 	} else if (abils[settings['ability']]['main style'] === 'ranged') {
 		if (settings[SETTINGS.WEAPON] === 'main-hand') {
 			let AD_mh =
 				Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
-				Math.floor(9.6 * weapons[settings[SETTINGS.MH]]['tier'] + calc_bonus(settings));
+				Math.floor(9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings));
 
 			let AD_oh = 0;
 			if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
 				AD_oh = Math.floor(
 					0.5 * Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
-						Math.floor(9.6 * weapons[settings[SETTINGS.OH]]['tier'] + calc_bonus(settings))
+						Math.floor(9.6 * calc_weapon_tier(settings, 'off-hand weapon') + calc_bonus(settings))
 				);
 			}
 
@@ -72,20 +72,20 @@ function calc_base_ad(settings) {
 			base_AD =
 				Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
 				Math.floor(1.25 * settings[SETTINGS.RANGED_LEVEL]) +
-				Math.floor(9.6 * weapons[settings[SETTINGS.TH]]['tier'] + calc_bonus(settings)) +
-				Math.floor(4.8 * weapons[settings[SETTINGS.TH]]['tier'] + 0.5 * calc_bonus(settings));
+				Math.floor(9.6 * calc_weapon_tier(settings, 'two-hand weapon') + calc_bonus(settings)) +
+				Math.floor(4.8 * calc_weapon_tier(settings, 'two-hand weapon') + 0.5 * calc_bonus(settings));
 		}
 	} else if (abils[settings['ability']]['main style'] === 'necromancy') {
 		if (settings[SETTINGS.WEAPON] === 'main-hand') {
 			let AD_mh =
 				Math.floor(2.5 * settings[SETTINGS.NECROMANCY_LEVEL]) +
-				Math.floor(9.6 * weapons[settings[SETTINGS.MH]]['tier'] + calc_bonus(settings));
+				Math.floor(9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings));
 
 			let AD_oh = 0;
 			if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
 				AD_oh = Math.floor(
 					0.5 * Math.floor(2.5 * settings[SETTINGS.NECROMANCY_LEVEL]) +
-						Math.floor(9.6 * weapons[settings[SETTINGS.OH]]['tier'] + calc_bonus(settings))
+						Math.floor(9.6 * calc_weapon_tier(settings, 'off-hand weapon') + calc_bonus(settings))
 				);
 			}
 
@@ -110,15 +110,15 @@ function calc_weapon_tier(settings, hand) {
 	const spell_tier = 999;
 	let tier = 0;
 	// custom weapon tier
-	if (settings[hand] === 'custom ' + hand) {
-		tier = settings['custom weapon tier ' + hand];
+	if (settings[hand] === 'custom') {
+		tier = Math.min(settings[hand + ' custom tier'], spell_tier);
 	}
 	// standard weapon
 	else {
-		let tier = Math.min(weapons[settings[hand]]['tier'], spell_tier);
+		tier = Math.min(weapons[settings[hand]]['tier'], spell_tier);
 
 		// innate mastery (shard of genesis essence)
-		if (weapons[settings[hand]]['tier'] && settings['innate mastery'] === true) {
+		if (weapons[settings[hand]]['tier'] === 95 && settings['innate mastery'] === true) {
 			tier += 5;
 		}
 	}

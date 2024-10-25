@@ -55,10 +55,10 @@ const weapons = {
 		type: 'bow',
 		classification: 'none'
 	},
-	omniguard: {
+	'omniguard': {
 		style: 'necromancy',
 		'weapon type': 'main-hand',
-		tier: 95,
+		'tier': 95,
 		type: 'armguard',
 		classification: 'none'
 	},

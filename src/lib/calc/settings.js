@@ -316,31 +316,26 @@ const SETTINGS = {
 		TH: 'two-hand'
 	},
 	MH: 'main-hand weapon',
+	MH_TIER_CUSTOM: 'main-hand weapon custom tier',
 	MAGIC_MH: 'magic main-hand weapon',
 	MAGIC_MH_VALUES: {
-		NONE: 'none',
-		OMNI: 'omniguard',
-		DG90: 'death guard (tier 90)',
+		CUSTOM: 'custom',
 	},
 	RANGED_MH: 'ranged main-hand weapon',
 	RANGED_MH_VALUES: {
-		NONE: 'none',
-		OMNI: 'omniguard',
-		DG90: 'death guard (tier 90)',
+		CUSTOM: 'custom',
 	},
 	MELEE_MH: 'melee main-hand weapon',
 	MELEE_MH_VALUES: {
-		NONE: 'none',
-		OMNI: 'omniguard',
-		DG90: 'death guard (tier 90)',
+		CUSTOM: 'custom',
 	},
 	NECRO_MH: 'necro main-hand weapon',
 	NECRO_MH_VALUES: {
-		NONE: 'none',
+		CUSTOM: 'custom',
 		OMNI: 'omniguard',
-		DG90: 'death guard (tier 90)',
 	},
 	OH: 'off-hand weapon',
+	OH_TIER_CUSTOM: 'off-hand weapon custom tier',
 	MAGIC_OH: 'magic off-hand weapon',
 	MAGIC_OH_VALUES: {
 		NONE: 'none',
@@ -370,6 +365,7 @@ const SETTINGS = {
 		SPECTRAL: 'spectral shield'
 	},
 	TH: 'two-hand weapon',
+	TH_TIER_CUSTOM: 'two-hand weapon custom tier',
 	MAGIC_TH: 'magic two-hand weapon',
 	MAGIC_TH_VALUES: {
 		NONE: 'none',
@@ -1022,38 +1018,31 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_MH]: {
 		label: 'Mh',
-		default: SETTINGS.MAGIC_MH_VALUES.OMNI,
+		default: SETTINGS.MAGIC_MH_VALUES.CUSTOM,
 		options: [
-			{ text: 'None', value: SETTINGS.MAGIC_MH_VALUES.NONE },
-			{ text: 'Omni Guard', value: SETTINGS.MAGIC_MH_VALUES.OMNI },
-			{ text: 'Death guard (t90)', value: SETTINGS.MAGIC_MH_VALUES.DG90 },
+			{ text: 'Custom', value: SETTINGS.MAGIC_MH_VALUES.CUSTOM },
 		]
 	},
 	[SETTINGS.RANGED_MH]: {
 		label: 'Mh',
-		default: SETTINGS.RANGED_MH_VALUES.OMNI,
+		default: SETTINGS.RANGED_MH_VALUES.CUSTOM,
 		options: [
-			{ text: 'None', value: SETTINGS.RANGED_MH_VALUES.NONE },
-			{ text: 'Omni Guard', value: SETTINGS.RANGED_MH_VALUES.OMNI },
-			{ text: 'Death guard (t90)', value: SETTINGS.RANGED_MH_VALUES.DG90 },
+			{ text: 'Custom', value: SETTINGS.RANGED_MH_VALUES.CUSTOM },
 		]
 	},
 	[SETTINGS.MELEE_MH]: {
 		label: 'Mh',
-		default: SETTINGS.MELEE_MH_VALUES.OMNI,
+		default: SETTINGS.MELEE_MH_VALUES.CUSTOM,
 		options: [
-			{ text: 'None', value: SETTINGS.MELEE_MH_VALUES.NONE },
-			{ text: 'Omni Guard', value: SETTINGS.MELEE_MH_VALUES.OMNI },
-			{ text: 'Death guard (t90)', value: SETTINGS.MELEE_MH_VALUES.DG90 },
+			{ text: 'Custom', value: SETTINGS.MELEE_MH_VALUES.CUSTOM },
 		]
 	},
 	[SETTINGS.NECRO_MH]: {
 		label: 'Mh',
 		default: SETTINGS.NECRO_MH_VALUES.OMNI,
 		options: [
-			{ text: 'None', value: SETTINGS.NECRO_MH_VALUES.NONE },
+			{ text: 'Custom', value: SETTINGS.NECRO_MH_VALUES.CUSTOM },
 			{ text: 'Omni Guard', value: SETTINGS.NECRO_MH_VALUES.OMNI },
-			{ text: 'Death guard (t90)', value: SETTINGS.NECRO_MH_VALUES.DG90 },
 		]
 	},
 	[SETTINGS.MAGIC_OH]: {
@@ -1334,6 +1323,18 @@ const settingsConfig = {
 	[SETTINGS.CAROMING]: {
 		label: 'Caroming',
 		default: 4
+	},
+	[SETTINGS.MH_TIER_CUSTOM]: {
+		label: 'MH custom tier',
+		default: 0
+	},
+	[SETTINGS.OH_TIER_CUSTOM]: {
+		label: 'OH custom tier',
+		default: 0
+	},
+	[SETTINGS.TH_TIER_CUSTOM]: {
+		label: '2H custom tier',
+		default: 0
 	},
 };
 
