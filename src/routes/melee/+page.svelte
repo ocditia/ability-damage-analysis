@@ -84,7 +84,7 @@
 				</div>
 			</div>
 
-			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-necro">
+			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-melee">
 				<ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
 					<li class="flex-grow me-2">
 						<button

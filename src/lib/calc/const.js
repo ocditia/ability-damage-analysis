@@ -35,18 +35,46 @@ const weapons = {
 		classification: 'none'
 	},
 	'inquisitor staff': {
-		style: 'magic',
+		'style': 'magic',
 		'weapon type': 'two-hand',
-		tier: 80,
-		type: 'staff',
-		classification: 'none'
+		'tier': 80,
+		'type': 'staff',
+		'classification': 'none'
 	},
 	'inquisitor staff+': {
-		style: 'magic',
+		'style': 'magic',
 		'weapon type': 'two-hand',
-		tier: 80,
-		type: 'staff',
-		classification: 'none'
+		'tier': 80,
+		'type': 'staff',
+		'classification': 'none'
+	},
+	'terrasaur maul': {
+		'style': 'melee',
+		'weapon type': 'two-hand',
+		'tier': 80,
+		'type': 'none',
+		'classification': 'none'
+	},
+	'terrasaur maul+': {
+		'style': 'melee',
+		'weapon type': 'two-hand',
+		'tier': 80,
+		'type': 'none',
+		'classification': 'none'
+	},
+	'hexhunter bow': {
+		'style': 'ranged',
+		'weapon type': 'two-hand',
+		'tier': 80,
+		'type': 'bow',
+		'classification': 'none'
+	},
+	'hexhunter bow+': {
+		'style': 'ranged',
+		'weapon type': 'two-hand',
+		'tier': 80,
+		'type': 'bow',
+		'classification': 'none'
 	},
 	'bow of the last guardian': {
 		style: 'ranged',
@@ -90,7 +118,35 @@ const weapons = {
 		'style': 'magic',
 		'weapon type': 'off-hand',
 		'tier': 95,
-		'type': 'orbp',
+		'type': 'orb',
+		'classification': 'none',
+	},
+	'dark shard of leng': {
+		'style': 'melee',
+		'weapon type': 'main-hand',
+		'tier': 95,
+		'type': 'none',
+		'classification': 'none',
+	},
+	'dark sliver of leng': {
+		'style': 'melee',
+		'weapon type': 'off-hand',
+		'tier': 95,
+		'type': 'none',
+		'classification': 'none',
+	},
+	'dark ice shard': {
+		'style': 'melee',
+		'weapon type': 'main-hand',
+		'tier': 88,
+		'type': 'none',
+		'classification': 'none',
+	},
+	'dark ice sliver': {
+		'style': 'melee',
+		'weapon type': 'off-hand',
+		'tier': 88,
+		'type': 'none',
 		'classification': 'none',
 	},
 };
@@ -326,7 +382,7 @@ const armour = {
 		slot: 'helmet',
 		style: 'hybrid'
 	},
-	'none/tank': {
+	'none': {
 		'necromancy strength': 0,
 		'magic strength': 0,
 		'melee strength': 0,
@@ -486,7 +542,6 @@ const armour = {
 		slot: 'boots',
 		style: 'ranged'
 	},
-	// up till here done
 	'blast diffusion boots': {
 		'necromancy strength': 0,
 		'magic strength': 12.7,
@@ -679,7 +734,7 @@ const armour = {
 		slot: 'cape',
 		style: 'melee'
 	},
-	eof: {
+	'essence of finality amulet': {
 		'necromancy strength': 56,
 		'magic strength': 56,
 		'melee strength': 56,
@@ -687,7 +742,7 @@ const armour = {
 		slot: 'necklace',
 		style: 'hybrid'
 	},
-	'eof (or)': {
+	'essence of finality amulet (or)': {
 		'necromancy strength': 59,
 		'magic strength': 59,
 		'melee strength': 59,
@@ -740,6 +795,30 @@ const armour = {
 		'magic strength': 8,
 		'melee strength': 8,
 		'ranged strength': 8,
+		slot: 'pocket',
+		style: 'hybrid'
+	},
+	'scripture of amascut': {
+		'necromancy strength': 8,
+		'magic strength': 8,
+		'melee strength': 8,
+		'ranged strength': 8,
+		slot: 'pocket',
+		style: 'hybrid'
+	},
+	'gwd3 scripture': {
+		'necromancy strength': 8,
+		'magic strength': 8,
+		'melee strength': 8,
+		'ranged strength': 8,
+		slot: 'pocket',
+		style: 'hybrid'
+	},
+	'illuminated god book': {
+		'necromancy strength': 7,
+		'magic strength': 7,
+		'melee strength': 7,
+		'ranged strength': 7,
 		slot: 'pocket',
 		style: 'hybrid'
 	},
@@ -807,6 +886,7 @@ const armour = {
 		slot: 'ring',
 		style: 'hybrid'
 	},
+	// done till here
 	'channlers ring': {
 		'necromancy strength': 0,
 		'magic strength': 30.4,

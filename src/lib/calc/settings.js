@@ -162,6 +162,10 @@ const SETTINGS = {
 	MELEE_HELMET: 'melee helmet',
 	MELEE_HELMET_VALUES: {
 		NONE: 'none',
+		MASTERWORK: 'masterwork helm',
+		TMW: 'trimmed masterwork helm',
+		VESTMENTS: 'vestments of havoc hood',
+		JAWS: 'jaws of the abyss'
 	},
 	NECRO_HELMET: 'necro helmet',
 	NECRO_HELMET_VALUES: {
@@ -188,6 +192,9 @@ const SETTINGS = {
 	MELEE_BODY: 'melee body',
 	MELEE_BODY_VALUES: {
 		NONE: 'none',
+		MASTERWORK: 'masterwork platebody',
+		TMW: 'trimmed masterwork platebody',
+		VESTMENTS: 'vestments of havoc robe top',
 	},
 	NECRO_BODY: 'necro body',
 	NECRO_BODY_VALUES: {
@@ -214,6 +221,9 @@ const SETTINGS = {
 	MELEE_LEGS: 'melee legs',
 	MELEE_LEGS_VALUES: {
 		NONE: 'none',
+		MASTERWORK: 'masterwork platelegs',
+		TMW: 'trimmed masterwork platelegs',
+		VESTMENTS: 'vestments of havoc robe bottom'
 	},
 	NECRO_LEGS: 'necro legs',
 	NECRO_LEGS_VALUES: {
@@ -227,6 +237,8 @@ const SETTINGS = {
 		NONE: 'none',
 		DTB: 'deathtouch bracelet',
 		CINDERS: 'cinderbane gloves',
+		KWW: 'kerapacs wristwraps',
+		KWW_E: 'enhanced kerapacs wristwraps',
 	},
 	RANGED_GLOVES: 'ranged gloves',
 	RANGED_GLOVES_VALUES: {
@@ -235,12 +247,18 @@ const SETTINGS = {
 		ELITE_DRACOLICH: 'elite dracolich vambraces',
 		DTB: 'deathtouch bracelet',
 		CINDERS: 'cinderbane gloves',
+		NIGHTMARES: 'nightmare gauntlets',
+		NIGHTMARES_E: 'enhanced nightmare gauntlets',
 	},
 	MELEE_GLOVES: 'melee gloves',
 	MELEE_GLOVES_VALUES: {
 		NONE: 'none',
 		DTB: 'deathtouch bracelet',
 		CINDERS: 'cinderbane gloves',
+		MASTERWORK: 'masterwork gloves',
+		TMW: 'trimmed masterwork gloves',
+		GOP: 'gloves of passage',
+		GOP_E: 'enhanced gloves of passage',
 	},
 	NECRO_GLOVES: 'necro gloves',
 	NECRO_GLOVES_VALUES: {
@@ -254,6 +272,9 @@ const SETTINGS = {
 	MAGIC_BOOTS: 'magic boots',
 	MAGIC_BOOTS_VALUES: {
 		NONE: 'none',
+		BLAST: 'blast diffusion boots',
+		BLAST_E: 'enhanced blast diffusion boots',
+		SH: 'silverhawk boots',
 	},
 	RANGED_BOOTS: 'ranged boots',
 	RANGED_BOOTS_VALUES: {
@@ -261,37 +282,41 @@ const SETTINGS = {
 		DRACOLICH: 'dracolich boots',
 		ELITE_DRACOLICH: 'elite dracolich boots',
 		FLEETING: 'fleeting boots',
-		ENHANCED_FLEETING: 'enhanced fleeting boots'
+		ENHANCED_FLEETING: 'enhanced fleeting boots',
+		SH: 'silverhawk boots',
 	},
-	MELEE_BOOTS: 'necro boots',
+	MELEE_BOOTS: 'melee boots',
 	MELEE_BOOTS_VALUES: {
 		NONE: 'none',
 		LACERATION: 'laceration boots',
 		ENHANCED_LACERATION: 'enhanced laceration boots',
+		SH: 'silverhawk boots',
+		MASTERWORK: 'masterwork boots',
+		TMW: 'trimmed masterwork boots',
+		VESTMENTS: 'vestments of havoc boots'
 	},
 	NECRO_BOOTS: 'necro boots',
 	NECRO_BOOTS_VALUES: {
 		NONE: 'none',
 		TFN: 'foot wraps of the first necromancer',
 		T90DD: 'deathdealer boots (tier 90)',
+		SH: 'silverhawk boots',
 	},
 	NECKLACE: 'necklace',
 	NECKLACE_VALUES: {
 		NONE: 'none',
-		EOFOR: 'eof (or)',
-		EOF: 'eof',
+		EOFOR: 'essence of finality amulet (or)',
+		EOF: 'essence of finality amulet',
 		MOONSTONE: 'conjurers raising amulet',
 		AOSOR: 'amulet of souls (or)',
 		AOS: 'amulet of souls',
-		REAPEROR: 'reaper (or)',
-		REAPER: 'reaper',
 		SALVEE: 'salve amulet (e)',
 		SALVE: 'salve amulet'
 	},
 	CAPE: 'cape',
 	CAPE_VALUES: {
 		NONE: 'none',
-		ZUK: 'igneous kal-mor',
+		ZUK: 'igneous kal-zuk',
 		KILN: 'tokhaar-kal-mor',
 		COMP: 'completionist',
 		GOD: 'god cape',
@@ -313,9 +338,10 @@ const SETTINGS = {
 		NONE: 'none',
 		GRIM: 'erethdors grimoire',
 		FUL: 'scripture of ful',
+		JAS: 'scripture of jas',
+		AMASCUT: 'scripture of amascut',
 		GWD3: 'gwd3 scripture',
 		IGOD: 'illuminated god book',
-		GOD: 'god book'
 	},
 	WEAPON: 'weapon type',
 	WEAPON_VALUES: {
@@ -336,6 +362,8 @@ const SETTINGS = {
 	MELEE_MH: 'melee main-hand weapon',
 	MELEE_MH_VALUES: {
 		CUSTOM: 'custom',
+		DARK_ICE_SHARD: 'dark ice shard',
+		LENG: 'dark shard of leng'
 	},
 	NECRO_MH: 'necro main-hand weapon',
 	NECRO_MH_VALUES: {
@@ -358,6 +386,8 @@ const SETTINGS = {
 	MELEE_OH_VALUES: {
 		CUSTOM: 'custom oh',
 		CUSTOM_SHIELD: 'custom shield',
+		DARK_ICE_SLIVER: 'dark ice sliver',
+		LENG: 'dark sliver of leng'
 	},
 	NECRO_OH: 'necro off-hand weapon',
 	NECRO_OH_VALUES: {
@@ -370,15 +400,21 @@ const SETTINGS = {
 	MAGIC_TH: 'magic two-hand weapon',
 	MAGIC_TH_VALUES: {
 		CUSTOM: 'custom th',
+		INQ_STAFF: 'inquisitor staff',
+		INQ_STAFF_E: 'inquisitor staff+'
 	},
 	RANGED_TH: 'ranged two-hand weapon',
 	RANGED_TH_VALUES: {
 		CUSTOM: 'custom th',
-		BOLG: 'bow of the last guardian'
+		BOLG: 'bow of the last guardian',
+		HEX: 'hexhunter bow',
+		HEX_E: 'hexhunter bow+'
 	},
 	MELEE_TH: 'melee two-hand weapon',
 	MELEE_TH_VALUES: {
 		CUSTOM: 'custom th',
+		T_MAUL: 'terrasaur maul',
+		T_MAUL_E: 'terrasaur maul+'
 	},
 	NECRO_TH: 'necro two-hand weapon',
 	NECRO_TH_VALUES: {
@@ -804,9 +840,13 @@ const settingsConfig = {
 	},
 	[SETTINGS.MELEE_HELMET]: {
 		label: 'Helmet',
-		default: SETTINGS.MELEE_HELMET_VALUES.TFN,
+		default: SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MELEE_HELMET_VALUES.NONE },
+			{ text: 'Masterwork', value: SETTINGS.MELEE_HELMET_VALUES.MASTERWORK },
+			{ text: 'TMW', value: SETTINGS.MELEE_HELMET_VALUES.TMW },
+			{ text: 'Vestments', value: SETTINGS.MELEE_HELMET_VALUES.VESTMENTS },
+			{ text: 'Jaws', value: SETTINGS.MELEE_HELMET_VALUES.JAWS },
 		]
 	},
 	[SETTINGS.NECRO_HELMET]: {
@@ -841,9 +881,12 @@ const settingsConfig = {
 	},
 	[SETTINGS.MELEE_BODY]: {
 		label: 'Body',
-		default: SETTINGS.MELEE_BODY_VALUES.TFN,
+		default: SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MELEE_BODY_VALUES.NONE },
+			{ text: 'Masterwork', value: SETTINGS.MELEE_BODY_VALUES.MASTERWORK },
+			{ text: 'TMW', value: SETTINGS.MELEE_BODY_VALUES.TMW },
+			{ text: 'Vestments', value: SETTINGS.MELEE_BODY_VALUES.VESTMENTS },
 		]
 	},
 	[SETTINGS.NECRO_BODY]: {
@@ -878,9 +921,12 @@ const settingsConfig = {
 	},
 	[SETTINGS.MELEE_LEGS]: {
 		label: 'Legs',
-		default: SETTINGS.MELEE_LEGS_VALUES.TFN,
+		default: SETTINGS.MELEE_LEGS_VALUES.NONE,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MELEE_LEGS_VALUES.NONE },
+			{ text: 'Masterwork', value: SETTINGS.MELEE_LEGS_VALUES.MASTERWORK },
+			{ text: 'TMW', value: SETTINGS.MELEE_LEGS_VALUES.TMW },
+			{ text: 'Vestments', value: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS },
 		]
 	},
 	[SETTINGS.NECRO_LEGS]: {
@@ -894,11 +940,13 @@ const settingsConfig = {
 	},
 	[SETTINGS.MAGIC_GLOVES]: {
 		label: 'Gloves',
-		default: SETTINGS.MAGIC_GLOVES_VALUES.NONE,
+		default: SETTINGS.MAGIC_GLOVES_VALUES.CINDERS,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MAGIC_GLOVES_VALUES.NONE },
 			{ text: 'DTB', value: SETTINGS.MAGIC_GLOVES_VALUES.DTB },
 			{ text: 'Cinderbanes', value: SETTINGS.MAGIC_GLOVES_VALUES.CINDERS },
+			{ text: 'Kerrywaps', value: SETTINGS.MAGIC_GLOVES_VALUES.KWW },
+			{ text: 'Kerrywaps+', value: SETTINGS.MAGIC_GLOVES_VALUES.KWW_E },
 		]
 	},
 	[SETTINGS.RANGED_GLOVES]: {
@@ -910,15 +958,21 @@ const settingsConfig = {
 			{ text: 'Elite dracolich', value: SETTINGS.RANGED_GLOVES_VALUES.ELITE_DRACOLICH },
 			{ text: 'DTB', value: SETTINGS.RANGED_GLOVES_VALUES.DTB },
 			{ text: 'Cinderbanes', value: SETTINGS.RANGED_GLOVES_VALUES.CINDERS },
+			{ text: 'Nightmares', value: SETTINGS.RANGED_GLOVES_VALUES.NIGHTMARES },
+			{ text: 'Nightmares+', value: SETTINGS.RANGED_GLOVES_VALUES.NIGHTMARES_E },
 		]
 	},
 	[SETTINGS.MELEE_GLOVES]: {
 		label: 'Gloves',
-		default: SETTINGS.MELEE_GLOVES_VALUES.TFN,
+		default: SETTINGS.MELEE_GLOVES_VALUES.CINDERS,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MELEE_GLOVES_VALUES.NONE },
-			{ text: 'DTB', value: SETTINGS.RANGED_GLOVES_VALUES.DTB },
-			{ text: 'cinderbanes', value: SETTINGS.RANGED_GLOVES_VALUES.CINDERS },
+			{ text: 'DTB', value: SETTINGS.MELEE_GLOVES_VALUES.DTB },
+			{ text: 'Cinderbanes', value: SETTINGS.MELEE_GLOVES_VALUES.CINDERS },
+			{ text: 'Masterwork', value: SETTINGS.MELEE_GLOVES_VALUES.MASTERWORK },
+			{ text: 'TMW', value: SETTINGS.MELEE_GLOVES_VALUES.TMW },
+			{ text: 'GoP', value: SETTINGS.MELEE_GLOVES_VALUES.GOP },
+			{ text: 'GoP+', value: SETTINGS.MELEE_GLOVES_VALUES.GOP_E },
 		]
 	},
 	[SETTINGS.NECRO_GLOVES]: {
@@ -928,15 +982,18 @@ const settingsConfig = {
 			{ text: 'None/Tank', value: SETTINGS.NECRO_GLOVES_VALUES.NONE },
 			{ text: 'TFN', value: SETTINGS.NECRO_GLOVES_VALUES.TFN },
 			{ text: 't90 deathdealer', value: SETTINGS.NECRO_GLOVES_VALUES.T90DD },
-			{ text: 'None/Tank', value: SETTINGS.RANGED_GLOVES_VALUES.DTB },
-			{ text: 'None/Tank', value: SETTINGS.RANGED_GLOVES_VALUES.CINDERS },
+			{ text: 'None/Tank', value: SETTINGS.NECRO_GLOVES_VALUES.DTB },
+			{ text: 'None/Tank', value: SETTINGS.NECRO_GLOVES_VALUES.CINDERS },
 		]
 	},
 	[SETTINGS.MAGIC_BOOTS]: {
 		label: 'Boots',
-		default: SETTINGS.MAGIC_BOOTS_VALUES.NONE,
+		default: SETTINGS.MAGIC_BOOTS_VALUES.BLAST_E,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MAGIC_BOOTS_VALUES.NONE },
+			{ text: 'Blast diff', value: SETTINGS.MAGIC_BOOTS_VALUES.BLAST },
+			{ text: 'Blast diff+', value: SETTINGS.MAGIC_BOOTS_VALUES.BLAST_E },
+			{ text: 'Silverhawks', value: SETTINGS.MAGIC_BOOTS_VALUES.SH },
 		]
 	},
 	[SETTINGS.RANGED_BOOTS]: {
@@ -948,15 +1005,20 @@ const settingsConfig = {
 			{ text: 'Elite dracolich', value: SETTINGS.RANGED_BOOTS_VALUES.ELITE_DRACOLICH },
 			{ text: 'Fleeting', value: SETTINGS.RANGED_BOOTS_VALUES.FLEETING },
 			{ text: 'Enhanced fleeting', value: SETTINGS.RANGED_BOOTS_VALUES.ENHANCED_FLEETING },
+			{ text: 'Silverhawks', value: SETTINGS.RANGED_BOOTS_VALUES.SH },
 		]
 	},
 	[SETTINGS.MELEE_BOOTS]: {
 		label: 'Boots',
-		default: SETTINGS.MELEE_BOOTS_VALUES.NONE,
+		default: SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
 		options: [
 			{ text: 'None/Tank', value: SETTINGS.MAGIC_BOOTS_VALUES.NONE },
 			{ text: 'Laceration', value: SETTINGS.MAGIC_BOOTS_VALUES.LACERATION },
 			{ text: 'Enhanced lac', value: SETTINGS.MAGIC_BOOTS_VALUES.ENHANCED_LACERATION },
+			{ text: 'Silverhawks', value: SETTINGS.MELEE_BOOTS_VALUES.SH },
+			{ text: 'Masterwork', value: SETTINGS.MELEE_BOOTS_VALUES.MASTERWORK },
+			{ text: 'TMW', value: SETTINGS.MELEE_BOOTS_VALUES.TMW },
+			{ text: 'Vestments', value: SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS },
 		]
 	},
 	[SETTINGS.NECRO_BOOTS]: {
@@ -966,6 +1028,7 @@ const settingsConfig = {
 			{ text: 'None/Tank', value: SETTINGS.NECRO_BOOTS_VALUES.NONE },
 			{ text: 'TFN', value: SETTINGS.NECRO_BOOTS_VALUES.TFN },
 			{ text: 't90 deathdealer', value: SETTINGS.NECRO_BOOTS_VALUES.T90DD },
+			{ text: 'Silverhawks', value: SETTINGS.NECRO_BOOTS_VALUES.SH },
 		]
 	},
 	[SETTINGS.NECKLACE]: {
@@ -992,9 +1055,6 @@ const settingsConfig = {
 			{ text: 'Zuk', value: SETTINGS.CAPE_VALUES.ZUK },
 			{ text: 'Kiln', value: SETTINGS.CAPE_VALUES.KILN },
 			{ text: 'Comp cape', value: SETTINGS.CAPE_VALUES.COMP },
-			{ text: 'God cape', value: SETTINGS.CAPE_VALUES.GOD },
-			{ text: 'Max cape', value: SETTINGS.CAPE_VALUES.MAX },
-			{ text: 'Skill cape', value: SETTINGS.CAPE_VALUES.SKILL }
 		]
 	},
 	[SETTINGS.RING]: {
@@ -1015,11 +1075,12 @@ const settingsConfig = {
 		default: SETTINGS.POCKET_VALUES.GRIM,
 		options: [
 			{ text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
-			{ text: 'Grimoire', value: SETTINGS.POCKET_VALUES.GRIM },
+			{ text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
 			{ text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
-			{ text: 'GWD3 book', value: SETTINGS.POCKET_VALUES.GWD3 },
-			{ text: 'Illuminated god book', value: SETTINGS.POCKET_VALUES.IGOD },
-			{ text: 'God book', value: SETTINGS.POCKET_VALUES.GOD }
+			{ text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
+			{ text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
+			{ text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
+			{ text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
 		]
 	},
 	[SETTINGS.WEAPON]: {
@@ -1047,9 +1108,11 @@ const settingsConfig = {
 	},
 	[SETTINGS.MELEE_MH]: {
 		label: 'Mh',
-		default: SETTINGS.MELEE_MH_VALUES.CUSTOM,
+		default: SETTINGS.MELEE_MH_VALUES.LENG,
 		options: [
 			{ text: 'Custom', value: SETTINGS.MELEE_MH_VALUES.CUSTOM },
+			{ text: 'Leng', value: SETTINGS.MELEE_MH_VALUES.LENG },
+			{ text: 'Leng t85', value: SETTINGS.MELEE_MH_VALUES.DARK_ICE_SHARD },
 		]
 	},
 	[SETTINGS.NECRO_MH]: {
@@ -1078,10 +1141,12 @@ const settingsConfig = {
 	},
 	[SETTINGS.MELEE_OH]: {
 		label: 'Oh',
-		default: SETTINGS.MELEE_OH_VALUES.CUSTOM,
+		default: SETTINGS.MELEE_OH_VALUES.LENG,
 		options: [
 			{ text: 'Custom', value: SETTINGS.MELEE_OH_VALUES.CUSTOM },
 			{ text: 'Custom shield', value: SETTINGS.MELEE_OH_VALUES.CUSTOM_SHIELD },
+			{ text: 'Leng', value: SETTINGS.MELEE_OH_VALUES.LENG },
+			{ text: 'Leng t85', value: SETTINGS.MELEE_OH_VALUES.DARK_ICE_SLIVER },
 		]
 	},
 	[SETTINGS.NECRO_OH]: {
@@ -1098,6 +1163,8 @@ const settingsConfig = {
 		default: SETTINGS.MAGIC_TH_VALUES.CUSTOM,
 		options: [
 			{ text: 'Custom', value: SETTINGS.MAGIC_TH_VALUES.CUSTOM },
+			{ text: 'Inq', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF },
+			{ text: 'Inq+', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF_E },
 		]
 	},
 	[SETTINGS.RANGED_TH]: {
@@ -1106,6 +1173,8 @@ const settingsConfig = {
 		options: [
 			{ text: 'Custom', value: SETTINGS.RANGED_TH_VALUES.CUSTOM },
 			{ text: 'Bow of the Last Guardian', value: SETTINGS.RANGED_TH_VALUES.BOLG },
+			{ text: 'Hex', value: SETTINGS.RANGED_TH_VALUES.HEX },
+			{ text: 'Hex+', value: SETTINGS.RANGED_TH_VALUES.HEX_E },
 		]
 	},
 	[SETTINGS.MELEE_TH]: {
@@ -1113,6 +1182,8 @@ const settingsConfig = {
 		default: SETTINGS.MELEE_TH_VALUES.CUSTOM,
 		options: [
 			{ text: 'Custom', value: SETTINGS.MELEE_TH_VALUES.CUSTOM },
+			{ text: 'Terrasaur maul', value: SETTINGS.MELEE_TH_VALUES.T_MAUL },
+			{ text: 'Terrasaur maul+', value: SETTINGS.MELEE_TH_VALUES.T_MAUL_E },
 		]
 	},
 	[SETTINGS.NECRO_TH]: {

@@ -85,8 +85,8 @@ function calc_crit_chance(settings) {
 	}
 
 	// erethdor's grimoire
-	if (settings['pocket'] === 'erethdors grimoire') {
-		crit_chance = 0.12;
+	if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.GRIM) {
+		crit_chance = +0.12;
 	}
 
 	// reaver's ring
