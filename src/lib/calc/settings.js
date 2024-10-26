@@ -500,6 +500,7 @@ const SETTINGS = {
 	RAMPAGE: 'rampage',
 	PERFECT_EQUILIBRIUM_STACKS: 'perfect equilibrium stacks',
 	BALANCE_BY_FORCE: 'balance by force',
+	TARGET_SIZE: 'target size',
 };
 
 const settingsConfig = {
@@ -1420,6 +1421,10 @@ const settingsConfig = {
 	[SETTINGS.TH_TIER_CUSTOM]: {
 		label: '2H custom tier',
 		default: 0
+	},
+	[SETTINGS.TARGET_SIZE]: {
+		label: 'Target size',
+		default: 5
 	},
 };
 

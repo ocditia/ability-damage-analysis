@@ -1174,6 +1174,13 @@ function calc_fsoa(settings) {
 	return Math.floor(calc_crit_chance(settings) * calc_damage_object(settings));
 }
 
+function calc_sgb(settings, dmg) {
+	const hits = [0, 1.16, 1.64, 2.44, 3.56, 5.0];
+	const size = Math.min(settings[SETTINGS.TARGET_SIZE], 5);
+
+	return Math.floor(dmg * ((hits[size])-1));
+}
+
 function add_split_soul(settings, dmgObject) {
 	for (let i = 0; i < dmgObject['damage list'].length; i++) {
 		dmgObject['damage list'][i] += calc_split_soul_hit(
@@ -1387,6 +1394,12 @@ function style_specific_unification(settings) {
 function hit_damage_calculation(settings) {
 	settings = style_specific_unification(settings); // initialise some settings
 	let total_damage = calc_damage_object(settings); // calculate the ability
+
+	// handle sgb logic
+	if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
+		total_damage += calc_sgb(settings, total_damage);
+		
+	}
 	
 	// handle bolg logic
 	if ('bolg damage' in settings) {

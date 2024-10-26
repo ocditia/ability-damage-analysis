@@ -134,6 +134,13 @@
 								max="7"
 								min="0"
 							/>
+							<Number
+								setting={settings[SETTINGS.TARGET_SIZE]}
+								on:settingsUpdated={updateDamages}
+								step="1"
+								max="5"
+								min="0"
+							/>
 						</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Base damage</h5>
