@@ -887,7 +887,7 @@ const armour = {
 		style: 'hybrid'
 	},
 	// done till here
-	'channlers ring': {
+	'channelers ring': {
 		'necromancy strength': 0,
 		'magic strength': 30.4,
 		'melee strength': 0,
@@ -965,30 +965,6 @@ const armour = {
 		'melee strength': 0,
 		'ranged strength': 0,
 		slot: 'necklace',
-		style: 'hybrid'
-	},
-	none: {
-		'necromancy strength': 0,
-		'magic strength': 0,
-		'melee strength': 0,
-		'ranged strength': 0,
-		slot: 'necklace',
-		style: 'hybrid'
-	},
-	'tank/none': {
-		'necromancy strength': 0,
-		'magic strength': 0,
-		'melee strength': 0,
-		'ranged strength': 0,
-		slot: 'ring',
-		style: 'hybrid'
-	},
-	'tank/none': {
-		'necromancy strength': 0,
-		'magic strength': 0,
-		'melee strength': 0,
-		'ranged strength': 0,
-		slot: 'cape',
 		style: 'hybrid'
 	},
 	'TokHaar-Kal-Ket': {

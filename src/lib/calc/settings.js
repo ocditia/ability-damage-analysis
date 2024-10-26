@@ -311,7 +311,8 @@ const SETTINGS = {
 		AOSOR: 'amulet of souls (or)',
 		AOS: 'amulet of souls',
 		SALVEE: 'salve amulet (e)',
-		SALVE: 'salve amulet'
+		SALVE: 'salve amulet',
+		ZEALOTS: 'amulet of zealots',
 	},
 	CAPE: 'cape',
 	CAPE_VALUES: {
@@ -331,7 +332,10 @@ const SETTINGS = {
 		RODI: 'ring of death (i)',
 		ROD: 'ring of death',
 		ASRI: 'asylum surgeon ring (i)',
-		ASR: 'asylum surgeon ring'
+		ASR: 'asylum surgeon ring',
+		CHANNELER: 'channelers rings',
+		STALKER: 'stalkers ring',
+		CHAMPION: 'champions ring',
 	},
 	POCKET: 'pocket',
 	POCKET_VALUES: {
@@ -342,6 +346,7 @@ const SETTINGS = {
 		AMASCUT: 'scripture of amascut',
 		GWD3: 'gwd3 scripture',
 		IGOD: 'illuminated god book',
+		UNDERWORLD_GRIM: 'underworld grimoire 4'
 	},
 	WEAPON: 'weapon type',
 	WEAPON_VALUES: {
@@ -1044,7 +1049,8 @@ const settingsConfig = {
 			{ text: 'Reaper(or)', value: SETTINGS.NECKLACE_VALUES.REAPEROR },
 			{ text: 'Reaper', value: SETTINGS.NECKLACE_VALUES.REAPER },
 			{ text: 'Salve (e)', value: SETTINGS.NECKLACE_VALUES.SALVEE },
-			{ text: 'Salve', value: SETTINGS.NECKLACE_VALUES.SALVE }
+			{ text: 'Salve', value: SETTINGS.NECKLACE_VALUES.SALVE },
+			{ text: 'Zealots', value: SETTINGS.NECKLACE_VALUES.ZEALOTS },
 		]
 	},
 	[SETTINGS.CAPE]: {
@@ -1053,7 +1059,6 @@ const settingsConfig = {
 		options: [
 			{ text: 'None', value: SETTINGS.CAPE_VALUES.NONE },
 			{ text: 'Zuk', value: SETTINGS.CAPE_VALUES.ZUK },
-			{ text: 'Kiln', value: SETTINGS.CAPE_VALUES.KILN },
 			{ text: 'Comp cape', value: SETTINGS.CAPE_VALUES.COMP },
 		]
 	},
@@ -1067,7 +1072,10 @@ const settingsConfig = {
 			{ text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
 			{ text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
 			{ text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
-			{ text: 'ASR', value: SETTINGS.RING_VALUES.ASR }
+			{ text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
+			{ text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELER },
+			{ text: 'Stalker', value: SETTINGS.RING_VALUES.STALKER },
+			{ text: 'Champion', value: SETTINGS.RING_VALUES.CHAMPION },
 		]
 	},
 	[SETTINGS.POCKET]: {
@@ -1081,6 +1089,7 @@ const settingsConfig = {
 			{ text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
 			{ text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
 			{ text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
+			{ text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM },
 		]
 	},
 	[SETTINGS.WEAPON]: {
