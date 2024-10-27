@@ -1,37 +1,48 @@
-name: Deploy to Github Pages
-
-permissions: 
-  contents: write
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: 'main'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 23.1.0
+          cache: npm
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build the project
+      - name: build
+        env:
+          BASE_PATH: '/${{ github.event.repository.name }}'
         run: npm run build
 
-      - name: Create CNAME file
-        run: echo 'rs-analysis.xyz' > build/CNAME
-
-      - name: Deploy to Github Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload Artifacts
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-          publish_branch: gh-pages
+          path: 'build/'
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
