@@ -166,6 +166,13 @@
 									setting={settings[SETTINGS.RAMPAGE]}
 									on:settingsUpdated={updateDamages}
 								/>
+								<Number
+									setting={settings[SETTINGS.PRIMORDIAL_ICE]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="10"
+									min="0"
+								/>
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Additive</h5>
@@ -239,6 +246,10 @@
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Core</h5>
+								<Checkbox
+									setting={settings[SETTINGS.FROSTBLADES]}
+									on:settingsUpdated={updateDamages}
+								/>
 								<Checkbox
 									setting={settings[SETTINGS.BERSERKERS_FURY]}
 									on:settingsUpdated={updateDamages}

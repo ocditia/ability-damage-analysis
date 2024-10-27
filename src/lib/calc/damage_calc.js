@@ -356,6 +356,12 @@ function set_min_var(settings, dmgObject) {
 			min_percent = min_percent + Math.min(0.05 * settings['time since last attack'], 0.5);
 			var_percent = var_percent + Math.min(0.02 * settings['time since last attack'], 0.7);
 		}
+
+		// icy tempest
+		if (settings['ability'] === ABILITIES.ICY_TEMPEST_1 || settings['ability'] === ABILITIES.ICY_TEMPEST_2) {
+			min_percent += 0.18 * settings[SETTINGS.PRIMORDIAL_ICE];
+			var_percent += 0.04 * settings[SETTINGS.PRIMORDIAL_ICE];
+		}
 	}
 
 	if (abils[settings['ability']]['main style'] === 'ranged') {
@@ -738,12 +744,12 @@ function calc_bonus_damage(settings, dmgObject) {
 	if (abils[settings['ability']]['main style'] === 'melee') {
 		// frostblades (leng off-hand effects)
 		if (
-			(settings[SETTINGS.OH] === 'dark sliver of leng' ||
-				settings[SETTINGS.OH] === 'dark ice sliver') &&
-			settings[SETTINGS.WEAPON] === 'main-hand' &&
-			settings['frostblades'] === true
+			(settings[SETTINGS.OH] === SETTINGS.MELEE_OH_VALUES.LENG ||
+				settings[SETTINGS.OH] === SETTINGS.MELEE_OH_VALUES.DARK_ICE_SLIVER) &&
+			settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
+			settings[SETTINGS.FROSTBLADES] === true
 		) {
-			min_hit += Math.floor(0.24 * settings['boosted_AD']);
+			min_hit += Math.floor(0.24 * dmgObject['boosted AD']);
 		}
 	}
 

@@ -501,6 +501,8 @@ const SETTINGS = {
 	PERFECT_EQUILIBRIUM_STACKS: 'perfect equilibrium stacks',
 	BALANCE_BY_FORCE: 'balance by force',
 	TARGET_SIZE: 'target size',
+	PRIMORDIAL_ICE: 'primordial ice',
+	FROSTBLADES: 'frostblades',
 };
 
 const settingsConfig = {
@@ -1425,6 +1427,14 @@ const settingsConfig = {
 	[SETTINGS.TARGET_SIZE]: {
 		label: 'Target size',
 		default: 5
+	},
+	[SETTINGS.PRIMORDIAL_ICE]: {
+		label: 'Primordial ice',
+		default: 0
+	},
+	[SETTINGS.FROSTBLADES]: {
+		label: 'Frostblades',
+		default: false
 	},
 };
 
