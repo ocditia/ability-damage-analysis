@@ -23,7 +23,7 @@ jobs:
       - name: yarn predeploy
         uses: borales/actions-yarn@v4
         with:
-          cmd: run
+          cmd: yarn run build
       - name: deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
