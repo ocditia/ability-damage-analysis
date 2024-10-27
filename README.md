@@ -8,7 +8,7 @@
 
 Requirements:
 
-- `npm` (must be available on `PATH`)
+-   `npm` (must be available on `PATH`)
 
 Install dependencies:
 
