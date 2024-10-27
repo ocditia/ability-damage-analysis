@@ -1,11 +1,10 @@
 import { SETTINGS } from './settings';
-import { weapons, gear, abils, prayers } from './const';
+import { weapons, abils } from './const';
 
 function create_object(settings) {
-    let damage_object = {};
     if (abils[settings['ability']]['crit effects'] === true) {
         const crit_chance = calc_crit_chance(settings);
-        damage_object = {
+        return {
             non_crit: {
                 'min hit': 0,
                 'var hit': 0,
@@ -24,7 +23,7 @@ function create_object(settings) {
             }
         };
     } else {
-        damage_object = {
+        return {
             non_crit: {
                 'min hit': 0,
                 'var hit': 0,
@@ -35,7 +34,6 @@ function create_object(settings) {
             }
         };
     }
-    return damage_object;
 }
 
 function calc_crit_chance(settings) {

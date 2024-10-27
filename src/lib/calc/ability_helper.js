@@ -1,7 +1,7 @@
 import { SETTINGS } from './settings';
-import { weapons, gear, armour, abils, prayers, ABILITIES } from './const';
+import { ABILITIES } from './const';
 
-function next_tick(settings, ability_used) {
+function next_tick(settings) {
     // needle strike logic
     if (settings['needle strike'] === true) {
         let single_tick_gear = ['essence of finality', 'amulet of souls'];

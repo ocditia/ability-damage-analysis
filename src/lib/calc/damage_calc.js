@@ -133,25 +133,25 @@ function calc_base_ad(settings) {
 
 function calc_weapon_tier(settings, hand) {
     const spell_tier = 999;
-    let tier = 0;
     // custom weapon tier
     if (
         settings[hand] === 'custom' ||
         settings[hand] === 'custom oh' ||
         settings[hand] === 'custom th'
     ) {
-        tier = Math.min(settings[hand + ' custom tier'], spell_tier);
+        return Math.min(settings[hand + ' custom tier'], spell_tier);
     }
     // standard weapon
     else {
-        tier = Math.min(weapons[settings[hand]]['tier'], spell_tier);
+        let tier = Math.min(weapons[settings[hand]]['tier'], spell_tier);
 
         // innate mastery (shard of genesis essence)
         if (weapons[settings[hand]]['tier'] === 95 && settings['innate mastery'] === true) {
             tier += 5;
         }
+
+        return tier
     }
-    return tier;
 }
 
 // bonus from gear and reaper crew
