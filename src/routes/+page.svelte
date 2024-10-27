@@ -33,7 +33,7 @@
 							<div
 								class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
 							>
-								<img class="card-icon" src="/style_icons/magic.svg" alt="" />
+								<img class="card-icon" src="{base}/style_icons/magic.svg" alt="" />
 								<div class="card-title">Magic Damage Calculator</div>
 							</div>
 						</div>
@@ -158,7 +158,7 @@
 						<div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
 							<div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
 								<div class="mx-auto w-24 h-24 rounded-full bg-none overflow-hidden mb-3">
-									<img src="/contributors/akritia.webp" alt="" />
+									<img src="{base}/contributors/akritia.webp" alt="" />
 								</div>
 								<div class="text-center text-gray-light">Akritia</div>
 								<div class="text-center text-gray-light">Research and Development</div>
@@ -167,7 +167,7 @@
 						<div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
 							<div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
 								<div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
-									<img src="/contributors/kyroh.webp" alt="" />
+									<img src="{base}/contributors/kyroh.webp" alt="" />
 								</div>
 								<div class="text-center text-gray-light">Kyroh</div>
 								<div class="text-center text-gray-light">Research and Development</div>
@@ -176,7 +176,7 @@
 						<div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
 							<div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
 								<div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
-									<img src="/contributors/sfox.webp" alt="" />
+									<img src="{base}/contributors/sfox.webp" alt="" />
 								</div>
 								<div class="text-center text-gray-light">Sfox</div>
 								<div class="text-center text-gray-light">Research</div>
@@ -185,7 +185,7 @@
 						<div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
 							<div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
 								<div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
-									<img src="/contributors/hight.webp" alt="" />
+									<img src="{base}/contributors/hight.webp" alt="" />
 								</div>
 								<div class="text-center text-gray-light">HightDetal</div>
 								<div class="text-center text-gray-light">Development</div>
@@ -194,7 +194,7 @@
 						<div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
 							<div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
 								<div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
-									<img src="/contributors/code.webp" alt="" />
+									<img src="{base}/contributors/code.webp" alt="" />
 								</div>
 								<div class="text-center text-gray-light">Codemati</div>
 								<div class="text-center text-gray-light">Development</div>
@@ -204,7 +204,7 @@
 							<div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
 								<a href="{base}https://discord.gg/BGjvs8Y28n">
 									<div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
-										<img src="/contributors/dolf.webp" alt="" />
+										<img src="{base}/contributors/dolf.webp" alt="" />
 									</div>
 									<div class="text-center text-gray-light">Gamedolf</div>
 									<div class="text-center text-gray-light">RS Math</div>
@@ -214,7 +214,7 @@
 						<div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
 							<div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
 								<div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
-									<img src="/contributors/rex.webp" alt="" />
+									<img src="{base}/contributors/rex.webp" alt="" />
 								</div>
 								<div class="text-center text-gray-light">RexT</div>
 								<div class="text-center text-gray-light">Legacy Sheet</div>
@@ -231,11 +231,11 @@
 							<div>
 								<h1 class="sm:text-2xl pb-2 uppercase font-bold mb-0">Join us on discord</h1>
 								<a href="{base}https://discord.gg/rsanalysis">
-									<img class="w-7/8 sm:w-1/3 pb-2" src="/logo.png" alt="" />
+									<img class="w-7/8 sm:w-1/3 pb-2" src="{base}/logo.png" alt="" />
 								</a>
 								<div class="flex flex-row items-center">
 									<a href="{base}https://discord.gg/rsanalysis">
-										<img class="w-auto mr-4" src="/google_icons/discord-blue.svg" alt="" />
+										<img class="w-auto mr-4" src="{base}/google_icons/discord-blue.svg" alt="" />
 									</a>
 									<a
 										href="{base}https://discord.gg/rsanalysis"
@@ -252,7 +252,7 @@
 							<div class="effect-container">
 								<div class="card-icon rounded-full bg-black overflow-hidden mb-3">
 									<a href="{base}https://discord.gg/pvme">
-										<img src="/contributors/pvme.jpeg" alt="" />
+										<img src="{base}/contributors/pvme.jpeg" alt="" />
 									</a>
 								</div>
 								<li class="block transition-all duration-75 relative">
@@ -268,7 +268,7 @@
 							<div class="effect-container">
 								<div class="card-icon rounded-full bg-black overflow-hidden mb-3">
 									<a href="{base}https://discord.gg/BGjvs8Y28n">
-										<img src="/contributors/rsmath.png" alt="" />
+										<img src="{base}/contributors/rsmath.png" alt="" />
 									</a>
 								</div>
 								<li class="block transition-all duration-75 relative">

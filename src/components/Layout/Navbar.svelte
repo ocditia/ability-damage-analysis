@@ -83,7 +83,7 @@
 									href="{base}/magic"
 									class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
 								>
-									<img class="size-10 inline mr-1" src="/style_icons/magic.svg" alt="" /> Magic
+									<img class="size-10 inline mr-1" src="{base}/style_icons/magic.svg" alt="" /> Magic
 								</a>
 							</li>
 							<li>
@@ -91,7 +91,7 @@
 									href="{base}/melee"
 									class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
 								>
-									<img class="size-10 inline mr-1" src="/style_icons/melee.svg" alt="" /> Melee
+									<img class="size-10 inline mr-1" src="{base}/style_icons/melee.svg" alt="" /> Melee
 								</a>
 							</li>
 							<li>
@@ -99,7 +99,7 @@
 									href="{base}/ranged"
 									class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
 								>
-									<img class="size-10 inline mr-1" src="/style_icons/ranged.svg" alt="" /> Ranged
+									<img class="size-10 inline mr-1" src="{base}/style_icons/ranged.svg" alt="" /> Ranged
 								</a>
 							</li>
 							<li>
@@ -107,7 +107,7 @@
 									href="{base}/necromancy"
 									class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
 								>
-									<img class="size-10 inline mr-1" src="/style_icons/necro.svg" alt="" /> Necromancy
+									<img class="size-10 inline mr-1" src="{base}/style_icons/necro.svg" alt="" /> Necromancy
 								</a>
 							</li>
 						</ul>
