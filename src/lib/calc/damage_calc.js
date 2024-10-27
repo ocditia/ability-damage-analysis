@@ -1037,6 +1037,14 @@ function roll_damage(settings, dmgObject, key) {
 		}
 		settings['deadshot massacre damage'][key]['damage list'] = dmg_list;
 	}
+
+	// store igneous cleave damage
+	if (settings['ability'] === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
+		if (!('igneous cleave bleed damage' in settings)) {
+			settings['igneous cleave bleed damage'] = create_object(settings);
+		}
+		settings['igneous cleave bleed damage'][key]['damage list'] = dmg_list;
+	}
 	return dmg_list;
 }
 
@@ -1185,6 +1193,24 @@ function calc_sgb(settings, dmg) {
 	const size = Math.min(settings[SETTINGS.TARGET_SIZE], 5);
 
 	return Math.floor(dmg * ((hits[size])-1));
+}
+
+function calc_igneous_bleed(settings) {
+	let total_damage = 0;
+	const total_hits = 6 + settings[SETTINGS.IGNEOUS_EXTENSIOS];
+	let previous_splat = settings['igneous cleave bleed damage'];
+	for (let hit=2; hit<=total_hits; hit++) {
+		let bleed_hit = create_object(settings);
+		for (let key in previous_splat) {
+			for (let dmg in previous_splat[key]['damage list']) {
+				bleed_hit[key]['damage list'].push(Math.floor(previous_splat[key]['damage list'][dmg]*1.05));
+			}
+			bleed_hit[key] = calc_on_npc(settings, bleed_hit[key]);
+		}
+		total_damage += get_user_value(settings, bleed_hit);
+		previous_splat = {...bleed_hit};
+	}
+	return total_damage;
 }
 
 function add_split_soul(settings, dmgObject) {
@@ -1434,6 +1460,11 @@ function hit_damage_calculation(settings) {
 	// handle instability (fsoa)
 	if (settings['instability'] === true && abils[settings['ability']]['damage type'] === 'magic') {
 		total_damage += calc_fsoa(settings);
+	}
+
+	// handle igneous cleave bleed
+	if (settings['ability'] === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
+		total_damage += calc_igneous_bleed(settings);
 	}
 
 	return total_damage;

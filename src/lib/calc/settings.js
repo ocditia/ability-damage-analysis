@@ -503,6 +503,7 @@ const SETTINGS = {
 	TARGET_SIZE: 'target size',
 	PRIMORDIAL_ICE: 'primordial ice',
 	FROSTBLADES: 'frostblades',
+	IGNEOUS_EXTENSIOS: 'igneous extensions',
 };
 
 const settingsConfig = {
@@ -1435,6 +1436,10 @@ const settingsConfig = {
 	[SETTINGS.FROSTBLADES]: {
 		label: 'Frostblades',
 		default: false
+	},
+	[SETTINGS.IGNEOUS_EXTENSIOS]: {
+		label: 'Igneous extensions',
+		default: 5
 	},
 };
 

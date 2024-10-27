@@ -2435,7 +2435,10 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'melee',
-		'damage type': 'melee'
+		'damage type': 'melee',
+		'hits': {
+			1: [ABILITIES.IGNEOUS_CLEAVE_INITIAL, ABILITIES.IGNEOUS_CLEAVE_BLEED]
+		}
 	},
 	[ABILITIES.QUICK_SMASH]: {
 		// ability name
