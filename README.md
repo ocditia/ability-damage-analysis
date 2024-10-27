@@ -25,5 +25,5 @@ npm start
 ### Deploys
 
 Deploys are automatic on pushes to `main`. The site is deployed via the `gh-pages`
-branch which contains the latest contents of the `dist` folder after a build (this is handled
+branch which contains the latest contents of the `build` folder after a build (this is handled
 automatically by GitHub Actions - refer to `.github/workflows/main.yml`).
