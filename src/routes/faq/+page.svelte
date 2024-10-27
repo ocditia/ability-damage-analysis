@@ -1,10 +1,11 @@
 <script>
-	import Navbar from '$components/Layout/Navbar.svelte';
+	import { base } from '$app/paths';
 	import Header from '$components/Layout/Header.svelte';
+	import Navbar from '$components/Layout/Navbar.svelte';
 </script>
 
 <Navbar />
-<Header img="/main_background.png" />
+<Header img="{base}/main_background.png" />
 
 <div class="space-y-14 z-20">
 	<div class="responsive-container">

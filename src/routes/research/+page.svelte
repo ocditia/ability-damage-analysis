@@ -5,7 +5,7 @@
 </script>
 
 <Navbar />
-<Header img="/main_background.png" />
+<Header img="{base}/main_background.png" />
 
 <!--MAIN CONTENT-->
 <div class="space-y-14 z-20">
