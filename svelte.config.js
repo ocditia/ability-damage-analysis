@@ -12,7 +12,7 @@ const config = {
             strict: true
         }),
         paths: {
-            base: ''
+            base: '/ability-damage-analysis',
         },
         alias: {
             $components: path.resolve('src/components'),
