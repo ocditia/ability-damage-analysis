@@ -35,7 +35,7 @@ function next_tick(settings, ability_used) {
 function next_cast(settings) {
     // turn off chaos roar
     if (settings['chaos roar'] === true) {
-        settings['chaos raor'] === false;
+        settings['chaos roar'] = false;
     }
     return settings;
 }

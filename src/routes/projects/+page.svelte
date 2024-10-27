@@ -14,8 +14,8 @@
                     <h1 class="main-header mb-6 ml-3">Active Projects</h1>
                     <div class="card card-home">
                         <div class="card-title pb-5">Features and fixes</div>
-                        <p>Add perk damages - Afershock, Crackling, Lunging</p>
-                        <p>Fix all the things that are innevitably broken with a v1 build</p>
+                        <p>Add perk damages - Aftershock, Crackling, Lunging</p>
+                        <p>Fix all the things that are inevitably broken with a v1 build</p>
                     </div>
                 </div>
             </div>

@@ -590,7 +590,7 @@
                         <div class="pb-5">
                             <p>
                                 Ability damage is automatically calculated based on the settings you
-                                have selected, however, you can mannualy override it by entering a
+                                have selected, however, you can manually override it by entering a
                                 value other than zero in the setting field.
                             </p>
                         </div>

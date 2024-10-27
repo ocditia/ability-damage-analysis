@@ -14,7 +14,7 @@
                     <h1 class="main-header mb-6 ml-3">Frequently Asked Questions</h1>
                     <div class="card card-home">
                         <div class="card-title pb-5">We Just Launched!</div>
-                        <p>This page will be upadated with FAQs as they come in.</p>
+                        <p>This page will be updated with FAQs as they come in.</p>
                     </div>
                 </div>
             </div>

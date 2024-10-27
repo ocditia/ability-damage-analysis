@@ -1431,7 +1431,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1443,7 +1443,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1455,9 +1455,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SMASH]: {
         // ability name
@@ -1467,9 +1467,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.BARGE]: {
         // ability name
@@ -1479,9 +1479,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.GREATER_BARGE]: {
         // ability name
@@ -1491,9 +1491,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SEVER]: {
         // ability name
@@ -1503,9 +1503,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.BLADED_DIVE]: {
         // ability name
@@ -1515,9 +1515,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SLAUGHTER_HIT]: {
         // ability name
@@ -1527,9 +1527,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SLAUGHTER]: {
         // ability name
@@ -1539,9 +1539,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
         hits: {
             1: [
                 ABILITIES.SLAUGHTER_HIT,
@@ -1560,9 +1560,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.FLURRY_HIT]: {
         // ability name
@@ -1572,9 +1572,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.FLURRY]: {
         // ability name
@@ -1584,9 +1584,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
         hits: {
             1: [ABILITIES.FLURRY_HIT],
             2: [],
@@ -1605,9 +1605,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.GREATER_FLURRY]: {
         // ability name
@@ -1617,9 +1617,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
         hits: {
             1: [ABILITIES.GREATER_FLURRY_HIT],
             2: [],
@@ -1638,9 +1638,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.HURRICANE_2]: {
         // ability name
@@ -1650,9 +1650,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.HURRICANE]: {
         // ability name
@@ -1662,9 +1662,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
         hits: {
             1: [ABILITIES.HURRICANE_1, 'next hit', ABILITIES.HURRICANE_2]
         }
@@ -1677,9 +1677,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.BLOOD_TENDRILS_2]: {
         // ability name
@@ -1689,9 +1689,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.BLOOD_TENDRILS]: {
         // ability name
@@ -1701,9 +1701,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
         hits: {
             1: [
                 ABILITIES.BLOOD_TENDRILS_1,
@@ -1722,9 +1722,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.MASSACRE_INITIAL]: {
         // ability name
@@ -1734,9 +1734,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.MASSACRE_BLEED]: {
         // ability name
@@ -1746,9 +1746,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.MASSACRE]: {
         // ability name
@@ -1758,9 +1758,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
         hits: {
             1: [
                 ABILITIES.MASSACRE_INITIAL,
@@ -1780,9 +1780,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.BALANCED_STRIKE]: {
         // ability name
@@ -1792,9 +1792,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'idfk what this is', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.KICK]: {
         // ability name
@@ -1804,9 +1804,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.PUNISH]: {
         // ability name
@@ -1816,9 +1816,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.DISMEMBER_HIT]: {
         // ability name
@@ -1828,7 +1828,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1840,7 +1840,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
@@ -1861,7 +1861,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1873,7 +1873,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1885,7 +1885,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1897,7 +1897,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1909,7 +1909,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1921,7 +1921,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1933,7 +1933,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'channel', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'channel', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1945,7 +1945,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'channel', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'channel', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
@@ -1966,7 +1966,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1978,7 +1978,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'channel', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'channel', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -1990,7 +1990,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
@@ -2011,7 +2011,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2023,7 +2023,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2035,7 +2035,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
@@ -2056,7 +2056,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2068,7 +2068,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'grounded', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2080,7 +2080,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
@@ -2124,7 +2124,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2136,7 +2136,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2148,7 +2148,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2160,7 +2160,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2172,7 +2172,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2184,7 +2184,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2196,7 +2196,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2208,7 +2208,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2220,7 +2220,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2232,7 +2232,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2244,7 +2244,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
@@ -2259,7 +2259,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2271,7 +2271,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2283,7 +2283,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2295,7 +2295,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2307,7 +2307,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2319,7 +2319,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
@@ -2342,7 +2342,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2354,7 +2354,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
@@ -2369,7 +2369,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2381,7 +2381,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2393,7 +2393,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2405,7 +2405,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2417,7 +2417,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2429,7 +2429,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2441,7 +2441,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2453,7 +2453,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2465,7 +2465,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
@@ -2480,7 +2480,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2492,7 +2492,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2504,7 +2504,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'magic'
     },
@@ -2516,7 +2516,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2528,7 +2528,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2540,7 +2540,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2552,7 +2552,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2564,7 +2564,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
@@ -2579,7 +2579,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2591,7 +2591,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2603,7 +2603,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2615,7 +2615,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -2628,9 +2628,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.WRACK_AND_RUIN]: {
         // ability name
@@ -2640,9 +2640,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.IMPACT]: {
         // ability name
@@ -2652,9 +2652,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.DRAGON_BREATH]: {
         // ability name
@@ -2664,9 +2664,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SONIC_WAVE]: {
         // ability name
@@ -2676,9 +2676,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SHOCK]: {
         // ability name
@@ -2688,9 +2688,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.CONCENTRATED_BLAST_1]: {
         // ability name
@@ -2700,9 +2700,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.CONCENTRATED_BLAST_2]: {
         // ability name
@@ -2712,9 +2712,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.CONCENTRATED_BLAST_3]: {
         // ability name
@@ -2724,9 +2724,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.CONCENTRATED_BLAST]: {
         // ability name
@@ -2736,7 +2736,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'basiC', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basiC', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
@@ -2753,9 +2753,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.GREATER_CONCENTRATED_BLAST_2]: {
         // ability name
@@ -2765,9 +2765,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.GREATER_CONCENTRATED_BLAST_3]: {
         // ability name
@@ -2777,9 +2777,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.GREATER_CONCENTRATED_BLAST]: {
         // ability name
@@ -2789,7 +2789,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
@@ -2806,9 +2806,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'burn', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.COMBUST]: {
         // ability name
@@ -2818,7 +2818,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'burn', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
@@ -2839,9 +2839,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.GREATER_CHAIN]: {
         // ability name
@@ -2851,9 +2851,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.MAGMA_TEMPEST_HIT]: {
         // ability name
@@ -2863,9 +2863,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.MAGMA_TEMPEST]: {
         // ability name
@@ -2875,7 +2875,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
@@ -2897,9 +2897,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'dot', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.GREATER_SONIC_WAVE]: {
         // ability name
@@ -2909,9 +2909,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.ASPHYXIATE_HIT]: {
         // ability name
@@ -2921,9 +2921,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.ASPHYXIATE]: {
         // ability name
@@ -2933,9 +2933,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         hits: {
             1: [ABILITIES.ASPHYXIATE_HIT],
             2: [],
@@ -2954,9 +2954,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.HORROR]: {
         // ability name
@@ -2966,9 +2966,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.WILD_MAGIC_HIT]: {
         // ability name
@@ -2978,9 +2978,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.WILD_MAGIC]: {
         // ability name
@@ -2990,7 +2990,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
@@ -3005,9 +3005,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SMOKE_TENDRILS_2]: {
         // ability name
@@ -3017,9 +3017,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SMOKE_TENDRILS_3]: {
         // ability name
@@ -3029,9 +3029,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SMOKE_TENDRILS_4]: {
         // ability name
@@ -3041,9 +3041,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SMOKE_TENDRILS]: {
         // ability name
@@ -3053,7 +3053,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
@@ -3074,9 +3074,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.TSUNAMI]: {
         // ability name
@@ -3086,9 +3086,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SUNSHINE_DOT]: {
         // ability name
@@ -3098,9 +3098,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'dot', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.TEMPEST_OF_ARMADYL_HIT]: {
         // ability name
@@ -3110,7 +3110,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3122,7 +3122,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
@@ -3141,7 +3141,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3153,7 +3153,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3165,7 +3165,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3177,7 +3177,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3189,7 +3189,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3201,7 +3201,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3213,7 +3213,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3225,7 +3225,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'burn', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3237,7 +3237,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
@@ -3261,7 +3261,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3273,7 +3273,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3285,7 +3285,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
@@ -3306,7 +3306,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3318,7 +3318,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     },
@@ -3331,9 +3331,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.TOUCH_OF_DEATH]: {
         // ability name
@@ -3343,9 +3343,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.FINGER_OF_DEATH]: {
         // ability name
@@ -3355,9 +3355,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SOUL_SAP]: {
         // ability name
@@ -3367,9 +3367,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SKELETON_WARRIOR_AUTO]: {
         // ability name
@@ -3379,9 +3379,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'conjure', // bleed, dot, burn, etc
-        'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'spirit' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SKELETON_WARRIOR_AUTO_10]: {
         // ability name
@@ -3391,7 +3391,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'conjure', // bleed, dot, burn, etc
-        'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'spirit',
         hits: {
@@ -3415,9 +3415,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'conjure', // bleed, dot, burn, etc
-        'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'spirit' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.PUTRID_ZOMBIE_AUTO]: {
         // ability name
@@ -3427,9 +3427,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'conjure', // bleed, dot, burn, etc
-        'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'spirit' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.COMMAND_PUTRID_ZOMBIE]: {
         // ability name
@@ -3439,9 +3439,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'conjure', // bleed, dot, burn, etc
-        'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'spirit' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.COMMAND_PHANTOM_GUARDIAN]: {
         // ability name
@@ -3451,9 +3451,9 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'conjure', // bleed, dot, burn, etc
-        'ability type': 'conjure', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'spirit' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.BLOAT]: {
         // ability name
@@ -3463,9 +3463,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.DEATHSKULLS]: {
         // ability name
@@ -3475,9 +3475,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.DEATHSKULLS_4]: {
         // ability name
@@ -3487,7 +3487,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {
@@ -3507,7 +3507,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {
@@ -3530,9 +3530,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SOUL_STRIKE_AOE]: {
         // ability name
@@ -3542,9 +3542,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.VOLLEY_OF_SOULS]: {
         // ability name
@@ -3554,7 +3554,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic'
     },
@@ -3566,7 +3566,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {
@@ -3581,7 +3581,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {
@@ -3602,7 +3602,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {
@@ -3625,7 +3625,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {
@@ -3650,7 +3650,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic'
     },
@@ -3662,7 +3662,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic'
     },
@@ -3674,7 +3674,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic'
     },
@@ -3686,7 +3686,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic'
     },
@@ -3698,7 +3698,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic'
     },
@@ -3710,7 +3710,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic'
     },
@@ -3723,7 +3723,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3735,7 +3735,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -3750,7 +3750,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3762,7 +3762,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3774,7 +3774,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3786,7 +3786,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3798,7 +3798,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3810,7 +3810,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3822,7 +3822,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3834,7 +3834,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -3855,7 +3855,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3867,7 +3867,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3879,7 +3879,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3891,7 +3891,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3903,7 +3903,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -3924,7 +3924,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'dot', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3936,7 +3936,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3948,7 +3948,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3960,7 +3960,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -3975,7 +3975,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3987,7 +3987,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -3999,7 +3999,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4011,7 +4011,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -4033,7 +4033,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4045,7 +4045,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4057,7 +4057,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'threshold', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4069,7 +4069,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4081,7 +4081,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4093,7 +4093,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4105,7 +4105,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4117,7 +4117,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ultimate', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -4138,7 +4138,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4150,7 +4150,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4162,7 +4162,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -4177,7 +4177,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4189,7 +4189,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4201,7 +4201,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4213,7 +4213,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4225,7 +4225,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -4240,7 +4240,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4252,7 +4252,7 @@ const abils = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4264,7 +4264,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -4287,7 +4287,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4299,7 +4299,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4311,7 +4311,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -4326,7 +4326,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4338,7 +4338,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4350,7 +4350,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4362,7 +4362,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4374,7 +4374,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4386,7 +4386,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4398,7 +4398,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4410,7 +4410,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4422,7 +4422,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -4437,7 +4437,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     },
@@ -4450,7 +4450,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -4462,7 +4462,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
     },
@@ -4475,9 +4475,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'proc', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     'rapid fire necro': {
         // ability name
@@ -4487,9 +4487,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'ability', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'ranged' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     'bolg proc': {
         // ability name
@@ -4499,9 +4499,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'proc', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'proc', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'ranged' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     'bolg proc percentages': {
         // ability name
@@ -4511,9 +4511,9 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'proc', // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'ability type': 'proc', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged' // basic, threshold, special attack, abilility (necromancy classification), ultimate
+        'damage type': 'ranged' // basic, threshold, special attack, ability (necromancy classification), ultimate
     }
 };
 
@@ -4584,7 +4584,7 @@ const prayers = {
         style: 'melee',
         category: 'single-stat boosting'
     },
-    chivlary: {
+    chivalry: {
         boost: 0.07,
         style: 'melee',
         category: 'multi-stat boosting'
