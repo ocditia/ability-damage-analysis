@@ -9,7 +9,7 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
 		paths: {
-			base: ''
+			base: process.argv.includes('dev') ? '' : "/ability-damage-analysis"
 		},
 		alias: {
 			$components: path.resolve('src/components'),
