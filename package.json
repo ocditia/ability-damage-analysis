@@ -1,25 +1,29 @@
 {
-  "name": "ability-damage-analysis",
-  "version": "0.0.0",
-  "source": "index.html",
-  "license": "MIT",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "yarn clean && parcel build --no-optimize",
-    "deploy": "gh-pages -d ./dist",
-    "clean": "rm -rf .parcel-cache dist",
-    "start": "parcel",
-    "predeploy": "rm -rf dist && parcel build index.html --no-optimize --no-source-maps --public-url ./",
-    "build-and-deploy": "yarn predeploy && yarn deploy",
-    "test": "mocha 'test/**/*.js' --recursive"
-  },
-  "devDependencies": {
-    "gh-pages": "^6.1.1",
-    "mocha": "^10.2.0",
-    "parcel": "^2.10.3"
-  },
-  "dependencies": {
-    "yarn": "^1.22.21"
-  }
+	"name": "ability-damage-analysis",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"test": "vitest",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/eslint": "^9.6.0",
+		"eslint": "^9.0.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-svelte": "^2.36.0",
+		"globals": "^15.0.0",
+		"prettier": "^3.1.1",
+		"prettier-plugin-svelte": "^3.1.2",
+		"svelte": "^4.2.7",
+		"vite": "^5.0.3",
+		"vitest": "^2.0.0"
+	},
+	"type": "module"
 }

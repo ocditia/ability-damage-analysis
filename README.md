@@ -1,13 +1,14 @@
 # ability-damage-analysis
 
 ## web-app
+
 [rs-analysis.xyz](https://rs-analysis.xyz)
 
 ### Getting started
 
 Requirements:
 
-* `yarn` (must be available on `PATH`)
+- `yarn` (must be available on `PATH`)
 
 Install dependencies:
 
