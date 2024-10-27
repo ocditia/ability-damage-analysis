@@ -1,4 +1,4 @@
-name: Push to main
+name: Deploy to Github Pages
 on:
   push:
     branches:
@@ -6,26 +6,24 @@ on:
 
 jobs:
   build:
-    name: Deploy to GH Pages
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Set Node.js 23.1
+      - name: Checout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 23.1.0
-      - name: yarn install
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # if needed
-      - name: yarn predeploy
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: run build
-      - name: deploy to gh-pages
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./build

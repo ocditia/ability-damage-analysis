@@ -8,18 +8,18 @@
 
 Requirements:
 
-- `yarn` (must be available on `PATH`)
+- `npm` (must be available on `PATH`)
 
 Install dependencies:
 
 ```sh
-yarn install
+npm install
 ```
 
 Run the local server:
 
 ```sh
-yarn start
+npm start
 ```
 
 ### Deploys
@@ -27,11 +27,3 @@ yarn start
 Deploys are automatic on pushes to `main`. The site is deployed via the `gh-pages`
 branch which contains the latest contents of the `dist` folder after a build (this is handled
 automatically by GitHub Actions - refer to `.github/workflows/main.yml`).
-
-#### Manual deploy
-
-To do a manual deploy from your local branch:
-
-```sh
-yarn build-and-deploy
-```
