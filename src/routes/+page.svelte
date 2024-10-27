@@ -122,51 +122,59 @@
                         <div class="card-title">Other Resources</div>
                         <div class="effect-container">
                             <img class="effect-icon" src="google_icons/book-blue.svg" alt="" />
-                            <li class="block transition-all duration-75 relative">
-                                <a
-                                    href="/research"
-                                    class="py-2 font-normal text-xl hover:text-link"
-                                    title=""
-                                >
-                                    Research
-                                </a>
-                            </li>
+                            <ul>
+                                <li class="block transition-all duration-75 relative">
+                                    <a
+                                        href="/research"
+                                        class="py-2 font-normal text-xl hover:text-link"
+                                        title=""
+                                    >
+                                        Research
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                         <div class="effect-container">
                             <img class="effect-icon" src="google_icons/hammer-blue.svg" alt="" />
-                            <li class="block transition-all duration-75 relative">
-                                <a
-                                    href="/projects"
-                                    class="py-2 font-normal text-xl hover:text-link"
-                                    title=""
-                                >
-                                    Upcoming Projects
-                                </a>
-                            </li>
+                            <ul>
+                                <li class="block transition-all duration-75 relative">
+                                    <a
+                                        href="/projects"
+                                        class="py-2 font-normal text-xl hover:text-link"
+                                        title=""
+                                    >
+                                        Upcoming Projects
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                         <div class="effect-container">
                             <img class="effect-icon" src="google_icons/discord-blue.svg" alt="" />
-                            <li class="block transition-all duration-75 relative">
-                                <a
-                                    href="https://discord.gg/rsanalysis"
-                                    class="py-2 font-normal text-xl hover:text-link"
-                                    title=""
-                                >
-                                    Discord
-                                </a>
-                            </li>
+                            <ul>
+                                <li class="block transition-all duration-75 relative">
+                                    <a
+                                        href="https://discord.gg/rsanalysis"
+                                        class="py-2 font-normal text-xl hover:text-link"
+                                        title=""
+                                    >
+                                        Discord
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                         <div class="effect-container">
                             <img class="effect-icon" src="google_icons/faq-blue.svg" alt="" />
-                            <li class="block transition-all duration-75 relative">
-                                <a
-                                    href="/faq"
-                                    class="py-2 font-normal text-xl hover:text-link"
-                                    title=""
-                                >
-                                    FAQ
-                                </a>
-                            </li>
+                            <ul>
+                                <li class="block transition-all duration-75 relative">
+                                    <a
+                                        href="/faq"
+                                        class="py-2 font-normal text-xl hover:text-link"
+                                        title=""
+                                    >
+                                        FAQ
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -301,15 +309,17 @@
                                         <img src="/contributors/pvme.jpeg" alt="" />
                                     </a>
                                 </div>
-                                <li class="block transition-all duration-75 relative">
-                                    <a
-                                        href="https://discord.gg/pvme"
-                                        class="py-2 font-normal text-xl hover:text-link"
-                                        title=""
-                                    >
-                                        PvM Encyclopedia
-                                    </a>
-                                </li>
+                                <ul>
+                                    <li class="block transition-all duration-75 relative">
+                                        <a
+                                            href="https://discord.gg/pvme"
+                                            class="py-2 font-normal text-xl hover:text-link"
+                                            title=""
+                                        >
+                                            PvM Encyclopedia
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                             <div class="effect-container">
                                 <div class="card-icon rounded-full bg-black overflow-hidden mb-3">
@@ -317,15 +327,17 @@
                                         <img src="/contributors/rsmath.png" alt="" />
                                     </a>
                                 </div>
-                                <li class="block transition-all duration-75 relative">
-                                    <a
-                                        href="https://discord.gg/BGjvs8Y28n"
-                                        class="py-2 font-normal text-xl hover:text-link"
-                                        title=""
-                                    >
-                                        RS Math Discord
-                                    </a>
-                                </li>
+                                <ul>
+                                    <li class="block transition-all duration-75 relative">
+                                        <a
+                                            href="https://discord.gg/BGjvs8Y28n"
+                                            class="py-2 font-normal text-xl hover:text-link"
+                                            title=""
+                                        >
+                                            RS Math Discord
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
