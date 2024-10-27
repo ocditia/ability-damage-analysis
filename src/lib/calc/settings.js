@@ -487,7 +487,6 @@ const SETTINGS = {
     LIVING_DEATH: 'living death',
     SWIFTNESS_OF_THE_AVIANSIE: 'swiftness of the avianse',
     ESSENCE_CORRUPTION: 'essence corruption',
-    CONFLAGRATE: 'conflagrate',
     WALKED_TARGET: 'walked target',
     CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
     CHAOS_ROAR: 'chaos roar',

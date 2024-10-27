@@ -395,31 +395,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        slot: 'body',
-        style: 'hybrid'
-    },
-    'none/tank': {
-        'necromancy strength': 0,
-        'magic strength': 0,
-        'melee strength': 0,
-        'ranged strength': 0,
-        slot: 'legs',
-        style: 'hybrid'
-    },
-    'none/tank': {
-        'necromancy strength': 0,
-        'magic strength': 0,
-        'melee strength': 0,
-        'ranged strength': 0,
-        slot: 'boots',
-        style: 'hybrid'
-    },
-    'none/tank': {
-        'necromancy strength': 0,
-        'magic strength': 0,
-        'melee strength': 0,
-        'ranged strength': 0,
-        slot: 'gloves',
+        slot: 'not used',
         style: 'hybrid'
     },
     'crown of the first necromancer': {
@@ -783,14 +759,6 @@ const armour = {
         style: 'hybrid'
     },
     'scripture of jas': {
-        'necromancy strength': 8,
-        'magic strength': 8,
-        'melee strength': 8,
-        'ranged strength': 8,
-        slot: 'pocket',
-        style: 'hybrid'
-    },
-    'scripture of amascut': {
         'necromancy strength': 8,
         'magic strength': 8,
         'melee strength': 8,
