@@ -134,7 +134,7 @@
 							<img class="effect-icon" src="google_icons/discord-blue.svg" alt="" />
 							<li class="block transition-all duration-75 relative">
 								<a
-									href="{base}https://discord.gg/rsanalysis"
+									href="https://discord.gg/rsanalysis"
 									class="py-2 font-normal text-xl hover:text-link"
 									title=""
 								>
@@ -202,7 +202,7 @@
 						</div>
 						<div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
 							<div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
-								<a href="{base}https://discord.gg/BGjvs8Y28n">
+								<a href="https://discord.gg/BGjvs8Y28n">
 									<div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
 										<img src="{base}/contributors/dolf.webp" alt="" />
 									</div>
@@ -230,15 +230,15 @@
 						<div class="container mx-auto pb-5">
 							<div>
 								<h1 class="sm:text-2xl pb-2 uppercase font-bold mb-0">Join us on discord</h1>
-								<a href="{base}https://discord.gg/rsanalysis">
+								<a href="https://discord.gg/rsanalysis">
 									<img class="w-7/8 sm:w-1/3 pb-2" src="{base}/logo.png" alt="" />
 								</a>
 								<div class="flex flex-row items-center">
-									<a href="{base}https://discord.gg/rsanalysis">
+									<a href="https://discord.gg/rsanalysis">
 										<img class="w-auto mr-4" src="{base}/google_icons/discord-blue.svg" alt="" />
 									</a>
 									<a
-										href="{base}https://discord.gg/rsanalysis"
+										href="https://discord.gg/rsanalysis"
 										class="py-2 font-normal text-xl hover:text-link"
 										title=""
 									>
@@ -251,13 +251,13 @@
 						<div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
 							<div class="effect-container">
 								<div class="card-icon rounded-full bg-black overflow-hidden mb-3">
-									<a href="{base}https://discord.gg/pvme">
+									<a href="https://discord.gg/pvme">
 										<img src="{base}/contributors/pvme.jpeg" alt="" />
 									</a>
 								</div>
 								<li class="block transition-all duration-75 relative">
 									<a
-										href="{base}https://discord.gg/pvme"
+										href="https://discord.gg/pvme"
 										class="py-2 font-normal text-xl hover:text-link"
 										title=""
 									>
@@ -267,13 +267,13 @@
 							</div>
 							<div class="effect-container">
 								<div class="card-icon rounded-full bg-black overflow-hidden mb-3">
-									<a href="{base}https://discord.gg/BGjvs8Y28n">
+									<a href="https://discord.gg/BGjvs8Y28n">
 										<img src="{base}/contributors/rsmath.png" alt="" />
 									</a>
 								</div>
 								<li class="block transition-all duration-75 relative">
 									<a
-										href="{base}https://discord.gg/BGjvs8Y28n"
+										href="https://discord.gg/BGjvs8Y28n"
 										class="py-2 font-normal text-xl hover:text-link"
 										title=""
 									>
