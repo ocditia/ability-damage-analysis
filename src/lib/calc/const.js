@@ -35,18 +35,46 @@ const weapons = {
 		classification: 'none'
 	},
 	'inquisitor staff': {
-		style: 'magic',
+		'style': 'magic',
 		'weapon type': 'two-hand',
-		tier: 80,
-		type: 'staff',
-		classification: 'none'
+		'tier': 80,
+		'type': 'staff',
+		'classification': 'none'
 	},
 	'inquisitor staff+': {
-		style: 'magic',
+		'style': 'magic',
 		'weapon type': 'two-hand',
-		tier: 80,
-		type: 'staff',
-		classification: 'none'
+		'tier': 80,
+		'type': 'staff',
+		'classification': 'none'
+	},
+	'terrasaur maul': {
+		'style': 'melee',
+		'weapon type': 'two-hand',
+		'tier': 80,
+		'type': 'none',
+		'classification': 'none'
+	},
+	'terrasaur maul+': {
+		'style': 'melee',
+		'weapon type': 'two-hand',
+		'tier': 80,
+		'type': 'none',
+		'classification': 'none'
+	},
+	'hexhunter bow': {
+		'style': 'ranged',
+		'weapon type': 'two-hand',
+		'tier': 80,
+		'type': 'bow',
+		'classification': 'none'
+	},
+	'hexhunter bow+': {
+		'style': 'ranged',
+		'weapon type': 'two-hand',
+		'tier': 80,
+		'type': 'bow',
+		'classification': 'none'
 	},
 	'bow of the last guardian': {
 		style: 'ranged',
@@ -55,10 +83,10 @@ const weapons = {
 		type: 'bow',
 		classification: 'none'
 	},
-	omniguard: {
+	'omniguard': {
 		style: 'necromancy',
 		'weapon type': 'main-hand',
-		tier: 95,
+		'tier': 95,
 		type: 'armguard',
 		classification: 'none'
 	},
@@ -68,7 +96,59 @@ const weapons = {
 		tier: 95,
 		type: 'conduit',
 		classification: 'none'
-	}
+	},
+	'custom oh': {
+		'style': 'hybrid',
+		'weapon type': 'off-hand',
+		'tier': 0,
+	},
+	'custom th': {
+		'style': 'hybrid',
+		'weapon type': 'two-hand',
+		'tier': 0,
+	},
+	'roar of awakening': {
+		'style': 'magic',
+		'weapon type': 'main-hand',
+		'tier': 95,
+		'type': 'wand',
+		'classification': 'none',
+	},
+	'ode to deceit': {
+		'style': 'magic',
+		'weapon type': 'off-hand',
+		'tier': 95,
+		'type': 'orb',
+		'classification': 'none',
+	},
+	'dark shard of leng': {
+		'style': 'melee',
+		'weapon type': 'main-hand',
+		'tier': 95,
+		'type': 'none',
+		'classification': 'none',
+	},
+	'dark sliver of leng': {
+		'style': 'melee',
+		'weapon type': 'off-hand',
+		'tier': 95,
+		'type': 'none',
+		'classification': 'none',
+	},
+	'dark ice shard': {
+		'style': 'melee',
+		'weapon type': 'main-hand',
+		'tier': 88,
+		'type': 'none',
+		'classification': 'none',
+	},
+	'dark ice sliver': {
+		'style': 'melee',
+		'weapon type': 'off-hand',
+		'tier': 88,
+		'type': 'none',
+		'classification': 'none',
+	},
 };
 
 const gear = {
@@ -294,7 +374,7 @@ const armour = {
 		slot: 'legs',
 		style: 'hybrid'
 	},
-	'deathtouch braclet': {
+	'deathtouch bracelet': {
 		'necromancy strength': 14.5,
 		'magic strength': 14.5,
 		'melee strength': 14.5,
@@ -302,7 +382,7 @@ const armour = {
 		slot: 'helmet',
 		style: 'hybrid'
 	},
-	'none/tank': {
+	'none': {
 		'necromancy strength': 0,
 		'magic strength': 0,
 		'melee strength': 0,
@@ -654,7 +734,7 @@ const armour = {
 		slot: 'cape',
 		style: 'melee'
 	},
-	eof: {
+	'essence of finality amulet': {
 		'necromancy strength': 56,
 		'magic strength': 56,
 		'melee strength': 56,
@@ -662,7 +742,7 @@ const armour = {
 		slot: 'necklace',
 		style: 'hybrid'
 	},
-	'eof (or)': {
+	'essence of finality amulet (or)': {
 		'necromancy strength': 59,
 		'magic strength': 59,
 		'melee strength': 59,
@@ -715,6 +795,30 @@ const armour = {
 		'magic strength': 8,
 		'melee strength': 8,
 		'ranged strength': 8,
+		slot: 'pocket',
+		style: 'hybrid'
+	},
+	'scripture of amascut': {
+		'necromancy strength': 8,
+		'magic strength': 8,
+		'melee strength': 8,
+		'ranged strength': 8,
+		slot: 'pocket',
+		style: 'hybrid'
+	},
+	'gwd3 scripture': {
+		'necromancy strength': 8,
+		'magic strength': 8,
+		'melee strength': 8,
+		'ranged strength': 8,
+		slot: 'pocket',
+		style: 'hybrid'
+	},
+	'illuminated god book': {
+		'necromancy strength': 7,
+		'magic strength': 7,
+		'melee strength': 7,
+		'ranged strength': 7,
 		slot: 'pocket',
 		style: 'hybrid'
 	},
@@ -782,7 +886,8 @@ const armour = {
 		slot: 'ring',
 		style: 'hybrid'
 	},
-	'channlers ring': {
+	// done till here
+	'channelers ring': {
 		'necromancy strength': 0,
 		'magic strength': 30.4,
 		'melee strength': 0,
@@ -860,30 +965,6 @@ const armour = {
 		'melee strength': 0,
 		'ranged strength': 0,
 		slot: 'necklace',
-		style: 'hybrid'
-	},
-	none: {
-		'necromancy strength': 0,
-		'magic strength': 0,
-		'melee strength': 0,
-		'ranged strength': 0,
-		slot: 'necklace',
-		style: 'hybrid'
-	},
-	'tank/none': {
-		'necromancy strength': 0,
-		'magic strength': 0,
-		'melee strength': 0,
-		'ranged strength': 0,
-		slot: 'ring',
-		style: 'hybrid'
-	},
-	'tank/none': {
-		'necromancy strength': 0,
-		'magic strength': 0,
-		'melee strength': 0,
-		'ranged strength': 0,
-		slot: 'cape',
 		style: 'hybrid'
 	},
 	'TokHaar-Kal-Ket': {
@@ -2354,7 +2435,10 @@ const abils = {
 		'ability classification': 'regular', // bleed, dot, burn, etc
 		'ability type': 'special attack', // basic, threshold, special attack, abilility (necromancy classification), ultimate
 		'main style': 'melee',
-		'damage type': 'melee'
+		'damage type': 'melee',
+		'hits': {
+			1: [ABILITIES.IGNEOUS_CLEAVE_INITIAL, ABILITIES.IGNEOUS_CLEAVE_BLEED]
+		}
 	},
 	[ABILITIES.QUICK_SMASH]: {
 		// ability name

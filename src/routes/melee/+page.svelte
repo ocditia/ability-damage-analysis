@@ -84,7 +84,7 @@
 				</div>
 			</div>
 
-			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-necro">
+			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-melee">
 				<ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
 					<li class="flex-grow me-2">
 						<button
@@ -166,6 +166,20 @@
 									setting={settings[SETTINGS.RAMPAGE]}
 									on:settingsUpdated={updateDamages}
 								/>
+								<Number
+									setting={settings[SETTINGS.PRIMORDIAL_ICE]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="10"
+									min="0"
+								/>
+								<Number
+									setting={settings[SETTINGS.IGNEOUS_EXTENSIOS]}
+									on:settingsUpdated={updateDamages}
+									step="1"
+									max="5"
+									min="0"
+								/>
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Additive</h5>
@@ -239,6 +253,10 @@
 							</div>
 							<div class="md:col-span-1">
 								<h5 class="uppercase font-bold text-lg text-center">Core</h5>
+								<Checkbox
+									setting={settings[SETTINGS.FROSTBLADES]}
+									on:settingsUpdated={updateDamages}
+								/>
 								<Checkbox
 									setting={settings[SETTINGS.BERSERKERS_FURY]}
 									on:settingsUpdated={updateDamages}
@@ -439,15 +457,36 @@
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Main_hand_slot.webp"
 								/>
+								<Number
+									setting={settings[SETTINGS.MH_TIER_CUSTOM]}
+									on:settingsUpdated={updateDamages}
+									max ="100"
+									step="1"
+									min="0"
+								/>
 								<Select
 									setting={settings[SETTINGS.MELEE_OH]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Off-hand_slot.webp"
 								/>
+								<Number
+									setting={settings[SETTINGS.OH_TIER_CUSTOM]}
+									on:settingsUpdated={updateDamages}
+									max ="100"
+									step="1"
+									min="0"
+								/>
 								<Select
 									setting={settings[SETTINGS.MELEE_TH]}
 									on:settingsUpdated={updateDamages}
 									img="/armour_icons/Off-hand_slot.webp"
+								/>
+								<Number
+									setting={settings[SETTINGS.TH_TIER_CUSTOM]}
+									on:settingsUpdated={updateDamages}
+									max ="100"
+									step="1"
+									min="0"
 								/>
 							</div>
 						{:else if tab === 'bosses'}

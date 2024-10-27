@@ -247,11 +247,11 @@ const abilities = {
 		calc: hit_damage_calculation,
 		icon: '/ability_icons/melee/30x30/slice.png'
 	},
-	[ABILITIES.IGNEOUS_CLEAVE]: {
-		title: 'Igenous cleave',
-		calc: hit_damage_calculation,
+	/*[ABILITIES.IGNEOUS_CLEAVE]: {
+		title: 'Igneous cleave',
+		calc: ability_damage_calculation,
 		icon: '/ability_icons/melee/30x30/slice.png'
-	},
+	},*/
 	[ABILITIES.QUICK_SMASH]: {
 		title: 'Quick smash',
 		calc: hit_damage_calculation,
