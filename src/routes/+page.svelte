@@ -1,3 +1,6 @@
+<script>
+	import { base } from '$app/paths';
+</script>
 <header
 	class="bg-center bg-cover relative z-10 h-64 md:h-96 mt-10 lg:mt-0"
 	style="background-image:url(/bg_main.png)"
@@ -25,7 +28,7 @@
 							</div>
 						</div>
 					</div>
-					<a href="/magic" class="flex flex-col group">
+					<a href="{base}/magic" class="flex flex-col group">
 						<div class="card border-b border-card-light">
 							<div
 								class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
@@ -35,7 +38,7 @@
 							</div>
 						</div>
 					</a>
-					<a href="/melee" class="flex flex-col group">
+					<a href="{base}/melee" class="flex flex-col group">
 						<div class="card border-b border-card-light">
 							<div
 								class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
@@ -45,7 +48,7 @@
 							</div>
 						</div>
 					</a>
-					<a href="/ranged" class="flex flex-col group">
+					<a href="{base}/ranged" class="flex flex-col group">
 						<div class="card border-b border-card-light">
 							<div
 								class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
@@ -55,7 +58,7 @@
 							</div>
 						</div>
 					</a>
-					<a href="/necromancy" class="flex flex-col group">
+					<a href="{base}/necromancy" class="flex flex-col group">
 						<div class="card">
 							<div
 								class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
@@ -71,7 +74,7 @@
 				<div class="flex flex-col">
 					<h1 class="main-header mb-6 ml-3">Most Recent Publication</h1>
 					<div class="card card-home">
-						<a href="/pdf/2024.001.pdf">
+						<a href="{base}/pdf/2024.001.pdf">
 							<div class="card-title hover:text-link">
 								Quantitative Analysis of RuneScape 3 Combat
 							</div>
@@ -103,7 +106,7 @@
 							<p>Comments:</p>
 							<p>Subjects: Statistics - Methods, Dynamic Programming, Game Theory</p>
 						</div>
-						<a href="/pdf/2024.001.pdf" class="hover:text-link">Open PDF</a>
+						<a href="{base}/pdf/2024.001.pdf" class="hover:text-link">Open PDF</a>
 					</div>
 				</div>
 			</div>
@@ -114,7 +117,7 @@
 						<div class="effect-container">
 							<img class="effect-icon" src="google_icons/book-blue.svg" alt="" />
 							<li class="block transition-all duration-75 relative">
-								<a href="/research" class="py-2 font-normal text-xl hover:text-link" title="">
+								<a href="{base}/research" class="py-2 font-normal text-xl hover:text-link" title="">
 									Research
 								</a>
 							</li>
@@ -122,7 +125,7 @@
 						<div class="effect-container">
 							<img class="effect-icon" src="google_icons/hammer-blue.svg" alt="" />
 							<li class="block transition-all duration-75 relative">
-								<a href="/projects" class="py-2 font-normal text-xl hover:text-link" title="">
+								<a href="{base}/projects" class="py-2 font-normal text-xl hover:text-link" title="">
 									Upcoming Projects
 								</a>
 							</li>
@@ -131,7 +134,7 @@
 							<img class="effect-icon" src="google_icons/discord-blue.svg" alt="" />
 							<li class="block transition-all duration-75 relative">
 								<a
-									href="https://discord.gg/rsanalysis"
+									href="{base}https://discord.gg/rsanalysis"
 									class="py-2 font-normal text-xl hover:text-link"
 									title=""
 								>
@@ -142,7 +145,7 @@
 						<div class="effect-container">
 							<img class="effect-icon" src="google_icons/faq-blue.svg" alt="" />
 							<li class="block transition-all duration-75 relative">
-								<a href="/faq" class="py-2 font-normal text-xl hover:text-link" title=""> FAQ </a>
+								<a href="{base}/faq" class="py-2 font-normal text-xl hover:text-link" title=""> FAQ </a>
 							</li>
 						</div>
 					</div>
@@ -199,7 +202,7 @@
 						</div>
 						<div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
 							<div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
-								<a href="https://discord.gg/BGjvs8Y28n">
+								<a href="{base}https://discord.gg/BGjvs8Y28n">
 									<div class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3">
 										<img src="/contributors/dolf.webp" alt="" />
 									</div>
@@ -227,15 +230,15 @@
 						<div class="container mx-auto pb-5">
 							<div>
 								<h1 class="sm:text-2xl pb-2 uppercase font-bold mb-0">Join us on discord</h1>
-								<a href="https://discord.gg/rsanalysis">
+								<a href="{base}https://discord.gg/rsanalysis">
 									<img class="w-7/8 sm:w-1/3 pb-2" src="/logo.png" alt="" />
 								</a>
 								<div class="flex flex-row items-center">
-									<a href="https://discord.gg/rsanalysis">
+									<a href="{base}https://discord.gg/rsanalysis">
 										<img class="w-auto mr-4" src="/google_icons/discord-blue.svg" alt="" />
 									</a>
 									<a
-										href="https://discord.gg/rsanalysis"
+										href="{base}https://discord.gg/rsanalysis"
 										class="py-2 font-normal text-xl hover:text-link"
 										title=""
 									>
@@ -248,13 +251,13 @@
 						<div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
 							<div class="effect-container">
 								<div class="card-icon rounded-full bg-black overflow-hidden mb-3">
-									<a href="https://discord.gg/pvme">
+									<a href="{base}https://discord.gg/pvme">
 										<img src="/contributors/pvme.jpeg" alt="" />
 									</a>
 								</div>
 								<li class="block transition-all duration-75 relative">
 									<a
-										href="https://discord.gg/pvme"
+										href="{base}https://discord.gg/pvme"
 										class="py-2 font-normal text-xl hover:text-link"
 										title=""
 									>
@@ -264,13 +267,13 @@
 							</div>
 							<div class="effect-container">
 								<div class="card-icon rounded-full bg-black overflow-hidden mb-3">
-									<a href="https://discord.gg/BGjvs8Y28n">
+									<a href="{base}https://discord.gg/BGjvs8Y28n">
 										<img src="/contributors/rsmath.png" alt="" />
 									</a>
 								</div>
 								<li class="block transition-all duration-75 relative">
 									<a
-										href="https://discord.gg/BGjvs8Y28n"
+										href="{base}https://discord.gg/BGjvs8Y28n"
 										class="py-2 font-normal text-xl hover:text-link"
 										title=""
 									>

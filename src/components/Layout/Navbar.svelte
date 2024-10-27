@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	let isDropdownOpen = false;
 	let isNavDropdownOpen = false;
 
@@ -13,7 +14,7 @@
 
 <nav class="bg-card border-gray-200">
 	<div class="responsive-container max-w-screen-xl flex flex-wrap items-center justify-between p-4">
-		<a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+		<a href="{base}/" class="flex items-center space-x-3 rtl:space-x-reverse">
 			<span class="text-2xl font-bold">RS Analysis</span>
 		</a>
 		<button
@@ -46,7 +47,7 @@
 			>
 				<li>
 					<a
-						href="/"
+						href="{base}/"
 						class="block py-2 px-3 rounded md:p-0 hover:text-link text-xl"
 						aria-current="page">Home</a
 					>
@@ -79,7 +80,7 @@
 						<ul class="pt-2" aria-labelledby="dropdownLargeButton">
 							<li>
 								<a
-									href="/magic"
+									href="{base}/magic"
 									class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
 								>
 									<img class="size-10 inline mr-1" src="/style_icons/magic.svg" alt="" /> Magic
@@ -87,7 +88,7 @@
 							</li>
 							<li>
 								<a
-									href="/melee"
+									href="{base}/melee"
 									class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
 								>
 									<img class="size-10 inline mr-1" src="/style_icons/melee.svg" alt="" /> Melee
@@ -95,7 +96,7 @@
 							</li>
 							<li>
 								<a
-									href="/ranged"
+									href="{base}/ranged"
 									class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
 								>
 									<img class="size-10 inline mr-1" src="/style_icons/ranged.svg" alt="" /> Ranged
@@ -103,7 +104,7 @@
 							</li>
 							<li>
 								<a
-									href="/necromancy"
+									href="{base}/necromancy"
 									class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
 								>
 									<img class="size-10 inline mr-1" src="/style_icons/necro.svg" alt="" /> Necromancy
@@ -114,7 +115,7 @@
 				</li>
 				<li>
 					<a
-						href="/research"
+						href="{base}/research"
 						class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
 						>Research</a
 					>
