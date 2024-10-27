@@ -1,8 +1,9 @@
 <script>
-	import Navbar from '$components/Layout/Navbar.svelte';
+	import { base } from '$app/paths';
 	import Header from '$components/Layout/Header.svelte';
+	import Navbar from '$components/Layout/Navbar.svelte';
+	import { SETTINGS, settingsConfig } from '$lib/calc/settings';
 	import { abilities } from '$lib/ranged/abilities';
-	import { settingsConfig, SETTINGS } from '$lib/calc/settings';
 	import Checkbox from '../../components/Settings/Checkbox.svelte';
 	import Number from '../../components/Settings/Number.svelte';
 	import Select from '../../components/Settings/Select.svelte';
@@ -53,7 +54,7 @@
 </script>
 
 <Navbar />
-<Header img="/range_background.png" text="Ranged Calculator" icon="/style_icons/ranged-white.svg" />
+<Header img="/range_background.png" text="Ranged Calculator" icon="{base}/style_icons/ranged-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
 	<div class="responsive-container">

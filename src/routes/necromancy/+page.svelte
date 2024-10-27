@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import Navbar from '$components/Layout/Navbar.svelte';
 	import Header from '$components/Layout/Header.svelte';
 	import { abilities } from '$lib/necromancy/abilities';
@@ -43,7 +44,7 @@
 <Header
 	img="/necro_background.png"
 	text="Necromancy Calculator"
-	icon="/style_icons/necro-white.svg"
+	icon="{base}/style_icons/necro-white.svg"
 />
 
 <div class="space-y-14 mt-10 z-20">

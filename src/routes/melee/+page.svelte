@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import Navbar from '$components/Layout/Navbar.svelte';
 	import Header from '$components/Layout/Header.svelte';
 	import { abilities } from '$lib/melee/abilities';
@@ -49,7 +50,7 @@
 </script>
 
 <Navbar />
-<Header img="/melee-background.png" text="Melee Calculator" icon="/style_icons/melee-white.svg" />
+<Header img="/melee-background.png" text="Melee Calculator" icon="{base}/style_icons/melee-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
 	<div class="responsive-container">

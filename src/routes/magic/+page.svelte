@@ -1,4 +1,5 @@
 <script>
+	import { base } from '$app/paths';
 	import Navbar from '$components/Layout/Navbar.svelte';
 	import Header from '$components/Layout/Header.svelte';
 	import { abilities } from '$lib/magic/abilities';
@@ -49,7 +50,7 @@
 </script>
 
 <Navbar />
-<Header img="/magic_background.png" text="Magic Calculator" icon="/style_icons/magic-white.svg" />
+<Header img="/magic_background.png" text="Magic Calculator" icon="{base}/style_icons/magic-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
 	<div class="responsive-container">
