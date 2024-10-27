@@ -778,15 +778,15 @@ const settingsConfig = {
         label: 'Demon slayer Perk',
         default: false
     },
-    [SETTINGS.UNDEAD_SLAYER_SIGIL]: {
+    [SETTINGS.SLAYER_SIGIL_UNDEAD]: {
         label: 'Undead slayer Sigil',
         default: false
     },
-    [SETTINGS.DRAGON_SLAYER_SIGIL]: {
+    [SETTINGS.SLAYER_SIGIL_DRAGON]: {
         label: 'Dragon slayer Sigil',
         default: false
     },
-    [SETTINGS.DEMON_SLAYER_SIGIL]: {
+    [SETTINGS.SLAYER_SIGIL_DEMON]: {
         label: 'Demon slayer Sigil',
         default: false
     },
@@ -1050,7 +1050,7 @@ const settingsConfig = {
             { text: 'Moonstone amulet', value: SETTINGS.NECKLACE_VALUES.MOONSTONE },
             { text: 'AOS(or)', value: SETTINGS.NECKLACE_VALUES.AOSOR },
             { text: 'AOS', value: SETTINGS.NECKLACE_VALUES.AOS },
-            { text: 'Reaper(or)', value: SETTINGS.NECKLACE_VALUES.REAPEROR },
+            { text: 'Reaper(or)', value: SETTINGS.NECKLACE_VALUES.REAPEROR }, // TODO: fix missing reference for SETTINGS.REAPEROR and SETTINGS.REAPER
             { text: 'Reaper', value: SETTINGS.NECKLACE_VALUES.REAPER },
             { text: 'Salve (e)', value: SETTINGS.NECKLACE_VALUES.SALVEE },
             { text: 'Salve', value: SETTINGS.NECKLACE_VALUES.SALVE },

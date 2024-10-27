@@ -312,17 +312,17 @@
                                     img="/effect_icons/25px-Undead_Slayer.webp"
                                 />
                                 <Checkbox
-                                    setting={settings[SETTINGS.SLAYER_SIGIL]}
+                                    setting={settings[SETTINGS.SLAYER_SIGIL_UNDEAD]}
                                     on:settingsUpdated={updateDamages}
                                     img="/effect_icons/Undead_slayer_sigil_detail.png"
                                 />
                                 <Checkbox
-                                    setting={settings[SETTINGS.SLAYER_DRAGON]}
+                                    setting={settings[SETTINGS.SLAYER_SIGIL_DRAGON]}
                                     on:settingsUpdated={updateDamages}
                                     img="/effect_icons/Undead_slayer_sigil_detail.png"
                                 />
                                 <Checkbox
-                                    setting={settings[SETTINGS.SLAYER_DEMON]}
+                                    setting={settings[SETTINGS.SLAYER_SIGIL_DEMON]}
                                     on:settingsUpdated={updateDamages}
                                     img="/effect_icons/Undead_slayer_sigil_detail.png"
                                 />

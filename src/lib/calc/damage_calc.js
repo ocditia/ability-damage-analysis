@@ -131,8 +131,6 @@ function calc_base_ad(settings) {
     return base_AD;
 }
 
-function calc_levels(settings) {}
-
 function calc_weapon_tier(settings, hand) {
     const spell_tier = 999;
     let tier = 0;
@@ -302,7 +300,7 @@ function ability_specific_effects(settings, dmgObject) {
                 settings[SETTINGS.TARGET_DISABILITY] ===
                     SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
         ) {
-            dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.3);
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
         }
 
         // wrack and ruin bound
@@ -313,7 +311,7 @@ function ability_specific_effects(settings, dmgObject) {
                 settings[SETTINGS.TARGET_DISABILITY] ===
                     SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
         ) {
-            dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.6);
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.6);
         }
 
         // greater chain half damage
@@ -333,17 +331,17 @@ function ability_specific_effects(settings, dmgObject) {
                 settings['target disability'] === 'bound' ||
                 settings['target disability'] === 'stunned and bound')
         ) {
-            dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.4);
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
         }
 
         // slaughter walk
         if (settings['ability'] === 'slaughter' && settings['walked'] === true) {
-            dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 3);
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 3);
         }
 
         // punish low
         if (settings['ability'] === 'punish' && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
-            dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 2.5);
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2.5);
         }
     }
 
@@ -355,7 +353,7 @@ function ability_specific_effects(settings, dmgObject) {
                 settings['target disability'] === 'bound' ||
                 settings['target disability'] === 'stunned and bound')
         ) {
-            dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 1.3);
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
         }
     }
 
@@ -392,7 +390,7 @@ function set_min_var(settings, dmgObject) {
     if (abils[settings['ability']]['main style'] === 'magic') {
         // detonate
         if (settings['ability'] === ABILITIES.DETONATE) {
-            min_percent = min_percent + 0.45 * settings[SETTINGS.DETONATE];
+            min_percent = min_percent + 0.45 * settings[SETTINGS.DETONATE]; // TODO: fix missing reference for SETTINGS.DETONATE
             var_percent = var_percent + 0.1 * settings[SETTINGS.DETONATE];
         }
     }
@@ -530,7 +528,7 @@ function calc_additive_boosts(settings, dmgObject) {
             settings[SETTINGS.OH] && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW
         )
     ) {
-        void_pieces += 1;
+        void_pieces += 1; // TODO: use number of void pieces somewhere
     }
 
     // add damage bonus
@@ -724,7 +722,7 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
     // apply magic unique buffs
     if (abils[settings['ability']]['main style'] === 'magic') {
         // spellcaster gloves (proc based, so added later)
-        boost = boost;
+        // boost = boost; // useless self-assignment
     }
 
     // apply melee unique buffs
@@ -858,7 +856,7 @@ function calc_crit_damage(settings) {
 
     // smoke cloud
     if (settings[SETTINGS.SMOKE_CLOUD] === true) {
-        if (abils[settings['ability']]['main style'] == 'magic') {
+        if (abils[settings['ability']]['main style'] === 'magic') {
             crit_buff += 0.15;
         } else {
             crit_buff += 0.06;
@@ -1004,7 +1002,7 @@ function calc_on_npc(settings, dmgObject) {
         // mahjarrat aura
         if (
             settings[SETTINGS.AURA] === 'mahjarrat' &&
-            abils[settings['ability']]['damage type'] != 'spirit'
+            abils[settings['ability']]['damage type'] !== 'spirit'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.05);
         }
@@ -1206,7 +1204,7 @@ function calc_bloat(settings) {
         }
         bloat_dot[key] = calc_on_npc(settings, bloat_dot[key]);
     }
-    dmg = get_user_value(settings, bloat_dot);
+    const dmg = get_user_value(settings, bloat_dot);
     return 10 * dmg;
 }
 
@@ -1220,7 +1218,7 @@ function calc_deadshot_massacre(settings) {
         dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
     }
 
-    dmgObject = get_user_value(settings, dmgObject);
+    // dmgObject = get_user_value(settings, dmgObject); // TODO: remove if not needed
     return 1;
 }
 
@@ -1363,7 +1361,6 @@ function get_mean_no_crit(dmgObject) {
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === false) {
             let total = 0;
-            let prob = dmgObject[key]['probability'];
             for (let i = 0; i < dmgObject[key]['damage list'].length; i++) {
                 total += dmgObject[key]['damage list'][i];
             }
@@ -1379,7 +1376,6 @@ function get_mean_crit(dmgObject) {
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === true) {
             let total = 0;
-            let prob = dmgObject[key]['probability'];
             for (let i = 0; i < dmgObject[key]['damage list'].length; i++) {
                 total += dmgObject[key]['damage list'][i];
             }
@@ -1505,7 +1501,7 @@ function hit_damage_calculation(settings) {
     }
 
     // handle bloat logic
-    if (settings['ability'] === SETTINGS.BLOAT) {
+    if (settings['ability'] === SETTINGS.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
         total_damage += calc_bloat(settings);
         delete settings['bloat damage'];
     }
