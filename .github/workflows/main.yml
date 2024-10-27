@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set Node.js 18.13
+      - name: Set Node.js 23.1
         uses: actions/setup-node@v3
         with:
-          node-version: 18.13
+          node-version: 23.1.0
       - name: yarn install
         uses: borales/actions-yarn@v4
         with:
