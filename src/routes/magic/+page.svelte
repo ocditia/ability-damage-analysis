@@ -274,9 +274,12 @@
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Core</h5>
-                                <Checkbox
+                                <Number
                                     setting={settings[SETTINGS.BERSERKERS_FURY]}
                                     on:settingsUpdated={updateDamages}
+                                    step="0.5"
+                                    max="5.5"
+                                    min="0"
                                 />
                                 <Checkbox
                                     setting={settings[SETTINGS.SMOKE_CLOUD]}
