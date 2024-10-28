@@ -459,7 +459,7 @@ function calc_style_specific(settings, dmgObject) {
         }
 
         // ful arrows
-        if (settings['ammunition'] === 'ful arrows') {
+        if (settings['ammunition'] === SETTINGS.AMMO_VALUES.FUL_ARROWS) {
             dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.15);
             dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.15);
         }
