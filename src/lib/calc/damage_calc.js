@@ -18,11 +18,11 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * Math.floor(2.5 * settings[SETTINGS.MAGIC_LEVEL]) +
+                    0.5 * (Math.floor(2.5 * settings[SETTINGS.MAGIC_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
-                        )
+                        ))
                 );
             }
 
@@ -47,11 +47,11 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
+                    0.5 * (Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
-                        )
+                        ))
                 );
             }
 
@@ -77,11 +77,11 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
+                    0.5 * (Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
-                        )
+                        ))
                 );
             }
 
@@ -108,11 +108,11 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * Math.floor(2.5 * settings[SETTINGS.NECROMANCY_LEVEL]) +
+                    0.5 * (Math.floor(2.5 * settings[SETTINGS.NECROMANCY_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
-                        )
+                        ))
                 );
             }
 
@@ -830,6 +830,7 @@ function calc_core(settings, dmgObject, key) {
             if (!('bolg damage' in settings)) {
                 settings['bolg damage'] = create_object(settings);
             }
+            console.log("hey")
             settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
         }
 

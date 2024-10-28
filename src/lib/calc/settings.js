@@ -1408,15 +1408,15 @@ const settingsConfig = {
     },
     [SETTINGS.MH_TIER_CUSTOM]: {
         label: 'MH custom tier',
-        default: 0
+        default: 95
     },
     [SETTINGS.OH_TIER_CUSTOM]: {
         label: 'OH custom tier',
-        default: 0
+        default: 95
     },
     [SETTINGS.TH_TIER_CUSTOM]: {
         label: '2H custom tier',
-        default: 0
+        default: 95
     },
     [SETTINGS.TARGET_SIZE]: {
         label: 'Target size',
