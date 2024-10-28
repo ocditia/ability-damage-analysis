@@ -834,7 +834,7 @@ function calc_core(settings, dmgObject, key) {
         }
 
         // crits
-        if (dmgObject['crit'] === true && abils[settings['ability']]['crit effects'] === true) {
+        if (dmgObject[key]['crit'] === true && abils[settings['ability']]['crit effects'] === true) {
             dmgObject[key]['damage list'][i] = Math.floor(
                 dmgObject[key]['damage list'][i] * (1 + calc_crit_damage(settings))
             );
@@ -1343,6 +1343,7 @@ function get_user_value(settings, dmgObject) {
 }
 
 function get_mean_damage(dmgObject) {
+    console.log(dmgObject)
     let mean = 0;
     for (let key in dmgObject) {
         let total = 0;
