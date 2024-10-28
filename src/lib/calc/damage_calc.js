@@ -18,11 +18,11 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * Math.floor(2.5 * settings[SETTINGS.MAGIC_LEVEL]) +
+                    0.5 * (Math.floor(2.5 * settings[SETTINGS.MAGIC_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
-                        )
+                        ))
                 );
             }
 
@@ -47,11 +47,11 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
+                    0.5 * (Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
-                        )
+                        ))
                 );
             }
 
@@ -77,11 +77,11 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
+                    0.5 * (Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
-                        )
+                        ))
                 );
             }
 
@@ -108,11 +108,11 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * Math.floor(2.5 * settings[SETTINGS.NECROMANCY_LEVEL]) +
+                    0.5 * (Math.floor(2.5 * settings[SETTINGS.NECROMANCY_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
-                        )
+                        ))
                 );
             }
 
@@ -459,7 +459,7 @@ function calc_style_specific(settings, dmgObject) {
         }
 
         // ful arrows
-        if (settings['ammunition'] === 'ful arrows') {
+        if (settings['ammunition'] === SETTINGS.AMMO_VALUES.FUL_ARROWS) {
             dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.15);
             dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.15);
         }
@@ -821,7 +821,7 @@ function calc_core(settings, dmgObject, key) {
 
         // store damage into bolg
         if (
-            settings[SETTINGS.TH] === 'bolg' &&
+            settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
             (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 7 ||
                 (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 3 &&
@@ -834,7 +834,7 @@ function calc_core(settings, dmgObject, key) {
         }
 
         // crits
-        if (dmgObject['crit'] === true && abils[settings['ability']]['crit effects'] === true) {
+        if (dmgObject[key]['crit'] === true && abils[settings['ability']]['crit effects'] === true) {
             dmgObject[key]['damage list'][i] = Math.floor(
                 dmgObject[key]['damage list'][i] * (1 + calc_crit_damage(settings))
             );
@@ -983,18 +983,18 @@ function calc_on_npc(settings, dmgObject) {
 
         // zerk auras
         if (
-            settings[SETTINGS.AURA] === 'maniacal' &&
-            abils[settings['ability']]['main style'] === 'magic'
+            settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.MANIACAL &&
+            abils[settings['ability']]['damage type'] === 'magic'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
         } else if (
-            settings[SETTINGS.AURA] === 'berserk' &&
-            abils[settings['ability']]['main style'] === 'melee'
+            settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.BERSERKER &&
+            abils[settings['ability']]['damage type'] === 'melee'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
         } else if (
-            settings[SETTINGS.AURA] === 'reckless' &&
-            abils[settings['ability']]['main style'] === 'ranged'
+            settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.RECKLESS &&
+            abils[settings['ability']]['damage type'] === 'ranged'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
         }
@@ -1326,23 +1326,23 @@ function calc_soul_split_hit(hit, settings) {
 
 function get_user_value(settings, dmgObject) {
     if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN) {
-        return get_mean_damage(dmgObject);
+        return get_mean_damage(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN_NO_CRIT) {
-        return get_mean_no_crit(dmgObject);
+        return get_mean_no_crit(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN_CRIT) {
-        return get_mean_crit(dmgObject);
+        return get_mean_crit(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_NO_CRIT) {
-        return get_min_no_crit(dmgObject);
+        return get_min_no_crit(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_CRIT) {
-        return get_min_crit(dmgObject);
+        return get_min_crit(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_NO_CRIT) {
-        return get_max_no_crit(dmgObject);
+        return get_max_no_crit(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
-        return get_max_crit(dmgObject);
+        return get_max_crit(settings, dmgObject);
     }
 }
 
-function get_mean_damage(dmgObject) {
+function get_mean_damage(settings, dmgObject) {
     let mean = 0;
     for (let key in dmgObject) {
         let total = 0;
@@ -1356,7 +1356,7 @@ function get_mean_damage(dmgObject) {
     return Math.round(mean);
 }
 
-function get_mean_no_crit(dmgObject) {
+function get_mean_no_crit(settings, dmgObject) {
     let mean = 0;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === false) {
@@ -1371,7 +1371,11 @@ function get_mean_no_crit(dmgObject) {
     return Math.round(mean);
 }
 
-function get_mean_crit(dmgObject) {
+function get_mean_crit(settings, dmgObject) {
+    if (abils[settings['ability']]['crit effects'] === false) {
+        return get_mean_damage(settings, dmgObject);
+    }
+
     let mean = 0;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === true) {
@@ -1386,7 +1390,7 @@ function get_mean_crit(dmgObject) {
     return Math.round(mean);
 }
 
-function get_min_no_crit(dmgObject) {
+function get_min_no_crit(settings, dmgObject) {
     let min_hit = 100000000;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === false) {
@@ -1399,7 +1403,11 @@ function get_min_no_crit(dmgObject) {
     return min_hit;
 }
 
-function get_min_crit(dmgObject) {
+function get_min_crit(settings, dmgObject) {
+    if (abils[settings['ability']]['crit effects'] === false) {
+        return get_min_no_crit(settings, dmgObject);
+    }
+
     let min_hit = 100000000;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === true) {
@@ -1412,7 +1420,7 @@ function get_min_crit(dmgObject) {
     return min_hit;
 }
 
-function get_max_no_crit(dmgObject) {
+function get_max_no_crit(settings, dmgObject) {
     let max_hit = 0;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === false) {
@@ -1426,7 +1434,11 @@ function get_max_no_crit(dmgObject) {
     return max_hit;
 }
 
-function get_max_crit(dmgObject) {
+function get_max_crit(settings, dmgObject) {
+    if (abils[settings['ability']]['crit effects'] === false) {
+        return get_max_no_crit(settings, dmgObject);
+    }
+
     let max_hit = 0;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === true) {

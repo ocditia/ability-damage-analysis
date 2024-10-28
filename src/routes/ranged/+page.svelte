@@ -220,13 +220,6 @@
                                     max="3"
                                     min="0"
                                 />
-                                <Number
-                                    setting={settings[SETTINGS.GRAVITATE]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="20"
-                                    min="0"
-                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">
@@ -264,9 +257,12 @@
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Core</h5>
-                                <Checkbox
+                                <Number
                                     setting={settings[SETTINGS.BERSERKERS_FURY]}
                                     on:settingsUpdated={updateDamages}
+                                    step="0.5"
+                                    max="5.5"
+                                    min="0"
                                 />
                                 <Checkbox
                                     setting={settings[SETTINGS.SMOKE_CLOUD]}
@@ -391,6 +387,10 @@
                                     on:settingsUpdated={updateDamages}
                                     img="/armour_icons/Pocket_slot.webp"
                                 />
+                                <Select
+                                    setting={settings[SETTINGS.AURA]}
+                                    on:settingsUpdated={updateDamages}
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Perks</h5>
@@ -502,6 +502,10 @@
                                     max="100"
                                     step="1"
                                     min="0"
+                                />
+                                <Select
+                                    setting={settings[SETTINGS.AMMO]}
+                                    on:settingsUpdated={updateDamages}
                                 />
                             </div>
                         {:else if tab === 'bosses'}

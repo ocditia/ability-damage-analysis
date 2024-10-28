@@ -30,49 +30,50 @@ const SETTINGS = {
     PRAYER: 'prayer',
     MAGIC_PRAYER: 'magic prayer',
     MAGIC_PRAYER_VALUES: {
-        NONE: 'none',
-        RUINATION: 'ruination',
-        SORROW: 'sorrow',
-        LEECH_NECRO_STRENGTH_2: 'leech necromancy strength 2',
-        LEECH_NECRO_STRENGTH_4: 'leech necromancy strength 4',
-        LEECH_NECRO_STRENGTH_6: 'leech necromancy strength 6',
-        LEECH_NECRO_STRENGTH_8: 'leech necromancy strength 8',
-        SANCTITY: 'sanctity',
-        ACCELERATED_DECAY: 'accelerated decay',
-        HASTENED_DECAY: 'hastened decay',
-        DECAY: 'decay'
+        NONE: 'none magic',
+        AFFLICTION: 'affliction',
+        TORMENT: 'torment',
+        LEECH_MAGIC_STRENGTH_2: 'leech magic strength 2',
+        LEECH_MAGIC_STRENGTH_4: 'leech magic strength 4',
+        LEECH_MAGIC_STRENGTH_6: 'leech magic strength 6',
+        LEECH_MAGIC_STRENGTH_8: 'leech magic strength 8',
+        AUGURY: 'augury',
+        OVERCHARGE: 'overcharge',
+        SUPER_CHARGE: 'super charge',
+        CHARGE: 'charge'
     },
     RANGED_PRAYER: 'ranged prayer',
     RANGED_PRAYER_VALUES: {
-        NONE: 'none',
-        RUINATION: 'ruination',
-        SORROW: 'sorrow',
-        LEECH_NECRO_STRENGTH_2: 'leech necromancy strength 2',
-        LEECH_NECRO_STRENGTH_4: 'leech necromancy strength 4',
-        LEECH_NECRO_STRENGTH_6: 'leech necromancy strength 6',
-        LEECH_NECRO_STRENGTH_8: 'leech necromancy strength 8',
-        SANCTITY: 'sanctity',
-        ACCELERATED_DECAY: 'accelerated decay',
-        HASTENED_DECAY: 'hastened decay',
-        DECAY: 'decay'
+        NONE: 'none ranged',
+        DESOLATION: 'desolation',
+        ANGUISH: 'anguish',
+        LEECH_RANGED_STRENGTH_2: 'leech ranged strength 2',
+        LEECH_RANGED_STRENGTH_4: 'leech ranged strength 4',
+        LEECH_RANGED_STRENGTH_6: 'leech ranged strength 6',
+        LEECH_RANGED_STRENGTH_8: 'leech ranged strength 8',
+        RIGOUR: 'rigour',
+        OVERPOWERING_FORCE: 'overpowering force',
+        UNRELENTING_FORCE: 'unrelenting force',
+        UNSTOPPABLE_FORCE: 'unstoppable force'
     },
     MELEE_PRAYER: 'melee prayer',
     MELEE_PRAYER_VALUES: {
-        NONE: 'none',
-        RUINATION: 'ruination',
-        SORROW: 'sorrow',
-        LEECH_NECRO_STRENGTH_2: 'leech necromancy strength 2',
-        LEECH_NECRO_STRENGTH_4: 'leech necromancy strength 4',
-        LEECH_NECRO_STRENGTH_6: 'leech necromancy strength 6',
-        LEECH_NECRO_STRENGTH_8: 'leech necromancy strength 8',
-        SANCTITY: 'sanctity',
-        ACCELERATED_DECAY: 'accelerated decay',
-        HASTENED_DECAY: 'hastened decay',
-        DECAY: 'decay'
+        NONE: 'none melee',
+        MALEVOLENCE: 'malevolence',
+        TURMOIL: 'turmoil',
+        LEECH_MELEE_STRENGTH_2: 'leech melee strength 2',
+        LEECH_MELEE_STRENGTH_4: 'leech melee strength 4',
+        LEECH_MELEE_STRENGTH_6: 'leech melee strength 6',
+        LEECH_MELEE_STRENGTH_8: 'leech melee strength 8',
+        PIETY: 'piety',
+        CHIVALRY: 'chivalry',
+        ULTIMATE_STRENGTH: 'ultimate strength',
+        SUPERHUMAN_STRENGTH: 'superhuman strength',
+        BURST_OF_STRENGTH: 'burst of strength'
     },
     NECRO_PRAYER: 'necromancy prayer',
     NECRO_PRAYER_VALUES: {
-        NONE: 'none',
+        NONE: 'none necro',
         RUINATION: 'ruination',
         SORROW: 'sorrow',
         LEECH_NECRO_STRENGTH_2: 'leech necromancy strength 2',
@@ -118,7 +119,10 @@ const SETTINGS = {
     AURA_VALUES: {
         NONE: 'none',
         MAHJARRAT: 'mahjarrat',
-        EQUILIBRIUM: 'equilibrium'
+        EQUILIBRIUM: 'equilibrium',
+        RECKLESS: 'reckless',
+        BERSERKER: 'berserker',
+        MANIACAL: 'maniacal',
     },
     VULN: 'vulnerability',
     VULN_VALUES: {
@@ -568,89 +572,90 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_PRAYER]: {
         label: 'Prayer',
-        default: SETTINGS.MAGIC_PRAYER_VALUES.RUINATION,
+        default: SETTINGS.MAGIC_PRAYER_VALUES.AFFLICTION,
         options: [
             { text: 'None', value: SETTINGS.MAGIC_PRAYER_VALUES.NONE },
-            { text: 'Ruination', value: SETTINGS.MAGIC_PRAYER_VALUES.RUINATION },
-            { text: 'Sorrow', value: SETTINGS.MAGIC_PRAYER_VALUES.SORROW },
+            { text: 'Affliction', value: SETTINGS.MAGIC_PRAYER_VALUES.AFFLICTION },
+            { text: 'Torment', value: SETTINGS.MAGIC_PRAYER_VALUES.TORMENT },
             {
-                text: 'Leech necromancy strength 2',
-                value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_NECRO_STRENGTH_2
+                text: 'Leech magic strength 2',
+                value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_MAGIC_STRENGTH_2
             },
             {
-                text: 'Leech necromancy strength 4',
-                value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_NECRO_STRENGTH_4
+                text: 'Leech magic strength 4',
+                value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_MAGIC_STRENGTH_4
             },
             {
-                text: 'Leech necromancy strength 6',
-                value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_NECRO_STRENGTH_6
+                text: 'Leech magic strength 6',
+                value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_MAGIC_STRENGTH_6
             },
             {
-                text: 'Leech necromancy strength 8',
-                value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_NECRO_STRENGTH_8
+                text: 'Leech magic strength 8',
+                value: SETTINGS.MAGIC_PRAYER_VALUES.LEECH_MAGIC_STRENGTH_8
             },
-            { text: 'Sanctity', value: SETTINGS.MAGIC_PRAYER_VALUES.SANCTITY },
-            { text: 'Accelerated Decay', value: SETTINGS.MAGIC_PRAYER_VALUES.ACCELERATED_DECAY },
-            { text: 'Hastened Decay', value: SETTINGS.MAGIC_PRAYER_VALUES.HASTENED_DECAY },
-            { text: 'Decay', value: SETTINGS.MAGIC_PRAYER_VALUES.DECAY }
+            { text: 'Augury', value: SETTINGS.MAGIC_PRAYER_VALUES.AUGURY },
+            { text: 'Overcharge', value: SETTINGS.MAGIC_PRAYER_VALUES.OVERCHARGE },
+            { text: 'Super charge', value: SETTINGS.MAGIC_PRAYER_VALUES.SUPER_CHARGE },
+            { text: 'Charge', value: SETTINGS.MAGIC_PRAYER_VALUES.CHARGE }
         ]
     },
     [SETTINGS.RANGED_PRAYER]: {
         label: 'Prayer',
-        default: SETTINGS.RANGED_PRAYER_VALUES.RUINATION,
+        default: SETTINGS.RANGED_PRAYER_VALUES.DESOLATION,
         options: [
             { text: 'None', value: SETTINGS.RANGED_PRAYER_VALUES.NONE },
-            { text: 'Ruination', value: SETTINGS.RANGED_PRAYER_VALUES.RUINATION },
-            { text: 'Sorrow', value: SETTINGS.RANGED_PRAYER_VALUES.SORROW },
+            { text: 'Desolation', value: SETTINGS.RANGED_PRAYER_VALUES.DESOLATION },
+            { text: 'Anguish', value: SETTINGS.RANGED_PRAYER_VALUES.ANGUISH},
             {
-                text: 'Leech necromancy strength 2',
-                value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_NECRO_STRENGTH_2
+                text: 'Leech ranged strength 2',
+                value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_RANGED_STRENGTH_2
             },
             {
-                text: 'Leech necromancy strength 4',
-                value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_NECRO_STRENGTH_4
+                text: 'Leech ranged strength 4',
+                value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_RANGED_STRENGTH_4
             },
             {
-                text: 'Leech necromancy strength 6',
-                value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_NECRO_STRENGTH_6
+                text: 'Leech ranged strength 6',
+                value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_RANGED_STRENGTH_6
             },
             {
-                text: 'Leech necromancy strength 8',
-                value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_NECRO_STRENGTH_8
+                text: 'Leech ranged strength 8',
+                value: SETTINGS.RANGED_PRAYER_VALUES.LEECH_RANGED_STRENGTH_8
             },
-            { text: 'Sanctity', value: SETTINGS.RANGED_PRAYER_VALUES.SANCTITY },
-            { text: 'Accelerated Decay', value: SETTINGS.RANGED_PRAYER_VALUES.ACCELERATED_DECAY },
-            { text: 'Hastened Decay', value: SETTINGS.RANGED_PRAYER_VALUES.HASTENED_DECAY },
-            { text: 'Decay', value: SETTINGS.RANGED_PRAYER_VALUES.DECAY }
+            { text: 'Rigour', value: SETTINGS.RANGED_PRAYER_VALUES.RIGOUR },
+            { text: 'Overpowering force', value: SETTINGS.RANGED_PRAYER_VALUES.OVERPOWERING_FORCE },
+            { text: 'Unrelenting force', value: SETTINGS.RANGED_PRAYER_VALUES.UNRELENTING_FORCE },
+            { text: 'Unstoppable force', value: SETTINGS.RANGED_PRAYER_VALUES.UNSTOPPABLE_FORCE }
         ]
     },
     [SETTINGS.MELEE_PRAYER]: {
         label: 'Prayer',
-        default: SETTINGS.MELEE_PRAYER_VALUES.RUINATION,
+        default: SETTINGS.MELEE_PRAYER_VALUES.MALEVOLENCE,
         options: [
             { text: 'None', value: SETTINGS.MELEE_PRAYER_VALUES.NONE },
-            { text: 'Ruination', value: SETTINGS.MELEE_PRAYER_VALUES.RUINATION },
-            { text: 'Sorrow', value: SETTINGS.MELEE_PRAYER_VALUES.SORROW },
+            { text: 'Malevolence', value: SETTINGS.MELEE_PRAYER_VALUES.MALEVOLENCE },
+            { text: 'Turmoil', value: SETTINGS.MELEE_PRAYER_VALUES.TURMOIL },
             {
-                text: 'Leech necromancy strength 2',
-                value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_NECRO_STRENGTH_2
+                text: 'Leech melee strength 2',
+                value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_MELEE_STRENGTH_2
             },
             {
-                text: 'Leech necromancy strength 4',
-                value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_NECRO_STRENGTH_4
+                text: 'Leech melee strength 4',
+                value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_MELEE_STRENGTH_4
             },
             {
-                text: 'Leech necromancy strength 6',
-                value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_NECRO_STRENGTH_6
+                text: 'Leech melee strength 6',
+                value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_MELEE_STRENGTH_6
             },
             {
-                text: 'Leech necromancy strength 8',
-                value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_NECRO_STRENGTH_8
+                text: 'Leech melee strength 8',
+                value: SETTINGS.MELEE_PRAYER_VALUES.LEECH_MELEE_STRENGTH_8
             },
-            { text: 'Sanctity', value: SETTINGS.MELEE_PRAYER_VALUES.SANCTITY },
-            { text: 'Accelerated Decay', value: SETTINGS.MELEE_PRAYER_VALUES.ACCELERATED_DECAY },
-            { text: 'Hastened Decay', value: SETTINGS.MELEE_PRAYER_VALUES.HASTENED_DECAY },
-            { text: 'Decay', value: SETTINGS.MELEE_PRAYER_VALUES.DECAY }
+            { text: 'Piety', value: SETTINGS.MELEE_PRAYER_VALUES.PIETY },
+            { text: 'Chivalry', value: SETTINGS.MELEE_PRAYER_VALUES.CHIVALRY },
+            { text: 'Ultimate strength', value: SETTINGS.MELEE_PRAYER_VALUES.ULTIMATE_STRENGTH },
+            { text: 'Superhuman strength', value: SETTINGS.MELEE_PRAYER_VALUES.SUPERHUMAN_STRENGTH },
+            { text: 'Burst of strength', value: SETTINGS.MELEE_PRAYER_VALUES.BURST_OF_STRENGTH }
         ]
     },
     [SETTINGS.NECRO_PRAYER]: {
@@ -745,7 +750,10 @@ const settingsConfig = {
         options: [
             { text: 'None', value: SETTINGS.AURA_VALUES.NONE },
             { text: 'Mahjarrat', value: SETTINGS.AURA_VALUES.MAHJARRAT },
-            { text: 'Equilibrium', value: SETTINGS.AURA_VALUES.EQUILIBRIUM }
+            { text: 'Equilibrium', value: SETTINGS.AURA_VALUES.EQUILIBRIUM },
+            { text: 'Reckless', value: SETTINGS.AURA_VALUES.RECKLESS },
+            { text: 'Berserker', value: SETTINGS.AURA_VALUES.BERSERKER },
+            { text: 'Maniacal', value: SETTINGS.AURA_VALUES.MANIACAL },
         ]
     },
     [SETTINGS.VULN]: {
@@ -1408,15 +1416,15 @@ const settingsConfig = {
     },
     [SETTINGS.MH_TIER_CUSTOM]: {
         label: 'MH custom tier',
-        default: 0
+        default: 95
     },
     [SETTINGS.OH_TIER_CUSTOM]: {
         label: 'OH custom tier',
-        default: 0
+        default: 95
     },
     [SETTINGS.TH_TIER_CUSTOM]: {
         label: '2H custom tier',
-        default: 0
+        default: 95
     },
     [SETTINGS.TARGET_SIZE]: {
         label: 'Target size',

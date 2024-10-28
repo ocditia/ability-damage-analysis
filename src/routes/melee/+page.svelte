@@ -274,9 +274,12 @@
                                     setting={settings[SETTINGS.FROSTBLADES]}
                                     on:settingsUpdated={updateDamages}
                                 />
-                                <Checkbox
+                                <Number
                                     setting={settings[SETTINGS.BERSERKERS_FURY]}
                                     on:settingsUpdated={updateDamages}
+                                    step="0.5"
+                                    max="5.5"
+                                    min="0"
                                 />
                                 <Checkbox
                                     setting={settings[SETTINGS.SMOKE_CLOUD]}
@@ -400,6 +403,10 @@
                                     setting={settings[SETTINGS.POCKET]}
                                     on:settingsUpdated={updateDamages}
                                     img="/armour_icons/Pocket_slot.webp"
+                                />
+                                <Select
+                                    setting={settings[SETTINGS.AURA]}
+                                    on:settingsUpdated={updateDamages}
                                 />
                             </div>
                             <div class="md:col-span-1">

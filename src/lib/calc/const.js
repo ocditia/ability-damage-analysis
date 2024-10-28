@@ -4486,214 +4486,235 @@ const abils = {
 };
 
 const prayers = {
-    charge: {
-        boost: 0.02,
-        style: 'magic',
-        category: 'single-stat boosting'
+    'charge': {
+        'boost': 0.02,
+        'style': 'magic',
+        'category': 'single-stat boosting'
     },
     'super charge': {
-        boost: 0.04,
-        style: 'magic',
-        category: 'single-stat boosting'
+        'boost': 0.04,
+        'style': 'magic',
+        'category': 'single-stat boosting'
     },
-    overcharge: {
-        boost: 0.06,
-        style: 'magic',
-        category: 'single-stat boosting'
+    'overcharge': {
+        'boost': 0.06,
+        'style': 'magic',
+        'category': 'single-stat boosting'
     },
-    augury: {
-        boost: 0.08,
-        style: 'magic',
-        category: 'multi-stat boosting'
+    'augury': {
+        'boost': 0.08,
+        'style': 'magic',
+        'category': 'multi-stat boosting'
     },
     'leech magic strength 2': {
-        boost: 0.02,
-        style: 'magic',
-        category: 'leech curse'
+        'boost': 0.02,
+        'style': 'magic',
+        'category': 'leech curse'
     },
     'leech magic strength 4': {
-        boost: 0.04,
-        style: 'magic',
-        category: 'leech curse'
+        'boost': 0.04,
+        'style': 'magic',
+        'category': 'leech curse'
     },
     'leech magic strength 6': {
-        boost: 0.06,
-        style: 'magic',
-        category: 'leech curse'
+        'boost': 0.06,
+        'style': 'magic',
+        'category': 'leech curse'
     },
     'leech magic strength 8': {
-        boost: 0.08,
-        style: 'magic',
-        category: 'leech curse'
+        'boost': 0.08,
+        'style': 'magic',
+        'category': 'leech curse'
     },
-    torment: {
-        boost: 0.1,
-        style: 'magic',
-        category: 'multi-stat boosting'
+    'torment': {
+        'boost': 0.1,
+        'style': 'magic',
+        'category': 'multi-stat boosting'
     },
-    affliction: {
-        boost: 0.12,
-        style: 'magic',
-        category: 'multi-stat boosting'
+    'affliction': {
+        'boost': 0.12,
+        'style': 'magic',
+        'category': 'multi-stat boosting'
     },
 
     'burst of strength': {
-        boost: 0.02,
-        style: 'melee',
-        category: 'single-stat boosting'
+        'boost': 0.02,
+        'style': 'melee',
+        'category': 'single-stat boosting'
     },
     'superhuman strength': {
-        boost: 0.04,
-        style: 'melee',
-        category: 'single-stat boosting'
+        'boost': 0.04,
+        'style': 'melee',
+        'category': 'single-stat boosting'
     },
     'ultimate strength': {
-        boost: 0.06,
-        style: 'melee',
-        category: 'single-stat boosting'
+        'boost': 0.06,
+        'style': 'melee',
+        'category': 'single-stat boosting'
     },
-    chivalry: {
-        boost: 0.07,
-        style: 'melee',
-        category: 'multi-stat boosting'
+    'chivalry': {
+        'boost': 0.07,
+        'style': 'melee',
+        'category': 'multi-stat boosting'
     },
-    piety: {
-        boost: 0.08,
-        style: 'melee',
-        category: 'multi-stat boosting'
+    'piety': {
+        'boost': 0.08,
+        'style': 'melee',
+        'category': 'multi-stat boosting'
     },
     'leech melee strength 2': {
-        boost: 0.02,
-        style: 'melee',
-        category: 'leech curse'
+        'boost': 0.02,
+        'style': 'melee',
+        'category': 'leech curse'
     },
     'leech melee strength 4': {
-        boost: 0.04,
-        style: 'melee',
-        category: 'leech curse'
+        'boost': 0.04,
+        'style': 'melee',
+        'category': 'leech curse'
     },
     'leech melee strength 6': {
-        boost: 0.06,
-        style: 'melee',
-        category: 'leech curse'
+        'boost': 0.06,
+        'style': 'melee',
+        'category': 'leech curse'
     },
     'leech melee strength 8': {
-        boost: 0.08,
-        style: 'melee',
-        category: 'leech curse'
+        'boost': 0.08,
+        'style': 'melee',
+        'category': 'leech curse'
     },
-    turmoil: {
-        boost: 0.1,
-        style: 'melee',
-        category: 'multi-stat boosting'
+    'turmoil': {
+        'boost': 0.1,
+        'style': 'melee',
+        'category': 'multi-stat boosting'
     },
-    malevolence: {
-        boost: 0.12,
-        style: 'melee',
-        category: 'multi-stat boosting'
+    'malevolence': {
+        'boost': 0.12,
+        'style': 'melee',
+        'category': 'multi-stat boosting'
     },
 
     'unstoppable force': {
-        boost: 0.02,
-        style: 'ranged',
-        category: 'single-stat boosting'
+        'boost': 0.02,
+        'style': 'ranged',
+        'category': 'single-stat boosting'
     },
     'unrelenting force': {
-        boost: 0.04,
-        style: 'ranged',
-        category: 'single-stat boosting'
+        'boost': 0.04,
+        'style': 'ranged',
+        'category': 'single-stat boosting'
     },
     'overpowering force': {
-        boost: 0.06,
-        style: 'ranged',
-        category: 'single-stat boosting'
+        'boost': 0.06,
+        'style': 'ranged',
+        'category': 'single-stat boosting'
     },
-    rigour: {
-        boost: 0.08,
-        style: 'ranged',
-        category: 'multi-stat boosting'
+    'rigour': {
+        'boost': 0.08,
+        'style': 'ranged',
+        'category': 'multi-stat boosting'
     },
     'leech ranged strength 2': {
-        boost: 0.02,
-        style: 'ranged',
-        category: 'leech curse'
+        'boost': 0.02,
+        'style': 'ranged',
+        'category': 'leech curse'
     },
     'leech ranged strength 4': {
-        boost: 0.04,
-        style: 'ranged',
-        category: 'leech curse'
+        'boost': 0.04,
+        'style': 'ranged',
+        'category': 'leech curse'
     },
     'leech ranged strength 6': {
-        boost: 0.06,
-        style: 'ranged',
-        category: 'leech curse'
+        'boost': 0.06,
+        'style': 'ranged',
+        'category': 'leech curse'
     },
     'leech ranged strength 8': {
-        boost: 0.08,
-        style: 'ranged',
-        category: 'leech curse'
+        'boost': 0.08,
+        'style': 'ranged',
+        'category': 'leech curse'
     },
-    anguish: {
-        boost: 0.1,
-        style: 'ranged',
-        category: 'multi-stat boosting'
+    'anguish': {
+        'boost': 0.1,
+        'style': 'ranged',
+        'category': 'multi-stat boosting'
     },
-    desolation: {
-        boost: 0.12,
-        style: 'ranged',
-        category: 'multi-stat boosting'
+    'desolation': {
+        'boost': 0.12,
+        'style': 'ranged',
+        'category': 'multi-stat boosting'
     },
 
-    decay: {
-        boost: 0.02,
-        style: 'necromancy',
-        category: 'single-stat boosting'
+    'decay': {
+        'boost': 0.02,
+        'style': 'necromancy',
+        'category': 'single-stat boosting'
     },
     'hastened decay': {
-        boost: 0.04,
-        style: 'necromancy',
-        category: 'single-stat boosting'
+        'boost': 0.04,
+        'style': 'necromancy',
+        'category': 'single-stat boosting'
     },
     'accelerated decay': {
-        boost: 0.06,
-        style: 'necromancy',
-        category: 'single-stat boosting'
+        'boost': 0.06,
+        'style': 'necromancy',
+        'category': 'single-stat boosting'
     },
-    sanctity: {
-        boost: 0.08,
-        style: 'necromancy',
-        category: 'multi-stat boosting'
+    'sanctity': {
+        'boost': 0.08,
+        'style': 'necromancy',
+        'category': 'multi-stat boosting'
     },
     'leech necromancy strength 2': {
-        boost: 0.02,
-        style: 'necromancy',
-        category: 'leech curse'
+        'boost': 0.02,
+        'style': 'necromancy',
+        'category': 'leech curse'
     },
     'leech necromancy strength 4': {
-        boost: 0.04,
-        style: 'necromancy',
-        category: 'leech curse'
+        'boost': 0.04,
+        'style': 'necromancy',
+        'category': 'leech curse'
     },
     'leech necromancy strength 6': {
-        boost: 0.06,
-        style: 'necromancy',
-        category: 'leech curse'
+        'boost': 0.06,
+        'style': 'necromancy',
+        'category': 'leech curse'
     },
     'leech necromancy strength 8': {
-        boost: 0.08,
-        style: 'necromancy',
-        category: 'leech curse'
+        'boost': 0.08,
+        'style': 'necromancy',
+        'category': 'leech curse'
     },
-    sorrow: {
-        boost: 0.1,
-        style: 'necromancy',
-        category: 'multi-stat boosting'
+    'sorrow': {
+        'boost': 0.1,
+        'style': 'necromancy',
+        'category': 'multi-stat boosting'
     },
-    ruination: {
-        boost: 0.12,
-        style: 'necromancy',
-        category: 'multi-stat boosting'
-    }
+    'ruination': {
+        'boost': 0.12,
+        'style': 'necromancy',
+        'category': 'multi-stat boosting'
+    },
+
+    'none necro': {
+        'boost': 0,
+        'style': 'necromancy',
+        'category': 'none'
+    },
+    'none magic': {
+        'boost': 0,
+        'style': 'magic',
+        'category': 'none'
+    },
+    'none ranged': {
+        'boost': 0,
+        'style': 'ranged',
+        'category': 'none'
+    },
+    'none melee': {
+        'boost': 0,
+        'style': 'melee',
+        'category': 'none'
+    },
 };
 
 export { ABILITIES, weapons, gear, abils, armour, prayers };

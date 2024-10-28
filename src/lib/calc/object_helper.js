@@ -8,17 +8,17 @@ function create_object(settings) {
             non_crit: {
                 'min hit': 0,
                 'var hit': 0,
-                crit: false,
+                'crit': false,
 
-                probability: 1 - crit_chance,
+                'probability': 1 - crit_chance,
                 'damage list': []
             },
             crit: {
                 'min hit': 0,
                 'var hit': 0,
-                crit: true,
+                'crit': true,
 
-                probability: crit_chance,
+                'probability': crit_chance,
                 'damage list': []
             }
         };
@@ -27,9 +27,9 @@ function create_object(settings) {
             non_crit: {
                 'min hit': 0,
                 'var hit': 0,
-                crit: false,
+                'crit': false,
 
-                probability: 1,
+                'probability': 1,
                 'damage list': []
             }
         };
@@ -83,8 +83,8 @@ function calc_crit_chance(settings) {
     }
 
     // erethdor's grimoire
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.GRIM) {
-        crit_chance = +0.12;
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.GRIM) {    
+        crit_chance += 0.12;
     }
 
     // reaver's ring
@@ -185,7 +185,7 @@ function calc_crit_chance(settings) {
     }
 
     // equilibrium aura
-    if (settings['aura'] === 'equilibrium aura') {
+    if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.EQUILIBRIUM) {
         crit_chance = 0;
     }
 
