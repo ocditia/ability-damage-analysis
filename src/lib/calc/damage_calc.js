@@ -983,18 +983,18 @@ function calc_on_npc(settings, dmgObject) {
 
         // zerk auras
         if (
-            settings[SETTINGS.AURA] === 'maniacal' &&
-            abils[settings['ability']]['main style'] === 'magic'
+            settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.MANIACAL &&
+            abils[settings['ability']]['damage type'] === 'magic'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
         } else if (
-            settings[SETTINGS.AURA] === 'berserk' &&
-            abils[settings['ability']]['main style'] === 'melee'
+            settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.BERSERKER &&
+            abils[settings['ability']]['damage type'] === 'melee'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
         } else if (
-            settings[SETTINGS.AURA] === 'reckless' &&
-            abils[settings['ability']]['main style'] === 'ranged'
+            settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.RECKLESS &&
+            abils[settings['ability']]['damage type'] === 'ranged'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
         }

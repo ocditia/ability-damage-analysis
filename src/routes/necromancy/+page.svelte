@@ -367,6 +367,10 @@
                                     on:settingsUpdated={updateDamages}
                                     img="/armour_icons/Pocket_slot.webp"
                                 />
+                                <Select
+                                    setting={settings[SETTINGS.AURA]}
+                                    on:settingsUpdated={updateDamages}
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Perks</h5>

@@ -119,7 +119,10 @@ const SETTINGS = {
     AURA_VALUES: {
         NONE: 'none',
         MAHJARRAT: 'mahjarrat',
-        EQUILIBRIUM: 'equilibrium'
+        EQUILIBRIUM: 'equilibrium',
+        RECKLESS: 'reckless',
+        BERSERKER: 'berserker',
+        MANIACAL: 'maniacal',
     },
     VULN: 'vulnerability',
     VULN_VALUES: {
@@ -747,7 +750,10 @@ const settingsConfig = {
         options: [
             { text: 'None', value: SETTINGS.AURA_VALUES.NONE },
             { text: 'Mahjarrat', value: SETTINGS.AURA_VALUES.MAHJARRAT },
-            { text: 'Equilibrium', value: SETTINGS.AURA_VALUES.EQUILIBRIUM }
+            { text: 'Equilibrium', value: SETTINGS.AURA_VALUES.EQUILIBRIUM },
+            { text: 'Reckless', value: SETTINGS.AURA_VALUES.RECKLESS },
+            { text: 'Berserker', value: SETTINGS.AURA_VALUES.BERSERKER },
+            { text: 'Maniacal', value: SETTINGS.AURA_VALUES.MANIACAL },
         ]
     },
     [SETTINGS.VULN]: {
