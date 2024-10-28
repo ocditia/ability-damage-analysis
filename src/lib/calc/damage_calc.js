@@ -821,7 +821,7 @@ function calc_core(settings, dmgObject, key) {
 
         // store damage into bolg
         if (
-            settings[SETTINGS.TH] === 'bolg' &&
+            settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
             (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 7 ||
                 (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 3 &&
@@ -830,7 +830,6 @@ function calc_core(settings, dmgObject, key) {
             if (!('bolg damage' in settings)) {
                 settings['bolg damage'] = create_object(settings);
             }
-            console.log("hey")
             settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
         }
 
