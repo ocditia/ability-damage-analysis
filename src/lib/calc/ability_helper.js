@@ -27,7 +27,6 @@ function next_tick(settings) {
     }
 
     settings = next_cast(settings);
-    settings = next_hit(settings);
 
     return settings;
 }
@@ -37,6 +36,9 @@ function next_cast(settings) {
     if (settings['chaos roar'] === true) {
         settings['chaos roar'] = false;
     }
+
+    settings = next_hit(settings);
+
     return settings;
 }
 
@@ -59,9 +61,9 @@ function next_hit(settings) {
             settings[SETTINGS.BALANCE_BY_FORCE] === true &&
             settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 4
         ) {
-            settings['bolg stacks'] = 0;
+            settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] = 0;
         } else if (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 7) {
-            settings['bolg stacks'] = 0;
+            settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] = 0;
         }
     }
 
