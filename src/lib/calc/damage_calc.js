@@ -1326,24 +1326,23 @@ function calc_soul_split_hit(hit, settings) {
 
 function get_user_value(settings, dmgObject) {
     if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN) {
-        return get_mean_damage(dmgObject);
+        return get_mean_damage(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN_NO_CRIT) {
-        return get_mean_no_crit(dmgObject);
+        return get_mean_no_crit(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN_CRIT) {
-        return get_mean_crit(dmgObject);
+        return get_mean_crit(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_NO_CRIT) {
-        return get_min_no_crit(dmgObject);
+        return get_min_no_crit(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_CRIT) {
-        return get_min_crit(dmgObject);
+        return get_min_crit(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_NO_CRIT) {
-        return get_max_no_crit(dmgObject);
+        return get_max_no_crit(settings, dmgObject);
     } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
-        return get_max_crit(dmgObject);
+        return get_max_crit(settings, dmgObject);
     }
 }
 
-function get_mean_damage(dmgObject) {
-    console.log(dmgObject)
+function get_mean_damage(settings, dmgObject) {
     let mean = 0;
     for (let key in dmgObject) {
         let total = 0;
@@ -1357,7 +1356,7 @@ function get_mean_damage(dmgObject) {
     return Math.round(mean);
 }
 
-function get_mean_no_crit(dmgObject) {
+function get_mean_no_crit(settings, dmgObject) {
     let mean = 0;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === false) {
@@ -1372,7 +1371,11 @@ function get_mean_no_crit(dmgObject) {
     return Math.round(mean);
 }
 
-function get_mean_crit(dmgObject) {
+function get_mean_crit(settings, dmgObject) {
+    if (abils[settings['ability']]['crit effects'] === false) {
+        return get_mean_damage(settings, dmgObject);
+    }
+
     let mean = 0;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === true) {
@@ -1387,7 +1390,7 @@ function get_mean_crit(dmgObject) {
     return Math.round(mean);
 }
 
-function get_min_no_crit(dmgObject) {
+function get_min_no_crit(settings, dmgObject) {
     let min_hit = 100000000;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === false) {
@@ -1400,7 +1403,11 @@ function get_min_no_crit(dmgObject) {
     return min_hit;
 }
 
-function get_min_crit(dmgObject) {
+function get_min_crit(settings, dmgObject) {
+    if (abils[settings['ability']]['crit effects'] === false) {
+        return get_min_no_crit(settings, dmgObject);
+    }
+
     let min_hit = 100000000;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === true) {
@@ -1413,7 +1420,7 @@ function get_min_crit(dmgObject) {
     return min_hit;
 }
 
-function get_max_no_crit(dmgObject) {
+function get_max_no_crit(settings, dmgObject) {
     let max_hit = 0;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === false) {
@@ -1427,7 +1434,11 @@ function get_max_no_crit(dmgObject) {
     return max_hit;
 }
 
-function get_max_crit(dmgObject) {
+function get_max_crit(settings, dmgObject) {
+    if (abils[settings['ability']]['crit effects'] === false) {
+        return get_max_no_crit(settings, dmgObject);
+    }
+
     let max_hit = 0;
     for (let key in dmgObject) {
         if (dmgObject[key]['crit'] === true) {
