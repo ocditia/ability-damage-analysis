@@ -1,5 +1,5 @@
 import { SETTINGS } from './settings';
-import { weapons, abils } from './const';
+import { weapons, abils, ABILITIES } from './const';
 
 function create_object(settings) {
     if (abils[settings['ability']]['crit effects'] === true) {
@@ -113,30 +113,30 @@ function calc_crit_chance(settings) {
         }
 
         // (g)conc
-        crit_chance += 0.05 * settings['conc stacks'];
+        crit_chance += 0.05 * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
 
         // (g)conc self boost
         if (
-            settings['ability'] === 'concentrated blast 2' ||
-            settings['ability'] === 'greater concentrated blast 2'
+            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_2 ||
+            settings['ability'] === ABILITIES.GREATER_CONCENTRATED_BLAST_2
         ) {
             crit_chance += 0.05;
         } else if (
-            settings['ability'] === 'concentrated blast 3' ||
-            settings['ability'] === 'greater concentrated blast 3'
+            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_3 ||
+            settings['ability'] === ABILITIES.GREATER_CONCENTRATED_BLAST_3
         ) {
             crit_chance += 0.1;
         }
 
         // smoke tendrils
-        if (settings['ability'] === 'smoke tendrils') {
+        if ([ABILITIES.SMOKE_TENDRILS_1, ABILITIES.SMOKE_TENDRILS_2, ABILITIES.SMOKE_TENDRILS_3, ABILITIES.SMOKE_TENDRILS_4].includes(settings['ability'])) {
             crit_chance = 1;
         }
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
         // champion's ring
-        if (settings['ring'] === 'champions ring active') {
+        if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION) {
             crit_chance += 0.03;
         }
 
@@ -156,29 +156,29 @@ function calc_crit_chance(settings) {
     if (abils[settings['ability']]['main style'] === 'ranged') {
         // stalker's ring
         if (
-            settings['ring'] === 'stalkers ring' &&
+            settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER &&
             weapons[settings['weapon']]['category'] === 'bow'
         ) {
             crit_chance += 0.03;
         }
 
         // shadow tendril
-        if (settings['ability'] === 'shadow tendril') {
+        if (settings['ability'] === ABILITIES.SHADOW_TENDRILS) {
             crit_chance = 1;
         }
 
         // dracolich
-        if (settings['dracolich infusion'] === 'regular') {
+        if (settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES.REGULAR) {
             crit_chance += 0.2;
-        } else if (settings['dracolich infusion'] === 'elite') {
+        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER) {
             crit_chance += 0.4;
         }
 
         // deathspore arrows
         if (
             weapons[settings['two-hand weapon']]['category'] === 'bow' &&
-            settings['weapon type'] === 'two-hand' &&
-            settings['ammo'] === 'deathspore arrows'
+            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+            settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS
         ) {
             crit_chance += 0.03;
         }

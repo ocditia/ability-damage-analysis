@@ -433,7 +433,9 @@ const SETTINGS = {
     AMMO_VALUES: {
         NONE: 'none',
         FUL_ARROWS: 'ful arrows',
-        WEN_ARROWS: 'wen arrows'
+        WEN_ARROWS: 'wen arrows',
+        DEATHSPORE_ARROWS: 'deathspore arrows',
+        JAS_ARROWS: 'jas arrows',
     },
     LVL20ARMOUR: 'level 20 armour',
     BITING: 'biting',
@@ -506,7 +508,14 @@ const SETTINGS = {
     TARGET_SIZE: 'target size',
     PRIMORDIAL_ICE: 'primordial ice',
     FROSTBLADES: 'frostblades',
-    IGNEOUS_EXTENSIOS: 'igneous extensions'
+    IGNEOUS_EXTENSIOS: 'igneous extensions',
+    DRACOLICH_INFUSION: 'dracolich infusion',
+    DRACOLICH_INFUSION_VALUES: {
+        NONE: 'none',
+        REGULAR: 'regular',
+        GREATER: 'greater',
+    },
+    INSTABILITY: 'instability',
 };
 
 const settingsConfig = {
@@ -1213,7 +1222,9 @@ const settingsConfig = {
         options: [
             { text: 'None', value: SETTINGS.AMMO_VALUES.NONE },
             { text: 'Ful', value: SETTINGS.AMMO_VALUES.FUL_ARROWS },
-            { text: 'Wen', value: SETTINGS.AMMO_VALUES.WEN_ARROWS }
+            { text: 'Wen', value: SETTINGS.AMMO_VALUES.WEN_ARROWS },
+            { text: 'Jas', value: SETTINGS.AMMO_VALUES.JAS_ARROWS },
+            { text: 'Deathspore arrows', value: SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS }
         ]
     },
     [SETTINGS.LVL20ARMOUR]: {
@@ -1441,7 +1452,20 @@ const settingsConfig = {
     [SETTINGS.IGNEOUS_EXTENSIOS]: {
         label: 'Igneous extensions',
         default: 5
-    }
+    },
+    [SETTINGS.DRACOLICH_INFUSION]: {
+        label: 'Dracolich infusion',
+        default: SETTINGS.DRACOLICH_INFUSION_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.DRACOLICH_INFUSION_VALUES.NONE },
+            { text: 'Regular', value: SETTINGS.DRACOLICH_INFUSION_VALUES.REGULAR },
+            { text: 'Greater', value: SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER }
+        ]
+    },
+    [SETTINGS.INSTABILITY]: {
+        label: 'Instability',
+        default: true
+    },
 };
 
 export { SETTINGS, settingsConfig };
