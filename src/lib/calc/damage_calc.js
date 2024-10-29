@@ -275,7 +275,10 @@ function ability_specific_effects(settings, dmgObject) {
 
         // song of destruction 2 item set effect
         if (
-            ['bleed', 'burn', 'dot'].includes(abils[settings['ability']]['ability classification'])
+            ['bleed', 'burn', 'dot'].includes(abils[settings['ability']]['ability classification']) && 
+                settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING && 
+                settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT && 
+                settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW
         ) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
         }
@@ -979,6 +982,10 @@ function calc_on_npc(settings, dmgObject) {
             dmgObject['damage list'][i] = Math.floor(
                 dmgObject['damage list'][i] * (1 + 0.05 * settings['quest deaths'])
             );
+        }
+
+        if (settings['meta'] === true && abils[settings['ability']]['damage type'] === 'magic') {
+            dmgObject['damage list'][i] = Math.floor(1.66 * dmgObject['damage list'][i])
         }
 
         // zerk auras
