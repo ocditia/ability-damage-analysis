@@ -75,9 +75,9 @@ function calc_crit_chance(settings) {
 
     // sliske tuska
     if (
-        settings['helmet'] === 'sliske tuska helmet' &&
-        settings['body'] === 'sliske tuska body' &&
-        settings['legs'] === 'sliske tuska legs'
+        settings[SETTINGS.HELMET] === SETTINGS.MAGIC_HELMET_VALUES.SLISKE &&
+        settings[SETTINGS.BODY] === SETTINGS.MAGIC_BODY_VALUES.SLISKE &&
+        settings[SETTINGS.LEGS] === SETTINGS.MAGIC_LEGS_VALUES.SLISKE
     ) {
         crit_chance += 0.06;
     }
