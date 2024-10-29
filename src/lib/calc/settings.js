@@ -839,8 +839,8 @@ const settingsConfig = {
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_HELMET_VALUES.NONE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.TECTONIC },
-            { text: 'Tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC },
-            { text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.SLISKE }
+            { text: 'Elite tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC },
+            { text: 'Sliske', value: SETTINGS.MAGIC_BODY_VALUES.SLISKE }
         ]
     },
     [SETTINGS.RANGED_HELMET]: {
@@ -880,8 +880,8 @@ const settingsConfig = {
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.NONE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_BODY_VALUES.TECTONIC },
-            { text: 'Tectonic', value: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC },
-            { text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.SLISKE }
+            { text: 'Elite tectonic', value: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC },
+            { text: 'Sliske', value: SETTINGS.MAGIC_BODY_VALUES.SLISKE }
         ]
     },
     [SETTINGS.RANGED_BODY]: {
@@ -920,8 +920,8 @@ const settingsConfig = {
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.NONE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.TECTONIC },
-            { text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC },
-            { text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.SLISKE }
+            { text: 'Elite tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC },
+            { text: 'Sliske', value: SETTINGS.MAGIC_LEGS_VALUES.SLISKE }
         ]
     },
     [SETTINGS.RANGED_LEGS]: {
