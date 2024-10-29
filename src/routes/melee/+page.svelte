@@ -193,6 +193,13 @@
                                     max="5"
                                     min="0"
                                 />
+                                <Number
+                                    setting={settings[SETTINGS.TIME_SINCE_ATTACK]}
+                                    on:settingsUpdated={updateDamages}
+                                    step="1"
+                                    max="10"
+                                    min="0"
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Additive</h5>

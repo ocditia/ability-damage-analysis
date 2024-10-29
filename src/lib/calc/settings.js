@@ -516,6 +516,7 @@ const SETTINGS = {
         GREATER: 'greater',
     },
     INSTABILITY: 'instability',
+    TIME_SINCE_ATTACK: 'time since attack',
 };
 
 const settingsConfig = {
@@ -808,7 +809,7 @@ const settingsConfig = {
     },
     [SETTINGS.HAUNTED]: {
         label: 'Haunted',
-        default: true
+        default: false
     },
     [SETTINGS.HAUNTED_AD]: {
         label: 'Haunted AD',
@@ -1465,6 +1466,10 @@ const settingsConfig = {
     [SETTINGS.INSTABILITY]: {
         label: 'Instability',
         default: true
+    },
+    [SETTINGS.TIME_SINCE_ATTACK]: {
+        label: 'Time since last attack',
+        default: 0
     },
 };
 

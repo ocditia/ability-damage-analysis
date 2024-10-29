@@ -400,9 +400,9 @@ function set_min_var(settings, dmgObject) {
 
     if (abils[settings['ability']]['main style'] === 'melee') {
         // greater barge tick bonus
-        if (settings['ability'] === 'greater barge') {
-            min_percent = min_percent + Math.min(0.05 * settings['time since last attack'], 0.5);
-            var_percent = var_percent + Math.min(0.02 * settings['time since last attack'], 0.7);
+        if (settings['ability'] === ABILITIES.GREATER_BARGE) {
+            min_percent = min_percent + Math.min(0.05 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.5);
+            var_percent = var_percent + Math.min(0.02 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
         }
 
         // icy tempest
