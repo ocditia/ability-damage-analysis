@@ -937,7 +937,7 @@ const settingsConfig = {
     },
     [SETTINGS.MELEE_LEGS]: {
         label: 'Legs',
-        default: SETTINGS.MELEE_LEGS_VALUES.NONE,
+        default: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
         options: [
             { text: 'None/Tank', value: SETTINGS.MELEE_LEGS_VALUES.NONE },
             { text: 'Masterwork', value: SETTINGS.MELEE_LEGS_VALUES.MASTERWORK },
