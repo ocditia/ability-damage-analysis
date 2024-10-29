@@ -102,7 +102,7 @@ function calc_crit_chance(settings) {
         crit_chance += 0.05;
     }
 
-    if (settings['main_style'] === 'magic') {
+    if (abils[settings['ability']]['main style'] === 'magic') {
         // channeller's ring
         if (
             settings['ring'] === 'channellers ring' &&
@@ -134,16 +134,16 @@ function calc_crit_chance(settings) {
         }
     }
 
-    if (settings['main_style'] === 'melee') {
+    if (abils[settings['ability']]['main style'] === 'melee') {
         // champion's ring
         if (settings['ring'] === 'champions ring active') {
             crit_chance += 0.03;
         }
 
         // (g)fury
-        if (settings['fury'] === 'regular') {
+        if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.REGULAR) {
             crit_chance += 0.25;
-        } else if (settings['fury'] === 'greater') {
+        } else if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.GREATER) {
             crit_chance = 1;
         }
 
@@ -153,7 +153,7 @@ function calc_crit_chance(settings) {
         }
     }
 
-    if (settings['main_style'] === 'ranged') {
+    if (abils[settings['ability']]['main style'] === 'ranged') {
         // stalker's ring
         if (
             settings['ring'] === 'stalkers ring' &&
