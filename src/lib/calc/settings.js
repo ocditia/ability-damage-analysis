@@ -840,7 +840,7 @@ const settingsConfig = {
             { text: 'None/Tank', value: SETTINGS.MAGIC_HELMET_VALUES.NONE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC },
-            { text: 'Sliske', value: SETTINGS.MAGIC_BODY_VALUES.SLISKE }
+            { text: 'Sliske', value: SETTINGS.MAGIC_HELMET_VALUES.SLISKE }
         ]
     },
     [SETTINGS.RANGED_HELMET]: {
