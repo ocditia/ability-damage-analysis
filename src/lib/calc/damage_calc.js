@@ -251,7 +251,7 @@ function calc_boosted_ad(settings, dmgObject) {
             wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type']) &&
             settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS
         ) {
-            boosted_AD = Math.floor(boosted_AD * (1 + 0.03 * settings['icy precision']));
+            boosted_AD = Math.floor(boosted_AD * (1 + 0.03 * settings[SETTINGS.ICY_PRECISION]));
         }
     }
 
@@ -400,9 +400,9 @@ function set_min_var(settings, dmgObject) {
 
     if (abils[settings['ability']]['main style'] === 'melee') {
         // greater barge tick bonus
-        if (settings['ability'] === 'greater barge') {
-            min_percent = min_percent + Math.min(0.05 * settings['time since last attack'], 0.5);
-            var_percent = var_percent + Math.min(0.02 * settings['time since last attack'], 0.7);
+        if (settings['ability'] === ABILITIES.GREATER_BARGE) {
+            min_percent = min_percent + Math.min(0.05 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.5);
+            var_percent = var_percent + Math.min(0.02 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
         }
 
         // icy tempest
@@ -454,15 +454,14 @@ function calc_style_specific(settings, dmgObject) {
 
         // jas bane ammo
         if (
-            settings['ammunition'] === 'jas dragon bane arrow' ||
-            settings['ammunition'] === 'jas demon bane arrow'
+            settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.JAS_ARROWS
         ) {
             dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.3);
             dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.3);
         }
 
         // ful arrows
-        if (settings['ammunition'] === SETTINGS.AMMO_VALUES.FUL_ARROWS) {
+        if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.FUL_ARROWS) {
             dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.15);
             dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.15);
         }
@@ -1126,10 +1125,10 @@ function calc_damage_object(settings) {
         dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
         // ability specific
         dmgObject[key] = ability_specific_effects(settings, dmgObject[key]);
-        // style specific
-        dmgObject[key] = calc_style_specific(settings, dmgObject[key]);
         // set min var
         dmgObject[key] = set_min_var(settings, dmgObject[key]);
+        // style specific
+        dmgObject[key] = calc_style_specific(settings, dmgObject[key]);
         // calc on hit effects
         if (abils[settings['ability']]['on-hit effects']) {
             dmgObject[key] = calc_on_hit(settings, dmgObject[key]);
