@@ -90,7 +90,7 @@
                 </div>
             </div>
 
-            <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-necro">
+            <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-ranged">
                 <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
                     <li class="flex-grow me-2">
                         <button
@@ -442,7 +442,6 @@
                                 <Number
                                     setting={settings[SETTINGS.GENOCIDAL]}
                                     on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Ruthless.webp"
                                     max="4.9"
                                     step="0.1"
                                     min="0"
@@ -513,80 +512,15 @@
                                 />
                             </div>
                         {:else if tab === 'bosses'}
-                            <div class="md:col-span-1">
-                                <Checkbox
-                                    setting={settings[SETTINGS.TELOS_RED_BEAM]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Red_virus.png"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.TELOS_BLACK_BEAM]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Black_virus.png"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.TOKKUL_ZO]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/TokKul-Zo_(Charged).png"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.KBD_ARTEFACT]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/kbd.png"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.INNER_CHAOS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Inner_Chaos_(self_status).png"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.SWORD_OF_EDICTS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Sword_of_Edicts_(self_status).png"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Guardian's_Triumph_Edict_(self_status).png"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.BALANCE_OF_POWER]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Balance_of_Power_Edict_(self_status).webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.ZAMORAK_CHOKE_STACKS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Choking_(self_status).png"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.RAKSHA_INNER_POWER]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Inner_Power_(self_status).webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.STONE_OF_JAS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Stone_of_Jas_(status).webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Infernal_Puzzle_Box.png"
-                                    step="1"
-                                    min="0"
-                                />
-                            </div>
+                        <div class="md:col-span-1">
+                            <Number
+                                setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
+                                on:settingsUpdated={updateDamages}
+                                img="/effect_icons/Guardian's_Triumph_Edict_(self_status).png"
+                                step="1"
+                                min="0"
+                            />
+                        </div>
                         {/if}
                     </div>
                 </form>

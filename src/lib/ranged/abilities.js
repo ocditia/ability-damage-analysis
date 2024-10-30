@@ -108,7 +108,7 @@ const abilities = {
         icon: '/ability_icons/necro/30x30/auto.png'
     },
     [ABILITIES.DESCENT_OF_DARKNESS]: {
-        title: 'Incendiary shot',
+        title: 'Descent of Darkness',
         calc: ability_damage_calculation,
         icon: '/ability_icons/necro/30x30/auto.png'
     },

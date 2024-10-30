@@ -121,7 +121,7 @@ function calc_base_ad(settings) {
     }
 
     // eruptive perk
-    base_AD = Math.floor(base_AD * (1 + settings[SETTINGS.ERUPTIVE] * 0.05));
+    base_AD = Math.floor(base_AD * (1 + settings[SETTINGS.ERUPTIVE] * 0.005));
 
     // equilibrium aura
     if (settings[SETTINGS.AURA] === 'equilibrium') {
@@ -662,7 +662,7 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
         }
 
         // zaros godsword
-        if (settings['zaros godsword'] === true) {
+        if (settings['zgs'] === true) {
             boost = Math.floor(boost * 1.25);
         }
 
@@ -1313,15 +1313,15 @@ function calc_soul_split_hit(hit, settings) {
 
     // heal 1.25% over the rest
     if (hit > 0) {
-        heal += 0.125 * hit;
+        heal += 0.0125 * hit;
     }
 
     // amulet of souls bonus healing
     const aos_amulets = [
-        'amulet of souls',
-        'amulet of souls (or)',
-        'essence of finality',
-        'essence of finality (or)'
+        SETTINGS.NECKLACE_VALUES.AOS,
+        SETTINGS.NECKLACE_VALUES.AOSOR,
+        SETTINGS.NECKLACE_VALUES.EOF,
+        SETTINGS.NECKLACE_VALUES.EOFOR
     ];
     if (aos_amulets.includes(settings['amulet'])) {
         heal = heal * 1.1875;
@@ -1519,7 +1519,7 @@ function hit_damage_calculation(settings) {
     }
 
     // handle bloat logic
-    if (settings['ability'] === SETTINGS.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
+    if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
         total_damage += calc_bloat(settings);
         delete settings['bloat damage'];
     }
