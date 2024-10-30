@@ -133,25 +133,25 @@ function calc_base_ad(settings) {
 
 function calc_weapon_tier(settings, hand) {
     const spell_tier = 999;
+    let tier = 0;
     // custom weapon tier
     if (
         settings[hand] === 'custom' ||
         settings[hand] === 'custom oh' ||
         settings[hand] === 'custom th'
     ) {
-        return Math.min(settings[hand + ' custom tier'], spell_tier);
+        tier = Math.min(settings[hand + ' custom tier'], spell_tier);
     }
     // standard weapon
     else {
-        let tier = Math.min(weapons[settings[hand]]['tier'], spell_tier);
-
-        // innate mastery (shard of genesis essence)
-        if (weapons[settings[hand]]['tier'] === 95 && settings['innate mastery'] === true) {
-            tier += 5;
-        }
-
-        return tier
+        tier = Math.min(weapons[settings[hand]]['tier'], spell_tier);
     }
+    // innate mastery (shard of genesis essence)
+    if (tier === 95 && settings[SETTINGS.INNATE_MASTERY] === true) {
+        tier += 5;
+    }
+
+    return tier;
 }
 
 // bonus from gear and reaper crew
@@ -658,7 +658,9 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
         }
 
         // blood tithe (exsanguinate)
-        boost = Math.floor(boost * (1 + settings[SETTINGS.BLOOD_TITHE] / 100));
+        if (abils[settings['ability']]['ability type'] === 'basic') {
+            boost = Math.floor(boost * (1 + settings[SETTINGS.BLOOD_TITHE] / 100));
+        }
     }
 
     // apply melee unique boosts
@@ -859,6 +861,17 @@ function calc_core(settings, dmgObject, key) {
             }
             settings['bloat damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
         }
+
+        // store fsoa damage
+        if (abils[settings['ability']]['crit effects'] === true 
+            && settings['instability'] === true 
+            && abils[settings['ability']]['damage type'] === 'magic' 
+            && settings['ability'] != 'time strike') {
+                if (!('fsoa damage' in settings)) {
+                    settings['fsoa damage'] = create_object(settings);
+                }
+                settings['fsoa damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
+            }
     }
     return dmgObject[key];
 }
@@ -1262,9 +1275,8 @@ function calc_corruption(settings) {
 
 function calc_fsoa(settings) {
     settings['ability'] = 'time strike';
-    // call double next tick
 
-    return Math.floor(calc_crit_chance(settings) * calc_damage_object(settings));
+    return Math.floor(settings['fsoa damage']['crit']['probability'] * calc_damage_object(settings));
 }
 
 function calc_sgb(settings, dmg) {
@@ -1547,7 +1559,7 @@ function hit_damage_calculation(settings) {
     }
 
     // handle instability (fsoa)
-    if (abils[settings['ability']]['crit effects'] === true && settings['instability'] === true && abils[settings['ability']]['damage type'] === 'magic') {
+    if ('fsoa damage' in settings) {
         total_damage += calc_fsoa(settings);
     }
 

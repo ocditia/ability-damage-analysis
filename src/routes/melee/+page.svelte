@@ -507,6 +507,10 @@
                                     step="1"
                                     min="0"
                                 />
+                                <Checkbox
+                                    setting={settings[SETTINGS.INNATE_MASTERY]}
+                                    on:settingsUpdated={updateDamages}
+                                />
                             </div>
                         {:else if tab === 'bosses'}
                             <div class="md:col-span-1">
