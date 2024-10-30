@@ -658,7 +658,9 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
         }
 
         // blood tithe (exsanguinate)
-        boost = Math.floor(boost * (1 + settings[SETTINGS.BLOOD_TITHE] / 100));
+        if (abils[settings['ability']]['ability type'] === 'basic') {
+            boost = Math.floor(boost * (1 + settings[SETTINGS.BLOOD_TITHE] / 100));
+        }
     }
 
     // apply melee unique boosts
@@ -1547,7 +1549,7 @@ function hit_damage_calculation(settings) {
     }
 
     // handle instability (fsoa)
-    if (abils[settings['ability']]['crit effects'] === true && settings['instability'] === true && abils[settings['ability']]['damage type'] === 'magic') {
+    if (abils[settings['ability']]['crit effects'] === true && settings['instability'] === true && abils[settings['ability']]['damage type'] === 'magic' && settings['ability'] != 'time strike') {
         total_damage += calc_fsoa(settings);
     }
 
