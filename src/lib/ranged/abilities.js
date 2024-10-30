@@ -33,7 +33,7 @@ const abilities = {
         icon: '/ability_icons/ranged/30x30/needle.png'
     },
     [ABILITIES.FRAGMENTATION_SHOT]: {
-        title: 'Snipe',
+        title: 'Fragmentation Shot',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/frag-shot.png'
     },
@@ -165,12 +165,12 @@ const abilities = {
     [ABILITIES.CRYSTAL_RAIN]: {
         title: 'Crystal rain',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/auto.png'
+        icon: '/ability_icons/ranged/30x30/sgb.png'
     },
     [ABILITIES.DEEP_BURN]: {
         title: 'Deep burn',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/sgb.png'
+        icon: '/ability_icons/ranged/30x30/strykebow.png'
     },
     [ABILITIES.DESTRUCTIVE_SHOT]: {
         title: 'Destrucive shot',
