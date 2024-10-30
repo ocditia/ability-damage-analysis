@@ -33,7 +33,7 @@ const abilities = {
         icon: '/ability_icons/ranged/30x30/needle.png'
     },
     [ABILITIES.FRAGMENTATION_SHOT]: {
-        title: 'Fragmentation Shot',
+        title: 'Fragmentation shot',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/frag-shot.png'
     },
