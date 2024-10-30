@@ -861,6 +861,17 @@ function calc_core(settings, dmgObject, key) {
             }
             settings['bloat damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
         }
+
+        // store fsoa damage
+        if (abils[settings['ability']]['crit effects'] === true 
+            && settings['instability'] === true 
+            && abils[settings['ability']]['damage type'] === 'magic' 
+            && settings['ability'] != 'time strike') {
+                if (!('fsoa damage' in settings)) {
+                    settings['fsoa damage'] = create_object(settings);
+                }
+                settings['fsoa damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
+            }
     }
     return dmgObject[key];
 }
@@ -1264,9 +1275,8 @@ function calc_corruption(settings) {
 
 function calc_fsoa(settings) {
     settings['ability'] = 'time strike';
-    // call double next tick
 
-    return Math.floor(calc_crit_chance(settings) * calc_damage_object(settings));
+    return Math.floor(settings['fsoa damage']['crit']['probability'] * calc_damage_object(settings));
 }
 
 function calc_sgb(settings, dmg) {
@@ -1549,7 +1559,7 @@ function hit_damage_calculation(settings) {
     }
 
     // handle instability (fsoa)
-    if (abils[settings['ability']]['crit effects'] === true && settings['instability'] === true && abils[settings['ability']]['damage type'] === 'magic' && settings['ability'] != 'time strike') {
+    if ('fsoa damage' in settings) {
         total_damage += calc_fsoa(settings);
     }
 
