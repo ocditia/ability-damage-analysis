@@ -517,6 +517,7 @@ const SETTINGS = {
     },
     INSTABILITY: 'instability',
     TIME_SINCE_ATTACK: 'time since attack',
+    INNATE_MASTERY: 'innate mastery',
 };
 
 const settingsConfig = {
@@ -1470,6 +1471,10 @@ const settingsConfig = {
     [SETTINGS.TIME_SINCE_ATTACK]: {
         label: 'Time since last attack',
         default: 0
+    },
+    [SETTINGS.INNATE_MASTERY]: {
+        label: 'Innate mastery (works on custom t95)',
+        default: true
     },
 };
 
