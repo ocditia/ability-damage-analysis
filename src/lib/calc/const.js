@@ -1279,6 +1279,8 @@ const ABILITIES = {
     SMOKE_TENDRILS_3: 'smoke tendrils 3',
     SMOKE_TENDRILS_4: 'smoke tendrils 4',
     SMOKE_TENDRILS: 'smoke tendrils',
+    OMNIPOWER_REGULAR: 'omnipower regular',
+    OMNIPOWER_IGNEOUS: 'omnipower igneous',
     OMNIPOWER: 'omnipower',
     TSUNAMI: 'tsunami',
     SUNSHINE_DOT: 'sunshine dot',
@@ -1321,6 +1323,7 @@ const ABILITIES = {
     BLOOD_TENDRILS_1: 'blood tendrils 1',
     BLOOD_TENDRILS_2: 'blood tendrils 2',
     BLOOD_TENDRILS: 'blood tendrils',
+    OVERPOWER_HIT: 'overpower hit',
     OVERPOWER: 'overpower',
     MASSACRE_INITIAL: 'massacre initial',
     MASSACRE_BLEED: 'massacre bleed',
@@ -1682,7 +1685,7 @@ const abils = {
             ]
         }
     },
-    [ABILITIES.OVERPOWER]: {
+    [ABILITIES.OVERPOWER_HIT]: {
         // ability name
         'min hit': 2.7, // min % of abil expressed as a decimal
         'var hit': 0.6,
@@ -1693,6 +1696,21 @@ const abils = {
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
+    [ABILITIES.OVERPOWER]: {
+        // ability name
+        'min hit': 2.7, // min % of abil expressed as a decimal
+        'var hit': 0.6,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, etc
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        hits: {
+            1: [ABILITIES.OVERPOWER_HIT]
+        }
     },
     [ABILITIES.MASSACRE_INITIAL]: {
         // ability name
@@ -3034,7 +3052,7 @@ const abils = {
             7: [ABILITIES.SMOKE_TENDRILS_4]
         }
     },
-    [ABILITIES.OMNIPOWER]: {
+    [ABILITIES.OMNIPOWER_REGULAR]: {
         // ability name
         'min hit': 2.7, // min % of abil expressed as a decimal
         'var hit': 0.6,
@@ -3045,6 +3063,32 @@ const abils = {
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
+    [ABILITIES.OMNIPOWER_IGNEOUS]: {
+        // ability name
+        'min hit': 1.2, // min % of abil expressed as a decimal
+        'var hit': 0.3,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, etc
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
+    [ABILITIES.OMNIPOWER]: {
+        // ability name
+        'min hit': 2.7, // min % of abil expressed as a decimal
+        'var hit': 0.6,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, etc
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        hits: {
+            1: [ABILITIES.OMNIPOWER_IGNEOUS, "next hit", ABILITIES.OMNIPOWER_IGNEOUS, "next hit", ABILITIES.OMNIPOWER_IGNEOUS, "next hit", ABILITIES.OMNIPOWER_IGNEOUS]
+        }
     },
     [ABILITIES.TSUNAMI]: {
         // ability name
@@ -3724,8 +3768,8 @@ const abils = {
     },
     [ABILITIES.SNIPE]: {
         // ability name
-        'min hit': 0.95, // min % of abil expressed as a decimal
-        'var hit': 0.2,
+        'min hit': 1.6, // min % of abil expressed as a decimal
+        'var hit': 0.5,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -3798,7 +3842,7 @@ const abils = {
         // ability name
         'min hit': 0.45, // min % of abil expressed as a decimal
         'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
+        'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, etc
@@ -3807,11 +3851,11 @@ const abils = {
         'damage type': 'ranged',
         hits: {
             1: [
-                ABILITIES.FRAGMENTATION_SHOT,
-                ABILITIES.FRAGMENTATION_SHOT,
-                ABILITIES.FRAGMENTATION_SHOT,
-                ABILITIES.FRAGMENTATION_SHOT,
-                ABILITIES.FRAGMENTATION_SHOT
+                ABILITIES.FRAGMENTATION_SHOT_HIT,
+                ABILITIES.FRAGMENTATION_SHOT_HIT,
+                ABILITIES.FRAGMENTATION_SHOT_HIT,
+                ABILITIES.FRAGMENTATION_SHOT_HIT,
+                ABILITIES.FRAGMENTATION_SHOT_HIT
             ]
         }
     },
@@ -4040,6 +4084,21 @@ const abils = {
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
+    },
+    [ABILITIES.DEADSHOT]: {
+        // ability name
+        'min hit': 1.15, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, etc
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        hits: {
+            1: [ABILITIES.DEADSHOT_INITIAL, ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED]
+        }
     },
     [ABILITIES.DEADSHOT_BLEED]: {
         // ability name

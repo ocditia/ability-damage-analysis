@@ -94,7 +94,7 @@ const abilities = {
     },
     [ABILITIES.OMNIPOWER]: {
         title: 'Omnipower',
-        calc: hit_damage_calculation,
+        calc: ability_damage_calculation,
         icon: '/ability_icons/magic/30x30/omnipower.png'
     },
     [ABILITIES.TSUNAMI]: {

@@ -74,7 +74,7 @@ const abilities = {
     },
     [ABILITIES.OVERPOWER]: {
         title: 'Overpower',
-        calc: hit_damage_calculation,
+        calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/overpower.png'
     },
     [ABILITIES.MASSACRE]: {
