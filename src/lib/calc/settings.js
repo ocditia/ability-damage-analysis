@@ -323,7 +323,7 @@ const SETTINGS = {
         NONE: 'none',
         ZUK: 'igneous kal-zuk',
         KILN: 'tokhaar-kal-mor',
-        COMP: 'completionist',
+        COMP: 'comp/max cape',
         GOD: 'god cape',
         MAX: 'max cape',
         SKILL: 'skill cape'

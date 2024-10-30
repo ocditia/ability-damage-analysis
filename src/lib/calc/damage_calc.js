@@ -295,6 +295,11 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
         }
 
+        // combust walk
+        if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
+        }
+
         // wrack bound
         if (
             settings['ability'] === 'wrack' &&
@@ -338,12 +343,12 @@ function ability_specific_effects(settings, dmgObject) {
         }
 
         // slaughter walk
-        if (settings['ability'] === 'slaughter' && settings['walked'] === true) {
+        if (settings['ability'] === ABILITIES.SLAUGHTER_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 3);
         }
 
         // punish low
-        if (settings['ability'] === 'punish' && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
+        if (settings['ability'] === ABILITIES.PUNISH && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2.5);
         }
     }
@@ -357,6 +362,11 @@ function ability_specific_effects(settings, dmgObject) {
                 settings['target disability'] === 'stunned and bound')
         ) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
+        }
+
+        // frag walk
+        if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
         }
     }
 
@@ -1537,7 +1547,7 @@ function hit_damage_calculation(settings) {
     }
 
     // handle instability (fsoa)
-    if (settings['instability'] === true && abils[settings['ability']]['damage type'] === 'magic') {
+    if (abils[settings['ability']]['crit effects'] === true && settings['instability'] === true && abils[settings['ability']]['damage type'] === 'magic') {
         total_damage += calc_fsoa(settings);
     }
 
@@ -1576,6 +1586,19 @@ function get_rotation(settings) {
             rotation[1].push('next hit');
             rotation[1].push(ABILITIES.GREATER_RICOCHET_3);
         }
+    }
+
+    if (settings['ability'] === ABILITIES.DEADSHOT && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
+        rotation[1].push(ABILITIES.DEADSHOT_BLEED)
+    }
+
+    if (settings['ability'] === ABILITIES.OVERPOWER && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
+        rotation[1].push("next hit")
+        rotation[1].push(ABILITIES.OVERPOWER_HIT)
+    }
+
+    if (settings['ability'] === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] != SETTINGS.CAPE_VALUES.ZUK) {
+        rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]}
     }
     return rotation;
 }
