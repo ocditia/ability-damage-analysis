@@ -224,7 +224,7 @@ const abilities = {
     },
     [ABILITIES.SWEEP]: {
         title: 'Sweep',
-        calc: hit_damage_calculation,
+        calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/dhally.png'
     },
     [ABILITIES.DRACONIC_CLEAVE]: {
@@ -248,10 +248,10 @@ const abilities = {
         icon: '/ability_icons/melee/30x30/dragon_spear.png'
     },
     /*[ABILITIES.IGNEOUS_CLEAVE]: {
-		title: 'Igneous cleave',
-		calc: ability_damage_calculation,
-		icon: '/ability_icons/melee/30x30/slice.png'
-	},*/
+        title: 'Igneous cleave',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/melee/30x30/slice.png'
+    },*/
     [ABILITIES.QUICK_SMASH]: {
         title: 'Quick smash',
         calc: hit_damage_calculation,

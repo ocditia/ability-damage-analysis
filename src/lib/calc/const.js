@@ -2347,7 +2347,7 @@ const abils = {
             1: [ABILITIES.DRACONIC_PUNCTURE_HIT, 'next hit', ABILITIES.DRACONIC_PUNCTURE_HIT]
         }
     },
-    [ABILITIES.SWEEP]: {
+    [ABILITIES.SWEEP_HIT]: {
         // ability name
         'min hit': 1.05, // min % of abil expressed as a decimal
         'var hit': 0.3,
@@ -2358,6 +2358,21 @@ const abils = {
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
+    },
+    [ABILITIES.SWEEP]: {
+        // ability name
+        'min hit': 1.05, // min % of abil expressed as a decimal
+        'var hit': 0.3,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, etc
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        hits: {
+            1: [ABILITIES.SWEEP_HIT, 'next hit', ABILITIES.SWEEP_HIT]
+        }
     },
     [ABILITIES.CLOBBER]: {
         // ability name
