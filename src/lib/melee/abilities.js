@@ -79,7 +79,7 @@ const abilities = {
     },
     [ABILITIES.MASSACRE]: {
         title: 'Massacre',
-        calc: hit_damage_calculation,
+        calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/massacre.png'
     },
     [ABILITIES.METEOR_STRIKE]: {
