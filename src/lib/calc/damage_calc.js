@@ -888,6 +888,14 @@ function calc_crit_damage(settings) {
         }
     }
 
+    // channelers ring
+    if (
+        (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
+        abils[settings['ability']]['ability classification'] === 'channel'
+    ) {
+        crit_buff += 0.025 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
+    }
+
     return crit_buff;
 }
 

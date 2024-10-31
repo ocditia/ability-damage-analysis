@@ -88,7 +88,7 @@ function calc_crit_chance(settings) {
     }
 
     // reaver's ring
-    if (settings['ring'] === 'reavers ring') {
+    if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.REAVERS) {
         crit_chance += 0.05;
     }
 
@@ -105,11 +105,11 @@ function calc_crit_chance(settings) {
     if (abils[settings['ability']]['main style'] === 'magic') {
         // channeller's ring
         if (
-            settings['ring'] === 'channellers ring' &&
+            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
             abils[settings['ability']]['ability classification'] === 'channel'
         ) {
             crit_chance += 0.04;
-            crit_chance += 0.04 * settings['channelers ring stacks'];
+            crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
         }
 
         // (g)conc
@@ -188,7 +188,7 @@ function calc_crit_chance(settings) {
     if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.EQUILIBRIUM) {
         crit_chance = 0;
     }
-
+    
     return Math.min(1, crit_chance);
 }
 

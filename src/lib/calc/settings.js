@@ -337,9 +337,12 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeon ring (i)',
         ASR: 'asylum surgeon ring',
-        CHANNELER: 'channelers rings',
+        CHANNELER: 'channelers ring',
+        CHANNELER_E: 'channelers ring+',
         STALKER: 'stalkers ring',
-        CHAMPION: 'champions ring'
+        STALKER_E: 'stalkers ring+',
+        CHAMPION: 'champions ring',
+        CHAMPION_E: 'champions ring+',
     },
     POCKET: 'pocket',
     POCKET_VALUES: {
@@ -518,6 +521,7 @@ const SETTINGS = {
     INSTABILITY: 'instability',
     TIME_SINCE_ATTACK: 'time since attack',
     INNATE_MASTERY: 'innate mastery',
+    CHANNELER_RING_STACKS: 'channelers ring stacks',
 };
 
 const settingsConfig = {
@@ -1090,14 +1094,17 @@ const settingsConfig = {
         options: [
             { text: 'None', value: SETTINGS.RING_VALUES.NONE },
             { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
-            { text: "Zorgoth's", value: SETTINGS.RING_VALUES.ZORGOTH },
+            { text: "Zorg/Occ", value: SETTINGS.RING_VALUES.ZORGOTH },
             { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
             { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
             { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
             { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELER },
+            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELER_E },
             { text: 'Stalker', value: SETTINGS.RING_VALUES.STALKER },
-            { text: 'Champion', value: SETTINGS.RING_VALUES.CHAMPION }
+            { text: 'Stalker+', value: SETTINGS.RING_VALUES.STALKER_E },
+            { text: 'Champion', value: SETTINGS.RING_VALUES.CHAMPION },
+            { text: 'Champion+', value: SETTINGS.RING_VALUES.CHAMPION_E },
         ]
     },
     [SETTINGS.POCKET]: {
@@ -1475,6 +1482,10 @@ const settingsConfig = {
     [SETTINGS.INNATE_MASTERY]: {
         label: 'Innate mastery (works on custom t95)',
         default: true
+    },
+    [SETTINGS.CHANNELER_RING_STACKS]: {
+        label: 'Channelers ring stacks',
+        default: 0
     },
 };
 
