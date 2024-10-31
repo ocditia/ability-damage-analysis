@@ -1,5 +1,5 @@
+import { ABILITIES, abils, weapons } from './const';
 import { SETTINGS } from './settings';
-import { weapons, abils, ABILITIES } from './const';
 
 function create_object(settings) {
     if (abils[settings['ability']]['crit effects'] === true) {
@@ -83,7 +83,7 @@ function calc_crit_chance(settings) {
     }
 
     // erethdor's grimoire
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.GRIM) {    
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.GRIM) {
         crit_chance += 0.12;
     }
 
@@ -148,9 +148,9 @@ function calc_crit_chance(settings) {
         }
 
         // no fear (pof meteor strike)
-        if (settings['ability'] === 'meteor strike') {
-            crit_chance += 0.2 * settings['no fear'];
-        }
+        // if (settings['ability'] === 'meteor strike') {
+        //     crit_chance += 0.2 * settings['no fear'];
+        // }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
@@ -192,4 +192,5 @@ function calc_crit_chance(settings) {
     return Math.min(1, crit_chance);
 }
 
-export { create_object, calc_crit_chance };
+export { calc_crit_chance, create_object };
+
