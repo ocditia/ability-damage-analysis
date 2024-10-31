@@ -4469,31 +4469,6 @@ const abils = {
         'damage type': 'ranged'
     },
 
-    [ABILITIES.SLICE]: {
-        // ability name
-        'min hit': 0.95, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.BACKHAND]: {
-        // ability name
-        'min hit': 0.95, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, etc
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-
     'time strike': {
         // ability name
         'min hit': 0.9, // min % of abil expressed as a decimal
@@ -4776,4 +4751,5 @@ const prayers = {
     },
 };
 
-export { ABILITIES, weapons, gear, abils, armour, prayers };
+export { ABILITIES, abils, armour, gear, prayers, weapons };
+
