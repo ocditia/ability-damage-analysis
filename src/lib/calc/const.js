@@ -80,7 +80,7 @@ const weapons = {
         style: 'ranged',
         'weapon type': 'two-hand',
         tier: 95,
-        type: 'bow',
+        'type': 'bow',
         classification: 'none'
     },
     omniguard: {

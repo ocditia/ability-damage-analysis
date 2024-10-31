@@ -409,6 +409,11 @@ const SETTINGS = {
     },
     TH: 'two-hand weapon',
     TH_TIER_CUSTOM: 'two-hand weapon custom tier',
+    TH_TYPE_CUSTOM: 'two-hand weapon custom type',
+    TH_TYPE_CUSTOM_VALUES: {
+        NONE: 'none',
+        BOW: 'bow',
+    },
     MAGIC_TH: 'magic two-hand weapon',
     MAGIC_TH_VALUES: {
         CUSTOM: 'custom th',
@@ -1442,6 +1447,14 @@ const settingsConfig = {
     [SETTINGS.OH_TIER_CUSTOM]: {
         label: 'OH custom tier',
         default: 95
+    },
+    [SETTINGS.TH_TYPE_CUSTOM]: {
+        label: '2H cust wep type',
+        default: SETTINGS.TH_TYPE_CUSTOM_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.TH_TYPE_CUSTOM_VALUES.NONE },
+            { text: 'Bow', value: SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW },
+        ]
     },
     [SETTINGS.TH_TIER_CUSTOM]: {
         label: '2H custom tier',

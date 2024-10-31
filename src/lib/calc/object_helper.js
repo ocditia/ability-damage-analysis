@@ -159,10 +159,15 @@ function calc_crit_chance(settings) {
     if (abils[settings['ability']]['main style'] === 'ranged') {
         // stalker's ring
         if (
-            settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER &&
-            weapons[settings['weapon']]['category'] === 'bow'
+            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E) &&
+            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+            (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)
         ) {
             crit_chance += 0.03;
+            if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E && 
+                (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)) {
+                crit_chance+= 0.01;
+            }
         }
 
         // shadow tendril
@@ -179,7 +184,6 @@ function calc_crit_chance(settings) {
 
         // deathspore arrows
         if (
-            weapons[settings['two-hand weapon']]['category'] === 'bow' &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
             settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS
         ) {

@@ -507,6 +507,11 @@
                                     min="0"
                                 />
                                 <Select
+                                    setting={settings[SETTINGS.TH_TYPE_CUSTOM]}
+                                    on:settingsUpdated={updateDamages}
+                                    img="/armour_icons/Off-hand_slot.webp"
+                                />
+                                <Select
                                     setting={settings[SETTINGS.AMMO]}
                                     on:settingsUpdated={updateDamages}
                                 />
