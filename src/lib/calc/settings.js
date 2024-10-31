@@ -522,6 +522,7 @@ const SETTINGS = {
     TIME_SINCE_ATTACK: 'time since attack',
     INNATE_MASTERY: 'innate mastery',
     CHANNELER_RING_STACKS: 'channelers ring stacks',
+    NUMBER_OF_BLEEDS: 'number of bleeds',
 };
 
 const settingsConfig = {
@@ -1486,6 +1487,10 @@ const settingsConfig = {
     [SETTINGS.CHANNELER_RING_STACKS]: {
         label: 'Channelers ring stacks',
         default: 0
+    },
+    [SETTINGS.NUMBER_OF_BLEEDS]: {
+        label: 'Bleeds on boss',
+        default: 1
     },
 };
 

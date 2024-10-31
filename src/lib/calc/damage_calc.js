@@ -891,9 +891,16 @@ function calc_crit_damage(settings) {
     // channelers ring
     if (
         (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
-        abils[settings['ability']]['ability classification'] === 'channel'
+        abils[settings['ability']]['ability classification'] === 'channel' &&
+        abils[settings['ability']]['main style'] === 'magic'
     ) {
         crit_buff += 0.025 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
+    }
+
+    if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E &&
+        abils[settings['ability']]['main style'] === 'melee'
+    ) {
+        crit_buff += 0.015 * settings[SETTINGS.NUMBER_OF_BLEEDS];
     }
 
     return crit_buff;

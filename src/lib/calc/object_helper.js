@@ -136,8 +136,11 @@ function calc_crit_chance(settings) {
 
     if (abils[settings['ability']]['main style'] === 'melee') {
         // champion's ring
-        if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION) {
+        if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E) {
             crit_chance += 0.03;
+            if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E) {
+                crit_chance += 0.01;
+            }
         }
 
         // (g)fury
@@ -188,7 +191,7 @@ function calc_crit_chance(settings) {
     if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.EQUILIBRIUM) {
         crit_chance = 0;
     }
-    
+
     return Math.min(1, crit_chance);
 }
 
