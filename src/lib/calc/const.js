@@ -80,7 +80,7 @@ const weapons = {
         style: 'ranged',
         'weapon type': 'two-hand',
         tier: 95,
-        type: 'bow',
+        'type': 'bow',
         classification: 'none'
     },
     omniguard: {
@@ -863,6 +863,14 @@ const armour = {
         slot: 'ring',
         style: 'magic'
     },
+    'channelers ring+': {
+        'necromancy strength': 0,
+        'magic strength': 30.4,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'ring',
+        style: 'magic'
+    },
     'stalkers ring': {
         'necromancy strength': 0,
         'magic strength': 0,
@@ -871,7 +879,23 @@ const armour = {
         slot: 'ring',
         style: 'ranged'
     },
+    'stalkers ring+': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 30.4,
+        slot: 'ring',
+        style: 'ranged'
+    },
     'champions ring': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 30.4,
+        'ranged strength': 0,
+        slot: 'ring',
+        style: 'melee'
+    },
+    'champions ring+': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 30.4,

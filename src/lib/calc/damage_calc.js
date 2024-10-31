@@ -888,6 +888,29 @@ function calc_crit_damage(settings) {
         }
     }
 
+    // channelers ring
+    if (
+        (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
+        abils[settings['ability']]['ability classification'] === 'channel' &&
+        abils[settings['ability']]['main style'] === 'magic'
+    ) {
+        crit_buff += 0.025 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
+    }
+
+    // champions ring
+    if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E &&
+        abils[settings['ability']]['main style'] === 'melee'
+    ) {
+        crit_buff += 0.015 * settings[SETTINGS.NUMBER_OF_BLEEDS];
+    }
+
+    // stalkers ring
+    if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E && 
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+        (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)) {
+            crit_buff += 0.03;
+        }
+
     return crit_buff;
 }
 

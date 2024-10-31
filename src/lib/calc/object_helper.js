@@ -88,7 +88,7 @@ function calc_crit_chance(settings) {
     }
 
     // reaver's ring
-    if (settings['ring'] === 'reavers ring') {
+    if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.REAVERS) {
         crit_chance += 0.05;
     }
 
@@ -105,11 +105,11 @@ function calc_crit_chance(settings) {
     if (abils[settings['ability']]['main style'] === 'magic') {
         // channeller's ring
         if (
-            settings['ring'] === 'channellers ring' &&
+            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
             abils[settings['ability']]['ability classification'] === 'channel'
         ) {
             crit_chance += 0.04;
-            crit_chance += 0.04 * settings['channelers ring stacks'];
+            crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
         }
 
         // (g)conc
@@ -136,8 +136,11 @@ function calc_crit_chance(settings) {
 
     if (abils[settings['ability']]['main style'] === 'melee') {
         // champion's ring
-        if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION) {
+        if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E) {
             crit_chance += 0.03;
+            if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E) {
+                crit_chance += 0.01;
+            }
         }
 
         // (g)fury
@@ -156,10 +159,15 @@ function calc_crit_chance(settings) {
     if (abils[settings['ability']]['main style'] === 'ranged') {
         // stalker's ring
         if (
-            settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER &&
-            weapons[settings['weapon']]['category'] === 'bow'
+            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E) &&
+            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+            (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)
         ) {
             crit_chance += 0.03;
+            if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E && 
+                (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)) {
+                crit_chance+= 0.01;
+            }
         }
 
         // shadow tendril
@@ -176,7 +184,6 @@ function calc_crit_chance(settings) {
 
         // deathspore arrows
         if (
-            weapons[settings['two-hand weapon']]['category'] === 'bow' &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
             settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS
         ) {
