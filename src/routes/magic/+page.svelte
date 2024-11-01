@@ -353,6 +353,9 @@
                                 <Number
                                     setting={settings[SETTINGS.HAUNTED_AD]}
                                     on:settingsUpdated={updateDamages}
+                                    step="1"
+                                    max="9999"
+                                    min="0"
                                 />
                             </div>
                         {:else if tab === 'equipment'}
