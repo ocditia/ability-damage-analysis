@@ -1,5 +1,7 @@
 <script>
     import { createEventDispatcher } from 'svelte';
+    import SettingWrapper from '$components/Settings/SettingWrapper.svelte';
+    import LabelWrapper from '$components/Settings/LabelWrapper.svelte';
 
     export let setting;
     export let img;
@@ -11,19 +13,35 @@
     }
 </script>
 
-<div class="md:flex md:items-center mt-4">
-    <label class="block ml-auto text-right" for={setting.key}>
-        {#if img}
-            <img class="inline w-auto h-6 leading-6" src={img} alt="" />
-        {/if}
-        {setting.label}
+<SettingWrapper>
+    <LabelWrapper
+        label={setting.label}
+        img={img}
+    />
+    <label
+        class={`
+            relative cursor-pointer select-none
+            focus-within:border focus-within:border-white focus-within:rounded-md
+        `}
+        for={setting.key}
+    >
         <input
-            class="mr-2 leading-tight"
-            id={setting.key}
+            class="absolute opacity-0 w-0 h-0"
             type="checkbox"
+            id={setting.key}
             bind:checked={setting.value}
             on:change={settingUpdated}
             {...$$restProps}
         />
+        <span class={`
+            hover:border hover:border-white
+            border border-slate-600 rounded-md w-6 h-6 flex
+            ${setting.value ? 'bg-transparent' : ''}
+            after:absolute after:left-[8px] after:top-[4px]
+            after:w-[6px] after:h-[12px] after:rotate-45
+            after:border-white after:border-r-2 after:border-b-2
+            ${setting.value ? 'after:block' : 'after:hidden'}
+        `}></span>
     </label>
-</div>
+</SettingWrapper>
+
