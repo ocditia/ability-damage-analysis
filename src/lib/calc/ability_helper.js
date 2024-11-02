@@ -33,8 +33,8 @@ function next_tick(settings) {
 
 function next_cast(settings) {
     // turn off chaos roar
-    if (settings['chaos roar'] === true) {
-        settings['chaos roar'] = false;
+    if (settings[SETTINGS.CHAOS_ROAR] === true) {
+        settings[SETTINGS.CHAOS_ROAR] = false;
     }
 
     settings = next_hit(settings);
@@ -44,12 +44,13 @@ function next_cast(settings) {
 
 function next_hit(settings) {
     // turn off (g)fury
-    if (settings['fury'] === 'regular' || settings['fury'] === 'greater') {
-        settings['fury'] = 'off';
+    if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.REGULAR || 
+        settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.GREATER) {
+        settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.NONE;
     }
 
     // turn off (g)conc
-    settings['conc stacks'] = 0; // this does not properly handle conc buffing itself
+    settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 0; // this does not properly handle conc buffing itself
 
     // bolg stack tracker
     if (
