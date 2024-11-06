@@ -1,7 +1,7 @@
+import { next_cast, next_hit, next_tick } from './ability_helper';
+import { ABILITIES, abils, armour, gear, prayers, weapons } from './const';
+import { create_object } from './object_helper';
 import { SETTINGS } from './settings';
-import { weapons, gear, armour, abils, prayers, ABILITIES } from './const';
-import { create_object, calc_crit_chance } from './object_helper';
-import { next_tick, next_hit, next_cast } from './ability_helper';
 
 function calc_base_ad(settings) {
     // see wiki page /ability_damage for more info
@@ -718,7 +718,7 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
         }
 
         // dragon battleaxe
-        if (settings['dragon battleaxe'] === true) {
+        if (settings['rampage'] === true) {
             boost = Math.floor(boost * 1.2);
         }
     }
