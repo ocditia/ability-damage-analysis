@@ -43,7 +43,7 @@ const abilities = {
         icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png'
     },
     [ABILITIES.COMBUST]: {
-        title: 'combust',
+        title: 'Combust',
         calc: ability_damage_calculation,
         icon: '/ability_icons/magic/30x30/combust.png'
     },
@@ -103,7 +103,7 @@ const abilities = {
         icon: '/ability_icons/magic/30x30/tsunami.png'
     },
     [ABILITIES.TEMPEST_OF_ARMADYL]: {
-        title: 'Tempest of armadyl',
+        title: 'Tempest of Armadyl',
         calc: ability_damage_calculation,
         icon: '/ability_icons/magic/30x30/armadyl_battlestaff-bg.png'
     },
@@ -113,7 +113,7 @@ const abilities = {
         icon: '/ability_icons/magic/30x30/time_strike-bg.png'
     },
     [ABILITIES.CLAWS_OF_GUTHIX]: {
-        title: 'Claws of guthix',
+        title: 'Claws of Guthix',
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/guthix_staff-bg.png'
     },
@@ -153,7 +153,7 @@ const abilities = {
         icon: '/ability_icons/magic/30x30/staff_of_sliske.png'
     },
     [ABILITIES.FLAMES_OF_ZAMORAK]: {
-        title: 'Flames of zamorak',
+        title: 'Flames of Zamorak',
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/zamorak_staff.png'
     },

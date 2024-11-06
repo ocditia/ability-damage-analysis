@@ -18,32 +18,32 @@ const abilities = {
         icon: '/ability_icons/necro/30x30/soul-sap.png'
     },
     [ABILITIES.SKELETON_WARRIOR_AUTO]: {
-        title: 'Skeleton warrior auto',
+        title: 'Skeleton Warrior auto',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/conj-skele.png'
     },
     [ABILITIES.SKELETON_WARRIOR_AUTO_10]: {
-        title: 'Command skeleton warrior',
+        title: 'Command Skeleton Warrior',
         calc: ability_damage_calculation,
         icon: '/ability_icons/necro/30x30/comm-skele.png'
     },
     [ABILITIES.VENGEFUL_GHOST_AUTO]: {
-        title: 'Vengeful ghost auto',
+        title: 'Vengeful Ghost auto',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/ghost.png'
     },
     [ABILITIES.PUTRID_ZOMBIE_AUTO]: {
-        title: 'Putrid zombie auto',
+        title: 'Putrid Zombie auto',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/conj-zom.png'
     },
     [ABILITIES.COMMAND_PUTRID_ZOMBIE]: {
-        title: 'Command putrid zombie',
+        title: 'Command Putrid Zombie',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/comm-zom.png'
     },
     [ABILITIES.COMMAND_PHANTOM_GUARDIAN]: {
-        title: 'Command phantom guardian',
+        title: 'Command Phantom Guardian',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/command_phantom_guardian.png'
     },
@@ -53,17 +53,17 @@ const abilities = {
         icon: '/ability_icons/necro/30x30/FOD.png'
     },
     [ABILITIES.DEATHSKULLS]: {
-        title: 'Deathskulls',
+        title: 'Deathskulls (1 hit)',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/skulls.png'
     },
     [ABILITIES.DEATHSKULLS_4]: {
-        title: 'Deathskulls 4 hit',
+        title: 'Deathskulls (4 hits)',
         calc: ability_damage_calculation,
         icon: '/ability_icons/necro/30x30/skulls.png'
     },
     [ABILITIES.DEATHSKULLS_7]: {
-        title: 'Deathskulls 7 hit',
+        title: 'Deathskulls (7 hits)',
         calc: ability_damage_calculation,
         icon: '/ability_icons/necro/30x30/skulls.png'
     },
@@ -73,7 +73,7 @@ const abilities = {
         icon: '/ability_icons/necro/30x30/soul_strike.png'
     },
     [ABILITIES.SOUL_STRIKE_AOE]: {
-        title: 'soul strike aoe',
+        title: 'Soul strike aoe',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/soul_strike.png'
     },
@@ -98,7 +98,7 @@ const abilities = {
         icon: '/ability_icons/necro/30x30/volley-5.png'
     },
     [ABILITIES.SPECTRAL_SCYTHE_1]: {
-        title: 'Spectral scythe (1)',
+        title: 'Spectral scythe 1',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/scyth-1.png'
     },

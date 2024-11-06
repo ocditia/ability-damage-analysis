@@ -168,7 +168,7 @@ const abilities = {
         icon: '/ability_icons/melee/30x30/ancient_mace.png'
     },
     [ABILITIES.ARMADYLS_JUDGEMENT]: {
-        title: 'Armadyls judgement',
+        title: "Armadyl's judgement",
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/ags.png'
     },
@@ -285,7 +285,7 @@ const abilities = {
         icon: '/ability_icons/melee/30x30/saradomin_godsword.png'
     },
     [ABILITIES.SARADOMINS_LIGHTNING]: {
-        title: 'Saradomins lightning',
+        title: "Saradomin's lightning",
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/saradomin_sword.png'
     },
