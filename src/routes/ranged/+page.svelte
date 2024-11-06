@@ -148,6 +148,13 @@
                                     setting={settings[SETTINGS.DRACOLICH_INFUSION]}
                                     on:settingsUpdated={updateDamages}
                                 />
+                                <Number
+                                    setting={settings[SETTINGS.TARGET_HP_PERCENT]}
+                                    on:settingsUpdated={updateDamages}
+                                    step="1"
+                                    max="100"
+                                    min="0"
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Base damage</h5>

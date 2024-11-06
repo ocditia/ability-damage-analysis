@@ -793,8 +793,9 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
 
     // ripper demon familiar buff
     if (settings[SETTINGS.FAMILIAR] === SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON) {
-        boost = Math.floor(boost + 0.05 * (1 - settings[SETTINGS.TARGET_HP_PERCENT] / 100));
+        boost += Math.floor(boost * 0.05 * (1 - settings[SETTINGS.TARGET_HP_PERCENT] / 100));
     }
+    
 
     dmgObject['min hit'] = Math.floor((dmgObject['min hit'] * boost) / 10000);
     dmgObject['var hit'] = Math.floor((dmgObject['var hit'] * boost) / 10000);
@@ -1635,6 +1636,27 @@ function get_rotation(settings) {
     if (settings['ability'] === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] != SETTINGS.CAPE_VALUES.ZUK) {
         rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]}
     }
+
+    // mastework spear of annihilation
+    if (settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR && 
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
+        if (settings['ability'] === ABILITIES.DISMEMBER) {
+            rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
+        }
+
+        if (settings['ability'] === ABILITIES.BLOOD_TENDRILS) {
+            rotation[1].push(ABILITIES.BLOOD_TENDRILS_2, ABILITIES.BLOOD_TENDRILS_2);
+        }
+
+        if (settings['abilty'] === ABILITIES.SLAUGHTER) {
+            rotation[1].push(ABILITIES.SLAUGHTER_HIT, ABILITIES.SLAUGHTER_HIT);
+        }
+
+        if (settings['ability'] === ABILITIES.MASSACRE) {
+            rotation[1].push(ABILITIES.MASSACRE_BLEED, ABILITIES.MASSACRE_BLEED);
+        }
+    }
+
     return rotation;
 }
 
