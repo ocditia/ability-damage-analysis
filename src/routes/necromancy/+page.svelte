@@ -113,6 +113,13 @@
                                     setting={settings[SETTINGS.MODE]}
                                     on:settingsUpdated={updateDamages}
                                 />
+                                <Number
+                                    setting={settings[SETTINGS.TARGET_HP_PERCENT]}
+                                    on:settingsUpdated={updateDamages}
+                                    step="1"
+                                    max="100"
+                                    min="0"
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Base damage</h5>
@@ -179,10 +186,6 @@
                                 />
                                 <Checkbox
                                     setting={settings[SETTINGS.DRACONIC_FRUIT]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.ENDURING_RUIN_HIT]}
                                     on:settingsUpdated={updateDamages}
                                 />
                                 <Number
@@ -255,10 +258,6 @@
                                     setting={settings[SETTINGS.VULN]}
                                     on:settingsUpdated={updateDamages}
                                     img="/effect_icons/Vulnerability_icon.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.ENDURING_RUIN_BLEED]}
-                                    on:settingsUpdated={updateDamages}
                                 />
                                 <Number
                                     setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
@@ -369,6 +368,10 @@
                                 />
                                 <Select
                                     setting={settings[SETTINGS.AURA]}
+                                    on:settingsUpdated={updateDamages}
+                                />
+                                <Select
+                                    setting={settings[SETTINGS.FAMILIAR]}
                                     on:settingsUpdated={updateDamages}
                                 />
                             </div>

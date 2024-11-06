@@ -406,6 +406,17 @@ function set_min_var(settings, dmgObject) {
             min_percent = min_percent + 0.45 * settings[SETTINGS.DETONATE]; // TODO: fix missing reference for SETTINGS.DETONATE
             var_percent = var_percent + 0.1 * settings[SETTINGS.DETONATE];
         }
+
+        // flank
+        if (settings['ability'] === ABILITIES.IMPACT) {
+            min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
+        }
+
+        if (settings['ability'] === ABILITIES.DEEP_IMPACT) {
+            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
@@ -423,6 +434,17 @@ function set_min_var(settings, dmgObject) {
             min_percent += 0.18 * settings[SETTINGS.PRIMORDIAL_ICE];
             var_percent += 0.04 * settings[SETTINGS.PRIMORDIAL_ICE];
         }
+
+        // flank
+        if (settings['ability'] === ABILITIES.BACKHAND) {
+            min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
+        }
+
+        if (settings['ability'] === ABILITIES.FORCEFUL_BACKHAND) {
+            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
@@ -431,12 +453,29 @@ function set_min_var(settings, dmgObject) {
             min_percent = min_percent + 0.1 * settings['puncture stacks'];
             var_percent = var_percent + 0.05 * settings['puncture stacks'];
         }
+
+        // flank
+        if (settings['ability'] === ABILITIES.BINDING_SHOT) {
+            min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
+        }
+
+        if (settings['ability'] === ABILITIES.TIGHT_BINDINGS) {
+            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'necromancy') {
         // death grasp (death guard spec)
         if (settings['ability'] === 'death grasp') {
             min_percent = min_percent + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
+        }
+
+        // flank
+        if (settings['ability'] === ABILITIES.SOUL_STRIKE) {
+            min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
         }
     }
 
@@ -793,8 +832,9 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
 
     // ripper demon familiar buff
     if (settings[SETTINGS.FAMILIAR] === SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON) {
-        boost = Math.floor(boost + 0.05 * (1 - settings[SETTINGS.TARGET_HP_PERCENT] / 100));
+        boost += Math.floor(boost * 0.05 * (1 - settings[SETTINGS.TARGET_HP_PERCENT] / 100));
     }
+    
 
     dmgObject['min hit'] = Math.floor((dmgObject['min hit'] * boost) / 10000);
     dmgObject['var hit'] = Math.floor((dmgObject['var hit'] * boost) / 10000);
@@ -1213,29 +1253,34 @@ function calc_bolg(settings) {
 
     // calc the damage based proc
     for (let key in bolg_damage_based) {
-        bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
-        bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
-        let dmg_list = [];
+        
+        /*let dmg_list = [];
         // take every single element of dmgobject and add the relevant percentage ranges as individual hits to bolg_damage_based with the same key
         for (let element in settings['bolg damage'][key]['damage list']) {
             bolg_damage_based[key]['min hit'] = Math.floor(
-                element * abils[settings['ability']]['min hit']
+                settings['bolg damage'][key]['damage list'][element] * abils[settings['ability']]['min hit']
             );
             bolg_damage_based[key]['var hit'] = Math.floor(
-                element * abils[settings['ability']]['var hit']
+                settings['bolg damage'][key]['damage list'][element] * abils[settings['ability']]['var hit']
             );
             bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
 
             for (
                 let i = bolg_damage_based[key]['min hit'];
-                i <= bolg_damage_based[key]['var hit'];
+                i <= bolg_damage_based[key]['min hit'] + bolg_damage_based[key]['var hit'];
                 i++
             ) {
                 dmg_list.push(i);
             }
         }
-        bolg_damage_based[key]['damage list'] = dmg_list;
+        bolg_damage_based[key]['damage list'] = dmg_list;*/
 
+        bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
+        bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
+        bolg_damage_based[key]['min hit'] = settings['bolg damage'][key]['damage list'][0];
+        bolg_damage_based[key]['var hit'] = settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1];
+        bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
+        bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
         bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
@@ -1635,6 +1680,34 @@ function get_rotation(settings) {
     if (settings['ability'] === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] != SETTINGS.CAPE_VALUES.ZUK) {
         rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]}
     }
+
+    // mastework spear of annihilation
+    if (settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR && 
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
+        if (settings['ability'] === ABILITIES.DISMEMBER) {
+            rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
+        }
+
+        if (settings['ability'] === ABILITIES.BLOOD_TENDRILS) {
+            rotation[1].push(ABILITIES.BLOOD_TENDRILS_2, ABILITIES.BLOOD_TENDRILS_2);
+        }
+
+        if (settings['abilty'] === ABILITIES.SLAUGHTER) {
+            rotation[1].push(ABILITIES.SLAUGHTER_HIT, ABILITIES.SLAUGHTER_HIT);
+        }
+
+        if (settings['ability'] === ABILITIES.MASSACRE) {
+            rotation[1].push(ABILITIES.MASSACRE_BLEED, ABILITIES.MASSACRE_BLEED);
+        }
+    }
+
+    // strenght cape
+    if (settings[SETTINGS.STRENGTH_CAPE] === true &&
+        settings['ability'] === ABILITIES.DISMEMBER
+    ) {
+        rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
+    }
+
     return rotation;
 }
 

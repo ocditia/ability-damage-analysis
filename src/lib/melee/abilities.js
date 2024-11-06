@@ -242,11 +242,12 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/dragon_scimitar.png'
     },
-    [ABILITIES.SHOVE]: {
+    // abil just does 0 damage
+    /*[ABILITIES.SHOVE]: {
         title: 'Shove',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/dragon_spear.png'
-    },
+    },*/
     /*[ABILITIES.IGNEOUS_CLEAVE]: {
         title: 'Igneous cleave',
         calc: ability_damage_calculation,
@@ -267,11 +268,12 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/korasis_sword.png'
     },
-    [ABILITIES.GET_OVER_HERE]: {
+    // abil does 0 damage
+    /*[ABILITIES.GET_OVER_HERE]: {
         title: 'Get over here!',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/lava_whip.png'
-    },
+    },*/
     [ABILITIES.IMPALE]: {
         title: 'Impale',
         calc: hit_damage_calculation,

@@ -148,7 +148,14 @@ const weapons = {
         tier: 88,
         type: 'none',
         classification: 'none'
-    }
+    },
+    'masterwork spear of annihilation': {
+        style: 'melee',
+        'weapon type': 'two-hand',
+        tier: 92,
+        type: 'spear',
+        classification: 'none'
+    },
 };
 
 const gear = {

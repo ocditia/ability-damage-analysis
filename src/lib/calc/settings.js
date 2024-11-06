@@ -431,7 +431,8 @@ const SETTINGS = {
     MELEE_TH_VALUES: {
         CUSTOM: 'custom th',
         T_MAUL: 'terrasaur maul',
-        T_MAUL_E: 'terrasaur maul+'
+        T_MAUL_E: 'terrasaur maul+',
+        MW_SPEAR: 'masterwork spear of annihilation',
     },
     NECRO_TH: 'necro two-hand weapon',
     NECRO_TH_VALUES: {
@@ -528,6 +529,7 @@ const SETTINGS = {
     INNATE_MASTERY: 'innate mastery',
     CHANNELER_RING_STACKS: 'channelers ring stacks',
     NUMBER_OF_BLEEDS: 'number of bleeds',
+    STRENGTH_CAPE: 'strength cape',
 };
 
 const settingsConfig = {
@@ -757,7 +759,7 @@ const settingsConfig = {
         default: 0
     },
     [SETTINGS.FAMILIAR]: {
-        label: 'Ripper Passive %',
+        label: 'Familiar',
         default: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON,
         options: [
             { text: 'None', value: SETTINGS.FAMILIAR_VALUES.NONE },
@@ -1219,11 +1221,12 @@ const settingsConfig = {
     },
     [SETTINGS.MELEE_TH]: {
         label: '2h',
-        default: SETTINGS.MELEE_TH_VALUES.CUSTOM,
+        default: SETTINGS.MELEE_TH_VALUES.MW_SPEAR,
         options: [
             { text: 'Custom', value: SETTINGS.MELEE_TH_VALUES.CUSTOM },
             { text: 'Terrasaur maul', value: SETTINGS.MELEE_TH_VALUES.T_MAUL },
-            { text: 'Terrasaur maul+', value: SETTINGS.MELEE_TH_VALUES.T_MAUL_E }
+            { text: 'Terrasaur maul+', value: SETTINGS.MELEE_TH_VALUES.T_MAUL_E },
+            { text: 'MW Spear', value: SETTINGS.MELEE_TH_VALUES.MW_SPEAR}
         ]
     },
     [SETTINGS.NECRO_TH]: {
@@ -1504,6 +1507,10 @@ const settingsConfig = {
     [SETTINGS.NUMBER_OF_BLEEDS]: {
         label: 'Bleeds on boss',
         default: 1
+    },
+    [SETTINGS.STRENGTH_CAPE]: {
+        label: 'Str cape',
+        default: true
     },
 };
 
