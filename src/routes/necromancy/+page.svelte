@@ -188,10 +188,6 @@
                                     setting={settings[SETTINGS.DRACONIC_FRUIT]}
                                     on:settingsUpdated={updateDamages}
                                 />
-                                <Select
-                                    setting={settings[SETTINGS.ENDURING_RUIN_HIT]}
-                                    on:settingsUpdated={updateDamages}
-                                />
                                 <Number
                                     setting={settings[SETTINGS.RUBY_AURORA]}
                                     on:settingsUpdated={updateDamages}
@@ -262,10 +258,6 @@
                                     setting={settings[SETTINGS.VULN]}
                                     on:settingsUpdated={updateDamages}
                                     img="/effect_icons/Vulnerability_icon.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.ENDURING_RUIN_BLEED]}
-                                    on:settingsUpdated={updateDamages}
                                 />
                                 <Number
                                     setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
