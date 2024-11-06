@@ -406,6 +406,17 @@ function set_min_var(settings, dmgObject) {
             min_percent = min_percent + 0.45 * settings[SETTINGS.DETONATE]; // TODO: fix missing reference for SETTINGS.DETONATE
             var_percent = var_percent + 0.1 * settings[SETTINGS.DETONATE];
         }
+
+        // flank
+        if (settings['ability'] === ABILITIES.IMPACT) {
+            min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
+        }
+
+        if (settings['ability'] === ABILITIES.DEEP_IMPACT) {
+            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
@@ -423,6 +434,17 @@ function set_min_var(settings, dmgObject) {
             min_percent += 0.18 * settings[SETTINGS.PRIMORDIAL_ICE];
             var_percent += 0.04 * settings[SETTINGS.PRIMORDIAL_ICE];
         }
+
+        // flank
+        if (settings['ability'] === ABILITIES.BACKHAND) {
+            min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
+        }
+
+        if (settings['ability'] === ABILITIES.FORCEFUL_BACKHAND) {
+            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
@@ -431,12 +453,29 @@ function set_min_var(settings, dmgObject) {
             min_percent = min_percent + 0.1 * settings['puncture stacks'];
             var_percent = var_percent + 0.05 * settings['puncture stacks'];
         }
+
+        // flank
+        if (settings['ability'] === ABILITIES.BINDING_SHOT) {
+            min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
+        }
+
+        if (settings['ability'] === ABILITIES.TIGHT_BINDINGS) {
+            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'necromancy') {
         // death grasp (death guard spec)
         if (settings['ability'] === 'death grasp') {
             min_percent = min_percent + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
+        }
+
+        // flank
+        if (settings['ability'] === ABILITIES.SOUL_STRIKE) {
+            min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
+            var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
         }
     }
 
