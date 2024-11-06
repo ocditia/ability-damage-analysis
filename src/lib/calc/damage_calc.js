@@ -1253,9 +1253,8 @@ function calc_bolg(settings) {
 
     // calc the damage based proc
     for (let key in bolg_damage_based) {
-        bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
-        bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
-        let dmg_list = [];
+        
+        /*let dmg_list = [];
         // take every single element of dmgobject and add the relevant percentage ranges as individual hits to bolg_damage_based with the same key
         for (let element in settings['bolg damage'][key]['damage list']) {
             bolg_damage_based[key]['min hit'] = Math.floor(
@@ -1274,8 +1273,14 @@ function calc_bolg(settings) {
                 dmg_list.push(i);
             }
         }
-        bolg_damage_based[key]['damage list'] = dmg_list;
+        bolg_damage_based[key]['damage list'] = dmg_list;*/
 
+        bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
+        bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
+        bolg_damage_based[key]['min hit'] = settings['bolg damage'][key]['damage list'][0];
+        bolg_damage_based[key]['var hit'] = settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1];
+        bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
+        bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
         bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
