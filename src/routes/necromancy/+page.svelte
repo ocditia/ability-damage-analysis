@@ -196,13 +196,6 @@
                                     max="3"
                                     min="0"
                                 />
-                                <Number
-                                    setting={settings[SETTINGS.GRAVITATE]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="20"
-                                    min="0"
-                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">
