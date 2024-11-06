@@ -1354,23 +1354,21 @@ function calc_sgb(settings, dmg) {
     return Math.floor(dmg * (hits[size] - 1));
 }
 
-function calc_igneous_bleed(settings) {
+function calc_igneous_bleed(settings) { 
     let total_damage = 0;
-    const total_hits = 6 + settings[SETTINGS.IGNEOUS_EXTENSIOS];
-    let previous_splat = settings['igneous cleave bleed damage'];
-    for (let hit = 2; hit <= total_hits; hit++) {
-        let bleed_hit = create_object(settings);
-        for (let key in previous_splat) {
-            for (let dmg in previous_splat[key]['damage list']) {
-                bleed_hit[key]['damage list'].push(
-                    Math.floor(previous_splat[key]['damage list'][dmg] * 1.05)
-                );
-            }
-            bleed_hit[key] = calc_on_npc(settings, bleed_hit[key]);
+    let total_hits = 6 + settings[SETTINGS.IGNEOUS_EXTENSIOS];
+    if (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR && 
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
+            total_hits += 3;
         }
-        total_damage += get_user_value(settings, bleed_hit);
-        previous_splat = { ...bleed_hit };
+    
+    let hit_dmg = get_user_value(settings, settings['igneous cleave bleed damage']);
+    total_damage += hit_dmg;
+    for (let hit=2; hit<=total_hits; hit++) {
+        hit_dmg = Math.floor(hit_dmg * 1.05);
+        total_damage += hit_dmg
     }
+
     return total_damage;
 }
 
