@@ -371,6 +371,10 @@
                                     setting={settings[SETTINGS.AURA]}
                                     on:settingsUpdated={updateDamages}
                                 />
+                                <Select
+                                    setting={settings[SETTINGS.FAMILIAR]}
+                                    on:settingsUpdated={updateDamages}
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Perks</h5>
