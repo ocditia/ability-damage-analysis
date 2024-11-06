@@ -1219,16 +1219,16 @@ function calc_bolg(settings) {
         // take every single element of dmgobject and add the relevant percentage ranges as individual hits to bolg_damage_based with the same key
         for (let element in settings['bolg damage'][key]['damage list']) {
             bolg_damage_based[key]['min hit'] = Math.floor(
-                element * abils[settings['ability']]['min hit']
+                settings['bolg damage'][key]['damage list'][element] * abils[settings['ability']]['min hit']
             );
             bolg_damage_based[key]['var hit'] = Math.floor(
-                element * abils[settings['ability']]['var hit']
+                settings['bolg damage'][key]['damage list'][element] * abils[settings['ability']]['var hit']
             );
             bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
 
             for (
                 let i = bolg_damage_based[key]['min hit'];
-                i <= bolg_damage_based[key]['var hit'];
+                i <= bolg_damage_based[key]['min hit'] + bolg_damage_based[key]['var hit'];
                 i++
             ) {
                 dmg_list.push(i);
