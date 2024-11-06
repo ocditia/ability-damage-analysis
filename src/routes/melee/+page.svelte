@@ -134,6 +134,10 @@
                                     max="100"
                                     min="0"
                                 />
+                                <Checkbox
+                                    setting={settings[SETTINGS.STRENGTH_CAPE]}
+                                    on:settingsUpdated={updateDamages}
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Base damage</h5>

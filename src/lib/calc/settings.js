@@ -529,6 +529,7 @@ const SETTINGS = {
     INNATE_MASTERY: 'innate mastery',
     CHANNELER_RING_STACKS: 'channelers ring stacks',
     NUMBER_OF_BLEEDS: 'number of bleeds',
+    STRENGTH_CAPE: 'strength cape',
 };
 
 const settingsConfig = {
@@ -1506,6 +1507,10 @@ const settingsConfig = {
     [SETTINGS.NUMBER_OF_BLEEDS]: {
         label: 'Bleeds on boss',
         default: 1
+    },
+    [SETTINGS.STRENGTH_CAPE]: {
+        label: 'Str cape',
+        default: true
     },
 };
 
