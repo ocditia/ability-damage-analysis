@@ -284,15 +284,17 @@ function ability_specific_effects(settings, dmgObject) {
         }
 
         // kerapac's wristwraps
-        if (
-            settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR
-        ) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.25);
-        } else if (
-            settings[SETTINGS.KERAPACS_WRIST_WRAPS] ===
-            SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED
-        ) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
+        if (settings['ability'] === ABILITIES.COMBUST_HIT) {
+            if (
+                settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR
+            ) {
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.25);
+            } else if (
+                settings[SETTINGS.KERAPACS_WRIST_WRAPS] ===
+                SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED
+            ) {
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
+            }
         }
 
         // combust walk
@@ -1074,21 +1076,27 @@ function calc_on_npc(settings, dmgObject) {
         }
 
         // zerk auras
-        if (
-            settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.MANIACAL &&
-            abils[settings['ability']]['damage type'] === 'magic'
+        if(settings[SETTINGS.SUNSHINE] === false &&
+        settings[SETTINGS.META] === false &&
+        settings[SETTINGS.DEATH_SWIFTNESS] === false &&
+        settings[SETTINGS.BERSERK] === false
         ) {
-            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
-        } else if (
-            settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.BERSERKER &&
-            abils[settings['ability']]['damage type'] === 'melee'
-        ) {
-            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
-        } else if (
-            settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.RECKLESS &&
-            abils[settings['ability']]['damage type'] === 'ranged'
-        ) {
-            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
+            if (
+                settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.MANIACAL &&
+                abils[settings['ability']]['damage type'] === 'magic'
+            ) {
+                dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
+            } else if (
+                settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.BERSERKER &&
+                abils[settings['ability']]['damage type'] === 'melee'
+            ) {
+                dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
+            } else if (
+                settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.RECKLESS &&
+                abils[settings['ability']]['damage type'] === 'ranged'
+            ) {
+                dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
+            }
         }
 
         // mahjarrat aura
@@ -1101,12 +1109,12 @@ function calc_on_npc(settings, dmgObject) {
 
         // scrimshaw of elements
         if (
-            settings[SETTINGS.POCKET] === 'scrimshaw of elements' &&
+            settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.ELEMENTS &&
             abils[settings['ability']]['main style'] === 'magic'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.05);
         } else if (
-            settings[SETTINGS.POCKET] === 'superior scrimshaw of elements' &&
+            settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS &&
             abils[settings['ability']]['main style'] === 'magic'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.0666);
@@ -1114,12 +1122,12 @@ function calc_on_npc(settings, dmgObject) {
 
         // scrimshaw of cruelty
         if (
-            settings[SETTINGS.POCKET] === 'scrimshaw of cruelty' &&
+            settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.CRUELTY &&
             abils[settings['ability']]['main style'] === 'ranged'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.05);
         } else if (
-            settings[SETTINGS.POCKET] === 'superior scrimshaw of cruelty' &&
+            settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY &&
             abils[settings['ability']]['main style'] === 'ranged'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.0666);
@@ -1171,7 +1179,7 @@ function roll_damage(settings, dmgObject, key) {
         if (!('corruption damage' in settings)) {
             settings['corruption damage'] = create_object(settings);
         }
-        settings['corruption damage'][key]['damage list'] = dmg_list;
+        settings['corruption damage'][key]['damage list'] = [...dmg_list];
     }
 
     // store deadshot damage
@@ -1187,7 +1195,7 @@ function roll_damage(settings, dmgObject, key) {
         if (!('igneous cleave bleed damage' in settings)) {
             settings['igneous cleave bleed damage'] = create_object(settings);
         }
-        settings['igneous cleave bleed damage'][key]['damage list'] = dmg_list;
+        settings['igneous cleave bleed damage'][key]['damage list'] = [...dmg_list];
     }
     return dmg_list;
 }
@@ -1320,25 +1328,16 @@ function calc_deadshot_massacre(settings) {
 }
 
 function calc_corruption(settings) {
-    let total_dmg = 0;
-    let previous_splat = { ...settings['corruption damage'] };
-    for (let splat = 1; splat <= 4; splat++) {
-        let corruption_splat = create_object(settings);
-        let dmg_list = [];
-        for (let key in corruption_splat) {
-            for (let dmg_loc = 0; dmg_loc < previous_splat[key]['damage list'].length; dmg_loc++) {
-                let dmg =
-                    previous_splat[key]['damage list'][dmg_loc] -
-                    Math.floor(0.2 * settings['corruption damage'][key]['damage list'][dmg_loc]);
-                dmg_list.push(dmg);
-            }
-            corruption_splat[key]['damage list'] = dmg_list;
-            corruption_splat[key] = calc_on_npc(settings, corruption_splat[key]);
-            total_dmg += get_user_value(settings, corruption_splat);
-            previous_splat = corruption_splat;
-        }
+    let total_damage = 0;
+
+    let hit_dmg = get_user_value(settings, settings['corruption damage']);
+    total_damage += hit_dmg;
+
+    for (let hit=2; hit<=total_hits; hit++) {
+        hit_dmg = Math.floor(hit_dmg * 1.05);
+        total_damage += hit_dmg
     }
-    return total_dmg;
+    return total_damage;
 }
 
 function calc_fsoa(settings) {
@@ -1366,7 +1365,7 @@ function calc_igneous_bleed(settings) {
     total_damage += hit_dmg;
     for (let hit=2; hit<=total_hits; hit++) {
         hit_dmg = Math.floor(hit_dmg * 1.05);
-        total_damage += hit_dmg
+        total_damage += hit_dmg;
     }
 
     return total_damage;

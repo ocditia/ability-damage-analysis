@@ -353,7 +353,11 @@ const SETTINGS = {
         AMASCUT: 'scripture of amascut',
         GWD3: 'gwd3 scripture',
         IGOD: 'illuminated god book',
-        UNDERWORLD_GRIM: 'underworld grimoire 4'
+        UNDERWORLD_GRIM: 'underworld grimoire 4',
+        ELEMENTS: 'scrimshaw of elements',
+        SUPERIOR_ELEMENTS: 'superior scrimshaw of elements',
+        CRUELTY: 'scrimshaw of cruelty',
+        SUPERIOR_CRUELTY: 'superior scrimshaw of elements',
     },
     WEAPON: 'weapon type',
     WEAPON_VALUES: {
@@ -530,6 +534,13 @@ const SETTINGS = {
     CHANNELER_RING_STACKS: 'channelers ring stacks',
     NUMBER_OF_BLEEDS: 'number of bleeds',
     STRENGTH_CAPE: 'strength cape',
+    SUNSHINE: 'sunshine',
+    META: 'meta',
+    DEATH_SWIFTNESS: 'death swiftness',
+    SPLIT_SOUL: 'split soul',
+    ZGS: 'zgs',
+    BERSERK: 'berserk',
+    DETONATE: 'detonate charge timer',
 };
 
 const settingsConfig = {
@@ -1126,7 +1137,11 @@ const settingsConfig = {
             { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
             { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
             { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
-            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM }
+            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM },
+            { text: 'Elements', value: SETTINGS.POCKET_VALUES.ELEMENTS },
+            { text: 'Superior elements', value: SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS },
+            { text: 'Cruelty', value: SETTINGS.POCKET_VALUES.CRUELTY },
+            { text: 'Superior cruelty', value: SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY },
         ]
     },
     [SETTINGS.WEAPON]: {
@@ -1511,6 +1526,34 @@ const settingsConfig = {
     [SETTINGS.STRENGTH_CAPE]: {
         label: 'Str cape',
         default: true
+    },
+    [SETTINGS.SUNSHINE]: {
+        label: 'Sunshine',
+        default: false
+    },
+    [SETTINGS.META]: {
+        label: 'Meta',
+        default: false
+    },
+    [SETTINGS.DEATH_SWIFTNESS]: {
+        label: 'Swift',
+        default: false
+    },
+    [SETTINGS.SPLIT_SOUL]: {
+        label: 'Split soul',
+        default: false
+    },
+    [SETTINGS.ZGS]: {
+        label: 'ZGS',
+        default: false
+    },
+    [SETTINGS.BERSERK]: {
+        label: 'Berserk',
+        default: false
+    },
+    [SETTINGS.DETONATE]: {
+        label: 'Deto charge time',
+        default: 5
     },
 };
 

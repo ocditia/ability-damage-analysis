@@ -797,6 +797,38 @@ const armour = {
         slot: 'pocket',
         style: 'hybrid'
     },
+    'scrimshaw of elements': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'pocket',
+        style: 'hybrid'
+    },
+    'superior scrimshaw of elements': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'pocket',
+        style: 'hybrid'
+    },
+    'scrimshaw of cruelty': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'pocket',
+        style: 'hybrid'
+    },
+    'superior scrimshaw of cruelty': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'pocket',
+        style: 'hybrid'
+    },
     'kerapacs wristwraps': {
         'necromancy strength': 0,
         'magic strength': 13.5,
@@ -3028,6 +3060,18 @@ const abils = {
         hits: {
             1: [ABILITIES.WILD_MAGIC_HIT, 'next hit', ABILITIES.WILD_MAGIC_HIT]
         }
+    },
+    [ABILITIES.DETONATE]: {
+        // ability name
+        'min hit': 0, // min % of abil expressed as a decimal
+        'var hit': 0,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, etc
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.SMOKE_TENDRILS_1]: {
         // ability name
