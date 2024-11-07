@@ -1330,13 +1330,13 @@ function calc_deadshot_massacre(settings) {
 function calc_corruption(settings) {
     let total_damage = 0;
 
-    let hit_dmg = get_user_value(settings, settings['corruption damage']);
+    /*let hit_dmg = get_user_value(settings, settings['corruption damage']);
     total_damage += hit_dmg;
 
     for (let hit=2; hit<=total_hits; hit++) {
         hit_dmg = Math.floor(hit_dmg * 1.05);
         total_damage += hit_dmg
-    }
+    }*/
     return total_damage;
 }
 
