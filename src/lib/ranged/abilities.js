@@ -3,7 +3,7 @@ import { ability_damage_calculation, hit_damage_calculation } from '../calc/dama
 
 const abilities = {
     [ABILITIES.PIERCING_SHOT]: {
-        title: 'piercing shot',
+        title: 'Piercing shot',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/piercing.png'
     },

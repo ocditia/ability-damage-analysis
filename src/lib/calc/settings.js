@@ -1349,7 +1349,7 @@ const settingsConfig = {
         default: false
     },
     [SETTINGS.KERAPACS_WRIST_WRAPS]: {
-        label: 'Kerapacs wristwraps',
+        label: "Kerapac's wristwraps",
         default: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.NONE,
         options: [
             { text: 'None', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.NONE },
