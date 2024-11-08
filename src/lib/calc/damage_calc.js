@@ -537,8 +537,8 @@ function calc_style_specific(settings, dmgObject) {
 function calc_precise(settings, dmgObject) {
     // calculate precise
     let max_hit = dmgObject['min hit'] + dmgObject['var hit'];
-    dmgObject['min hit'] =
-        dmgObject['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
+    dmgObject['min hit'] = dmgObject['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
+    dmgObject['var hit'] = dmgObject['var hit'] - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
 
     return dmgObject;
 }
@@ -997,12 +997,12 @@ function calc_on_npc(settings, dmgObject) {
         }
 
         // zamorak's guardian triumph
-        if (
+        /*if (
             settings['guardian triump'] === true &&
             abils[settings['ability']]['ability type'] === 'basic'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.2);
-        }
+        }*/
 
         // undead slayer perk
         if (settings[SETTINGS.SLAYER_PERK_UNDEAD] === true) {

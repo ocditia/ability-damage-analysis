@@ -730,7 +730,7 @@ const settingsConfig = {
         default: 0
     },
     [SETTINGS.BERSERKERS_FURY]: {
-        label: "Dharok's Momento (relic)",
+        label: "Berserkers fury",
         default: 0
     },
     [SETTINGS.RUTHLESS_STACKS]: {
