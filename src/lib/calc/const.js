@@ -1221,7 +1221,39 @@ const armour = {
         'ranged strength': 0,
         slot: 'boots',
         style: 'melee'
-    }
+    },
+    'ghost hunter goggles': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'helmet',
+        style: 'hybrid'
+    },
+    'ghost hunter body': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'body',
+        style: 'hybrid'
+    },
+    'ghost hunter legs': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'legs',
+        style: 'hybrid'
+    },
+    'ghost hunter backpack': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'cape',
+        style: 'hybrid'
+    },
 };
 
 const ABILITIES = {
