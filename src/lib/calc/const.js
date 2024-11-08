@@ -1364,6 +1364,7 @@ const ABILITIES = {
     FROM_THE_SHADOWS: 'from the shadows',
     FLAMES_OF_ZAMORAK: 'flames of zamorak',
     MIASMIC_BARRAGE: 'miasmic barrage',
+    TIME_STRIKE: 'time strike',
 
     SLICE: 'slice',
     BACKHAND: 'backhand',
@@ -2686,7 +2687,7 @@ const abils = {
 
     [ABILITIES.WRACK]: {
         // ability name
-        'min hit': 0.95, // min % of abil expressed as a decimal
+        'min hit': 0.9, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -4559,7 +4560,7 @@ const abils = {
         'damage type': 'ranged'
     },
 
-    'time strike': {
+    [ABILITIES.TIME_STRIKE]: {
         // ability name
         'min hit': 0.9, // min % of abil expressed as a decimal
         'var hit': 0.2,

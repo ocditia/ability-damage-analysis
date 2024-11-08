@@ -7,6 +7,11 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/wrack.png'
     },
+    [ABILITIES.TIME_STRIKE]: {
+        title: 'Timestrike',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/magic/30x30/wrack.png'
+    },
     [ABILITIES.IMPACT]: {
         title: 'Impact',
         calc: hit_damage_calculation,
