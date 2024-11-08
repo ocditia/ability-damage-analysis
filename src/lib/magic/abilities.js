@@ -22,6 +22,11 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/dragon_breath.png'
     },
+    [ABILITIES.CORRUPTION_BLAST]: {
+        title: 'Corruption blast',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/magic/30x30/dragon_breath.png'
+    },
     [ABILITIES.SONIC_WAVE]: {
         title: 'Sonic wave',
         calc: hit_damage_calculation,

@@ -5,7 +5,7 @@ function create_object(settings) {
     if (abils[settings['ability']]['crit effects'] === true) {
         const crit_chance = calc_crit_chance(settings);
         return {
-            non_crit: {
+            'non_crit': {
                 'min hit': 0,
                 'var hit': 0,
                 'crit': false,
@@ -13,7 +13,7 @@ function create_object(settings) {
                 'probability': 1 - crit_chance,
                 'damage list': []
             },
-            crit: {
+            'crit': {
                 'min hit': 0,
                 'var hit': 0,
                 'crit': true,
@@ -24,7 +24,7 @@ function create_object(settings) {
         };
     } else {
         return {
-            non_crit: {
+            'non_crit': {
                 'min hit': 0,
                 'var hit': 0,
                 'crit': false,

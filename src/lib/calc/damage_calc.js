@@ -1182,14 +1182,6 @@ function roll_damage(settings, dmgObject, key) {
         settings['corruption damage'][key]['damage list'] = [...dmg_list];
     }
 
-    // store deadshot damage
-    if ([ABILITIES.DEADSHOT_INITIAL, ABILITIES.MASSACRE_INITIAL].includes(settings['ability'])) {
-        if (!('deadshot massacre damage' in settings)) {
-            settings['deadshot massacre damage'] = create_object(settings);
-        }
-        settings['deadshot massacre damage'][key]['damage list'] = dmg_list;
-    }
-
     // store igneous cleave damage
     if (settings['ability'] === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
         if (!('igneous cleave bleed damage' in settings)) {
@@ -1313,36 +1305,23 @@ function calc_bloat(settings) {
     return 10 * dmg;
 }
 
-function calc_deadshot_massacre(settings) {
-    settings['ability'] = ABILITIES.DEADSHOT_BLEED;
-    let dmgObject = create_object(settings);
-    for (let key in dmgObject) {
-        dmgObject[key]['base AD'] = calc_base_ad(settings);
-        dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
-        dmgObject[key] = set_min_var(settings, dmgObject[key]);
-        dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
-    }
-
-    // dmgObject = get_user_value(settings, dmgObject); // TODO: remove if not needed
-    return 1;
-}
-
 function calc_corruption(settings) {
     let total_damage = 0;
-
-    /*let hit_dmg = get_user_value(settings, settings['corruption damage']);
-    total_damage += hit_dmg;
-
-    for (let hit=2; hit<=total_hits; hit++) {
-        hit_dmg = Math.floor(hit_dmg * 1.05);
-        total_damage += hit_dmg
-    }*/
+    for (let splat=2; splat <=5; splat++) {
+        let hit_dmg = JSON.parse(JSON.stringify(settings['corruption damage']));
+        for (let key in hit_dmg) {
+            for (let i=0; i<hit_dmg[key]['damage list'].length; i++) {
+                hit_dmg[key]['damage list'][i] = Math.floor(hit_dmg[key]['damage list'][i] * 0.8);
+            }
+            hit_dmg[key] = calc_on_npc(settings, hit_dmg[key]);
+        }
+        total_damage += get_user_value(settings, hit_dmg);
+    }
     return total_damage;
 }
 
 function calc_fsoa(settings) {
     settings['ability'] = 'time strike';
-    console.log(settings['fsoa damage']['crit']['probability'])
 
     return Math.floor(settings['fsoa damage']['crit']['probability'] * calc_damage_object(settings));
 }
@@ -1356,19 +1335,24 @@ function calc_sgb(settings, dmg) {
 
 function calc_igneous_bleed(settings) { 
     let total_damage = 0;
+
     let total_hits = 6 + settings[SETTINGS.IGNEOUS_EXTENSIOS];
-    if (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR && 
-        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
-            total_hits += 3;
-        }
-    
-    let hit_dmg = get_user_value(settings, settings['igneous cleave bleed damage']);
-    total_damage += hit_dmg;
-    for (let hit=2; hit<=total_hits; hit++) {
-        hit_dmg = Math.floor(hit_dmg * 1.05);
-        total_damage += hit_dmg;
+    if (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR &&
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
+    ) {
+        total_hits += 3;
     }
 
+    for (let splat=2; splat <=total_hits; splat++) {
+        let hit_dmg = JSON.parse(JSON.stringify(settings['igneous cleave bleed damage']));
+        for (let key in hit_dmg) {
+            for (let i=0; i<hit_dmg[key]['damage list'].length; i++) {
+                hit_dmg[key]['damage list'][i] = Math.floor(hit_dmg[key]['damage list'][i] * 1.05);
+            }
+            hit_dmg[key] = calc_on_npc(settings, hit_dmg[key]);
+        }
+        total_damage += get_user_value(settings, hit_dmg);
+    }
     return total_damage;
 }
 
@@ -1466,7 +1450,9 @@ function get_mean_no_crit(settings, dmgObject) {
 }
 
 function get_mean_crit(settings, dmgObject) {
-    if (abils[settings['ability']]['crit effects'] === false) {
+    if (abils[settings['ability']]['crit effects'] === false ||
+        dmgObject['crit']['probability'] === 0
+    ) {
         return get_mean_damage(settings, dmgObject);
     }
 
@@ -1498,7 +1484,8 @@ function get_min_no_crit(settings, dmgObject) {
 }
 
 function get_min_crit(settings, dmgObject) {
-    if (abils[settings['ability']]['crit effects'] === false) {
+    if (abils[settings['ability']]['crit effects'] === false ||
+        dmgObject['crit']['probability'] === 0) {
         return get_min_no_crit(settings, dmgObject);
     }
 
@@ -1529,7 +1516,8 @@ function get_max_no_crit(settings, dmgObject) {
 }
 
 function get_max_crit(settings, dmgObject) {
-    if (abils[settings['ability']]['crit effects'] === false) {
+    if (abils[settings['ability']]['crit effects'] === false ||
+        dmgObject['crit']['probability'] === 0) {
         return get_max_no_crit(settings, dmgObject);
     }
 
@@ -1618,12 +1606,6 @@ function hit_damage_calculation(settings) {
         delete settings['corruption damage'];
     }
 
-    // handle bloat/massacre
-    if ('deadshot massacre damage' in settings) {
-        total_damage += calc_deadshot_massacre(settings);
-        delete settings['deadshot massacre damage'];
-    }
-
     // handle instability (fsoa)
     if ('fsoa damage' in settings) {
         total_damage += calc_fsoa(settings);
@@ -1667,7 +1649,7 @@ function get_rotation(settings) {
     }
 
     if (settings['ability'] === ABILITIES.DEADSHOT && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-        rotation[1].push(ABILITIES.DEADSHOT_BLEED)
+        rotation[1].push(ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED)
     }
 
     if (settings['ability'] === ABILITIES.OVERPOWER && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
