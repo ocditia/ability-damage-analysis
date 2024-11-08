@@ -153,7 +153,8 @@ const SETTINGS = {
         NONE: 'none',
         TECTONIC: 'tectonic mask',
         ELITE_TECTONIC: 'elite tectonic mask',
-        SLISKE: 'anima core helm of sliske'
+        SLISKE: 'anima core helm of sliske',
+        GHOST_HUNTER: 'ghost hunter goggles',
     },
     RANGED_HELMET: 'ranged helmet',
     RANGED_HELMET_VALUES: {
@@ -161,7 +162,8 @@ const SETTINGS = {
         SIRENIC: 'sirenic mask',
         ELITE_SIRENIC: 'elite sirenic mask',
         DRACOLICH: 'dracolich coif',
-        ELITE_DRACOLICH: 'elite dracolich coif'
+        ELITE_DRACOLICH: 'elite dracolich coif',
+        GHOST_HUNTER: 'ghost hunter goggles',
     },
     MELEE_HELMET: 'melee helmet',
     MELEE_HELMET_VALUES: {
@@ -169,13 +171,15 @@ const SETTINGS = {
         MASTERWORK: 'masterwork helm',
         TMW: 'trimmed masterwork helm',
         VESTMENTS: 'vestments of havoc hood',
-        JAWS: 'jaws of the abyss'
+        JAWS: 'jaws of the abyss',
+        GHOST_HUNTER: 'ghost hunter goggles',
     },
     NECRO_HELMET: 'necro helmet',
     NECRO_HELMET_VALUES: {
         NONE: 'none',
         TFN: 'crown of the first necromancer',
-        T90DD: 'deathdealer hood (tier 90)'
+        T90DD: 'deathdealer hood (tier 90)',
+        GHOST_HUNTER: 'ghost hunter goggles',
     },
     BODY: 'body',
     MAGIC_BODY: 'magic body',
@@ -183,7 +187,8 @@ const SETTINGS = {
         NONE: 'none',
         TECTONIC: 'tectonic robe top',
         ELITE_TECTONIC: 'elite tectonic robe top',
-        SLISKE: 'anima core body of sliske'
+        SLISKE: 'anima core body of sliske',
+        GHOST_HUNTER: 'ghost hunter body',
     },
     RANGED_BODY: 'ranged body',
     RANGED_BODY_VALUES: {
@@ -191,20 +196,23 @@ const SETTINGS = {
         SIRENIC: 'sirenic hauberk',
         ELITE_SIRENIC: 'elite sirenic hauberk',
         DRACOLICH: 'dracolich hauberk',
-        ELITE_DRACOLICH: 'elite dracolich hauberk'
+        ELITE_DRACOLICH: 'elite dracolich hauberk',
+        GHOST_HUNTER: 'ghost hunter body',
     },
     MELEE_BODY: 'melee body',
     MELEE_BODY_VALUES: {
         NONE: 'none',
         MASTERWORK: 'masterwork platebody',
         TMW: 'trimmed masterwork platebody',
-        VESTMENTS: 'vestments of havoc robe top'
+        VESTMENTS: 'vestments of havoc robe top',
+        GHOST_HUNTER: 'ghost hunter body',
     },
     NECRO_BODY: 'necro body',
     NECRO_BODY_VALUES: {
         NONE: 'none',
         TFN: 'robe top of the first necromancer',
-        T90DD: 'deathdealer robe top (tier 90)'
+        T90DD: 'deathdealer robe top (tier 90)',
+        GHOST_HUNTER: 'ghost hunter body',
     },
     LEGS: 'legs',
     MAGIC_LEGS: 'magic legs',
@@ -212,7 +220,8 @@ const SETTINGS = {
         NONE: 'none',
         TECTONIC: 'tectonic robe bottom',
         ELITE_TECTONIC: 'elite tectonic robe bottom',
-        SLISKE: 'anima core legs of sliske'
+        SLISKE: 'anima core legs of sliske',
+        GHOST_HUNTER: 'ghost hunter legs',
     },
     RANGED_LEGS: 'ranged legs',
     RANGED_LEGS_VALUES: {
@@ -220,20 +229,23 @@ const SETTINGS = {
         SIRENIC: 'sirenic chaps',
         ELITE_SIRENIC: 'elite sirenic chaps',
         DRACOLICH: 'dracolich chaps',
-        ELITE_DRACOLICH: 'elite dracolich chaps'
+        ELITE_DRACOLICH: 'elite dracolich chaps',
+        GHOST_HUNTER: 'ghost hunter legs',
     },
     MELEE_LEGS: 'melee legs',
     MELEE_LEGS_VALUES: {
         NONE: 'none',
         MASTERWORK: 'masterwork platelegs',
         TMW: 'trimmed masterwork platelegs',
-        VESTMENTS: 'vestments of havoc robe bottom'
+        VESTMENTS: 'vestments of havoc robe bottom',
+        GHOST_HUNTER: 'ghost hunter legs',
     },
     NECRO_LEGS: 'necro legs',
     NECRO_LEGS_VALUES: {
         NONE: 'none',
         TFN: 'robe bottom of the first necromancer',
-        T90DD: 'deathdealer robe bottom (tier 90)'
+        T90DD: 'deathdealer robe bottom (tier 90)',
+        GHOST_HUNTER: 'ghost hunter legs',
     },
     GLOVES: 'gloves',
     MAGIC_GLOVES: 'magic gloves',
@@ -326,7 +338,8 @@ const SETTINGS = {
         COMP: 'comp/max cape',
         GOD: 'god cape',
         MAX: 'max cape',
-        SKILL: 'skill cape'
+        SKILL: 'skill cape',
+        GHOST_HUNTER: 'ghost hunter backpack'
     },
     RING: 'ring',
     RING_VALUES: {
@@ -874,7 +887,8 @@ const settingsConfig = {
             { text: 'None/Tank', value: SETTINGS.MAGIC_HELMET_VALUES.NONE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC },
-            { text: 'Sliske', value: SETTINGS.MAGIC_HELMET_VALUES.SLISKE }
+            { text: 'Sliske', value: SETTINGS.MAGIC_HELMET_VALUES.SLISKE },
+            { text: 'Ghost hunter', value: SETTINGS.MAGIC_HELMET_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.RANGED_HELMET]: {
@@ -885,7 +899,8 @@ const settingsConfig = {
             { text: 'Sirenic', value: SETTINGS.RANGED_HELMET_VALUES.SIRENIC },
             { text: 'Elite sirenic', value: SETTINGS.RANGED_HELMET_VALUES.ELITE_SIRENIC },
             { text: 'Dracolich', value: SETTINGS.RANGED_HELMET_VALUES.DRACOLICH },
-            { text: 'Elite dracolich', value: SETTINGS.RANGED_HELMET_VALUES.ELITE_DRACOLICH }
+            { text: 'Elite dracolich', value: SETTINGS.RANGED_HELMET_VALUES.ELITE_DRACOLICH },
+            { text: 'Ghost hunter', value: SETTINGS.RANGED_HELMET_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.MELEE_HELMET]: {
@@ -896,7 +911,8 @@ const settingsConfig = {
             { text: 'Masterwork', value: SETTINGS.MELEE_HELMET_VALUES.MASTERWORK },
             { text: 'TMW', value: SETTINGS.MELEE_HELMET_VALUES.TMW },
             { text: 'Vestments', value: SETTINGS.MELEE_HELMET_VALUES.VESTMENTS },
-            { text: 'Jaws', value: SETTINGS.MELEE_HELMET_VALUES.JAWS }
+            { text: 'Jaws', value: SETTINGS.MELEE_HELMET_VALUES.JAWS },
+            { text: 'Ghost hunter', value: SETTINGS.MELEE_HELMET_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.NECRO_HELMET]: {
@@ -905,7 +921,8 @@ const settingsConfig = {
         options: [
             { text: 'None/Tank', value: SETTINGS.NECRO_HELMET_VALUES.NONE },
             { text: 'TFN', value: SETTINGS.NECRO_HELMET_VALUES.TFN },
-            { text: 't90 deathdealer', value: SETTINGS.NECRO_HELMET_VALUES.T90DD }
+            { text: 't90 deathdealer', value: SETTINGS.NECRO_HELMET_VALUES.T90DD },
+            { text: 'Ghost hunter', value: SETTINGS.NECRO_HELMET_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.MAGIC_BODY]: {
@@ -915,7 +932,8 @@ const settingsConfig = {
             { text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.NONE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_BODY_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC },
-            { text: 'Sliske', value: SETTINGS.MAGIC_BODY_VALUES.SLISKE }
+            { text: 'Sliske', value: SETTINGS.MAGIC_BODY_VALUES.SLISKE },
+            { text: 'Ghost hunter', value: SETTINGS.MAGIC_BODY_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.RANGED_BODY]: {
@@ -926,7 +944,8 @@ const settingsConfig = {
             { text: 'Sirenic', value: SETTINGS.RANGED_BODY_VALUES.SIRENIC },
             { text: 'Elite sirenic', value: SETTINGS.RANGED_BODY_VALUES.ELITE_SIRENIC },
             { text: 'Dracolich', value: SETTINGS.RANGED_BODY_VALUES.DRACOLICH },
-            { text: 'Elite dracolich', value: SETTINGS.RANGED_BODY_VALUES.ELITE_DRACOLICH }
+            { text: 'Elite dracolich', value: SETTINGS.RANGED_BODY_VALUES.ELITE_DRACOLICH },
+            { text: 'Ghost hunter', value: SETTINGS.RANGED_BODY_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.MELEE_BODY]: {
@@ -936,7 +955,8 @@ const settingsConfig = {
             { text: 'None/Tank', value: SETTINGS.MELEE_BODY_VALUES.NONE },
             { text: 'Masterwork', value: SETTINGS.MELEE_BODY_VALUES.MASTERWORK },
             { text: 'TMW', value: SETTINGS.MELEE_BODY_VALUES.TMW },
-            { text: 'Vestments', value: SETTINGS.MELEE_BODY_VALUES.VESTMENTS }
+            { text: 'Vestments', value: SETTINGS.MELEE_BODY_VALUES.VESTMENTS },
+            { text: 'Ghost hunter', value: SETTINGS.MELEE_BODY_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.NECRO_BODY]: {
@@ -945,7 +965,8 @@ const settingsConfig = {
         options: [
             { text: 'None/Tank', value: SETTINGS.NECRO_BODY_VALUES.NONE },
             { text: 'TFN', value: SETTINGS.NECRO_BODY_VALUES.TFN },
-            { text: 't90 deathdealer', value: SETTINGS.NECRO_BODY_VALUES.T90DD }
+            { text: 't90 deathdealer', value: SETTINGS.NECRO_BODY_VALUES.T90DD },
+            { text: 'Ghost hunter', value: SETTINGS.NECRO_BODY_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.MAGIC_LEGS]: {
@@ -955,7 +976,8 @@ const settingsConfig = {
             { text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.NONE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC },
-            { text: 'Sliske', value: SETTINGS.MAGIC_LEGS_VALUES.SLISKE }
+            { text: 'Sliske', value: SETTINGS.MAGIC_LEGS_VALUES.SLISKE },
+            { text: 'Ghost hunter', value: SETTINGS.MAGIC_LEGS_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.RANGED_LEGS]: {
@@ -966,7 +988,8 @@ const settingsConfig = {
             { text: 'Sirenic', value: SETTINGS.RANGED_LEGS_VALUES.SIRENIC },
             { text: 'Elite sirenic', value: SETTINGS.RANGED_LEGS_VALUES.ELITE_SIRENIC },
             { text: 'Dracolich', value: SETTINGS.RANGED_LEGS_VALUES.DRACOLICH },
-            { text: 'Elite dracolich', value: SETTINGS.RANGED_LEGS_VALUES.ELITE_DRACOLICH }
+            { text: 'Elite dracolich', value: SETTINGS.RANGED_LEGS_VALUES.ELITE_DRACOLICH },
+            { text: 'Ghost hunter', value: SETTINGS.RANGED_LEGS_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.MELEE_LEGS]: {
@@ -976,7 +999,8 @@ const settingsConfig = {
             { text: 'None/Tank', value: SETTINGS.MELEE_LEGS_VALUES.NONE },
             { text: 'Masterwork', value: SETTINGS.MELEE_LEGS_VALUES.MASTERWORK },
             { text: 'TMW', value: SETTINGS.MELEE_LEGS_VALUES.TMW },
-            { text: 'Vestments', value: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS }
+            { text: 'Vestments', value: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS },
+            { text: 'Ghost hunter', value: SETTINGS.MELEE_LEGS_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.NECRO_LEGS]: {
@@ -985,7 +1009,8 @@ const settingsConfig = {
         options: [
             { text: 'None/Tank', value: SETTINGS.NECRO_LEGS_VALUES.NONE },
             { text: 'TFN', value: SETTINGS.NECRO_LEGS_VALUES.TFN },
-            { text: 't90 deathdealer', value: SETTINGS.NECRO_LEGS_VALUES.T90DD }
+            { text: 't90 deathdealer', value: SETTINGS.NECRO_LEGS_VALUES.T90DD },
+            { text: 'Ghost hunter', value: SETTINGS.NECRO_LEGS_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.MAGIC_GLOVES]: {
@@ -1104,7 +1129,8 @@ const settingsConfig = {
         options: [
             { text: 'None', value: SETTINGS.CAPE_VALUES.NONE },
             { text: 'Zuk', value: SETTINGS.CAPE_VALUES.ZUK },
-            { text: 'Comp cape', value: SETTINGS.CAPE_VALUES.COMP }
+            { text: 'Comp cape', value: SETTINGS.CAPE_VALUES.COMP },
+            { text: 'Ghost hunter', value: SETTINGS.CAPE_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.RING]: {
