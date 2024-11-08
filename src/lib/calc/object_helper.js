@@ -191,6 +191,14 @@ function calc_crit_chance(settings) {
         }
     }
 
+    // max hit mode
+    if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT ||
+        settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_CRIT ||
+        settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN_CRIT
+    ) {
+        crit_chance = 1;
+    }
+
     // equilibrium aura
     if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.EQUILIBRIUM) {
         crit_chance = 0;

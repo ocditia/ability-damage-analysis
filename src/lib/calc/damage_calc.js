@@ -1342,6 +1342,7 @@ function calc_corruption(settings) {
 
 function calc_fsoa(settings) {
     settings['ability'] = 'time strike';
+    console.log(settings['fsoa damage']['crit']['probability'])
 
     return Math.floor(settings['fsoa damage']['crit']['probability'] * calc_damage_object(settings));
 }
