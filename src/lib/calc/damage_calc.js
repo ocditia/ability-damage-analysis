@@ -538,7 +538,7 @@ function calc_precise(settings, dmgObject) {
     // calculate precise
     let max_hit = dmgObject['min hit'] + dmgObject['var hit'];
     dmgObject['min hit'] = dmgObject['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
-    dmgObject['var hit'] = dmgObject['var hit'] - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
+    dmgObject['var hit'] = Math.max(0, dmgObject['var hit'] - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit));
 
     return dmgObject;
 }
@@ -1609,6 +1609,7 @@ function hit_damage_calculation(settings) {
     // handle instability (fsoa)
     if ('fsoa damage' in settings) {
         total_damage += calc_fsoa(settings);
+        delete settings['fsoa damage']
     }
 
     // handle igneous cleave bleed
