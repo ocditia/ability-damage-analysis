@@ -156,6 +156,13 @@ const weapons = {
         type: 'spear',
         classification: 'none'
     },
+    'spectral shield': {
+        style: 'necromancy',
+        'weapon type': 'shield',
+        tier: 75,
+        type: 'shield',
+        classification: 'none'
+    },
 };
 
 const gear = {

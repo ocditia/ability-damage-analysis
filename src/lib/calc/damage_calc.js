@@ -470,7 +470,7 @@ function set_min_var(settings, dmgObject) {
 
     if (abils[settings['ability']]['main style'] === 'necromancy') {
         // death grasp (death guard spec)
-        if (settings['ability'] === 'death grasp') {
+        if (settings['ability'] === ABILITIES.DEATH_GRASP) {
             min_percent = min_percent + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
         }
 
