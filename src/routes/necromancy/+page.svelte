@@ -174,6 +174,13 @@
                                     max="25"
                                     min="0"
                                 />
+                                <Number
+                                    setting={settings[SETTINGS.NECROSIS_STACKS]}
+                                    on:settingsUpdated={updateDamages}
+                                    step="1"
+                                    max="12"
+                                    min="0"
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Additive</h5>
