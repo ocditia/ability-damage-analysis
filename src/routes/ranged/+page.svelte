@@ -189,13 +189,6 @@
                                     max="100"
                                     min="0"
                                 />
-                                <Number
-                                    setting={settings[SETTINGS.ICY_PRECISION]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="15"
-                                    min="0"
-                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">
@@ -522,13 +515,20 @@
                                     on:settingsUpdated={updateDamages}
                                     img="/armour_icons/Off-hand_slot.webp"
                                 />
+                                <Checkbox
+                                    setting={settings[SETTINGS.INNATE_MASTERY]}
+                                    on:settingsUpdated={updateDamages}
+                                />
                                 <Select
                                     setting={settings[SETTINGS.AMMO]}
                                     on:settingsUpdated={updateDamages}
                                 />
-                                <Checkbox
-                                    setting={settings[SETTINGS.INNATE_MASTERY]}
+                                <Number
+                                    setting={settings[SETTINGS.ICY_PRECISION]}
                                     on:settingsUpdated={updateDamages}
+                                    step="1"
+                                    max="15"
+                                    min="0"
                                 />
                             </div>
                         {:else if tab === 'bosses'}
