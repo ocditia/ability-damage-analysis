@@ -1686,7 +1686,7 @@ function get_rotation(settings) {
     if (settings[SETTINGS.STRENGTH_CAPE] === true &&
         settings['ability'] === ABILITIES.DISMEMBER
     ) {
-        rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
+        rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
     }
 
     return rotation;
