@@ -272,6 +272,10 @@
                                     setting={settings[SETTINGS.SMOKE_CLOUD]}
                                     on:settingsUpdated={updateDamages}
                                 />
+                                <Checkbox
+                                    setting={settings[SETTINGS.KALG_SPEC]}
+                                    on:settingsUpdated={updateDamages}
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">On-NPC</h5>

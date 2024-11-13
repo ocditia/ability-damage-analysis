@@ -98,7 +98,7 @@ function calc_crit_chance(settings) {
     }
 
     // kalg scroll
-    if (settings['crit-i-kal'] === true) {
+    if (settings[SETTINGS.KALG_SPEC] === true) {
         crit_chance += 0.05;
     }
 
