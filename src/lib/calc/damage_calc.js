@@ -375,15 +375,15 @@ function ability_specific_effects(settings, dmgObject) {
     if (abils[settings['ability']]['main style'] === 'necromancy') {
         // death spark (omni guard passive)
         if (settings['death spark'] === true && settings['ability'] === 'necromancy auto') {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
         }
 
-        // living dead - finger of death
+        // living death - finger of death
         if (
             settings[SETTINGS.LIVING_DEATH] === true &&
             settings['ability'] === ABILITIES.FINGER_OF_DEATH
         ) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
         }
 
         // skeleton warrior stacks

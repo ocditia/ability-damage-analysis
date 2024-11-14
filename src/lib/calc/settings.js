@@ -1384,7 +1384,7 @@ const settingsConfig = {
         ]
     },
     [SETTINGS.TARGET_DISABILITY]: {
-        label: 'Disability',
+        label: 'Stun/bound state',
         default: SETTINGS.TARGET_DISABILITY_VALUES.NONE,
         options: [
             { text: 'None', value: SETTINGS.TARGET_DISABILITY_VALUES.NONE },
