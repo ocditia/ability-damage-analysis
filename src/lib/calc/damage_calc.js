@@ -1238,6 +1238,7 @@ function calc_damage_object(settings) {
             dmgObject[key] = add_split_soul(settings, dmgObject[key]);
         }
     }
+    //PUT NEXT HIT HERE
     // get user value
     return get_user_value(settings, dmgObject);
 }
@@ -1534,6 +1535,11 @@ function get_max_crit(settings, dmgObject) {
     return max_hit;
 }
 
+/**
+ * Ensures the correct prayer and set of gear is used for calculating the damage of an ability
+ * @param {*} settings 
+ * @returns 
+ */
 function style_specific_unification(settings) {
     if (abils[settings['ability']]['main style'] === 'magic') {
         settings[SETTINGS.MH] = settings[SETTINGS.MAGIC_MH];
@@ -1582,7 +1588,13 @@ function style_specific_unification(settings) {
 function hit_damage_calculation(settings) {
     settings = style_specific_unification(settings); // initialise some settings
     let total_damage = calc_damage_object(settings); // calculate the ability
+    total_damage = apply_additional(settings, total_damage);
+    //TODO add next cast next hit next tick etc
+    return total_damage;
+}
 
+//todo rename
+function apply_additional(settings, total_damage) {
     // handle sgb logic
     if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
         total_damage += calc_sgb(settings, total_damage);
@@ -1615,7 +1627,42 @@ function hit_damage_calculation(settings) {
     if (settings['ability'] === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
         total_damage += calc_igneous_bleed(settings);
     }
+    return total_damage;
+}
 
+function apply_additional_rota(settings, total_damage) {
+    // handle sgb logic
+    if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
+        total_damage += calc_sgb(settings, total_damage);
+    }
+
+    // handle bolg logic
+    if ('bolg damage' in settings) {
+        total_damage += calc_bolg(settings);
+        delete settings['bolg damage'];
+    }
+
+    // handle bloat logic
+    if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
+        total_damage += calc_bloat(settings);
+        delete settings['bloat damage'];
+    }
+
+    // handle corruption shot/blast
+    if ('corruption damage' in settings) {
+        total_damage += calc_corruption(settings);
+        delete settings['corruption damage'];
+    }
+
+    // handle instability (fsoa)
+    if ('fsoa damage' in settings) {
+        total_damage += calc_fsoa(settings);
+    }
+
+    // handle igneous cleave bleed
+    if (settings['ability'] === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
+        total_damage += calc_igneous_bleed(settings);
+    }
     return total_damage;
 }
 
@@ -1638,6 +1685,11 @@ function ability_damage_calculation(settings) {
     return damage;
 }
 
+/**
+ * Handles modifiers for the number of hits of multi-hit abilities
+ * @param {*} settings 
+ * @returns 
+ */
 function get_rotation(settings) {
     let rotation = JSON.parse(JSON.stringify(abils[settings['ability']]['hits']));
 
@@ -1691,4 +1743,7 @@ function get_rotation(settings) {
     return rotation;
 }
 
-export { ability_damage_calculation, hit_damage_calculation };
+export { ability_damage_calculation, hit_damage_calculation, 
+    calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
+    calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
+get_user_value, get_rotation, add_split_soul, apply_additional, apply_additional_rota };

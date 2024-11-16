@@ -1288,6 +1288,7 @@ const ABILITIES = {
     PIERCING_SHOT_HIT: 'piercing shot hit',
     PIERCING_SHOT: 'piercing shot',
     BINDING_SHOT: 'binding shot',
+    SNIPE_HIT: 'snipe hit',
     SNIPE: 'snipe',
     DAZING_SHOT: 'dazing shot',
     GREATER_DAZING_SHOT: 'greater dazing shot',
@@ -1306,6 +1307,7 @@ const ABILITIES = {
     SNAP_SHOT: 'snap shot',
     TIGHT_BINDINGS: 'tight bindings',
     ROUT: 'rout',
+    RAPID_FIRE_LAST_HIT: 'rapid fire last hit',
     RAPID_FIRE_HIT: 'rapid fire hit',
     RAPID_FIRE: 'rapid fire',
     BOMBARDMENT: 'bombardment',
@@ -1317,6 +1319,9 @@ const ABILITIES = {
     INCENDIARY_SHOT: 'incendiary shot',
     UNLOAD_HIT: 'unload hit',
     UNLOAD: 'unload',
+    DEATHS_SWIFTNESS_DOT: 'death\'s swiftness dot',
+    DEATHS_SWIFTNESS: 'death\'s swiftness',
+    GREATER_DEATHS_SWIFTNESS: 'greater death\'s swiftness',
     BALANCE_BY_FORCE: 'balance by force',
     DESCENT_OF_DARKNESS_HIT: 'descent of darkness hit',
     DESCENT_OF_DARKNESS: 'descent of darkness',
@@ -1334,6 +1339,7 @@ const ABILITIES = {
     CHAIN_HIT: 'chain hit',
     RESTORATIVE_SHOT: 'restorative shot',
     SOUL_SHOT: 'soul shot',
+    SPLIT_SOUL_ECB: 'split soul ecb',
     CRYSTAL_RAIN: 'crystal rain',
     DEEP_BURN: 'deep burn',
     DESTRUCTIVE_SHOT_HIT: 'destructive shot hit',
@@ -3873,6 +3879,7 @@ const abils = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
+        hit_timings: [0, 0], 
         hits: {
             1: [ABILITIES.PIERCING_SHOT, 'next cast', ABILITIES.PIERCING_SHOT]
         }
@@ -3889,6 +3896,18 @@ const abils = {
         'main style': 'ranged',
         'damage type': 'ranged'
     },
+    [ABILITIES.SNIPE_HIT]: {
+        // ability name
+        'min hit': 1.6, // min % of abil expressed as a decimal
+        'var hit': 0.5,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, etc
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+    },
     [ABILITIES.SNIPE]: {
         // ability name
         'min hit': 1.6, // min % of abil expressed as a decimal
@@ -3899,7 +3918,14 @@ const abils = {
         'ability classification': 'channel', // bleed, dot, burn, etc
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'duration': 4,
+        hits: {
+            1: [],
+            2: [],
+            3: [],
+            4: [ABILITIES.SNIPE_HIT]   
+        }
     },
     [ABILITIES.DAZING_SHOT]: {
         // ability name
@@ -3972,6 +3998,7 @@ const abils = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
+        hit_timings: [1, 3, 5, 7, 9],
         hits: {
             1: [
                 ABILITIES.FRAGMENTATION_SHOT_HIT,
@@ -4041,6 +4068,7 @@ const abils = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
+        hit_timings: [0, 1, 1, 1, 1, 1, 1],
         hits: {
             1: [
                 ABILITIES.GREATER_RICOCHET_1,
@@ -4061,7 +4089,8 @@ const abils = {
         'ability classification': 'dot', // bleed, dot, burn, etc
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        hit_timings: [1, 3, 5, 7, 9], 
     },
     [ABILITIES.SNAP_SHOT_1]: {
         // ability name
@@ -4098,6 +4127,7 @@ const abils = {
         'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
+        hit_timings: [0, 0], 
         hits: {
             1: [ABILITIES.SNAP_SHOT_1, 'next hit', ABILITIES.SNAP_SHOT_2]
         }
@@ -4138,9 +4168,9 @@ const abils = {
         'main style': 'ranged',
         'damage type': 'ranged'
     },
-    [ABILITIES.RAPID_FIRE]: {
+    [ABILITIES.RAPID_FIRE_LAST_HIT]: {
         // ability name
-        'min hit': 0.45, // min % of abil expressed as a decimal
+        'min hit': 0.65, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -4148,7 +4178,20 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, etc
         'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
+        'damage type': 'ranged'
+    },
+    [ABILITIES.RAPID_FIRE]: {
+        // ability name
+        'min hit': 0.45, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, etc
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
         'damage type': 'ranged',
+        'duration': 8,
         hits: {
             1: [ABILITIES.RAPID_FIRE_HIT],
             2: [ABILITIES.RAPID_FIRE_HIT],
@@ -4157,8 +4200,9 @@ const abils = {
             5: [ABILITIES.RAPID_FIRE_HIT],
             6: [ABILITIES.RAPID_FIRE_HIT],
             7: [ABILITIES.RAPID_FIRE_HIT],
-            8: [ABILITIES.RAPID_FIRE_HIT]
-        }
+            8: [ABILITIES.RAPID_FIRE_LAST_HIT]
+        },
+        hit_timings: [0, 1, 2, 3, 4, 5, 6, 7]
     },
     [ABILITIES.BOMBARDMENT]: {
         // ability name
@@ -4234,6 +4278,52 @@ const abils = {
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
+    },
+    [ABILITIES.DEATHS_SWIFTNESS_DOT]: {
+        // ability name
+        'min hit': 0.0,// 0.1, // min % of abil expressed as a decimal
+        'var hit': 0.0, // 0.1 TODO change back
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, etc
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+    },
+    [ABILITIES.DEATHS_SWIFTNESS]: {
+        //TODO check number of dot hits
+        // ability name
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, etc
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        hits: {
+            1: new Array(17).fill(ABILITIES.DEATHS_SWIFTNESS_DOT)
+           },
+        hit_timings: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49]//TODO Find out what these actually are
+    },
+    [ABILITIES.GREATER_DEATHS_SWIFTNESS]: {
+        //TODO check number of dot hits
+        // ability name
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, etc
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        hits: {
+            1: new Array(21).fill(ABILITIES.DEATHS_SWIFTNESS_DOT)
+        },
+        hit_timings: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61]//TODO Find out what these actually are
     },
     [ABILITIES.INCENDIARY_SHOT]: {
         // ability name
@@ -4315,6 +4405,7 @@ const abils = {
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
+        hit_timings: [0, 0], 
         hits: {
             1: [ABILITIES.DESCENT_OF_DARKNESS_HIT, 'next hit', ABILITIES.DESCENT_OF_DARKNESS_HIT]
         }
@@ -4528,6 +4619,18 @@ const abils = {
         'main style': 'ranged',
         'damage type': 'ranged'
     },
+    [ABILITIES.SPLIT_SOUL_ECB]: {
+        // ability name
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': 0, // does the ability get on-hit effects
+        'crit effects': 0, // can the ability crit
+        'damage potential effects': 0, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, etc
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged'
+    },
     [ABILITIES.CRYSTAL_RAIN]: {
         // ability name
         'min hit': 1.25, // min % of abil expressed as a decimal
@@ -4538,7 +4641,8 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, etc
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        hit_timings: [0, 4, 4, 4, 4] //TODO check these are correct
     },
     [ABILITIES.DEEP_BURN]: {
         // ability name

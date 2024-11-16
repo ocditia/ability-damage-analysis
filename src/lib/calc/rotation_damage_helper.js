@@ -1,0 +1,204 @@
+import { create_object } from './object_helper';
+import { SETTINGS } from './settings';
+import { ABILITIES, abils, armour, gear, prayers, weapons } from './const';
+import { hit_damage_calculation, calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
+    calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
+get_user_value, get_rotation, add_split_soul, apply_additional_rota} from './damage_calc';
+import { next_cast, next_hit, next_tick } from './ability_helper';
+
+//Calculates effects that are applied when ability is cast (adren changes)
+function calc_on_cast(settings) {
+    settings = style_specific_unification(settings); // initialise some settings
+    const dmgObject = create_object(settings);
+    for (let key in dmgObject) {
+        // calc base AD
+        dmgObject[key]['base AD'] = calc_base_ad(settings);
+        // calc buffed AD
+        dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
+        // ability specific
+        dmgObject[key] = ability_specific_effects(settings, dmgObject[key]);
+        // set min var
+        dmgObject[key] = set_min_var(settings, dmgObject[key]);
+        // style specific
+        dmgObject[key] = calc_style_specific(settings, dmgObject[key]);
+        // calc on hit effects
+        if (abils[settings['ability']]['on-hit effects']) {
+            dmgObject[key] = calc_on_hit(settings, dmgObject[key]);
+        }
+        // roll damage
+        dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
+        // calc core
+        if (abils[settings['ability']]['on-hit effects']) {
+            dmgObject[key] = calc_core(settings, dmgObject, key);
+        } 
+    }
+    next_hit();
+    //TODO get user value
+    return dmgObject;
+}
+
+/**
+ * On NPC calculator for rotation calculating
+ * @param {} settings 
+ * @param {*} dmgObject 
+ * @returns 
+ */
+function rotation_on_npc(settings, dmgObject) {
+    for (let key in dmgObject) {  
+        if (key == 'ability') {
+            continue;
+        }      
+        // calc on npc
+        dmgObject[key] = calc_on_npc(settings, dmgObject[key]);
+
+        // add split soul damage
+        if (
+            settings['split soul'] === true &&
+            ['magic', 'melee', 'ranged', 'necrotic'].includes(
+                abils[settings['ability']]['damage type']
+            )
+        ) {
+            dmgObject[key] = add_split_soul(settings, dmgObject[key]);
+            //TODO make split soul its own hitsplat
+        }
+    }
+    let total_damage = get_user_value(settings, dmgObject);
+    total_damage = apply_additional_rota(settings, total_damage);
+
+    return total_damage;
+}
+
+/**
+ * Calculates the damage objects for multi-hit non-channelled abilities.
+ * @param {*} settings 
+ * @returns 
+ */
+function rotation_ability_damage(settings) {
+    let rotation = get_rotation(settings);
+    let damages = [];
+    for (let key in rotation) {
+        for (let iter = 0; iter < rotation[key].length; iter++) {
+            if (rotation[key][iter] === 'next cast') {
+                settings = next_cast(settings);
+            } else if (rotation[key][iter] === 'next hit') {
+                settings = next_hit(settings);
+            } else {
+                settings['ability'] = rotation[key][iter];
+                damages.push(calc_on_cast(settings));
+            }
+        }
+        settings = next_tick(settings);
+    }
+    return damages;
+}
+
+function calc_channelled_hit(settings, hit_index, rotation, timers) {
+    let dmgObject = null;
+    for (let iter = 0; iter < rotation[hit_index].length; iter++) {
+        if (rotation[hit_index][iter] === 'next cast') {
+            settings = next_cast(settings);
+        } else if (rotation[hit_index][iter] === 'next hit') {
+            settings = next_hit(settings);
+        } else {
+            settings['ability'] = rotation[hit_index][iter];
+            dmgObject = calc_on_cast(settings);
+            handle_edraco(settings, timers, rotation[hit_index][iter]);
+        }
+    }
+    settings = next_tick(settings);
+    return dmgObject;
+}
+
+/**
+ * Handles the toggling and timer initialisation of most ranged buffs, exlcuding (e)dracolich
+ * @param {*} settings 
+ * @param {Object} timers - map of (buff_name -> buff_duration)
+ * @param {String} abilityKey 
+ */
+function handle_ranged_buffs(settings, timers, abilityKey) {
+    //TODO handle swiftness' weird damage calc
+    if (abilityKey == ABILITIES.DEATHS_SWIFTNESS) {
+        settings['death swiftness'] = true;
+        timers['death swiftness'] = 51;
+    }
+    else if (abilityKey == ABILITIES.GREATER_DEATHS_SWIFTNESS) {
+        settings['death swiftness'] = true;
+        timers['death swiftness'] = 63;
+    }
+    //TODO remove split soul on changing weapon
+    else if (abilityKey == ABILITIES.SPLIT_SOUL_ECB) {
+        settings['split soul'] = true; //TODO dont let non ranged hits proc split soul
+        timers['split soul'] = 25;
+    }
+}
+
+
+function handle_edraco(settings, timers, abilityKey) {
+    if (abilityKey != ABILITIES.RAPID_FIRE_LAST_HIT) {
+        return;
+    }
+    let body = settings['body'];
+    let helmet = settings['helmet'];
+    let gloves = settings['gloves'];
+    let legs = settings['legs'];
+    let boots = settings['boots'];
+    
+
+    // List of strings to search
+    let items = [body, helmet, gloves, legs, boots];
+
+    // Substring to check at the start
+    const edraco = 'elite dracolich';
+    
+    // Count how many strings start with x
+    let count = items.filter(item => item && item.startsWith(edraco)).length;
+    if (count >= 3) {
+        let buff_duration = 5 + 8 + (3 * Math.max(count - 3, 0)); // 5 tick base duration, add 8 because we decrement relative to rapid fire cast tick
+        settings['dracolich infusion'] = 'greater';
+        timers['dracolich infusion'] = buff_duration; 
+    }
+    //TODO regular dracolich
+
+    
+}
+
+function handle_sgb(settings, dmgObject, damageTracker, hitTick) {
+    const hits = [0, 1.16, 1.64, 2.44, 3.56, 5.0];
+    const size = Math.min(settings[SETTINGS.TARGET_SIZE], 5);
+    const n_hits = (hits[size] - 1);
+    console.log('N hits = ' + n_hits);
+    console.log(dmgObject);
+}
+
+function pseudoCode() {
+    if (rangedAbils[abilityKey].calc == hit_damage_calculation) {
+        let castDmgObject = calc_on_cast(settingsCopy);
+        castDmgObject['non_crit']['ability'] = abilityKey;
+        damageTracker[hit_tick].push(castDmgObject);
+        //Handle bolg here maybe?
+        if (abilityKey == 'crystal rain') {
+            handle_sgb(settingsCopy, castDmgObject, damageTracker, hit_tick);
+        }
+    }
+    //Handle multi-hit and channelled abilities
+    else if (abils[abilityKey]['ability classification'] == 'channel') {
+            channel_hits = { ...abils[abilityKey]['hits']};
+        }
+        //Bleeds, multi-hits and dots
+    else {
+        let castDmgObjects = rotation_ability_damage(settingsCopy);
+            let i = 0;
+            castDmgObjects.forEach(hitsplat_dist => {
+                hitsplat_dist['non_crit']['ability'] = abilityKey;
+                let hit_tick_n = hit_tick + abils[abilityKey].hit_timings[i];
+                damageTracker[hit_tick_n] ??= [];
+                damageTracker[hit_tick_n].push(hitsplat_dist);
+                i++;
+            });
+    }
+}
+
+export { 
+    calc_on_cast, rotation_on_npc,  rotation_ability_damage, handle_ranged_buffs,
+    handle_edraco, handle_sgb, calc_channelled_hit
+};

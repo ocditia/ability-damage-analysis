@@ -70,6 +70,16 @@
                             </div>
                         </div>
                     </a>
+                    <a href="/rotation_builder" class="flex flex-col group">
+                        <div class="card">
+                            <div
+                                class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
+                            >
+                                <img class="card-icon" src="style_icons/necro-white.svg" alt="" />
+                                <div class="card-title">Rotation Builder</div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="xl:col-span-9 xl:row-start-5">

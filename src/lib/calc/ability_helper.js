@@ -78,4 +78,4 @@ function next_hit(settings) {
     return settings;
 }
 
-export { next_tick, next_hit, next_cast };
+export { next_tick, next_hit, next_cast};
