@@ -6,7 +6,12 @@ import { hit_damage_calculation, calc_base_ad, calc_boosted_ad, ability_specific
 get_user_value, get_rotation, add_split_soul, apply_additional_rota} from './damage_calc';
 import { next_cast, next_hit, next_tick } from './ability_helper';
 
-//Calculates effects that are applied when ability is cast (adren changes)
+
+/**
+ * Calculates effects that are applied when ability is cast (when adren changes?)
+ * @param {} settings
+ * @returns {*} dmgObject
+ */
 function calc_on_cast(settings) {
     settings = style_specific_unification(settings); // initialise some settings
     const dmgObject = create_object(settings);
@@ -92,6 +97,14 @@ function rotation_ability_damage(settings) {
     return damages;
 }
 
+/**
+ * Calculates the damage object for a single tick of a channelled ability
+ * @param {*} settings
+ * @param {number} hit_index - which hit to calculate
+ * @param {} rotation - information on all hits of the ability (e.g. {1: [hit1, hit2...], 2: [], 3: [hit1]..})
+ * @param {} timers - timers object containing buff timer information
+ * @returns
+ */
 function calc_channelled_hit(settings, hit_index, rotation, timers) {
     let dmgObject = null;
     for (let iter = 0; iter < rotation[hit_index].length; iter++) {
@@ -132,7 +145,9 @@ function handle_ranged_buffs(settings, timers, abilityKey) {
     }
 }
 
-
+/**
+ * Sets (greater) dracolich infusion buff to active if applicable
+ */
 function handle_edraco(settings, timers, abilityKey) {
     if (abilityKey != ABILITIES.RAPID_FIRE_LAST_HIT) {
         return;
@@ -158,44 +173,18 @@ function handle_edraco(settings, timers, abilityKey) {
         timers['dracolich infusion'] = buff_duration; 
     }
     //TODO regular dracolich
-
-    
 }
 
+/**
+ * Not yet implemented - does nothing currently, but will handle sgb by creating multiple
+ * hits instead of current impl simply multiplying damage
+ */
 function handle_sgb(settings, dmgObject, damageTracker, hitTick) {
     const hits = [0, 1.16, 1.64, 2.44, 3.56, 5.0];
     const size = Math.min(settings[SETTINGS.TARGET_SIZE], 5);
     const n_hits = (hits[size] - 1);
     console.log('N hits = ' + n_hits);
     console.log(dmgObject);
-}
-
-function pseudoCode() {
-    if (rangedAbils[abilityKey].calc == hit_damage_calculation) {
-        let castDmgObject = calc_on_cast(settingsCopy);
-        castDmgObject['non_crit']['ability'] = abilityKey;
-        damageTracker[hit_tick].push(castDmgObject);
-        //Handle bolg here maybe?
-        if (abilityKey == 'crystal rain') {
-            handle_sgb(settingsCopy, castDmgObject, damageTracker, hit_tick);
-        }
-    }
-    //Handle multi-hit and channelled abilities
-    else if (abils[abilityKey]['ability classification'] == 'channel') {
-            channel_hits = { ...abils[abilityKey]['hits']};
-        }
-        //Bleeds, multi-hits and dots
-    else {
-        let castDmgObjects = rotation_ability_damage(settingsCopy);
-            let i = 0;
-            castDmgObjects.forEach(hitsplat_dist => {
-                hitsplat_dist['non_crit']['ability'] = abilityKey;
-                let hit_tick_n = hit_tick + abils[abilityKey].hit_timings[i];
-                damageTracker[hit_tick_n] ??= [];
-                damageTracker[hit_tick_n].push(hitsplat_dist);
-                i++;
-            });
-    }
 }
 
 export { 
