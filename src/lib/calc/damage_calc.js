@@ -1219,7 +1219,7 @@ function calc_damage_object(settings) {
         if (abils[settings['ability']]['on-hit effects']) {
             dmgObject[key] = calc_on_hit(settings, dmgObject[key]);
         }
-        // roll damage
+        // roll damage 
         dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
         // calc core
         if (abils[settings['ability']]['on-hit effects']) {
@@ -1277,10 +1277,12 @@ function calc_bolg(settings) {
 
         bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
         bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
+        bolg_damage_based[key] = ability_specific_effects(settings, bolg_damage_based[key]);
         bolg_damage_based[key]['min hit'] = abils[settings['ability']]['min hit'] * settings['bolg damage'][key]['damage list'][0];
         bolg_damage_based[key]['var hit'] = (abils[settings['ability']]['min hit'] + abils[settings['ability']]['var hit']) * 
         settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1] -
         bolg_damage_based[key]['min hit'];
+        bolg_damage_based[key] = calc_style_specific(settings, bolg_damage_based[key]);
         bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
         bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
