@@ -9,6 +9,7 @@ import { next_cast, next_hit, next_tick } from './ability_helper';
 
 /**
  * Calculates effects that are applied when ability is cast (when adren changes?)
+ * Rewrite of calc_damage_object from damage_calc.js
  * @param {} settings
  * @returns {*} dmgObject
  */
@@ -44,6 +45,7 @@ function calc_on_cast(settings) {
 
 /**
  * On NPC calculator for rotation calculating
+ * Rewrite of calc_on_npc from damage_calc.js
  * @param {} settings 
  * @param {*} dmgObject 
  * @returns 
@@ -75,6 +77,7 @@ function rotation_on_npc(settings, dmgObject) {
 
 /**
  * Calculates the damage objects for multi-hit non-channelled abilities.
+ * Rewrite of ability_damage_calculation from damage_calc.js
  * @param {*} settings 
  * @returns 
  */
