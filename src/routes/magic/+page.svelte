@@ -1,51 +1,130 @@
 <script>
-    import Header from '$components/Layout/Header.svelte';
-    import Navbar from '$components/Layout/Navbar.svelte';
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
     import { abilities } from '$lib/magic/abilities';
-    import Checkbox from '../../components/Settings/Checkbox.svelte';
-    import Number from '../../components/Settings/Number.svelte';
-    import Select from '../../components/Settings/Select.svelte';
+    import Header from '$components/Layout/Header.svelte';
+    import Navbar from '$components/Layout/Navbar.svelte';
+    import Checkbox from '$components/Settings/Checkbox.svelte';
+    import Number from '$components/Settings/Number.svelte';
+    import Select from '$components/Settings/Select.svelte';
+    import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
+    import TableHeader from '$components/TableHeader/TableHeader.svelte';
+    import {
+        FlexRender,
+        createColumnHelper,
+        renderComponent,
+        createSvelteTable,
+        getSortedRowModel,
+        getCoreRowModel
+    } from '$components/FlexRender';
 
-    let damages = Object.fromEntries(
-        Object.entries(abilities).map(([key, value]) => [
-            key,
-            { ...value, regular: 0, sunshine: 0, meta: 0 }
-        ])
-    );
+    let damages = Object.entries(abilities).map(([key, value]) => ({
+        key,
+        ...value,
+        abilityInfo: {
+            title: value.title,
+            src: value.icon
+        },
+        regular: 0,
+        sunshine: 0,
+        meta: 0
+    }));
 
-    let tab = 'general';
+    let tab = $state('general');
 
-    let settings = Object.fromEntries(
+    let settings = $state(Object.fromEntries(
         Object.entries(settingsConfig).map(([key, value]) => [
             key,
             { ...value, key: key, value: value.default }
         ])
-    );
+    ));
 
-    updateDamages();
-
-    function updateDamages() {
+    const updateDamages = () => {
         const adaptedSettings = Object.fromEntries(
             Object.entries(settings).map(([key, value]) => [key, value.value])
         );
 
-        Object.entries(damages).forEach(([abilityKey, ability]) => {
-            adaptedSettings['ability'] = abilityKey;
+        for (const ability of damages) {
+            adaptedSettings['ability'] = ability.key;
 
-            adaptedSettings['sunshine'] = false;
-            adaptedSettings['meta'] = false;
-            damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
-
-            adaptedSettings['sunshine'] = true;
-            adaptedSettings['meta'] = false;
-            damages[abilityKey].sunshine = ability.calc({ ...adaptedSettings });
-
-            adaptedSettings['sunshine'] = false;
-            adaptedSettings['meta'] = true;
-            damages[abilityKey].meta = ability.calc({ ...adaptedSettings });
-        });
+            ability.regular = ability.calc({ ...adaptedSettings, sunshine: false, meta: false });
+            ability.sunshine = ability.calc({ ...adaptedSettings, sunshine: true, meta: false });
+            ability.meta = ability.calc({ ...adaptedSettings, sunshine: false, meta: true });
+        }
     }
+
+    updateDamages();
+
+    let sorting = $state({})
+
+    const handleClickHeader = (columnId) => {
+        switch (sorting[columnId]) {
+            case undefined:
+                sorting = { [columnId]: 'asc' }
+                break;
+            case 'asc':
+                sorting = { [columnId]: 'desc' };
+                break;
+            case 'desc':
+                sorting = {};
+                break;
+        }
+    }
+
+    const damageColumns = [
+        { accessor: 'regular', title: 'Regular' },
+        { accessor: 'sunshine', title: 'Sunshine' },
+        { accessor: 'meta', title: 'Meta' }
+    ]
+
+    const columnHelper = createColumnHelper();
+
+    let baseOptions = {
+        columns: [
+            columnHelper.accessor('abilityInfo', {
+                header: () => renderComponent(TableHeader, {
+                    onclick: () => handleClickHeader('abilityInfo'),
+                    sortType: sorting['abilityInfo'],
+                    title: 'Ability'
+                }),
+                cell: ({ cell }) => renderComponent(AbilityInfo, { abilityInfo: cell.getValue() }),
+            }),
+            ...damageColumns.map(({ accessor, title }) => columnHelper.accessor(accessor, {
+                header: () => renderComponent(TableHeader, {
+                    onclick: () => handleClickHeader(accessor),
+                    sortType: sorting[accessor],
+                    title
+                })
+            }))
+        ],
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel()
+    }
+
+    let table = $state(createSvelteTable({
+        ...baseOptions,
+        data: Object.values(damages)
+    }));
+
+    $effect(() => {
+        updateDamages();
+
+        const sortedData = Object.values(damages).toSorted((a,b) => {
+            const key = Object.keys(sorting)[0];
+            if (!key) return 0;
+            return key === 'abilityInfo'
+                ? sorting[key] === 'desc'
+                    ? b[key].title.localeCompare(a[key].title)
+                    : a[key].title.localeCompare(b[key].title)
+                : sorting[key] === 'desc'
+                    ? b[key] - a[key]
+                    : a[key] - b[key];
+        })
+
+        table = createSvelteTable({
+            ...baseOptions,
+            data: sortedData
+        });
+    })
 </script>
 
 <Navbar />
@@ -58,26 +137,28 @@
                 <div class="card card-magic">
                     <h1 class="main-header mb-6 ml-3">Damage Values</h1>
                     <div class="table-container">
-                        <table>
+                        <table class="w-full">
                             <thead>
+                            {#each table.getHeaderGroups() as headerGroup}
                                 <tr>
-                                    <th class="p-0 min-w-[30px]"></th>
-                                    <th class="p-3 text-left">Ability</th>
-                                    <th class="p-3 text-left">Regular</th>
-                                    <th class="p-3 text-left">Sunshine</th>
-                                    <th class="p-3 text-left">Meta</th>
+                                    {#each headerGroup.headers as header}
+                                        <th>
+                                            <FlexRender content={header.column.columnDef.header} context={header.getContext()} />
+                                        </th>
+                                    {/each}
                                 </tr>
+                            {/each}
                             </thead>
                             <tbody>
-                                {#each Object.entries(damages) as [key, damage] (key)}
-                                    <tr>
-                                        <td class="p-0"><img src={damage.icon} alt="" /></td>
-                                        <td class="p-3 text-left">{damage.title}</td>
-                                        <td class="p-3 text-left">{damage.regular}</td>
-                                        <td class="p-3 text-left">{damage.sunshine}</td>
-                                        <td class="p-3 text-left">{damage.meta}</td>
-                                    </tr>
-                                {/each}
+                            {#each table.getRowModel().rows as row}
+                                <tr>
+                                    {#each row.getVisibleCells() as cell}
+                                        <td class="text-center">
+                                            <FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
+                                        </td>
+                                    {/each}
+                                </tr>
+                            {/each}
                             </tbody>
                         </table>
                     </div>
@@ -88,7 +169,7 @@
                 <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
                     <li class="flex-grow me-2">
                         <button
-                            on:click={() => (tab = 'general')}
+                            onclick={() => (tab = 'general')}
                             class:text-[#968A5C]={tab === 'general'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                             >General</button
@@ -96,7 +177,7 @@
                     </li>
                     <li class="flex-grow me-2">
                         <button
-                            on:click={() => (tab = 'equipment')}
+                            onclick={() => (tab = 'equipment')}
                             class:text-[#968A5C]={tab === 'equipment'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                             >Equipment</button
@@ -104,7 +185,7 @@
                     </li>
                     <li class="flex-grow me-2">
                         <button
-                            on:click={() => (tab = 'bosses')}
+                            onclick={() => (tab = 'bosses')}
                             class:text-[#968A5C]={tab === 'bosses'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                             >Bosses</button
