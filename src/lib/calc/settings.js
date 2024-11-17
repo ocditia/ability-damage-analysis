@@ -554,6 +554,7 @@ const SETTINGS = {
     ZGS: 'zgs',
     BERSERK: 'berserk',
     DETONATE: 'detonate charge timer',
+    DIVINE_RAGE: 'divine rage',
 };
 
 const settingsConfig = {
@@ -1580,6 +1581,10 @@ const settingsConfig = {
     [SETTINGS.DETONATE]: {
         label: 'Deto charge time',
         default: 5
+    },
+    [SETTINGS.DIVINE_RAGE]: {
+        label: 'Divine rage',
+        default: false
     },
 };
 
