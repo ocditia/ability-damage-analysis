@@ -744,8 +744,8 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
 
     // apply revenge
     if (
-        abils[settings['ability']]['main style'] === 'main-hand' &&
-        weapons[settings[SETTINGS.OH]]['weapon type'] in ['shield', 'defender']
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
+        ['shield', 'defender'].includes(weapons[settings[SETTINGS.OH]]['weapon type'])
     ) {
         let revenge = 0.025 * settings[SETTINGS.REVENGE];
 
