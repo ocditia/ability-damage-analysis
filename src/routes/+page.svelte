@@ -153,7 +153,7 @@
                             <ul>
                                 <li class="block transition-all duration-75 relative">
                                     <a
-                                        href="https://discord.gg/rsanalysis"
+                                        href="https://discord.gg/RBWwPy4NkJ"
                                         class="py-2 font-normal text-xl hover:text-link"
                                         title=""
                                     >
