@@ -217,7 +217,7 @@ function on_cast(settings, dmgObject) {
             // skeleton warrior stacks
             if (settings['ability'] === ABILITIES.SKELETON_WARRIOR_AUTO) {
                 dmgObject[key]['boosted AD'] = Math.floor(
-                    dmgObject['boosted AD'] *
+                    dmgObject[key]['boosted AD'] *
                         (1 + 0.03 * settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS])
                 );
             }
@@ -399,10 +399,10 @@ function on_hit(settings, dmgObject) {
 
         // apply precise
         for (let key in dmgObject) {
-            dmgObject['min hit'] = dmgObject['min hit'] + 
-            Math.floor(0.015 * settings[SETTINGS.PRECISE] * (dmgObject['min hit'] + dmgObject['var hit']));
-            dmgObject['var hit'] = dmgObject['var hit'] - 
-            Math.floor(0.015 * settings[SETTINGS.PRECISE] * (dmgObject['min hit'] + dmgObject['var hit']));
+            dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + 
+            Math.floor(0.015 * settings[SETTINGS.PRECISE] * (dmgObject[key]['min hit'] + dmgObject[key]['var hit']));
+            dmgObject[key]['var hit'] = dmgObject[key]['var hit'] - 
+            Math.floor(0.015 * settings[SETTINGS.PRECISE] * (dmgObject[key]['min hit'] + dmgObject[key]['var hit']));
         }
 
         // Marco - turn additive boosts on if appropriate
@@ -774,7 +774,7 @@ function on_hit(settings, dmgObject) {
                     settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
                     settings[SETTINGS.FROSTBLADES] === true
                 ) {
-                    dmgObject['min hit'] += Math.floor(0.24 * dmgObject['boosted AD']);
+                    dmgObject[key]['min hit'] += Math.floor(0.24 * dmgObject[key]['boosted AD']);
                 }
             }   
         }
@@ -865,4 +865,222 @@ function on_hit(settings, dmgObject) {
 
     // Marco - After this the damage object should be sent to the correct tick
     // so that the damage can be calculated on that tick
+}
+
+function on_damage(settings, dmgObject) {
+    for (let key in dmgObject) {
+        for (let i = 0; i < dmgObject[key]['damage list'].length; i++) {
+            // set haunted
+            let haunted = Math.min(
+                Math.floor(dmgObject[key]['damage list'][i] * 0.1),
+                Math.floor(0.2 * settings['haunted AD'])
+            );
+
+            // vulnerability / curse
+            if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.VULNERABILITY) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+            } else if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.CURSE) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.05);
+            }
+
+            // enduring ruin bleed (gop)
+            if (
+                settings['enduring ruin - bleed'] === 'regular' &&
+                abils[settings['ability']]['ability classification'] === 'bleed'
+            ) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.2);
+            } else if (
+                settings['enduring ruin - bleed'] === 'enhanced' &&
+                abils[settings['ability']]['ability classification'] === 'bleed'
+            ) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.25);
+            }
+
+            // wilderness puzzlebox
+            if (settings['wilderness puzzlebox'] > 1) {
+                dmgObject[key]['damage list'][i] = Math.floor(
+                    dmgObject[key]['damage list'][i] * (1 + 0.03 + settings['wilderness puzzlebox'])
+                );
+            }
+
+            // croesus deathspores (crypt flanking)
+            if (settings[SETTINGS.CRYPTBLOOM] === true) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+            }
+
+            // zamorak's guardian triumph
+            /*if (
+                settings['guardian triump'] === true &&
+                abils[settings['ability']]['ability type'] === 'basic'
+            ) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.2);
+            }*/
+
+            // undead slayer perk
+            if (settings[SETTINGS.SLAYER_PERK_UNDEAD] === true) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.07);
+            }
+
+            // undead slayer sigil
+            if (settings[SETTINGS.SLAYER_SIGIL_UNDEAD] === true) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.15);
+            }
+
+            // dragon slayer perk
+            if (settings[SETTINGS.SLAYER_PERK_DRAGON] === true) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.07);
+            }
+
+            // dragon slayer sigil
+            if (settings[SETTINGS.SLAYER_SIGIL_DRAGON] === true) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.15);
+            }
+
+            // demon slayer perk
+            if (settings[SETTINGS.SLAYER_PERK_DEMON] === true) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.07);
+            }
+
+            // demon slayer sigil
+            if (settings[SETTINGS.SLAYER_SIGIL_DEMON] === true) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.15);
+            }
+
+            // nopenopenope (pof spider buff)
+            dmgObject[key]['damage list'][i] = Math.floor(
+                dmgObject[key]['damage list'][i] * (1 + settings[SETTINGS.NOPE])
+            );
+
+            // ghost hunter outfit
+            // count number of pieces
+            let ghost_hunter_pieces = 0;
+            if (settings[SETTINGS.HELMET] === 'ghost hunter goggles') {
+                ghost_hunter_pieces += 1;
+            }
+            if (settings[SETTINGS.CAPE] === 'ghost hunter backpack') {
+                ghost_hunter_pieces += 1;
+            }
+            if (settings[SETTINGS.BODY] === 'ghost hunter body') {
+                ghost_hunter_pieces += 1;
+            }
+            if (settings[SETTINGS.LEGS] === 'ghost hunter legs') {
+                ghost_hunter_pieces += 1;
+            }
+
+            // apply buff
+            if (ghost_hunter_pieces === 1) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.03);
+            } else if (ghost_hunter_pieces === 2) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.06);
+            } else if (ghost_hunter_pieces === 3 || ghost_hunter_pieces === 4) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+            }
+
+            // vanquish (quest point weapon)
+            if (settings['two-hand weapon'] === 'vanquish') {
+                dmgObject[key]['damage list'][i] = Math.floor(
+                    dmgObject[key]['damage list'][i] * (1 + 0.05 * settings['quest deaths'])
+                );
+            }
+
+            if (settings['meta'] === true && abils[settings['ability']]['damage type'] === 'magic') {
+                dmgObject[key]['damage list'][i] = Math.floor(1.66 * dmgObject[key]['damage list'][i])
+            }
+
+            // zerk auras
+            if(settings[SETTINGS.SUNSHINE] === false &&
+            settings[SETTINGS.META] === false &&
+            settings[SETTINGS.DEATH_SWIFTNESS] === false &&
+            settings[SETTINGS.BERSERK] === false
+            ) {
+                if (
+                    settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.MANIACAL &&
+                    abils[settings['ability']]['damage type'] === 'magic'
+                ) {
+                    dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+                } else if (
+                    settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.BERSERKER &&
+                    abils[settings['ability']]['damage type'] === 'melee'
+                ) {
+                    dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+                } else if (
+                    settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.RECKLESS &&
+                    abils[settings['ability']]['damage type'] === 'ranged'
+                ) {
+                    dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+                }
+            }
+
+            // mahjarrat aura
+            if (
+                settings[SETTINGS.AURA] === 'mahjarrat' &&
+                abils[settings['ability']]['damage type'] !== 'spirit'
+            ) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.05);
+            }
+
+            // scrimshaw of elements
+            if (
+                settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.ELEMENTS &&
+                abils[settings['ability']]['main style'] === 'magic'
+            ) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.05);
+            } else if (
+                settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS &&
+                abils[settings['ability']]['main style'] === 'magic'
+            ) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.0666);
+            }
+
+            // scrimshaw of cruelty
+            if (
+                settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.CRUELTY &&
+                abils[settings['ability']]['main style'] === 'ranged'
+            ) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.05);
+            } else if (
+                settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY &&
+                abils[settings['ability']]['main style'] === 'ranged'
+            ) {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.0666);
+            }
+
+            // apply haunted
+            if (settings[SETTINGS.HAUNTED] === true) {
+                dmgObject[key]['damage list'][i] = dmgObject[key]['damage list'][i] + haunted;
+            }
+
+            // essence corruption 25 stack bonus
+            if (
+                abils[settings['ability']]['damage type'] === 'magic' &&
+                settings[SETTINGS.ESSENCE_CORRUPTION] >= 25
+            ) {
+                dmgObject[key]['damage list'][i] =
+                    dmgObject[key]['damage list'][i] +
+                    settings[SETTINGS.MAGIC_LEVEL] +
+                    settings[SETTINGS.ESSENCE_CORRUPTION];
+            }
+
+            // necklace of salamancy
+            if (settings[SETTINGS.NECKLACE] === 'necklace of salamancy') {
+                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+            }
+
+            // anachronia slayer lodge buff
+            // dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * (1 + settings['anachronia slayer lodge buff']));
+
+            // store damage into soul split
+            settings['soul split'] = dmgObject;
+
+            // hit cap
+            dmgObject[key]['damage list'][i] = Math.min(dmgObject[key]['damage list'][i], 30000);
+            
+        }
+    }
+    return 1;
+
+
+    // Marco - apply any effects that happen on-damage here
+    // I think currently that is only rng stuff like applying poison
+    // also if the hit is a crit it should proc fsoa and give crit adren here for example
 }
