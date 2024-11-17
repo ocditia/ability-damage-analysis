@@ -856,7 +856,7 @@ function calc_bonus_damage(settings, dmgObject) {
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
             settings[SETTINGS.FROSTBLADES] === true
         ) {
-            min_hit += Math.floor(0.24 * dmgObject['boosted AD']);
+            min_hit += Math.floor(0.24 * dmgObject['base AD']);
         }
     }
 
