@@ -49,6 +49,7 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
 );
 
     const table = createTable(resolvedOptions);
+    // @ts-ignore
     let state = $state<Partial<TableState>>(table.initialState);
 
     function updateOptions() {
@@ -68,6 +69,7 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
 
     updateOptions();
 
+    // @ts-ignore
     $effect.pre(() => {
         updateOptions();
     });
@@ -94,6 +96,7 @@ export function mergeObjects(...sources: any): any {
         let source = sources[i];
         if (typeof source === 'function') source = source();
         if (source) {
+            // @ts-ignore
             const descriptors = Object.getOwnPropertyDescriptors(source);
             for (const key in descriptors) {
                 if (key in target) continue;
