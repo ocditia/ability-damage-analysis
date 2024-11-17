@@ -5,7 +5,10 @@ import { SETTINGS } from './settings';
 
 // Marco - some changes might have to be made.
 // e.g. currently conflagrate is true/false, but this should be a timer so it should check conflagrate >=1.
-function on_cast_tick(settings, dmgObject) {
+
+function on_cast(settings, dmgObject) {
+    // This function happens as an ability is cast
+
     // scale to hit chance / damage potential
     for (let key in dmgObject) {
         dmgObject[key]['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 
@@ -225,6 +228,15 @@ function on_cast_tick(settings, dmgObject) {
 
     // Marco - turn off ability specific stuff here
     // e.g. turn off conflagrate after it's been used
+    return 1;
+
+    // Marco - here the single cast should be split up into the different effects
+    // e.g. if you cast dclaws, it should then be split up into 4 hits
+    // or for wild magic, it should be split into the two wild magic hits
+}
+
+function on_hit(settings, dmgObject) {
+    // this function runs for all hits (note: note hitsplats)
 
     // set min and var percentages
     for (let key in dmgObject) {
@@ -849,7 +861,8 @@ function on_cast_tick(settings, dmgObject) {
                 }
     }
     
-    
-    
     return 1;
+
+    // Marco - After this the damage object should be sent to the correct tick
+    // so that the damage can be calculated on that tick
 }
