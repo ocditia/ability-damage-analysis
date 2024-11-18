@@ -12,6 +12,7 @@
             { ...value, key: key, value: value.default }
         ])
     );
+    settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH; 
 </script>
 
 <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-ranged">

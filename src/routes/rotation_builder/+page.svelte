@@ -26,7 +26,7 @@
 
 	
 
-
+	
     let necroAbils = {...necro_dmg_abilities};
     let meleeAbils = {...melee_dmg_abilities};
     let magicAbils = {...magic_dmg_abilities};
@@ -248,7 +248,6 @@
                 }
             }
             if (abilityKey in ranged_buff_abilities) handle_ranged_buffs(settingsCopy, timers, abilityKey);
-
             //Process hitsplats and decrement timers 
             let rota;
             if (isChannelled(settingsCopy, abilityKey)) {

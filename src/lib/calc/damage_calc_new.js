@@ -355,14 +355,6 @@ function on_hit(settings, dmgObject) {
         dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * dmgObject[key]['boosted AD']);
         dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * dmgObject[key]['boosted AD']);
     }
-    console.log('Abil: ' + settings['ability']);
-    console.log('Min hit: ' + abils[settings['ability']]['min hit']);
-    console.log('Min hit: ' + abils[settings['ability']]['var hit']);
-    console.log('after set min var (new impl)');
-    console.log(dmgObject);
-    console.log('Min hit');
-    console.log(dmgObject['non_crit']['min hit']);
-
     //calc style specific
     
     // compute on-hit effects
