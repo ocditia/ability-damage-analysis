@@ -5,7 +5,7 @@ import { hit_damage_calculation, calc_base_ad, calc_boosted_ad, ability_specific
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
 get_user_value, get_rotation, add_split_soul, apply_additional_rota} from './damage_calc';
 import { next_cast, next_hit, next_tick } from './ability_helper';
-
+import { on_cast, on_hit, on_damage } from './damage_calc_new';
 
 /**
  * Calculates effects that are applied when ability is cast (when adren changes?)
@@ -23,11 +23,11 @@ function calc_on_cast(settings) {
         dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
         // ability specific
         dmgObject[key] = ability_specific_effects(settings, dmgObject[key]);
-        // set min var
+        // set min and var
         dmgObject[key] = set_min_var(settings, dmgObject[key]);
         // style specific
         dmgObject[key] = calc_style_specific(settings, dmgObject[key]);
-        // calc on hit effects
+        //calc on hit effects
         if (abils[settings['ability']]['on-hit effects']) {
             dmgObject[key] = calc_on_hit(settings, dmgObject[key]);
         }
@@ -38,7 +38,7 @@ function calc_on_cast(settings) {
             dmgObject[key] = calc_core(settings, dmgObject, key);
         } 
     }
-    next_hit();
+    //next_hit();
     //TODO get user value
     return dmgObject;
 }
@@ -50,7 +50,7 @@ function calc_on_cast(settings) {
  * @param {*} dmgObject 
  * @returns 
  */
-function rotation_on_npc(settings, dmgObject) {
+function rotation_on_npc(settings, dmgObject, experimentalData) {
     for (let key in dmgObject) {  
         if (key == 'ability') {
             continue;
@@ -69,6 +69,7 @@ function rotation_on_npc(settings, dmgObject) {
             //TODO make split soul its own hitsplat
         }
     }
+    experimentalData.push({...dmgObject});
     let total_damage = get_user_value(settings, dmgObject);
     total_damage = apply_additional_rota(settings, total_damage);
 
@@ -109,19 +110,13 @@ function rotation_ability_damage(settings) {
  * @returns
  */
 function calc_channelled_hit(settings, hit_index, rotation, timers) {
-    let dmgObject = null;
+    let dmgObject = create_object(settings);
     for (let iter = 0; iter < rotation[hit_index].length; iter++) {
-        if (rotation[hit_index][iter] === 'next cast') {
-            settings = next_cast(settings);
-        } else if (rotation[hit_index][iter] === 'next hit') {
-            settings = next_hit(settings);
-        } else {
-            settings['ability'] = rotation[hit_index][iter];
-            dmgObject = calc_on_cast(settings);
-            handle_edraco(settings, timers, rotation[hit_index][iter]);
-        }
+        settings['ability'] = rotation[hit_index][iter];
+        on_cast(settings, dmgObject);
+        on_hit(settings, dmgObject);
+        handle_edraco(settings, timers, rotation[hit_index][iter]);
     }
-    settings = next_tick(settings);
     return dmgObject;
 }
 
@@ -192,5 +187,5 @@ function handle_sgb(settings, dmgObject, damageTracker, hitTick) {
 
 export { 
     calc_on_cast, rotation_on_npc,  rotation_ability_damage, handle_ranged_buffs,
-    handle_edraco, handle_sgb, calc_channelled_hit
+    handle_edraco, handle_sgb, calc_channelled_hit, rotation_on_npc_test
 };

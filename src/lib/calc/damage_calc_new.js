@@ -2,13 +2,15 @@ import { next_cast, next_hit, next_tick } from './ability_helper';
 import { ABILITIES, abils, armour, gear, prayers, weapons } from './const';
 import { create_object } from './object_helper';
 import { SETTINGS } from './settings';
+import { calc_crit_damage } from './damage_calc';
 
 // Marco - some changes might have to be made.
 // e.g. currently conflagrate is true/false, but this should be a timer so it should check conflagrate >=1.
 
 function on_cast(settings, dmgObject) {
     // This function happens as an ability is cast
-
+    console.log('beginning (new impl)');
+    console.log({...dmgObject});
     // scale to hit chance / damage potential
     for (let key in dmgObject) {
         dmgObject[key]['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 
@@ -16,7 +18,7 @@ function on_cast(settings, dmgObject) {
     }
 
     // Marco - turn off hit chance stuff here (idt anything exists)
-
+    // TODO - ingenuity of the humans, and check if accuracy penalty from wrong style gear is implement
     // calculate boosted AD / invisible AD
     for (let key in dmgObject) {
         
@@ -98,6 +100,10 @@ function on_cast(settings, dmgObject) {
         }
     }
 
+    console.log('before abilspec (new impl)');
+    console.log({...dmgObject});
+    console.log('boosted AD');
+    console.log(dmgObject['non_crit']['boosted AD']);
     // Marco - turn off boosted AD stuff here
     // e.g. turn off chaos roar after it's been used
 
@@ -195,7 +201,8 @@ function on_cast(settings, dmgObject) {
             }
 
             // frag walk
-            if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
+            if ((settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT || settings['ability'] === ABILITIES.FRAGMENTATION_SHOT)
+                && settings[SETTINGS.WALKED_TARGET] === true) {
                 dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 2);
             }
         }
@@ -225,20 +232,41 @@ function on_cast(settings, dmgObject) {
             // The first necromancer armour + conjurer's amulet
         }
     }
-
+    
     // Marco - turn off ability specific stuff here
     // e.g. turn off conflagrate after it's been used
-    return 1;
+    
 
     // Marco - here the single cast should be split up into the different effects
     // e.g. if you cast dclaws, it should then be split up into 4 hits
     // or for wild magic, it should be split into the two wild magic hits
+    if (abils[settings['ability']]['ability classification'] == 'multihit') {
+        let dmgObjects = []
+        let hits = abils[settings['ability']]['hits']
+        for (let tick in hits) {
+            for (let hit in hits[tick]) {
+                if (abils[hits[tick][hit]]) { //filter 'next tick'/'next hit' entries 
+                    let clone = create_object(settings);
+                    for (let key in clone){
+                        clone[key]['probability'] = dmgObject[key]['probability'];
+                        clone[key]['boosted AD'] = dmgObject[key]['boosted AD'];
+                        clone[key]['ability'] = hits[tick][hit];
+                    }
+                    dmgObjects.push(clone);
+                }
+            }
+        }
+        return dmgObjects;
+    }
+    
+    else return dmgObject;
 }
 
 function on_hit(settings, dmgObject) {
-    // this function runs for all hits (note: note hitsplats)
+    // this function runs for all hits (note: not hitsplats)
 
     // set min and var percentages
+    
     for (let key in dmgObject) {
         dmgObject[key]['min hit'] = abils[settings['ability']]['min hit'];
         dmgObject[key]['var hit'] = abils[settings['ability']]['var hit'];
@@ -295,15 +323,16 @@ function on_hit(settings, dmgObject) {
                 dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + 0.1 * settings[SETTINGS.PUNCTURE_STACKS];
                 dmgObject[key]['var hit'] = dmgObject[key]['var hit'] + 0.05 * settings[SETTINGS.PUNCTURE_STACKS];
             }
-
             // flank
-            if (settings['ability'] === ABILITIES.BINDING_SHOT) {
-                dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
-                dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
-            }
-            else if (settings['ability'] === ABILITIES.TIGHT_BINDINGS) {
-                dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
-                dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
+            if (settings[SETTINGS.FLANKING] > 0) {
+                if (settings['ability'] === ABILITIES.BINDING_SHOT) {
+                    dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
+                    dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
+                }
+                else if (settings['ability'] === ABILITIES.TIGHT_BINDINGS) {
+                    dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
+                    dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
+                }
             }
         }
 
@@ -320,22 +349,26 @@ function on_hit(settings, dmgObject) {
             }
         }
     }
-
-    // Marco - turn off min/var percent boosts
-
-    // set actual min var values
+    // // Marco - turn off min/var percent boosts
+    // // set actual min var values
     for (let key in dmgObject) {
-        dmgObject[key]['min hit'] = dmgObject[key]['min hit'] * dmgObject[key]['boosted AD'];
-        dmgObject[key]['var hit'] = dmgObject[key]['var hit'] * dmgObject[key]['boosted AD'];
+        dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * dmgObject[key]['boosted AD']);
+        dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * dmgObject[key]['boosted AD']);
     }
-    
-    
+    console.log('Abil: ' + settings['ability']);
+    console.log('Min hit: ' + abils[settings['ability']]['min hit']);
+    console.log('Min hit: ' + abils[settings['ability']]['var hit']);
+    console.log('after set min var (new impl)');
+    console.log(dmgObject);
+    console.log('Min hit');
+    console.log(dmgObject['non_crit']['min hit']);
 
+    //calc style specific
+    
     // compute on-hit effects
     if (abils[settings['ability']]['on-hit effects'] === true) {
         // Marco - turn on any style specific effects (idt there are any)
 
-        // calc style specific effects
         for (let key in dmgObject) {
             if (abils[settings['ability']]['main style'] === 'magic') {
 
@@ -373,7 +406,7 @@ function on_hit(settings, dmgObject) {
                 if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.FUL_ARROWS) {
                     dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * 1.15);
                     dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * 1.15);
-                }
+                }                
 
                 // enchanted bolts (proc based, will come later)
                 // sirenic set effect (proc based, will come later)
@@ -394,15 +427,14 @@ function on_hit(settings, dmgObject) {
                 
             }
         }
-
         // Marco - turn off any style specific effects (idt there are any)
-
         // apply precise
-        for (let key in dmgObject) {
-            dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + 
-            Math.floor(0.015 * settings[SETTINGS.PRECISE] * (dmgObject[key]['min hit'] + dmgObject[key]['var hit']));
-            dmgObject[key]['var hit'] = dmgObject[key]['var hit'] - 
-            Math.floor(0.015 * settings[SETTINGS.PRECISE] * (dmgObject[key]['min hit'] + dmgObject[key]['var hit']));
+        if (settings[SETTINGS.PRECISE] > 0 ) {
+            for (let key in dmgObject) {
+                let max_hit = dmgObject[key]['min hit'] + dmgObject[key]['var hit'];
+                dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
+                dmgObject[key]['var hit'] = dmgObject[key]['var hit'] - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
+            }
         }
 
         // Marco - turn additive boosts on if appropriate
@@ -420,7 +452,6 @@ function on_hit(settings, dmgObject) {
             }
             settings[SETTINGS.NEEDLE_STRIKE_BUFFER] = 0;
         }
-
         // apply additive boosts
         for (let key in dmgObject) {
             let boost = 0;
@@ -492,31 +523,31 @@ function on_hit(settings, dmgObject) {
 
             // dominion marker (wtf does this do lol?)
 
-            // turn on gop on-hit buff if appropriate
-            if (settings[a] > 0 &&
-                abils[settings['ability']]['main style'] === 'ranged'
-            ) {
-                if ([SETTINGS.NECKLACE_VALUES.AOS, SETTINGS.NECKLACE_VALUES.AOSOR, SETTINGS.NECKLACE_VALUES.EOF, SETTINGS.NECKLACE_VALUES.EOFOR].includes(settings[SETTINGS.NECKLACE])) {
-                    settings[a] = 'fleeting';
-                }
-                else {
-                    settings[a] = true;
-                }
+            // // turn on gop on-hit buff if appropriate
+            // if (settings[a] > 0 &&
+            //     abils[settings['ability']]['main style'] === 'ranged'
+            // ) {
+            //     if ([SETTINGS.NECKLACE_VALUES.AOS, SETTINGS.NECKLACE_VALUES.AOSOR, SETTINGS.NECKLACE_VALUES.EOF, SETTINGS.NECKLACE_VALUES.EOFOR].includes(settings[SETTINGS.NECKLACE])) {
+            //         settings[a] = 'fleeting';
+            //     }
+            //     else {
+            //         settings[a] = true;
+            //     }
                 
-                settings[a] = 0;
-            }
-            // apply gop on-hit buff
-            if (
-                settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR &&
-                abils[settings['ability']]['main style'] === 'melee'
-            ) {
-                boost += 0.1;
-            } else if (
-                settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED &&
-                abils[settings['ability']]['main style'] === 'melee'
-            ) {
-                boost += 0.16;
-            }
+            //     settings[a] = 0;
+            // }
+            // // apply gop on-hit buff
+            // if (
+            //     settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR &&
+            //     abils[settings['ability']]['main style'] === 'melee'
+            // ) {
+            //     boost += 0.1;
+            // } else if (
+            //     settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED &&
+            //     abils[settings['ability']]['main style'] === 'melee'
+            // ) {
+            //     boost += 0.16;
+            // }
 
             // Discrete example: needle strike
             // apply needle strike damage buff
@@ -556,26 +587,26 @@ function on_hit(settings, dmgObject) {
             dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * (1 + boost));
             dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * (1 + boost));
         }
-
+        
         // Marco - turn off additive boosts, note that needle strike should get turned off when the tick changes, not here
     
         // Marco - turn on multiplicative shared boosts
 
         // apply multiplicative shared buffs
         for (let key in dmgObject) {
-            boost = 0;
+            let boost = 10000;
             if (abils[settings['ability']]['main style'] === 'magic') {
                 // prayer boost
                 if (abils[settings['ability']]['main style'] === prayers[settings[SETTINGS.PRAYER]]['style']) {
-                    boost += prayers[settings[SETTINGS.PRAYER]]['boost'];
-            
+                    let prayerBoost = prayers[settings[SETTINGS.PRAYER]]['boost'];
                     if (
                         settings[SETTINGS.NECKLACE] === 'amulet of zealots' &&
                         prayers[settings[SETTINGS.PRAYER]]['category'] in
                             ['single-stat boosting', 'leech curse']
                     ) {
-                        boost += 0.1;
+                        prayerBoost += 0.1;
                     }
+                    boost = Math.floor(boost * (1 + prayerBoost));
                 }
 
                 // divine rage
@@ -597,7 +628,7 @@ function on_hit(settings, dmgObject) {
             if (abils[settings['ability']]['main style'] === 'melee') {
                 // prayer boost
                 if (abils[settings['ability']]['main style'] === prayers[settings[SETTINGS.PRAYER]]['style']) {
-                    boost += prayers[settings[SETTINGS.PRAYER]]['boost'];
+                    let prayerBoost = prayers[settings[SETTINGS.PRAYER]]['boost'];
             
                     if (
                         settings[SETTINGS.NECKLACE] === 'amulet of zealots' &&
@@ -606,6 +637,7 @@ function on_hit(settings, dmgObject) {
                     ) {
                         boost += 0.1;
                     }
+                    boost = Math.floor(boost * (1 + prayerBoost));
                 }
 
                 // berserk
@@ -627,8 +659,7 @@ function on_hit(settings, dmgObject) {
             if (abils[settings['ability']]['main style'] === 'ranged') {
                 // prayer boost
                 if (abils[settings['ability']]['main style'] === prayers[settings[SETTINGS.PRAYER]]['style']) {
-                    boost += prayers[settings[SETTINGS.PRAYER]]['boost'];
-            
+                    let prayerBoost = prayers[settings[SETTINGS.PRAYER]]['boost'];
                     if (
                         settings[SETTINGS.NECKLACE] === 'amulet of zealots' &&
                         prayers[settings[SETTINGS.PRAYER]]['category'] in
@@ -636,6 +667,7 @@ function on_hit(settings, dmgObject) {
                     ) {
                         boost += 0.1;
                     }
+                    boost = Math.floor(boost * (1 + prayerBoost));
                 }
 
                 // death swiftness
@@ -647,8 +679,7 @@ function on_hit(settings, dmgObject) {
             if (abils[settings['ability']]['main style'] === 'necromancy') {
                 // prayer boost
                 if (abils[settings['ability']]['main style'] === prayers[settings[SETTINGS.PRAYER]]['style']) {
-                    boost += prayers[settings[SETTINGS.PRAYER]]['boost'];
-            
+                    let prayerBoost = prayers[settings[SETTINGS.PRAYER]]['boost'];
                     if (
                         settings[SETTINGS.NECKLACE] === 'amulet of zealots' &&
                         prayers[settings[SETTINGS.PRAYER]]['category'] in
@@ -656,6 +687,7 @@ function on_hit(settings, dmgObject) {
                     ) {
                         boost += 0.1;
                     }
+                    boost = Math.floor(boost * (1 + prayerBoost));
                 }
             }   
     
@@ -679,21 +711,23 @@ function on_hit(settings, dmgObject) {
             // spendthrift (proc based, so added later)
 
             // ruthless
-            boost = Math.floor(
-                boost * (1 + settings[SETTINGS.RUTHLESS_STACKS] * settings[SETTINGS.RUTHLESS_RANK] * 0.005)
-            );
+            //TODO fix - current breaks calc if no ruthless stacks
+            // boost = Math.floor(
+            //     boost * (1 + settings[SETTINGS.RUTHLESS_STACKS] * settings[SETTINGS.RUTHLESS_RANK] * 0.005)
+            // );
 
-            // apply buff
-            dmgObject[key]['min hit'] = Math.floor((dmgObject[key]['min hit'] * boost) / 10000);
+            // apply buff            
+            dmgObject[key]['min hit'] = Math.floor((dmgObject[key]['min hit'] * boost) / 10000); 
             dmgObject[key]['var hit'] = Math.floor((dmgObject[key]['var hit'] * boost) / 10000);
-        }
 
+        }
         // Marco - turn off multiplicative shared boosts
     
         // Marco - turn on multiplicative pve only buffs
 
         // apply multiplicative pve only buffs
         for (let key in dmgObject) {
+            let boost = 10000;
             if (abils[settings['ability']]['main style'] === 'magic') {
                 // spellcaster gloves (proc based, so added later)
                 // boost = boost; // useless self-assignment
@@ -779,7 +813,7 @@ function on_hit(settings, dmgObject) {
             }   
         }
     }
-
+    
     // roll damage
     for (let key in dmgObject) {
         for (let i = 0; i <= dmgObject[key]['var hit']; i++) {
@@ -856,12 +890,12 @@ function on_hit(settings, dmgObject) {
         // if bolg procced set bolg stacks back to 0
         if (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 8 ||
             (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 4 &&
-                settings[SETTINGS.BALANCE_BY_FORCE] === true)) {
-                    settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] = 0;
-                }
-    }
-    
-    return 1;
+            settings[SETTINGS.BALANCE_BY_FORCE] === true)) 
+        {
+            settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] = 0;
+        }
+    }    
+    return dmgObject;
 
     // Marco - After this the damage object should be sent to the correct tick
     // so that the damage can be calculated on that tick
@@ -883,18 +917,18 @@ function on_damage(settings, dmgObject) {
                 dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.05);
             }
 
-            // enduring ruin bleed (gop)
-            if (
-                settings['enduring ruin - bleed'] === 'regular' &&
-                abils[settings['ability']]['ability classification'] === 'bleed'
-            ) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.2);
-            } else if (
-                settings['enduring ruin - bleed'] === 'enhanced' &&
-                abils[settings['ability']]['ability classification'] === 'bleed'
-            ) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.25);
-            }
+            // // enduring ruin bleed (gop)
+            // if (
+            //     settings['enduring ruin - bleed'] === 'regular' &&
+            //     abils[settings['ability']]['ability classification'] === 'bleed'
+            // ) {
+            //     dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.2);
+            // } else if (
+            //     settings['enduring ruin - bleed'] === 'enhanced' &&
+            //     abils[settings['ability']]['ability classification'] === 'bleed'
+            // ) {
+            //     dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.25);
+            // }
 
             // wilderness puzzlebox
             if (settings['wilderness puzzlebox'] > 1) {
@@ -1084,3 +1118,5 @@ function on_damage(settings, dmgObject) {
     // I think currently that is only rng stuff like applying poison
     // also if the hit is a crit it should proc fsoa and give crit adren here for example
 }
+
+export {on_cast, on_hit, on_damage}

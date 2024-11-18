@@ -481,54 +481,58 @@ function set_min_var(settings, dmgObject) {
         }
     }
 
+    
     dmgObject['min hit'] = Math.max(Math.floor(min_percent * dmgObject['boosted AD']), 0);
     dmgObject['var hit'] = Math.max(Math.floor(var_percent * dmgObject['boosted AD']), 0);
     return dmgObject;
 }
 
 function calc_style_specific(settings, dmgObject) {
-    if (abils[settings['ability']]['main style'] === 'ranged') {
-        // og bane ammo
-        if (settings['ammunition'] === 'bane bolts' || settings['ammunition'] === 'bane arrows') {
-            if (
-                settings['ability'] === 'ranged main-hand auto' ||
-                settings['ability'] === 'ranged two-hand auto' ||
-                settings['ability'] === 'ranged off-hand auto'
-            ) {
-                dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.4);
-                dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.4);
-            } else {
-                dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.25);
-                dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.25);
+    if (abils[settings['ability']]['on-hit effects'] === true) {
+        if (abils[settings['ability']]['main style'] === 'ranged') {
+            // og bane ammo
+            if (settings['ammunition'] === 'bane bolts' || settings['ammunition'] === 'bane arrows') {
+                if (
+                    settings['ability'] === 'ranged main-hand auto' ||
+                    settings['ability'] === 'ranged two-hand auto' ||
+                    settings['ability'] === 'ranged off-hand auto'
+                ) {
+                    dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.4);
+                    dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.4);
+                } else {
+                    dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.25);
+                    dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.25);
+                }
             }
-        }
 
-        // jas bane ammo
-        if (
-            settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.JAS_ARROWS
-        ) {
-            dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.3);
-            dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.3);
-        }
+            // jas bane ammo
+            if (
+                settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.JAS_ARROWS
+            ) {
+                dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.3);
+                dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.3);
+            }
 
-        // ful arrows
-        if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.FUL_ARROWS) {
-            dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.15);
-            dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.15);
-        }
+            // ful arrows
+            //TODO check you're actually using a bow
+            if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.FUL_ARROWS) {
+                dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * 1.15);
+                dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * 1.15);
+            }
 
-        // enchanted bolts (proc based, will come later)
-        // sirenic set effect (proc based, will come later)
-        // gemstone armour effect (proc based, will come later)
+            // enchanted bolts (proc based, will come later)
+            // sirenic set effect (proc based, will come later)
+            // gemstone armour effect (proc based, will come later)
 
-        // pernix quiver
-        if (
-            settings['ammo slot'] === 'pernix quiver' &&
-            settings[SETTINGS.TARGET_HP_PERCENT] <= 25
-        ) {
-            dmgObject['var hit'] = Math.floor(
-                (dmgObject['var hit'] += 0.04 * (dmgObject['min hit'] + dmgObject['var hit']))
-            );
+            // pernix quiver
+            if (
+                settings['ammo slot'] === 'pernix quiver' &&
+                settings[SETTINGS.TARGET_HP_PERCENT] <= 25
+            ) {
+                dmgObject['var hit'] = Math.floor(
+                    (dmgObject['var hit'] += 0.04 * (dmgObject['min hit'] + dmgObject['var hit']))
+                );
+            }
         }
     }
     return dmgObject;
@@ -1196,9 +1200,9 @@ function calc_on_hit(settings, dmgObject) {
     dmgObject = calc_precise(settings, dmgObject);
     dmgObject = calc_additive_boosts(settings, dmgObject);
     dmgObject = calc_multiplicative_shared_buffs(settings, dmgObject);
+    
     dmgObject = calc_multiplicative_pve_buffs(settings, dmgObject);
     dmgObject = calc_bonus_damage(settings, dmgObject);
-
     return dmgObject;
 }
 
@@ -1540,8 +1544,8 @@ function get_max_crit(settings, dmgObject) {
  * @param {*} settings 
  * @returns 
  */
-function style_specific_unification(settings) {
-    if (abils[settings['ability']]['main style'] === 'magic') {
+function style_specific_unification(settings, style = null) {
+    if (style == 'magic' || abils[settings['ability']]['main style'] === 'magic') {
         settings[SETTINGS.MH] = settings[SETTINGS.MAGIC_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.MAGIC_OH];
         settings[SETTINGS.TH] = settings[SETTINGS.MAGIC_TH];
@@ -1551,7 +1555,7 @@ function style_specific_unification(settings) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.MAGIC_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.MAGIC_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.MAGIC_PRAYER];
-    } else if (abils[settings['ability']]['main style'] === 'ranged') {
+    } else if (style == 'ranged' || abils[settings['ability']]['main style'] === 'ranged') {
         settings[SETTINGS.MH] = settings[SETTINGS.RANGED_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.RANGED_OH];
         settings[SETTINGS.TH] = settings[SETTINGS.RANGED_TH];
@@ -1561,7 +1565,7 @@ function style_specific_unification(settings) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.RANGED_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.RANGED_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.RANGED_PRAYER];
-    } else if (abils[settings['ability']]['main style'] === 'melee') {
+    } else if (style == 'melee' || abils[settings['ability']]['main style'] === 'melee') {
         settings[SETTINGS.MH] = settings[SETTINGS.MELEE_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.MELEE_OH];
         settings[SETTINGS.TH] = settings[SETTINGS.MELEE_TH];
@@ -1571,7 +1575,7 @@ function style_specific_unification(settings) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.MELEE_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.MELEE_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.MELEE_PRAYER];
-    } else if (abils[settings['ability']]['main style'] === 'necromancy') {
+    } else if (style == 'necromancy' || abils[settings['ability']]['main style'] === 'necromancy') {
         settings[SETTINGS.MH] = settings[SETTINGS.NECRO_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.NECRO_OH];
         settings[SETTINGS.TH] = settings[SETTINGS.NECRO_TH];
@@ -1582,6 +1586,7 @@ function style_specific_unification(settings) {
         settings[SETTINGS.BOOTS] = settings[SETTINGS.NECRO_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.NECRO_PRAYER];
     }
+    
     return settings;
 }
 
@@ -1746,4 +1751,6 @@ function get_rotation(settings) {
 export { ability_damage_calculation, hit_damage_calculation, 
     calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
-get_user_value, get_rotation, add_split_soul, apply_additional, apply_additional_rota };
+    get_user_value, get_rotation, add_split_soul, apply_additional, apply_additional_rota,
+    calc_crit_damage
+};
