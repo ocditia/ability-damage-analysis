@@ -1261,12 +1261,7 @@ function calc_bolg(settings) {
             settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1] -
             bolg_damage_based[key]['min hit'];
         bolg_damage_based[key] = calc_style_specific(settings, bolg_damage_based[key]);
-        //bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_additive_boosts(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_multiplicative_shared_buffs(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_multiplicative_pve_buffs(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_bonus_damage(settings, bolg_damage_based[key]);
-        
+        bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
         bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
