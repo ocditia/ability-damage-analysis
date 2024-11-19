@@ -7,11 +7,11 @@
     import Number from '../../components/Settings/Number.svelte';
     import Select from '../../components/Settings/Select.svelte';
 
-    let damages = Object.fromEntries(
+    let damages = $state(Object.fromEntries(
         Object.entries(abilities).map(([key, value]) => [key, { ...value, regular: 0, ss: 0 }])
-    );
+    ));
 
-    let tab = 'general';
+    let tab = $state('general');
 
     let settings = Object.fromEntries(
         Object.entries(settingsConfig).map(([key, value]) => [
@@ -81,7 +81,7 @@
                 <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
                     <li class="flex-grow me-2">
                         <button
-                            on:click={() => (tab = 'general')}
+                            onclick={() => (tab = 'general')}
                             class:text-[#968A5C]={tab === 'general'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                             >General</button
@@ -89,7 +89,7 @@
                     </li>
                     <li class="flex-grow me-2">
                         <button
-                            on:click={() => (tab = 'necro equipment')}
+                            onclick={() => (tab = 'necro equipment')}
                             class:text-[#968A5C]={tab === 'equipment'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                             >Necro</button
@@ -97,7 +97,7 @@
                     </li>
                     <li class="flex-grow me-2">
                         <button
-                            on:click={() => (tab = 'magic equipment')}
+                            onclick={() => (tab = 'magic equipment')}
                             class:text-[#968A5C]={tab === 'equipment'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                             >Magic</button
@@ -105,7 +105,7 @@
                     </li>
                     <li class="flex-grow me-2">
                         <button
-                            on:click={() => (tab = 'ranged equipment')}
+                            onclick={() => (tab = 'ranged equipment')}
                             class:text-[#968A5C]={tab === 'equipment'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                             >Ranged</button
@@ -113,7 +113,7 @@
                     </li>
                     <li class="flex-grow me-2">
                         <button
-                            on:click={() => (tab = 'melee equipment')}
+                            onclick={() => (tab = 'melee equipment')}
                             class:text-[#968A5C]={tab === 'equipment'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                             >Melee</button
@@ -121,7 +121,7 @@
                     </li>
                     <li class="flex-grow me-2">
                         <button
-                            on:click={() => (tab = 'bosses')}
+                            onclick={() => (tab = 'bosses')}
                             class:text-[#968A5C]={tab === 'bosses'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                             >Bosses</button

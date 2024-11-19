@@ -1,6 +1,6 @@
 <script>
-    let isDropdownOpen = false;
-    let isNavDropdownOpen = false;
+    let isDropdownOpen = $state(false);
+    let isNavDropdownOpen = $state(false);
 
     const handleDropdownClick = () => {
         isDropdownOpen = !isDropdownOpen;
@@ -19,7 +19,7 @@
             <span class="text-2xl font-bold">RS Analysis</span>
         </a>
         <button
-            on:click={handleDropdownClick}
+            onclick={handleDropdownClick}
             type="button"
             class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden"
             aria-controls="navbar-dropdown"
@@ -55,7 +55,7 @@
                 </li>
                 <li>
                     <button
-                        on:click={handleNavDropdownClick}
+                        onclick={handleNavDropdownClick}
                         class="flex items-center justify-between w-full py-2 px-3 rounded md:border-0 md:p-0 md:w-auto hover:text-link text-xl"
                         >Ability Analysis <svg
                             class="w-2.5 h-2.5 ms-2.5"

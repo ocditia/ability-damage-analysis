@@ -1,7 +1,5 @@
 <script>
-    export let img;
-    export let icon;
-    export let text = '';
+    let { img, icon, text = '' } = $props();
 </script>
 
 <header

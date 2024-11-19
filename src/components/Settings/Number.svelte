@@ -1,19 +1,15 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
     import SettingWrapper from '$components/Settings/SettingWrapper.svelte';
     import LabelWrapper from '$components/Settings/LabelWrapper.svelte';
 
-    export let setting;
-    export let img;
-    export let step = "1";
-    export let min = "0";
-    export let max = "9999";
-
-    const dispatch = createEventDispatcher();
-
-    function settingUpdated() {
-        dispatch('settingsUpdated');
-    }
+    let {
+        setting = $bindable(),
+        onchange,
+        img,
+        step = "1",
+        min = "0",
+        max = "9999"
+    } = $props();
 </script>
 
 <SettingWrapper>
@@ -30,7 +26,7 @@
             type="number"
             id={setting.key}
             bind:value={setting.value}
-            on:change={settingUpdated}
+            {onchange}
             step={step}
             min={min}
             max={max}
