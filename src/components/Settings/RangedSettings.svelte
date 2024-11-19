@@ -20,8 +20,8 @@
     }
 
     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH; 
-    settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.HEX_E;
-    //settings[SETTINGS.BALANCE_BY_FORCE]['value'] = false;
+    settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.BOLG;//HEX_E;
+    settings[SETTINGS.BALANCE_BY_FORCE]['value'] = true;
     tryUpdateDamages();
 
     

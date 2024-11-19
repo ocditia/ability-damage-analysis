@@ -1,5 +1,4 @@
 <script>
-	import FFT from 'fft.js';
 	import Navbar from '$components/Layout/Navbar.svelte';
 	import Header from '$components/Layout/Header.svelte';
 	import { abilities  as r_dmg_abilities } from '$lib/ranged/abilities';
@@ -120,7 +119,6 @@
                     let hit_tick = i + hit_delay;
                     (damageTracker[hit_tick] ??= []).push(dmgObject);;
                 }
-
                 if (Object.keys(timers).length > 0) {
                     for (let key in timers) {
                         timers[key] -= 1;
@@ -133,7 +131,6 @@
                 if (damageTracker[i]) {
                     damageTracker[i].forEach(namedDmgObject => {
                         settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
-						console.log(namedDmgObject);
                         dmgs.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
 						
 						//experimental_data.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
@@ -273,14 +270,18 @@
                 if (damageTracker[i]) {
 					damageTracker[i].forEach(namedDmgObject => {
                         settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
-						console.log(namedDmgObject);
 						let dmg = get_user_value(settingsCopy, on_damage(settingsCopy, namedDmgObject));
-						dmg = apply_additional(settingsCopy, dmg);
+						let dmg1 = dmg;
+						dmg = apply_additional(settingsCopy, dmg, true);
 						dmgs.push(dmg);
+						console.log('Binding shot damage = ' +dmg1);
+
+						console.log('Bolg proc damage = ' + (dmg-dmg1));
 						//dmgs.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
                     });
                 }
-				bolgStacks[tick] = settingsCopy['perfect e                      quilibrium stacks'];
+				bolgStacks[tick] = settingsCopy['perfect equilibrium stacks'];
+				wenStacks[tick] = settingsCopy['wen stacks'];
                 tick += 1;
             }
             end_tick = tick;
@@ -319,11 +320,15 @@
     }
 	const barSize = 500;
     let abilityBar = Array(barSize).fill(null); // Empty slots on the bar
-	let bolgStacks = Array(barSize).fill(0); // Empty slots on the bar
+	let bolgStacks = Array(barSize).fill(0); // PE stacks on each tick
+	let wenStacks = Array(barSize).fill(0); // Wen stacks on each tick
 	let tab = 'general'; // settings tab
     let selectedTab = 'general';
 
     abilityBar[0] = "binding shot";
+	// abilityBar[3] = "rapid fire";
+
+	// abilityBar[11] = "greater ricochet";
 
 	let abilityBarIndex = 0;
 	let lastAbilityIndex;
@@ -400,8 +405,10 @@
     }
 
 	function clearRotation() {
-		for (let i = 0; i < abilityBar.length; i++) {
+		for (let i = 0; i < barSize; i++) {
 			abilityBar[i] = null;
+			bolgStacks[i] = 0;
+			wenStacks[i] = 0;
 		}
 		totalDamage = 0;
 		abilityBarIndex = 0;
@@ -415,12 +422,12 @@
 	}
 
 	//TODO delete
-	function showBolg(idx) {
+	function showStack(idx, arr) {
 		if (idx == 0) {
 			return true;
 		}
 		else {
-			return !(bolgStacks[idx] == bolgStacks[idx-1]);
+			return !(arr[idx] == arr[idx-1]);
 		}
 	}
 
@@ -508,8 +515,11 @@
 								{#if buffActive('split soul ecb', index)}
 									<div class="line-ecb"></div>
 								{/if}	
-								{#if showBolg(index)}
+								{#if showStack(index, bolgStacks)}
 									<span class="bolg-stacks">{bolgStacks[index]}</span>
+								{/if}
+								{#if showStack(index, wenStacks)}
+									<span class="wen-stacks">{wenStacks[index]}</span>
 								{/if}
 							</div>
 						{/each}
@@ -526,7 +536,7 @@
 	.ability-bar {
 		display: grid; 
 		grid-template-columns: repeat(auto-fill, 30px); 
-		row-gap: 40px; 
+		row-gap: 52px; 
 		column-gap: 0px; 
 		position: relative;
 	}
@@ -582,5 +592,14 @@
         transform: translateX(+50%);
         font-size: 12px; /* Adjust size of the number */
         color: #4cfc42; /* Adjust color of the number */
+	}
+
+	.wen-stacks {
+        position: absolute;
+        top: +46px; /* Adjust to move the number above the cell */
+        left: auto;
+        transform: translateX(+50%);
+        font-size: 12px; /* Adjust size of the number */
+        color: #03f4fc; /* Adjust color of the number */
 	}
 </style>

@@ -1296,6 +1296,48 @@ function calc_bolg(settings) {
     return bolg_perc_damage + bolg_base;
 }
 
+function calc_bolg_new(settings) {
+    settings['ability'] = 'bolg proc';
+
+    // calc base bolg damage
+    let bolg_base = calc_damage_object(settings);
+
+    console.log('Bolg base damage (12-16%)');
+    console.log(bolg_base);
+
+    settings['ability'] = 'bolg proc percentages';
+    let bolg_damage_based = create_object(settings);
+
+    // calc the damage based proc
+    for (let key in bolg_damage_based) {
+        bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
+        bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
+        bolg_damage_based[key] = ability_specific_effects(settings, bolg_damage_based[key]);
+        bolg_damage_based[key]['min hit'] = abils[settings['ability']]['min hit'] * settings['bolg damage'][key]['damage list'][0];
+        bolg_damage_based[key]['var hit'] = (abils[settings['ability']]['min hit'] + abils[settings['ability']]['var hit']) * 
+            settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1] -
+            bolg_damage_based[key]['min hit'];
+        bolg_damage_based[key] = calc_style_specific(settings, bolg_damage_based[key]);
+        bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
+        bolg_damage_based[key] = calc_additive_boosts(settings, bolg_damage_based[key]);
+        bolg_damage_based[key] = calc_multiplicative_shared_buffs(settings, bolg_damage_based[key]);
+        bolg_damage_based[key] = calc_multiplicative_pve_buffs(settings, bolg_damage_based[key]);
+        bolg_damage_based[key] = calc_bonus_damage(settings, bolg_damage_based[key]);
+        
+        bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
+        bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
+        bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
+        
+        
+        bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
+        
+    }
+
+    const bolg_perc_damage = get_user_value(settings, bolg_damage_based);
+
+    return bolg_perc_damage + bolg_base;
+}
+
 function calc_bloat(settings) {
     let bloat_dot = create_object(settings);
     for (let key in settings['bloat damage']) {
@@ -1362,11 +1404,13 @@ function calc_igneous_bleed(settings) {
 }
 
 function add_split_soul(settings, dmgObject) {
-    for (let i = 0; i < dmgObject['damage list'].length; i++) {
-        dmgObject['damage list'][i] += calc_split_soul_hit(
-            settings['soul split']['damage list'][i],
-            settings
-        );
+    if (settings[SETTINGS.SPLIT_SOUL]) {
+        for (let i = 0; i < dmgObject['damage list'].length; i++) {
+            dmgObject['damage list'][i] += calc_split_soul_hit(
+                settings['soul split']['damage list'][i],
+                settings
+            );
+        }
     }
     return dmgObject;
 }
@@ -1599,7 +1643,7 @@ function hit_damage_calculation(settings) {
 }
 
 //todo rename
-function apply_additional(settings, total_damage) {
+function apply_additional(settings, total_damage, newbolg = False) {
     // handle sgb logic
     if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
         total_damage += calc_sgb(settings, total_damage);
@@ -1607,7 +1651,13 @@ function apply_additional(settings, total_damage) {
 
     // handle bolg logic
     if ('bolg damage' in settings) {
-        total_damage += calc_bolg(settings);
+        if (newbolg) {
+            total_damage += calc_bolg_new(settings);
+        }
+        else {
+            total_damage += calc_bolg(settings)
+        }
+
         delete settings['bolg damage'];
     }
 

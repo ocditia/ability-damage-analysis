@@ -85,6 +85,12 @@ function on_cast(settings, dmgObject) {
             ) {
                 dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * (1 + 0.03 * settings[SETTINGS.ICY_PRECISION]));
             }
+
+            // balance by force (bolg spec)
+            if (settings['ability'] == ABILITIES.BALANCE_BY_FORCE) {
+                settings[SETTINGS.BALANCE_BY_FORCE] = true;
+            }
+            //TODO test
         }
 
         // necromancy has no (known) buffs of this type
@@ -352,7 +358,7 @@ function on_hit(settings, dmgObject) {
         dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * dmgObject[key]['boosted AD']);
         dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * dmgObject[key]['boosted AD']);
     }
-    
+    console.log('Boosted AD: ' + dmgObject['non_crit']['boosted AD']);
 
     // compute on-hit effects
     if (abils[settings['ability']]['on-hit effects'] === true) {
@@ -802,7 +808,7 @@ function on_hit(settings, dmgObject) {
             }   
         }
     }
-    
+    console.log('Boosted AD: ' + dmgObject['non_crit']['boosted AD']);
     // roll damage
     for (let key in dmgObject) {
         for (let i = 0; i <= dmgObject[key]['var hit']; i++) {
@@ -820,15 +826,25 @@ function on_hit(settings, dmgObject) {
         settings['igneous cleave bleed damage'][key]['damage list'] = structuredClone(dmgObject);
     }
 
-    // calc core
-    if (abils[settings['ability']]['on-hit effects'] === true) {
+    //Add wen and bolg stacks
+    if (abils[settings['ability']]['on-hit effects'] === true &&
+        abils[settings['ability']]['ability type'] != 'proc') {
         // Marco - Discrete example: bolg
         // add a bolg stack
         if (settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
                 settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] += 1;
         }
+    }
+    if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
+        abils[settings['ability']]['ability type'] == 'basic'
+    ) {
+            settings[SETTINGS.WEN_STACKS] = Math.min(settings[SETTINGS.WEN_STACKS]+1, 15);
+    }
+    //TODO check for wen arrows, check this is called correctly (abilities that give wen but no pe?)
 
+    // calc core
+    if (abils[settings['ability']]['on-hit effects'] === true) {
         for (let key in dmgObject) {
             for (let i=0; i<dmgObject[key]['damage list'].length; i++) {
                 // berserker's fury
@@ -844,7 +860,7 @@ function on_hit(settings, dmgObject) {
                     settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
                     settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
                     (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 8 ||
-                        (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 4 &&
+                        (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 4 &&
                             settings[SETTINGS.BALANCE_BY_FORCE] === true))
                 ) {
                     if (!('bolg damage' in settings)) {
@@ -884,6 +900,12 @@ function on_hit(settings, dmgObject) {
             settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] = 0;
         }
     }    
+    console.log('bolg damage based (after on hit for ability that procs)');
+    console.log(settings['bolg damage']);
+    console.log('----');
+    console.log('Ability damage (that procs bolg)');
+    console.log(dmgObject);
+    console.log('----');
     return dmgObject;
 
     // Marco - After this the damage object should be sent to the correct tick
