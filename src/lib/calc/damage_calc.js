@@ -1253,37 +1253,20 @@ function calc_bolg(settings) {
 
     // calc the damage based proc
     for (let key in bolg_damage_based) {
-        
-        /*let dmg_list = [];
-        // take every single element of dmgobject and add the relevant percentage ranges as individual hits to bolg_damage_based with the same key
-        for (let element in settings['bolg damage'][key]['damage list']) {
-            bolg_damage_based[key]['min hit'] = Math.floor(
-                settings['bolg damage'][key]['damage list'][element] * abils[settings['ability']]['min hit']
-            );
-            bolg_damage_based[key]['var hit'] = Math.floor(
-                settings['bolg damage'][key]['damage list'][element] * abils[settings['ability']]['var hit']
-            );
-            bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
-
-            for (
-                let i = bolg_damage_based[key]['min hit'];
-                i <= bolg_damage_based[key]['min hit'] + bolg_damage_based[key]['var hit'];
-                i++
-            ) {
-                dmg_list.push(i);
-            }
-        }
-        bolg_damage_based[key]['damage list'] = dmg_list;*/
-
         bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
         bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
         bolg_damage_based[key] = ability_specific_effects(settings, bolg_damage_based[key]);
         bolg_damage_based[key]['min hit'] = abils[settings['ability']]['min hit'] * settings['bolg damage'][key]['damage list'][0];
         bolg_damage_based[key]['var hit'] = (abils[settings['ability']]['min hit'] + abils[settings['ability']]['var hit']) * 
-        settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1] -
-        bolg_damage_based[key]['min hit'];
+            settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1] -
+            bolg_damage_based[key]['min hit'];
         bolg_damage_based[key] = calc_style_specific(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
+        //bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
+        dmgObject = calc_additive_boosts(settings, dmgObject);
+        dmgObject = calc_multiplicative_shared_buffs(settings, dmgObject);
+        dmgObject = calc_multiplicative_pve_buffs(settings, dmgObject);
+        dmgObject = calc_bonus_damage(settings, dmgObject);
+        
         bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
