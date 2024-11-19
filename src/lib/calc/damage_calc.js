@@ -1691,12 +1691,13 @@ function ability_damage_calculation(settings) {
 }
 
 /**
- * Handles modifiers for the number of hits of multi-hit abilities
+ * Handles modifiers for the number of hits of multi-hit abilities, returning
+ * the modified structure as a deep copy of the original
  * @param {*} settings 
  * @returns 
  */
 function get_rotation(settings) {
-    let rotation = JSON.parse(JSON.stringify(abils[settings['ability']]['hits']));
+    let rotation = JSON.parse(JSON.stringify(abils[settings['ability']]['hits'])); //Deep copy
 
     if (settings['ability'] === ABILITIES.GREATER_RICOCHET) {
         for (let i = 1; i <= settings[SETTINGS.CAROMING]; i++) {

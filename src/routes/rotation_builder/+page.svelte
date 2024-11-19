@@ -13,11 +13,11 @@
 	import Select from '../../components/Settings/Select.svelte';
 	import { ABILITIES, abils } from '$lib/calc/const.js';
 	import { hit_damage_calculation, ability_damage_calculation, get_rotation, 
-		style_specific_unification, calc_base_ad, get_user_value
+		style_specific_unification, calc_base_ad, get_user_value, apply_additional
 	} from '$lib/calc/damage_calc.js';
 	import { 
         calc_on_cast, rotation_on_npc, rotation_on_npc_test, rotation_ability_damage, handle_ranged_buffs, 
-        handle_edraco, handle_sgb, calc_channelled_hit 
+        handle_edraco, handle_sgb, calc_channelled_hit
     } from '$lib/calc/rotation_damage_helper.js';
     import RangedSettings from '../../components/Settings/RangedSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
@@ -113,8 +113,6 @@
                 rota = get_rotation(settingsCopy);
             }
             for (let i = start_tick; i < start_tick + abil_duration; i++) {
-
-
                 //Perform any necessary hits from chanelled abilities on this tick
                 if (isChannelled(settingsCopy, abilityKey)) {
                     let dmgObject = calc_channelled_hit(settingsCopy, 1 + i - start_tick, rota, timers); //i+1 because hits are 1 indexed
@@ -135,8 +133,10 @@
                 if (damageTracker[i]) {
                     damageTracker[i].forEach(namedDmgObject => {
                         settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
+						console.log(namedDmgObject);
                         dmgs.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
-						experimental_data.push(rotation_on_npc_test(settingsCopy, namedDmgObject));
+						
+						//experimental_data.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
                     });
                 }
                 tick += 1;
@@ -166,10 +166,10 @@
 					tick += 1;
 				}
 		experimental_data.forEach(element => {
-			console.log('Crit:');
-			console.log(element['crit']['damage list']);
-			console.log('Non Crit:');
-			console.log(element['non_crit']['damage list']);
+			//console.log('Crit:');
+			//console.log(element['crit']['damage list']);
+			// console.log('Non Crit:');
+			// console.log(element['non_crit']['damage list']);
 		});
 		
 		experimental_data = [];
@@ -196,6 +196,7 @@
 		//TODO implement non ability actions
         abilityBar.forEach(abilityKey => {
             if (abilityKey == null) return;
+			
 			let abil_duration = 3; //assume ability is 3t unless duration is explicitly specified
             if (abils[abilityKey]['duration']) abil_duration = abils[abilityKey]['duration'];
 			settingsCopy['ability'] = abilityKey;
@@ -212,7 +213,7 @@
 					style_specific_unification(settingsCopy);
 					dmgObject = on_cast(settingsCopy, dmgObject);
 					on_hit(settingsCopy, dmgObject);
-                    dmgObject['non_crit']['ability'] = abilityKey;
+					dmgObject['non_crit']['ability'] = abilityKey;
                     damageTracker[hit_tick].push(dmgObject);
                 }
 				//Handles channelled abilities (many casts, many hits, many hitsplats)
@@ -244,7 +245,6 @@
 						damageTracker[htick] ??= [];
 						damageTracker[htick].push(clone);
 					}
-					console.log(damageTracker);
                 }
             }
             if (abilityKey in ranged_buff_abilities) handle_ranged_buffs(settingsCopy, timers, abilityKey);
@@ -261,7 +261,6 @@
                     let hit_tick = i + hit_delay;
                     (damageTracker[hit_tick] ??= []).push(dmgObject);;
                 }
-
                 if (Object.keys(timers).length > 0) {
                     for (let key in timers) {
                         timers[key] -= 1;
@@ -272,18 +271,16 @@
                 }
                 //Apply on npc modifiers to already queued damage for this to tick
                 if (damageTracker[i]) {
-
-					console.log('damageTracker['+i+']');
-					console.log(damageTracker[i]);
-                    damageTracker[i].forEach(namedDmgObject => {
+					damageTracker[i].forEach(namedDmgObject => {
                         settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
-                        dmgs.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
-						//experimental_data.push(rotation_on_npc_test(settingsCopy, namedDmgObject));
+						console.log(namedDmgObject);
+						let dmg = get_user_value(settingsCopy, on_damage(settingsCopy, namedDmgObject));
+						dmg = apply_additional(settingsCopy, dmg);
+						dmgs.push(dmg);
+						//dmgs.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
                     });
-                    //console.log('Tick: (' + i + ')');
-                    //console.log(damageTracker[i]);
-                    //console.log('Tick: (' + i + ') --- Total Damage: ' + dmgs.reduce((acc, current) => acc + current, 0));
                 }
+				bolgStacks[tick] = settingsCopy['perfect e                      quilibrium stacks'];
                 tick += 1;
             }
             end_tick = tick;
@@ -302,9 +299,6 @@
 			if (damageTracker[i]) {
 				damageTracker[i].forEach(namedDmgObject => {
 					settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
-					console.log('???');
-					
-					console.log(namedDmgObject);
 					dmgs.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
 					//experimental_data.push(rotation_on_npc_test(settingsCopy, namedDmgObject));
 				});
@@ -325,10 +319,11 @@
     }
 	const barSize = 500;
     let abilityBar = Array(barSize).fill(null); // Empty slots on the bar
+	let bolgStacks = Array(barSize).fill(0); // Empty slots on the bar
 	let tab = 'general'; // settings tab
     let selectedTab = 'general';
 
-    abilityBar[0] = "fragmentation shot";
+    abilityBar[0] = "binding shot";
 
 	let abilityBarIndex = 0;
 	let lastAbilityIndex;
@@ -338,10 +333,7 @@
 
 		abilityBar[abilityBarIndex] = abilityKey;
 		
-		// console.log('Key = ' + abilityKey);
-		// console.log('Key = ' + ABILITIES['GREATER_DEATHS_SWIFTNESS']);
-		// console.log(abilityKey == ABILITIES['GREATER_DEATHS_SWIFTNESS']);
-		//TODO implement sunshine and other buffs
+		//TODO implement other buffs
 		if (abilityKey == ABILITIES['GREATER_DEATHS_SWIFTNESS']) {
 			buffTimings['swiftness'].push([abilityBarIndex, abilityBarIndex+63]);
 		}
@@ -351,6 +343,10 @@
 		else if (abilityKey == ABILITIES['SPLIT_SOUL_ECB']) {
 			buffTimings['split soul ecb'].push([abilityBarIndex, abilityBarIndex+25]);
 		}
+		else if (abilityKey == ABILITIES['SUNSHINE']) {
+			buffTimings['sunshine'].push([abilityBarIndex, abilityBarIndex+25]);
+		}
+		
 		buffTimings = {...buffTimings};
 		if (abils[abilityKey]['duration']) {
 			abilityBarIndex += abils[abilityKey]['duration'];
@@ -416,6 +412,16 @@
 			}
 		}
 		experimental_data = [];
+	}
+
+	//TODO delete
+	function showBolg(idx) {
+		if (idx == 0) {
+			return true;
+		}
+		else {
+			return !(bolgStacks[idx] == bolgStacks[idx-1]);
+		}
 	}
 
 </script>
@@ -502,12 +508,15 @@
 								{#if buffActive('split soul ecb', index)}
 									<div class="line-ecb"></div>
 								{/if}	
+								{#if showBolg(index)}
+									<span class="bolg-stacks">{bolgStacks[index]}</span>
+								{/if}
 							</div>
 						{/each}
 					</div>
 				</div>
 			</div>
-            <RangedSettings settings={settings}/>
+            <RangedSettings settings={settings} updateDamages={null}/>
 		</section>
 	</div>
 </div>
@@ -517,7 +526,7 @@
 	.ability-bar {
 		display: grid; 
 		grid-template-columns: repeat(auto-fill, 30px); 
-		row-gap: 30px; 
+		row-gap: 40px; 
 		column-gap: 0px; 
 		position: relative;
 	}
@@ -564,5 +573,14 @@
         transform: translateX(-50%);
         font-size: 12px; /* Adjust size of the number */
         color: #a8a8a8; /* Adjust color of the number */
+	}
+
+	.bolg-stacks {
+        position: absolute;
+        top: +34px; /* Adjust to move the number above the cell */
+        left: auto;
+        transform: translateX(+50%);
+        font-size: 12px; /* Adjust size of the number */
+        color: #4cfc42; /* Adjust color of the number */
 	}
 </style>

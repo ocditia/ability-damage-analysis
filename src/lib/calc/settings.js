@@ -529,6 +529,8 @@ const SETTINGS = {
         GREATER: 'greater'
     },
     RAMPAGE: 'rampage',
+    BIK_STACKS: 'bik stacks',
+    WEN_STACKS: 'wen stacks',
     PERFECT_EQUILIBRIUM_STACKS: 'perfect equilibrium stacks',
     BALANCE_BY_FORCE: 'balance by force',
     TARGET_SIZE: 'target size',
@@ -1473,13 +1475,21 @@ const settingsConfig = {
         label: 'Rampage',
         default: false
     },
+    [SETTINGS.BALANCE_BY_FORCE]: {
+        label: 'Balance by force',
+        default: true
+    },
     [SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
         label: 'Bolg stacks',
         default: 3
     },
-    [SETTINGS.BALANCE_BY_FORCE]: {
-        label: 'Balance by force',
-        default: true
+    [SETTINGS.WEN_STACKS]: {
+        label: 'Wen stacks',
+        default: 0
+    },
+    [SETTINGS.BIK_STACKS]: {
+        label: 'Bik stacks',
+        default: 0
     },
     [SETTINGS.CAROMING]: {
         label: 'Caroming',

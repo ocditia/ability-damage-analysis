@@ -2,15 +2,13 @@ import { next_cast, next_hit, next_tick } from './ability_helper';
 import { ABILITIES, abils, armour, gear, prayers, weapons } from './const';
 import { create_object } from './object_helper';
 import { SETTINGS } from './settings';
-import { calc_crit_damage } from './damage_calc';
+import { calc_crit_damage, get_rotation } from './damage_calc';
 
 // Marco - some changes might have to be made.
 // e.g. currently conflagrate is true/false, but this should be a timer so it should check conflagrate >=1.
 
 function on_cast(settings, dmgObject) {
     // This function happens as an ability is cast
-    console.log('beginning (new impl)');
-    console.log({...dmgObject});
     // scale to hit chance / damage potential
     for (let key in dmgObject) {
         dmgObject[key]['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 
@@ -99,11 +97,6 @@ function on_cast(settings, dmgObject) {
             dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.1);
         }
     }
-
-    console.log('before abilspec (new impl)');
-    console.log({...dmgObject});
-    console.log('boosted AD');
-    console.log(dmgObject['non_crit']['boosted AD']);
     // Marco - turn off boosted AD stuff here
     // e.g. turn off chaos roar after it's been used
 
@@ -241,8 +234,9 @@ function on_cast(settings, dmgObject) {
     // e.g. if you cast dclaws, it should then be split up into 4 hits
     // or for wild magic, it should be split into the two wild magic hits
     if (abils[settings['ability']]['ability classification'] == 'multihit') {
-        let dmgObjects = []
-        let hits = abils[settings['ability']]['hits']
+        let dmgObjects = [];
+        let hits = get_rotation(settings);
+
         for (let tick in hits) {
             for (let hit in hits[tick]) {
                 if (abils[hits[tick][hit]]) { //filter 'next tick'/'next hit' entries 
@@ -266,6 +260,8 @@ function on_hit(settings, dmgObject) {
     // this function runs for all hits (note: not hitsplats)
 
     // set min and var percentages
+
+    
     
     for (let key in dmgObject) {
         dmgObject[key]['min hit'] = abils[settings['ability']]['min hit'];
@@ -349,14 +345,15 @@ function on_hit(settings, dmgObject) {
             }
         }
     }
+    
     // // Marco - turn off min/var percent boosts
     // // set actual min var values
     for (let key in dmgObject) {
         dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * dmgObject[key]['boosted AD']);
         dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * dmgObject[key]['boosted AD']);
     }
-    //calc style specific
     
+
     // compute on-hit effects
     if (abils[settings['ability']]['on-hit effects'] === true) {
         // Marco - turn on any style specific effects (idt there are any)
@@ -419,13 +416,13 @@ function on_hit(settings, dmgObject) {
                 
             }
         }
-        // Marco - turn off any style specific effects (idt there are any)
-        // apply precise
+        // // Marco - turn off any style specific effects (idt there are any)
+        // // apply precise
         if (settings[SETTINGS.PRECISE] > 0 ) {
             for (let key in dmgObject) {
                 let max_hit = dmgObject[key]['min hit'] + dmgObject[key]['var hit'];
                 dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
-                dmgObject[key]['var hit'] = dmgObject[key]['var hit'] - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
+                dmgObject[key]['var hit'] = Math.max(0, dmgObject[key]['var hit'] - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit));
             }
         }
 
@@ -1103,7 +1100,7 @@ function on_damage(settings, dmgObject) {
             
         }
     }
-    return 1;
+    return dmgObject;
 
 
     // Marco - apply any effects that happen on-damage here

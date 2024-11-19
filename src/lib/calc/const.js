@@ -1492,7 +1492,9 @@ const ABILITIES = {
     OBLITERATE: 'obliterate',
     FEINT: 'feint',
     SPEAR_WALL: 'spear wall',
-    ICE_CLEAVE: 'ice cleave'
+    ICE_CLEAVE: 'ice cleave',
+
+    INGENUITY_OF_THE_HUMANS: 'ingenuity of the humans'
 };
 
 const abils = {
@@ -3879,6 +3881,7 @@ const abils = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
+        hit_timings: [1, 1],
         hits: {
             1: [ABILITIES.PIERCING_SHOT, 'next cast', ABILITIES.PIERCING_SHOT]
         }
@@ -4063,7 +4066,7 @@ const abils = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
@@ -4282,8 +4285,8 @@ const abils = {
         // ability name
         'min hit': 0.0,// 0.1, // min % of abil expressed as a decimal
         'var hit': 0.0, // 0.1 TODO change back
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
@@ -4295,8 +4298,8 @@ const abils = {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal
         'var hit': 0.0,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
@@ -4312,8 +4315,8 @@ const abils = {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal
         'var hit': 0.0,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
@@ -4355,10 +4358,11 @@ const abils = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
+        'duration': '7',
         hits: {
             1: [ABILITIES.UNLOAD_HIT],
             2: [],
@@ -4400,7 +4404,7 @@ const abils = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
@@ -4550,7 +4554,7 @@ const abils = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
@@ -4674,7 +4678,7 @@ const abils = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
@@ -4742,7 +4746,20 @@ const abils = {
         'ability type': 'proc', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    }
+    },
+    [ABILITIES.INGENUITY_OF_THE_HUMANS]: {
+        // ability name
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': false, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
+        'main style': 'melee',//TODO??
+        'damage type': 'melee',//TODO??
+        'duration': 0
+    },
 };
 
 const prayers = {

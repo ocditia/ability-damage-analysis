@@ -76,6 +76,30 @@ function rotation_on_npc(settings, dmgObject, experimentalData) {
     return total_damage;
 }
 
+function rotation_on_npc_test(settings, dmgObject) {
+    for (let key in dmgObject) {  
+        if (key == 'ability') {
+            continue;
+        }      
+        // calc on npc
+        dmgObject[key] = calc_on_npc(settings, dmgObject[key]);
+
+        // add split soul damage
+        if (
+            settings['split soul'] === true &&
+            ['magic', 'melee', 'ranged', 'necrotic'].includes(
+                abils[settings['ability']]['damage type']
+            )
+        ) {
+            dmgObject[key] = add_split_soul(settings, dmgObject[key]);
+            //TODO make split soul its own hitsplat
+        }
+    }
+    let total_damage = apply_additional_rota(settings, total_damage);
+
+    return total_damage;
+}
+
 /**
  * Calculates the damage objects for multi-hit non-channelled abilities.
  * Rewrite of ability_damage_calculation from damage_calc.js
@@ -83,6 +107,25 @@ function rotation_on_npc(settings, dmgObject, experimentalData) {
  * @returns 
  */
 function rotation_ability_damage(settings) {
+    let rotation = get_rotation(settings);
+    let damages = [];
+    for (let key in rotation) {
+        for (let iter = 0; iter < rotation[key].length; iter++) {
+            if (rotation[key][iter] === 'next cast') {
+                settings = next_cast(settings);
+            } else if (rotation[key][iter] === 'next hit') {
+                settings = next_hit(settings);
+            } else {
+                settings['ability'] = rotation[key][iter];
+                damages.push(calc_on_cast(settings));
+            }
+        }
+        settings = next_tick(settings);
+    }
+    return damages;
+}
+
+function handle_bleeds(settings) {
     let rotation = get_rotation(settings);
     let damages = [];
     for (let key in rotation) {
