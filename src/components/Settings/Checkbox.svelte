@@ -1,16 +1,8 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
     import SettingWrapper from '$components/Settings/SettingWrapper.svelte';
     import LabelWrapper from '$components/Settings/LabelWrapper.svelte';
 
-    export let setting;
-    export let img;
-
-    const dispatch = createEventDispatcher();
-
-    function settingUpdated() {
-        dispatch('settingsUpdated');
-    }
+    let { setting = $bindable(), onchange, img, ...rest } = $props();
 </script>
 
 <SettingWrapper>
@@ -30,8 +22,8 @@
             type="checkbox"
             id={setting.key}
             bind:checked={setting.value}
-            on:change={settingUpdated}
-            {...$$restProps}
+            {onchange}
+            {...rest}
         />
         <span class={`
             hover:border hover:border-white
