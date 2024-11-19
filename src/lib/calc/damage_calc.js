@@ -1265,7 +1265,14 @@ function calc_bolg(settings) {
         bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
+        if (
+            settings['split soul'] === true &&
+            ['magic', 'melee', 'ranged', 'necrotic'].includes(
+                abils[settings['ability']]['damage type']
+            )
+        ) {
+            bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
+        }
     }
 
     const bolg_perc_damage = get_user_value(settings, bolg_damage_based);
