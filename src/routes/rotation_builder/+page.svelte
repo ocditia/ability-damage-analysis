@@ -397,13 +397,30 @@
 		if (rangedAbils[abilityKey]) {
 			abilityBar[index] = abilityKey;
 		}
-		//TODO rethink drag - it kinda sucks compared to clicking to add
+		else {
+			const dragObj = JSON.parse(event.dataTransfer.getData('application/json'));
+			console.log(('2r456781294129412rasjhkfla;rn8  _'));
+			console.log((dragObj));
+			abilityBar[index] = dragObj['ability'];
+			abilityBar[dragObj['startIndex']] = null;
+		}
+		calculateTotalDamageNew();
+    }
+
+	function handleDragStartBar(event, ability, startIndex) {
+        const dragData = JSON.stringify({ ability, startIndex });
+    	event.dataTransfer.setData('application/json', dragData);
     }
 
     function allowDrop(event) {
         event.preventDefault();
     }
 
+	function handleBarRightClick(event, index) {
+		event.preventDefault();
+		abilityBar[index] = null;
+		calculateTotalDamageNew()
+	}
 	function clearRotation() {
 		for (let i = 0; i < barSize; i++) {
 			abilityBar[i] = null;
@@ -498,16 +515,21 @@
                     <div class="ability-bar">		
 						{#each abilityBar as ability, index}
 							<div class="ability-slot"
-									role="option"
+									role="button"
 									tabindex="0"
 									aria-label="Ability slot"
-									aria-selected={ability ? 'true' : 'false'}
+									on:contextmenu={(e) => handleBarRightClick(e, index)}
 									on:drop={(e) => handleDrop(e, index)}
 									on:dragover={allowDrop}
 							>
 								<span class="cell-number">{index}</span>
 								{#if ability}
-									<img src={allAbils[ability].icon} alt={allAbils[ability].title} style="width: 100%; height: 100%;" />
+									<img src={allAbils[ability].icon} 
+										alt={allAbils[ability].title} 
+										style="width: 100%; height: 100%;"
+										draggable="true"
+            							on:dragstart={(e) => handleDragStartBar(e, ability, index)}
+									/>
 								{/if}
 								{#if buffActive('swiftness', index)}
 									<div class="line-swiftness"></div>
@@ -526,7 +548,7 @@
 					</div>
 				</div>
 			</div>
-            <RangedSettings settings={settings} updateDamages={null}/>
+            <RangedSettings settings={settings} updateDamages={calculateTotalDamageNew}/>
 		</section>
 	</div>
 </div>
