@@ -358,7 +358,6 @@ function on_hit(settings, dmgObject) {
         dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * dmgObject[key]['boosted AD']);
         dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * dmgObject[key]['boosted AD']);
     }
-    console.log('Boosted AD: ' + dmgObject['non_crit']['boosted AD']);
 
     // compute on-hit effects
     if (abils[settings['ability']]['on-hit effects'] === true) {

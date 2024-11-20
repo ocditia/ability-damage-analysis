@@ -270,13 +270,15 @@
                 if (damageTracker[i]) {
 					damageTracker[i].forEach(namedDmgObject => {
                         settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
+						console.log('!!!');
+						console.log(namedDmgObject);
 						let dmg = get_user_value(settingsCopy, on_damage(settingsCopy, namedDmgObject));
-						let dmg1 = dmg;
+						//let dmg1 = dmg;
 						dmg = apply_additional(settingsCopy, dmg, true);
 						dmgs.push(dmg);
-						console.log('Binding shot damage = ' +dmg1);
+						console.log('Binding shot damage = ' +dmg);
 
-						console.log('Bolg proc damage = ' + (dmg-dmg1));
+						//console.log('Bolg proc damage = ' + (dmg-dmg1));
 						//dmgs.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
                     });
                 }
@@ -325,7 +327,7 @@
 	let tab = 'general'; // settings tab
     let selectedTab = 'general';
 
-    abilityBar[0] = "binding shot";
+    abilityBar[0] = "greater ricochet";
 	// abilityBar[3] = "rapid fire";
 
 	// abilityBar[11] = "greater ricochet";
@@ -353,13 +355,22 @@
 		}
 		
 		buffTimings = {...buffTimings};
+
+		let lastAbilityIndex = 0;
+		for (let i = 0; i < barSize; i++) {
+			if (abilityBar[i] != null) {
+				lastAbilityIndex = i;
+			}
+		}
+
+		abilityBarIndex = lastAbilityIndex;
 		if (abils[abilityKey]['duration']) {
 			abilityBarIndex += abils[abilityKey]['duration'];
 		}
 		else {
 			abilityBarIndex += 3;
 		}
-		lastAbilityIndex = abilityBarIndex;
+		calculateTotalDamageNew();
     }
 
 	function findLastAbilityIndex() {
@@ -401,8 +412,9 @@
 			const dragObj = JSON.parse(event.dataTransfer.getData('application/json'));
 			console.log(('2r456781294129412rasjhkfla;rn8  _'));
 			console.log((dragObj));
+			const swapAbil = abilityBar[index]
 			abilityBar[index] = dragObj['ability'];
-			abilityBar[dragObj['startIndex']] = null;
+			abilityBar[dragObj['startIndex']] = swapAbil;
 		}
 		calculateTotalDamageNew();
     }
@@ -532,16 +544,28 @@
 									/>
 								{/if}
 								{#if buffActive('swiftness', index)}
-									<div class="line-swiftness"></div>
+									<div class="line-swiftness" title="Death's Swiftness"></div>
 								{/if}
 								{#if buffActive('split soul ecb', index)}
-									<div class="line-ecb"></div>
+									<div class="line-ecb" title="Split Soul (ECB)"></div>
 								{/if}	
 								{#if showStack(index, bolgStacks)}
-									<span class="bolg-stacks">{bolgStacks[index]}</span>
+									<span class="bolg-stacks" title="Perfect Equilibrium Stacks">{bolgStacks[index]}</span>
 								{/if}
 								{#if showStack(index, wenStacks)}
-									<span class="wen-stacks">{wenStacks[index]}</span>
+									<span class="wen-stacks" title="Icy Chill Stacks">{wenStacks[index]}</span>
+								{/if}
+								{#if (index%18) == 0}
+									<img src={'/effect_icons/Perfect Equilibrium (self status).png'} 
+										class="pe-icon"
+										title="Perfect Equilibrium Stacks"
+										alt="Perfect Equilibrium Stacks"
+									/>
+									<img src={'/effect_icons/Icy_Chill.png'} 
+										class="icy-chill-icon"
+										title="Icy Chill Stacks"
+										alt="Icy Chill Stacks"
+									/>
 								{/if}
 							</div>
 						{/each}
@@ -558,7 +582,7 @@
 	.ability-bar {
 		display: grid; 
 		grid-template-columns: repeat(auto-fill, 30px); 
-		row-gap: 52px; 
+		row-gap: 58px; 
 		column-gap: 0px; 
 		position: relative;
 	}
@@ -604,12 +628,12 @@
         left: 50%;
         transform: translateX(-50%);
         font-size: 12px; /* Adjust size of the number */
-        color: #a8a8a8; /* Adjust color of the number */
+        color: #bababa; /* Adjust color of the number */
 	}
 
 	.bolg-stacks {
         position: absolute;
-        top: +34px; /* Adjust to move the number above the cell */
+        top: +38px; /* Adjust to move the number under the cell */
         left: auto;
         transform: translateX(+50%);
         font-size: 12px; /* Adjust size of the number */
@@ -618,10 +642,23 @@
 
 	.wen-stacks {
         position: absolute;
-        top: +46px; /* Adjust to move the number above the cell */
+        top: +52px; /* Adjust to move the number under the cell */
         left: auto;
         transform: translateX(+50%);
         font-size: 12px; /* Adjust size of the number */
         color: #03f4fc; /* Adjust color of the number */
+	}
+
+	.pe-icon {
+		position: absolute;
+		width: 12px; 
+		height: 12px; 
+		transform: translateX(-70%) translateY(32px);
+	}
+	.icy-chill-icon {
+		position: absolute;
+		width: 12px; 
+		height: 12px; 
+		transform: translateX(-70%) translateY(47px);
 	}
 </style>
