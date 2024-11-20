@@ -826,7 +826,7 @@ function on_hit(settings, dmgObject) {
         settings['igneous cleave bleed damage'][key]['damage list'] = structuredClone(dmgObject);
     }
 
-    //Add wen and bolg stacks
+    //Add wen, bik, bolg stacks
     if (abils[settings['ability']]['on-hit effects'] === true &&
         abils[settings['ability']]['ability type'] != 'proc') {
         // Marco - Discrete example: bolg
@@ -837,11 +837,17 @@ function on_hit(settings, dmgObject) {
         }
     }
     if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
-        abils[settings['ability']]['ability type'] == 'basic'
+        abils[settings['ability']]['ability type'] == 'basic' &&
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
             settings[SETTINGS.WEN_STACKS] = Math.min(settings[SETTINGS.WEN_STACKS]+1, 15);
     }
-    //TODO check for wen arrows, check this is called correctly (abilities that give wen but no pe?)
+    else if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.BIK_ARROWS &&
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
+    ) {
+            settings[SETTINGS.BIK_STACKS] = Math.min(settings[SETTINGS.BIK_STACKS]+1, 200);
+    }
+    
 
     // calc core
     if (abils[settings['ability']]['on-hit effects'] === true) {

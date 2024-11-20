@@ -1643,7 +1643,7 @@ function hit_damage_calculation(settings) {
 }
 
 //todo rename
-function apply_additional(settings, total_damage, newbolg = False) {
+function apply_additional(settings, total_damage, newbolg = false) {
     // handle sgb logic
     if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
         total_damage += calc_sgb(settings, total_damage);
