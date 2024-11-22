@@ -75,6 +75,8 @@
 		while (tick < barSize + 20) {
 			let abilityKey = abilityBar[tick];
 			if (abilityKey == null) {
+				//Todo make a function which combines all these 3 (i.e. handle buff timers, 
+				//process damage queue, copy buff info for this tick to ui)
 				handleTimers(timers, settingsCopy);
 				processQueuedDamage(tick);
 				copyStacks(settingsCopy);

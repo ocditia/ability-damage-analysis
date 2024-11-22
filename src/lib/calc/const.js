@@ -4688,7 +4688,7 @@ const abils = {
         hits: {
             1: [ABILITIES.DESTRUCTIVE_SHOT_HIT, 'next hit', ABILITIES.DESTRUCTIVE_SHOT_HIT]
         },
-        'adren cost': 25
+        'adren cost': 40
     },
     [ABILITIES.DEFIANCE]: {
         // ability name

@@ -190,15 +190,11 @@ function handle_ranged_buffs(settings, timers, abilityKey) {
  * Sets (greater) dracolich infusion buff to active if applicable
  */
 function handle_edraco(settings, timers, abilityKey) {
-    if (abilityKey != ABILITIES.RAPID_FIRE_LAST_HIT) {
-        return;
-    }
     let body = settings['body'];
     let helmet = settings['helmet'];
     let gloves = settings['gloves'];
     let legs = settings['legs'];
     let boots = settings['boots'];
-    
 
     // List of strings to search
     let items = [body, helmet, gloves, legs, boots];
@@ -208,10 +204,17 @@ function handle_edraco(settings, timers, abilityKey) {
     
     // Count how many strings start with x
     let count = items.filter(item => item && item.startsWith(edraco)).length;
-    if (count >= 3) {
-        let buff_duration = 5 + (3 * Math.max(count - 3, 0)); // 5 tick base duration
-        settings['dracolich infusion'] = 'greater';
-        timers['dracolich infusion'] = buff_duration; 
+    //Handle adrenaline gain
+    if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT || abilityKey == ABILITIES.RAPID_FIRE_HIT) {
+        settings[SETTINGS.ADRENALINE] += (count * 0.5);
+    }
+    //Handle crit chance buff
+    if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
+        if (count >= 3) {
+            let buff_duration = 5 + (3 * Math.max(count - 3, 0)); // 5 tick base duration
+            settings['dracolich infusion'] = 'greater';
+            timers['dracolich infusion'] = buff_duration; 
+        }
     }
     //TODO regular dracolich
 }

@@ -870,7 +870,7 @@ function calc_bonus_damage(settings, dmgObject) {
     return dmgObject;
 }
 
-function calc_core(settings, dmgObject, key) {
+function calc_core(settings, dmgObject, key, newBolg = false) {
     for (let i = 0; i < dmgObject[key]['damage list'].length; i++) {
         // berserker's fury
         dmgObject[key]['damage list'][i] = Math.floor(
@@ -887,10 +887,12 @@ function calc_core(settings, dmgObject, key) {
                 (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 3 &&
                     settings[SETTINGS.BALANCE_BY_FORCE] === true))
         ) {
-            if (!('bolg damage' in settings)) {
-                settings['bolg damage'] = create_object(settings);
+            if (!newBolg) {
+                if (!('bolg damage' in settings)) {
+                    settings['bolg damage'] = create_object(settings);
+                }
+                settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
             }
-            settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
         }
 
         // crits
@@ -1206,7 +1208,7 @@ function calc_on_hit(settings, dmgObject) {
     return dmgObject;
 }
 
-function calc_damage_object(settings) {
+function calc_damage_object(settings, newBolg = false) {
     const dmgObject = create_object(settings);
     for (let key in dmgObject) {
         // calc base AD
@@ -1227,7 +1229,7 @@ function calc_damage_object(settings) {
         dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
         // calc core
         if (abils[settings['ability']]['on-hit effects']) {
-            dmgObject[key] = calc_core(settings, dmgObject, key);
+            dmgObject[key] = calc_core(settings, dmgObject, key, newBolg);
         }
         // calc on npc
         dmgObject[key] = calc_on_npc(settings, dmgObject[key]);
@@ -1299,13 +1301,12 @@ function calc_bolg_new(settings) {
     settings['ability'] = 'bolg proc';
 
     // calc base bolg damage
-    let bolg_base = calc_damage_object(settings);
+    let bolg_base = calc_damage_object(settings, true);
 
     settings['ability'] = 'bolg proc percentages';
     let bolg_damage_based = create_object(settings);
-    //TODO - make settings['bolg damage'] a list of damage objects. process the first one, then remove it
-
-
+    const bolgDmgObject = settings['bolg damage'][0];
+    
     // calc the damage based proc
     for (let key in bolg_damage_based) {
         bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
@@ -1324,7 +1325,7 @@ function calc_bolg_new(settings) {
         bolg_damage_based[key] = calc_bonus_damage(settings, bolg_damage_based[key]);
         
         bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
-        bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
+        bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key, true);
         bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
         
         
@@ -1365,7 +1366,6 @@ function calc_corruption(settings) {
         }
         total_damage += get_user_value(settings, hit_dmg);
     }
-    console.log('Total damage: ' + total_damage);
     return total_damage;
 }
 
@@ -1650,10 +1650,8 @@ function apply_additional(settings, total_damage, newbolg = false) {
     if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
         total_damage += calc_sgb(settings, total_damage);
     }
-    console.log(total_damage);
     // handle bolg logic
     if (settings['bolg damage'] && settings['bolg damage'].length > 0) {
-        console.log('is this called');
         if (newbolg) {
             total_damage += calc_bolg_new(settings);
         }
@@ -1663,13 +1661,11 @@ function apply_additional(settings, total_damage, newbolg = false) {
 
         delete settings['bolg damage'];
     }
-    console.log(total_damage);
     // handle bloat logic
     if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
         total_damage += calc_bloat(settings);
         delete settings['bloat damage'];
     }
-    console.log(total_damage);
     // handle corruption shot/blast
     if ('corruption damage' in settings) {
         total_damage += calc_corruption(settings);

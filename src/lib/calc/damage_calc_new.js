@@ -886,22 +886,6 @@ function on_hit(settings, dmgObject) {
                 );
         
                 // dharock's gear (proc based, so added later)
-                
-                // Marco - Discrete example: bolg
-                // store damage into bolg if needed
-                 if (
-                     settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
-                     settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-                     (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 8 ||
-                         (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 4 &&
-                             settings[SETTINGS.BALANCE_BY_FORCE] === true))
-                 ) {
-                     if (!('bolg damage' in settings)) {
-                         settings['bolg damage'] = create_object(settings);
-
-                     }
-                     settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
-                 }
                 //crits
                 if (dmgObject[key]['crit'] === true && abils[settings['ability']]['crit effects'] === true) {
                     dmgObject[key]['damage list'][i] = Math.floor(
@@ -926,7 +910,6 @@ function on_hit(settings, dmgObject) {
                 bolgDmgObject[key]['damage list'] = [...dmgObject['non_crit']['damage list']];
             }
             settings['bolg damage'].push(bolgDmgObject);
-            //settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
         }
 
         // store fsoa damage
