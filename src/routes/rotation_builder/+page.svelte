@@ -11,17 +11,28 @@
 	import Number from '../../components/Settings/Number.svelte';
 	import Select from '../../components/Settings/Select.svelte';
 	import { ABILITIES, abils } from '$lib/calc/const.js';
-	import { hit_damage_calculation, ability_damage_calculation, get_rotation, 
+	import { hit_damage_calculation, ability_damage_calculation, get_rotation,
 		style_specific_unification, calc_base_ad, get_user_value, apply_additional
 	} from '$lib/calc/damage_calc.js';
-	import { 
-        calc_on_cast, rotation_on_npc, rotation_on_npc_test, rotation_ability_damage, handle_ranged_buffs, 
+	import {
+        calc_on_cast, rotation_on_npc, rotation_on_npc_test, rotation_ability_damage, handle_ranged_buffs,
         handle_edraco, handle_sgb, calc_channelled_hit
     } from '$lib/calc/rotation_damage_helper.js';
     import RangedSettings from '../../components/Settings/RangedSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
 	import { on_stall, on_cast, on_hit, on_damage} from '$lib/calc/damage_calc_new.js';
 	import { create_object } from '$lib/calc/object_helper.js';
+    import Header from '$components/Layout/Header.svelte';
+    import Navbar from '$components/Layout/Navbar.svelte';
+    import { SETTINGS, settingsConfig } from '$lib/calc/settings';
+    import { abilities } from '$lib/necromancy/abilities';
+    import Checkbox from '../../components/Settings/Checkbox.svelte';
+    import Number from '../../components/Settings/Number.svelte';
+    import Select from '../../components/Settings/Select.svelte';
+
+    let damages = $state(Object.fromEntries(
+        Object.entries(abilities).map(([key, value]) => [key, { ...value, regular: 0, ss: 0 }])
+    ));
 
     let necroAbils = {...necro_dmg_abilities};
     let meleeAbils = {...melee_dmg_abilities};
@@ -37,10 +48,10 @@
     const adaptedSettings = Object.fromEntries(
         Object.entries(settings).map(([key, value]) => [key, value.value])
     );
-	
-    let totalDamage = 0;	
+
+    let totalDamage = 0;
 	let experimental_data = [];
-	
+
 	function calculateTotalDamageNew() {
 		let dmgs = [];
 		totalDamage = 0;
@@ -48,10 +59,10 @@
             			Object.entries(settings).map(([key, value]) => [key, value.value])
             		);
 		const settingsCopy = structuredClone(adaptedSettings);
-		
+
 		let tick = 0;
 		let damageTracker = {};
-		let timers = {}; 
+		let timers = {};
 		let hit_delay = 1; //TODO actually implement this
 		let start_tick = tick;
 		function processQueuedDamage(tick) {
@@ -75,7 +86,7 @@
 		while (tick < barSize + 20) {
 			let abilityKey = abilityBar[tick];
 			if (abilityKey == null) {
-				//Todo make a function which combines all these 3 (i.e. handle buff timers, 
+				//Todo make a function which combines all these 3 (i.e. handle buff timers,
 				//process damage queue, copy buff info for this tick to ui)
 				handleTimers(timers, settingsCopy);
 				processQueuedDamage(tick);
@@ -94,7 +105,7 @@
             start_tick = tick;
             let hit_tick = tick + hit_delay;
             damageTracker[hit_tick] ??= [];
-			
+
 			if (abilityKey in ranged_buff_abilities) {
 				handle_ranged_buffs(settingsCopy, timers, abilityKey);
 			}
@@ -139,7 +150,7 @@
                 }
             }
 //s            if (abilityKey in ranged_buff_abilities) handle_ranged_buffs(settingsCopy, timers, abilityKey);
-            //Process hitsplats and decrement timers 
+            //Process hitsplats and decrement timers
             let rota;
             if (isChannelled(settingsCopy, abilityKey)) {
                 rota = get_rotation(settingsCopy);
@@ -221,9 +232,9 @@
 			stackTicks: Array(barSize).fill(0),
 			colour: '#4cfc42'
 		},
-		[SETTINGS.ICY_CHILL_STACKS]: { 
+		[SETTINGS.ICY_CHILL_STACKS]: {
 			title: 'Icy Chill stacks',
-			displaySetting: SETTINGS.SHOW_ICY_CHILL_STACKS, 
+			displaySetting: SETTINGS.SHOW_ICY_CHILL_STACKS,
 			idx: -1,
 			image: '/effect_icons/Icy_Chill.png',
 			stackTicks: Array(barSize).fill(0),
@@ -236,7 +247,7 @@
 	//UI functions
     function handleAbilityClick(event, abilityKey) {
 		abilityBar[abilityBarIndex] = abilityKey;
-		
+
 		//TODO implement other buffs
 		if (abilityKey == ABILITIES['GREATER_DEATHS_SWIFTNESS']) {
 			buffTimings['swiftness'].push([abilityBarIndex, abilityBarIndex+63]);
@@ -255,7 +266,7 @@
     }
 
 	function buffActive(key, index) {
-		let active = false; 
+		let active = false;
 		//Find which tick(s) this buff is used on, and if the current tick
 		//is within the buff duration for any of the uses
 		buffTimings[key].forEach(element => {
@@ -264,7 +275,7 @@
 			}
 		});
 		let x = abilityBar[0] == null; //THIS IS REQUIRED TO FORCE THE ROTATION TO RERENDER
-		//TODO rewrite this 
+		//TODO rewrite this
 		return active
 	}
 
@@ -338,8 +349,8 @@
 			//else if (lastAbilityIndex == 0) abilityBarIndex = 0;
 			else abilityBarIndex += 3;
 		}
-		
-		
+
+
 
 		//Handle stacks
 		let i = 0;
@@ -356,7 +367,7 @@
 				stacks[key]['idx'] = -1;
 			}
 		}
-		
+
 		if (calcDmg) {
 			calculateTotalDamageNew();
 		}
@@ -407,7 +418,7 @@
                                 >Melee</button
                             >
                         </li>
-                        
+
                         <li class="flex-grow me-2">
                             <button
                                 on:click={() => (abilityTab = 'ranged')}
@@ -425,7 +436,7 @@
                             >
                         </li>
                     </ul>
-					<br>		
+					<br>
                     {#if abilityTab === 'ranged'}
                         <AbilityChoice abilities={rangedAbils} handleAbilityClick={handleAbilityClick} handleDragStart={handleDragStart} style={abilityTab}/>
                     {:else if abilityTab === 'magic'}
@@ -435,7 +446,7 @@
                     {:else if abilityTab === 'necro'}
                         <AbilityChoice abilities={necroAbils} handleAbilityClick={handleAbilityClick} handleDragStart={handleDragStart} style={abilityTab}/>
                     {/if}
-                    <div style="row-gap:{barRowGap}px;" class="ability-bar">		
+                    <div style="row-gap:{barRowGap}px;" class="ability-bar">
 						{#each abilityBar as ability, index}
 							<div class="ability-slot"
 									role="button"
@@ -447,8 +458,8 @@
 							>
 								<span class="cell-number">{index}</span>
 								{#if ability}
-									<img src={allAbils[ability].icon} 
-										alt={allAbils[ability].title} 
+									<img src={allAbils[ability].icon}
+										alt={allAbils[ability].title}
 										style="width: 100%; height: 100%;"
 										draggable="true"
             							on:dragstart={(e) => handleDragStartBar(e, ability, index)}
@@ -465,17 +476,17 @@
 										<span
 											title="{stacks[key].title}"
 											style="
-												transform: translateX(0px); 
+												transform: translateX(0px);
 												top: {baseStackOffset+3+(stackFontSize+stackPadding) * stacks[key].idx}px;
 												left: {stackFontSize+stackPadding*2}px;
 												font-size: {stackFontSize}px;
 												color: {stacks[key].colour};
 												"
-											class="bolg-stacks" 
+											class="bolg-stacks"
 										>
 											{stacks[key].stackTicks[index]}
 										</span>
-										<img src={stacks[key].image} 
+										<img src={stacks[key].image}
 											style=
 												"transform:translateX({2-(30-stackFontSize)/2}px);
 												top: {baseStackOffset+6+(stackFontSize+stackPadding) * stacks[key].idx}px;
@@ -488,7 +499,7 @@
 										/>
 									{/if}
 								{/each}
-								
+
 							</div>
 						{/each}
 					</div>
@@ -551,21 +562,21 @@
 <style>
 	/* TODO - move these into their own css file */
 	.ability-bar {
-		display: grid; 
-		grid-template-columns: repeat(auto-fill, 30px); 
-		column-gap: 0px; 
+		display: grid;
+		grid-template-columns: repeat(auto-fill, 30px);
+		column-gap: 0px;
 		position: relative;
 	}
 
 	.ability-slot {
         position: relative;
-		width: 30px; 
-		height: 30px; 
-		display: flex; 
-		justify-content: center; 
-		align-items: center; 
-		position: relative; 
-		border: 1px solid #878787; 
+		width: 30px;
+		height: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		border: 1px solid #878787;
 		box-sizing: border-box;
     }
 
@@ -618,14 +629,14 @@
 
 	.pe-icon {
 		position: absolute;
-		width: 12px; 
-		height: 12px; 
+		width: 12px;
+		height: 12px;
 		transform: translateX(-70%) translateY(32px);
 	}
 	.icy-chill-icon {
 		position: absolute;
-		width: 12px; 
-		height: 12px; 
+		width: 12px;
+		height: 12px;
 		transform: translateX(-70%) translateY(47px);
 	}
 </style>

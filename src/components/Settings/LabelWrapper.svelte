@@ -1,8 +1,7 @@
 <script>
     import ImageWrapper from '$components/Settings/ImageWrapper.svelte';
 
-    export let label;
-    export let img;
+    let { label, img } = $props();
 </script>
 
 <div

@@ -30,7 +30,7 @@ const abilities = {
     [ABILITIES.CORRUPTION_BLAST]: {
         title: 'Corruption blast',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/dragon_breath.png'
+        icon: '/ability_icons/magic/30x30/corruption_blast.png'
     },
     [ABILITIES.SONIC_WAVE]: {
         title: 'Sonic wave',

@@ -375,15 +375,15 @@ function ability_specific_effects(settings, dmgObject) {
     if (abils[settings['ability']]['main style'] === 'necromancy') {
         // death spark (omni guard passive)
         if (settings['death spark'] === true && settings['ability'] === 'necromancy auto') {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
         }
 
-        // living dead - finger of death
+        // living death - finger of death
         if (
             settings[SETTINGS.LIVING_DEATH] === true &&
             settings['ability'] === ABILITIES.FINGER_OF_DEATH
         ) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
         }
 
         // skeleton warrior stacks
@@ -470,7 +470,7 @@ function set_min_var(settings, dmgObject) {
 
     if (abils[settings['ability']]['main style'] === 'necromancy') {
         // death grasp (death guard spec)
-        if (settings['ability'] === 'death grasp') {
+        if (settings['ability'] === ABILITIES.DEATH_GRASP) {
             min_percent = min_percent + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
         }
 
@@ -542,7 +542,7 @@ function calc_precise(settings, dmgObject) {
     // calculate precise
     let max_hit = dmgObject['min hit'] + dmgObject['var hit'];
     dmgObject['min hit'] = dmgObject['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
-    dmgObject['var hit'] = dmgObject['var hit'] - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
+    dmgObject['var hit'] = Math.max(0, dmgObject['var hit'] - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit));
 
     return dmgObject;
 }
@@ -748,8 +748,8 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
 
     // apply revenge
     if (
-        abils[settings['ability']]['main style'] === 'main-hand' &&
-        weapons[settings[SETTINGS.OH]]['weapon type'] in ['shield', 'defender']
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
+        ['shield', 'defender'].includes(weapons[settings[SETTINGS.OH]]['weapon type'])
     ) {
         let revenge = 0.025 * settings[SETTINGS.REVENGE];
 
@@ -860,7 +860,7 @@ function calc_bonus_damage(settings, dmgObject) {
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
             settings[SETTINGS.FROSTBLADES] === true
         ) {
-            min_hit += Math.floor(0.24 * dmgObject['boosted AD']);
+            min_hit += Math.floor(0.24 * dmgObject['base AD']);
         }
     }
 
@@ -1225,7 +1225,7 @@ function calc_damage_object(settings, newBolg = false) {
         if (abils[settings['ability']]['on-hit effects']) {
             dmgObject[key] = calc_on_hit(settings, dmgObject[key]);
         }
-        // roll damage
+        // roll damage 
         dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
         // calc core
         if (abils[settings['ability']]['on-hit effects']) {
@@ -1259,37 +1259,26 @@ function calc_bolg(settings) {
 
     // calc the damage based proc
     for (let key in bolg_damage_based) {
-        
-        /*let dmg_list = [];
-        // take every single element of dmgobject and add the relevant percentage ranges as individual hits to bolg_damage_based with the same key
-        for (let element in settings['bolg damage'][key]['damage list']) {
-            bolg_damage_based[key]['min hit'] = Math.floor(
-                settings['bolg damage'][key]['damage list'][element] * abils[settings['ability']]['min hit']
-            );
-            bolg_damage_based[key]['var hit'] = Math.floor(
-                settings['bolg damage'][key]['damage list'][element] * abils[settings['ability']]['var hit']
-            );
-            bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
-
-            for (
-                let i = bolg_damage_based[key]['min hit'];
-                i <= bolg_damage_based[key]['min hit'] + bolg_damage_based[key]['var hit'];
-                i++
-            ) {
-                dmg_list.push(i);
-            }
-        }
-        bolg_damage_based[key]['damage list'] = dmg_list;*/
-
         bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
         bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
-        bolg_damage_based[key]['min hit'] = settings['bolg damage'][key]['damage list'][0];
-        bolg_damage_based[key]['var hit'] = settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1];
+        bolg_damage_based[key] = ability_specific_effects(settings, bolg_damage_based[key]);
+        bolg_damage_based[key]['min hit'] = abils[settings['ability']]['min hit'] * settings['bolg damage'][key]['damage list'][0];
+        bolg_damage_based[key]['var hit'] = (abils[settings['ability']]['min hit'] + abils[settings['ability']]['var hit']) * 
+            settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1] -
+            bolg_damage_based[key]['min hit'];
+        bolg_damage_based[key] = calc_style_specific(settings, bolg_damage_based[key]);
         bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
         bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
         bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
+        if (
+            settings['split soul'] === true &&
+            ['magic', 'melee', 'ranged', 'necrotic'].includes(
+                abils[settings['ability']]['damage type']
+            )
+        ) {
+            bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
+        }
     }
 
     const bolg_perc_damage = get_user_value(settings, bolg_damage_based);
@@ -1711,6 +1700,7 @@ function apply_additional_rota(settings, total_damage) {
     // handle instability (fsoa)
     if ('fsoa damage' in settings) {
         total_damage += calc_fsoa(settings);
+        delete settings['fsoa damage']
     }
 
     // handle igneous cleave bleed
@@ -1792,7 +1782,7 @@ function get_rotation(settings) {
     if (settings[SETTINGS.STRENGTH_CAPE] === true &&
         settings['ability'] === ABILITIES.DISMEMBER
     ) {
-        rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
+        rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
     }
 
     return rotation;

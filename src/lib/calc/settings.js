@@ -348,8 +348,8 @@ const SETTINGS = {
         ZORGOTH: 'zorgoths soul ring',
         RODI: 'ring of death (i)',
         ROD: 'ring of death',
-        ASRI: 'asylum surgeon ring (i)',
-        ASR: 'asylum surgeon ring',
+        ASRI: 'asylum surgeons ring (i)',
+        ASR: 'asylum surgeons ring',
         CHANNELER: 'channelers ring',
         CHANNELER_E: 'channelers ring+',
         STALKER: 'stalkers ring',
@@ -1400,7 +1400,7 @@ const settingsConfig = {
         ]
     },
     [SETTINGS.TARGET_DISABILITY]: {
-        label: 'Disability',
+        label: 'Stun/bound state',
         default: SETTINGS.TARGET_DISABILITY_VALUES.NONE,
         options: [
             { text: 'None', value: SETTINGS.TARGET_DISABILITY_VALUES.NONE },
