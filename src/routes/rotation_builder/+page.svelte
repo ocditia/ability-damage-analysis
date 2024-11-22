@@ -193,7 +193,7 @@
 	//UI
 	const barSize = 250;
     let abilityBar = Array(barSize).fill(null); // Empty slots on the bar
-	let tab = 'general'; // settings tab
+	let tab = $state('general'); // settings tab
 	let abilityTab = 'ranged';
     let selectedTab = 'general';
 	const baseBarRowGap = 30;
