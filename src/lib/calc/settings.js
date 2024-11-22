@@ -552,13 +552,20 @@ const SETTINGS = {
     SUNSHINE: 'sunshine',
     META: 'meta',
     DEATH_SWIFTNESS: 'death swiftness',
+    SWIFTNESS_ACTIVE: 'swiftness',
     SPLIT_SOUL: 'split soul',
     ZGS: 'zgs',
     BERSERK: 'berserk',
     DETONATE: 'detonate charge timer',
     DIVINE_RAGE: 'divine rage',
+
     SHOW_BOLG_STACKS: 'show bolg stacks',
-    SHOW_ICY_CHILL_STACKS: 'show icy chill stacks'
+    SHOW_ICY_CHILL_STACKS: 'show icy chill stacks',
+    ADRENALINE: 'adrenaline',
+    VIGOUR: 'vigour',
+    FURY_OF_THE_SMALL: 'fots',
+    HEIGHTENED_SENSES: 'heightened senses',
+    CONSERVATION_OF_ENERGY: 'coe'
 };
 
 const settingsConfig = {
@@ -1603,8 +1610,28 @@ const settingsConfig = {
         default: true
     },
     [SETTINGS.SHOW_ICY_CHILL_STACKS]: {
-        label: 'Show icy chill stacks',
+        label: 'Show Icy Chill Stacks',
         default: true
+    },
+    [SETTINGS.ADRENALINE]: {
+        label: 'Starting Adrenaline',
+        default: 100
+    },
+    [SETTINGS.VIGOUR]: {
+        label: 'Vigour Passive',
+        default: true
+    },
+    [SETTINGS.FURY_OF_THE_SMALL]: {
+        label: 'Fury of the Small',
+        default: true
+    },
+    [SETTINGS.HEIGHTENED_SENSES]: {
+        label: 'Heightened Senses',
+        default: true
+    },
+    [SETTINGS.CONSERVATION_OF_ENERGY]: {
+        label: 'Conservation of Energy',
+        default: false
     }
 };
 

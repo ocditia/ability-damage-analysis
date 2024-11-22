@@ -4,6 +4,27 @@ import { create_object } from './object_helper';
 import { SETTINGS } from './settings';
 import { calc_crit_damage, get_rotation, add_split_soul } from './damage_calc';
 
+//Handle adren and cooldowns before on_cast is called
+function on_stall(settings) {
+    const type = abils[settings['ability']]['ability type'];
+    if (type == 'basic') {
+        settings[SETTINGS.ADRENALINE] += settings[SETTINGS.FURY_OF_THE_SMALL] ? 9 : 8; //fots
+        const max_adren = settings[SETTINGS.HEIGHTENED_SENSES] ? 110 : 100;
+        settings[SETTINGS.ADRENALINE] = Math.min(max_adren, settings[SETTINGS.ADRENALINE]);
+    }
+    else if (type == 'threshold') settings[SETTINGS.ADRENALINE] -= 15;
+    else if (type == 'ultimate') { 
+        let cost = 100;
+        cost -= settings[SETTINGS.VIGOUR] ? 10 : 0;
+        cost -= settings[SETTINGS.CONSERVATION_OF_ENERGY] ? 10 : 0;
+        settings[SETTINGS.ADRENALINE] -= cost;
+    }
+    else if (type == 'special attack') {
+        const multi = settings[SETTINGS.VIGOUR] ? 0.9 : 1;
+        settings[SETTINGS.ADRENALINE] -= multi * abils[settings['ability']]['adren cost'];
+    }
+}
+
 // Marco - some changes might have to be made.
 // e.g. currently conflagrate is true/false, but this should be a timer so it should check conflagrate >=1.
 
@@ -14,9 +35,17 @@ function on_cast(settings, dmgObject) {
         dmgObject[key]['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 
             Math.min(settings[SETTINGS.HIT_CHANCE] / 100, 1));
     }
-
+    
+    //TODO fix - this is turning off active when buff when using a non basic second abiltiy
+    if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
+        ['threshold', 'special attack', 'ultimate'].includes(abils[settings['ability']]['ability type']) &&
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
+    ) {
+            settings[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_CHILL_STACKS];
+            settings[SETTINGS.ICY_CHILL_STACKS] = 0;
+    }
     // Marco - turn off hit chance stuff here (idt anything exists)
-    // TODO - ingenuity of the humans, and check if accuracy penalty from wrong style gear is implement
+    // TODO - ingenuity of the humans, and check if accuracy penalty from wrong style gear is implemented
     // calculate boosted AD / invisible AD
     for (let key in dmgObject) {
         
@@ -860,26 +889,44 @@ function on_hit(settings, dmgObject) {
                 
                 // Marco - Discrete example: bolg
                 // store damage into bolg if needed
-                if (
-                    settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
-                    settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-                    (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 8 ||
-                        (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 4 &&
-                            settings[SETTINGS.BALANCE_BY_FORCE] === true))
-                ) {
-                    if (!('bolg damage' in settings)) {
-                        settings['bolg damage'] = create_object(settings);
-                    }
-                    settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
-                }
-            
-                // crits
+                 if (
+                     settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
+                     settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+                     (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 8 ||
+                         (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 4 &&
+                             settings[SETTINGS.BALANCE_BY_FORCE] === true))
+                 ) {
+                     if (!('bolg damage' in settings)) {
+                         settings['bolg damage'] = create_object(settings);
+
+                     }
+                     settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
+                 }
+                //crits
                 if (dmgObject[key]['crit'] === true && abils[settings['ability']]['crit effects'] === true) {
                     dmgObject[key]['damage list'][i] = Math.floor(
                         dmgObject[key]['damage list'][i] * (1 + calc_crit_damage(settings))
                     );
                 }
             }
+        }
+        if (
+            settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
+            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+            (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 8 ||
+                (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 4 &&
+                settings[SETTINGS.BALANCE_BY_FORCE] === true))
+        ) {
+            if (!('bolg damage' in settings)) {
+                //settings['bolg damage'] = create_object(settings);
+                settings['bolg damage'] = [];
+            }
+            let bolgDmgObject = create_object(settings);
+            for (let key in dmgObject) {
+                bolgDmgObject[key]['damage list'] = [...dmgObject['non_crit']['damage list']];
+            }
+            settings['bolg damage'].push(bolgDmgObject);
+            //settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
         }
 
         // store fsoa damage
@@ -1135,4 +1182,4 @@ function on_damage(settings, dmgObject) {
     // also if the hit is a crit it should proc fsoa and give crit adren here for example
 }
 
-export {on_cast, on_hit, on_damage}
+export {on_stall, on_cast, on_hit, on_damage}

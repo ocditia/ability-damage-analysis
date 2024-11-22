@@ -209,7 +209,7 @@ function handle_edraco(settings, timers, abilityKey) {
     // Count how many strings start with x
     let count = items.filter(item => item && item.startsWith(edraco)).length;
     if (count >= 3) {
-        let buff_duration = 5 + 8 + (3 * Math.max(count - 3, 0)); // 5 tick base duration, add 8 because we decrement relative to rapid fire cast tick
+        let buff_duration = 5 + (3 * Math.max(count - 3, 0)); // 5 tick base duration
         settings['dracolich infusion'] = 'greater';
         timers['dracolich infusion'] = buff_duration; 
     }

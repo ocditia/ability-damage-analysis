@@ -4411,7 +4411,8 @@ const abils = {
         hit_timings: [0, 0], 
         hits: {
             1: [ABILITIES.DESCENT_OF_DARKNESS_HIT, 'next hit', ABILITIES.DESCENT_OF_DARKNESS_HIT]
-        }
+        },
+        'adren cost': 65
     },
     [ABILITIES.BALANCED_SHOT]: {
         // ability name
@@ -4632,7 +4633,8 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'adren cost': 25
     },
     [ABILITIES.CRYSTAL_RAIN]: {
         // ability name
@@ -4645,7 +4647,8 @@ const abils = {
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
-        hit_timings: [3, 4, 4, 4, 4] //TODO check these are correct
+        hit_timings: [3, 4, 4, 4, 4], //TODO check these are correct
+        'adren cost': 30
     },
     [ABILITIES.DEEP_BURN]: {
         // ability name
@@ -4684,7 +4687,8 @@ const abils = {
         'damage type': 'ranged',
         hits: {
             1: [ABILITIES.DESTRUCTIVE_SHOT_HIT, 'next hit', ABILITIES.DESTRUCTIVE_SHOT_HIT]
-        }
+        },
+        'adren cost': 25
     },
     [ABILITIES.DEFIANCE]: {
         // ability name

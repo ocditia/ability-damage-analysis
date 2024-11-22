@@ -1311,9 +1311,10 @@ function calc_bolg_new(settings) {
         bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
         bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
         bolg_damage_based[key] = ability_specific_effects(settings, bolg_damage_based[key]);
-        bolg_damage_based[key]['min hit'] = abils[settings['ability']]['min hit'] * settings['bolg damage'][key]['damage list'][0];
-        bolg_damage_based[key]['var hit'] = (abils[settings['ability']]['min hit'] + abils[settings['ability']]['var hit']) * 
-            settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1] -
+        bolg_damage_based[key]['min hit'] = abils[settings['ability']]['min hit'] * bolgDmgObject[key]['damage list'][0];
+        bolg_damage_based[key]['var hit'] = 
+            (abils[settings['ability']]['min hit'] + abils[settings['ability']]['var hit']) * 
+            bolgDmgObject[key]['damage list'][bolgDmgObject[key]['damage list'].length-1] -
             bolg_damage_based[key]['min hit'];
         bolg_damage_based[key] = calc_style_specific(settings, bolg_damage_based[key]);
         bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
@@ -1330,6 +1331,8 @@ function calc_bolg_new(settings) {
         bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
         
     }
+
+    settings['bolg damage'].shift(); // delete this bolg proc
 
     const bolg_perc_damage = get_user_value(settings, bolg_damage_based);;
     return bolg_perc_damage + bolg_base;
@@ -1649,7 +1652,8 @@ function apply_additional(settings, total_damage, newbolg = false) {
     }
     console.log(total_damage);
     // handle bolg logic
-    if ('bolg damage' in settings) {
+    if (settings['bolg damage'] && settings['bolg damage'].length > 0) {
+        console.log('is this called');
         if (newbolg) {
             total_damage += calc_bolg_new(settings);
         }

@@ -20,12 +20,9 @@
     } from '$lib/calc/rotation_damage_helper.js';
     import RangedSettings from '../../components/Settings/RangedSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
-	import { on_cast, on_hit, on_damage} from '$lib/calc/damage_calc_new.js';
+	import { on_stall, on_cast, on_hit, on_damage} from '$lib/calc/damage_calc_new.js';
 	import { create_object } from '$lib/calc/object_helper.js';
 
-	
-
-	
     let necroAbils = {...necro_dmg_abilities};
     let meleeAbils = {...melee_dmg_abilities};
     let magicAbils = {...magic_dmg_abilities};
@@ -40,145 +37,9 @@
     const adaptedSettings = Object.fromEntries(
         Object.entries(settings).map(([key, value]) => [key, value.value])
     );
+	
     let totalDamage = 0;	
-	let damageByTick = [];
 	let experimental_data = [];
-
-	/**
-	 * Deprecated - original implementation
-	*/
-	// function calculateTotalDamage() {
-	// 	let dmgs = [];
-	// 	totalDamage = 0;
-    //     const adaptedSettings = Object.fromEntries(
-    //         			Object.entries(settings).map(([key, value]) => [key, value.value])
-    //         		);
-	// 	const settingsCopy = structuredClone(adaptedSettings);
-		
-	// 	let tick = 0;  // TODO implement ticks properly
-	// 	let damageTracker = {};
-	// 	let timers = {}; 
-	// 	let hit_delay = 1; //TODO actually implement this
-	// 	let gcd = 0;
-	// 	let start_tick = tick;
-	// 	let end_tick = 1000; // random large number
-	// 	let finished = false;
-	// 	//TODO allow non ability actions
-	// 	//TODO change to ticks
-    //     abilityBar.forEach(abilityKey => {
-    //         if (abilityKey == null) return;
-	// 		//console.log('Ability: {'+abilityKey+'} - Dracolich infusion: {' + settingsCopy['dracolich infusion'] +
-	// 		//	'} - Split Soul: {' + settingsCopy['split soul'] + '} - Swiftness: {' + settingsCopy['death swiftness'] + '}');
-    //         settingsCopy['ability'] = abilityKey;
-    //         let channel_hits = [];
-    //         start_tick = tick;
-    //         let hit_tick = tick + hit_delay;
-    //         damageTracker[hit_tick] ??= [];
-    //         if (abilityKey in rangedAbils) {
-    //             //Handle single-hit abilities
-    //             if (rangedAbils[abilityKey].calc == hit_damage_calculation) {
-    //                 let castDmgObject = calc_on_cast(settingsCopy);
-    //                 castDmgObject['non_crit']['ability'] = abilityKey;
-    //                 damageTracker[hit_tick].push(castDmgObject);
-    //                 if (abilityKey == 'crystal rain') {
-    //                     handle_sgb(settingsCopy, castDmgObject, damageTracker, hit_tick);
-    //                 }
-    //             }
-    //             //Handle multi-hit and channelled abilities
-    //             else if (abils[abilityKey]['ability classification'] == 'channel') {
-    //                     channel_hits = { ...abils[abilityKey]['hits']};
-    //                 }
-    //                 //Bleeds, multi-hits and dots
-    //             else {
-    //                 let castDmgObjects = rotation_ability_damage(settingsCopy);
-    //                     let i = 0;
-    //                     castDmgObjects.forEach(hitsplat_dist => {
-    //                         hitsplat_dist['non_crit']['ability'] = abilityKey;
-    //                         let hit_tick_n = hit_tick + abils[abilityKey].hit_timings[i];
-    //                         damageTracker[hit_tick_n] ??= [];
-    //                         damageTracker[hit_tick_n].push(hitsplat_dist);
-    //                         i++;
-    //                     });
-    //             }
-    //         }
-    //         if (abilityKey in ranged_buff_abilities) {
-    //             handle_ranged_buffs(settingsCopy, timers, abilityKey);
-    //         }
-    //         let abil_duration = 3; //assume ability is 3t unless duration is explicitly specified
-    //         if (abils[abilityKey]['duration']) {
-    //             abil_duration = abils[abilityKey]['duration'] ;
-    //         }
-            
-    //         let rota;
-    //         if (isChannelled(settingsCopy, abilityKey)) {
-    //             rota = get_rotation(settingsCopy);
-    //         }
-    //         for (let i = start_tick; i < start_tick + abil_duration; i++) {
-    //             //Perform any necessary hits from chanelled abilities on this tick
-    //             if (isChannelled(settingsCopy, abilityKey)) {
-    //                 let dmgObject = calc_channelled_hit(settingsCopy, 1 + i - start_tick, rota, timers); //i+1 because hits are 1 indexed
-    //                 dmgObject['non_crit']['ability'] = abilityKey; //TODO should this be the hit instead of the parent ability
-    //                 let hit_tick = i + hit_delay;
-    //                 (damageTracker[hit_tick] ??= []).push(dmgObject);;
-    //             }
-    //             if (Object.keys(timers).length > 0) {
-    //                 for (let key in timers) {
-    //                     timers[key] -= 1;
-    //                     if (timers[key] < 0) {
-    //                         settingsCopy[key] = false;
-    //                     }
-    //                 }
-    //             }
-    //             //Apply on npc modifiers to already queued damage for this to tick
-    //             if (damageTracker[i]) {
-    //                 damageTracker[i].forEach(namedDmgObject => {
-    //                     settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
-    //                     dmgs.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
-						
-	// 					//experimental_data.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
-    //                 });
-    //             }
-    //             tick += 1;
-    //         }
-    //         end_tick = tick;
-	// 		//console.log(experimental_data);
-    //     });
-	// 	//TODO remove this dogshit code and handle better 
-	// 	for (let i = end_tick; i < end_tick + 10; i++) {
-	// 				if (Object.keys(timers).length > 0) {
-	// 					for (let key in timers) {
-	// 						timers[key] -= 1;
-	// 						if (timers[key] < 0) {
-	// 							settingsCopy[key] = false;
-	// 						}
-	// 					}
-	// 				}
-	// 				if (damageTracker[i]) {
-	// 					damageTracker[i].forEach(namedDmgObject => {
-	// 						settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
-							
-	// 						dmgs.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
-	// 						//experimental_data.push(rotation_on_npc_test(settingsCopy, namedDmgObject));
-	// 					});
-	// 					//console.log('Tick: (' + i + ') --- Total Damage: ' + dmgs.reduce((acc, current) => acc + current, 0));
-	// 				}
-	// 				tick += 1;
-	// 			}
-	// 	experimental_data.forEach(element => {
-	// 		//console.log('Crit:');
-	// 		//console.log(element['crit']['damage list']);
-	// 		// console.log('Non Crit:');
-	// 		// console.log(element['non_crit']['damage list']);
-	// 	});
-		
-	// 	experimental_data = [];
-	// 	totalDamage = dmgs.reduce((acc, current) => acc + current, 0);
-	// 	console.log('Old Impl Total Damage = ' + totalDamage);
-	// }
-
-	function isChannelled(settingsCopy, key) {
-        return abils[key]['ability classification'] == 'channel';
-    }
 	
 	function calculateTotalDamageNew() {
 		let dmgs = [];
@@ -188,12 +49,11 @@
             		);
 		const settingsCopy = structuredClone(adaptedSettings);
 		
-		let tick = 0;  // TODO implement ticks properly
+		let tick = 0;
 		let damageTracker = {};
 		let timers = {}; 
 		let hit_delay = 1; //TODO actually implement this
 		let start_tick = tick;
-		let end_tick = 1000; // random large number
 		function processQueuedDamage(tick) {
 			if (damageTracker[tick]) {
 				damageTracker[tick].forEach(namedDmgObject => {
@@ -204,7 +64,12 @@
 				});
 			}
 		}
-		//const lastAbilTick = findLastAbilityIndex();
+
+		function copyStacks(settings) {
+			stacks[SETTINGS.ADRENALINE].stackTicks[tick] = settings[SETTINGS.ADRENALINE];
+			stacks['perfect equilibrium stacks'].stackTicks[tick] = settings['perfect equilibrium stacks'];
+			stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[tick] = settings[SETTINGS.ICY_CHILL_STACKS];
+		}
 
 		//TODO implement non ability actions
 		while (tick < barSize + 20) {
@@ -212,20 +77,26 @@
 			if (abilityKey == null) {
 				handleTimers(timers, settingsCopy);
 				processQueuedDamage(tick);
+				copyStacks(settingsCopy);
 				tick += 1;
 				continue;
 			}
+
 			let abil_duration = 3; //assume ability is 3t unless duration is explicitly specified
-            if (abils[abilityKey]['duration']) abil_duration = abils[abilityKey]['duration'];
+            if (abils[abilityKey]['duration'])
+				abil_duration = abils[abilityKey]['duration'];
 			settingsCopy['ability'] = abilityKey;
+			on_stall(settingsCopy);
 			style_specific_unification(settingsCopy, 'ranged');
 			settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
             start_tick = tick;
             let hit_tick = tick + hit_delay;
             damageTracker[hit_tick] ??= [];
 			
-
-            if (abilityKey in rangedAbils) {
+			if (abilityKey in ranged_buff_abilities) {
+				handle_ranged_buffs(settingsCopy, timers, abilityKey);
+			}
+            else if (abilityKey in rangedAbils) {
                 //Handle single-hit abilities (one cast, one hit, one hitsplat)
                 if (rangedAbils[abilityKey].calc == hit_damage_calculation) {
 					let dmgObject = create_object(settingsCopy);
@@ -256,7 +127,6 @@
 					dmgObject = on_cast(settingsCopy, dmgObject);
 					dmgObject = on_hit(settingsCopy, dmgObject);
 					let n_hits = abils[abilityKey]['hits'][1].length;
-					//TODO deadshot and other bleeds which aren't uniform
 					for (let i = 0; i < n_hits; i++) {
 						let clone = structuredClone(dmgObject);
 						clone['non_crit']['ability'] = abils[abilityKey]['hits'][1][i];
@@ -266,13 +136,12 @@
 					}
                 }
             }
-            if (abilityKey in ranged_buff_abilities) handle_ranged_buffs(settingsCopy, timers, abilityKey);
+//s            if (abilityKey in ranged_buff_abilities) handle_ranged_buffs(settingsCopy, timers, abilityKey);
             //Process hitsplats and decrement timers 
             let rota;
             if (isChannelled(settingsCopy, abilityKey)) {
                 rota = get_rotation(settingsCopy);
             }
-            // for (let i = start_tick; i < start_tick + abil_duration; i++) {
 			let end_tick = start_tick + abil_duration;
 			for (let i = start_tick; i < end_tick; i++) {
                 //Perform any necessary hits from chanelled abilities on this tick
@@ -290,137 +159,13 @@
                 }
 				handleTimers(timers, settingsCopy);
                 //Apply on npc modifiers to already queued damage for this to tick
-				//damage tracker, i 
 				processQueuedDamage(i);
 				//TODO make a function
-				stacks['perfect equilibrium stacks'].stackTicks[tick] = settingsCopy['perfect equilibrium stacks'];
-				stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[tick] = settingsCopy[SETTINGS.ICY_CHILL_STACKS];
+				copyStacks(settingsCopy);
                 tick += 1;
             }
             end_tick = tick;
-			//console.log(experimental_data);
 		}
-        // abilityBar.forEach(abilityKey => {
-        //     if (abilityKey == null) {
-		// 		//console.log('Tick ' + tick);
-		// 		handleTimers(timers, settingsCopy);
-		// 		tick += 1;
-		// 		return;
-		// 	}
-		// 	let abil_duration = 3; //assume ability is 3t unless duration is explicitly specified
-        //     if (abils[abilityKey]['duration']) abil_duration = abils[abilityKey]['duration'];
-		// 	settingsCopy['ability'] = abilityKey;
-		// 	style_specific_unification(settingsCopy, 'ranged');
-		// 	settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
-        //     start_tick = tick;
-        //     let hit_tick = tick + hit_delay;
-        //     damageTracker[hit_tick] ??= [];
-
-        //     if (abilityKey in rangedAbils) {
-        //         //Handle single-hit abilities (one cast, one hit, one hitsplat)
-        //         if (rangedAbils[abilityKey].calc == hit_damage_calculation) {
-		// 			let dmgObject = create_object(settingsCopy);
-		// 			style_specific_unification(settingsCopy);
-		// 			dmgObject = on_cast(settingsCopy, dmgObject);
-		// 			on_hit(settingsCopy, dmgObject);
-		// 			dmgObject['non_crit']['ability'] = abilityKey;
-        //             damageTracker[hit_tick].push(dmgObject);
-        //         }
-		// 		//Handles channelled abilities (many casts, many hits, many hitsplats)
-		// 		//(do nothing, handle at the end)
-		// 		else if  (isChannelled(settingsCopy, abilityKey)){}
-		// 		//Multi-hits (one cast, multiple hits, many hitsplats)
-        //         else if (abils[abilityKey]['ability classification'] == 'multihit') {
-		// 			let dmgObject = create_object(settingsCopy);
-		// 			let dmgObjects = on_cast(settingsCopy, dmgObject);
-		// 			dmgObjects.forEach(element => {
-		// 				settingsCopy['ability'] = element['crit']['ability'];
-		// 				let namedDmgObject = on_hit(settingsCopy, element);
-		// 				damageTracker[hit_tick].push(namedDmgObject);
-		// 			});
-		// 			settingsCopy['ability'] = abilityKey;
-		// 		}
-		// 		//Bleeds, dots, burns (one cast, one hit, many hitsplats)
-		// 		else {
-		// 			let dmgObject = create_object(settingsCopy);
-		// 			settingsCopy['ability'] = abils[abilityKey]['hits'][1][0];
-		// 			dmgObject = on_cast(settingsCopy, dmgObject);
-		// 			dmgObject = on_hit(settingsCopy, dmgObject);
-		// 			let n_hits = abils[abilityKey]['hits'][1].length;
-		// 			//TODO deadshot and other bleeds which aren't uniform
-		// 			for (let i = 0; i < n_hits; i++) {
-		// 				let clone = structuredClone(dmgObject);
-		// 				clone['non_crit']['ability'] = abils[abilityKey]['hits'][1][i];
-		// 				let htick = hit_tick + abils[abilityKey]['hit_timings'][i];
-		// 				damageTracker[htick] ??= [];
-		// 				damageTracker[htick].push(clone);
-		// 			}
-        //         }
-        //     }
-        //     if (abilityKey in ranged_buff_abilities) handle_ranged_buffs(settingsCopy, timers, abilityKey);
-        //     //Process hitsplats and decrement timers 
-        //     let rota;
-        //     if (isChannelled(settingsCopy, abilityKey)) {
-        //         rota = get_rotation(settingsCopy);
-        //     }
-        //     // for (let i = start_tick; i < start_tick + abil_duration; i++) {
-		// 	for (let i = start_tick; i < start_tick + abil_duration; i++) {
-        //         //Perform any necessary hits from chanelled abilities on this tick
-        //         if (isChannelled(settingsCopy, abilityKey)) {
-		// 			//TODO allow early cancel - 
-		// 			// if the bar at this tick contains an ability
-		// 			// just stop this function from running
-		// 			// and make i > than the last loop?
-        //             let dmgObject = calc_channelled_hit(settingsCopy, 1 + i - start_tick, rota, timers); //i+1 because hits are 1 indexed
-        //             dmgObject['non_crit']['ability'] = abilityKey;
-        //             let hit_tick = i + hit_delay;
-        //             (damageTracker[hit_tick] ??= []).push(dmgObject);
-		// 			console.log('We have calced ' + (i + 1)+ ' chanelled hits');
-        //         }
-		// 		handleTimers(timers, settingsCopy);
-        //         //Apply on npc modifiers to already queued damage for this to tick
-        //         if (damageTracker[i]) {
-		// 			damageTracker[i].forEach(namedDmgObject => {
-        //                 settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
-		// 				let dmg = get_user_value(settingsCopy, on_damage(settingsCopy, namedDmgObject));
-		// 				//let dmg1 = dmg;
-		// 				dmg = apply_additional(settingsCopy, dmg, true);
-		// 				dmgs.push(dmg);
-		// 				console.log('Damages');
-		// 				console.log(dmgs);
-		// 				//dmgs.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
-        //             });
-        //         }
-		// 		//TODO make a function
-		// 		stacks['perfect equilibrium stacks'].stackTicks[tick] = settingsCopy['perfect equilibrium stacks'];
-		// 		stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[tick] = settingsCopy[SETTINGS.ICY_CHILL_STACKS];
-        //         tick += 1;
-        //     }
-        //     end_tick = tick;
-		// 	//console.log(experimental_data);
-        // });
-		//TODO remove this dogshit code and handle better 
-		for (let i = end_tick; i < end_tick + 10; i++) {
-			if (Object.keys(timers).length > 0) {
-				for (let key in timers) {
-					timers[key] -= 1;
-					if (timers[key] < 0) {
-						settingsCopy[key] = false;
-					}
-				}
-			}
-			if (damageTracker[i]) {
-				damageTracker[i].forEach(namedDmgObject => {
-					settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
-					dmgs.push(rotation_on_npc(settingsCopy, namedDmgObject, experimental_data));
-					//experimental_data.push(rotation_on_npc_test(settingsCopy, namedDmgObject));
-				});
-				//console.log('Tick: (' + i + ') --- Total Damage: ' + dmgs.reduce((acc, current) => acc + current, 0));
-			}
-			tick += 1;
-		}
-		// console.log(experimental_data);
-		// experimental_data = [];
 		totalDamage = dmgs.reduce((acc, current) => acc + current, 0);
 		console.log('New Impl Total Damage = ' + totalDamage);
 	}
@@ -439,6 +184,11 @@
 		}
 	}
 
+	function isChannelled(settingsCopy, key) {
+        return abils[key]['ability classification'] == 'channel';
+    }
+
+	//UI
 	const barSize = 250;
     let abilityBar = Array(barSize).fill(null); // Empty slots on the bar
 	let tab = 'general'; // settings tab
@@ -452,6 +202,15 @@
 	const stackPadding = 2;
 
 	const stacks = {
+		[SETTINGS.ADRENALINE]: {
+			title: 'Adrenaline',
+			displaySetting: SETTINGS.ADRENALINE,
+			idx: -1,
+			image: '/effect_icons/Crit_buff.png',
+			stackTicks: Array(barSize).fill(0),
+			colour: '#f5e942',
+			number: 'true'
+		},
 		[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
 			title: 'Perfect Equilibrium stacks',
 			displaySetting: SETTINGS.SHOW_BOLG_STACKS,
@@ -588,7 +347,7 @@
 			let disp = settings[displaySetting];
 			if (disp['value']) {
 				stacks[key]['idx'] = i;
-				barRowGap += (stackFontSize + 2)
+				barRowGap += (stackFontSize + stackPadding);
 				i++;
 			}
 			else {
@@ -703,14 +462,24 @@
 									{#if showStack(index,  stacks[key].stackTicks) && stacks[key].idx >= 0}
 										<span
 											title="{stacks[key].title}"
-											style="transform: translateX(50%); top: {baseStackOffset+6+(stackFontSize+stackPadding) * stacks[key].idx}px"
+											style="
+												transform: translateX(0px); 
+												top: {baseStackOffset+3+(stackFontSize+stackPadding) * stacks[key].idx}px;
+												left: {stackFontSize+stackPadding*2}px;
+												font-size: {stackFontSize}px;
+												color: {stacks[key].colour};
+												"
 											class="bolg-stacks" 
 										>
 											{stacks[key].stackTicks[index]}
 										</span>
 										<img src={stacks[key].image} 
-											style="transform:translateY({baseStackOffset+(stackFontSize+stackPadding) * stacks[key].idx}px) 
-												translateX(-70%)"
+											style=
+												"transform:translateX({2-(30-stackFontSize)/2}px);
+												top: {baseStackOffset+6+(stackFontSize+stackPadding) * stacks[key].idx}px;
+												height: {stackFontSize}px;
+												width: {stackFontSize}px;
+												"
 											class="pe-icon"
 											title={stacks[key].title}
 											alt={stacks[key].title}
@@ -726,12 +495,53 @@
             <RangedSettings settings={settings} updateDamages={calculateTotalDamageNew}/>
 			{#each Object.keys(stacks) as key}
 				<div>
-					<Checkbox
-						setting={settings[stacks[key].displaySetting]}
-						on:settingsUpdated={refreshUI}
-					/>
+					{#if stacks[key].number}
+						<Number
+							setting={settings[stacks[key].displaySetting]}
+							on:settingsUpdated={refreshUI}
+							step="1"
+							max="200"
+							min="0"
+						/>
+					{:else}
+						<Checkbox
+							setting={settings[stacks[key].displaySetting]}
+							on:settingsUpdated={refreshUI}
+						/>
+					{/if}
 				</div>
+				<br>
 			{/each}
+			<br>
+			<div>
+				<Checkbox
+					setting={settings[SETTINGS.VIGOUR]}
+					on:settingsUpdated={refreshUI}
+				/>
+				<br>
+				<Checkbox
+					setting={settings[SETTINGS.FURY_OF_THE_SMALL]}
+					on:settingsUpdated={refreshUI}
+				/>
+				<br>
+				<Checkbox
+					setting={settings[SETTINGS.CONSERVATION_OF_ENERGY]}
+					on:settingsUpdated={refreshUI}
+				/>
+				<br>
+				<Checkbox
+					setting={settings[SETTINGS.HEIGHTENED_SENSES]}
+					on:settingsUpdated={refreshUI}
+				/>
+				<br>
+				<Number
+					setting={settings[SETTINGS.ICY_CHILL_STACKS]}
+					on:settingsUpdated={refreshUI}
+					step="1"
+					max="10"
+					min="0"
+				/>
+			</div>
 		</section>
 	</div>
 </div>
@@ -794,7 +604,6 @@
         top: +38px; /* Adjust to move the number under the cell */
         left: auto;
         transform: translateX(+50%);
-        font-size: 12px; /* Adjust size of the number */
 	}
 
 	.wen-stacks {

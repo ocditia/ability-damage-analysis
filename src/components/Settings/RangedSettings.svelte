@@ -21,6 +21,8 @@
 
     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH; 
     //settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.HEX_E;
+
+    //settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.HEX_E;
     
 
 
@@ -46,14 +48,34 @@
         settings[SETTINGS.REAPER_CREW]['value'] = false;
         settings[SETTINGS.RANGED_PRAYER]['value'] = 'none ranged';
         settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-        settings[SETTINGS.AMMO]['value'] = 'none';
+        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
         
         settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 92;
         settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.CUSTOM;
         settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MIN_NO_CRIT;
         
     }
-    makeNaked();
+
+    function testPreset() {
+        settings[SETTINGS.RANGED_GLOVES]['value'] = 'cinderbane gloves';
+        settings[SETTINGS.NECKLACE]['value'] = 'essence of finality amulet';
+        settings[SETTINGS.POCKET]['value'] = 'scripture of jas';
+        settings[SETTINGS.AURA]['value'] = 'reckless';
+
+        settings[SETTINGS.LVL20ARMOUR]['value'] = false;
+        settings[SETTINGS.BITING]['value'] = 3;
+        settings[SETTINGS.ERUPTIVE]['value'] = 0;
+
+        //settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
+        settings[SETTINGS.REAPER_CREW]['value'] = false;
+        settings[SETTINGS.RANGED_PRAYER]['value'] = 'anguish';
+        settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
+        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
+        
+        
+    }
+    //makeNaked();
+    testPreset();
     //settings[SETTINGS.ICY_CHILL_STACKS].value = 10;
     tryUpdateDamages();
 
