@@ -2,7 +2,7 @@ import { next_cast, next_hit, next_tick } from './ability_helper';
 import { ABILITIES, abils, armour, gear, prayers, weapons } from './const';
 import { create_object } from './object_helper';
 import { SETTINGS } from './settings';
-import { calc_crit_damage, get_rotation } from './damage_calc';
+import { calc_crit_damage, get_rotation, add_split_soul } from './damage_calc';
 
 // Marco - some changes might have to be made.
 // e.g. currently conflagrate is true/false, but this should be a timer so it should check conflagrate >=1.
@@ -807,7 +807,6 @@ function on_hit(settings, dmgObject) {
             }   
         }
     }
-    console.log('Boosted AD: ' + dmgObject['non_crit']['boosted AD']);
     // roll damage
     for (let key in dmgObject) {
         for (let i = 0; i <= dmgObject[key]['var hit']; i++) {
@@ -839,7 +838,7 @@ function on_hit(settings, dmgObject) {
         abils[settings['ability']]['ability type'] == 'basic' &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
-            settings[SETTINGS.WEN_STACKS] = Math.min(settings[SETTINGS.WEN_STACKS]+1, 15);
+            settings[SETTINGS.ICY_CHILL_STACKS] = Math.min(settings[SETTINGS.ICY_CHILL_STACKS]+1, 15);
     }
     else if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.BIK_ARROWS &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
@@ -905,12 +904,6 @@ function on_hit(settings, dmgObject) {
             settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] = 0;
         }
     }    
-    console.log('bolg damage based (after on hit for ability that procs)');
-    console.log(settings['bolg damage']);
-    console.log('----');
-    console.log('Ability damage (that procs bolg)');
-    console.log(dmgObject);
-    console.log('----');
     return dmgObject;
 
     // Marco - After this the damage object should be sent to the correct tick
@@ -1119,12 +1112,19 @@ function on_damage(settings, dmgObject) {
             // anachronia slayer lodge buff
             // dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * (1 + settings['anachronia slayer lodge buff']));
 
-            // store damage into soul split
-            settings['soul split'] = dmgObject;
+            
 
             // hit cap
             dmgObject[key]['damage list'][i] = Math.min(dmgObject[key]['damage list'][i], 30000);
             
+        }
+        // store damage into soul split
+        settings['soul split'] = dmgObject[key];
+        // add split soul damage
+        if (settings['split soul'] === true && ['magic', 'melee', 'ranged', 'necrotic'].includes(
+                abils[settings['ability']]['damage type']) && settings['soul split']['damage list'])
+        {
+            dmgObject[key] = add_split_soul(settings, dmgObject[key]);
         }
     }
     return dmgObject;

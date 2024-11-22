@@ -1242,7 +1242,6 @@ function calc_damage_object(settings) {
             dmgObject[key] = add_split_soul(settings, dmgObject[key]);
         }
     }
-    //PUT NEXT HIT HERE
     // get user value
     return get_user_value(settings, dmgObject);
 }
@@ -1302,11 +1301,10 @@ function calc_bolg_new(settings) {
     // calc base bolg damage
     let bolg_base = calc_damage_object(settings);
 
-    console.log('Bolg base damage (12-16%)');
-    console.log(bolg_base);
-
     settings['ability'] = 'bolg proc percentages';
     let bolg_damage_based = create_object(settings);
+    //TODO - make settings['bolg damage'] a list of damage objects. process the first one, then remove it
+
 
     // calc the damage based proc
     for (let key in bolg_damage_based) {
@@ -1333,8 +1331,7 @@ function calc_bolg_new(settings) {
         
     }
 
-    const bolg_perc_damage = get_user_value(settings, bolg_damage_based);
-
+    const bolg_perc_damage = get_user_value(settings, bolg_damage_based);;
     return bolg_perc_damage + bolg_base;
 }
 
@@ -1356,14 +1353,16 @@ function calc_corruption(settings) {
     let total_damage = 0;
     for (let splat=2; splat <=5; splat++) {
         let hit_dmg = JSON.parse(JSON.stringify(settings['corruption damage']));
+        let multiplier = 1 - ((splat-1) * 0.2)
         for (let key in hit_dmg) {
             for (let i=0; i<hit_dmg[key]['damage list'].length; i++) {
-                hit_dmg[key]['damage list'][i] = Math.floor(hit_dmg[key]['damage list'][i] * 0.8);
+                hit_dmg[key]['damage list'][i] = Math.floor(hit_dmg[key]['damage list'][i] * multiplier);
             }
             hit_dmg[key] = calc_on_npc(settings, hit_dmg[key]);
         }
         total_damage += get_user_value(settings, hit_dmg);
     }
+    console.log('Total damage: ' + total_damage);
     return total_damage;
 }
 
@@ -1648,7 +1647,7 @@ function apply_additional(settings, total_damage, newbolg = false) {
     if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
         total_damage += calc_sgb(settings, total_damage);
     }
-
+    console.log(total_damage);
     // handle bolg logic
     if ('bolg damage' in settings) {
         if (newbolg) {
@@ -1660,13 +1659,13 @@ function apply_additional(settings, total_damage, newbolg = false) {
 
         delete settings['bolg damage'];
     }
-
+    console.log(total_damage);
     // handle bloat logic
     if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
         total_damage += calc_bloat(settings);
         delete settings['bloat damage'];
     }
-
+    console.log(total_damage);
     // handle corruption shot/blast
     if ('corruption damage' in settings) {
         total_damage += calc_corruption(settings);
@@ -1789,7 +1788,7 @@ function get_rotation(settings) {
         }
     }
 
-    // strenght cape
+    // strength cape
     if (settings[SETTINGS.STRENGTH_CAPE] === true &&
         settings['ability'] === ABILITIES.DISMEMBER
     ) {

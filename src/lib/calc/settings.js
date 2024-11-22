@@ -483,6 +483,7 @@ const SETTINGS = {
     STONE_OF_JAS: 'stone of jas',
     INFERNAL_PUZZLE_BOX: 'Infernal puzzle box',
     ICY_PRECISION: 'icy precision',
+    ICY_CHILL_STACKS: 'icy chill stacks',
     PUNCTURE_STACKS: 'puncture stacks',
     FLOW_STACKS: 'flow stacks',
     CONFLAGRATE: 'conflagrate',
@@ -530,7 +531,6 @@ const SETTINGS = {
     },
     RAMPAGE: 'rampage',
     BIK_STACKS: 'bik stacks',
-    WEN_STACKS: 'wen stacks',
     PERFECT_EQUILIBRIUM_STACKS: 'perfect equilibrium stacks',
     BALANCE_BY_FORCE: 'balance by force',
     TARGET_SIZE: 'target size',
@@ -557,6 +557,8 @@ const SETTINGS = {
     BERSERK: 'berserk',
     DETONATE: 'detonate charge timer',
     DIVINE_RAGE: 'divine rage',
+    SHOW_BOLG_STACKS: 'show bolg stacks',
+    SHOW_ICY_CHILL_STACKS: 'show icy chill stacks'
 };
 
 const settingsConfig = {
@@ -1365,6 +1367,10 @@ const settingsConfig = {
         label: 'Icy Precision stacks',
         default: 0
     },
+    [SETTINGS.ICY_CHILL_STACKS]: {
+        label: 'Icy Chill stacks',
+        default: 0
+    },
     [SETTINGS.PUNCTURE_STACKS]: {
         label: 'Puncture Stacks',
         default: 0
@@ -1483,10 +1489,6 @@ const settingsConfig = {
         label: 'Bolg stacks',
         default: 3
     },
-    [SETTINGS.WEN_STACKS]: {
-        label: 'Wen stacks',
-        default: 0
-    },
     [SETTINGS.BIK_STACKS]: {
         label: 'Bik stacks',
         default: 0
@@ -1596,6 +1598,14 @@ const settingsConfig = {
         label: 'Divine rage',
         default: false
     },
+    [SETTINGS.SHOW_BOLG_STACKS]: {
+        label: 'Show bolg stacks',
+        default: true
+    },
+    [SETTINGS.SHOW_ICY_CHILL_STACKS]: {
+        label: 'Show icy chill stacks',
+        default: true
+    }
 };
 
 export { SETTINGS, settingsConfig };

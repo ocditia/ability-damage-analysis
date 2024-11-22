@@ -20,8 +20,41 @@
     }
 
     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH; 
-    settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.BOLG;//HEX_E;
-    settings[SETTINGS.BALANCE_BY_FORCE]['value'] = true;
+    //settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.HEX_E;
+    
+
+
+    function makeNaked() {
+        settings[SETTINGS.RANGED_HELMET]['value'] = 'none';
+        settings[SETTINGS.RANGED_BODY]['value'] = 'none';
+        settings[SETTINGS.RANGED_LEGS]['value'] = 'none';
+        settings[SETTINGS.RANGED_GLOVES]['value'] = 'none';
+        settings[SETTINGS.RANGED_BOOTS]['value'] = 'none';
+        settings[SETTINGS.NECKLACE]['value'] = 'none';
+        settings[SETTINGS.CAPE]['value'] = 'none';
+        settings[SETTINGS.RING]['value'] = 'none';
+        settings[SETTINGS.POCKET]['value'] = 'none';
+        settings[SETTINGS.AURA]['value'] = 'none';
+        settings[SETTINGS.FAMILIAR]['value'] = 'none';
+
+        settings[SETTINGS.LVL20ARMOUR]['value'] = false;
+        settings[SETTINGS.BITING]['value'] = 0;
+        settings[SETTINGS.ERUPTIVE]['value'] = 0;
+        settings[SETTINGS.VULN]['value'] = 'none';
+
+        settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
+        settings[SETTINGS.REAPER_CREW]['value'] = false;
+        settings[SETTINGS.RANGED_PRAYER]['value'] = 'none ranged';
+        settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
+        settings[SETTINGS.AMMO]['value'] = 'none';
+        
+        settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 92;
+        settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.CUSTOM;
+        settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MIN_NO_CRIT;
+        
+    }
+    makeNaked();
+    //settings[SETTINGS.ICY_CHILL_STACKS].value = 10;
     tryUpdateDamages();
 
     
