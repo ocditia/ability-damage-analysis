@@ -1306,7 +1306,7 @@ function calc_bolg_new(settings) {
     settings['ability'] = 'bolg proc percentages';
     let bolg_damage_based = create_object(settings);
     const bolgDmgObject = settings['bolg damage'][0];
-    
+
     // calc the damage based proc
     for (let key in bolg_damage_based) {
         bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
