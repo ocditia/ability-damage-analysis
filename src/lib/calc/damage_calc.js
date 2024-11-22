@@ -1303,7 +1303,7 @@ function calc_bolg_new(settings) {
 
     settings['ability'] = 'bolg proc percentages';
     let bolg_damage_based = create_object(settings);
-    //TODO - make settings['bolg damage'] a list of damage objects. process the first one, then remove it
+    const bolgDmgObject = settings['bolg damage'][0];
 
 
     // calc the damage based proc
