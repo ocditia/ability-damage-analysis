@@ -86,9 +86,7 @@
                 continue;
             }
 
-            let abil_duration = 3; //assume ability is 3t unless duration is explicitly specified
-            if (abils[abilityKey]['duration'])
-                abil_duration = abils[abilityKey]['duration'];
+            const abil_duration = abils[abilityKey]['duration'] ?? 3; //assume ability is 3t unless duration is explicitly specified
             settingsCopy['ability'] = abilityKey;
             on_stall(settingsCopy);
             style_specific_unification(settingsCopy, 'ranged');
