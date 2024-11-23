@@ -151,8 +151,10 @@
                     //If there's a new ability cast on this tick, cancel the channel and exit early
                     if (i > start_tick && abilityBar[tick]) {
                         break;
-                    } else {
-                        let dmgObject = calc_channelled_hit(settingsCopy, 1 + i - start_tick, rota, timers); //i+1 because hits are 1 indexed
+                    }
+                    const tickIndex = 1 + i - start_tick;
+                    if (rota[tickIndex].length > 0) {
+                        let dmgObject = calc_channelled_hit(settingsCopy, tickIndex, rota, timers); //i+1 because hits are 1 indexed
                         dmgObject['non_crit']['ability'] = abilityKey;
                         let hit_tick = i + hit_delay;
                         (damageTracker[hit_tick] ??= []).push(dmgObject);
