@@ -1,86 +1,86 @@
 <script>
-	import Navbar from '$components/Layout/Navbar.svelte';
-	import Header from '$components/Layout/Header.svelte';
-	import { abilities } from '$lib/ranged/abilities';
-	import { ranged_buff_abilities } from '$lib/ranged/buff_abilities';
-	import { settingsConfig, SETTINGS } from '$lib/calc/settings';
-	import Checkbox from '../../components/Settings/Checkbox.svelte';
-	import Number from '../../components/Settings/Number.svelte';
-	import Select from '../../components/Settings/Select.svelte';
-	import { ABILITIES } from '$lib/calc/const.js';
-	import { hit_damage_calculation, ability_damage_calculation } from '$lib/calc/damage_calc.js';
+    import Navbar from '$components/Layout/Navbar.svelte';
+    import Header from '$components/Layout/Header.svelte';
+    import { abilities } from '$lib/ranged/abilities';
+    import { ranged_buff_abilities } from '$lib/ranged/buff_abilities';
+    import { settingsConfig, SETTINGS } from '$lib/calc/settings';
+    import Checkbox from '../../components/Settings/Checkbox.svelte';
+    import Number from '../../components/Settings/Number.svelte';
+    import Select from '../../components/Settings/Select.svelte';
+    import { ABILITIES } from '$lib/calc/const.js';
+    import { hit_damage_calculation, ability_damage_calculation } from '$lib/calc/damage_calc.js';
 
-	let allAbilities = {...abilities, ...ranged_buff_abilities};
+    let allAbilities = {...abilities, ...ranged_buff_abilities};
 
-	let damages = Object.fromEntries(
-		Object.entries(abilities).map(([key, value]) => [
-			key,
-			{ ...value, regular: 0, ss: 0, swift: 0, ssSwift: 0 }
-		])
-	);
+    let damages = Object.fromEntries(
+        Object.entries(abilities).map(([key, value]) => [
+            key,
+            { ...value, regular: 0, ss: 0, swift: 0, ssSwift: 0 }
+        ])
+    );
 
-	let tab = 'general';
+    let tab = 'general';
 
-	let settings = Object.fromEntries(
-		Object.entries(settingsConfig).map(([key, value]) => [
-			key,
-			{ ...value, key: key, value: value.default }
-		])
-	);
+    let settings = Object.fromEntries(
+        Object.entries(settingsConfig).map(([key, value]) => [
+            key,
+            { ...value, key: key, value: value.default }
+        ])
+    );
 
-	updateDamages();
+    updateDamages();
 
-	function updateDamages() {
-		const adaptedSettings = Object.fromEntries(
-			Object.entries(settings).map(([key, value]) => [key, value.value])
-		);
+    function updateDamages() {
+        const adaptedSettings = Object.fromEntries(
+            Object.entries(settings).map(([key, value]) => [key, value.value])
+        );
 
-		Object.entries(damages).forEach(([abilityKey, ability]) => {
-			adaptedSettings['ability'] = abilityKey;
+        Object.entries(damages).forEach(([abilityKey, ability]) => {
+            adaptedSettings['ability'] = abilityKey;
 
-			adaptedSettings['split soul'] = false;
-			adaptedSettings['death swiftness'] = false;
-			damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
+            adaptedSettings['split soul'] = false;
+            adaptedSettings['death swiftness'] = false;
+            damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
 
-			adaptedSettings['split soul'] = true;
-			adaptedSettings['death swiftness'] = false;
-			damages[abilityKey].ss = ability.calc({ ...adaptedSettings });
+            adaptedSettings['split soul'] = true;
+            adaptedSettings['death swiftness'] = false;
+            damages[abilityKey].ss = ability.calc({ ...adaptedSettings });
 
-			adaptedSettings['split soul'] = false;
-			adaptedSettings['death swiftness'] = true;
-			damages[abilityKey].swift = ability.calc({ ...adaptedSettings });
+            adaptedSettings['split soul'] = false;
+            adaptedSettings['death swiftness'] = true;
+            damages[abilityKey].swift = ability.calc({ ...adaptedSettings });
 
-			adaptedSettings['split soul'] = true;
-			adaptedSettings['death swiftness'] = true;
-			damages[abilityKey].ssSwift = ability.calc({ ...adaptedSettings });
-		});
-	}
+            adaptedSettings['split soul'] = true;
+            adaptedSettings['death swiftness'] = true;
+            damages[abilityKey].ssSwift = ability.calc({ ...adaptedSettings });
+        });
+    }
 
-	function updateExpectedDamage() {
-    		const adaptedSettings = Object.fromEntries(
-    			Object.entries(settings).map(([key, value]) => [key, value.value])
-    		);
+    function updateExpectedDamage() {
+            const adaptedSettings = Object.fromEntries(
+                Object.entries(settings).map(([key, value]) => [key, value.value])
+            );
 
-    		Object.entries(damages).forEach(([abilityKey, ability]) => {
-    			adaptedSettings['ability'] = abilityKey;
+            Object.entries(damages).forEach(([abilityKey, ability]) => {
+                adaptedSettings['ability'] = abilityKey;
 
-    			adaptedSettings['split soul'] = false;
-    			adaptedSettings['death swiftness'] = false;
-    			damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
+                adaptedSettings['split soul'] = false;
+                adaptedSettings['death swiftness'] = false;
+                damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
 
-    			adaptedSettings['split soul'] = true;
-    			adaptedSettings['death swiftness'] = false;
-    			damages[abilityKey].ss = ability.calc({ ...adaptedSettings });
+                adaptedSettings['split soul'] = true;
+                adaptedSettings['death swiftness'] = false;
+                damages[abilityKey].ss = ability.calc({ ...adaptedSettings });
 
-    			adaptedSettings['split soul'] = false;
-    			adaptedSettings['death swiftness'] = true;
-    			damages[abilityKey].swift = ability.calc({ ...adaptedSettings });
+                adaptedSettings['split soul'] = false;
+                adaptedSettings['death swiftness'] = true;
+                damages[abilityKey].swift = ability.calc({ ...adaptedSettings });
 
-    			adaptedSettings['split soul'] = true;
-    			adaptedSettings['death swiftness'] = true;
-    			damages[abilityKey].ssSwift = ability.calc({ ...adaptedSettings });
-    		});
-    	}
+                adaptedSettings['split soul'] = true;
+                adaptedSettings['death swiftness'] = true;
+                damages[abilityKey].ssSwift = ability.calc({ ...adaptedSettings });
+            });
+        }
 
     // Calculate and sum damage for each ability
     let totalDamage = 0;
@@ -88,12 +88,12 @@
         totalDamage = 0;
 
         const adaptedSettings = Object.fromEntries(
-            			Object.entries(settings).map(([key, value]) => [key, value.value])
-            		);
-		// TODO handle buffs that aren't present in ability damage calculator
+                        Object.entries(settings).map(([key, value]) => [key, value.value])
+                    );
+        // TODO handle buffs that aren't present in ability damage calculator
         abilityBar.forEach(abilityKey => {
             if (abilityKey != null) {
-				adaptedSettings['ability'] = abilityKey
+                adaptedSettings['ability'] = abilityKey
                 const damage = abilities[abilityKey].calc({ ...adaptedSettings })
                 totalDamage += damage;
             }
@@ -127,16 +127,16 @@
 <Header img="/range_background.png" text="Ranged Rotation Calculator" icon="/style_icons/ranged-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
-	<div class="responsive-container">
-		<section class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8">
-			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-4">
-				<div class="card card-ranged">
-					<h1 class="main-header mb-6 ml-3">Rotation</h1>
-					<div class="table-container">
+    <div class="responsive-container">
+        <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8">
+            <div class="xl:col-span-6 xl:row-start-1 xl:row-span-4">
+                <div class="card card-ranged">
+                    <h1 class="main-header mb-6 ml-3">Rotation</h1>
+                    <div class="table-container">
                         <button on:click={calculateTotalDamage}>Calculate Damage</button>
                         <p>Total Damage: {totalDamage}</p>
-					</div>
-					<div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-0 abilities">
+                    </div>
+                    <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-0 abilities">
                         {#each Object.entries(allAbilities) as [key, ability]}
                             <img
                                 src={ability.icon}
@@ -170,8 +170,8 @@
                             {/each}
                         {/if}
                     </div>
-				</div>
-			</div>
-		</section>
-	</div>
+                </div>
+            </div>
+        </section>
+    </div>
 </div>

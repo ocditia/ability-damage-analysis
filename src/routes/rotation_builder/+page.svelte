@@ -473,26 +473,26 @@
                                 {/if}
                                 {#each Object.keys(stacks) as key}
                                     {#if showStack(index, stacks[key].stackTicks) && stacks[key].idx >= 0}
-										<span
+                                        <span
                                             title="{stacks[key].title}"
                                             style="
-												transform: translateX(0px);
-												top: {baseStackOffset+3+(stackFontSize+stackPadding) * stacks[key].idx}px;
-												left: {stackFontSize+stackPadding*2}px;
-												font-size: {stackFontSize}px;
-												color: {stacks[key].colour};
-												"
+                                                transform: translateX(0px);
+                                                top: {baseStackOffset+3+(stackFontSize+stackPadding) * stacks[key].idx}px;
+                                                left: {stackFontSize+stackPadding*2}px;
+                                                font-size: {stackFontSize}px;
+                                                color: {stacks[key].colour};
+                                                "
                                             class="bolg-stacks"
                                         >
-											{stacks[key].stackTicks[index]}
-										</span>
+                                            {stacks[key].stackTicks[index]}
+                                        </span>
                                         <img src={stacks[key].image}
                                              style=
                                                  "transform:translateX({2-(30-stackFontSize)/2}px);
-												top: {baseStackOffset+6+(stackFontSize+stackPadding) * stacks[key].idx}px;
-												height: {stackFontSize}px;
-												width: {stackFontSize}px;
-												"
+                                                top: {baseStackOffset+6+(stackFontSize+stackPadding) * stacks[key].idx}px;
+                                                height: {stackFontSize}px;
+                                                width: {stackFontSize}px;
+                                                "
                                              class="pe-icon"
                                              title={stacks[key].title}
                                              alt={stacks[key].title}

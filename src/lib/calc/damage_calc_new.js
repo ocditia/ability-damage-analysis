@@ -760,7 +760,7 @@ function on_hit(settings, dmgObject) {
                 // spellcaster gloves (proc based, so added later)
                 //bane gear
                 // if (weapons[settings['main-hand']]['category'] === 'bane') {
-                // 	boost = Math.floor(boost * 1.25);
+                //     boost = Math.floor(boost * 1.25);
                 // }
             }
 

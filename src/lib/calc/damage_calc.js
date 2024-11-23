@@ -326,11 +326,11 @@ function ability_specific_effects(settings, dmgObject) {
 
         // greater chain half damage
         /*const gchain_not_halved = ['bleed', 'burn', 'dot'];
-		if (
-			gchain_not_halved.includes(abils[settings['ability']][['ability classification']] === false)
-		) {
-			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 0.5);
-		}*/
+        if (
+            gchain_not_halved.includes(abils[settings['ability']][['ability classification']] === false)
+        ) {
+            dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 0.5);
+        }*/
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
@@ -645,8 +645,8 @@ function calc_additive_boosts(settings, dmgObject) {
 
     // gorajan trailblazer
     /*if (settings['gorajan trailblazer effect'] === true) {
-		boost += 0.07;
-	}*/
+        boost += 0.07;
+    }*/
 
     // gravitate (annihilation spec)
     if (abils[settings['ability']]['main style'] === 'melee') {
@@ -660,9 +660,9 @@ function calc_additive_boosts(settings, dmgObject) {
 
     // desperado (ring of kinship ranged boost)
     /*if (settings['desperado'] > 0 && abils[settings['ability']]['main style'] === 'ranged') {
-		boost += 0.1;
-		boost = boost + 0.01 * settings['desperado'];
-	}*/
+        boost += 0.1;
+        boost = boost + 0.01 * settings['desperado'];
+    }*/
 
     dmgObject['min hit'] = Math.floor(dmgObject['min hit'] * (1 + boost));
     dmgObject['var hit'] = Math.floor(dmgObject['var hit'] * (1 + boost));
@@ -789,7 +789,7 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
         // spellcaster gloves (proc based, so added later)
         //bane gear
         // if (weapons[settings['main-hand']]['category'] === 'bane') {
-        // 	boost = Math.floor(boost * 1.25);
+        //     boost = Math.floor(boost * 1.25);
         // }
     }
 
@@ -1371,20 +1371,21 @@ function calc_sgb(settings, dmg) {
     return Math.floor(dmg * (hits[size] - 1));
 }
 
-function calc_igneous_bleed(settings) { 
+function calc_igneous_bleed(settings) {
     let total_damage = 0;
 
     let total_hits = 6 + settings[SETTINGS.IGNEOUS_EXTENSIOS];
-    if (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR &&
+    if (
+        settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         total_hits += 3;
     }
 
-    for (let splat=2; splat <=total_hits; splat++) {
+    for (let splat = 2; splat <= total_hits; splat++) {
         let hit_dmg = JSON.parse(JSON.stringify(settings['igneous cleave bleed damage']));
         for (let key in hit_dmg) {
-            for (let i=0; i<hit_dmg[key]['damage list'].length; i++) {
+            for (let i = 0; i < hit_dmg[key]['damage list'].length; i++) {
                 hit_dmg[key]['damage list'][i] = Math.floor(hit_dmg[key]['damage list'][i] * 1.05);
             }
             hit_dmg[key] = calc_on_npc(settings, hit_dmg[key]);
