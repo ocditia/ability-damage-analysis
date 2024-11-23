@@ -22,37 +22,28 @@
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
 	import { on_stall, on_cast, on_hit, on_damage} from '$lib/calc/damage_calc_new.js';
 	import { create_object } from '$lib/calc/object_helper.js';
-    import Header from '$components/Layout/Header.svelte';
-    import Navbar from '$components/Layout/Navbar.svelte';
-    import { SETTINGS, settingsConfig } from '$lib/calc/settings';
     import { abilities } from '$lib/necromancy/abilities';
-    import Checkbox from '../../components/Settings/Checkbox.svelte';
-    import Number from '../../components/Settings/Number.svelte';
-    import Select from '../../components/Settings/Select.svelte';
-
-    let damages = $state(Object.fromEntries(
-        Object.entries(abilities).map(([key, value]) => [key, { ...value, regular: 0, ss: 0 }])
-    ));
 
     let necroAbils = {...necro_dmg_abilities};
     let meleeAbils = {...melee_dmg_abilities};
     let magicAbils = {...magic_dmg_abilities};
 	let rangedAbils = {...r_dmg_abilities, ...ranged_buff_abilities};
     let allAbils = {...magicAbils, ...rangedAbils, ...necroAbils, ...meleeAbils};
-	let settings = Object.fromEntries(
+	let settings = $state(Object.fromEntries(
 		Object.entries(settingsConfig).map(([key, value]) => [
 			key,
 			{ ...value, key: key, value: value.default }
 		])
-	);
+	));
     const adaptedSettings = Object.fromEntries(
         Object.entries(settings).map(([key, value]) => [key, value.value])
     );
 
-    let totalDamage = 0;
+    let totalDamage = $state(0);
 	let experimental_data = [];
 
 	function calculateTotalDamageNew() {
+		console.log('Running calc total damage new')
 		let dmgs = [];
 		totalDamage = 0;
         const adaptedSettings = Object.fromEntries(
@@ -203,18 +194,18 @@
 
 	//UI
 	const barSize = 250;
-    let abilityBar = Array(barSize).fill(null); // Empty slots on the bar
+    let abilityBar = $state(Array(barSize).fill(null)); // Empty slots on the bar
 	let tab = $state('general'); // settings tab
-	let abilityTab = 'ranged';
+	let abilityTab = $state('ranged');
     let selectedTab = 'general';
 	const baseBarRowGap = 30;
-	let barRowGap = baseBarRowGap;
+	let barRowGap = $state(baseBarRowGap);
 
 	const stackFontSize = 12;
 	const baseStackOffset = 32;
 	const stackPadding = 2;
 
-	const stacks = {
+	const stacks = $state({
 		[SETTINGS.ADRENALINE]: {
 			title: 'Adrenaline',
 			displaySetting: SETTINGS.ADRENALINE,
@@ -240,10 +231,13 @@
 			stackTicks: Array(barSize).fill(0),
 			colour: '#03f4fc'
 		}
-	}
+	});
 	let abilityBarIndex = 0;
 	let lastAbilityIndex = 0;
-	let buffTimings = {'swiftness': [], 'sunshine': [], 'berserk': [], 'split soul ecb': [], 'crit buff': []}; //tracks when buffs are active for drawing visual indicator
+	let buffTimings = $state(
+		{'swiftness': [], 'sunshine': [], 'berserk': [], 
+		'split soul ecb': [], 'crit buff': []}); 
+		//tracks when buffs are active for drawing visual indicator
 	//UI functions
     function handleAbilityClick(event, abilityKey) {
 		abilityBar[abilityBarIndex] = abilityKey;
@@ -368,6 +362,8 @@
 			}
 		}
 
+		console.log('refresh ui is called');
+
 		if (calcDmg) {
 			calculateTotalDamageNew();
 		}
@@ -396,15 +392,15 @@
 				<div class="card card-ranged">
 					<h1 class="main-header mb-6 ml-3">Rotation</h1>
                     <div class="table-container">
-						<button on:click={clearRotation}>Reset</button>
+						<button onclick={() => clearRotation()}>Reset</button>
 						<br>
-                        <button on:click={calculateTotalDamageNew}>Calculate Damage</button>
+                        <button onclick={() => calculateTotalDamageNew()}>Calculate Damage</button>
                         <p>Total Damage: {totalDamage}</p>
 					</div>
                     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
                         <li class="flex-grow me-2">
                             <button
-                                on:click={() => (abilityTab = 'magic')}
+                                onclick={() => (abilityTab = 'magic')}
                                 class:text-[#968A5C]={abilityTab === 'magic'}
                                 class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                                 >Magic</button
@@ -412,7 +408,7 @@
                         </li>
                         <li class="flex-grow me-2">
                             <button
-                                on:click={() => (abilityTab = 'melee')}
+                                onclick={() => (abilityTab = 'melee')}
                                 class:text-[#968A5C]={abilityTab === 'melee'}
                                 class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                                 >Melee</button
@@ -421,7 +417,7 @@
 
                         <li class="flex-grow me-2">
                             <button
-                                on:click={() => (abilityTab = 'ranged')}
+                                onclick={() => (abilityTab = 'ranged')}
                                 class:text-[#968A5C]={abilityTab === 'ranged'}
                                 class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                                 >Ranged</button
@@ -429,7 +425,7 @@
                         </li>
                         <li class="flex-grow me-2">
                             <button
-                                on:click={() => (abilityTab = 'necro')}
+                                onclick={() => (abilityTab = 'necro')}
                                 class:text-[#968A5C]={abilityTab === 'necro'}
                                 class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                                 >Necro</button
@@ -452,9 +448,9 @@
 									role="button"
 									tabindex="0"
 									aria-label="Ability slot"
-									on:contextmenu={(e) => handleBarRightClick(e, index)}
-									on:drop={(e) => handleDrop(e, index)}
-									on:dragover={allowDrop}
+									oncontextmenu={(e) => handleBarRightClick(e, index)}
+									ondrop={(e) => handleDrop(e, index)}
+									ondragover={() => allowDrop()}
 							>
 								<span class="cell-number">{index}</span>
 								{#if ability}
@@ -462,7 +458,7 @@
 										alt={allAbils[ability].title}
 										style="width: 100%; height: 100%;"
 										draggable="true"
-            							on:dragstart={(e) => handleDragStartBar(e, ability, index)}
+            							ondragstart={(e) => handleDragStartBar(e, ability, index)}
 									/>
 								{/if}
 								{#if buffActive('swiftness', index)}
@@ -505,12 +501,12 @@
 					</div>
 				</div>
 			</div>
-            <RangedSettings settings={settings} updateDamages={calculateTotalDamageNew}/>
+            <RangedSettings bind:settings={settings} updateDamages={calculateTotalDamageNew}/>
 			{#each Object.keys(stacks) as key}
 				<div>
 					{#if stacks[key].number}
 						<Number
-							setting={settings[stacks[key].displaySetting]}
+							bind:setting={settings[stacks[key].displaySetting]}
 							on:settingsUpdated={refreshUI}
 							step="1"
 							max="200"
@@ -518,7 +514,7 @@
 						/>
 					{:else}
 						<Checkbox
-							setting={settings[stacks[key].displaySetting]}
+							bind:setting={settings[stacks[key].displaySetting]}
 							on:settingsUpdated={refreshUI}
 						/>
 					{/if}
@@ -528,27 +524,27 @@
 			<br>
 			<div>
 				<Checkbox
-					setting={settings[SETTINGS.VIGOUR]}
+					bind:setting={settings[SETTINGS.VIGOUR]}
 					on:settingsUpdated={refreshUI}
 				/>
 				<br>
 				<Checkbox
-					setting={settings[SETTINGS.FURY_OF_THE_SMALL]}
+					bind:setting={settings[SETTINGS.FURY_OF_THE_SMALL]}
 					on:settingsUpdated={refreshUI}
 				/>
 				<br>
 				<Checkbox
-					setting={settings[SETTINGS.CONSERVATION_OF_ENERGY]}
+					bind:setting={settings[SETTINGS.CONSERVATION_OF_ENERGY]}
 					on:settingsUpdated={refreshUI}
 				/>
 				<br>
 				<Checkbox
-					setting={settings[SETTINGS.HEIGHTENED_SENSES]}
+					bind:setting={settings[SETTINGS.HEIGHTENED_SENSES]}
 					on:settingsUpdated={refreshUI}
 				/>
 				<br>
 				<Number
-					setting={settings[SETTINGS.ICY_CHILL_STACKS]}
+					bind:setting={settings[SETTINGS.ICY_CHILL_STACKS]}
 					on:settingsUpdated={refreshUI}
 					step="1"
 					max="10"
@@ -619,24 +615,10 @@
         transform: translateX(+50%);
 	}
 
-	.wen-stacks {
-        position: absolute;
-        top: +52px; /* Adjust to move the number under the cell */
-        left: auto;
-        transform: translateX(+50%);
-        font-size: 12px; /* Adjust size of the number */
-	}
-
 	.pe-icon {
 		position: absolute;
 		width: 12px;
 		height: 12px;
 		transform: translateX(-70%) translateY(32px);
-	}
-	.icy-chill-icon {
-		position: absolute;
-		width: 12px;
-		height: 12px;
-		transform: translateX(-70%) translateY(47px);
 	}
 </style>
