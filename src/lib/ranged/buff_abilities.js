@@ -3,12 +3,12 @@ import { ABILITIES } from '../calc/const.js';
 
 const ranged_buff_abilities = {
 	[ABILITIES.DEATHS_SWIFTNESS]: {
-		title: 'Death\`s swiftness',
+		title: 'Death\'s swiftness',
 		calc: ability_damage_calculation,
 		icon: '/ability_icons/ranged/Death\'s_Swiftness.png'
 	},
 	[ABILITIES.GREATER_DEATHS_SWIFTNESS]: {
-		title: 'Greater death\`s swiftness',
+		title: 'Greater death\'s swiftness',
 		calc: ability_damage_calculation,
 		icon:  '/ability_icons/ranged/Greater_Death\'s_Swiftness.png'
 	},

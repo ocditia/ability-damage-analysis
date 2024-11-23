@@ -148,7 +148,7 @@ function handle_bleeds(settings) {
  * Calculates the damage object for a single tick of a channelled ability
  * @param {*} settings
  * @param {number} hit_index - which hit to calculate
- * @param {} rotation - information on all hits of the ability (e.g. {1: [hit1, hit2...], 2: [], 3: [hit1]..})
+ * @param {} rotation - information on all hits of the ability (e.g. {1: [hit1, hit2...], 2: [], 3: [hit1], etc.})
  * @param {} timers - timers object containing buff timer information
  * @returns
  */
