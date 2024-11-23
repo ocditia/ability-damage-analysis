@@ -148,7 +148,7 @@
             }
             let end_tick = start_tick + abil_duration;
             for (let i = start_tick; i < end_tick; i++) {
-                //Perform any necessary hits from chanelled abilities on this tick
+                //Perform any necessary hits from channelled abilities on this tick
                 if (isChannelled(settingsCopy, abilityKey)) {
                     //If there's a new ability cast on this tick, cancel the channel and exit early
                     if (i > start_tick && abilityBar[tick]) {
