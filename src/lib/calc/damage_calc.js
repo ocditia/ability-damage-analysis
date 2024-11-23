@@ -1324,7 +1324,7 @@ function calc_bolg_new(settings) {
 
     settings['bolg damage'].shift(); // delete this bolg proc
 
-    const bolg_perc_damage = get_user_value(settings, bolg_damage_based);;
+    const bolg_perc_damage = get_user_value(settings, bolg_damage_based);
     return bolg_perc_damage + bolg_base;
 }
 
@@ -1641,19 +1641,18 @@ function apply_additional(settings, total_damage, newbolg = false) {
     }
     // handle bolg logic
     if (settings['bolg damage'] && settings['bolg damage'].length > 0) {
-    if (newbolg) {
-        if (!settings['bolg damage']) {
-            settings['bolg damage'] = [];
-        }
-        if (settings['bolg damage'].length > 0) {
-            total_damage += calc_bolg_new(settings);
-        }
-    }
-    else {
-        if (settings['bolg damage']) {
+        if (newbolg) {
+            if (!settings['bolg damage']) {
+                settings['bolg damage'] = [];
+            }
+            if (settings['bolg damage'].length > 0) {
+                total_damage += calc_bolg_new(settings);
+            }
+        } else if (settings['bolg damage']) {
             total_damage += calc_bolg(settings)
             delete settings['bolg damage'];
         }
+    }
     // handle bloat logic
     if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
         total_damage += calc_bloat(settings);
@@ -1758,7 +1757,7 @@ function get_rotation(settings) {
         rotation[1].push(ABILITIES.OVERPOWER_HIT)
     }
 
-    if (settings['ability'] === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] != SETTINGS.CAPE_VALUES.ZUK) {
+    if (settings['ability'] === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] !== SETTINGS.CAPE_VALUES.ZUK) {
         rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]}
     }
 
@@ -1792,7 +1791,8 @@ function get_rotation(settings) {
     return rotation;
 }
 
-export { ability_damage_calculation, hit_damage_calculation, 
+export {
+    ability_damage_calculation, hit_damage_calculation,
     calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
     get_user_value, get_rotation, add_split_soul, apply_additional, apply_additional_rota,

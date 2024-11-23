@@ -367,7 +367,7 @@ function on_hit(settings, dmgObject) {
             }
         }
 
-        if (abils[settings['ability']]['main style'] === 'necromancy') {7
+        if (abils[settings['ability']]['main style'] === 'necromancy') {
             // death grasp (death guard spec)
             if (settings['ability'] === ABILITIES.DEATH_GRASP) {
                 dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
