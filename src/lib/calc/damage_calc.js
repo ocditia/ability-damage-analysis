@@ -1641,15 +1641,19 @@ function apply_additional(settings, total_damage, newbolg = false) {
     }
     // handle bolg logic
     if (settings['bolg damage'] && settings['bolg damage'].length > 0) {
-        if (newbolg) {
+    if (newbolg) {
+        if (!settings['bolg damage']) {
+            settings['bolg damage'] = [];
+        }
+        if (settings['bolg damage'].length > 0) {
             total_damage += calc_bolg_new(settings);
         }
-        else {
-            total_damage += calc_bolg(settings)
-        }
-
-        delete settings['bolg damage'];
     }
+    else {
+        if (settings['bolg damage']) {
+            total_damage += calc_bolg(settings)
+            delete settings['bolg damage'];
+        }
     // handle bloat logic
     if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
         total_damage += calc_bloat(settings);

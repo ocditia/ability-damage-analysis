@@ -551,6 +551,32 @@
 					min="0"
 				/>
 			</div>
+			<div class="xl:col-span-6 xl:row-start-2 xl:col-start-0">
+                <div class="flex flex-col">
+                    <div class="card card-ranged">
+                        <div class="card-title pb-5">User Guide</div>
+                        <div class="pb-5">
+                            <p>
+                                To add abilities, left clicking will add a new ability to the end of your 
+								bar. You can also drag abilities for more control. Right clicking an ability
+								on the bar will remove it.
+                            </p>
+                        </div>
+                        <div class="pb-5">
+                            <p>
+                                You can configure the additional settings to decide how much information
+								you are shown, as well as how much adrenaline and how many stacks you start
+								with.
+                            </p>
+                        </div>
+						<div class="pb-5">
+                            <p>
+                                Please report any bugs or errors you find in the RSA discord.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 		</section>
 	</div>
 </div>

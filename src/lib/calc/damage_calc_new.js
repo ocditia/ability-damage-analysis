@@ -901,8 +901,7 @@ function on_hit(settings, dmgObject) {
                 (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 4 &&
                 settings[SETTINGS.BALANCE_BY_FORCE] === true))
         ) {
-            if (!('bolg damage' in settings)) {
-                //settings['bolg damage'] = create_object(settings);
+            if (!(settings['bolg damage'])) {
                 settings['bolg damage'] = [];
             }
             let bolgDmgObject = create_object(settings);
