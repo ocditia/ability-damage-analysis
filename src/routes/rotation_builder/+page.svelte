@@ -318,7 +318,7 @@
         calculateTotalDamageNew();
         //Reset the visual indicators for buffs
         for (let key in buffTimings) {
-            if (buffTimings.hasOwnProperty(key)) {
+            if (Object.hasOwnProperty.call(buffTimings, key)) {
                 buffTimings[key] = []; // Reset each key to an empty array
             }
         }
