@@ -167,11 +167,10 @@ function handle_ranged_buffs(settings, timers, abilityKey) {
     }
 }
 
-function handle_wen_buff(settings, timers) {
+export function handle_wen_buff(settings, timers) {
     settings[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_CHILL_STACKS];
     settings[SETTINGS.ICY_CHILL_STACKS] = 0;
-    //TODO handle swiftness' weird damage calc
-    timers[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_PRECISION];
+    timers[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_PRECISION]; // time in ticks is same as n stacks
 }
 
 /**

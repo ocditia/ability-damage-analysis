@@ -3,6 +3,7 @@ import { ABILITIES, abils, armour, gear, prayers, weapons } from './const';
 import { create_object } from './object_helper';
 import { SETTINGS } from './settings';
 import { calc_crit_damage, get_rotation, add_split_soul } from './damage_calc';
+import { handle_wen_buff } from './rotation_damage_helper';
 
 //Handle adren and cooldowns before on_cast is called
 function on_stall(settings) {
@@ -42,9 +43,8 @@ function on_cast(settings, dmgObject, timers) {
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
         (!timers[SETTINGS.ICY_PRECISION])
     ) {
-            settings[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_CHILL_STACKS];
-            settings[SETTINGS.ICY_CHILL_STACKS] = 0;
-            //do something with timers to track buff
+            handle_wen_buff(settings, timers);
+            //TODO consider handling this differently
     }
     // Marco - turn off hit chance stuff here (idt anything exists)
     // TODO - ingenuity of the humans, and check if accuracy penalty from wrong style gear is implemented

@@ -24,7 +24,7 @@
 	import { create_object } from '$lib/calc/object_helper.js';
     import { abilities } from '$lib/necromancy/abilities';
 
-    let necroAbils = {...necro_dmg_abilities};
+    let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abils eventually
     let meleeAbils = {...melee_dmg_abilities};
     let magicAbils = {...magic_dmg_abilities};
 	let rangedAbils = {...r_dmg_abilities, ...ranged_buff_abilities};
@@ -53,7 +53,7 @@
 		let tick = 0;
 		let damageTracker = {};
 		let timers = {};
-		let hit_delay = 1; //TODO actually implement this
+		let hit_delay = 1; //TODO actually implement hit delay properly (define min delay for each ability)
 		let start_tick = tick;
 		function processQueuedDamage(tick) {
 			if (damageTracker[tick]) {
@@ -67,9 +67,13 @@
 		}
 
 		function copyStacks(settings) {
-			stacks[SETTINGS.ADRENALINE].stackTicks[tick] = settings[SETTINGS.ADRENALINE];
-			stacks['perfect equilibrium stacks'].stackTicks[tick] = settings['perfect equilibrium stacks'];
-			stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[tick] = settings[SETTINGS.ICY_CHILL_STACKS];
+			//Track number of each stack, and whether buffs are on during this tick
+			for(let key in stacks) {
+				stacks[key].stackTicks[tick] = settings[key];
+			}
+			buffs.forEach(buffTitle => {
+				buffTimings2[buffTitle][tick] = settings[buffTitle];
+			});
 		}
 
 		//TODO implement non ability actions
@@ -109,8 +113,8 @@
                     dmgObject['non_crit']['ability'] = abilityKey;
                     damageTracker[hit_tick].push(dmgObject);
                 }
-                    //Handles channelled abilities (many casts, many hits, many hitsplats)
-                //(do nothing, handle at the end)
+                //Handles channelled abilities (many casts, many hits, many hitsplats)
+                //(do nothing, handle at the end - but needs to run so channels aren't interpreted as bleeds)
                 else if (isChannelled(settingsCopy, abilityKey)) {
                 }
                 //Multi-hits (one cast, multiple hits, many hitsplats)
@@ -140,8 +144,7 @@
                     }
                 }
             }
-//s            if (abilityKey in ranged_buff_abilities) handle_ranged_buffs(settingsCopy, timers, abilityKey);
-            //Process hitsplats and decrement timers
+			//Process hitsplats and decrement timers
             let rota;
             if (isChannelled(settingsCopy, abilityKey)) {
                 rota = get_rotation(settingsCopy);
@@ -157,20 +160,22 @@
 					else {
 						let dmgObject = calc_channelled_hit(settingsCopy, 1 + i - start_tick, rota, timers); //i+1 because hits are 1 indexed
 						dmgObject['non_crit']['ability'] = abilityKey;
-						let hit_tick = i + hit_delay;
-						(damageTracker[hit_tick] ??= []).push(dmgObject);
+						if (dmgObject['non_crit']['damage list'].length > 0 ) {
+							let hit_tick = i + hit_delay;
+							(damageTracker[hit_tick] ??= []).push(dmgObject);
+						}
 					}
                 }
 				handleTimers(timers, settingsCopy);
                 //Apply on npc modifiers to already queued damage for this to tick
 				processQueuedDamage(i);
-				//TODO make a function
 				copyStacks(settingsCopy);
                 tick += 1;
             }
             end_tick = tick;
 		}
 		totalDamage = dmgs.reduce((acc, current) => acc + current, 0);
+		console.log(buffTimings2);
 		console.log('New Impl Total Damage = ' + totalDamage);
 	}
 
@@ -235,10 +240,20 @@
 	let abilityBarIndex = 0;
 	let lastAbilityIndex = 0;
 
+	//tracks when buffs are active for drawing the visual indicator
 	let buffTimings = $state(
 		{'swiftness': [], 'sunshine': [], 'berserk': [],
 		'split soul ecb': [], 'icy_precision': [], 'crit buff': []});
-		//tracks when buffs are active for drawing visual indicator
+
+	//TODO replace buffTimings original impl with this one
+	// The times buffs are active are already tracked properly - just need to rewrite the function
+	// which translates when the buffs are active into drawing the indicator bars on UI to use this data
+	let buffs = [SETTINGS.DEATH_SWIFTNESS, SETTINGS.SUNSHINE, SETTINGS.BERSERK,
+	SETTINGS.SPLIT_SOUL, SETTINGS.ICY_PRECISION];
+	let buffTimings2 = 
+		Object.fromEntries(buffs.map(buff => [buff, Array(barSize).fill(0)]))
+	;
+		
 	//UI functions
 	//TODO handle this differently
     function handleAbilityClick(event, abilityKey) {
@@ -268,7 +283,7 @@
 			}
 		});
 		let x = abilityBar[0] == null; //TODO remove
-		//TODO rewrite this
+		//TODO rewrite this to just store the value of each buff at each tickq2
 		return active
 	}
 
@@ -342,24 +357,6 @@
 			//else if (lastAbilityIndex == 0) abilityBarIndex = 0;
 			else abilityBarIndex += 3;
 		}
-    function refreshUI(calcDmg = true) {
-        lastAbilityIndex = 0;
-        for (let i = 0; i < barSize; i++) {
-            if (abilityBar[i] != null) {
-                lastAbilityIndex = i;
-            }
-        }
-        abilityBarIndex = lastAbilityIndex;
-        let abilToAdd = abils[abilityBar[lastAbilityIndex]];
-        if (abilToAdd) {
-            if (abilToAdd['duration']) {
-                abilityBarIndex += abilToAdd['duration'];
-            }
-            //else if (lastAbilityIndex == 0) abilityBarIndex = 0;
-            else abilityBarIndex += 3;
-        }
-
-
 
 		//Handle stacks
 		let i = 0;
@@ -465,7 +462,7 @@
 									aria-label="Ability slot"
 									oncontextmenu={(e) => handleBarRightClick(e, index)}
 									ondrop={(e) => handleDrop(e, index)}
-									ondragover={() => allowDrop()}
+									ondragover={(e) => allowDrop(e)}
 							>
 								<span class="cell-number">{index}</span>
 								{#if ability}
@@ -581,7 +578,10 @@
                             <p>
                                 You can configure the additional settings to decide how much information
 								you are shown, as well as how much adrenaline and how many stacks you start
-								with.
+								with. As adren pots/renewals are not yet implemented, please add additional 
+								starting adrenaline to replicate them for now. Additionally, the damage over time 
+								from Death's Swiftness has been turned off currently while a better 
+								implementation is being written.
                             </p>
                         </div>
 						<div class="pb-5">
