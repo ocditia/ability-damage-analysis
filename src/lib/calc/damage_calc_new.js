@@ -369,7 +369,7 @@ function on_hit(settings, dmgObject) {
             }
         }
 
-        if (abils[settings['ability']]['main style'] === 'necromancy') {7
+        if (abils[settings['ability']]['main style'] === 'necromancy') {
             // death grasp (death guard spec)
             if (settings['ability'] === ABILITIES.DEATH_GRASP) {
                 dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
@@ -762,7 +762,7 @@ function on_hit(settings, dmgObject) {
                 // spellcaster gloves (proc based, so added later)
                 //bane gear
                 // if (weapons[settings['main-hand']]['category'] === 'bane') {
-                // 	boost = Math.floor(boost * 1.25);
+                //     boost = Math.floor(boost * 1.25);
                 // }
             }
 

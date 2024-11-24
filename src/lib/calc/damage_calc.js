@@ -326,11 +326,11 @@ function ability_specific_effects(settings, dmgObject) {
 
         // greater chain half damage
         /*const gchain_not_halved = ['bleed', 'burn', 'dot'];
-		if (
-			gchain_not_halved.includes(abils[settings['ability']][['ability classification']] === false)
-		) {
-			dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 0.5);
-		}*/
+        if (
+            gchain_not_halved.includes(abils[settings['ability']][['ability classification']] === false)
+        ) {
+            dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 0.5);
+        }*/
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
@@ -1443,20 +1443,23 @@ function calc_soul_split_hit(hit, settings) {
 }
 
 function get_user_value(settings, dmgObject) {
-    if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN) {
-        return get_mean_damage(settings, dmgObject);
-    } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN_NO_CRIT) {
-        return get_mean_no_crit(settings, dmgObject);
-    } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN_CRIT) {
-        return get_mean_crit(settings, dmgObject);
-    } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_NO_CRIT) {
-        return get_min_no_crit(settings, dmgObject);
-    } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_CRIT) {
-        return get_min_crit(settings, dmgObject);
-    } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_NO_CRIT) {
-        return get_max_no_crit(settings, dmgObject);
-    } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
-        return get_max_crit(settings, dmgObject);
+    switch (settings[SETTINGS.MODE]) {
+        case SETTINGS.MODE_VALUES.MEAN:
+            return get_mean_damage(settings, dmgObject);
+        case SETTINGS.MODE_VALUES.MEAN_NO_CRIT:
+            return get_mean_no_crit(settings, dmgObject);
+        case SETTINGS.MODE_VALUES.MEAN_CRIT:
+            return get_mean_crit(settings, dmgObject);
+        case SETTINGS.MODE_VALUES.MIN_NO_CRIT:
+            return get_min_no_crit(settings, dmgObject);
+        case SETTINGS.MODE_VALUES.MIN_CRIT:
+            return get_min_crit(settings, dmgObject);
+        case SETTINGS.MODE_VALUES.MAX_NO_CRIT:
+            return get_max_no_crit(settings, dmgObject);
+        case SETTINGS.MODE_VALUES.MAX_CRIT:
+            return get_max_crit(settings, dmgObject);
+        default:
+            return null;
     }
 }
 
@@ -1758,7 +1761,7 @@ function get_rotation(settings) {
         rotation[1].push(ABILITIES.OVERPOWER_HIT)
     }
 
-    if (settings['ability'] === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] != SETTINGS.CAPE_VALUES.ZUK) {
+    if (settings['ability'] === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] !== SETTINGS.CAPE_VALUES.ZUK) {
         rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]}
     }
 

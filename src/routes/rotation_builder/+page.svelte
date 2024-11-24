@@ -70,7 +70,6 @@
 			stacks[SETTINGS.ADRENALINE].stackTicks[tick] = settings[SETTINGS.ADRENALINE];
 			stacks['perfect equilibrium stacks'].stackTicks[tick] = settings['perfect equilibrium stacks'];
 			stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[tick] = settings[SETTINGS.ICY_CHILL_STACKS];
-
 		}
 
 		//TODO implement non ability actions
@@ -103,41 +102,42 @@
             else if (abilityKey in rangedAbils) {
                 //Handle single-hit abilities (one cast, one hit, one hitsplat)
                 if (rangedAbils[abilityKey].calc == hit_damage_calculation) {
-					let dmgObject = create_object(settingsCopy);
-					style_specific_unification(settingsCopy);
-					dmgObject = on_cast(settingsCopy, dmgObject, timers);
-					on_hit(settingsCopy, dmgObject);
-					dmgObject['non_crit']['ability'] = abilityKey;
+                    let dmgObject = create_object(settingsCopy);
+                    style_specific_unification(settingsCopy);
+                    dmgObject = on_cast(settingsCopy, dmgObject, timers);
+                    on_hit(settingsCopy, dmgObject);
+                    dmgObject['non_crit']['ability'] = abilityKey;
                     damageTracker[hit_tick].push(dmgObject);
                 }
-				//Handles channelled abilities (many casts, many hits, many hitsplats)
-				//(do nothing, handle at the end)
-				else if  (isChannelled(settingsCopy, abilityKey)){}
-				//Multi-hits (one cast, multiple hits, many hitsplats)
+                    //Handles channelled abilities (many casts, many hits, many hitsplats)
+                //(do nothing, handle at the end)
+                else if (isChannelled(settingsCopy, abilityKey)) {
+                }
+                //Multi-hits (one cast, multiple hits, many hitsplats)
                 else if (abils[abilityKey]['ability classification'] == 'multihit') {
-					let dmgObject = create_object(settingsCopy);
-					let dmgObjects = on_cast(settingsCopy, dmgObject, timers);
-					dmgObjects.forEach(element => {
-						settingsCopy['ability'] = element['crit']['ability'];
-						let namedDmgObject = on_hit(settingsCopy, element);
-						damageTracker[hit_tick].push(namedDmgObject);
-					});
-					settingsCopy['ability'] = abilityKey;
-				}
-				//Bleeds, dots, burns (one cast, one hit, many hitsplats)
-				else {
-					let dmgObject = create_object(settingsCopy);
-					settingsCopy['ability'] = abils[abilityKey]['hits'][1][0];
-					dmgObject = on_cast(settingsCopy, dmgObject, timers);
-					dmgObject = on_hit(settingsCopy, dmgObject);
-					let n_hits = abils[abilityKey]['hits'][1].length;
-					for (let i = 0; i < n_hits; i++) {
-						let clone = structuredClone(dmgObject);
-						clone['non_crit']['ability'] = abils[abilityKey]['hits'][1][i];
-						let htick = hit_tick + abils[abilityKey]['hit_timings'][i];
-						damageTracker[htick] ??= [];
-						damageTracker[htick].push(clone);
-					}
+                    let dmgObject = create_object(settingsCopy);
+                    let dmgObjects = on_cast(settingsCopy, dmgObject, timers);
+                    dmgObjects.forEach(element => {
+                        settingsCopy['ability'] = element['crit']['ability'];
+                        let namedDmgObject = on_hit(settingsCopy, element);
+                        damageTracker[hit_tick].push(namedDmgObject);
+                    });
+                    settingsCopy['ability'] = abilityKey;
+                }
+                //Bleeds, dots, burns (one cast, one hit, many hitsplats)
+                else {
+                    let dmgObject = create_object(settingsCopy);
+                    settingsCopy['ability'] = abils[abilityKey]['hits'][1][0];
+                    dmgObject = on_cast(settingsCopy, dmgObject, timers);
+                    dmgObject = on_hit(settingsCopy, dmgObject);
+                    let n_hits = abils[abilityKey]['hits'][1].length;
+                    for (let i = 0; i < n_hits; i++) {
+                        let clone = structuredClone(dmgObject);
+                        clone['non_crit']['ability'] = abils[abilityKey]['hits'][1][i];
+                        let htick = hit_tick + abils[abilityKey]['hit_timings'][i];
+                        damageTracker[htick] ??= [];
+                        damageTracker[htick].push(clone);
+                    }
                 }
             }
 //s            if (abilityKey in ranged_buff_abilities) handle_ranged_buffs(settingsCopy, timers, abilityKey);
@@ -234,31 +234,28 @@
 	});
 	let abilityBarIndex = 0;
 	let lastAbilityIndex = 0;
-	
+
 	let buffTimings = $state(
-		{'swiftness': [], 'sunshine': [], 'berserk': [], 
-		'split soul ecb': [], 'icy_precision': [], 'crit buff': []}); 
+		{'swiftness': [], 'sunshine': [], 'berserk': [],
+		'split soul ecb': [], 'icy_precision': [], 'crit buff': []});
 		//tracks when buffs are active for drawing visual indicator
 	//UI functions
 	//TODO handle this differently
     function handleAbilityClick(event, abilityKey) {
 		abilityBar[abilityBarIndex] = abilityKey;
 
-		//TODO rewrite these to just be saved when we calc damage
-		if (abilityKey == ABILITIES['GREATER_DEATHS_SWIFTNESS']) {
-			buffTimings['swiftness'].push([abilityBarIndex, abilityBarIndex+63]);
-		}
-		else if (abilityKey == ABILITIES['DEATHS_SWIFTNESS']) {
-			buffTimings['swiftness'].push([abilityBarIndex, abilityBarIndex+52]);
-		}
-		else if (abilityKey == ABILITIES['SPLIT_SOUL_ECB']) {
-			buffTimings['split soul ecb'].push([abilityBarIndex, abilityBarIndex+25]);
-		}
-		else if (abilityKey == ABILITIES['SUNSHINE']) {
-			buffTimings['sunshine'].push([abilityBarIndex, abilityBarIndex+25]);
-		}
-		refreshUI(false);
-		calculateTotalDamageNew();
+        //TODO implement other buffs
+        if (abilityKey == ABILITIES['GREATER_DEATHS_SWIFTNESS']) {
+            buffTimings['swiftness'].push([abilityBarIndex, abilityBarIndex + 63]);
+        } else if (abilityKey == ABILITIES['DEATHS_SWIFTNESS']) {
+            buffTimings['swiftness'].push([abilityBarIndex, abilityBarIndex + 52]);
+        } else if (abilityKey == ABILITIES['SPLIT_SOUL_ECB']) {
+            buffTimings['split soul ecb'].push([abilityBarIndex, abilityBarIndex + 25]);
+        } else if (abilityKey == ABILITIES['SUNSHINE']) {
+            buffTimings['sunshine'].push([abilityBarIndex, abilityBarIndex + 25]);
+        }
+        refreshUI(false);
+        calculateTotalDamageNew();
     }
 
 	function buffActive(key, index) {
@@ -277,23 +274,22 @@
 
     function handleDragStart(event, ability) {
         event.dataTransfer.setData('text/plain', ability);
-		//TODO rethink drag - it kinda sucks compared to clicking to add
+        //TODO rethink drag - it kinda sucks compared to clicking to add
     }
 
     function handleDrop(event, index) {
         event.preventDefault();
-        const abilityKey = event.dataTransfer.getData("text/plain");
-		if (rangedAbils[abilityKey]) {
-			abilityBar[index] = abilityKey;
-		}
-		else {
-			const dragObj = JSON.parse(event.dataTransfer.getData('application/json'));
-			const swapAbil = abilityBar[index]
-			abilityBar[index] = dragObj['ability'];
-			abilityBar[dragObj['startIndex']] = swapAbil;
-		}
-		refreshUI();
-		calculateTotalDamageNew();
+        const abilityKey = event.dataTransfer.getData('text/plain');
+        if (rangedAbils[abilityKey]) {
+            abilityBar[index] = abilityKey;
+        } else {
+            const dragObj = JSON.parse(event.dataTransfer.getData('application/json'));
+            const swapAbil = abilityBar[index];
+            abilityBar[index] = dragObj['ability'];
+            abilityBar[dragObj['startIndex']] = swapAbil;
+        }
+        refreshUI();
+        calculateTotalDamageNew();
     }
 
 	function handleDragStartBar(event, ability, startIndex) {
@@ -305,29 +301,29 @@
         event.preventDefault();
     }
 
-	function handleBarRightClick(event, index) {
-		event.preventDefault();
-		abilityBar[index] = null;
-		refreshUI();
-		calculateTotalDamageNew()
-	}
+    function handleBarRightClick(event, index) {
+        event.preventDefault();
+        abilityBar[index] = null;
+        refreshUI();
+        calculateTotalDamageNew();
+    }
 
-	function clearRotation() {
-		for (let i = 0; i < barSize; i++) {
-			abilityBar[i] = null;
-			stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[i] = 0;
-			stacks[SETTINGS.PERFECT_EQUILIBRIUM_STACKS].stackTicks[i] = 0;
-		}
-		totalDamage = 0;
-		refreshUI();
-		calculateTotalDamageNew();
-		//Reset the visual indicators for buffs
-		for (let key in buffTimings) {
-			if (buffTimings.hasOwnProperty(key)) {
-				buffTimings[key] = []; // Reset each key to an empty array
-			}
-		}
-	}
+    function clearRotation() {
+        for (let i = 0; i < barSize; i++) {
+            abilityBar[i] = null;
+            stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[i] = 0;
+            stacks[SETTINGS.PERFECT_EQUILIBRIUM_STACKS].stackTicks[i] = 0;
+        }
+        totalDamage = 0;
+        refreshUI();
+        calculateTotalDamageNew();
+        //Reset the visual indicators for buffs
+        for (let key in buffTimings) {
+            if (Object.hasOwnProperty.call(buffTimings, key)) {
+                buffTimings[key] = []; // Reset each key to an empty array
+            }
+        }
+    }
 
 	//TODO rename (refreshUIData?)
 	function refreshUI(calcDmg = true) {
@@ -346,6 +342,22 @@
 			//else if (lastAbilityIndex == 0) abilityBarIndex = 0;
 			else abilityBarIndex += 3;
 		}
+    function refreshUI(calcDmg = true) {
+        lastAbilityIndex = 0;
+        for (let i = 0; i < barSize; i++) {
+            if (abilityBar[i] != null) {
+                lastAbilityIndex = i;
+            }
+        }
+        abilityBarIndex = lastAbilityIndex;
+        let abilToAdd = abils[abilityBar[lastAbilityIndex]];
+        if (abilToAdd) {
+            if (abilToAdd['duration']) {
+                abilityBarIndex += abilToAdd['duration'];
+            }
+            //else if (lastAbilityIndex == 0) abilityBarIndex = 0;
+            else abilityBarIndex += 3;
+        }
 
 
 
@@ -365,7 +377,7 @@
 			}
 		}
 
-		console.log('refresh ui is called');
+        console.log('refresh ui is called');
 
 		if (calcDmg) {
 			calculateTotalDamageNew();
@@ -499,62 +511,62 @@
 									{/if}
 								{/each}
 
-							</div>
-						{/each}
-					</div>
-				</div>
-			</div>
-            <RangedSettings bind:settings={settings} updateDamages={calculateTotalDamageNew}/>
-			{#each Object.keys(stacks) as key}
-				<div>
-					{#if stacks[key].number}
-						<Number
-							bind:setting={settings[stacks[key].displaySetting]}
-							on:settingsUpdated={refreshUI}
-							step="1"
-							max="200"
-							min="0"
-						/>
-					{:else}
-						<Checkbox
-							bind:setting={settings[stacks[key].displaySetting]}
-							on:settingsUpdated={refreshUI}
-						/>
-					{/if}
-				</div>
-				<br>
-			{/each}
-			<br>
-			<div>
-				<Checkbox
-					bind:setting={settings[SETTINGS.VIGOUR]}
-					onchange={() => refreshUI()}
-				/>
-				<br>
-				<Checkbox
-					bind:setting={settings[SETTINGS.FURY_OF_THE_SMALL]}
-					onchange={() => refreshUI()}
-				/>
-				<br>
-				<Checkbox
-					bind:setting={settings[SETTINGS.CONSERVATION_OF_ENERGY]}
-					onchange={() => refreshUI()}
-				/>
-				<br>
-				<Checkbox
-					bind:setting={settings[SETTINGS.HEIGHTENED_SENSES]}
-					onchange={() => refreshUI()}
-				/>
-				<br>
-				<Number
-					bind:setting={settings[SETTINGS.ICY_CHILL_STACKS]}
-					onchange={() => refreshUI()}
-					step="1"
-					max="10"
-					min="0"
-				/>
-			</div>
-			<div class="xl:col-span-6 xl:row-start-2 xl:col-start-0">
+                            </div>
+                        {/each}
+                    </div>
+                </div>
+            </div>
+            <RangedSettings bind:settings={settings} updateDamages={calculateTotalDamageNew} />
+            {#each Object.keys(stacks) as key}
+                <div>
+                    {#if stacks[key].number}
+                        <Number
+                            bind:setting={settings[stacks[key].displaySetting]}
+                            on:settingsUpdated={refreshUI}
+                            step="1"
+                            max="200"
+                            min="0"
+                        />
+                    {:else}
+                        <Checkbox
+                            bind:setting={settings[stacks[key].displaySetting]}
+                            on:settingsUpdated={refreshUI}
+                        />
+                    {/if}
+                </div>
+                <br>
+            {/each}
+            <br>
+            <div>
+                <Checkbox
+                    bind:setting={settings[SETTINGS.VIGOUR]}
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Checkbox
+                    bind:setting={settings[SETTINGS.FURY_OF_THE_SMALL]}
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Checkbox
+                    bind:setting={settings[SETTINGS.CONSERVATION_OF_ENERGY]}
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Checkbox
+                    bind:setting={settings[SETTINGS.HEIGHTENED_SENSES]}
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Number
+                    bind:setting={settings[SETTINGS.ICY_CHILL_STACKS]}
+                    onchange={() => refreshUI()}
+                    step="1"
+                    max="10"
+                    min="0"
+                />
+            </div>
+            <div class="xl:col-span-6 xl:row-start-2 xl:col-start-0">
                 <div class="flex flex-col">
                     <div class="card card-ranged">
                         <div class="card-title pb-5">User Guide</div>

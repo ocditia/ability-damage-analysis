@@ -208,7 +208,7 @@ const abilities = {
         icon: '/ability_icons/melee/30x30/darklight.png'
     },
     [ABILITIES.POWERSTAB]: {
-        title: 'Powerstab	',
+        title: 'Powerstab',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/dragon_2h_sword.png'
     },
