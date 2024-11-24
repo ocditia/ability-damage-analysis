@@ -67,7 +67,7 @@
         
         
     }
-    makeNaked();
+    //makeNaked();
     //testPreset();
     //settings[SETTINGS.ICY_CHILL_STACKS].value = 10;
     updateDamages();

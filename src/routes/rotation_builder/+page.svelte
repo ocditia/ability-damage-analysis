@@ -40,7 +40,6 @@
     );
 
     let totalDamage = $state(0);
-	let experimental_data = [];
 
 	function calculateTotalDamageNew() {
 		console.log('Running calc total damage new')
@@ -71,6 +70,7 @@
 			stacks[SETTINGS.ADRENALINE].stackTicks[tick] = settings[SETTINGS.ADRENALINE];
 			stacks['perfect equilibrium stacks'].stackTicks[tick] = settings['perfect equilibrium stacks'];
 			stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[tick] = settings[SETTINGS.ICY_CHILL_STACKS];
+
 		}
 
 		//TODO implement non ability actions
@@ -105,7 +105,7 @@
                 if (rangedAbils[abilityKey].calc == hit_damage_calculation) {
 					let dmgObject = create_object(settingsCopy);
 					style_specific_unification(settingsCopy);
-					dmgObject = on_cast(settingsCopy, dmgObject);
+					dmgObject = on_cast(settingsCopy, dmgObject, timers);
 					on_hit(settingsCopy, dmgObject);
 					dmgObject['non_crit']['ability'] = abilityKey;
                     damageTracker[hit_tick].push(dmgObject);
@@ -116,7 +116,7 @@
 				//Multi-hits (one cast, multiple hits, many hitsplats)
                 else if (abils[abilityKey]['ability classification'] == 'multihit') {
 					let dmgObject = create_object(settingsCopy);
-					let dmgObjects = on_cast(settingsCopy, dmgObject);
+					let dmgObjects = on_cast(settingsCopy, dmgObject, timers);
 					dmgObjects.forEach(element => {
 						settingsCopy['ability'] = element['crit']['ability'];
 						let namedDmgObject = on_hit(settingsCopy, element);
@@ -128,7 +128,7 @@
 				else {
 					let dmgObject = create_object(settingsCopy);
 					settingsCopy['ability'] = abils[abilityKey]['hits'][1][0];
-					dmgObject = on_cast(settingsCopy, dmgObject);
+					dmgObject = on_cast(settingsCopy, dmgObject, timers);
 					dmgObject = on_hit(settingsCopy, dmgObject);
 					let n_hits = abils[abilityKey]['hits'][1].length;
 					for (let i = 0; i < n_hits; i++) {
@@ -234,15 +234,17 @@
 	});
 	let abilityBarIndex = 0;
 	let lastAbilityIndex = 0;
+	
 	let buffTimings = $state(
 		{'swiftness': [], 'sunshine': [], 'berserk': [], 
-		'split soul ecb': [], 'crit buff': []}); 
+		'split soul ecb': [], 'icy_precision': [], 'crit buff': []}); 
 		//tracks when buffs are active for drawing visual indicator
 	//UI functions
+	//TODO handle this differently
     function handleAbilityClick(event, abilityKey) {
 		abilityBar[abilityBarIndex] = abilityKey;
 
-		//TODO implement other buffs
+		//TODO rewrite these to just be saved when we calc damage
 		if (abilityKey == ABILITIES['GREATER_DEATHS_SWIFTNESS']) {
 			buffTimings['swiftness'].push([abilityBarIndex, abilityBarIndex+63]);
 		}
@@ -268,7 +270,7 @@
 				active = true; // todo return early if possible
 			}
 		});
-		let x = abilityBar[0] == null; //THIS IS REQUIRED TO FORCE THE ROTATION TO RERENDER
+		let x = abilityBar[0] == null; //TODO remove
 		//TODO rewrite this
 		return active
 	}
@@ -309,6 +311,7 @@
 		refreshUI();
 		calculateTotalDamageNew()
 	}
+
 	function clearRotation() {
 		for (let i = 0; i < barSize; i++) {
 			abilityBar[i] = null;
@@ -324,9 +327,9 @@
 				buffTimings[key] = []; // Reset each key to an empty array
 			}
 		}
-		experimental_data = [];
 	}
 
+	//TODO rename (refreshUIData?)
 	function refreshUI(calcDmg = true) {
 		lastAbilityIndex = 0;
 		for (let i = 0; i < barSize; i++) {
@@ -525,27 +528,27 @@
 			<div>
 				<Checkbox
 					bind:setting={settings[SETTINGS.VIGOUR]}
-					on:settingsUpdated={refreshUI}
+					onchange={() => refreshUI()}
 				/>
 				<br>
 				<Checkbox
 					bind:setting={settings[SETTINGS.FURY_OF_THE_SMALL]}
-					on:settingsUpdated={refreshUI}
+					onchange={() => refreshUI()}
 				/>
 				<br>
 				<Checkbox
 					bind:setting={settings[SETTINGS.CONSERVATION_OF_ENERGY]}
-					on:settingsUpdated={refreshUI}
+					onchange={() => refreshUI()}
 				/>
 				<br>
 				<Checkbox
 					bind:setting={settings[SETTINGS.HEIGHTENED_SENSES]}
-					on:settingsUpdated={refreshUI}
+					onchange={() => refreshUI()}
 				/>
 				<br>
 				<Number
 					bind:setting={settings[SETTINGS.ICY_CHILL_STACKS]}
-					on:settingsUpdated={refreshUI}
+					onchange={() => refreshUI()}
 					step="1"
 					max="10"
 					min="0"

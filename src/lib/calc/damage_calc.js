@@ -1640,7 +1640,6 @@ function apply_additional(settings, total_damage, newbolg = false) {
         total_damage += calc_sgb(settings, total_damage);
     }
     // handle bolg logic
-    if (settings['bolg damage'] && settings['bolg damage'].length > 0) {
     if (newbolg) {
         if (!settings['bolg damage']) {
             settings['bolg damage'] = [];
@@ -1654,6 +1653,7 @@ function apply_additional(settings, total_damage, newbolg = false) {
             total_damage += calc_bolg(settings)
             delete settings['bolg damage'];
         }
+    }
     // handle bloat logic
     if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
         total_damage += calc_bloat(settings);

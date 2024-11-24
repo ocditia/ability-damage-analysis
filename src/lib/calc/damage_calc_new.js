@@ -28,7 +28,7 @@ function on_stall(settings) {
 // Marco - some changes might have to be made.
 // e.g. currently conflagrate is true/false, but this should be a timer so it should check conflagrate >=1.
 
-function on_cast(settings, dmgObject) {
+function on_cast(settings, dmgObject, timers) {
     // This function happens as an ability is cast
     // scale to hit chance / damage potential
     for (let key in dmgObject) {
@@ -39,10 +39,12 @@ function on_cast(settings, dmgObject) {
     //TODO fix - this is turning off active when buff when using a non basic second abiltiy
     if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
         ['threshold', 'special attack', 'ultimate'].includes(abils[settings['ability']]['ability type']) &&
-        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+        (!timers[SETTINGS.ICY_PRECISION])
     ) {
             settings[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_CHILL_STACKS];
             settings[SETTINGS.ICY_CHILL_STACKS] = 0;
+            //do something with timers to track buff
     }
     // Marco - turn off hit chance stuff here (idt anything exists)
     // TODO - ingenuity of the humans, and check if accuracy penalty from wrong style gear is implemented

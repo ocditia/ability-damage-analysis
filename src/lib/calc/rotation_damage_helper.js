@@ -125,25 +125,6 @@ function rotation_ability_damage(settings) {
     return damages;
 }
 
-function handle_bleeds(settings) {
-    let rotation = get_rotation(settings);
-    let damages = [];
-    for (let key in rotation) {
-        for (let iter = 0; iter < rotation[key].length; iter++) {
-            if (rotation[key][iter] === 'next cast') {
-                settings = next_cast(settings);
-            } else if (rotation[key][iter] === 'next hit') {
-                settings = next_hit(settings);
-            } else {
-                settings['ability'] = rotation[key][iter];
-                damages.push(calc_on_cast(settings));
-            }
-        }
-        settings = next_tick(settings);
-    }
-    return damages;
-}
-
 /**
  * Calculates the damage object for a single tick of a channelled ability
  * @param {*} settings
@@ -186,6 +167,13 @@ function handle_ranged_buffs(settings, timers, abilityKey) {
     }
 }
 
+function handle_wen_buff(settings, timers) {
+    settings[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_CHILL_STACKS];
+    settings[SETTINGS.ICY_CHILL_STACKS] = 0;
+    //TODO handle swiftness' weird damage calc
+    timers[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_PRECISION];
+}
+
 /**
  * Sets (greater) dracolich infusion buff to active if applicable
  */
@@ -196,13 +184,8 @@ function handle_edraco(settings, timers, abilityKey) {
     let legs = settings['legs'];
     let boots = settings['boots'];
 
-    // List of strings to search
     let items = [body, helmet, gloves, legs, boots];
-
-    // Substring to check at the start
     const edraco = 'elite dracolich';
-    
-    // Count how many strings start with x
     let count = items.filter(item => item && item.startsWith(edraco)).length;
     //Handle adrenaline gain
     if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT || abilityKey == ABILITIES.RAPID_FIRE_HIT) {
