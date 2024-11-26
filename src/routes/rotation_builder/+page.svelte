@@ -288,6 +288,11 @@
 	//UI functions
 	//TODO handle this differently
     function handleAbilityClick(event, abilityKey) {
+		if (abilityBarIndex > barSize) {
+			alert("You're trying to add an ability after the end of the rotation.");
+			return;
+		}
+
 		abilityBar[abilityBarIndex] = abilityKey;
 		calculateTotalDamageNew();
         refreshUI(false);
@@ -379,6 +384,7 @@
             abilityBar[i] = null;
             stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[i] = 0;
             stacks[SETTINGS.PERFECT_EQUILIBRIUM_STACKS].stackTicks[i] = 0;
+			//TODO make sure all stacks are reset here, or figure out if this is even still needed
         }
         totalDamage = 0;
         refreshUI();
