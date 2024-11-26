@@ -1,1045 +1,665 @@
 <script>
-    import Header from '$components/Layout/Header.svelte';
-    import Navbar from '$components/Layout/Navbar.svelte';
-    import { SETTINGS, settingsConfig } from '$lib/calc/settings';
+	import Navbar from '$components/Layout/Navbar.svelte';
+	import Header from '$components/Layout/Header.svelte';
+	import { abilities  as r_dmg_abilities } from '$lib/ranged/abilities';
+	import { ranged_buff_abilities } from '$lib/ranged/buff_abilities';
+    import { abilities as magic_dmg_abilities } from '$lib/magic/abilities';
+    import { abilities as melee_dmg_abilities } from '$lib/melee/abilities';
+    import { abilities as necro_dmg_abilities } from '$lib/necromancy/abilities';
+	import { settingsConfig, SETTINGS } from '$lib/calc/settings';
+	import Checkbox from '../../components/Settings/Checkbox.svelte';
+	import Number from '../../components/Settings/Number.svelte';
+	import Select from '../../components/Settings/Select.svelte';
+	import { ABILITIES, abils } from '$lib/calc/const.js';
+	import { hit_damage_calculation, ability_damage_calculation, get_rotation,
+		style_specific_unification, calc_base_ad, get_user_value, apply_additional
+	} from '$lib/calc/damage_calc.js';
+	import {
+        calc_on_cast, rotation_on_npc, rotation_on_npc_test, rotation_ability_damage, handle_ranged_buffs,
+        handle_edraco, handle_sgb, calc_channelled_hit
+    } from '$lib/calc/rotation_damage_helper.js';
+    import RangedSettings from '../../components/Settings/RangedSettings.svelte';
+    import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
+	import { on_stall, on_cast, on_hit, on_damage} from '$lib/calc/damage_calc_new.js';
+	import { create_object } from '$lib/calc/object_helper.js';
     import { abilities } from '$lib/necromancy/abilities';
-    import Checkbox from '../../components/Settings/Checkbox.svelte';
-    import Number from '../../components/Settings/Number.svelte';
-    import Select from '../../components/Settings/Select.svelte';
 
-    let damages = $state(Object.fromEntries(
-        Object.entries(abilities).map(([key, value]) => [key, { ...value, regular: 0, ss: 0 }])
-    ));
-
-    let tab = $state('general');
-
-    let settings = Object.fromEntries(
-        Object.entries(settingsConfig).map(([key, value]) => [
-            key,
-            { ...value, key: key, value: value.default }
-        ])
+    let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abils eventually
+    let meleeAbils = {...melee_dmg_abilities};
+    let magicAbils = {...magic_dmg_abilities};
+	let rangedAbils = {...r_dmg_abilities, ...ranged_buff_abilities};
+    let allAbils = {...magicAbils, ...rangedAbils, ...necroAbils, ...meleeAbils};
+	let settings = $state(Object.fromEntries(
+		Object.entries(settingsConfig).map(([key, value]) => [
+			key,
+			{ ...value, key: key, value: value.default }
+		])
+	));
+    const adaptedSettings = Object.fromEntries(
+        Object.entries(settings).map(([key, value]) => [key, value.value])
     );
 
-    updateDamages();
+    let totalDamage = $state(0);
 
-    function updateDamages() {
+	function calculateTotalDamageNew() {
+		console.log('Running calc total damage new')
+		let dmgs = [];
+		totalDamage = 0;
         const adaptedSettings = Object.fromEntries(
-            Object.entries(settings).map(([key, value]) => [key, value.value])
-        );
+            			Object.entries(settings).map(([key, value]) => [key, value.value])
+            		);
+		const settingsCopy = structuredClone(adaptedSettings);
 
-        Object.entries(damages).forEach(([abilityKey, ability]) => {
-            adaptedSettings['ability'] = abilityKey;
+		let tick = 0;
+		let damageTracker = {};
+		let timers = {};
+		let hit_delay = 1; //TODO actually implement hit delay properly (define min delay for each ability)
+		let start_tick = tick;
+		function processQueuedDamage(tick) {
+			if (damageTracker[tick]) {
+				damageTracker[tick].forEach(namedDmgObject => {
+					settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
+					let dmg = get_user_value(settingsCopy, on_damage(settingsCopy, namedDmgObject));
+					dmg = apply_additional(settingsCopy, dmg, true);
+					dmgs.push(dmg);
+				});
+			}
+		}
 
-            adaptedSettings['split soul'] = false;
-            damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
+		function copyStacks(settings) {
+			//Track number of each stack, and whether buffs are on during this tick
+			for(let key in stacks) {
+				stacks[key].stackTicks[tick] = settings[key];
+			}
+			buffs.forEach(buffTitle => {
+				buffTimings2[buffTitle][tick] = settings[buffTitle];
+			});
+		}
 
-            adaptedSettings['split soul'] = true;
-            damages[abilityKey].ss = ability.calc({ ...adaptedSettings });
-        });
+		//TODO implement non ability actions
+		while (tick < barSize + 20) {
+			let abilityKey = abilityBar[tick];
+			if (abilityKey == null) {
+				//Todo make a function which combines all these 3 (i.e. handle buff timers,
+				//process damage queue, copy buff info for this tick to ui)
+				handleTimers(timers, settingsCopy);
+				processQueuedDamage(tick);
+				copyStacks(settingsCopy);
+				tick += 1;
+				continue;
+			}
+
+			let abil_duration = 3; //assume ability is 3t unless duration is explicitly specified
+            if (abils[abilityKey]['duration'])
+				abil_duration = abils[abilityKey]['duration'];
+			settingsCopy['ability'] = abilityKey;
+			on_stall(settingsCopy);
+			style_specific_unification(settingsCopy, 'ranged');
+			settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
+            start_tick = tick;
+            let hit_tick = tick + hit_delay;
+            damageTracker[hit_tick] ??= [];
+
+			if (abilityKey in ranged_buff_abilities) {
+				handle_ranged_buffs(settingsCopy, timers, abilityKey);
+			}
+            else if (abilityKey in rangedAbils) {
+                //Handle single-hit abilities (one cast, one hit, one hitsplat)
+                if (rangedAbils[abilityKey].calc == hit_damage_calculation) {
+                    let dmgObject = create_object(settingsCopy);
+                    style_specific_unification(settingsCopy);
+                    dmgObject = on_cast(settingsCopy, dmgObject, timers);
+                    on_hit(settingsCopy, dmgObject);
+                    dmgObject['non_crit']['ability'] = abilityKey;
+                    damageTracker[hit_tick].push(dmgObject);
+                }
+                //Handles channelled abilities (many casts, many hits, many hitsplats)
+                //(do nothing, handle at the end - but needs to run so channels aren't interpreted as bleeds)
+                else if (isChannelled(settingsCopy, abilityKey)) {
+                }
+                //Multi-hits (one cast, multiple hits, many hitsplats)
+                else if (abils[abilityKey]['ability classification'] == 'multihit') {
+                    let dmgObject = create_object(settingsCopy);
+                    let dmgObjects = on_cast(settingsCopy, dmgObject, timers);
+                    dmgObjects.forEach(element => {
+                        settingsCopy['ability'] = element['crit']['ability'];
+                        let namedDmgObject = on_hit(settingsCopy, element);
+                        damageTracker[hit_tick].push(namedDmgObject);
+                    });
+                    settingsCopy['ability'] = abilityKey;
+                }
+                //Bleeds, dots, burns (one cast, one hit, many hitsplats)
+                else {
+                    let dmgObject = create_object(settingsCopy);
+                    settingsCopy['ability'] = abils[abilityKey]['hits'][1][0];
+                    dmgObject = on_cast(settingsCopy, dmgObject, timers);
+                    dmgObject = on_hit(settingsCopy, dmgObject);
+                    let n_hits = abils[abilityKey]['hits'][1].length;
+                    for (let i = 0; i < n_hits; i++) {
+                        let clone = structuredClone(dmgObject);
+                        clone['non_crit']['ability'] = abils[abilityKey]['hits'][1][i];
+                        let htick = hit_tick + abils[abilityKey]['hit_timings'][i];
+                        damageTracker[htick] ??= [];
+                        damageTracker[htick].push(clone);
+                    }
+                }
+            }
+			//Process hitsplats and decrement timers
+            let rota;
+            if (isChannelled(settingsCopy, abilityKey)) {
+                rota = get_rotation(settingsCopy);
+            }
+			let end_tick = start_tick + abil_duration;
+			for (let i = start_tick; i < end_tick; i++) {
+                //Perform any necessary hits from chanelled abilities on this tick
+                if (isChannelled(settingsCopy, abilityKey)) {
+					//If there's a new ability cast on this tick, cancel the channel and exit early
+					if (i > start_tick && abilityBar[tick]) {
+						break;
+					}
+					else {
+						let dmgObject = calc_channelled_hit(settingsCopy, 1 + i - start_tick, rota, timers); //i+1 because hits are 1 indexed
+						dmgObject['non_crit']['ability'] = abilityKey;
+						if (dmgObject['non_crit']['damage list'].length > 0 ) {
+							let hit_tick = i + hit_delay;
+							(damageTracker[hit_tick] ??= []).push(dmgObject);
+						}
+					}
+                }
+				handleTimers(timers, settingsCopy);
+                //Apply on npc modifiers to already queued damage for this to tick
+				processQueuedDamage(i);
+				copyStacks(settingsCopy);
+                tick += 1;
+            }
+            end_tick = tick;
+		}
+		totalDamage = dmgs.reduce((acc, current) => acc + current, 0);
+		console.log(buffTimings2);
+		console.log('New Impl Total Damage = ' + totalDamage);
+	}
+
+	function handleTimers(timers, settings) {
+		if (Object.keys(timers).length > 0) {
+			for (let key in timers) {
+				// console.log('Key = ' + key);
+				// console.log('Time = ' + timers[key]);
+				// console.log(settings[key]);
+				timers[key] -= 1;
+				if (timers[key] < 0) {
+					settings[key] = false;
+				}
+			}
+		}
+	}
+
+	function isChannelled(settingsCopy, key) {
+        return abils[key]['ability classification'] == 'channel';
     }
+
+	//UI
+	const barSize = 250;
+    let abilityBar = $state(Array(barSize).fill(null)); // Empty slots on the bar
+	let tab = $state('general'); // settings tab
+	let abilityTab = $state('ranged');
+    let selectedTab = 'general';
+	const baseBarRowGap = 30;
+	let barRowGap = $state(baseBarRowGap);
+
+	const stackFontSize = 12;
+	const baseStackOffset = 32;
+	const stackPadding = 2;
+
+	const stacks = $state({
+		[SETTINGS.ADRENALINE]: {
+			title: 'Adrenaline',
+			displaySetting: SETTINGS.ADRENALINE,
+			idx: -1,
+			image: '/effect_icons/Crit_buff.png',
+			stackTicks: Array(barSize).fill(0),
+			colour: '#f5e942',
+			number: 'true'
+		},
+		[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
+			title: 'Perfect Equilibrium stacks',
+			displaySetting: SETTINGS.SHOW_BOLG_STACKS,
+			idx: -1,
+			image: '/effect_icons/Perfect Equilibrium (self status).png',
+			stackTicks: Array(barSize).fill(0),
+			colour: '#4cfc42'
+		},
+		[SETTINGS.ICY_CHILL_STACKS]: {
+			title: 'Icy Chill stacks',
+			displaySetting: SETTINGS.SHOW_ICY_CHILL_STACKS,
+			idx: -1,
+			image: '/effect_icons/Icy_Chill.png',
+			stackTicks: Array(barSize).fill(0),
+			colour: '#03f4fc'
+		}
+	});
+	let abilityBarIndex = 0;
+	let lastAbilityIndex = 0;
+
+	//tracks when buffs are active for drawing the visual indicator
+	let buffTimings = $state(
+		{'swiftness': [], 'sunshine': [], 'berserk': [],
+		'split soul ecb': [], 'icy_precision': [], 'crit buff': []});
+
+	//TODO replace buffTimings original impl with this one
+	// The times buffs are active are already tracked properly - just need to rewrite the function
+	// which translates when the buffs are active into drawing the indicator bars on UI to use this data
+	let buffs = [SETTINGS.DEATH_SWIFTNESS, SETTINGS.SUNSHINE, SETTINGS.BERSERK,
+	SETTINGS.SPLIT_SOUL, SETTINGS.ICY_PRECISION];
+	let buffTimings2 = 
+		Object.fromEntries(buffs.map(buff => [buff, Array(barSize).fill(0)]))
+	;
+		
+	//UI functions
+	//TODO handle this differently
+    function handleAbilityClick(event, abilityKey) {
+		abilityBar[abilityBarIndex] = abilityKey;
+
+        //TODO implement other buffs
+        if (abilityKey == ABILITIES['GREATER_DEATHS_SWIFTNESS']) {
+            buffTimings['swiftness'].push([abilityBarIndex, abilityBarIndex + 63]);
+        } else if (abilityKey == ABILITIES['DEATHS_SWIFTNESS']) {
+            buffTimings['swiftness'].push([abilityBarIndex, abilityBarIndex + 52]);
+        } else if (abilityKey == ABILITIES['SPLIT_SOUL_ECB']) {
+            buffTimings['split soul ecb'].push([abilityBarIndex, abilityBarIndex + 25]);
+        } else if (abilityKey == ABILITIES['SUNSHINE']) {
+            buffTimings['sunshine'].push([abilityBarIndex, abilityBarIndex + 25]);
+        }
+        refreshUI(false);
+        calculateTotalDamageNew();
+    }
+
+	function buffActive(key, index) {
+		let active = false;
+		//Find which tick(s) this buff is used on, and if the current tick
+		//is within the buff duration for any of the uses
+		buffTimings[key].forEach(element => {
+			if (index >= element[0] && index < element[1]) {
+				active = true; // todo return early if possible
+			}
+		});
+		let x = abilityBar[0] == null; //TODO remove
+		//TODO rewrite this to just store the value of each buff at each tickq2
+		return active
+	}
+
+    function handleDragStart(event, ability) {
+        event.dataTransfer.setData('text/plain', ability);
+        //TODO rethink drag - it kinda sucks compared to clicking to add
+    }
+
+    function handleDrop(event, index) {
+        event.preventDefault();
+        const abilityKey = event.dataTransfer.getData('text/plain');
+        if (rangedAbils[abilityKey]) {
+            abilityBar[index] = abilityKey;
+        } else {
+            const dragObj = JSON.parse(event.dataTransfer.getData('application/json'));
+            const swapAbil = abilityBar[index];
+            abilityBar[index] = dragObj['ability'];
+            abilityBar[dragObj['startIndex']] = swapAbil;
+        }
+        refreshUI();
+        calculateTotalDamageNew();
+    }
+
+	function handleDragStartBar(event, ability, startIndex) {
+        const dragData = JSON.stringify({ ability, startIndex });
+    	event.dataTransfer.setData('application/json', dragData);
+    }
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function handleBarRightClick(event, index) {
+        event.preventDefault();
+        abilityBar[index] = null;
+        refreshUI();
+        calculateTotalDamageNew();
+    }
+
+    function clearRotation() {
+        for (let i = 0; i < barSize; i++) {
+            abilityBar[i] = null;
+            stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[i] = 0;
+            stacks[SETTINGS.PERFECT_EQUILIBRIUM_STACKS].stackTicks[i] = 0;
+        }
+        totalDamage = 0;
+        refreshUI();
+        calculateTotalDamageNew();
+        //Reset the visual indicators for buffs
+        for (let key in buffTimings) {
+            if (Object.hasOwnProperty.call(buffTimings, key)) {
+                buffTimings[key] = []; // Reset each key to an empty array
+            }
+        }
+    }
+
+	//TODO rename (refreshUIData?)
+	function refreshUI(calcDmg = true) {
+		lastAbilityIndex = 0;
+		for (let i = 0; i < barSize; i++) {
+			if (abilityBar[i] != null) {
+				lastAbilityIndex = i;
+			}
+		}
+		abilityBarIndex = lastAbilityIndex;
+		let abilToAdd = abils[abilityBar[lastAbilityIndex]];
+		if (abilToAdd) {
+			if (abilToAdd['duration']) {
+				abilityBarIndex += abilToAdd['duration'];
+			}
+			//else if (lastAbilityIndex == 0) abilityBarIndex = 0;
+			else abilityBarIndex += 3;
+		}
+
+		//Handle stacks
+		let i = 0;
+		barRowGap = baseBarRowGap;
+		for (let key in stacks) {
+			let displaySetting = stacks[key]['displaySetting'];
+			let disp = settings[displaySetting];
+			if (disp['value']) {
+				stacks[key]['idx'] = i;
+				barRowGap += (stackFontSize + stackPadding);
+				i++;
+			}
+			else {
+				stacks[key]['idx'] = -1;
+			}
+		}
+
+        console.log('refresh ui is called');
+
+		if (calcDmg) {
+			calculateTotalDamageNew();
+		}
+	}
+
+	//TODO delete
+	function showStack(idx, arr) {
+		if (idx == 0) {
+			return true;
+		}
+		else {
+			return !(arr[idx] == arr[idx-1]);
+		}
+	}
+	//abilityBar[0] = "greater ricochet";
+	refreshUI();
 </script>
 
 <Navbar />
-<Header
-    img="/necro_background.png"
-    text="Necromancy Calculator"
-    icon="/style_icons/necro-white.svg"
-/>
+<Header img="/range_background.png" text="Rotation Calculator" icon="/style_icons/ranged-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
-    <div class="responsive-container">
-        <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8">
-            <div class="xl:col-span-6 xl:row-start-1 xl:row-span-4">
-                <div class="card card-necro">
-                    <h1 class="main-header mb-6 ml-3">Damage Values</h1>
+	<div class="responsive-container">
+		<section class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8">
+			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-4">
+				<div class="card card-ranged">
+					<h1 class="main-header mb-6 ml-3">Rotation</h1>
                     <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="p-0 min-w-[30px]"></th>
-                                    <th class="p-3 text-left">Ability</th>
-                                    <th class="p-3 text-left">Regular</th>
-                                    <th class="p-3 text-left">Split Soul</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {#each Object.entries(damages) as [key, damage] (key)}
-                                    <tr>
-                                        <td class="p-0"><img src={damage.icon} alt="" /></td>
-                                        <td class="p-3 text-left">{damage.title}</td>
-                                        <td class="p-3 text-left">{damage.regular}</td>
-                                        <td class="p-3 text-left">{damage.ss}</td>
-                                    </tr>
-                                {/each}
-                            </tbody>
-                        </table>
+						<button onclick={() => clearRotation()}>Reset</button>
+						<br>
+                        <button onclick={() => calculateTotalDamageNew()}>Calculate Damage</button>
+                        <p>Total Damage: {totalDamage}</p>
+					</div>
+                    <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
+                        <li class="flex-grow me-2">
+                            <button
+                                onclick={() => (abilityTab = 'magic')}
+                                class:text-[#968A5C]={abilityTab === 'magic'}
+                                class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
+                                >Magic</button
+                            >
+                        </li>
+                        <li class="flex-grow me-2">
+                            <button
+                                onclick={() => (abilityTab = 'melee')}
+                                class:text-[#968A5C]={abilityTab === 'melee'}
+                                class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
+                                >Melee</button
+                            >
+                        </li>
+
+                        <li class="flex-grow me-2">
+                            <button
+                                onclick={() => (abilityTab = 'ranged')}
+                                class:text-[#968A5C]={abilityTab === 'ranged'}
+                                class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
+                                >Ranged</button
+                            >
+                        </li>
+                        <li class="flex-grow me-2">
+                            <button
+                                onclick={() => (abilityTab = 'necro')}
+                                class:text-[#968A5C]={abilityTab === 'necro'}
+                                class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
+                                >Necro</button
+                            >
+                        </li>
+                    </ul>
+					<br>
+                    {#if abilityTab === 'ranged'}
+                        <AbilityChoice abilities={rangedAbils} handleAbilityClick={handleAbilityClick} handleDragStart={handleDragStart} style={abilityTab}/>
+                    {:else if abilityTab === 'magic'}
+                        <AbilityChoice abilities={magicAbils} handleAbilityClick={handleAbilityClick} handleDragStart={handleDragStart} style={abilityTab}/>
+                    {:else if abilityTab === 'melee'}
+                        <AbilityChoice abilities={meleeAbils} handleAbilityClick={handleAbilityClick} handleDragStart={handleDragStart} style={abilityTab}/>
+                    {:else if abilityTab === 'necro'}
+                        <AbilityChoice abilities={necroAbils} handleAbilityClick={handleAbilityClick} handleDragStart={handleDragStart} style={abilityTab}/>
+                    {/if}
+                    <div style="row-gap:{barRowGap}px;" class="ability-bar">
+						{#each abilityBar as ability, index}
+							<div class="ability-slot"
+									role="button"
+									tabindex="0"
+									aria-label="Ability slot"
+									oncontextmenu={(e) => handleBarRightClick(e, index)}
+									ondrop={(e) => handleDrop(e, index)}
+									ondragover={(e) => allowDrop(e)}
+							>
+								<span class="cell-number">{index}</span>
+								{#if ability}
+									<img src={allAbils[ability].icon}
+										alt={allAbils[ability].title}
+										style="width: 100%; height: 100%;"
+										draggable="true"
+            							ondragstart={(e) => handleDragStartBar(e, ability, index)}
+									/>
+								{/if}
+								{#if buffActive('swiftness', index)}
+									<div class="line-swiftness" title="Death's Swiftness"></div>
+								{/if}
+								{#if buffActive('split soul ecb', index)}
+									<div class="line-ecb" title="Split Soul (ECB)"></div>
+								{/if}
+								{#each Object.keys(stacks) as key}
+									{#if showStack(index,  stacks[key].stackTicks) && stacks[key].idx >= 0}
+										<span
+											title="{stacks[key].title}"
+											style="
+												transform: translateX(0px);
+												top: {baseStackOffset+3+(stackFontSize+stackPadding) * stacks[key].idx}px;
+												left: {stackFontSize+stackPadding*2}px;
+												font-size: {stackFontSize}px;
+												color: {stacks[key].colour};
+												"
+											class="bolg-stacks"
+										>
+											{stacks[key].stackTicks[index]}
+										</span>
+										<img src={stacks[key].image}
+											style=
+												"transform:translateX({2-(30-stackFontSize)/2}px);
+												top: {baseStackOffset+6+(stackFontSize+stackPadding) * stacks[key].idx}px;
+												height: {stackFontSize}px;
+												width: {stackFontSize}px;
+												"
+											class="pe-icon"
+											title={stacks[key].title}
+											alt={stacks[key].title}
+										/>
+									{/if}
+								{/each}
+
+                            </div>
+                        {/each}
                     </div>
                 </div>
             </div>
-
-            <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-necro">
-                <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
-                    <li class="flex-grow me-2">
-                        <button
-                            onclick={() => (tab = 'general')}
-                            class:text-[#968A5C]={tab === 'general'}
-                            class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                            >General</button
-                        >
-                    </li>
-                    <li class="flex-grow me-2">
-                        <button
-                            onclick={() => (tab = 'necro equipment')}
-                            class:text-[#968A5C]={tab === 'equipment'}
-                            class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                            >Necro</button
-                        >
-                    </li>
-                    <li class="flex-grow me-2">
-                        <button
-                            onclick={() => (tab = 'magic equipment')}
-                            class:text-[#968A5C]={tab === 'equipment'}
-                            class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                            >Magic</button
-                        >
-                    </li>
-                    <li class="flex-grow me-2">
-                        <button
-                            onclick={() => (tab = 'ranged equipment')}
-                            class:text-[#968A5C]={tab === 'equipment'}
-                            class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                            >Ranged</button
-                        >
-                    </li>
-                    <li class="flex-grow me-2">
-                        <button
-                            onclick={() => (tab = 'melee equipment')}
-                            class:text-[#968A5C]={tab === 'equipment'}
-                            class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                            >Melee</button
-                        >
-                    </li>
-                    <li class="flex-grow me-2">
-                        <button
-                            onclick={() => (tab = 'bosses')}
-                            class:text-[#968A5C]={tab === 'bosses'}
-                            class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                            >Bosses</button
-                        >
-                    </li>
-                </ul>
-                <form class="w-full">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
-                        {#if tab === 'general'}
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">General</h5>
-                                <Select
-                                    setting={settings[SETTINGS.MODE]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.TARGET_HP_PERCENT]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="100"
-                                    min="0"
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Base damage</h5>
-                                <Number
-                                    setting={settings[SETTINGS.ABILITY_DAMAGE]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="9999"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.NECROMANCY_LEVEL]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="150"
-                                    min="1"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.REAPER_CREW]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/death.png"
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">
-                                    Invisible base damage
-                                </h5>
-                                <Number
-                                    setting={settings[SETTINGS.HIT_CHANCE]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="100"
-                                    min="0"
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">
-                                    Ability specific
-                                </h5>
-                                <Checkbox
-                                    setting={settings[SETTINGS.DEATH_SPARK]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.LIVING_DEATH]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="25"
-                                    min="0"
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Additive</h5>
-                                <Number
-                                    setting={settings[SETTINGS.STONE_OF_JAS]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="6"
-                                    min="0"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.DRACONIC_FRUIT]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.RUBY_AURORA]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Ruby_Aurora_icon.webp"
-                                    step="1"
-                                    max="3"
-                                    min="0"
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">
-                                    Multiplicative (shared)
-                                </h5>
-                                <Select
-                                    setting={settings[SETTINGS.NECRO_PRAYER]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Prayer.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.REVENGE]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="10"
-                                    min="0"
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">
-                                    Multiplicative (PvE)
-                                </h5>
-                                <Select
-                                    setting={settings[SETTINGS.SLAYER_HELM]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.GUARDHOUSE]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.SWIFTNESS_OF_THE_AVIANSIE]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Core</h5>
-                                <Number
-                                    setting={settings[SETTINGS.BERSERKERS_FURY]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="0.5"
-                                    max="5.5"
-                                    min="0"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.SMOKE_CLOUD]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">On-NPC</h5>
-                                <Select
-                                    setting={settings[SETTINGS.VULN]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Vulnerability_icon.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="6"
-                                    min="0"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.CRYPTBLOOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Cryptbloom_helm.png"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.SLAYER_PERK_UNDEAD]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/25px-Undead_Slayer.webp"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.SLAYER_PERK_DRAGON]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/25px-Undead_Slayer.webp"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.SLAYER_PERK_DEMON]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/25px-Undead_Slayer.webp"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.SLAYER_SIGIL_UNDEAD]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.SLAYER_SIGIL_DRAGON]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.SLAYER_SIGIL_DEMON]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.NOPE]}
-                                    on:settingsUpdated={updateDamages}
-                                    step="1"
-                                    max="3"
-                                    min="0"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.HAUNTED]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="https://imgur.com/9U5ghz2.png"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.HAUNTED_AD]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                            </div>
-                        {:else if tab === 'necro equipment'}
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Armour</h5>
-                                <Select
-                                    setting={settings[SETTINGS.NECRO_HELMET]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Head_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.NECRO_BODY]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Torso_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.NECRO_LEGS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Legs_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.NECRO_GLOVES]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Hands_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.NECRO_BOOTS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Feet_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.NECKLACE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Neck_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.CAPE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Back_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.RING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Ring_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.POCKET]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Pocket_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.AURA]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.FAMILIAR]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Perks</h5>
-                                <Checkbox
-                                    setting={settings[SETTINGS.LVL20ARMOUR]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/level-20.png"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.BITING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Biting.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.PRECISE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Precise.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.ERUPTIVE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Eruptive.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.FLANKING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Flanking.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.GENOCIDAL]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="4.9"
-                                    step="0.1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.RUTHLESS_RANK]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Ruthless.webp"
-                                    max="3"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.RUTHLESS_STACKS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Ruthless.webp"
-                                    max="5"
-                                    step="1"
-                                    min="0"
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>
-                                <Select
-                                    setting={settings[SETTINGS.WEAPON]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Main_hand_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.NECRO_MH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Main_hand_slot.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.MH_TIER_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.NECRO_OH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Off-hand_slot.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.OH_TIER_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.INNATE_MASTERY]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                            </div>
-                            {:else if tab === 'magic equipment'}
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Armour</h5>
-                                <Select
-                                    setting={settings[SETTINGS.MAGIC_HELMET]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Head_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MAGIC_BODY]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Torso_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MAGIC_LEGS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Legs_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MAGIC_GLOVES]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Hands_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MAGIC_BOOTS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Feet_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.NECKLACE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Neck_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.CAPE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Back_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.RING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Ring_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.POCKET]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Pocket_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.AURA]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.FAMILIAR]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Perks</h5>
-                                <Checkbox
-                                    setting={settings[SETTINGS.LVL20ARMOUR]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/level-20.png"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.BITING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Biting.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.PRECISE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Precise.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.ERUPTIVE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Eruptive.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.FLANKING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Flanking.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.GENOCIDAL]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="4.9"
-                                    step="0.1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.RUTHLESS_RANK]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Ruthless.webp"
-                                    max="3"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.RUTHLESS_STACKS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Ruthless.webp"
-                                    max="5"
-                                    step="1"
-                                    min="0"
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>
-                                <Select
-                                    setting={settings[SETTINGS.WEAPON]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Main_hand_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MAGIC_MH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Main_hand_slot.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.MH_TIER_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MAGIC_OH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Off-hand_slot.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.OH_TIER_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MAGIC_TH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Off-hand_slot.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.TH_TIER_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.INNATE_MASTERY]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                            </div>
-                            {:else if tab === 'ranged equipment'}
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Armour</h5>
-                                <Select
-                                    setting={settings[SETTINGS.RANGED_HELMET]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Head_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.RANGED_BODY]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Torso_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.RANGED_LEGS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Legs_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.RANGED_GLOVES]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Hands_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.RANGED_BOOTS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Feet_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.NECKLACE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Neck_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.CAPE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Back_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.RING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Ring_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.POCKET]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Pocket_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.AURA]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.FAMILIAR]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Perks</h5>
-                                <Checkbox
-                                    setting={settings[SETTINGS.LVL20ARMOUR]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/level-20.png"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.BITING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Biting.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.PRECISE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Precise.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.ERUPTIVE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Eruptive.webp"
-                                    max="4"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.CAROMING]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="4"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.FLANKING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Flanking.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.GENOCIDAL]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="4.9"
-                                    step="0.1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.RUTHLESS_RANK]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Ruthless.webp"
-                                    max="3"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.RUTHLESS_STACKS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Ruthless.webp"
-                                    max="5"
-                                    step="1"
-                                    min="0"
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>
-                                <Select
-                                    setting={settings[SETTINGS.WEAPON]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Main_hand_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.RANGED_MH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Main_hand_slot.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.MH_TIER_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.RANGED_OH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Off-hand_slot.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.OH_TIER_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.RANGED_TH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Off-hand_slot.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.TH_TIER_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.TH_TYPE_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Off-hand_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.AMMO]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.INNATE_MASTERY]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                            </div>
-                            {:else if tab === 'melee equipment'}
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Armour</h5>
-                                <Select
-                                    setting={settings[SETTINGS.MELEE_HELMET]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Head_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MELEE_BODY]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Torso_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MELEE_LEGS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Legs_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MELEE_GLOVES]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Hands_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MELEE_BOOTS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Feet_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.NECKLACE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Neck_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.CAPE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Back_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.RING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Ring_slot.png"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.POCKET]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Pocket_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.AURA]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.FAMILIAR]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Perks</h5>
-                                <Checkbox
-                                    setting={settings[SETTINGS.LVL20ARMOUR]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/level-20.png"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.BITING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Biting.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.PRECISE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Precise.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.ERUPTIVE]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Eruptive.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.FLANKING]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Flanking.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.GENOCIDAL]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="4.9"
-                                    step="0.1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.RUTHLESS_RANK]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Ruthless.webp"
-                                    max="3"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.RUTHLESS_STACKS]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/effect_icons/Ruthless.webp"
-                                    max="5"
-                                    step="1"
-                                    min="0"
-                                />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>
-                                <Select
-                                    setting={settings[SETTINGS.WEAPON]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Main_hand_slot.webp"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MELEE_MH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Main_hand_slot.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.MH_TIER_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MELEE_OH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Off-hand_slot.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.OH_TIER_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Select
-                                    setting={settings[SETTINGS.MELEE_TH]}
-                                    on:settingsUpdated={updateDamages}
-                                    img="/armour_icons/Off-hand_slot.webp"
-                                />
-                                <Number
-                                    setting={settings[SETTINGS.TH_TIER_CUSTOM]}
-                                    on:settingsUpdated={updateDamages}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Checkbox
-                                    setting={settings[SETTINGS.INNATE_MASTERY]}
-                                    on:settingsUpdated={updateDamages}
-                                />
-                            </div>
-                        {:else if tab === 'bosses'}
-                        <div class="md:col-span-1">
-                            <Number
-                                setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
-                                on:settingsUpdated={updateDamages}
-                                img="/effect_icons/Guardian's_Triumph_Edict_(self_status).png"
-                                step="1"
-                                min="0"
-                            />
-                        </div>
-                        {/if}
-                    </div>
-                </form>
+            <RangedSettings bind:settings={settings} updateDamages={calculateTotalDamageNew} />
+            {#each Object.keys(stacks) as key}
+                <div>
+                    {#if stacks[key].number}
+                        <Number
+                            bind:setting={settings[stacks[key].displaySetting]}
+                            on:settingsUpdated={refreshUI}
+                            step="1"
+                            max="200"
+                            min="0"
+                        />
+                    {:else}
+                        <Checkbox
+                            bind:setting={settings[stacks[key].displaySetting]}
+                            on:settingsUpdated={refreshUI}
+                        />
+                    {/if}
+                </div>
+                <br>
+            {/each}
+            <br>
+            <div>
+                <Checkbox
+                    bind:setting={settings[SETTINGS.VIGOUR]}
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Checkbox
+                    bind:setting={settings[SETTINGS.FURY_OF_THE_SMALL]}
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Checkbox
+                    bind:setting={settings[SETTINGS.CONSERVATION_OF_ENERGY]}
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Checkbox
+                    bind:setting={settings[SETTINGS.HEIGHTENED_SENSES]}
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Number
+                    bind:setting={settings[SETTINGS.ICY_CHILL_STACKS]}
+                    onchange={() => refreshUI()}
+                    step="1"
+                    max="10"
+                    min="0"
+                />
             </div>
-
-            <div class="xl:col-span-6 xl:row-start-2 xl:col-start-7">
+            <div class="xl:col-span-6 xl:row-start-2 xl:col-start-0">
                 <div class="flex flex-col">
-                    <div class="card card-necro">
+                    <div class="card card-ranged">
                         <div class="card-title pb-5">User Guide</div>
                         <div class="pb-5">
                             <p>
-                                Ability damage is automatically calculated based on the settings you
-                                have selected, however, you can manually override it by entering a
-                                value other than zero in the setting field.
+                                To add abilities, left clicking will add a new ability to the end of your 
+								bar. You can also drag abilities for more control. Right clicking an ability
+								on the bar will remove it.
                             </p>
                         </div>
                         <div class="pb-5">
                             <p>
-                                The calculator prevents irrational settings from being selected, for
-                                example, revenge does nothing if you do not have mainhand + shield
-                                (Ms) as your selected weapon. Be sure to check all settings if
-                                effects are not giving the expected results.
+                                You can configure the additional settings to decide how much information
+								you are shown, as well as how much adrenaline and how many stacks you start
+								with. As adren pots/renewals are not yet implemented, please add additional 
+								starting adrenaline to replicate them for now. Additionally, the damage over time 
+								from Death's Swiftness has been turned off currently while a better 
+								implementation is being written.
                             </p>
                         </div>
-                        <div>
+						<div class="pb-5">
                             <p>
-                                Certain value or stack based effects have higher bounds than what
-                                exists in the live game which we have done to allow for more freedom
-                                with testing.
+                                Please report any bugs or errors you find in the RSA discord.
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+		</section>
+	</div>
 </div>
+
+<style>
+	/* TODO - move these into their own css file */
+	.ability-bar {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, 30px);
+		column-gap: 0px;
+		position: relative;
+	}
+
+	.ability-slot {
+        position: relative;
+		width: 30px;
+		height: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		border: 1px solid #878787;
+		box-sizing: border-box;
+    }
+
+	.line-swiftness {
+		position: absolute;
+		bottom: -6px;
+		left: -1px;
+		width: 32px;
+		height: 4px;
+		background-color: #00bf63; /* Dashed line color */
+		box-sizing: border-box;
+	}
+
+	.line-ecb {
+		position: absolute;
+		bottom: -11px;
+		left: -1px;
+		width: 32px;
+		height: 4px;
+		background-color: #9303ec; /* Dashed line color */
+	}
+
+	.ability-bar {
+		padding-top: 25px;
+	}
+
+    .cell-number {
+        position: absolute;
+        top: -18px; /* Adjust to move the number above the cell */
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px; /* Adjust size of the number */
+        color: #bababa; /* Adjust color of the number */
+	}
+
+	.bolg-stacks {
+        position: absolute;
+        top: +38px; /* Adjust to move the number under the cell */
+        left: auto;
+        transform: translateX(+50%);
+	}
+
+	.pe-icon {
+		position: absolute;
+		width: 12px;
+		height: 12px;
+		transform: translateX(-70%) translateY(32px);
+	}
+</style>

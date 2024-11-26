@@ -483,6 +483,7 @@ const SETTINGS = {
     STONE_OF_JAS: 'stone of jas',
     INFERNAL_PUZZLE_BOX: 'Infernal puzzle box',
     ICY_PRECISION: 'icy precision',
+    ICY_CHILL_STACKS: 'icy chill stacks',
     PUNCTURE_STACKS: 'puncture stacks',
     FLOW_STACKS: 'flow stacks',
     CONFLAGRATE: 'conflagrate',
@@ -529,6 +530,7 @@ const SETTINGS = {
         GREATER: 'greater'
     },
     RAMPAGE: 'rampage',
+    BIK_STACKS: 'bik stacks',
     PERFECT_EQUILIBRIUM_STACKS: 'perfect equilibrium stacks',
     BALANCE_BY_FORCE: 'balance by force',
     TARGET_SIZE: 'target size',
@@ -550,10 +552,20 @@ const SETTINGS = {
     SUNSHINE: 'sunshine',
     META: 'meta',
     DEATH_SWIFTNESS: 'death swiftness',
+    SWIFTNESS_ACTIVE: 'swiftness',
     SPLIT_SOUL: 'split soul',
     ZGS: 'zgs',
     BERSERK: 'berserk',
     DETONATE: 'detonate charge timer',
+    DIVINE_RAGE: 'divine rage',
+
+    SHOW_BOLG_STACKS: 'show bolg stacks',
+    SHOW_ICY_CHILL_STACKS: 'show icy chill stacks',
+    ADRENALINE: 'adrenaline',
+    VIGOUR: 'vigour',
+    FURY_OF_THE_SMALL: 'fots',
+    HEIGHTENED_SENSES: 'heightened senses',
+    CONSERVATION_OF_ENERGY: 'coe'
 };
 
 const settingsConfig = {
@@ -1362,6 +1374,10 @@ const settingsConfig = {
         label: 'Icy Precision stacks',
         default: 0
     },
+    [SETTINGS.ICY_CHILL_STACKS]: {
+        label: 'Icy Chill stacks',
+        default: 0
+    },
     [SETTINGS.PUNCTURE_STACKS]: {
         label: 'Puncture Stacks',
         default: 0
@@ -1472,13 +1488,17 @@ const settingsConfig = {
         label: 'Rampage',
         default: false
     },
+    [SETTINGS.BALANCE_BY_FORCE]: {
+        label: 'Balance by force',
+        default: true
+    },
     [SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
         label: 'Bolg stacks',
         default: 3
     },
-    [SETTINGS.BALANCE_BY_FORCE]: {
-        label: 'Balance by force',
-        default: true
+    [SETTINGS.BIK_STACKS]: {
+        label: 'Bik stacks',
+        default: 0
     },
     [SETTINGS.CAROMING]: {
         label: 'Caroming',
@@ -1581,6 +1601,38 @@ const settingsConfig = {
         label: 'Deto charge time',
         default: 5
     },
+    [SETTINGS.DIVINE_RAGE]: {
+        label: 'Divine rage',
+        default: false
+    },
+    [SETTINGS.SHOW_BOLG_STACKS]: {
+        label: 'Show bolg stacks',
+        default: true
+    },
+    [SETTINGS.SHOW_ICY_CHILL_STACKS]: {
+        label: 'Show Icy Chill Stacks',
+        default: true
+    },
+    [SETTINGS.ADRENALINE]: {
+        label: 'Starting Adrenaline',
+        default: 100
+    },
+    [SETTINGS.VIGOUR]: {
+        label: 'Vigour Passive',
+        default: true
+    },
+    [SETTINGS.FURY_OF_THE_SMALL]: {
+        label: 'Fury of the Small',
+        default: true
+    },
+    [SETTINGS.HEIGHTENED_SENSES]: {
+        label: 'Heightened Senses',
+        default: true
+    },
+    [SETTINGS.CONSERVATION_OF_ENERGY]: {
+        label: 'Conservation of Energy',
+        default: false
+    }
 };
 
 export { SETTINGS, settingsConfig };

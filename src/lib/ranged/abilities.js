@@ -14,7 +14,7 @@ const abilities = {
     },
     [ABILITIES.SNIPE]: {
         title: 'Snipe',
-        calc: hit_damage_calculation,
+        calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/snipe.png'
     },
     [ABILITIES.DAZING_SHOT]: {
@@ -102,6 +102,11 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/unload.png'
     },
+    [ABILITIES.CRYSTAL_RAIN]: {
+        title: 'Crystal rain',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/ranged/30x30/sgb.png'
+    },
     [ABILITIES.BALANCE_BY_FORCE]: {
         title: 'Balance by force',
         calc: hit_damage_calculation,
@@ -161,11 +166,6 @@ const abilities = {
         title: 'Soul shot',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/seercull.png'
-    },
-    [ABILITIES.CRYSTAL_RAIN]: {
-        title: 'Crystal rain',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/sgb.png'
     },
     [ABILITIES.DEEP_BURN]: {
         title: 'Deep burn',
