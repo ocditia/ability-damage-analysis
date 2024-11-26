@@ -4390,7 +4390,8 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'adren cost': 30
     },
     [ABILITIES.DESCENT_OF_DARKNESS_HIT]: {
         // ability name

@@ -247,13 +247,10 @@
 	});
 	
 
-	//TODO replace buffTimings original impl with this one
 
 	const buffs = [SETTINGS.DEATH_SWIFTNESS, SETTINGS.SUNSHINE, SETTINGS.BERSERK,
 	SETTINGS.SPLIT_SOUL, SETTINGS.ICY_PRECISION];
-	// let buffTimings = $state(
-	// 	Object.fromEntries(buffs.map(buff => [buff, Array(barSize).fill(0)]))
-	// );
+
 
 	let buffTimings = $state( {
 		[SETTINGS.DEATH_SWIFTNESS]: {
@@ -428,7 +425,7 @@
 			}
 		}
 
-		//handle bars?
+		//handle bars
 		i = 0;
 		lineGap = 0;
 		for (let key in buffTimings) {
