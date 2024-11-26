@@ -4431,7 +4431,21 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'adren cost': 35
+    },
+    [ABILITIES.AIMED_SHOT_HIT]: {
+        // ability name
+        'min hit': 3.0, // min % of abil expressed as a decimal
+        'var hit': 0.6,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        //TODO implement this properly
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
     },
     [ABILITIES.AIMED_SHOT]: {
         // ability name
@@ -4441,9 +4455,19 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        //TODO implement this properly
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'duration': 5,
+        hits: {
+            1: [],
+            2: [],
+            3: [],
+            4: [],
+            5: [ABILITIES.AIMED_SHOT_HIT]   
+        },
+        'adren cost': 35
     },
     [ABILITIES.POWER_SHOT]: {
         // ability name
@@ -4455,7 +4479,8 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'adren cost': 35
     },
     [ABILITIES.TWIN_FANG_HIT]: {
         // ability name
@@ -4476,13 +4501,15 @@ const abils = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
+        hit_timings: [1, 1],
         hits: {
             1: [ABILITIES.TWIN_FANG_HIT, 'next hit', ABILITIES.TWIN_FANG_HIT]
-        }
+        },
+        'adren cost': 50
     },
     [ABILITIES.PHANTOM_STRIKE_INITIAL]: {
         // ability name
@@ -4519,6 +4546,7 @@ const abils = {
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
+        hit_timings: [1, 4, 7, 10, 13, 16, 19], //todo actual hit timings 
         hits: {
             1: [
                 ABILITIES.PHANTOM_STRIKE_INITIAL,
@@ -4526,10 +4554,10 @@ const abils = {
                 ABILITIES.PHANTOM_STRIKE_BLEED,
                 ABILITIES.PHANTOM_STRIKE_BLEED,
                 ABILITIES.PHANTOM_STRIKE_BLEED,
-                ABILITIES.PHANTOM_STRIKE_BLEED,
                 ABILITIES.PHANTOM_STRIKE_BLEED
             ]
-        }
+        },
+        'adren cost': 50
     },
     [ABILITIES.HAMSTRING]: {
         // ability name
@@ -4541,7 +4569,8 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'adren cost': 50
     },
     [ABILITIES.TWIN_SHOT_HIT]: {
         // ability name
@@ -4568,7 +4597,8 @@ const abils = {
         'damage type': 'ranged',
         hits: {
             1: [ABILITIES.TWIN_SHOT_HIT, 'next hit', ABILITIES.TWIN_SHOT_HIT]
-        }
+        },
+        'adren cost': 35
     },
     [ABILITIES.CHAIN_HIT]: {
         // ability name
@@ -4580,7 +4610,8 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'adren cost': 10
     },
     [ABILITIES.TWIN_SHOT_HIT]: {
         // ability name
@@ -4604,7 +4635,8 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'adren cost': 30
     },
     [ABILITIES.TWIN_SHOT_HIT]: {
         // ability name
@@ -4628,7 +4660,8 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'adren cost': 50
     },
     [ABILITIES.SPLIT_SOUL_ECB]: {
         // ability name
@@ -4667,7 +4700,8 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'adren cost': 25
     },
     [ABILITIES.DESTRUCTIVE_SHOT_HIT]: {
         // ability name
@@ -4707,7 +4741,8 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
+        'damage type': 'ranged',
+        'adren cost': 40
     },
 
     [ABILITIES.TIME_STRIKE]: {
