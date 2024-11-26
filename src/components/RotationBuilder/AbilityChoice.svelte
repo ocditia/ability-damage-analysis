@@ -20,7 +20,7 @@
             aria-label={ability.title}
             on:click={(e) => handleAbilityClick(e, key)}
             on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleAbilityClick(e, key); }}
-            style="display: inline-block;"
+            style="display: inline-block; overflow: hidden; width: 30px; height: 30px; "
         >
         <img
             src={ability.icon}
@@ -28,10 +28,7 @@
             draggable="true"
             on:dragstart={(e) => handleDragStart(e, key)}
             title={ability.title}
-            class="ability-icon"
-            width="30"
-            height="30"
-            style="border: 1px solid {getBorderColour()};"
+            style="width: 30px; height: 30px; object-fit: contain; border: 1px solid {getBorderColour()};"
         />
     </div>
     {/each}

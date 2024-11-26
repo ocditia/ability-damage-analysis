@@ -137,7 +137,7 @@ function calc_channelled_hit(settings, hit_index, rotation, timers) {
     let dmgObject = create_object(settings);
     for (let iter = 0; iter < rotation[hit_index].length; iter++) {
         settings['ability'] = rotation[hit_index][iter];
-        on_cast(settings, dmgObject);
+        on_cast(settings, dmgObject, timers);
         on_hit(settings, dmgObject);
         handle_edraco(settings, timers, rotation[hit_index][iter]);
     }

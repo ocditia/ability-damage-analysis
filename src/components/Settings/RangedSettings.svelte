@@ -14,9 +14,7 @@
 
     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH; 
     //settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.HEX_E;
-
     //settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.HEX_E;
-    
 
 
     function makeNaked() {
@@ -68,7 +66,7 @@
         
     }
     //makeNaked();
-    //testPreset();
+    // testPreset();
     //settings[SETTINGS.ICY_CHILL_STACKS].value = 10;
     updateDamages();
 

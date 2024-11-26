@@ -37,14 +37,15 @@ function on_cast(settings, dmgObject, timers) {
             Math.min(settings[SETTINGS.HIT_CHANCE] / 100, 1));
     }
     
+
+    
     //TODO fix - this is turning off active when buff when using a non basic second abiltiy
     if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
         ['threshold', 'special attack', 'ultimate'].includes(abils[settings['ability']]['ability type']) &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-        (!timers[SETTINGS.ICY_PRECISION])
+        (!timers[SETTINGS.ICY_PRECISION] || timers[SETTINGS.ICY_PRECISION] < 0)
     ) {
             handle_wen_buff(settings, timers);
-            //TODO consider handling this differently
     }
     // Marco - turn off hit chance stuff here (idt anything exists)
     // TODO - ingenuity of the humans, and check if accuracy penalty from wrong style gear is implemented
@@ -267,7 +268,7 @@ function on_cast(settings, dmgObject, timers) {
     // e.g. turn off conflagrate after it's been used
     
 
-    // Marco - here the single cast should be split up into the different effects
+    // Split single cast up into the different effects
     // e.g. if you cast dclaws, it should then be split up into 4 hits
     // or for wild magic, it should be split into the two wild magic hits
     if (abils[settings['ability']]['ability classification'] == 'multihit') {

@@ -72,7 +72,7 @@
 				stacks[key].stackTicks[tick] = settings[key];
 			}
 			buffs.forEach(buffTitle => {
-				buffTimings2[buffTitle][tick] = settings[buffTitle];
+				buffTimings[buffTitle].buffTicks[tick] = settings[buffTitle];
 			});
 		}
 
@@ -175,7 +175,6 @@
             end_tick = tick;
 		}
 		totalDamage = dmgs.reduce((acc, current) => acc + current, 0);
-		console.log(buffTimings2);
 		console.log('New Impl Total Damage = ' + totalDamage);
 	}
 
@@ -187,7 +186,12 @@
 				// console.log(settings[key]);
 				timers[key] -= 1;
 				if (timers[key] < 0) {
+					if (key == SETTINGS.ICY_PRECISION) {
+						settings[key] = 0; //TODO better solution
+					}
+					else {
 					settings[key] = false;
+					}
 				}
 			}
 		}
@@ -198,17 +202,21 @@
     }
 
 	//UI
-	const barSize = 250;
+	const barSize = 200;
     let abilityBar = $state(Array(barSize).fill(null)); // Empty slots on the bar
 	let tab = $state('general'); // settings tab
 	let abilityTab = $state('ranged');
-    let selectedTab = 'general';
+	let abilityBarIndex = 0;
+	let lastAbilityIndex = 0;
 	const baseBarRowGap = 30;
 	let barRowGap = $state(baseBarRowGap);
+	let lineGap = $state(0);
 
 	const stackFontSize = 12;
 	const baseStackOffset = 32;
 	const stackPadding = 2;
+	const buffLineWidth = 32;
+	const buffLineHeight = 6;
 
 	const stacks = $state({
 		[SETTINGS.ADRENALINE]: {
@@ -237,59 +245,72 @@
 			colour: '#03f4fc'
 		}
 	});
-	let abilityBarIndex = 0;
-	let lastAbilityIndex = 0;
-
-	//tracks when buffs are active for drawing the visual indicator
-	let buffTimings = $state(
-		{'swiftness': [], 'sunshine': [], 'berserk': [],
-		'split soul ecb': [], 'icy_precision': [], 'crit buff': []});
+	
 
 	//TODO replace buffTimings original impl with this one
-	// The times buffs are active are already tracked properly - just need to rewrite the function
-	// which translates when the buffs are active into drawing the indicator bars on UI to use this data
-	let buffs = [SETTINGS.DEATH_SWIFTNESS, SETTINGS.SUNSHINE, SETTINGS.BERSERK,
+
+	const buffs = [SETTINGS.DEATH_SWIFTNESS, SETTINGS.SUNSHINE, SETTINGS.BERSERK,
 	SETTINGS.SPLIT_SOUL, SETTINGS.ICY_PRECISION];
-	let buffTimings2 = 
-		Object.fromEntries(buffs.map(buff => [buff, Array(barSize).fill(0)]))
-	;
+	// let buffTimings = $state(
+	// 	Object.fromEntries(buffs.map(buff => [buff, Array(barSize).fill(0)]))
+	// );
+
+	let buffTimings = $state( {
+		[SETTINGS.DEATH_SWIFTNESS]: {
+			title: 'Death\'s Swiftness',
+			idx: -1,
+			buffTicks: Array(barSize).fill(0),
+			colour: '#00bf63'
+		},
+		[SETTINGS.SUNSHINE]: {
+			title: 'Sunshine',
+			idx: -1,
+			buffTicks: Array(barSize).fill(0),
+			colour: '#86F6FE'
+		},
+		[SETTINGS.BERSERK]: {
+			title: 'Berserk',
+			idx: -1,
+			buffTicks: Array(barSize).fill(0),
+			colour: '#E28329'
+		},
+		[SETTINGS.SPLIT_SOUL]: {
+			title: 'Split Soul',
+			idx: -1,
+			buffTicks: Array(barSize).fill(0),
+			colour: '#5b1db6'//'#9303ec'
+		},
+		[SETTINGS.ICY_PRECISION]: {
+			title: 'Icy Precision',
+			idx: -1,
+			buffTicks: Array(barSize).fill(0),
+			colour: '#5AC8E1'
+		}
+	});
 		
 	//UI functions
 	//TODO handle this differently
     function handleAbilityClick(event, abilityKey) {
 		abilityBar[abilityBarIndex] = abilityKey;
-
-        //TODO implement other buffs
-        if (abilityKey == ABILITIES['GREATER_DEATHS_SWIFTNESS']) {
-            buffTimings['swiftness'].push([abilityBarIndex, abilityBarIndex + 63]);
-        } else if (abilityKey == ABILITIES['DEATHS_SWIFTNESS']) {
-            buffTimings['swiftness'].push([abilityBarIndex, abilityBarIndex + 52]);
-        } else if (abilityKey == ABILITIES['SPLIT_SOUL_ECB']) {
-            buffTimings['split soul ecb'].push([abilityBarIndex, abilityBarIndex + 25]);
-        } else if (abilityKey == ABILITIES['SUNSHINE']) {
-            buffTimings['sunshine'].push([abilityBarIndex, abilityBarIndex + 25]);
-        }
+		calculateTotalDamageNew();
         refreshUI(false);
-        calculateTotalDamageNew();
+        
     }
 
 	function buffActive(key, index) {
 		let active = false;
-		//Find which tick(s) this buff is used on, and if the current tick
-		//is within the buff duration for any of the uses
-		buffTimings[key].forEach(element => {
-			if (index >= element[0] && index < element[1]) {
-				active = true; // todo return early if possible
-			}
-		});
-		let x = abilityBar[0] == null; //TODO remove
-		//TODO rewrite this to just store the value of each buff at each tickq2
+		//TODO make seperate ranged and necro split souls
+		if (key == 'split soul ecb') {
+			active = buffTimings['split soul'].buffTicks[index];
+		}
+		else {
+			active = buffTimings[key].buffTicks[index];
+		}
 		return active
 	}
 
     function handleDragStart(event, ability) {
         event.dataTransfer.setData('text/plain', ability);
-        //TODO rethink drag - it kinda sucks compared to clicking to add
     }
 
     function handleDrop(event, index) {
@@ -298,22 +319,55 @@
         if (rangedAbils[abilityKey]) {
             abilityBar[index] = abilityKey;
         } else {
-            const dragObj = JSON.parse(event.dataTransfer.getData('application/json'));
+            const dragObj = JSON.parse(event.dataTransfer.getData('text/plain'));
             const swapAbil = abilityBar[index];
             abilityBar[index] = dragObj['ability'];
             abilityBar[dragObj['startIndex']] = swapAbil;
         }
+		hoveredSlot = null;
         refreshUI();
         calculateTotalDamageNew();
     }
 
 	function handleDragStartBar(event, ability, startIndex) {
         const dragData = JSON.stringify({ ability, startIndex });
-    	event.dataTransfer.setData('application/json', dragData);
+    	event.dataTransfer.setData('text/plain', dragData);
     }
 
     function allowDrop(event) {
         event.preventDefault();
+    }
+
+	let validSlot = $state(true);
+	let hoveredSlot = $state(null); //rename to hovered slot?
+	/**
+	 * Flag slot to be highlighted if on gcd
+	 */
+	//TODO there's gotta be a better way...
+	function handleDragEnter(event, index) {
+		hoveredSlot = index;
+		validSlot = true;
+		//Handle case where we are moving ability 
+		let data = event.dataTransfer.getData('text/plain');
+		if (!allAbils[data]) {
+			data = JSON.parse(event.dataTransfer.getData('text/plain'));
+			if ((index - data.startIndex) <= 2 && index >= data.startIndex) {
+				validSlot = true;
+				return;
+			}
+		}
+		for (let i = index-1; i >= (index - 2); i--) {
+			if (i < 0) return;
+			if (abilityBar[i] != null) {
+        		validSlot = false;
+			}
+		}
+    }
+
+    function handleDragLeave(event, index) {
+        if (hoveredSlot === index) {
+            hoveredSlot = null;
+        }
     }
 
     function handleBarRightClick(event, index) {
@@ -335,13 +389,14 @@
         //Reset the visual indicators for buffs
         for (let key in buffTimings) {
             if (Object.hasOwnProperty.call(buffTimings, key)) {
-                buffTimings[key] = []; // Reset each key to an empty array
+                buffTimings[key].buffTicks = Array(barSize).fill(0); // Reset each key to an empty array
             }
         }
     }
 
 	//TODO rename (refreshUIData?)
 	function refreshUI(calcDmg = true) {
+		//Ability bar pointer 
 		lastAbilityIndex = 0;
 		for (let i = 0; i < barSize; i++) {
 			if (abilityBar[i] != null) {
@@ -354,7 +409,6 @@
 			if (abilToAdd['duration']) {
 				abilityBarIndex += abilToAdd['duration'];
 			}
-			//else if (lastAbilityIndex == 0) abilityBarIndex = 0;
 			else abilityBarIndex += 3;
 		}
 
@@ -374,11 +428,24 @@
 			}
 		}
 
-        console.log('refresh ui is called');
-
+		//handle bars?
+		i = 0;
+		lineGap = 0;
+		for (let key in buffTimings) {
+			if (buffTimings[key].buffTicks.some(value => value !== 0 && value !== false)) {
+				buffTimings[key].idx = i;
+				barRowGap += (buffLineHeight);
+				lineGap += buffLineHeight;
+				i++;
+			}
+			else {
+				buffTimings[key].idx = -1;
+			}
+		}
 		if (calcDmg) {
 			calculateTotalDamageNew();
 		}
+		console.log('UI Reresh');
 	}
 
 	//TODO delete
@@ -390,7 +457,6 @@
 			return !(arr[idx] == arr[idx-1]);
 		}
 	}
-	//abilityBar[0] = "greater ricochet";
 	refreshUI();
 </script>
 
@@ -410,22 +476,22 @@
                         <p>Total Damage: {totalDamage}</p>
 					</div>
                     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
-                        <li class="flex-grow me-2">
+                        <!-- <li class="flex-grow me-2">
                             <button
                                 onclick={() => (abilityTab = 'magic')}
                                 class:text-[#968A5C]={abilityTab === 'magic'}
                                 class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                                 >Magic</button
                             >
-                        </li>
-                        <li class="flex-grow me-2">
+                        </li> -->
+                        <!-- <li class="flex-grow me-2">
                             <button
                                 onclick={() => (abilityTab = 'melee')}
                                 class:text-[#968A5C]={abilityTab === 'melee'}
                                 class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                                 >Melee</button
                             >
-                        </li>
+                        </li> -->
 
                         <li class="flex-grow me-2">
                             <button
@@ -435,14 +501,14 @@
                                 >Ranged</button
                             >
                         </li>
-                        <li class="flex-grow me-2">
+                        <!-- <li class="flex-grow me-2">
                             <button
                                 onclick={() => (abilityTab = 'necro')}
                                 class:text-[#968A5C]={abilityTab === 'necro'}
                                 class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                                 >Necro</button
                             >
-                        </li>
+                        </li> -->
                     </ul>
 					<br>
                     {#if abilityTab === 'ranged'}
@@ -456,36 +522,48 @@
                     {/if}
                     <div style="row-gap:{barRowGap}px;" class="ability-bar">
 						{#each abilityBar as ability, index}
-							<div class="ability-slot"
+							<div 
+									class="ability-slot {hoveredSlot === index ? (validSlot? 'highlight-green' : 'highlight-red') : ''}"
 									role="button"
 									tabindex="0"
 									aria-label="Ability slot"
 									oncontextmenu={(e) => handleBarRightClick(e, index)}
 									ondrop={(e) => handleDrop(e, index)}
 									ondragover={(e) => allowDrop(e)}
+									ondragenter={(e) => handleDragEnter(e, index)}
+           							ondragleave={(e) => handleDragLeave(e, index)}
 							>
 								<span class="cell-number">{index}</span>
 								{#if ability}
 									<img src={allAbils[ability].icon}
 										alt={allAbils[ability].title}
 										style="width: 100%; height: 100%;"
+										title="{allAbils[ability].title}"
 										draggable="true"
             							ondragstart={(e) => handleDragStartBar(e, ability, index)}
 									/>
 								{/if}
-								{#if buffActive('swiftness', index)}
-									<div class="line-swiftness" title="Death's Swiftness"></div>
-								{/if}
-								{#if buffActive('split soul ecb', index)}
-									<div class="line-ecb" title="Split Soul (ECB)"></div>
-								{/if}
+								{#each Object.keys(buffTimings) as key}
+									{#if buffActive(key, index)}
+										<div title="{buffTimings[key].title}" 
+											style="
+											position: absolute;
+											bottom: {-(buffLineHeight * 1.5) - (buffLineHeight * buffTimings[key].idx)}px;
+											left: -1px;
+											width: {buffLineWidth}px;
+											height: {buffLineHeight}px;
+											background-color: {buffTimings[key].colour};
+											box-sizing: border-box; ">
+										</div>
+									{/if}
+								{/each}
 								{#each Object.keys(stacks) as key}
 									{#if showStack(index,  stacks[key].stackTicks) && stacks[key].idx >= 0}
 										<span
 											title="{stacks[key].title}"
 											style="
 												transform: translateX(0px);
-												top: {baseStackOffset+3+(stackFontSize+stackPadding) * stacks[key].idx}px;
+												top: {baseStackOffset + lineGap + 3 + (stackFontSize+stackPadding) * stacks[key].idx}px;
 												left: {stackFontSize+stackPadding*2}px;
 												font-size: {stackFontSize}px;
 												color: {stacks[key].colour};
@@ -497,7 +575,7 @@
 										<img src={stacks[key].image}
 											style=
 												"transform:translateX({2-(30-stackFontSize)/2}px);
-												top: {baseStackOffset+6+(stackFontSize+stackPadding) * stacks[key].idx}px;
+												top: {baseStackOffset + lineGap + 6 + (stackFontSize+stackPadding) * stacks[key].idx}px;
 												height: {stackFontSize}px;
 												width: {stackFontSize}px;
 												"
@@ -519,7 +597,7 @@
                     {#if stacks[key].number}
                         <Number
                             bind:setting={settings[stacks[key].displaySetting]}
-                            on:settingsUpdated={refreshUI}
+                    		onchange={() => refreshUI()}
                             step="1"
                             max="200"
                             min="0"
@@ -527,7 +605,7 @@
                     {:else}
                         <Checkbox
                             bind:setting={settings[stacks[key].displaySetting]}
-                            on:settingsUpdated={refreshUI}
+                    		onchange={() => refreshUI()}
                         />
                     {/if}
                 </div>
@@ -569,9 +647,10 @@
                         <div class="card-title pb-5">User Guide</div>
                         <div class="pb-5">
                             <p>
-                                To add abilities, left clicking will add a new ability to the end of your 
+                                This is a first beta of the rotation builder. Currently, only ranged is supported.
+								To add abilities, left clicking will add a new ability to the end of your 
 								bar. You can also drag abilities for more control. Right clicking an ability
-								on the bar will remove it.
+								on the bar will remove it. 
                             </p>
                         </div>
                         <div class="pb-5">
@@ -617,41 +696,22 @@
 		box-sizing: border-box;
     }
 
-	.line-swiftness {
-		position: absolute;
-		bottom: -6px;
-		left: -1px;
-		width: 32px;
-		height: 4px;
-		background-color: #00bf63; /* Dashed line color */
-		box-sizing: border-box;
-	}
-
-	.line-ecb {
-		position: absolute;
-		bottom: -11px;
-		left: -1px;
-		width: 32px;
-		height: 4px;
-		background-color: #9303ec; /* Dashed line color */
-	}
-
 	.ability-bar {
 		padding-top: 25px;
 	}
 
     .cell-number {
         position: absolute;
-        top: -18px; /* Adjust to move the number above the cell */
+        top: -18px;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 12px; /* Adjust size of the number */
-        color: #bababa; /* Adjust color of the number */
+        font-size: 12px; 
+        color: #bababa;
 	}
 
 	.bolg-stacks {
         position: absolute;
-        top: +38px; /* Adjust to move the number under the cell */
+        top: +38px;
         left: auto;
         transform: translateX(+50%);
 	}
@@ -662,4 +722,12 @@
 		height: 12px;
 		transform: translateX(-70%) translateY(32px);
 	}
+
+	.highlight-red {
+		border: 1px solid rgba(255, 51, 0, 0.789);
+    }
+
+	.highlight-green {
+		border: 1px solid rgba(0, 231, 54, 0.789);
+    }
 </style>

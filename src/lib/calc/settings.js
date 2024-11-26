@@ -554,6 +554,7 @@ const SETTINGS = {
     DEATH_SWIFTNESS: 'death swiftness',
     SWIFTNESS_ACTIVE: 'swiftness',
     SPLIT_SOUL: 'split soul',
+    //SPLIT_SOUL_ECB: 'split soul ecb',
     ZGS: 'zgs',
     BERSERK: 'berserk',
     DETONATE: 'detonate charge timer',
