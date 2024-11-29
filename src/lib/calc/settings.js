@@ -566,7 +566,13 @@ const SETTINGS = {
     VIGOUR: 'vigour',
     FURY_OF_THE_SMALL: 'fots',
     HEIGHTENED_SENSES: 'heightened senses',
-    CONSERVATION_OF_ENERGY: 'coe'
+    CONSERVATION_OF_ENERGY: 'coe',
+    POF_DINOS: 'pof dinos',
+    POF_DINOS_VALUES: {
+        NONE: 'none',
+        CORBICULA_1: '1 corbicula',
+        CORBICULA_2: '2 corbicula',
+    }
 };
 
 const settingsConfig = {
@@ -1633,7 +1639,16 @@ const settingsConfig = {
     [SETTINGS.CONSERVATION_OF_ENERGY]: {
         label: 'Conservation of Energy',
         default: false
-    }
+    },
+    [SETTINGS.POF_DINOS]: {
+        label: 'Dino perks',
+        default: SETTINGS.POF_DINOS_VALUES.CORBICULA_2,
+        options: [
+            { text: 'None', value: SETTINGS.POF_DINOS_VALUES.NONE },
+            { text: '1 corbicula', value: SETTINGS.POF_DINOS_VALUES.CORBICULA_1 },
+            { text: '2 corbiculas', value: SETTINGS.POF_DINOS_VALUES.CORBICULA_2 }
+        ]
+    },
 };
 
 export { SETTINGS, settingsConfig };

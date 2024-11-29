@@ -248,6 +248,10 @@
                                     max="10"
                                     min="0"
                                 />
+                                <Select
+                                    bind:setting={settings[SETTINGS.POF_DINOS]}
+                                    onchange={() => updateDamages()}
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Additive</h5>
