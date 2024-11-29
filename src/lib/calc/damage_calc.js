@@ -490,6 +490,14 @@ function set_min_var(settings, dmgObject) {
 function calc_style_specific(settings, dmgObject) {
     if (abils[settings['ability']]['on-hit effects'] === true) {
         if (abils[settings['ability']]['main style'] === 'ranged') {
+            // add bolg damage
+            if (settings['ability'] === 'bolg proc') {
+                dmgObject['min hit'] += Math.floor(settings['bolg damage']['crit']['damage list'][0] * 0.33);
+                dmgObject['var hit'] += Math.floor(settings['bolg damage']['crit']['damage list'][settings['bolg damage']['crit']['damage list'].length-1] * 0.37 -
+                    settings['bolg damage']['crit']['damage list'][0] * 0.33
+                );
+            }
+
             // og bane ammo
             if (settings['ammunition'] === 'bane bolts' || settings['ammunition'] === 'bane arrows') {
                 if (
@@ -1254,7 +1262,7 @@ function calc_bolg(settings) {
     // calc base bolg damage
     let bolg_base = calc_damage_object(settings);
 
-    settings['ability'] = 'bolg proc percentages';
+    /*settings['ability'] = 'bolg proc percentages';
     let bolg_damage_based = create_object(settings);
 
     // calc the damage based proc
@@ -1281,9 +1289,9 @@ function calc_bolg(settings) {
         }
     }
 
-    const bolg_perc_damage = get_user_value(settings, bolg_damage_based);
+    const bolg_perc_damage = get_user_value(settings, bolg_damage_based);*/
 
-    return bolg_perc_damage + bolg_base;
+    return bolg_base; //bolg_perc_damage + bolg_base;
 }
 
 function calc_bolg_new(settings) {
