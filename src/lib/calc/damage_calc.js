@@ -1258,40 +1258,9 @@ function calc_damage_object(settings, newBolg = false) {
 
 function calc_bolg(settings) {
     settings['ability'] = 'bolg proc';
-
     // calc base bolg damage
     let bolg_base = calc_damage_object(settings);
-
-    /*settings['ability'] = 'bolg proc percentages';
-    let bolg_damage_based = create_object(settings);
-
-    // calc the damage based proc
-    for (let key in bolg_damage_based) {
-        bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
-        bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = ability_specific_effects(settings, bolg_damage_based[key]);
-        bolg_damage_based[key]['min hit'] = abils[settings['ability']]['min hit'] * settings['bolg damage'][key]['damage list'][0];
-        bolg_damage_based[key]['var hit'] = (abils[settings['ability']]['min hit'] + abils[settings['ability']]['var hit']) * 
-            settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1] -
-            bolg_damage_based[key]['min hit'];
-        bolg_damage_based[key] = calc_style_specific(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
-        bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
-        bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
-        bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
-        if (
-            settings['split soul'] === true &&
-            ['magic', 'melee', 'ranged', 'necrotic'].includes(
-                abils[settings['ability']]['damage type']
-            )
-        ) {
-            bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
-        }
-    }
-
-    const bolg_perc_damage = get_user_value(settings, bolg_damage_based);*/
-
-    return bolg_base; //bolg_perc_damage + bolg_base;
+    return bolg_base;
 }
 
 function calc_bolg_new(settings) {
