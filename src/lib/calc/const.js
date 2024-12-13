@@ -1392,7 +1392,11 @@ const ABILITIES = {
     OMNIPOWER: 'omnipower',
     TSUNAMI: 'tsunami',
     SUNSHINE_DOT: 'sunshine dot',
-    TEMPEST_OF_ARMADYL_HIT: 'tempest of armadyl hit',
+    TEMPEST_OF_ARMADYL_HIT_1: 'tempest of armadyl hit 1',
+    TEMPEST_OF_ARMADYL_HIT_2: 'tempest of armadyl hit 2',
+    TEMPEST_OF_ARMADYL_HIT_3: 'tempest of armadyl hit 3',
+    TEMPEST_OF_ARMADYL_HIT_4: 'tempest of armadyl hit 4',
+    TEMPEST_OF_ARMADYL_HIT_5: 'tempest of armadyl hit 5',
     TEMPEST_OF_ARMADYL: 'tempest of armadyl',
     INSTABILITY: 'instability',
     CLAWS_OF_GUTHIX: 'claws of guthix',
@@ -3252,9 +3256,57 @@ const abils = {
         'main style': 'magic',
         'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
-    [ABILITIES.TEMPEST_OF_ARMADYL_HIT]: {
+    [ABILITIES.TEMPEST_OF_ARMADYL_HIT_1]: {
         // ability name
         'min hit': 0.45, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
+    [ABILITIES.TEMPEST_OF_ARMADYL_HIT_2]: {
+        // ability name
+        'min hit': 0.5, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
+    [ABILITIES.TEMPEST_OF_ARMADYL_HIT_3]: {
+        // ability name
+        'min hit': 0.55, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
+    [ABILITIES.TEMPEST_OF_ARMADYL_HIT_4]: {
+        // ability name
+        'min hit': 0.6, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
+    [ABILITIES.TEMPEST_OF_ARMADYL_HIT_5]: {
+        // ability name
+        'min hit': 0.65, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3276,11 +3328,11 @@ const abils = {
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
-            1: [ABILITIES.TEMPEST_OF_ARMADYL_HIT],
-            2: [ABILITIES.TEMPEST_OF_ARMADYL_HIT],
-            3: [ABILITIES.TEMPEST_OF_ARMADYL_HIT],
-            4: [ABILITIES.TEMPEST_OF_ARMADYL_HIT],
-            5: [ABILITIES.TEMPEST_OF_ARMADYL_HIT]
+            1: [ABILITIES.TEMPEST_OF_ARMADYL_HIT_1],
+            2: [ABILITIES.TEMPEST_OF_ARMADYL_HIT_2],
+            3: [ABILITIES.TEMPEST_OF_ARMADYL_HIT_3],
+            4: [ABILITIES.TEMPEST_OF_ARMADYL_HIT_4],
+            5: [ABILITIES.TEMPEST_OF_ARMADYL_HIT_5]
         }
     },
     [ABILITIES.INSTABILITY]: {
