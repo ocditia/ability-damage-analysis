@@ -1314,6 +1314,7 @@ function calc_bloat(settings) {
             );
         }
         bloat_dot[key] = calc_on_npc(settings, bloat_dot[key]);
+        bloat_dot[key] = add_split_soul(settings, bloat_dot[key]);
     }
     const dmg = get_user_value(settings, bloat_dot);
     return 10 * dmg;
