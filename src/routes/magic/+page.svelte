@@ -168,16 +168,6 @@
                                     bind:setting={settings[SETTINGS.TARGET_DISABILITY]}
                                     onchange={() => updateDamages()}
                                 />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Base damage</h5>
-                                <Number
-                                    bind:setting={settings[SETTINGS.ABILITY_DAMAGE]}
-                                    onchange={() => updateDamages()}
-                                    step="1"
-                                    max="9999"
-                                    min="0"
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.MAGIC_LEVEL]}
                                     onchange={() => updateDamages()}
@@ -190,11 +180,13 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/death.png"
                                 />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">
-                                    Invisible base damage
-                                </h5>
+                                <Number
+                                    bind:setting={settings[SETTINGS.ABILITY_DAMAGE]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="9999"
+                                    min="0"
+                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.HIT_CHANCE]}
                                     onchange={() => updateDamages()}
@@ -202,6 +194,11 @@
                                     max="100"
                                     min="0"
                                 />
+                            </div>
+                            <div class="md:col-span-1">
+                                <h5 class="uppercase font-bold text-lg text-center">
+                                    Applies to dots
+                                </h5>                                
                                 <Number
                                     bind:setting={settings[SETTINGS.FLOW_STACKS]}
                                     onchange={() => updateDamages()}
@@ -212,7 +209,7 @@
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">
-                                    Ability specific
+                                    Applies to regular abils only
                                 </h5>
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.CONFLAGRATE]}
@@ -240,9 +237,6 @@
                                     max="5"
                                     min="0"
                                 />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Additive</h5>
                                 <Number
                                     bind:setting={settings[SETTINGS.STONE_OF_JAS]}
                                     onchange={() => updateDamages()}
@@ -262,11 +256,6 @@
                                     max="3"
                                     min="0"
                                 />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">
-                                    Multiplicative (shared)
-                                </h5>
                                 <Select
                                     bind:setting={settings[SETTINGS.MAGIC_PRAYER]}
                                     onchange={() => updateDamages()}
@@ -286,11 +275,6 @@
                                     max="10"
                                     min="0"
                                 />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">
-                                    Multiplicative (PvE)
-                                </h5>
                                 <Select
                                     bind:setting={settings[SETTINGS.SLAYER_HELM]}
                                     onchange={() => updateDamages()}
@@ -305,7 +289,7 @@
                                 />
                             </div>
                             <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Core</h5>
+                                <h5 class="uppercase font-bold text-lg text-center"></h5>
                                 <Number
                                     bind:setting={settings[SETTINGS.BERSERKERS_FURY]}
                                     onchange={() => updateDamages()}
@@ -321,9 +305,6 @@
                                     bind:setting={settings[SETTINGS.KALG_SPEC]}
                                     onchange={() => updateDamages()}
                                 />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">On-NPC</h5>
                                 <Select
                                     bind:setting={settings[SETTINGS.VULN]}
                                     onchange={() => updateDamages()}
