@@ -173,7 +173,7 @@ const abilities = {
         icon: '/ability_icons/ranged/30x30/strykebow.png'
     },
     [ABILITIES.DESTRUCTIVE_SHOT]: {
-        title: 'Destrucive shot',
+        title: 'Destructive shot',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/zamorak_bow.png'
     },
