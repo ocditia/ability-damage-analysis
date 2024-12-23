@@ -357,6 +357,99 @@ const SETTINGS = {
         CHAMPION: 'champions ring',
         CHAMPION_E: 'champions ring+',
     },
+    /*
+    MAGIC_RING: 'magic ring',
+    MAGIC_RING_VALUES: {
+        NONE: 'none',
+        REAVERS: 'reavers ring',
+        RODI: 'ring of death (i)',
+        ROD: 'ring of death',
+        ASRI: 'asylum surgeons ring (i)',
+        ASR: 'asylum surgeons ring',
+        CHANNELER: 'channelers ring',
+        CHANNELER_E: 'channelers ring+'
+    },
+    RANGED_RING: 'range ring',
+    RANGED_RING_VALUES: {
+        NONE: 'none',
+        REAVERS: 'reavers ring',
+        RODI: 'ring of death (i)',
+        ROD: 'ring of death',
+        ASRI: 'asylum surgeons ring (i)',
+        ASR: 'asylum surgeons ring',
+        STALKER: 'stalkers ring',
+        STALKER_E: 'stalkers ring+'
+    },
+    MELEE_RING: 'melee ring',
+    MELEE_RING_VALUES: {
+        NONE: 'none',
+        REAVERS: 'reavers ring',
+        RODI: 'ring of death (i)',
+        ROD: 'ring of death',
+        ASRI: 'asylum surgeons ring (i)',
+        ASR: 'asylum surgeons ring',
+        CHAMPION: 'champions ring',
+        CHAMPION_E: 'champions ring+'
+    },
+    NECRO_RING: 'necro ring',
+    NECRO_RING_VALUES: {
+        NONE: 'none',
+        REAVERS: 'reavers ring',
+        ZORGOTH: 'zorgoths soul ring',
+        RODI: 'ring of death (i)',
+        ROD: 'ring of death',
+        ASRI: 'asylum surgeons ring (i)',
+        ASR: 'asylum surgeons ring'
+    },
+    MAGIC_POCKET: 'mage pocket',
+    MAGIC_POCKET_VALUES: {
+        NONE: 'none',
+        GRIM: 'erethdors grimoire',
+        FUL: 'scripture of ful',
+        JAS: 'scripture of jas',
+        AMASCUT: 'scripture of amascut',
+        GWD3: 'gwd3 scripture',
+        IGOD: 'illuminated god book',
+        UNDERWORLD_GRIM: 'underworld grimoire 4',
+        ELEMENTS: 'scrimshaw of elements',
+        SUPERIOR_ELEMENTS: 'superior scrimshaw of elements'
+    },
+    RANGED_POCKET: 'range pocket',
+    RANGED_POCKET_VALUES: {
+        NONE: 'none',
+        GRIM: 'erethdors grimoire',
+        FUL: 'scripture of ful',
+        JAS: 'scripture of jas',
+        AMASCUT: 'scripture of amascut',
+        GWD3: 'gwd3 scripture',
+        IGOD: 'illuminated god book',
+        UNDERWORLD_GRIM: 'underworld grimoire 4',
+        CRUELTY: 'scrimshaw of cruelty',
+        SUPERIOR_CRUELTY: 'superior scrimshaw of cruelty'
+    },
+    MELEE_POCKET: 'melee pocket',
+    MELEE_POCKET_VALUES: {
+        NONE: 'none',
+        GRIM: 'erethdors grimoire',
+        FUL: 'scripture of ful',
+        JAS: 'scripture of jas',
+        AMASCUT: 'scripture of amascut',
+        GWD3: 'gwd3 scripture',
+        IGOD: 'illuminated god book',
+        UNDERWORLD_GRIM: 'underworld grimoire 4'
+    },
+    NECRO_POCKET: 'necro pocket',
+    NECRO_POCKET_VALUES: {
+        NONE: 'none',
+        GRIM: 'erethdors grimoire',
+        FUL: 'scripture of ful',
+        JAS: 'scripture of jas',
+        AMASCUT: 'scripture of amascut',
+        GWD3: 'gwd3 scripture',
+        IGOD: 'illuminated god book',
+        UNDERWORLD_GRIM: 'underworld grimoire 4'
+    },
+    */
     POCKET: 'pocket',
     POCKET_VALUES: {
         NONE: 'none',
@@ -600,16 +693,16 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_LEVEL]: {
         label: 'Magic Level',
-        default: 130,
+        default: 120,
         style: 'magic'
     },
     [SETTINGS.STRENGTH_LEVEL]: {
         label: 'Strength Level',
-        default: 130
+        default: 120
     },
     [SETTINGS.RANGED_LEVEL]: {
         label: 'Ranged Level',
-        default: 130
+        default: 120
     },
     [SETTINGS.POTION]: {
         label: 'Potion',
@@ -803,7 +896,7 @@ const settingsConfig = {
     },
     [SETTINGS.FAMILIAR]: {
         label: 'Familiar',
-        default: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON,
+        default: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON,
         options: [
             { text: 'None', value: SETTINGS.FAMILIAR_VALUES.NONE },
             { text: 'Ripper demon', value: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON },
@@ -881,7 +974,7 @@ const settingsConfig = {
     },
     [SETTINGS.KALG_SPEC]: {
         label: 'Crit-i-Kal Spec',
-        default: false
+        default: true
     },
     [SETTINGS.CUSTOM_ON_AD]: {
         label: 'Additional on AD buff %',
@@ -1171,6 +1264,123 @@ const settingsConfig = {
             { text: 'Champion+', value: SETTINGS.RING_VALUES.CHAMPION_E },
         ]
     },
+    /*
+    [SETTINGS.MAGIC_RING]: {
+        label: 'Ring',
+        default: SETTINGS.MAGIC_RING_VALUES.REAVERS,
+        options: [
+            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
+            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
+            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
+            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
+            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
+            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
+            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELER },
+            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELER_E }
+        ]
+    },
+    [SETTINGS.RANGED_RING]: {
+        label: 'Ring',
+        default: SETTINGS.RANGED_RING_VALUES.REAVERS,
+        options: [
+            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
+            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
+            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
+            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
+            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
+            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
+            { text: 'Stalker', value: SETTINGS.RING_VALUES.STALKER },
+            { text: 'Stalker+', value: SETTINGS.RING_VALUES.STALKER_E }
+        ]
+    },
+    [SETTINGS.MELEE_RING]: {
+        label: 'Ring',
+        default: SETTINGS.MELEE_RING_VALUES.REAVERS,
+        options: [
+            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
+            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
+            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
+            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
+            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
+            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
+            { text: 'Champion', value: SETTINGS.RING_VALUES.CHAMPION },
+            { text: 'Champion+', value: SETTINGS.RING_VALUES.CHAMPION_E }
+        ]
+    },
+    [SETTINGS.NECRO_RING]: {
+        label: 'Ring',
+        default: SETTINGS.NECRO_RING_VALUES.REAVERS,
+        options: [
+            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
+            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
+            { text: "Zorg/Occ", value: SETTINGS.RING_VALUES.ZORGOTH },
+            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
+            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
+            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
+            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR }
+        ]
+    },
+    [SETTINGS.MAGIC_POCKET]: {
+        label: 'Pocket',
+        default: SETTINGS.POCKET_VALUES.GRIM,
+        options: [
+            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
+            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
+            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
+            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
+            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
+            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
+            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
+            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM },
+            { text: 'Elements', value: SETTINGS.POCKET_VALUES.ELEMENTS },
+            { text: 'Superior elements', value: SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS }
+        ]
+    },
+    [SETTINGS.RANGED_POCKET]: {
+        label: 'Pocket',
+        default: SETTINGS.POCKET_VALUES.GRIM,
+        options: [
+            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
+            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
+            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
+            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
+            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
+            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
+            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
+            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM },
+            { text: 'Cruelty', value: SETTINGS.POCKET_VALUES.CRUELTY },
+            { text: 'Superior cruelty', value: SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY }
+        ]
+    },
+    [SETTINGS.MELEE_POCKET]: {
+        label: 'Pocket',
+        default: SETTINGS.POCKET_VALUES.GRIM,
+        options: [
+            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
+            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
+            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
+            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
+            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
+            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
+            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
+            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM }
+        ]
+    },
+    [SETTINGS.NECRO_POCKET]: {
+        label: 'Pocket',
+        default: SETTINGS.POCKET_VALUES.GRIM,
+        options: [
+            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
+            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
+            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
+            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
+            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
+            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
+            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
+            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM }
+        ]
+    },
+    */
     [SETTINGS.POCKET]: {
         label: 'Pocket',
         default: SETTINGS.POCKET_VALUES.GRIM,
@@ -1191,7 +1401,7 @@ const settingsConfig = {
     },
     [SETTINGS.WEAPON]: {
         label: 'Weapon type',
-        default: SETTINGS.WEAPON_VALUES.DW,
+        default: SETTINGS.WEAPON_VALUES.TH,
         options: [
             { text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW },
             { text: 'Two handed', value: SETTINGS.WEAPON_VALUES.TH }
@@ -1296,7 +1506,7 @@ const settingsConfig = {
     },
     [SETTINGS.AMMO]: {
         label: 'Ammo',
-        default: SETTINGS.AMMO_VALUES.FUL_ARROWS,
+        default: SETTINGS.AMMO_VALUES.WEN_ARROWS,
         options: [
             { text: 'None', value: SETTINGS.AMMO_VALUES.NONE },
             { text: 'Ful', value: SETTINGS.AMMO_VALUES.FUL_ARROWS },
@@ -1379,11 +1589,11 @@ const settingsConfig = {
     },
     [SETTINGS.ICY_PRECISION]: {
         label: 'Icy Precision stacks',
-        default: 0
+        default: 15
     },
     [SETTINGS.ICY_CHILL_STACKS]: {
         label: 'Icy Chill stacks',
-        default: 0
+        default: 2
     },
     [SETTINGS.PUNCTURE_STACKS]: {
         label: 'Puncture Stacks',
@@ -1501,7 +1711,7 @@ const settingsConfig = {
     },
     [SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
         label: 'Bolg stacks',
-        default: 3
+        default: 0
     },
     [SETTINGS.BIK_STACKS]: {
         label: 'Bik stacks',
@@ -1562,7 +1772,7 @@ const settingsConfig = {
     },
     [SETTINGS.TIME_SINCE_ATTACK]: {
         label: 'Time since last attack',
-        default: 0
+        default: 9
     },
     [SETTINGS.INNATE_MASTERY]: {
         label: 'Innate mastery (works on custom t95)',

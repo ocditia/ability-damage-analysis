@@ -95,7 +95,7 @@ const abilities = {
     [ABILITIES.DETONATE]: {
         title: 'Detonate',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/deep_impact.png'
+        icon: '/ability_icons/magic/30x30/detonate.png'
     },
     [ABILITIES.DEEP_IMPACT]: {
         title: 'Deep impact',
