@@ -149,6 +149,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.NUMBER_OF_BLEEDS]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/number_of_bleeds.png"
                                     step="1"
                                     max="10"
                                     min="0"
@@ -156,6 +157,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.TARGET_HP_PERCENT]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/target_hp.png"
                                     step="1"
                                     max="100"
                                     min="0"
@@ -163,10 +165,12 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.STRENGTH_CAPE]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/strength_cape.png"
                                 />
                                 <Select
                                     bind:setting={settings[SETTINGS.TARGET_DISABILITY]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/stunned.png"
                                 />
                             </div>
                             <div class="md:col-span-1">
@@ -181,6 +185,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.STRENGTH_LEVEL]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/strength.png"
                                     step="1"
                                     max="150"
                                     min="1"
@@ -205,6 +210,7 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.CHAOS_ROAR]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/chaos_roar.png"
                                 />
                             </div>
                             <div class="md:col-span-1">
@@ -214,6 +220,7 @@
                                 <Select
                                     bind:setting={settings[SETTINGS.ENDURING_RUIN_HIT]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/enduring_ruin.png"
                                 />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.WALKED_TARGET]}
@@ -222,14 +229,17 @@
                                 <Select
                                     bind:setting={settings[SETTINGS.FURY_BUFF]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/greater_fury.png"
                                 />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.RAMPAGE]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/rampage.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.PRIMORDIAL_ICE]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/primordial_ice.png"
                                     step="1"
                                     max="10"
                                     min="0"
@@ -237,6 +247,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.IGNEOUS_EXTENSIOS]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/igneous_extensions.png"
                                     step="1"
                                     max="5"
                                     min="0"
@@ -244,6 +255,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.TIME_SINCE_ATTACK]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/cease.png"
                                     step="1"
                                     max="10"
                                     min="0"
@@ -251,6 +263,7 @@
                                 <Select
                                     bind:setting={settings[SETTINGS.POF_DINOS]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/no_fear.png"
                                 />
                             </div>
                             <div class="md:col-span-1">
@@ -258,6 +271,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.STONE_OF_JAS]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/stone_of_jas.png"
                                     step="1"
                                     max="6"
                                     min="0"
@@ -265,6 +279,7 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.DRACONIC_FRUIT]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/draconic_fruit.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.RUBY_AURORA]}
@@ -277,6 +292,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.GRAVITATE]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/gravitate.png"
                                     step="1"
                                     max="20"
                                     min="0"
@@ -294,6 +310,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.REVENGE]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/revenge.png"
                                     step="1"
                                     max="10"
                                     min="0"
@@ -306,6 +323,7 @@
                                 <Select
                                     bind:setting={settings[SETTINGS.SLAYER_HELM]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/slayer_helmet.png"
                                 />
                                 <Select
                                     bind:setting={settings[SETTINGS.GUARDHOUSE]}
@@ -314,6 +332,7 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.SWIFTNESS_OF_THE_AVIANSIE]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/swiftness_of_the_avianse.png"
                                 />
                             </div>
                             <div class="md:col-span-1">
@@ -321,10 +340,12 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.FROSTBLADES]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/frostblades.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.BERSERKERS_FURY]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/berserkers_fury.png"
                                     step="0.5"
                                     max="5.5"
                                     min="0"
@@ -332,10 +353,12 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.SMOKE_CLOUD]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/smoke_cloud.png"
                                 />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.KALG_SPEC]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/crit_i_kal.png"
                                 />
                             </div>
                             <div class="md:col-span-1">
@@ -348,10 +371,12 @@
                                 <Select
                                     bind:setting={settings[SETTINGS.ENDURING_RUIN_BLEED]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/enduring_ruin.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/infernal_puzzlebox.png"
                                     step="1"
                                     max="6"
                                     min="0"
@@ -394,6 +419,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.NOPE]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/nopenopenope.png"
                                     step="1"
                                     max="3"
                                     min="0"
@@ -459,10 +485,12 @@
                                 <Select
                                     bind:setting={settings[SETTINGS.AURA]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/aura.png"
                                 />
                                 <Select
                                     bind:setting={settings[SETTINGS.FAMILIAR]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/familiar.png"
                                 />
                             </div>
                             <div class="md:col-span-1">
@@ -503,6 +531,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.GENOCIDAL]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/genocidal.png"
                                     max="4.9"
                                     step="0.1"
                                     min="0"
@@ -570,6 +599,7 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.INNATE_MASTERY]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/shard_of_genesis.png"
                                 />
                             </div>
                         {:else if tab === 'bosses'}
