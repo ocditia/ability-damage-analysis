@@ -529,6 +529,14 @@
                                     min="0"
                                 />
                                 <Number
+                                    bind:setting={settings[SETTINGS.LUNGING]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/Lunging.webp"
+                                    step="1"
+                                    min="0"
+                                    max="4"
+                                />
+                                <Number
                                     bind:setting={settings[SETTINGS.GENOCIDAL]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/genocidal.png"
