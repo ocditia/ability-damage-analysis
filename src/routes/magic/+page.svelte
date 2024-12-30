@@ -162,7 +162,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.TARGET_HP_PERCENT]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/target.hp.png"
+                                    img="/effect_icons/target_hp.png"
                                     step="1"
                                     max="100"
                                     min="0"
@@ -305,7 +305,7 @@
                                 />
                             </div>
                             <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center"></h5>
+                                <h5 class="uppercase font-bold text-lg text-center">part 2</h5>
                                 <Number
                                     bind:setting={settings[SETTINGS.BERSERKERS_FURY]}
                                     onchange={() => updateDamages()}
