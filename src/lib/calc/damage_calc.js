@@ -297,9 +297,19 @@ function ability_specific_effects(settings, dmgObject) {
             }
         }
 
+        // combust lunging
+        if (settings['ability'] === ABILITIES.COMBUST_HIT) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
+        }
+
         // combust walk
         if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
+            if (settings[SETTINGS.LUNGING]>0) {
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);    
+            }
+            else {
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
+            }
         }
 
         // wrack bound
@@ -344,6 +354,11 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
         }
 
+        // dismember lunging
+        if (settings['ability'] === ABILITIES.DISMEMBER_HIT) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + 0.06 * settings[SETTINGS.LUNGING]));
+        }
+
         // slaughter walk
         if (settings['ability'] === ABILITIES.SLAUGHTER_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 3);
@@ -366,9 +381,19 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
         }
 
+        // frag lunging
+        if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
+        }
+
         // frag walk
         if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
+            if (settings[SETTINGS.LUNGING]>0) {
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);    
+            }
+            else {
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
+            }
         }
     }
 

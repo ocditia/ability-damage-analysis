@@ -665,7 +665,8 @@ const SETTINGS = {
         NONE: 'none',
         CORBICULA_1: '1 corbicula',
         CORBICULA_2: '2 corbicula',
-    }
+    },
+    LUNGING: 'lunging',
 };
 
 const settingsConfig = {
@@ -1858,6 +1859,10 @@ const settingsConfig = {
             { text: '1 corbicula', value: SETTINGS.POF_DINOS_VALUES.CORBICULA_1 },
             { text: '2 corbiculas', value: SETTINGS.POF_DINOS_VALUES.CORBICULA_2 }
         ]
+    },
+    [SETTINGS.LUNGING]: {
+        label: 'Lunging',
+        default: 0
     },
 };
 
