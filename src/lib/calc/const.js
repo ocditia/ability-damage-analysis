@@ -3493,7 +3493,6 @@ const abils = {
                 ABILITIES.SOULFIRE_BURN,
                 ABILITIES.SOULFIRE_BURN,
                 ABILITIES.SOULFIRE_BURN,
-                ABILITIES.SOULFIRE_BURN
             ]
         }
     },
