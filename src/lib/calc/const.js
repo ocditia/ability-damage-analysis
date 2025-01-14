@@ -163,6 +163,48 @@ const weapons = {
         type: 'shield',
         classification: 'none'
     },
+    'keris': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 50,
+        type: 'none',
+        classification: 'none'
+    },
+    'keris proc': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 50,
+        type: 'none',
+        classification: 'none'
+    },
+    'primed keris': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 70,
+        type: 'none',
+        classification: 'none'
+    },
+    'primed keris proc': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 70,
+        type: 'none',
+        classification: 'none'
+    },
+    'consecrated keris': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 80,
+        type: 'none',
+        classification: 'none'
+    },
+    'consecrated keris proc': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 80,
+        type: 'none',
+        classification: 'none'
+    },
 };
 
 const gear = {

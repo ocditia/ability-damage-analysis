@@ -222,6 +222,16 @@ function calc_boosted_ad(settings, dmgObject) {
             boosted_AD = Math.floor(boosted_AD * 1.175);
         }
 
+        // keris
+        if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
+            if ([SETTINGS.MELEE_MH_VALUES.KERIS, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS].includes(settings[SETTINGS.MH])) {
+                boosted_AD = Math.floor(boosted_AD * 1.333);
+            }
+            else if ([SETTINGS.MELEE_MH_VALUES.KERIS_PROC, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
+                boosted_AD = Math.floor(boosted_AD*2);
+            }
+        }
+
         // chaos roar
         if (settings['chaos roar'] === true) {
             boosted_AD = 2 * boosted_AD;

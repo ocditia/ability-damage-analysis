@@ -485,7 +485,13 @@ const SETTINGS = {
     MELEE_MH_VALUES: {
         CUSTOM: 'custom',
         DARK_ICE_SHARD: 'dark ice shard',
-        LENG: 'dark shard of leng'
+        LENG: 'dark shard of leng',
+        KERIS: 'keris',
+        KERIS_PROC: 'keris proc',
+        PRIMED_KERIS: 'primed keris',
+        PRIMED_KERIS_PROC: 'primed keris proc',
+        CONSECRATED_KERIS: 'consecrated keris',
+        CONSECRATED_KERIS_PROC: 'consecrated keris proc'
     },
     NECRO_MH: 'necro main-hand weapon',
     NECRO_MH_VALUES: {
@@ -1427,7 +1433,13 @@ const settingsConfig = {
         options: [
             { text: 'Custom', value: SETTINGS.MELEE_MH_VALUES.CUSTOM },
             { text: 'Leng', value: SETTINGS.MELEE_MH_VALUES.LENG },
-            { text: 'Leng t85', value: SETTINGS.MELEE_MH_VALUES.DARK_ICE_SHARD }
+            { text: 'Leng t85', value: SETTINGS.MELEE_MH_VALUES.DARK_ICE_SHARD },
+            { text: 'Consecrated Keris', value: SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS },
+            { text: 'Consecrated Keris proc', value: SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC },
+            { text: 'Primed Keris', value: SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS },
+            { text: 'Primed Keris proc', value: SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC },
+            { text: 'Keris', value: SETTINGS.MELEE_MH_VALUES.KERIS },
+            { text: 'Keris proc', value: SETTINGS.MELEE_MH_VALUES.KERIS_PROC },
         ]
     },
     [SETTINGS.NECRO_MH]: {
