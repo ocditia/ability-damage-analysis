@@ -1085,7 +1085,7 @@ function calc_on_npc(settings, dmgObject) {
 
         // nopenopenope (pof spider buff)
         dmgObject['damage list'][i] = Math.floor(
-            dmgObject['damage list'][i] * (1 + settings[SETTINGS.NOPE])
+            dmgObject['damage list'][i] * (1 + 0.01*settings[SETTINGS.NOPE])
         );
 
         // ghost hunter outfit
