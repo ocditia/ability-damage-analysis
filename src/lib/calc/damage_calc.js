@@ -1680,10 +1680,11 @@ function apply_additional(settings, total_damage, newbolg = false) {
         total_damage += calc_corruption(settings);
         delete settings['corruption damage'];
     }
-
+    
     // handle instability (fsoa)
     if ('fsoa damage' in settings) {
         total_damage += calc_fsoa(settings);
+        delete settings['fsoa damage'];
     }
 
     // handle igneous cleave bleed
