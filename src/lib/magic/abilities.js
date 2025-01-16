@@ -40,7 +40,7 @@ const abilities = {
     [ABILITIES.TIME_STRIKE]: {
         title: 'Timestrike',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/wrack.png'
+        icon: '/ability_icons/magic/30x30/time_strike-bg.png'
     },
     [ABILITIES.GREATER_SONIC_WAVE]: {
         title: 'Greater sonic wave',
