@@ -176,7 +176,10 @@ function calc_bonus(settings) {
 
 // modify boosted AD by damage potential (hit chance)
 function calc_damage_potential(settings, dmgObject) {
-    let hit_chance = Math.min(settings[SETTINGS.HIT_CHANCE] / 100, 1);
+    let hit_chance = 1;
+    if (abils[settings['ability']]['damage potential effects'] === true) {
+        hit_chance = Math.min(settings[SETTINGS.HIT_CHANCE] / 100, 1);
+    }
     return Math.floor(dmgObject['base AD'] * hit_chance);
 }
 

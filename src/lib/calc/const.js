@@ -3620,7 +3620,7 @@ const abils = {
         'var hit': 0.06,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
+        'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'conjure', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
@@ -3632,7 +3632,7 @@ const abils = {
         'var hit': 0.06,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
+        'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'conjure', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
@@ -4387,7 +4387,7 @@ const abils = {
         'var hit': 0.0, // 0.1 TODO change back
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
+        'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
