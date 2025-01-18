@@ -431,6 +431,11 @@ function ability_specific_effects(settings, dmgObject) {
                     (1 + 0.03 * settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS])
             );
         }
+
+        // scythe 3
+        if (settings['ability'] === ABILITIES.SPECTRAL_SCYTHE_3) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + (1-settings[SETTINGS.TARGET_HP_PERCENT]/100)));
+        }
     }
     return dmgObject;
 }
