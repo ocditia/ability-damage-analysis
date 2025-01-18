@@ -973,7 +973,7 @@ const settingsConfig = {
     },
     [SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]: {
         label: 'Skeleton rage stacks',
-        default: 0
+        default: 25
     },
     [SETTINGS.NOPE]: {
         label: 'Nope Nope Nope',
