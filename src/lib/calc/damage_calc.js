@@ -1814,6 +1814,13 @@ function get_rotation(settings) {
         rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
     }
 
+    // Ruin stacks
+    if (settings['ability'] === ABILITIES.COMBUST) {
+        for (let i=0; i<2*settings[SETTINGS.RUIN]; i++) {
+            rotation[1].push(ABILITIES.COMBUST_HIT);
+        }
+    }
+
     return rotation;
 }
 

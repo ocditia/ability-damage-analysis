@@ -222,6 +222,14 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/conflagrate.png"
                                 />
+                                <Number
+                                    bind:setting={settings[SETTINGS.RUIN]}
+                                    onchange={() => updateDamages()}
+                                    img="/ability_icons/magic/30x30/wrack_and_ruin.png"
+                                    step="1"
+                                    max="100"
+                                    min="0"
+                                />
                                 <Select
                                     bind:setting={settings[SETTINGS.KERAPACS_WRIST_WRAPS]}
                                     onchange={() => updateDamages()}

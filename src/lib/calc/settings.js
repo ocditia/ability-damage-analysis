@@ -673,6 +673,7 @@ const SETTINGS = {
         CORBICULA_2: '2 corbicula',
     },
     LUNGING: 'lunging',
+    RUIN: 'ruin',
 };
 
 const settingsConfig = {
@@ -1874,6 +1875,10 @@ const settingsConfig = {
     },
     [SETTINGS.LUNGING]: {
         label: 'Lunging',
+        default: 0
+    },
+    [SETTINGS.RUIN]: {
+        label: 'Ruin stacks',
         default: 0
     },
 };
