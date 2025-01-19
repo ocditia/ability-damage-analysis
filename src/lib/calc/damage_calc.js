@@ -282,7 +282,7 @@ function ability_specific_effects(settings, dmgObject) {
     // order of these effects in unknown and should be researched properly still.
     if (abils[settings['ability']]['main style'] === 'magic') {
         // conflagrate
-        if (settings['ability'] === 'combust' && settings[SETTINGS.CONFLAGRATE] === true) {
+        if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.CONFLAGRATE] === true) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
         }
 
