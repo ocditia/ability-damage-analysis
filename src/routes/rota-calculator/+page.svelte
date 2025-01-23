@@ -3,12 +3,7 @@
     import Header from '$components/Layout/Header.svelte';
     import { abilities } from '$lib/ranged/abilities';
     import { ranged_buff_abilities } from '$lib/ranged/buff_abilities';
-    import { settingsConfig, SETTINGS } from '$lib/calc/settings';
-    import Checkbox from '../../components/Settings/Checkbox.svelte';
-    import Number from '../../components/Settings/Number.svelte';
-    import Select from '../../components/Settings/Select.svelte';
-    import { ABILITIES } from '$lib/calc/const.js';
-    import { hit_damage_calculation, ability_damage_calculation } from '$lib/calc/damage_calc.js';
+    import { settingsConfig } from '$lib/calc/settings';
 
     let allAbilities = {...abilities, ...ranged_buff_abilities};
 
@@ -18,8 +13,6 @@
             { ...value, regular: 0, ss: 0, swift: 0, ssSwift: 0 }
         ])
     );
-
-    let tab = 'general';
 
     let settings = Object.fromEntries(
         Object.entries(settingsConfig).map(([key, value]) => [
@@ -56,32 +49,6 @@
         });
     }
 
-    function updateExpectedDamage() {
-            const adaptedSettings = Object.fromEntries(
-                Object.entries(settings).map(([key, value]) => [key, value.value])
-            );
-
-            Object.entries(damages).forEach(([abilityKey, ability]) => {
-                adaptedSettings['ability'] = abilityKey;
-
-                adaptedSettings['split soul'] = false;
-                adaptedSettings['death swiftness'] = false;
-                damages[abilityKey].regular = ability.calc({ ...adaptedSettings });
-
-                adaptedSettings['split soul'] = true;
-                adaptedSettings['death swiftness'] = false;
-                damages[abilityKey].ss = ability.calc({ ...adaptedSettings });
-
-                adaptedSettings['split soul'] = false;
-                adaptedSettings['death swiftness'] = true;
-                damages[abilityKey].swift = ability.calc({ ...adaptedSettings });
-
-                adaptedSettings['split soul'] = true;
-                adaptedSettings['death swiftness'] = true;
-                damages[abilityKey].ssSwift = ability.calc({ ...adaptedSettings });
-            });
-        }
-
     // Calculate and sum damage for each ability
     let totalDamage = 0;
     function calculateTotalDamage() {
@@ -107,7 +74,7 @@
         event.dataTransfer.setData('text/plain', ability);
     }
 
-    function handleDrop(event, index) {
+    function handleDrop(event) {
         event.preventDefault();
         const abilityKey = event.dataTransfer.getData("text/plain");
 
@@ -133,7 +100,7 @@
                 <div class="card card-ranged">
                     <h1 class="main-header mb-6 ml-3">Rotation</h1>
                     <div class="table-container">
-                        <button on:click={calculateTotalDamage}>Calculate Damage</button>
+                        <button onclick={calculateTotalDamage}>Calculate Damage</button>
                         <p>Total Damage: {totalDamage}</p>
                     </div>
                     <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-0 abilities">
@@ -142,7 +109,7 @@
                                 src={ability.icon}
                                 alt={ability.title}
                                 draggable="true"
-                                on:dragstart={(e) => handleDragStart(e, key)}
+                                ondragstart={(e) => handleDragStart(e, key)}
                                 title={ability.title}
                                 class="ability-icon"
                             />
@@ -152,15 +119,16 @@
                     <div class="ability-bar" style="display: grid; grid-template-columns: repeat(auto-fill, 30px); gap: 10px;">
                         {#if abilityBar.length === 0}
                             <p>No abilities added yet</p>
-                            {#each Array(5) as _, index}
+                            {#each Array(5) as _}
                                 <div class="ability-slot empty-slot" style="width: 30px; height: 30px; border: 1px solid #ccc; background-color: #f0f0f0;"></div>
                             {/each}
                         {:else}
                             {#each abilityBar as ability, index}
                                 <div
                                     class="ability-slot"
-                                    on:drop={(e) => handleDrop(e, index)}
-                                    on:dragover={allowDrop}
+                                    ondrop={(e) => handleDrop(e, index)}
+                                    ondragover={allowDrop}
+                                    aria-hidden="true"
                                     style="width: 30px; height: 30px; border: 1px solid #ccc; display: flex; justify-content: center; align-items: center;"
                                 >
                                     {#if ability}

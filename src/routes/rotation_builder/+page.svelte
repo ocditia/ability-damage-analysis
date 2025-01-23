@@ -9,20 +9,15 @@
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings';
 	import Checkbox from '../../components/Settings/Checkbox.svelte';
 	import Number from '../../components/Settings/Number.svelte';
-	import Select from '../../components/Settings/Select.svelte';
-	import { ABILITIES, abils } from '$lib/calc/const.js';
-	import { hit_damage_calculation, ability_damage_calculation, get_rotation,
+	import { abils } from '$lib/calc/const.js';
+	import { hit_damage_calculation, get_rotation,
 		style_specific_unification, calc_base_ad, get_user_value, apply_additional
 	} from '$lib/calc/damage_calc.js';
-	import {
-        calc_on_cast, rotation_on_npc, rotation_on_npc_test, rotation_ability_damage, handle_ranged_buffs,
-        handle_edraco, handle_sgb, calc_channelled_hit
-    } from '$lib/calc/rotation_damage_helper.js';
+	import { handle_ranged_buffs, calc_channelled_hit } from '$lib/calc/rotation_damage_helper.js';
     import RangedSettings from '../../components/Settings/RangedSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
 	import { on_stall, on_cast, on_hit, on_damage} from '$lib/calc/damage_calc_new.js';
 	import { create_object } from '$lib/calc/object_helper.js';
-    import { abilities } from '$lib/necromancy/abilities';
 
     let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abils eventually
     let meleeAbils = {...melee_dmg_abilities};
@@ -35,9 +30,6 @@
 			{ ...value, key: key, value: value.default?.ranged ?? value.default }
 		])
 	));
-    const adaptedSettings = Object.fromEntries(
-        Object.entries(settings).map(([key, value]) => [key, value.value])
-    );
 
     let totalDamage = $state(0);
 
@@ -105,7 +97,7 @@
 			}
             else if (abilityKey in rangedAbils) {
                 //Handle single-hit abilities (one cast, one hit, one hitsplat)
-                if (rangedAbils[abilityKey].calc == hit_damage_calculation) {
+                if (rangedAbils[abilityKey].calc === hit_damage_calculation) {
                     let dmgObject = create_object(settingsCopy);
                     style_specific_unification(settingsCopy);
                     dmgObject = on_cast(settingsCopy, dmgObject, timers);
@@ -113,12 +105,8 @@
                     dmgObject['non_crit']['ability'] = abilityKey;
                     damageTracker[hit_tick].push(dmgObject);
                 }
-                //Handles channelled abilities (many casts, many hits, many hitsplats)
-                //(do nothing, handle at the end - but needs to run so channels aren't interpreted as bleeds)
-                else if (isChannelled(settingsCopy, abilityKey)) {
-                }
                 //Multi-hits (one cast, multiple hits, many hitsplats)
-                else if (abils[abilityKey]['ability classification'] == 'multihit') {
+                else if (abils[abilityKey]['ability classification'] === 'multihit') {
                     let dmgObject = create_object(settingsCopy);
                     let dmgObjects = on_cast(settingsCopy, dmgObject, timers);
                     dmgObjects.forEach(element => {
@@ -128,8 +116,8 @@
                     });
                     settingsCopy['ability'] = abilityKey;
                 }
-                //Bleeds, dots, burns (one cast, one hit, many hitsplats)
-                else {
+                // Bleeds, dots, burns (one cast, one hit, many hitsplats)
+                else if (!isChannelled(abilityKey)) { // (handle channels at the end)
                     let dmgObject = create_object(settingsCopy);
                     settingsCopy['ability'] = abils[abilityKey]['hits'][1][0];
                     dmgObject = on_cast(settingsCopy, dmgObject, timers);
@@ -144,15 +132,17 @@
                     }
                 }
             }
-			//Process hitsplats and decrement timers
+
+            // Handles channelled abilities (many casts, many hits, many hitsplats)
+			// Process hitsplats and decrement timers
             let rota;
-            if (isChannelled(settingsCopy, abilityKey)) {
+            if (isChannelled(abilityKey)) {
                 rota = get_rotation(settingsCopy);
             }
 			let end_tick = start_tick + abil_duration;
 			for (let i = start_tick; i < end_tick; i++) {
-                //Perform any necessary hits from chanelled abilities on this tick
-                if (isChannelled(settingsCopy, abilityKey)) {
+                //Perform any necessary hits from channelled abilities on this tick
+                if (isChannelled(abilityKey)) {
 					//If there's a new ability cast on this tick, cancel the channel and exit early
 					if (i > start_tick && abilityBar[tick]) {
 						break;
@@ -186,7 +176,7 @@
 				// console.log(settings[key]);
 				timers[key] -= 1;
 				if (timers[key] < 0) {
-					if (key == SETTINGS.ICY_PRECISION) {
+					if (key === SETTINGS.ICY_PRECISION) {
 						settings[key] = 0; //TODO better solution
 					}
 					else {
@@ -197,14 +187,13 @@
 		}
 	}
 
-	function isChannelled(settingsCopy, key) {
-        return abils[key]['ability classification'] == 'channel';
+	function isChannelled(key) {
+        return abils[key]['ability classification'] === 'channel';
     }
 
 	//UI
 	const barSize = 200;
     let abilityBar = $state(Array(barSize).fill(null)); // Empty slots on the bar
-	let tab = $state('general'); // settings tab
 	let abilityTab = $state('ranged');
 	let abilityBarIndex = 0;
 	let lastAbilityIndex = 0;
