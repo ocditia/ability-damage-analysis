@@ -26,12 +26,36 @@
         meta: 0
     })));
 
-    let settings = $state(Object.fromEntries(
-        Object.entries(settingsConfig).map(([key, value]) => [
-            key,
-            { ...value, key: key, value: value.default?.magic ?? value.default }
-        ])
-    ));
+    let storedSettings = {};
+    if (typeof localStorage !== 'undefined') {
+        storedSettings = JSON.parse(localStorage.getItem('settings')) || {};
+    }
+
+    let settings = $state(
+        Object.fromEntries(
+            Object.entries(settingsConfig).map(([key, value]) => [
+                key,
+                {
+                    ...value,
+                    key,
+                    value: storedSettings[key]?.value ?? value.default?.magic ?? value.default
+                }
+            ])
+        )
+    );
+
+    function saveSettings() {
+        if (typeof localStorage !== 'undefined') {
+            const settingsToSave = Object.fromEntries(
+                Object.entries(settings).map(([key, value]) => [key, { value: value.value }])
+            );
+            localStorage.setItem('settings', JSON.stringify(settingsToSave));
+        }
+    }
+
+    $effect(() => {
+        if (settings) saveSettings();
+    });
 
     const updateDamages = () => {
         const adaptedSettings = Object.fromEntries(
@@ -203,7 +227,7 @@
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">
                                     Applies to dots
-                                </h5>                                
+                                </h5>
                                 <Number
                                     bind:setting={settings[SETTINGS.FLOW_STACKS]}
                                     onchange={() => updateDamages()}
