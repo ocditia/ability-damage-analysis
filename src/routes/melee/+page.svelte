@@ -26,12 +26,36 @@
         berserk: 0
     })));
 
-    let settings = $state(Object.fromEntries(
-        Object.entries(settingsConfig).map(([key, value]) => [
-            key,
-            { ...value, key: key, value: value.default?.melee ?? value.default }
-        ])
-    ));
+    let storedSettings = {};
+    if (typeof localStorage !== 'undefined') {
+        storedSettings = JSON.parse(localStorage.getItem('settings')) || {};
+    }
+
+    let settings = $state(
+        Object.fromEntries(
+            Object.entries(settingsConfig).map(([key, value]) => [
+                key,
+                {
+                    ...value,
+                    key,
+                    value: storedSettings[key]?.value ?? value.default?.melee ?? value.default
+                }
+            ])
+        )
+    );
+
+    function saveSettings() {
+        if (typeof localStorage !== 'undefined') {
+            const settingsToSave = Object.fromEntries(
+                Object.entries(settings).map(([key, value]) => [key, { value: value.value }])
+            );
+            localStorage.setItem('settings', JSON.stringify(settingsToSave));
+        }
+    }
+
+    $effect(() => {
+        if (settings) saveSettings();
+    });
 
     const updateDamages = () => {
         const adaptedSettings = Object.fromEntries(
