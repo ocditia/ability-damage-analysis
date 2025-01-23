@@ -24,7 +24,7 @@
     let settings = Object.fromEntries(
         Object.entries(settingsConfig).map(([key, value]) => [
             key,
-            { ...value, key: key, value: value.default }
+            { ...value, key: key, value: value.default?.ranged ?? value.default }
         ])
     );
 

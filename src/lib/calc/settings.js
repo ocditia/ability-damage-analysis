@@ -1409,7 +1409,12 @@ const settingsConfig = {
     },
     [SETTINGS.WEAPON]: {
         label: 'Weapon type',
-        default: SETTINGS.WEAPON_VALUES.TH,
+        default: {
+            melee: SETTINGS.WEAPON_VALUES.TH,
+            ranged: SETTINGS.WEAPON_VALUES.TH,
+            magic: SETTINGS.WEAPON_VALUES.TH,
+            necromancy: SETTINGS.WEAPON_VALUES.DW
+        },
         options: [
             { text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW },
             { text: 'Two handed', value: SETTINGS.WEAPON_VALUES.TH }
