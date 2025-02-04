@@ -356,6 +356,10 @@ const SETTINGS = {
         STALKER_E: 'stalkers ring+',
         CHAMPION: 'champions ring',
         CHAMPION_E: 'champions ring+',
+        LOTD: 'luck of the dwarves',
+        LOTD_I: 'luck of the dwarves (i)',
+        HSR: 'hazelmeres signet ring',
+        HSR_I: 'hazelmeres signet ring (i)',
     },
     /*
     MAGIC_RING: 'magic ring',
@@ -1270,6 +1274,10 @@ const settingsConfig = {
             { text: 'Stalker+', value: SETTINGS.RING_VALUES.STALKER_E },
             { text: 'Champion', value: SETTINGS.RING_VALUES.CHAMPION },
             { text: 'Champion+', value: SETTINGS.RING_VALUES.CHAMPION_E },
+            { text: 'LOTD', value: SETTINGS.RING_VALUES.LOTD },
+            { text: 'LOTD (i)', value: SETTINGS.RING_VALUES.LOTD_I },
+            { text: 'HSR', value: SETTINGS.RING_VALUES.HSR },
+            { text: 'HSR (i)', value: SETTINGS.RING_VALUES.HSR_I },
         ]
     },
     /*

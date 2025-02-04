@@ -942,7 +942,6 @@ const armour = {
         slot: 'ring',
         style: 'hybrid'
     },
-    // done till here
     'channelers ring': {
         'necromancy strength': 0,
         'magic strength': 30.4,
@@ -1036,6 +1035,38 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        slot: 'ring',
+        style: 'hybrid'
+    },
+    'luck of the dwarves': {
+        'necromancy strength': 17.3,
+        'magic strength': 17.3,
+        'melee strength': 17.3,
+        'ranged strength': 17.3,
+        slot: 'ring',
+        style: 'hybrid'
+    },
+    'luck of the dwarves (i)': {
+        'necromancy strength': 19.8,
+        'magic strength': 19.8,
+        'melee strength': 19.8,
+        'ranged strength': 19.8,
+        slot: 'ring',
+        style: 'hybrid'
+    },
+    'hazelmeres signet ring': {
+        'necromancy strength': 21.0,
+        'magic strength': 21.0,
+        'melee strength': 21.0,
+        'ranged strength': 21.0,
+        slot: 'ring',
+        style: 'hybrid'
+    },
+    'hazelmeres signet ring (i)': {
+        'necromancy strength': 23.7,
+        'magic strength': 23.7,
+        'melee strength': 23.7,
+        'ranged strength': 23.7,
         slot: 'ring',
         style: 'hybrid'
     },
