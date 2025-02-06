@@ -1004,7 +1004,8 @@ function calc_crit_damage(settings) {
     }
 
     // stalkers ring
-    if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E && 
+    if (abils[settings['ability']]['main style'] === 'ranged' &&
+        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E && 
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
         (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)) {
             crit_buff += 0.03;

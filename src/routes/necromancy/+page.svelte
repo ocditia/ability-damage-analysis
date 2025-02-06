@@ -559,6 +559,11 @@
                                 step="1"
                                 min="0"
                             />
+                            <Select
+                                    bind:setting={settings[SETTINGS.NECRO_TH]}
+                                    onchange={() => updateDamages()}
+                                    img="/armour_icons/Off-hand_slot.webp"
+                                />
                         </div>
                         {/if}
                     </div>

@@ -556,7 +556,7 @@ const SETTINGS = {
     },
     NECRO_TH: 'necro two-hand weapon',
     NECRO_TH_VALUES: {
-        NONE: 'none'
+        CUSTOM: 'custom th'
     },
     AMMO: 'ammo',
     AMMO_VALUES: {
@@ -1529,7 +1529,7 @@ const settingsConfig = {
     [SETTINGS.NECRO_TH]: {
         label: '2h',
         default: SETTINGS.NECRO_TH_VALUES.NONE,
-        options: [{ text: 'None', value: SETTINGS.NECRO_TH_VALUES.NONE }]
+        options: [{ text: 'Custom', value: SETTINGS.NECRO_TH_VALUES.CUSTOM }]
     },
     [SETTINGS.AMMO]: {
         label: 'Ammo',
