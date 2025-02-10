@@ -1031,12 +1031,12 @@ function calc_on_npc(settings, dmgObject) {
 
         // enduring ruin bleed (gop)
         if (
-            settings['enduring ruin - bleed'] === 'regular' &&
+            settings[SETTINGS.ENDURING_RUIN_BLEED] === 'regular' &&
             abils[settings['ability']]['ability classification'] === 'bleed'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.2);
         } else if (
-            settings['enduring ruin - bleed'] === 'enhanced' &&
+            settings[SETTINGS.ENDURING_RUIN_BLEED] === 'enhanced' &&
             abils[settings['ability']]['ability classification'] === 'bleed'
         ) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.25);
