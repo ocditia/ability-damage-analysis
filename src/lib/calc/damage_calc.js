@@ -1407,9 +1407,7 @@ function calc_igneous_bleed(settings) {
         let hit_dmg = JSON.parse(JSON.stringify(settings['igneous cleave bleed damage']));
         for (let key in hit_dmg) {
             for (let i=0; i<hit_dmg[key]['damage list'].length; i++) {
-		    for (let j=1; j<splat; j++) {
-                	hit_dmg[key]['damage list'][i] = Math.floor(hit_dmg[key]['damage list'][i] * 1.05);
-		    }
+                hit_dmg[key]['damage list'][i] = Math.floor(hit_dmg[key]['damage list'][i] * 1.05**(splat-1));
             }
             hit_dmg[key] = calc_on_npc(settings, hit_dmg[key]);
         }
