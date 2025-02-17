@@ -264,7 +264,7 @@ function calc_boosted_ad(settings, dmgObject) {
             wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type']) &&
             settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS
         ) {
-            boosted_AD = Math.floor(boosted_AD * (1 + 0.03 * settings[SETTINGS.ICY_PRECISION]));
+            boosted_AD = Math.floor(boosted_AD * (1 + 0.02 * settings[SETTINGS.ICY_PRECISION]));
         }
     }
 
