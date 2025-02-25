@@ -1645,6 +1645,7 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.NECRO_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.NECRO_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.NECRO_PRAYER];
+        settings[SETTINGS.WEAPON] = settings[SETTINGS.WEAPON_VALUES.DW]
     }
     
     return settings;
