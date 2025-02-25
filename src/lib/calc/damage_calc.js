@@ -98,7 +98,7 @@ function calc_base_ad(settings) {
                 );
         }
     } else if (abils[settings['ability']]['main style'] === 'necromancy') {
-        if (settings[SETTINGS.WEAPON] === 'main-hand') {
+        if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
             let AD_mh =
                 Math.floor(2.5 * settings[SETTINGS.NECROMANCY_LEVEL]) +
                 Math.floor(
@@ -119,7 +119,7 @@ function calc_base_ad(settings) {
             base_AD = AD_mh + AD_oh;
         }
     }
-
+    
     // eruptive perk
     base_AD = Math.floor(base_AD * (1 + settings[SETTINGS.ERUPTIVE] * 0.005));
 
@@ -127,7 +127,7 @@ function calc_base_ad(settings) {
     if (settings[SETTINGS.AURA] === 'equilibrium') {
         base_AD = Math.floor(base_AD * 1.12);
     }
-
+    
     return base_AD;
 }
 
@@ -1645,7 +1645,7 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.NECRO_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.NECRO_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.NECRO_PRAYER];
-        settings[SETTINGS.WEAPON] = settings[SETTINGS.WEAPON_VALUES.DW]
+        settings[SETTINGS.WEAPON] = SETTINGS.WEAPON_VALUES.DW
     }
     
     return settings;
