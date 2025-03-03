@@ -473,7 +473,7 @@ function set_min_var(settings, dmgObject) {
         // greater barge tick bonus
         if (settings['ability'] === ABILITIES.GREATER_BARGE) {
             min_percent = min_percent + Math.min(0.05 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.5);
-            var_percent = var_percent + Math.min(0.04 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.4);
+            var_percent = var_percent + Math.min(0.07 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
         }
 
         // icy tempest
