@@ -483,6 +483,10 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/familiar.png"
                                 />
+                                <Select
+                                    bind:setting={settings[SETTINGS.AUTO_CAST]}
+                                    onchange={() => updateDamages()}
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Perks</h5>

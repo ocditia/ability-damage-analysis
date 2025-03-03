@@ -566,6 +566,11 @@ const SETTINGS = {
         DEATHSPORE_ARROWS: 'deathspore arrows',
         JAS_ARROWS: 'jas arrows',
     },
+    AUTO_CAST: 'auto cast',
+    AUTO_CAST_VALUES: {
+        NONE: 'none',
+        CRUMBLE_UNDEAD: 'crumble undead',
+    },
     LVL20ARMOUR: 'level 20 armour',
     BITING: 'biting',
     PRECISE: 'precise',
@@ -1540,6 +1545,14 @@ const settingsConfig = {
             { text: 'Wen', value: SETTINGS.AMMO_VALUES.WEN_ARROWS },
             { text: 'Jas', value: SETTINGS.AMMO_VALUES.JAS_ARROWS },
             { text: 'Deathspore arrows', value: SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS }
+        ]
+    },
+    [SETTINGS.AUTO_CAST]: {
+        label: 'Auto cast',
+        default: SETTINGS.AUTO_CAST_VALUES.NONE,
+        options: [
+            { text: 'Vanilla', value: SETTINGS.AUTO_CAST_VALUES.NONE },
+            { text: 'Crumble Undead', value: SETTINGS.AUTO_CAST_VALUES.CRUMBLE_UNDEAD },
         ]
     },
     [SETTINGS.LVL20ARMOUR]: {

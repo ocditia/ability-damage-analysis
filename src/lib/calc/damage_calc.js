@@ -204,6 +204,11 @@ function calc_boosted_ad(settings, dmgObject) {
             boosted_AD = Math.floor(boosted_AD * 1.175);
         }
 
+        // crumble undead
+        if (settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.CRUMBLE_UNDEAD) {
+            boosted_AD = Math.floor(boosted_AD * 1.3);
+        }
+
         // flow stacks
         boosted_AD = Math.floor(boosted_AD * (1 + 0.01 * settings[SETTINGS.FLOW_STACKS]));
     }
