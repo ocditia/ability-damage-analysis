@@ -739,7 +739,8 @@ function calc_prayer(settings) {
             boost += 0.1;
         }
     }
-    if (settings['divine rage'] === true) {
+    if (settings[SETTINGS.DIVINE_RAGE] === true && 
+        (prayers[settings[SETTINGS.PRAYER]]['book'] === "normal" || prayers[settings[SETTINGS.PRAYER]]['style'] === "none")) {
         boost += 0.05;
     }
     return boost;

@@ -1,4 +1,4 @@
-import { ABILITIES, abils, weapons } from './const';
+import { ABILITIES, abils, weapons, prayers } from './const';
 import { SETTINGS } from './settings';
 
 function create_object(settings) {
@@ -41,7 +41,8 @@ function calc_crit_chance(settings) {
     let crit_chance = 0.1;
 
     // eclipsed soul
-    if (settings['eclipsed soul'] === true) {
+    if (settings[SETTINGS.ECLIPSED_SOUL] === true && 
+        (prayers[settings[SETTINGS.PRAYER]]['book'] === "normal" || prayers[settings[SETTINGS.PRAYER]]['style'] === "none")) {
         crit_chance += 0.04;
     }
 

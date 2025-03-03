@@ -667,6 +667,7 @@ const SETTINGS = {
     BERSERK: 'berserk',
     DETONATE: 'detonate charge timer',
     DIVINE_RAGE: 'divine rage',
+    ECLIPSED_SOUL: 'eclipsed soul',
 
     SHOW_BOLG_STACKS: 'show bolg stacks',
     SHOW_ICY_CHILL_STACKS: 'show icy chill stacks',
@@ -1860,7 +1861,11 @@ const settingsConfig = {
     },
     [SETTINGS.DIVINE_RAGE]: {
         label: 'Divine rage',
-        default: false
+        default: true
+    },
+    [SETTINGS.ECLIPSED_SOUL]: {
+        label: 'Eclipsed soul',
+        default: true
     },
     [SETTINGS.SHOW_BOLG_STACKS]: {
         label: 'Show bolg stacks',

@@ -301,6 +301,14 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/Prayer.webp"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.DIVINE_RAGE]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.ECLIPSED_SOUL]}
+                                    onchange={() => updateDamages()}
+                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.REVENGE]}
                                     onchange={() => updateDamages()}
