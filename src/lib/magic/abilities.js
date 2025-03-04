@@ -135,7 +135,7 @@ const abilities = {
     [ABILITIES.INSTABILITY]: {
         title: 'Instability',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/time_strike-bg.png'
+        icon: '/ability_icons/magic/Fractured_Staff_of_Armadyl.webp'
     },
     [ABILITIES.RUNE_FLAME]: {
         title: 'Rune flame',
