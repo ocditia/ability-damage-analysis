@@ -23,7 +23,8 @@
         },
         regular: 0,
         sunshine: 0,
-        meta: 0
+        meta: 0,
+        smeta: 0
     })));
 
     let storedSettings = {};
@@ -68,6 +69,7 @@
             ability.regular = ability.calc({ ...adaptedSettings, sunshine: false, meta: false });
             ability.sunshine = ability.calc({ ...adaptedSettings, sunshine: true, meta: false });
             ability.meta = ability.calc({ ...adaptedSettings, sunshine: false, meta: true });
+            ability.smeta = ability.calc({ ...adaptedSettings, sunshine: true, meta: true });
 
             return ability;
         })
@@ -108,6 +110,14 @@
         {
             accessorKey: 'meta',
             header: 'Meta',
+            sortDescFirst: true,
+            meta: {
+                class: "text-center"
+            }
+        },
+        {
+            accessorKey: 'smeta',
+            header: 'Sun + Meta',
             sortDescFirst: true,
             meta: {
                 class: "text-center"
