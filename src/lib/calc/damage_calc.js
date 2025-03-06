@@ -730,11 +730,9 @@ function calc_prayer(settings) {
     let boost = 0;
     if (abils[settings['ability']]['main style'] === prayers[settings[SETTINGS.PRAYER]]['style']) {
         boost += prayers[settings[SETTINGS.PRAYER]]['boost'];
-
-        if (
-            settings[SETTINGS.NECKLACE] === 'amulet of zealots' &&
-            prayers[settings[SETTINGS.PRAYER]]['category'] in
-                ['single-stat boosting', 'leech curse']
+        
+        if (['single-stat boosting', 'leech curse'].includes(prayers[settings[SETTINGS.PRAYER]]['category']) &&
+            settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.ZEALOTS                
         ) {
             boost += 0.1;
         }
