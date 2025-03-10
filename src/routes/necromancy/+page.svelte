@@ -236,6 +236,14 @@
                                     min="0"
                                 />
                                 <Number
+                                    bind:setting={settings[SETTINGS.VALOUR_STACKS]}
+                                    onchange={() => updateDamages()}
+                                    img="/ability_icons/necro/30x30/command_phantom_guardian.png"
+                                    step="1"
+                                    max="25"
+                                    min="0"
+                                />
+                                <Number
                                     bind:setting={settings[SETTINGS.NECROSIS_STACKS]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/necrosis.png"

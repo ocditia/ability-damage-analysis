@@ -684,6 +684,7 @@ const SETTINGS = {
     },
     LUNGING: 'lunging',
     RUIN: 'ruin',
+    VALOUR_STACKS: 'valour stacks'
 };
 
 const settingsConfig = {
@@ -1911,6 +1912,10 @@ const settingsConfig = {
     [SETTINGS.RUIN]: {
         label: 'Ruin stacks',
         default: 0
+    },
+    [SETTINGS.VALOUR_STACKS]: {
+        label: 'Valour (Phantom stacks)',
+        default: 25
     },
 };
 

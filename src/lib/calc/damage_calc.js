@@ -473,6 +473,14 @@ function ability_specific_effects(settings, dmgObject) {
             );
         }
 
+        // valour / phantom guardian stacks
+        if (settings['ability'] === ABILITIES.COMMAND_PHANTOM_GUARDIAN) {
+            dmgObject['boosted AD'] = Math.floor(
+                dmgObject['boosted AD'] *
+                    (1 + 0.2 * settings[SETTINGS.VALOUR_STACKS])
+            );
+        }
+
         // scythe 3
         if (settings['ability'] === ABILITIES.SPECTRAL_SCYTHE_3) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + (1-settings[SETTINGS.TARGET_HP_PERCENT]/100)));
