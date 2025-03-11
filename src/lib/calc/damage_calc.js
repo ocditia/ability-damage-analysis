@@ -1016,7 +1016,7 @@ function calc_on_npc(settings, dmgObject) {
         }
 
         // undead slayer sigil
-        if (settings[SETTINGS.SLAYER_SIGIL_UNDEAD] === true) {
+        if (settings[SETTINGS.UNDEAD_SLAYER_ABILITY] === true) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.15);
         }
 
@@ -1026,7 +1026,7 @@ function calc_on_npc(settings, dmgObject) {
         }
 
         // dragon slayer sigil
-        if (settings[SETTINGS.SLAYER_SIGIL_DRAGON] === true) {
+        if (settings[SETTINGS.DRAGON_SLAYER_ABILITY] === true) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.15);
         }
 
@@ -1036,7 +1036,7 @@ function calc_on_npc(settings, dmgObject) {
         }
 
         // demon slayer sigil
-        if (settings[SETTINGS.SLAYER_SIGIL_DEMON] === true) {
+        if (settings[SETTINGS.DEMON_SLAYER_ABILITY] === true) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.15);
         }
 

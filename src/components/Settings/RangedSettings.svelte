@@ -13,9 +13,9 @@
 
 
     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH; 
-    //settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.HEX_E;
-    //settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.HEX_E;
-
+    settings[SETTINGS.AMMO]['value'] = 'wen arrows';
+    settings[SETTINGS.BALANCE_BY_FORCE]['value'] = false;
+        
 
     function makeNaked() {
         settings[SETTINGS.RANGED_HELMET]['value'] = 'none';
@@ -65,15 +65,33 @@
         
         
     }
+
+    function rakshaPreset() {
+        settings[SETTINGS.NECKLACE]['value'] = 'essence of finality amulet';
+        settings[SETTINGS.POCKET]['value'] = 'gwd3 scripture';
+        settings[SETTINGS.AURA]['value'] = 'inspiration';
+
+        settings[SETTINGS.LVL20ARMOUR]['value'] = false;
+        settings[SETTINGS.BITING]['value'] = 3;
+        settings[SETTINGS.REAPER_CREW]['value'] = false;
+        settings[SETTINGS.RANGED_PRAYER]['value'] = 'anguish';
+        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
+
+        settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]['value'] = 0;
+        settings[SETTINGS.KALG_SPEC]['value'] = true;
+        settings[SETTINGS.INNATE_MASTERY]['value'] = false;
+        settings[SETTINGS.ADRENALINE]['value'] = 210;
+    }
     //makeNaked();
     // testPreset();
     //settings[SETTINGS.ICY_CHILL_STACKS].value = 10;
+    rakshaPreset();
     updateDamages();
 
     
 </script>
 
-<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-ranged">
+<div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-rotation">
     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
         <li class="flex-grow me-2">
             <button
@@ -262,6 +280,10 @@
                         bind:setting={settings[SETTINGS.SMOKE_CLOUD]}
                         onchange={() => updateDamages()}
                     />
+                    <Checkbox
+                        bind:setting={settings[SETTINGS.KALG_SPEC]}
+                        onchange={() => updateDamages()}
+                    />
                 </div>
                 <div class="md:col-span-1">
                     <h5 class="uppercase font-bold text-lg text-center">On-NPC</h5>
@@ -302,19 +324,19 @@
                         img="/effect_icons/25px-Undead_Slayer.webp"
                     />
                     <Checkbox
-                        bind:setting={settings[SETTINGS.SLAYER_SIGIL_UNDEAD]}
+                        bind:setting={settings[SETTINGS.UNDEAD_SLAYER_ABILITY]}
                         onchange={() => updateDamages()}
-                        img="/effect_icons/Undead_slayer_sigil_detail.png"
+                        img="/ability_icons/special/Undead_Slayer_(ability).png"
                     />
                     <Checkbox
-                        bind:setting={settings[SETTINGS.SLAYER_SIGIL_DRAGON]}
+                        bind:setting={settings[SETTINGS.DRAGON_SLAYER_ABILITY]}
                         onchange={() => updateDamages()}
-                        img="/effect_icons/Undead_slayer_sigil_detail.png"
+                        img="/ability_icons/special/Dragon_Slayer_(ability).png"
                     />
                     <Checkbox
-                        bind:setting={settings[SETTINGS.SLAYER_SIGIL_DEMON]}
+                        bind:setting={settings[SETTINGS.DEMON_SLAYER_ABILITY]}
                         onchange={() => updateDamages()}
-                        img="/effect_icons/Undead_slayer_sigil_detail.png"
+                        img="/ability_icons/special/Demon_Slayer_(ability).png"
                     />
                     <Number
                         bind:setting={settings[SETTINGS.NOPE]}
@@ -456,6 +478,15 @@
                         step="1"
                         min="0"
                     />
+                    <Number
+                        bind:setting={settings[SETTINGS.IMPATIENT]}
+                        onchange={() => updateDamages()}
+                        img="/effect_icons/Impatient.png"
+                        max="4"
+                        step="1"
+                        min="0"
+                    />
+
                 </div>
                 <div class="md:col-span-1">
                     <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>

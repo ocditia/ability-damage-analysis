@@ -1501,7 +1501,29 @@ const ABILITIES = {
     SPEAR_WALL: 'spear wall',
     ICE_CLEAVE: 'ice cleave',
 
-    INGENUITY_OF_THE_HUMANS: 'ingenuity of the humans'
+    // Defensives
+    FREEDOM: 'freedom',
+    ANTICIPATION: 'anticipation',
+    RESONANCE: 'resonance',
+    DIVERT: 'divert',
+    PREPARATION: 'preparation',
+    REFLECT: 'reflect',
+    DEVOTION: 'devotion',
+    REVENGE: 'revenge',
+    IMMORTALITY: 'immortality',
+    BARRICADE: 'barricade',
+    NATURAL_INSTINCT: 'natural instinct',
+    
+
+    //no gcd abilities
+    INGENUITY_OF_THE_HUMANS: 'ingenuity of the humans',
+    LIMITLESS: 'limitless',
+    DRAGON_SLAYER_ABILITY: 'dragon slayer ability',
+    DEMON_SLAYER_ABILITY: 'demon slayer ability',
+    UNDEAD_SLAYER_ABILITY: 'undead slayer ability',
+    SURGE: 'surge',
+    ESCAPE: 'escape',
+    DIVE: 'dive'
 };
 
 const abils = {
@@ -4793,6 +4815,31 @@ const abils = {
         'ability type': 'proc', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
+    // Defensives
+    [ABILITIES.NATURAL_INSTINCT]: {
+        // ability name
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': false, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
+        'main style': 'defence',//TODO??
+        'damage type': 'defence',//TODO??
+    },
+    [ABILITIES.RESONANCE]: {
+        // ability name
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': false, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
+        'main style': 'defence',//TODO??
+        'damage type': 'defence',//TODO??
     },
     [ABILITIES.INGENUITY_OF_THE_HUMANS]: {
         // ability name

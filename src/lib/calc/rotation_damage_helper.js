@@ -151,10 +151,10 @@ function calc_channelled_hit(settings, hit_index, rotation, timers) {
  * @param {String} abilityKey 
  */
 function handle_ranged_buffs(settings, timers, abilityKey) {
-    //TODO handle swiftness' weird damage calc
+    //TODO handle swiftness' weird damage calc + cleanup format
     if (abilityKey == ABILITIES.DEATHS_SWIFTNESS) {
         settings['death swiftness'] = true;
-        timers['death swiftness'] = 51;
+        timers['death swiftness'] = 50;
     }
     else if (abilityKey == ABILITIES.GREATER_DEATHS_SWIFTNESS) {
         settings['death swiftness'] = true;
@@ -164,6 +164,18 @@ function handle_ranged_buffs(settings, timers, abilityKey) {
     else if (abilityKey == ABILITIES.SPLIT_SOUL_ECB) {
         settings['split soul'] = true; //TODO dont let non ranged hits proc split soul
         timers['split soul'] = 25;
+    }
+    else if (abilityKey == ABILITIES.BALANCE_BY_FORCE) {
+        settings[ABILITIES.BALANCE_BY_FORCE] = true; 
+        timers[ABILITIES.BALANCE_BY_FORCE] = 50;
+    }
+    else if ([ABILITIES.INCENDIARY_SHOT, ABILITIES.METEOR_STRIKE, ABILITIES.TSUNAMI].includes(abilityKey)) {
+        settings[SETTINGS.CRIT_BUFF] = true; 
+        timers[SETTINGS.CRIT_BUFF] = 50;
+    }
+    else if (abilityKey == ABILITIES.NATURAL_INSTINCT) {
+        settings[SETTINGS.NATURAL_INSTINCT] = true; 
+        timers[ABILITIES.NATURAL_INSTINCT] = 34;
     }
 }
 
@@ -184,21 +196,23 @@ function handle_edraco(settings, timers, abilityKey) {
     let boots = settings['boots'];
 
     let items = [body, helmet, gloves, legs, boots];
-    const edraco = 'elite dracolich';
-    let count = items.filter(item => item && item.startsWith(edraco)).length;
-    //Handle adrenaline gain
-    if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT || abilityKey == ABILITIES.RAPID_FIRE_HIT) {
-        settings[SETTINGS.ADRENALINE] += (count * 0.5);
-    }
-    //Handle crit chance buff
-    if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
-        if (count >= 3) {
-            let buff_duration = 5 + (3 * Math.max(count - 3, 0)); // 5 tick base duration
-            settings['dracolich infusion'] = 'greater';
-            timers['dracolich infusion'] = buff_duration; 
+    function dracoBuff(startString, adrenGain, infusionTier) {
+        let count = items.filter(item => item && item.startsWith(startString)).length;
+        if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT || abilityKey == ABILITIES.RAPID_FIRE_HIT) {
+            settings[SETTINGS.ADRENALINE] += count * adrenGain;
+        }
+        //Handle crit chance buff
+        if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
+            if (count >= 3) {
+                let buff_duration = 5 + (3 * Math.max(count - 3, 0)); // 5 tick base duration
+                settings['dracolich infusion'] = infusionTier;
+                timers['dracolich infusion'] = buff_duration; 
+            }
         }
     }
-    //TODO regular dracolich
+    dracoBuff('elite dracolich', 0.5, 'greater');
+    //dracoBuff('dracolich', 0.2, 'regular'); 
+    //TOOD solve the floating point error for regular draco
 }
 
 /**

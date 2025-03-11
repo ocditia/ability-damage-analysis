@@ -109,6 +109,7 @@ const SETTINGS = {
     },
     TARGET_HP_PERCENT: 'target hp percent',
     GENOCIDAL: 'genocidal',
+    IMPATIENT: 'impatient',
     FAMILIAR: 'familiar',
     FAMILIAR_VALUES: {
         NONE: 'none',
@@ -119,6 +120,7 @@ const SETTINGS = {
     AURA_VALUES: {
         NONE: 'none',
         MAHJARRAT: 'mahjarrat',
+        INSPIRATION: 'inspiration',
         EQUILIBRIUM: 'equilibrium',
         RECKLESS: 'reckless',
         BERSERKER: 'berserker',
@@ -135,9 +137,9 @@ const SETTINGS = {
     SLAYER_PERK_UNDEAD: 'undead slayer perk',
     SLAYER_PERK_DRAGON: 'dragon slayer perk',
     SLAYER_PERK_DEMON: 'demon slayer perk',
-    SLAYER_SIGIL_UNDEAD: 'undead slayer sigil',
-    SLAYER_SIGIL_DRAGON: 'dragon slayer sigil',
-    SLAYER_SIGIL_DEMON: 'demon slayer sigil',
+    UNDEAD_SLAYER_ABILITY: 'undead slayer ability',
+    DRAGON_SLAYER_ABILITY: 'dragon slayer ability',
+    DEMON_SLAYER_ABILITY: 'demon slayer ability',
     HAUNTED: 'haunted',
     HAUNTED_AD: 'haunted AD',
     SKELETON_WARRIOR_RAGE_STACKS: 'skeleton rage stacks',
@@ -159,10 +161,10 @@ const SETTINGS = {
     RANGED_HELMET: 'ranged helmet',
     RANGED_HELMET_VALUES: {
         NONE: 'none',
-        SIRENIC: 'sirenic mask',
-        ELITE_SIRENIC: 'elite sirenic mask',
-        DRACOLICH: 'dracolich coif',
         ELITE_DRACOLICH: 'elite dracolich coif',
+        DRACOLICH: 'dracolich coif',
+        ELITE_SIRENIC: 'elite sirenic mask',
+        SIRENIC: 'sirenic mask',
         GHOST_HUNTER: 'ghost hunter goggles',
     },
     MELEE_HELMET: 'melee helmet',
@@ -185,18 +187,18 @@ const SETTINGS = {
     MAGIC_BODY: 'magic body',
     MAGIC_BODY_VALUES: {
         NONE: 'none',
-        TECTONIC: 'tectonic robe top',
-        ELITE_TECTONIC: 'elite tectonic robe top',
         SLISKE: 'anima core body of sliske',
+        ELITE_TECTONIC: 'elite tectonic robe top',
+        TECTONIC: 'tectonic robe top',
         GHOST_HUNTER: 'ghost hunter body',
     },
     RANGED_BODY: 'ranged body',
     RANGED_BODY_VALUES: {
         NONE: 'none',
-        SIRENIC: 'sirenic hauberk',
-        ELITE_SIRENIC: 'elite sirenic hauberk',
-        DRACOLICH: 'dracolich hauberk',
         ELITE_DRACOLICH: 'elite dracolich hauberk',
+        DRACOLICH: 'dracolich hauberk',
+        ELITE_SIRENIC: 'elite sirenic hauberk',
+        SIRENIC: 'sirenic hauberk',
         GHOST_HUNTER: 'ghost hunter body',
     },
     MELEE_BODY: 'melee body',
@@ -226,10 +228,10 @@ const SETTINGS = {
     RANGED_LEGS: 'ranged legs',
     RANGED_LEGS_VALUES: {
         NONE: 'none',
-        SIRENIC: 'sirenic chaps',
-        ELITE_SIRENIC: 'elite sirenic chaps',
-        DRACOLICH: 'dracolich chaps',
         ELITE_DRACOLICH: 'elite dracolich chaps',
+        DRACOLICH: 'dracolich chaps',
+        ELITE_SIRENIC: 'elite sirenic chaps',
+        SIRENIC: 'sirenic chaps',
         GHOST_HUNTER: 'ghost hunter legs',
     },
     MELEE_LEGS: 'melee legs',
@@ -259,8 +261,8 @@ const SETTINGS = {
     RANGED_GLOVES: 'ranged gloves',
     RANGED_GLOVES_VALUES: {
         NONE: 'none',
-        DRACOLICH: 'dracolich vambraces',
         ELITE_DRACOLICH: 'elite dracolich vambraces',
+        DRACOLICH: 'dracolich vambraces',
         DTB: 'deathtouch bracelet',
         CINDERS: 'cinderbane gloves',
         NIGHTMARES: 'nightmare gauntlets',
@@ -295,10 +297,10 @@ const SETTINGS = {
     RANGED_BOOTS: 'ranged boots',
     RANGED_BOOTS_VALUES: {
         NONE: 'none',
-        DRACOLICH: 'dracolich boots',
         ELITE_DRACOLICH: 'elite dracolich boots',
-        FLEETING: 'fleeting boots',
+        DRACOLICH: 'dracolich boots',
         ENHANCED_FLEETING: 'enhanced fleeting boots',
+        FLEETING: 'fleeting boots',
         SH: 'silverhawk boots'
     },
     MELEE_BOOTS: 'melee boots',
@@ -441,8 +443,8 @@ const SETTINGS = {
     RANGED_TH_VALUES: {
         CUSTOM: 'custom th',
         BOLG: 'bow of the last guardian',
+        HEX_E: 'hexhunter bow+',
         HEX: 'hexhunter bow',
-        HEX_E: 'hexhunter bow+'
     },
     MELEE_TH: 'melee two-hand weapon',
     MELEE_TH_VALUES: {
@@ -554,6 +556,7 @@ const SETTINGS = {
     DEATH_SWIFTNESS: 'death swiftness',
     SWIFTNESS_ACTIVE: 'swiftness',
     SPLIT_SOUL: 'split soul',
+    NATURAL_INSTINCT: 'natural instinct',
     //SPLIT_SOUL_ECB: 'split soul ecb',
     ZGS: 'zgs',
     BERSERK: 'berserk',
@@ -563,6 +566,8 @@ const SETTINGS = {
     SHOW_BOLG_STACKS: 'show bolg stacks',
     SHOW_ICY_CHILL_STACKS: 'show icy chill stacks',
     ADRENALINE: 'adrenaline',
+    EXPECTED_ADRENALINE: 'expected adrenaline',
+    CRIT_BUFF: 'crit buff',
     VIGOUR: 'vigour',
     FURY_OF_THE_SMALL: 'fots',
     HEIGHTENED_SENSES: 'heightened senses',
@@ -795,6 +800,10 @@ const settingsConfig = {
         label: 'Genocidal %',
         default: 0
     },
+    [SETTINGS.IMPATIENT]: {
+        label: 'Impatient',
+        default: 4
+    },
     [SETTINGS.FAMILIAR]: {
         label: 'Familiar',
         default: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON,
@@ -809,6 +818,7 @@ const settingsConfig = {
         default: SETTINGS.AURA_VALUES.MAHJARRAT,
         options: [
             { text: 'None', value: SETTINGS.AURA_VALUES.NONE },
+            { text: 'Inspiration', value: SETTINGS.AURA_VALUES.INSPIRATION},
             { text: 'Mahjarrat', value: SETTINGS.AURA_VALUES.MAHJARRAT },
             { text: 'Equilibrium', value: SETTINGS.AURA_VALUES.EQUILIBRIUM },
             { text: 'Reckless', value: SETTINGS.AURA_VALUES.RECKLESS },
@@ -845,16 +855,16 @@ const settingsConfig = {
         label: 'Demon slayer Perk',
         default: false
     },
-    [SETTINGS.SLAYER_SIGIL_UNDEAD]: {
-        label: 'Undead slayer Sigil',
+    [SETTINGS.UNDEAD_SLAYER_ABILITY]: {
+        label: 'Undead slayer Ability',
         default: false
     },
-    [SETTINGS.SLAYER_SIGIL_DRAGON]: {
-        label: 'Dragon slayer Sigil',
+    [SETTINGS.DRAGON_SLAYER_ABILITY]: {
+        label: 'Dragon slayer Ability',
         default: false
     },
-    [SETTINGS.SLAYER_SIGIL_DEMON]: {
-        label: 'Demon slayer Sigil',
+    [SETTINGS.DEMON_SLAYER_ABILITY]: {
+        label: 'Demon slayer Ability',
         default: false
     },
     [SETTINGS.HAUNTED]: {
@@ -1614,9 +1624,17 @@ const settingsConfig = {
         label: 'Show Icy Chill Stacks',
         default: true
     },
+    [SETTINGS.SHOW_ADRENALINE]: {
+        label: 'Show Adrenaline',
+        default: true
+    },
     [SETTINGS.ADRENALINE]: {
         label: 'Starting Adrenaline',
         default: 100
+    },
+    [SETTINGS.EXPECTED_ADRENALINE]: {
+        label: 'Expected adrenaline rng?',
+        default: true
     },
     [SETTINGS.VIGOUR]: {
         label: 'Vigour Passive',
@@ -1628,11 +1646,11 @@ const settingsConfig = {
     },
     [SETTINGS.HEIGHTENED_SENSES]: {
         label: 'Heightened Senses',
-        default: true
+        default: false
     },
     [SETTINGS.CONSERVATION_OF_ENERGY]: {
         label: 'Conservation of Energy',
-        default: false
+        default: true
     }
 };
 
