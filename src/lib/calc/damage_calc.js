@@ -188,12 +188,14 @@ function calc_boosted_ad(settings, dmgObject) {
     let boosted_AD = calc_damage_potential(settings, dmgObject);
 
     if (abils[settings['ability']]['main style'] === 'magic') {
+        let base_ad_boost = 1;
         // inq staff
         if (
             settings[SETTINGS.WEAPON] === 'two-hand' &&
             settings['two-hand weapon'] === 'inquisitor staff'
         ) {
-            boosted_AD = Math.floor(boosted_AD * 1.125);
+            //boosted_AD = Math.floor(boosted_AD * 1.125);
+            base_ad_boost += 0.125;
         }
 
         // inq staff upgraded
@@ -201,16 +203,20 @@ function calc_boosted_ad(settings, dmgObject) {
             settings[SETTINGS.WEAPON] === 'two-hand' &&
             settings['two-hand weapon'] === 'inquisitor staff+'
         ) {
-            boosted_AD = Math.floor(boosted_AD * 1.175);
+            //boosted_AD = Math.floor(boosted_AD * 1.175);
+            base_ad_boost += 0.175;
         }
 
         // crumble undead
         if (settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.CRUMBLE_UNDEAD) {
-            boosted_AD = Math.floor(boosted_AD * 1.3);
+            //boosted_AD = Math.floor(boosted_AD * 1.3);
+            base_ad_boost += 0.3;
         }
 
         // flow stacks
-        boosted_AD = Math.floor(boosted_AD * (1 + 0.01 * settings[SETTINGS.FLOW_STACKS]));
+        //boosted_AD = Math.floor(boosted_AD * (1 + 0.01 * settings[SETTINGS.FLOW_STACKS]));
+        base_ad_boost += 0.01 * settings[SETTINGS.FLOW_STACKS];
+        boosted_AD = Math.floor(boosted_AD * base_ad_boost);
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
