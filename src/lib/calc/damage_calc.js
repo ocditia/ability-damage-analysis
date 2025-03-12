@@ -286,46 +286,10 @@ function calc_boosted_ad(settings, dmgObject) {
 function ability_specific_effects(settings, dmgObject) {
     // order of these effects in unknown and should be researched properly still.
     if (abils[settings['ability']]['main style'] === 'magic') {
-        if (settings['ability'] === ABILITIES.COMBUST_HIT) {
-            let combust_increase = 1;
-            // conflagrate
-            if (settings[SETTINGS.CONFLAGRATE] === true) {
-                combust_increase += 0.4;
-            }
-
-            // kerry waps
-            if (
-                settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR
-            ) {
-                combust_increase += 0.25;
-            } else if (
-                settings[SETTINGS.KERAPACS_WRIST_WRAPS] ===
-                SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED
-            ) {
-                combust_increase += 0.4;
-            }
-
-            // lunging
-            combust_increase +=  0.06*settings[SETTINGS.LUNGING];
-
-            // combust walk
-            if (settings[SETTINGS.WALKED_TARGET] === true) {
-                if (settings[SETTINGS.LUNGING]>0) {
-                    combust_increase += 0.5;
-                }
-                else {
-                    combust_increase += 1;
-                }
-            }
-
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * combust_increase);
-        }
-
-
-        /*// conflagrate
+        // conflagrate
         if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.CONFLAGRATE] === true) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
-        }*/
+        }
 
         // song of destruction 2 item set effect
         if (
@@ -337,7 +301,7 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
         }
 
-        /*// kerapac's wristwraps
+        // kerapac's wristwraps
         if (settings['ability'] === ABILITIES.COMBUST_HIT) {
             if (
                 settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR
@@ -349,14 +313,14 @@ function ability_specific_effects(settings, dmgObject) {
             ) {
                 dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
             }
-        }*/
+        }
 
-        /*// combust lunging
+        // combust lunging
         if (settings['ability'] === ABILITIES.COMBUST_HIT) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
-        }*/
+        }
 
-        /*// combust walk
+        // combust walk
         if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
             if (settings[SETTINGS.LUNGING]>0) {
                 dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);    
@@ -364,7 +328,7 @@ function ability_specific_effects(settings, dmgObject) {
             else {
                 dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
             }
-        }*/
+        }
 
         // wrack bound
         if (
@@ -389,12 +353,12 @@ function ability_specific_effects(settings, dmgObject) {
         }
 
         // greater chain half damage
-        /*const gchain_not_halved = ['bleed', 'burn', 'dot'];
+        const gchain_not_halved = ['bleed', 'burn', 'dot'];
         if (
             gchain_not_halved.includes(abils[settings['ability']][['ability classification']] === false)
         ) {
             dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 0.5);
-        }*/
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
