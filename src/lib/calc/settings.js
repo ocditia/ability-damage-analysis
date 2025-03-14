@@ -665,7 +665,7 @@ const SETTINGS = {
     //SPLIT_SOUL_ECB: 'split soul ecb',
     ZGS: 'zgs',
     BERSERK: 'berserk',
-    DETONATE: 'detonate charge timer',
+    DETONATE: 'detonate charge percent',
     DIVINE_RAGE: 'divine rage',
     ECLIPSED_SOUL: 'eclipsed soul',
 
@@ -1857,8 +1857,8 @@ const settingsConfig = {
         default: false
     },
     [SETTINGS.DETONATE]: {
-        label: 'Deto charge time',
-        default: 5
+        label: 'Deto charge percent',
+        default: 100
     },
     [SETTINGS.DIVINE_RAGE]: {
         label: 'Divine rage',

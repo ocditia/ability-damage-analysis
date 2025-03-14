@@ -285,8 +285,8 @@
                                     bind:setting={settings[SETTINGS.DETONATE]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/detonate.png"
-                                    step="1"
-                                    max="5"
+                                    step="20"
+                                    max="100"
                                     min="0"
                                 />
                                 <Number

@@ -467,8 +467,8 @@ function set_min_var(settings, dmgObject) {
     if (abils[settings['ability']]['main style'] === 'magic') {
         // detonate
         if (settings['ability'] === ABILITIES.DETONATE) {
-            min_percent = min_percent + 0.45 * settings[SETTINGS.DETONATE]; // TODO: fix missing reference for SETTINGS.DETONATE
-            var_percent = var_percent + 0.1 * settings[SETTINGS.DETONATE];
+            min_percent = min_percent + 0.45 * (settings[SETTINGS.DETONATE]/20); // TODO: fix missing reference for SETTINGS.DETONATE
+            var_percent = var_percent + 0.1 * (settings[SETTINGS.DETONATE]/20);
         }
 
         // flank
