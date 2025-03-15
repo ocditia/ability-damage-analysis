@@ -372,7 +372,8 @@
 			return !(arr[idx] == arr[idx-1]);
 		}
 	}
-	refreshUI();
+	// Initial UI setup without damage calculation
+	refreshUI(false);
 
 	let activeTool = $state(ToolMode.Regular);
 
@@ -480,6 +481,19 @@
 		);
 		pointer-events: none;
 		z-index: 1;
+	}
+
+	.ability-slot.has-extra-actions::after {
+		content: '';
+		position: absolute;
+		bottom: -2px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 6px;
+		height: 6px;
+		background-color: #ffff00;
+		border-radius: 50%;
+		z-index: 2;
 	}
 
 	.cell-number {
@@ -634,8 +648,8 @@
                         <p>Total Damage: {gameState.totalDamage}</p>
 					</div>
                     <div class="space-y-4 mt-4">
-						<button onclick={() => importFromString()}>Import</button>
-                        <button onclick={() => exportToString()} alt="Copy Rotation to Clipboard">Export</button>
+						<button onclick={() => importFromString()}>Import Rotation</button>
+                        <button onclick={() => exportToString()} alt="Copy Rotation to Clipboard">Export Rotation</button>
 					</div>
                     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
                         {#each tabs as tab}
@@ -678,6 +692,7 @@
 									class:highlight-red={uiState.dragDrop.hoveredSlot === index && !uiState.dragDrop.validSlot}
 									class:highlight-green={uiState.dragDrop.hoveredSlot === index && uiState.dragDrop.validSlot}
 									class:nulled={gameState.nulledTicks[index]}
+									class:has-extra-actions={gameState.extraActionBar[index]?.some(action => action !== null)}
 									tabindex="0"
 									aria-label="Ability slot"
 									onclick={(e) => handleBarLeftClick(e, ability, index)}
@@ -833,7 +848,7 @@
 								There are 3 tools - regular, stall, and null.
 								Regular is the default mode (keyboard R) - left click to add abilities, right click to remove, drag to move.
 								Stall mode (keyboard S) will allows you to stall the ability you left click on, and release
-								it on any tick on the bar. Stalled abilities can be removed by right clicking them in stall mode.
+								it on any tick on the bar. Stalled abilities can be removed by clicking them in stall mode.
 								Null mode (keyboard N) will null the ability you left click on, which is equivalent to casting that ability
 								on a dummy.
 								

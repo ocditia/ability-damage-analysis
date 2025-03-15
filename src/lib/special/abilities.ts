@@ -99,9 +99,6 @@ for (let slot in rGear) {
         i++;
     }
 }
-console.log('Gear swaps orig');
-console.log(gearSwapsOrig);
-console.log('Gear swaps final');
-console.log(rGearFinal);
+
 export const rangedGear = rGearFinal;
 export const gearSwaps = gearSwapsOrig;

@@ -12,15 +12,8 @@
     const iconPath = '/gear_icons/';
     const png = '.png';
 
-    console.log(rangedGear);
-    console.log('Gear Choice');
-    console.log(settings);
-
     let rangedBody = settings[SETTINGS.RANGED_BODY].value;
     let rangedLegs = settings[SETTINGS.RANGED_LEGS].value;
-    
-    console.log(rangedBody);
-    console.log(rangedLegs);
 
     function getImage(slot) {
         const sharedSlots = [GearSlots.NECKLACE, GearSlots.POCKET, 

@@ -247,11 +247,12 @@ function processAbilityTicks(
     }
 
     const end_tick = state.start_tick + abil_duration;
+    console.log(abilityKey);
+    console.log('^^^^^^^^');
     for (let i = state.start_tick; i < end_tick; i++) {
         if (isChannelled(settingsCopy, abilityKey)) {
             processChannelledTick(state, gameState, settingsCopy, abilityKey, i, rota);
         }
-        
         handleExtraActions(settingsCopy, state.timers, state.tick, gameState);
         copyStacks(state.tick, settingsCopy, gameState);
         handleTimers(state.timers, settingsCopy);
