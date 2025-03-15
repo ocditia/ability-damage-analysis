@@ -1,7 +1,7 @@
 <script>
     import AbilityChoice from './AbilityChoice.svelte';
     import GearChoice from './GearChoice.svelte';
-    import { offGcdAbilities, gearSwaps, rangedGear } from '$lib/special/abilities';
+    import { offGcdAbilities, rangedGear } from '$lib/special/abilities';
 
     export let uiState;
     export let gameState;
@@ -13,6 +13,14 @@
     export let extraActions;
 
     const EXTRA_BAR_SIZE = 12;
+
+    function getAbility() {
+        return allAbils[uiState.extraActions.infoAbility];
+    }
+
+    function getStalledAbility() {
+        return allAbils[gameState.stalledAbilities[uiState.extraActions.tick]];
+    }
 </script>
 
 <div class="extra-action-section">
@@ -25,16 +33,27 @@
             ✕
         </button>
     </div>
-
-    {#if allAbils[uiState.extraActions.infoAbility]}
-        <img src={allAbils[uiState.extraActions.infoAbility].icon}
-            alt={allAbils[uiState.extraActions.infoAbility].title}
+    <div class="flex gap-2">
+        {#if getAbility()}
+            <img src={getAbility().icon}
+                alt={getAbility().title}
             style="width: 30px; height: 30px;"
-            title="{allAbils[uiState.extraActions.infoAbility].title}"
+            title="{getAbility().title}"
         />
+        {/if}
+        {#if getStalledAbility()}
+            <img src={getStalledAbility().icon}
+                alt={getStalledAbility().title}
+                style="width: 30px; height: 30px;"
+                title="Stalled: {getStalledAbility().title}"
+            />
+        {/if}
+    </div>
+    <p>Cast {getAbility() ? getAbility().title : 'nothing'}</p>
+    {#if getStalledAbility()}
+        <p>Released stalled {getStalledAbility().title}</p>
     {/if}
-    
-    <p>Cast {uiState.extraActions.infoAbility ? uiState.extraActions.infoAbility : 'nothing'}</p>
+
     
     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
         <li class="flex-grow me-2">

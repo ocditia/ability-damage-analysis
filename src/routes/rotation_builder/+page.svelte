@@ -7,13 +7,13 @@
     import { abilities as melee_dmg_abilities } from '$lib/melee/abilities';
     import { abilities as necro_dmg_abilities } from '$lib/necromancy/abilities';
     import { abilities as def_abilities } from '$lib/defence/abilities';
-	import { offGcdAbilities, gearSwaps, rangedGear } from '$lib/special/abilities';
+	import { offGcdAbilities } from '$lib/special/abilities';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings';
 	import Checkbox from '../../components/Settings/Checkbox.svelte';
 	import Number from '../../components/Settings/Number.svelte';
 	import Select from '../../components/Settings/Select.svelte';
-	import { abils } from '$lib/calc/const.js';
-    import RangedSettings from '../../components/Settings/RangedSettings.svelte';
+	import { abils } from '$lib/calc/const';
+    import RotationSettings from '../../components/Settings/RotationSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
 	import {buffs, createBuffTimings, createStackTimings} from '$lib/calc/rotation_builder/rotation_consts.ts';
 	import {ToolMode} from '$lib/calc/rotation_builder/ui_material/toolModes.ts';
@@ -28,8 +28,7 @@
     let allAbils = {...magicAbils, ...rangedAbils, ...necroAbils, ...meleeAbils, ...def_abilities};
 
 	let specialAbils = {...offGcdAbilities};
-	let gearActions = {...gearSwaps};
-	let extraActions = {...specialAbils, ...gearActions};
+	let extraActions = {...specialAbils};
 
 	// Constants
 	const BASE_BAR_ROW_GAP = 30;
@@ -73,10 +72,10 @@
 	let gameState = $state({
 		totalDamage: 0,
 		settings: Object.fromEntries(
-			Object.entries(settingsConfig).map(([key, value]) => [
-				key,
-				{ ...value, key: key, value: value.default }
-			])
+		Object.entries(settingsConfig).map(([key, value]) => [
+			key,
+			{ ...value, key: key, value: value.default }
+		])
 		),
 		abilityBar: Array(BAR_SIZE).fill(null),
 		extraActionBar: Array(BAR_SIZE).fill(null),
@@ -105,11 +104,16 @@
 		gameState.totalDamage = calculateTotalDamage(gameState, BAR_SIZE);
 		console.log('New Impl Total Damage = ' + gameState.totalDamage);
 	}
-
+		
 	//UI functions
 	//TODO handle this differently
     function handleAbilityClick(event, abilityKey, mainBar = true) {
         if (uiState.activeTool === ToolMode.Stall) {
+            // Check if ability is channeled
+            if (abils[abilityKey]['ability classification'] === 'channel') {
+                alert("Channeled abilities cannot be stalled currently.");
+                return;
+            }
             uiState.stallingAbility = abilityKey;
             return;
         }
@@ -117,17 +121,17 @@
         let size = mainBar ? BAR_SIZE : EXTRA_BAR_SIZE;
         let idx = mainBar ? uiState.bar.index : uiState.extraActions.barIndex;
 
-        if (idx >= size) {
-            alert("You're trying to add an ability after the end of the rotation.");
-            return;
-        }
+		if (idx >= size) {
+			alert("You're trying to add an ability after the end of the rotation.");
+			return;
+		}
 
-        if (mainBar) {
+		if (mainBar) {
             gameState.abilityBar[idx] = abilityKey;
         } else {
             gameState.extraActionBar[uiState.extraActions.tick][idx] = abilityKey;
-        }
-        calculateTotalDamageNew();
+		}
+		calculateTotalDamageNew();
         refreshUI(false);
     }
 
@@ -157,7 +161,7 @@
 			gameState.abilityBar[index] = abilityKey;
 		} else {
 			try {
-				const dragObj = JSON.parse(event.dataTransfer.getData('text/plain'));
+			const dragObj = JSON.parse(event.dataTransfer.getData('text/plain'));
 				const swapAbil = gameState.abilityBar[index];
 				gameState.abilityBar[index] = dragObj.ability;
 				gameState.abilityBar[dragObj.startIndex] = swapAbil;
@@ -167,7 +171,7 @@
 		}
 		uiState.dragDrop.hoveredSlot = null;
 		refreshUI();
-		calculateTotalDamageNew();
+			calculateTotalDamageNew();
     }
 
 	function handleDragStartBar(event, ability, startIndex) {
@@ -186,14 +190,14 @@
 		let data = event.dataTransfer.getData('text/plain');
 		if (!allAbils[data]) {
 			try {
-				data = JSON.parse(event.dataTransfer.getData('text/plain'));
-				if ((index - data.startIndex) <= 2 && index >= data.startIndex) {
+			data = JSON.parse(event.dataTransfer.getData('text/plain'));
+			if ((index - data.startIndex) <= 2 && index >= data.startIndex) {
 					uiState.dragDrop.validSlot = true;
-					return;
-				}
+				return;
+			}
 			} catch (e) {
 				console.error('Error parsing drag data:', e);
-			}
+		}
 		}
 		
 		for (let i = index-1; i >= (index - 2); i--) {
@@ -259,7 +263,7 @@
 			uiState.extraActions.tick = index;
 		}
 		uiState.extraActions.infoAbility = ability;
-	}
+    }
 
     function handleBarRightClick(event, index, innerIdx = null) {
         event.preventDefault();
@@ -386,6 +390,47 @@
 			uiState.stallingAbility = null;
         }
 		console.log('Tool mode: ' + uiState.activeTool);
+    }
+
+    function exportToString() {
+        try {
+            const exportData = {
+                a: gameState.abilityBar.map(a => a || ''),
+                e: gameState.extraActionBar.map(row => row ? row.map(a => a || '') : []),
+                n: gameState.nulledTicks,
+                t: gameState.stalledAbilities.map(a => a || '')
+            };
+            const jsonStr = JSON.stringify(exportData);
+            const rotationString = btoa(jsonStr);
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(rotationString);
+            alert('Rotation copied to clipboard!');
+        } catch (e) {
+            console.error('Export failed:', e);
+            alert('Failed to export rotation');
+        }
+    }
+
+    function importFromString() {
+        try {
+            const importStr = prompt('Paste rotation string:');
+            if (!importStr) return;
+            
+            const jsonStr = atob(importStr);
+            const importData = JSON.parse(jsonStr);
+            
+            gameState.abilityBar = importData.a.map(a => a || null);
+            gameState.extraActionBar = importData.e.map(row => row.map(a => a || null));
+            gameState.nulledTicks = importData.n;
+            gameState.stalledAbilities = importData.t.map(a => a || null);
+            
+            
+            calculateTotalDamageNew();refreshUI();
+        } catch (e) {
+            console.error('Import failed:', e);
+            alert('Invalid rotation string');
+        }
     }
 </script>
 
@@ -525,10 +570,17 @@
 		padding: 0;
 		margin: 0;
 		visibility: hidden;
+		height: 0;
+		opacity: 0;
 	}
 
 	.settings-content {
 		padding-top: 50px; /* Add space for the button */
+		height: 100%;
+	}
+
+	.card-rotation {
+		height: fit-content;
 	}
 
 	.collapse-button, .expand-button {
@@ -560,8 +612,8 @@
 		role="button" 
 		onkeydown={handleKeypress}
 		style={uiState.stallingAbility ? `cursor: url('${allAbils[uiState.stallingAbility].icon}') 15 15, wait;` : ''}>
-		<section class="grid grid-cols-12 gap-6">
-			<div class="col-span-{uiState.settingsPanelCollapsed ? '12' : '7'} relative">
+		<section class="grid grid-cols-12 gap-6 auto-rows-min">
+			<div class="col-span-{uiState.settingsPanelCollapsed ? '12' : '6'} relative">
 				<div class="card card-rotation">
 					{#if uiState.settingsPanelCollapsed}
 						<button 
@@ -581,15 +633,19 @@
                         <button onclick={() => calculateTotalDamageNew()}>Calculate Damage</button>
                         <p>Total Damage: {gameState.totalDamage}</p>
 					</div>
+                    <div class="space-y-4 mt-4">
+						<button onclick={() => importFromString()}>Import</button>
+                        <button onclick={() => exportToString()} alt="Copy Rotation to Clipboard">Export</button>
+					</div>
                     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
                         {#each tabs as tab}
-                            <li class="flex-grow me-2">
-                                <button
+                        <li class="flex-grow me-2">
+                            <button
                                     onclick={() => (uiState.activeTab = tab.id)}
-                                    class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
+                                class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                                     class:text-[#968A5C]={uiState.activeTab === tab.id}
                                 >{tab.label}</button>
-                            </li>
+                        </li>
                         {/each}
                     </ul>
 					<br>
@@ -598,11 +654,11 @@
                             <AbilityChoice 
                                 abilities={tab.abilities}
                                 handleAbilityClick={handleAbilityClick}
-                                handleDragStart={handleDragStart}
+									handleDragStart={handleDragStart} 
                                 style={tab.id}
-                            />
-                        {/if}
-                    {/each}
+											/>
+										{/if}
+								{/each}
 					{#if uiState.extraActions.show}
 						<ExtraActionsPanel
 							{uiState}
@@ -698,8 +754,8 @@
                     </div>
                 </div>
             </div>
-            <div class="settings-panel col-span-{uiState.settingsPanelCollapsed ? '0' : '5'} {uiState.settingsPanelCollapsed ? 'collapsed' : ''}"
-				style={uiState.settingsPanelCollapsed ? 'visibility: hidden;' : ''}>
+            <div class="settings-panel col-span-{uiState.settingsPanelCollapsed ? '0' : '6'} {uiState.settingsPanelCollapsed ? 'collapsed' : ''}"
+				style={uiState.settingsPanelCollapsed ? 'visibility: hidden; height: 0; margin: 0;' : ''}>
                 <button 
                     class="collapse-button"
                     onclick={() => uiState.settingsPanelCollapsed = true}
@@ -708,7 +764,7 @@
                     → Hide
                 </button>
                 <div class="settings-content">
-                    <RangedSettings bind:settings={gameState.settings} updateDamages={calculateTotalDamageNew} />
+                    <RotationSettings bind:settings={gameState.settings} updateDamages={calculateTotalDamageNew} />
                 </div>
             </div>
             <div class="col-span-12 mt-8">
@@ -716,55 +772,55 @@
                     <div class="card card-rotation">
                         <h2 class="card-title pb-5">Additional Settings</h2>
                         {#each Object.keys(gameState.stacks) as key}
-                            <div>
-                                <Checkbox
+                <div>
+                        <Checkbox
                                     bind:setting={gameState.settings[gameState.stacks[key].displaySetting]}
-                                    onchange={() => refreshUI()}
-                                />
-                            </div>
-                            <br>
-                        {/each}
-                        <div>
-                            <Checkbox 
+                    		onchange={() => refreshUI()}
+                        />
+                </div>
+                <br>
+            {/each}
+            <div>
+                <Checkbox
                                 bind:setting={gameState.settings[SETTINGS.VIGOUR]}
-                                onchange={() => refreshUI()}
-                            />
-                            <br>
-                            <Checkbox
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Checkbox
                                 bind:setting={gameState.settings[SETTINGS.FURY_OF_THE_SMALL]}
-                                onchange={() => refreshUI()}
-                            />
-                            <br>
-                            <Checkbox
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Checkbox
                                 bind:setting={gameState.settings[SETTINGS.CONSERVATION_OF_ENERGY]}
-                                onchange={() => refreshUI()}
-                            />
-                            <br>
-                            <Checkbox
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Checkbox
                                 bind:setting={gameState.settings[SETTINGS.HEIGHTENED_SENSES]}
-                                onchange={() => refreshUI()}
-                            />
-                            <br>
-                            <Number
+                    onchange={() => refreshUI()}
+                />
+                <br>
+                <Number
                                 bind:setting={gameState.settings[SETTINGS.ICY_CHILL_STACKS]}
-                                onchange={() => refreshUI()}
-                                step="1"
-                                max="10"
-                                min="0"
-                            />
-                            <br>
-                            <Number
+                    onchange={() => refreshUI()}
+                    step="1"
+                    max="10"
+                    min="0"
+                />
+				<br>
+				<Number
                                 bind:setting={gameState.settings[SETTINGS.ADRENALINE]}
-                                onchange={() => refreshUI()}
-                                step="1"
-                                max="200"
-                                min="0"
-                            />
-                            <Checkbox
+                    onchange={() => refreshUI()}
+                    step="1"
+                    max="200"
+                    min="0"
+                />
+				<Checkbox
                                 bind:setting={gameState.settings[SETTINGS.EXPECTED_ADRENALINE]}
-                                onchange={() => refreshUI()}
-                            />
-                        </div>
+                    onchange={() => refreshUI()}
+                />
+            </div>
                     </div>
                     <div class="card card-rotation">
                         <h2 class="card-title pb-5">User Guide</h2>
@@ -774,6 +830,13 @@
 								To add abilities, left clicking will add a new ability to the end of your 
 								bar. You can also drag abilities for more control. Right clicking an ability
 								on the bar will remove it. 
+								There are 3 tools - regular, stall, and null.
+								Regular is the default mode (keyboard R) - left click to add abilities, right click to remove, drag to move.
+								Stall mode (keyboard S) will allows you to stall the ability you left click on, and release
+								it on any tick on the bar. Stalled abilities can be removed by right clicking them in stall mode.
+								Null mode (keyboard N) will null the ability you left click on, which is equivalent to casting that ability
+								on a dummy.
+								
                             </p>
                         </div>
                         <div class="pb-5">

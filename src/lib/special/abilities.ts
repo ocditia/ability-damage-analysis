@@ -40,20 +40,7 @@ export const offGcdAbilities = {
     }
 }
 
-export const gearSwaps = {
-    [SETTINGS.AMMO_VALUES.WEN_ARROWS]: {
-        title: 'Wen Arrows',
-        icon: '/gear_icons/Wen_arrow_5.png'
-    },
-    [SETTINGS.AMMO_VALUES.FUL_ARROWS]: {
-        title: 'Ful Arrows',
-        icon: '/gear_icons/Ful_arrow_5.png'
-    },
-    [SETTINGS.AMMO_VALUES.JAS_ARROWS]: {
-        title: 'Jas Arrows',
-        icon: '/gear_icons/Jas_dragonbane_arrow_5.png'
-    }
-}
+const gearSwapsOrig = {}
 
 export const rangedGearOrig = [
     ...Object.values(SETTINGS.RANGED_MH_VALUES),
@@ -85,12 +72,14 @@ let rGear = {
     [SETTINGS.RANGED_BODY]: {...(SETTINGS.RANGED_BODY_VALUES)},
     [SETTINGS.RANGED_LEGS]: {...(SETTINGS.RANGED_LEGS_VALUES)},
     [SETTINGS.RANGED_GLOVES]: {...(SETTINGS.RANGED_GLOVES_VALUES)},
-    [SETTINGS.RANGED_BOOTS]: {...(SETTINGS.RANGED_BOOTS_VALUES)}
+    [SETTINGS.RANGED_BOOTS]: {...(SETTINGS.RANGED_BOOTS_VALUES)},
+    [SETTINGS.AMMO]: {...(SETTINGS.AMMO_VALUES)}
 }
 
 let rGearFinal = structuredClone(rGear);
 
 const toDelete = ['NONE', 'CUSTOM'];
+let i = 0;
 for (let slot in rGear) {
     for (let item in rGear[slot]) {
         //Delete none/custom options
@@ -100,12 +89,19 @@ for (let slot in rGear) {
                 delete rGearFinal[slot][key];
             }
         });
-
-        rGearFinal[slot][item] = {
+        let obj = {
             title: rGear[slot][item],
-            icon: '/gear_icons/' + rGear[slot][item] + '.png'
-//            icon: '/gear_icons/ranged/' + 'elite dracolich coif' + '.png'
+            icon: '/gear_icons/' + rGear[slot][item] + '.png',
         };
+        rGearFinal[slot][item] = obj;
+        gearSwapsOrig[obj.title] = slot;
+    
+        i++;
     }
 }
+console.log('Gear swaps orig');
+console.log(gearSwapsOrig);
+console.log('Gear swaps final');
+console.log(rGearFinal);
 export const rangedGear = rGearFinal;
+export const gearSwaps = gearSwapsOrig;

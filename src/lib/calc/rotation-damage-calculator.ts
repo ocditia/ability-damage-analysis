@@ -6,17 +6,18 @@ import { on_stall, on_cast, on_hit, on_damage } from './damage_calc_new';
 import { create_object } from './object_helper';
 import { buffs } from './rotation_builder/rotation_consts';
 import { abilities as rangedAbils } from '../ranged/abilities';
-import { offGcdAbilities as specialAbils } from '../special/abilities';
+import { gearSwaps, offGcdAbilities as specialAbils } from '../special/abilities';
 
 // Interface for the game state
 interface GameState {
     totalDamage: number;
     settings: Record<string, { value: any }>;
     abilityBar: (string | null)[];
-    extraActionBar: (string | null)[][];
+    extraActionBar: (any | null)[][];
     buffs: Record<string, { buffTicks: (boolean | number)[] }>;
     stacks: Record<string, { stackTicks: number[] }>;
     nulledTicks: boolean[];
+    stalledAbilities: string[];
 }
 
 interface DamageCalculationState {
@@ -26,6 +27,7 @@ interface DamageCalculationState {
     tick: number;
     hit_delay: number;
     start_tick: number;
+    hitCount: number;
 }
 
 export function calculateTotalDamage(gameState: GameState, BAR_SIZE: number): number {
@@ -35,7 +37,8 @@ export function calculateTotalDamage(gameState: GameState, BAR_SIZE: number): nu
         timers: {},
         tick: 0,
         hit_delay: 1, // TODO implement hit delay properly (define min delay for each ability)
-        start_tick: 0
+        start_tick: 0,
+        hitCount: 0
     };
 
     const adaptedSettings = Object.fromEntries(
@@ -43,21 +46,42 @@ export function calculateTotalDamage(gameState: GameState, BAR_SIZE: number): nu
     );
     const settingsCopy = structuredClone(adaptedSettings);
 
-    // Process through each tick until we reach the end
+    // Process through each tick until we reach the end, +20 to finish handling bleeds
     while (state.tick < BAR_SIZE + 20) {
         processCurrentTick(state, gameState, settingsCopy, BAR_SIZE);
     }
 
+    console.log(`Total number of hits: ${state.hitCount}`);
     return state.dmgs.reduce((acc, current) => acc + current, 0);
 }
 
 function processCurrentTick(state: DamageCalculationState, gameState: GameState, settingsCopy: any, BAR_SIZE: number) {
-    const abilityKey = gameState.abilityBar[state.tick];
-    
     // Store nulled state at the start
     const isNulledTick = gameState.nulledTicks[state.tick];
-    settingsCopy.isNulledTick = isNulledTick; // Pass this through to other functions
+    settingsCopy.isNulledTick = isNulledTick;
     
+    // First process any stalled ability on this tick
+    const stalledAbility = gameState.stalledAbilities[state.tick];
+    if (stalledAbility) {
+        const abil_duration = typeof abils[stalledAbility]['duration'] === 'number' ? abils[stalledAbility]['duration'] : 3;
+        settingsCopy['ability'] = stalledAbility;
+        // Skip on_stall() call but do everything else
+        style_specific_unification(settingsCopy, 'ranged');
+        settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
+        
+        state.start_tick = state.tick;
+        const hit_tick = state.tick + state.hit_delay;
+        state.damageQueue[hit_tick] ??= [];
+        
+        handle_ranged_buffs(settingsCopy, state.timers, stalledAbility);
+
+        if (stalledAbility in rangedAbils) {
+            processRangedAbility(state, settingsCopy, stalledAbility, hit_tick);
+        }
+    }
+
+    // Then process any regular ability on this tick
+    const abilityKey = gameState.abilityBar[state.tick];
     if (abilityKey == null) {
         handleNullAbilityTick(state, gameState, settingsCopy);
         return;
@@ -65,7 +89,7 @@ function processCurrentTick(state: DamageCalculationState, gameState: GameState,
 
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
     settingsCopy['ability'] = abilityKey;
-
+    
     processAbility(state, gameState, settingsCopy, abilityKey, abil_duration);
 }
 
@@ -233,6 +257,9 @@ function processAbilityTicks(
         handleTimers(state.timers, settingsCopy);
         processQueuedDamage(i, state, settingsCopy);
         state.tick += 1;
+        if (gameState.abilityBar[i+1]) {
+            break;
+        }
     }
 }
 
@@ -262,24 +289,22 @@ function processChannelledTick(
 }
 
 function processQueuedDamage(tick: number, state: DamageCalculationState, settingsCopy: any) {
-    // If this is a nulled tick, don't add any damage
-    // if (settingsCopy.isNulledTick) {
-    //     return;
-    // }
-
     if (state.damageQueue[tick]) {
         state.damageQueue[tick].forEach(namedDmgObject => {
             settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
             let dmg = get_user_value(settingsCopy, on_damage(settingsCopy, namedDmgObject));
             dmg = apply_additional(settingsCopy, dmg, true);
             state.dmgs.push(dmg);
+            state.hitCount++;
         });
     }
 }
 
 function copyStacks(tick: number, settings: any, gameState: GameState) {
     for(let key in gameState.stacks) {
-        gameState.stacks[key].stackTicks[tick] = settings[key];
+        // Convert to number before storing
+        const value = typeof settings[key] === 'number' ? settings[key] : Number(settings[key]) || 0;
+        gameState.stacks[key].stackTicks[tick] = value;
     }
     buffs.forEach(buffTitle => {
         gameState.buffs[buffTitle].buffTicks[tick] = settings[buffTitle];
@@ -293,12 +318,18 @@ function handleExtraActions(settings: any, timers: Record<string, number>, tick:
     if (!gameState.extraActionBar[tick]) return;
     
     gameState.extraActionBar[tick].forEach(element => {
+        if (!element) return;
         if (specialAbils[element]) {
             if (element === "Adrenaline renewal potion") {
                 timers[element] = 10;
             }
         }
-        // TODO: Handle gear actions
+        // Handle gear swaps
+        //TODO nicer implementation unifying extra actions
+        else if (gearSwaps[element.title]) {
+            const slot = gearSwaps[element.title];
+            settings[slot] = element.title;
+        }
     });
 }
 

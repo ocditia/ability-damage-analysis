@@ -9,11 +9,10 @@
     export let settings;
     export let updateDamages; 
 
-    // let { tab, settings, updateDamages } = $props();
-
-
+    
     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH; 
     settings[SETTINGS.AMMO]['value'] = 'wen arrows';
+    settings[SETTINGS.ICY_PRECISION]['value'] = 0;
     settings[SETTINGS.BALANCE_BY_FORCE]['value'] = false;
         
 
@@ -80,11 +79,9 @@
         settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]['value'] = 0;
         settings[SETTINGS.KALG_SPEC]['value'] = true;
         settings[SETTINGS.INNATE_MASTERY]['value'] = false;
-        settings[SETTINGS.ADRENALINE]['value'] = 210;
+        settings[SETTINGS.ADRENALINE]['value'] = 130;
     }
-    //makeNaked();
-    // testPreset();
-    //settings[SETTINGS.ICY_CHILL_STACKS].value = 10;
+    
     rakshaPreset();
     updateDamages();
 
@@ -121,134 +118,127 @@
     <form class="w-full">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
             {#if tab === 'general'}
-                <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center">General</h5>
-                    <Select
-                        bind:setting={settings[SETTINGS.MODE]}
-                        onchange={() => updateDamages()}
-                    />
-                    <Checkbox
-                        bind:setting={settings[SETTINGS.BALANCE_BY_FORCE]}
-                        onchange={() => updateDamages()}
-                    />
-                    <Number
-                        bind:setting={settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]}
-                        onchange={() => updateDamages()}
-                        step="1"
-                        max="7"
-                        min="0"
-                    />
-                    <Number
-                        bind:setting={settings[SETTINGS.TARGET_SIZE]}
-                        onchange={() => updateDamages()}
-                        step="1"
-                        max="5"
-                        min="0"
-                    />
-                    <Select
-                        bind:setting={settings[SETTINGS.DRACOLICH_INFUSION]}
-                        onchange={() => updateDamages()}
-                    />
-                    <Number
-                        bind:setting={settings[SETTINGS.TARGET_HP_PERCENT]}
-                        onchange={() => updateDamages()}
-                        step="1"
-                        max="100"
-                        min="0"
-                    />
+                <div class="md:col-span-1 space-y-4">
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">General</h5>
+                    <div class="space-y-4">
+                        <Select
+                            bind:setting={settings[SETTINGS.MODE]}
+                            onchange={() => updateDamages()}
+                        />
+                        <Number
+                            bind:setting={settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]}
+                            onchange={() => updateDamages()}
+                            step="1"
+                            max="7"
+                            min="0"
+                        />
+                        <Number
+                            bind:setting={settings[SETTINGS.TARGET_SIZE]}
+                            onchange={() => updateDamages()}
+                            step="1"
+                            max="5"
+                            min="0"
+                        />
+                        <Number
+                            bind:setting={settings[SETTINGS.TARGET_HP_PERCENT]}
+                            onchange={() => updateDamages()}
+                            step="1"
+                            max="100"
+                            min="0"
+                        />
+                    </div>
                 </div>
-                <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center">Base damage</h5>
-                    <Number
-                        bind:setting={settings[SETTINGS.ABILITY_DAMAGE]}
-                        onchange={() => updateDamages()}
-                        step="1"
-                        max="9999"
-                        min="0"
-                    />
-                    <Number
-                        bind:setting={settings[SETTINGS.RANGED_LEVEL]}
-                        onchange={() => updateDamages()}
-                        step="1"
-                        max="150"
-                        min="1"
-                    />
-                    <Checkbox
-                        bind:setting={settings[SETTINGS.REAPER_CREW]}
-                        onchange={() => updateDamages()}
-                        img="/effect_icons/death.png"
-                    />
+                <div class="md:col-span-1 space-y-4">
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">Base damage</h5>
+                    <div class="space-y-4">
+                        <Number
+                            bind:setting={settings[SETTINGS.ABILITY_DAMAGE]}
+                            onchange={() => updateDamages()}
+                            step="1"
+                            max="9999"
+                            min="0"
+                        />
+                        <Number
+                            bind:setting={settings[SETTINGS.RANGED_LEVEL]}
+                            onchange={() => updateDamages()}
+                            step="1"
+                            max="150"
+                            min="1"
+                        />
+                        <Checkbox
+                            bind:setting={settings[SETTINGS.REAPER_CREW]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/death.png"
+                        />
+                    </div>
                 </div>
-                <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center">
+                <div class="md:col-span-1 space-y-4">
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">
                         Invisible base damage
                     </h5>
-                    <Number
-                        bind:setting={settings[SETTINGS.HIT_CHANCE]}
-                        onchange={() => updateDamages()}
-                        step="1"
-                        max="100"
-                        min="0"
-                    />
-                    <Number
-                        bind:setting={settings[SETTINGS.ICY_PRECISION]}
-                        onchange={() => updateDamages()}
-                        step="1"
-                        max="15"
-                        min="0"
-                    />
+                    <div class="space-y-4">
+                        <Number
+                            bind:setting={settings[SETTINGS.HIT_CHANCE]}
+                            onchange={() => updateDamages()}
+                            step="1"
+                            max="100"
+                            min="0"
+                        />
+                    </div>
                 </div>
-                <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center">
+                <div class="md:col-span-1 space-y-4">
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">
                         Ability specific
                     </h5>
-                    <Checkbox
-                        bind:setting={settings[SETTINGS.WALKED_TARGET]}
-                        onchange={() => updateDamages()}
-                    />
-                    <Checkbox
-                        bind:setting={settings[SETTINGS.NEEDLE_STRIKE]}
-                        onchange={() => updateDamages()}
-                    />
+                    <div class="space-y-4">
+                        <Checkbox
+                            bind:setting={settings[SETTINGS.WALKED_TARGET]}
+                            onchange={() => updateDamages()}
+                        />
+                    </div>
                 </div>
-                <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center">Additive</h5>
-                    <Number
-                        bind:setting={settings[SETTINGS.STONE_OF_JAS]}
-                        onchange={() => updateDamages()}
-                        step="1"
-                        max="6"
-                        min="0"
-                    />
-                    <Checkbox
-                        bind:setting={settings[SETTINGS.DRACONIC_FRUIT]}
-                        onchange={() => updateDamages()}
-                    />
-                    <Number
-                        bind:setting={settings[SETTINGS.RUBY_AURORA]}
-                        onchange={() => updateDamages()}
-                        img="/effect_icons/Ruby_Aurora_icon.webp"
-                        step="1"
-                        max="3"
-                        min="0"
-                    />
+                <div class="md:col-span-1 space-y-4">
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">Additive</h5>
+                    <div class="space-y-4">
+                        <Number
+                            bind:setting={settings[SETTINGS.STONE_OF_JAS]}
+                            onchange={() => updateDamages()}
+                            step="1"
+                            max="6"
+                            min="0"
+                        />
+                        <Checkbox
+                            bind:setting={settings[SETTINGS.DRACONIC_FRUIT]}
+                            onchange={() => updateDamages()}
+                        />
+                        <Number
+                            bind:setting={settings[SETTINGS.RUBY_AURORA]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/Ruby_Aurora_icon.webp"
+                            step="1"
+                            max="3"
+                            min="0"
+                        />
+                    </div>
                 </div>
-                <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center">
+                <div class="md:col-span-1 space-y-4">
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">
                         Multiplicative (shared)
                     </h5>
-                    <Select
-                        bind:setting={settings[SETTINGS.RANGED_PRAYER]}
-                        onchange={() => updateDamages()}
-                        img="/effect_icons/Prayer.webp"
-                    />
-                    <Number
-                        bind:setting={settings[SETTINGS.REVENGE]}
-                        onchange={() => updateDamages()}
-                        step="1"
-                        max="10"
-                        min="0"
-                    />
+                    <div class="space-y-4">
+                        <Select
+                            bind:setting={settings[SETTINGS.RANGED_PRAYER]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/Prayer.webp"
+                        />
+                        <Number
+                            bind:setting={settings[SETTINGS.REVENGE]}
+                            onchange={() => updateDamages()}
+                            step="1"
+                            max="10"
+                            min="0"
+                        />
+                    </div>
                 </div>
                 <div class="md:col-span-1">
                     <h5 class="uppercase font-bold text-lg text-center">
@@ -291,10 +281,6 @@
                         bind:setting={settings[SETTINGS.VULN]}
                         onchange={() => updateDamages()}
                         img="/effect_icons/Vulnerability_icon.webp"
-                    />
-                    <Select
-                        bind:setting={settings[SETTINGS.ENDURING_RUIN_BLEED]}
-                        onchange={() => updateDamages()}
                     />
                     <Number
                         bind:setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
@@ -345,19 +331,10 @@
                         max="3"
                         min="0"
                     />
-                    <Checkbox
-                        bind:setting={settings[SETTINGS.HAUNTED]}
-                        onchange={() => updateDamages()}
-                        img="https://imgur.com/9U5ghz2.png"
-                    />
-                    <Number
-                        bind:setting={settings[SETTINGS.HAUNTED_AD]}
-                        onchange={() => updateDamages()}
-                    />
                 </div>
             {:else if tab === 'equipment'}
                 <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center">Armour</h5>
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">Armour</h5>
                     <Select
                         bind:setting={settings[SETTINGS.RANGED_HELMET]}
                         onchange={() => updateDamages()}
@@ -411,9 +388,10 @@
                         bind:setting={settings[SETTINGS.FAMILIAR]}
                         onchange={() => updateDamages()}
                     />
+                
                 </div>
                 <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center">Perks</h5>
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">Perks</h5>
                     <Checkbox
                         bind:setting={settings[SETTINGS.LVL20ARMOUR]}
                         onchange={() => updateDamages()}
@@ -486,10 +464,9 @@
                         step="1"
                         min="0"
                     />
-
                 </div>
                 <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">Weapons</h5>
                     <Select
                         bind:setting={settings[SETTINGS.WEAPON]}
                         onchange={() => updateDamages()}
@@ -546,15 +523,18 @@
                     />
                 </div>
             {:else if tab === 'bosses'}
-            <div class="md:col-span-1">
-                <Number
-                    bind:setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
-                    onchange={() => updateDamages()}
-                    img="/effect_icons/Guardian's_Triumph_Edict_(self_status).png"
-                    step="1"
-                    min="0"
-                />
-            </div>
+                <div class="md:col-span-1 space-y-4">
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">Boss Settings</h5>
+                    <div class="space-y-4">
+                        <Number
+                            bind:setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/Guardian's_Triumph_Edict_(self_status).png"
+                            step="1"
+                            min="0"
+                        />
+                    </div>
+                </div>
             {/if}
         </div>
     </form>

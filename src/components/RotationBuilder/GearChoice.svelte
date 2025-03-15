@@ -46,93 +46,95 @@
 
 <div class="flex-container">
     <!-- Equipped gear interface -->
-    <div class="box img-box">
-        <img
-            src='/armour_icons/Worn%20equipment%20interface.png'
-            alt='Equipment display'
-            title='Equipment display'
-            class="main-image"
-        />
-        <!-- <img
-            src='/gear_icons/completionist%20cape.png'
-            alt='Aura slot'
-            class="overlay-image"
-            style="top: 4.25em; left: 3.05em;"
-        /> -->
-        <img
-            src={getImage(GearSlots.HELMET)}
-            alt='Helmet slot'
-            class="overlay-image"
-            style="top: 5.2em; left: 6.45em;"
-        />
-        <img
-            src={getImage(GearSlots.NECKLACE)}
-            alt='Amulet slot'
-            class="overlay-image"
-            style="top: 7.7em; left: 6.45em;"
-        />
-        <img
-            src={getImage(GearSlots.BODY)}
-            alt='Body slot'
-            class="overlay-image"
-            style="top: 10.1em; left: 6.45em;"
-        />
-        <img
-            src={getImage(GearSlots.LEGS)}
-            alt='Legs slot'
-            class="overlay-image"
-            style="top: 12.5em; left: 6.45em;"
-        />
-        <img
-            src={getImage(GearSlots.BOOTS)}
-            alt='Boots slot'
-            class="overlay-image"
-            style="top: 15.0em; left: 6.45em;"
-        />
-        <img
-            src={getImage(GearSlots.CAPE)}
-            alt='Cape slot'
-            class="overlay-image"
-            style="top: 6.8em; left: 3.1em;"
-        />
-        <img
-            src={getImage(GearSlots.AMMO)}
-            alt='Ammo slot'
-            class="overlay-image"
-            style="top: 7.7em; left: 9.0em;"
-        />
-        <img
-            src={getImage(GearSlots.GLOVES)}
-            alt='Gloves slot'
-            class="overlay-image"
-            style="top: 15.25em; left: 2.8em;"
-        />
-        <img
-            src={getImage(GearSlots.RING)}
-            alt='Ring slot'
-            class="overlay-image"
-            style="top: 15.0em; left: 10.1em;"
-        />
-        <!-- <img
-            src='/gear_icons/completionist%20cape.png'
-            alt='Mainhand slot'
-            class="overlay-image"
-            style="top: 9.3em; left: 1.8em;"
-        />
-        <img
-            src='/gear_icons/completionist%20cape.png'
-            alt='Offhand slot'
-            class="overlay-image"
-            style="top: 9.3em; left: 9.3em;"
-        /> -->
+     {#if false} 
+        <div class="box img-box">
+            <img
+                src='/armour_icons/Worn%20equipment%20interface.png'
+                alt='Equipment display'
+                title='Equipment display'
+                class="main-image"
+            />
+            <!-- <img
+                src='/gear_icons/completionist%20cape.png'
+                alt='Aura slot'
+                class="overlay-image"
+                style="top: 4.25em; left: 3.05em;"
+            /> -->
+            <img
+                src={getImage(GearSlots.HELMET)}
+                alt='Helmet slot'
+                class="overlay-image"
+                style="top: 5.2em; left: 6.45em;"
+            />
+            <img
+                src={getImage(GearSlots.NECKLACE)}
+                alt='Amulet slot'
+                class="overlay-image"
+                style="top: 7.7em; left: 6.45em;"
+            />
+            <img
+                src={getImage(GearSlots.BODY)}
+                alt='Body slot'
+                class="overlay-image"
+                style="top: 10.1em; left: 6.45em;"
+            />
+            <img
+                src={getImage(GearSlots.LEGS)}
+                alt='Legs slot'
+                class="overlay-image"
+                style="top: 12.5em; left: 6.45em;"
+            />
+            <img
+                src={getImage(GearSlots.BOOTS)}
+                alt='Boots slot'
+                class="overlay-image"
+                style="top: 15.0em; left: 6.45em;"
+            />
+            <img
+                src={getImage(GearSlots.CAPE)}
+                alt='Cape slot'
+                class="overlay-image"
+                style="top: 6.8em; left: 3.1em;"
+            />
+            <img
+                src={getImage(GearSlots.AMMO)}
+                alt='Ammo slot'
+                class="overlay-image"
+                style="top: 7.7em; left: 9.0em;"
+            />
+            <img
+                src={getImage(GearSlots.GLOVES)}
+                alt='Gloves slot'
+                class="overlay-image"
+                style="top: 15.25em; left: 2.8em;"
+            />
+            <img
+                src={getImage(GearSlots.RING)}
+                alt='Ring slot'
+                class="overlay-image"
+                style="top: 15.0em; left: 10.1em;"
+            />
+            <!-- <img
+                src='/gear_icons/completionist%20cape.png'
+                alt='Mainhand slot'
+                class="overlay-image"
+                style="top: 9.3em; left: 1.8em;"
+            />
+            <img
+                src='/gear_icons/completionist%20cape.png'
+                alt='Offhand slot'
+                class="overlay-image"
+                style="top: 9.3em; left: 9.3em;"
+            /> -->
 
-        <img
-            src={getImage(GearSlots.POCKET)}
-            alt='Pocket slot'
-            class="overlay-image"
-            style="top: 5.25em; left: 8.9em;"
-        />
-    </div>
+            <img
+                src={getImage(GearSlots.POCKET)}
+                alt='Pocket slot'
+                class="overlay-image"
+                style="top: 5.25em; left: 8.9em;"
+            />
+        </div> 
+    {/if}
     <!-- Gear Selection interface-->
     <div class="box">
         <div class="grid grid-cols-5 md:grid-cols-5 lg:grid-cols-9 gap-x-0.5 gap-y-2 abilities">
