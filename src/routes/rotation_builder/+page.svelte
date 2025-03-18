@@ -71,6 +71,7 @@
 
 	let gameState = $state({
 		totalDamage: 0,
+		poisonDamage: 0,
 		settings: Object.fromEntries(
 		Object.entries(settingsConfig).map(([key, value]) => [
 			key,
@@ -93,16 +94,11 @@
 		{ id: 'necro', label: 'Necro', abilities: necroAbils }
 	];
 
-	/**
-	 * This will eventually be split into several functions. It calculates the total damage of the rotation.
-	 * It goes through each tick and does 3 things:
-	 * 1. Process any damage that is queued to be applied on this tick (i.e. hitsplat appears)
-	 * 2. Process any abilities cast on this tick, dealing with buffs/stacks/adrenaline/damage
-	 * 3. Decrement timers for buffs
-	*/
 	function calculateTotalDamageNew() {
-		gameState.totalDamage = calculateTotalDamage(gameState, BAR_SIZE);
-		console.log('New Impl Total Damage = ' + gameState.totalDamage);
+		const dmgResult = calculateTotalDamage(gameState, BAR_SIZE);
+		gameState.totalDamage = dmgResult[0];
+		gameState.poisonDamage = dmgResult[1];
+		console.log('New Impl Total Damage = ' + gameState.totalDamage + ' (Poison Damage = ' + gameState.poisonDamage + ')');
 	}
 		
 	//UI functions
@@ -645,7 +641,13 @@
 						<button onclick={() => clearRotation()}>Reset</button>
 						<br>
                         <button onclick={() => calculateTotalDamageNew()}>Calculate Damage</button>
-                        <p>Total Damage: {gameState.totalDamage}</p>
+                        <p>Total Damage: {gameState.totalDamage} 
+                            {#if gameState.poisonDamage > 0}
+                                <span style="color: #4CAF50" 
+								title="Expected poison damage (approximate - assumes poison+++)">(+{gameState.poisonDamage} )
+								</span>
+                            {/if}
+                        </p>
 					</div>
                     <div class="space-y-4 mt-4">
 						<button onclick={() => importFromString()}>Import Rotation</button>

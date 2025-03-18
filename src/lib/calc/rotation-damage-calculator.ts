@@ -30,7 +30,7 @@ interface DamageCalculationState {
     hitCount: number;
 }
 
-export function calculateTotalDamage(gameState: GameState, BAR_SIZE: number): number {
+export function calculateTotalDamage(gameState: GameState, BAR_SIZE: number): [number, number] {
     const state: DamageCalculationState = {
         dmgs: [],
         damageQueue: {},
@@ -50,9 +50,9 @@ export function calculateTotalDamage(gameState: GameState, BAR_SIZE: number): nu
     while (state.tick < BAR_SIZE + 20) {
         processCurrentTick(state, gameState, settingsCopy, BAR_SIZE);
     }
-
-    console.log(`Total number of hits: ${state.hitCount}`);
-    return state.dmgs.reduce((acc, current) => acc + current, 0);
+    const totalDamage = state.dmgs.reduce((acc, current) => acc + current, 0);
+    const poisonDamage = calcPoisonDamage(state.hitCount, settingsCopy);
+    return [totalDamage, poisonDamage];
 }
 
 function processCurrentTick(state: DamageCalculationState, gameState: GameState, settingsCopy: any, BAR_SIZE: number) {
@@ -299,6 +299,21 @@ function processQueuedDamage(tick: number, state: DamageCalculationState, settin
             state.hitCount++;
         });
     }
+}
+
+/**
+ * Calculates the poison damage for the rotation. //TODO properly implement
+ * @param state - The current state of the damage calculation.
+ * @param settingsCopy - The settings copy used for rotation damage calculation.
+ * @returns The total poison damage for the rotation.
+ */
+export function calcPoisonDamage(n_hits: number, settingsCopy: any) {
+    let poison_dmg = 0;
+    if (settingsCopy[SETTINGS.RANGED_GLOVES] === SETTINGS.RANGED_GLOVES_VALUES.CINDERS) {
+        const abilDmg = settingsCopy[SETTINGS.ABILITY_DAMAGE];
+        poison_dmg = Math.floor(abilDmg * 0.125 * 0.39);
+    }
+    return Math.floor(poison_dmg * n_hits);
 }
 
 function copyStacks(tick: number, settings: any, gameState: GameState) {

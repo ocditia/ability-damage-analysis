@@ -81,8 +81,27 @@
         settings[SETTINGS.INNATE_MASTERY]['value'] = false;
         settings[SETTINGS.ADRENALINE]['value'] = 130;
     }
+
+    function kerapac() {
+        settings[SETTINGS.NECKLACE]['value'] = 'essence of finality amulet';
+        settings[SETTINGS.POCKET]['value'] = 'gwd3 scripture';
+        settings[SETTINGS.AURA]['value'] = 'reckless';
+
+        settings[SETTINGS.LVL20ARMOUR]['value'] = false;
+        settings[SETTINGS.BITING]['value'] = 3;
+        settings[SETTINGS.REAPER_CREW]['value'] = false;
+        settings[SETTINGS.RANGED_PRAYER]['value'] = 'anguish';
+        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
+
+        settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]['value'] = 0;
+        settings[SETTINGS.KALG_SPEC]['value'] = true;
+        settings[SETTINGS.INNATE_MASTERY]['value'] = false;
+        settings[SETTINGS.ADRENALINE]['value'] = 110;
+        settings[SETTINGS.SLAYER_HELM]['value'] = SETTINGS.SLAYER_HELM_VALUES.MIGHTY;
+        settings[SETTINGS.TARGET_SIZE]['value'] = 3;
+    }
     
-    rakshaPreset();
+    kerapac();
     updateDamages();
 
     
