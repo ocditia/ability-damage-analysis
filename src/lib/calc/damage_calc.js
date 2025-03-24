@@ -1230,6 +1230,11 @@ function calc_on_npc(settings, dmgObject) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
         }
 
+        // balance of power
+        if (settings[SETTINGS.BALANCE_OF_POWER] > 0) {
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * (1 + 0.06 * settings[SETTINGS.BALANCE_OF_POWER]));
+        }
+
         // anachronia slayer lodge buff
         // dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * (1 + settings['anachronia slayer lodge buff']));
 

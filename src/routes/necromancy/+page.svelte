@@ -575,6 +575,14 @@
                                 step="1"
                                 min="0"
                             />
+                            <Number
+                                    bind:setting={settings[SETTINGS.BALANCE_OF_POWER]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/Balance_of_Power_Edict_(self_status).png"
+                                    step="1"
+                                    min="0"
+                                    max="6"
+                                />
                             <Select
                                     bind:setting={settings[SETTINGS.NECRO_TH]}
                                     onchange={() => updateDamages()}
