@@ -514,8 +514,8 @@ function set_min_var(settings, dmgObject) {
     if (abils[settings['ability']]['main style'] === 'ranged') {
         // salt the wound stack bonus
         if (settings['ability'] === 'salt the wound') {
-            min_percent = min_percent + 0.1 * settings['puncture stacks'];
-            var_percent = var_percent + 0.05 * settings['puncture stacks'];
+            min_percent = min_percent + 0.1 * settings[SETTINGS.PUNCTURE_STACKS];
+            var_percent = var_percent + 0.05 * settings[SETTINGS.PUNCTURE_STACKS];
         }
 
         // flank
