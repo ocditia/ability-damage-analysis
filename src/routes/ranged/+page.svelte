@@ -267,6 +267,13 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/needle_strike.png"
                                 />
+                                <Number
+                                    bind:setting={settings[SETTINGS.PUNCTURE_STACKS]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="13"
+                                    min="0"
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Additive</h5>
