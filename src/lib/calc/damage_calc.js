@@ -1823,7 +1823,7 @@ function get_rotation(settings) {
             rotation[1].push(ABILITIES.BLOOD_TENDRILS_2, ABILITIES.BLOOD_TENDRILS_2);
         }
 
-        if (settings['abilty'] === ABILITIES.SLAUGHTER) {
+        if (settings['ability'] === ABILITIES.SLAUGHTER) {
             rotation[1].push(ABILITIES.SLAUGHTER_HIT, ABILITIES.SLAUGHTER_HIT);
         }
 
