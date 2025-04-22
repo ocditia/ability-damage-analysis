@@ -237,6 +237,13 @@
                                     bind:setting={settings[SETTINGS.HITCAP]}
                                     onchange={() => updateDamages()}
                                 />
+                                <Number
+                                    bind:setting={settings[SETTINGS.MAX_CHANNEL_DURATION]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="1000"
+                                    min="0"
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">

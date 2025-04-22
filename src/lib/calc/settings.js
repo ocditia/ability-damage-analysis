@@ -708,6 +708,7 @@ const SETTINGS = {
         PER_TICK: 'per tick',
         PER_ADREN: 'per adren',
     },
+    MAX_CHANNEL_DURATION: 'max channel duration',
 };
 
 const settingsConfig = {
@@ -1980,6 +1981,10 @@ const settingsConfig = {
             { text: 'Dmg per tick', value: SETTINGS.DAMAGE_QUALIFIER_VALUES.PER_TICK },
             { text: 'Dmg per adren', value: SETTINGS.DAMAGE_QUALIFIER_VALUES.PER_ADREN }
         ]
+    },
+    [SETTINGS.MAX_CHANNEL_DURATION]: {
+        label: 'Max channel length',
+        default: 1000
     },
 };
 

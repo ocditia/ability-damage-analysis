@@ -1781,17 +1781,19 @@ function ability_damage_calculation(settings) {
     let rotation = get_rotation(settings);
     let damage = 0;
     for (let key in rotation) {
-        for (let iter = 0; iter < rotation[key].length; iter++) {
-            if (rotation[key][iter] === 'next cast') {
-                settings = next_cast(settings);
-            } else if (rotation[key][iter] === 'next hit') {
-                settings = next_hit(settings);
-            } else {
-                settings['ability'] = rotation[key][iter];
-                damage += hit_damage_calculation(settings);
+        if (key <= settings[SETTINGS.MAX_CHANNEL_DURATION]) {
+            for (let iter = 0; iter < rotation[key].length; iter++) {
+                if (rotation[key][iter] === 'next cast') {
+                    settings = next_cast(settings);
+                } else if (rotation[key][iter] === 'next hit') {
+                    settings = next_hit(settings);
+                } else {
+                    settings['ability'] = rotation[key][iter];
+                    damage += hit_damage_calculation(settings);
+                }
             }
-        }
-        settings = next_tick(settings);
+            settings = next_tick(settings);
+        }  
     }
     return damage;
 }
