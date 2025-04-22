@@ -250,6 +250,74 @@
                                     max="100"
                                     min="0"
                                 />
+                                <Select
+                                    bind:setting={settings[SETTINGS.VULN]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/Vulnerability_icon.webp"
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/infernal_puzzlebox.png"
+                                    step="1"
+                                    max="6"
+                                    min="0"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.CRYPTBLOOM]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/Cryptbloom_helm.png"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.SLAYER_PERK_UNDEAD]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/25px-Undead_Slayer.webp"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.SLAYER_PERK_DRAGON]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/25px-Undead_Slayer.webp"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.SLAYER_PERK_DEMON]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/25px-Undead_Slayer.webp"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_UNDEAD]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_DRAGON]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_DEMON]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.NOPE]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/nopenopenope.png"
+                                    step="1"
+                                    max="3"
+                                    min="0"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.HAUNTED]}
+                                    onchange={() => updateDamages()}
+                                    img="https://imgur.com/9U5ghz2.png"
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.HAUNTED_AD]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="9999"
+                                    min="0"
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">
@@ -377,74 +445,6 @@
                                     bind:setting={settings[SETTINGS.KALG_SPEC]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/crit_i_kal.png"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.VULN]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/Vulnerability_icon.webp"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/infernal_puzzlebox.png"
-                                    step="1"
-                                    max="6"
-                                    min="0"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.CRYPTBLOOM]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/Cryptbloom_helm.png"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_PERK_UNDEAD]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/25px-Undead_Slayer.webp"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_PERK_DRAGON]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/25px-Undead_Slayer.webp"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_PERK_DEMON]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/25px-Undead_Slayer.webp"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_UNDEAD]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_DRAGON]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_DEMON]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.NOPE]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/nopenopenope.png"
-                                    step="1"
-                                    max="3"
-                                    min="0"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.HAUNTED]}
-                                    onchange={() => updateDamages()}
-                                    img="https://imgur.com/9U5ghz2.png"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.HAUNTED_AD]}
-                                    onchange={() => updateDamages()}
-                                    step="1"
-                                    max="9999"
-                                    min="0"
                                 />
                             </div>
                         {:else if tab === 'equipment'}
