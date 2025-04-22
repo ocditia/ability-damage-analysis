@@ -560,12 +560,13 @@ const SETTINGS = {
     },
     AMMO: 'ammo',
     AMMO_VALUES: {
-        NONE: 'none',
+        CUSTOM: 'custom',
         FUL_ARROWS: 'ful arrows',
         WEN_ARROWS: 'wen arrows',
         DEATHSPORE_ARROWS: 'deathspore arrows',
         JAS_ARROWS: 'jas arrows',
     },
+    AMMO_TIER: 'ammo tier',
     AUTO_CAST: 'auto cast',
     AUTO_CAST_VALUES: {
         NONE: 'none',
@@ -1189,8 +1190,8 @@ const settingsConfig = {
             { text: 'None/Tank', value: SETTINGS.NECRO_GLOVES_VALUES.NONE },
             { text: 'TFN', value: SETTINGS.NECRO_GLOVES_VALUES.TFN },
             { text: 't90 deathdealer', value: SETTINGS.NECRO_GLOVES_VALUES.T90DD },
-            { text: 'None/Tank', value: SETTINGS.NECRO_GLOVES_VALUES.DTB },
-            { text: 'None/Tank', value: SETTINGS.NECRO_GLOVES_VALUES.CINDERS }
+            { text: 'DTB', value: SETTINGS.NECRO_GLOVES_VALUES.DTB },
+            { text: 'Cinderbane gloves', value: SETTINGS.NECRO_GLOVES_VALUES.CINDERS }
         ]
     },
     [SETTINGS.MAGIC_BOOTS]: {
@@ -1543,12 +1544,16 @@ const settingsConfig = {
         label: 'Ammo',
         default: SETTINGS.AMMO_VALUES.WEN_ARROWS,
         options: [
-            { text: 'None', value: SETTINGS.AMMO_VALUES.NONE },
+            { text: 'Custom', value: SETTINGS.AMMO_VALUES.CUSTOM },
             { text: 'Ful', value: SETTINGS.AMMO_VALUES.FUL_ARROWS },
             { text: 'Wen', value: SETTINGS.AMMO_VALUES.WEN_ARROWS },
             { text: 'Jas', value: SETTINGS.AMMO_VALUES.JAS_ARROWS },
             { text: 'Deathspore arrows', value: SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS }
         ]
+    },
+    [SETTINGS.AMMO_TIER]: {
+        label: 'Ammo tier',
+        default: 99
     },
     [SETTINGS.AUTO_CAST]: {
         label: 'Auto cast',

@@ -205,6 +205,18 @@ const weapons = {
         type: 'none',
         classification: 'none'
     },
+    'ful arrows': {
+        tier: 99
+    },
+    'wen arrows':{
+        tier: 99
+    },
+    'deathspore arrows':{
+        tier: 99
+    },
+    'jas arrows':{
+        tier: 99
+    },
 };
 
 const gear = {

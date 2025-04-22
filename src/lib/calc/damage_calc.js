@@ -132,7 +132,16 @@ function calc_base_ad(settings) {
 }
 
 function calc_weapon_tier(settings, hand) {
-    const spell_tier = 999;
+    let ammo_tier = 999;
+    if (abils[settings['ability']]['main style'] === 'ranged') {
+        if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.CUSTOM) {
+            ammo_tier = settings[SETTINGS.AMMO_TIER];
+        }
+        else {
+            ammo_tier = weapons[settings[SETTINGS.AMMO]]['tier'];
+        }
+    }
+
     let tier = 0;
     // custom weapon tier
     if (
@@ -140,11 +149,11 @@ function calc_weapon_tier(settings, hand) {
         settings[hand] === 'custom oh' ||
         settings[hand] === 'custom th'
     ) {
-        tier = Math.min(settings[hand + ' custom tier'], spell_tier);
+        tier = Math.min(settings[hand + ' custom tier'], ammo_tier);
     }
     // standard weapon
     else {
-        tier = Math.min(weapons[settings[hand]]['tier'], spell_tier);
+        tier = Math.min(weapons[settings[hand]]['tier'], ammo_tier);
     }
     // innate mastery (shard of genesis essence)
     if (tier === 95 && settings[SETTINGS.INNATE_MASTERY] === true) {

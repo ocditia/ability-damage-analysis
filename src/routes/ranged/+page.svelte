@@ -613,6 +613,13 @@
                                     img="/effect_icons/ammo_type.png"
                                 />
                                 <Number
+                                    bind:setting={settings[SETTINGS.AMMO_TIER]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="100"
+                                    min="0"
+                                />
+                                <Number
                                     bind:setting={settings[SETTINGS.ICY_PRECISION]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/icy_precision.png"
