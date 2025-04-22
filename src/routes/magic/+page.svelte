@@ -233,6 +233,10 @@
                                     max="100"
                                     min="0"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.HITCAP]}
+                                    onchange={() => updateDamages()}
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">

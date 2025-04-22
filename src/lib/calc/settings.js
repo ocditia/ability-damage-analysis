@@ -684,7 +684,8 @@ const SETTINGS = {
     },
     LUNGING: 'lunging',
     RUIN: 'ruin',
-    VALOUR_STACKS: 'valour stacks'
+    VALOUR_STACKS: 'valour stacks',
+    HITCAP: 'hit cap',
 };
 
 const settingsConfig = {
@@ -1916,6 +1917,10 @@ const settingsConfig = {
     [SETTINGS.VALOUR_STACKS]: {
         label: 'Valour (Phantom stacks)',
         default: 25
+    },
+    [SETTINGS.HITCAP]: {
+        label: 'Apply hitcap',
+        default: true
     },
 };
 

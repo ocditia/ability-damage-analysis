@@ -1242,7 +1242,9 @@ function calc_on_npc(settings, dmgObject) {
         settings['soul split'] = dmgObject;
 
         // hit cap
-        dmgObject['damage list'][i] = Math.min(dmgObject['damage list'][i], 30000);
+        if (settings[SETTINGS.HITCAP] === true) {
+            dmgObject['damage list'][i] = Math.min(dmgObject['damage list'][i], 30000);
+        }
     }
     return dmgObject;
 }
