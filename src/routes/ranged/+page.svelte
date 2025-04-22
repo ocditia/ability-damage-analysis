@@ -607,6 +607,10 @@
                                     max="15"
                                     min="0"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.QUIVER]}
+                                    onchange={() => updateDamages()}
+                                />
                             </div>
                         {:else if tab === 'bosses'}
                         <div class="md:col-span-1">

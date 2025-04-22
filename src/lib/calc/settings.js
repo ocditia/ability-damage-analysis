@@ -701,6 +701,7 @@ const SETTINGS = {
     RUIN: 'ruin',
     VALOUR_STACKS: 'valour stacks',
     HITCAP: 'hit cap',
+    QUIVER: 'quiver',
 };
 
 const settingsConfig = {
@@ -1959,6 +1960,10 @@ const settingsConfig = {
     },
     [SETTINGS.HITCAP]: {
         label: 'Apply hitcap',
+        default: true
+    },
+    [SETTINGS.QUIVER]: {
+        label: 'Pernix quiver',
         default: true
     },
 };

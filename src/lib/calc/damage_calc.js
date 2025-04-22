@@ -605,7 +605,7 @@ function calc_style_specific(settings, dmgObject) {
 
             // pernix quiver
             if (
-                settings['ammo slot'] === 'pernix quiver' &&
+                settings[SETTINGS.QUIVER] === true &&
                 settings[SETTINGS.TARGET_HP_PERCENT] <= 25
             ) {
                 dmgObject['var hit'] = Math.floor(
