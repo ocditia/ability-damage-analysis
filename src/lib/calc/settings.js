@@ -702,6 +702,12 @@ const SETTINGS = {
     VALOUR_STACKS: 'valour stacks',
     HITCAP: 'hit cap',
     QUIVER: 'quiver',
+    DAMAGE_QUALIFIER: 'damage qualifier',
+    DAMAGE_QUALIFIER_VALUES: {
+        TOTAL: 'total',
+        PER_TICK: 'per tick',
+        PER_ADREN: 'per adren',
+    },
 };
 
 const settingsConfig = {
@@ -1965,6 +1971,15 @@ const settingsConfig = {
     [SETTINGS.QUIVER]: {
         label: 'Pernix quiver',
         default: true
+    },
+    [SETTINGS.DAMAGE_QUALIFIER]: {
+        label: 'Dino perks',
+        default: SETTINGS.DAMAGE_QUALIFIER_VALUES.TOTAL,
+        options: [
+            { text: 'Total', value: SETTINGS.DAMAGE_QUALIFIER_VALUES.TOTAL },
+            { text: 'Dmg per tick', value: SETTINGS.DAMAGE_QUALIFIER_VALUES.PER_TICK },
+            { text: 'Dmg per adren', value: SETTINGS.DAMAGE_QUALIFIER_VALUES.PER_ADREN }
+        ]
     },
 };
 
