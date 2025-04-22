@@ -277,33 +277,13 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/Cryptbloom_helm.png"
                                 />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_PERK_UNDEAD]}
+                                <Select
+                                    bind:setting={settings[SETTINGS.SLAYER_PERK]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/25px-Undead_Slayer.webp"
                                 />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_PERK_DRAGON]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/25px-Undead_Slayer.webp"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_PERK_DEMON]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/25px-Undead_Slayer.webp"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_UNDEAD]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_DRAGON]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_DEMON]}
+                                <Select
+                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/Undead_slayer_sigil_detail.png"
                                 />

@@ -138,6 +138,20 @@ const SETTINGS = {
     SLAYER_SIGIL_UNDEAD: 'undead slayer sigil',
     SLAYER_SIGIL_DRAGON: 'dragon slayer sigil',
     SLAYER_SIGIL_DEMON: 'demon slayer sigil',
+    SLAYER_PERK: 'slayer perk',
+    SLAYER_PERK_VALUES: {
+        NONE: 'none',
+        UNDEAD: 'undead',
+        DRAGON: 'dragon',
+        DEMON: 'demon'
+    },
+    SLAYER_SIGIL: 'slayer sigil',
+    SLAYER_SIGIL_VALUES: {
+        NONE: 'none',
+        UNDEAD: 'undead',
+        DRAGON: 'dragon',
+        DEMON: 'demon'
+    },
     HAUNTED: 'haunted',
     HAUNTED_AD: 'haunted AD',
     SKELETON_WARRIOR_RAGE_STACKS: 'skeleton rage stacks',
@@ -965,6 +979,16 @@ const settingsConfig = {
         label: 'Demon slayer Perk',
         default: false
     },
+    [SETTINGS.SLAYER_PERK]: {
+        label: 'Slayer perk',
+        default: SETTINGS.SLAYER_PERK.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.SLAYER_PERK_VALUES.NONE },
+            { text: 'Undead', value: SETTINGS.SLAYER_PERK_VALUES.UNDEAD},
+            { text: 'Dragon', value: SETTINGS.SLAYER_PERK_VALUES.DRAGON},
+            { text: 'Demon', value: SETTINGS.SLAYER_PERK_VALUES.DEMON},
+        ]
+    },
     [SETTINGS.SLAYER_SIGIL_UNDEAD]: {
         label: 'Undead slayer Sigil',
         default: false
@@ -976,6 +1000,16 @@ const settingsConfig = {
     [SETTINGS.SLAYER_SIGIL_DEMON]: {
         label: 'Demon slayer Sigil',
         default: false
+    },
+    [SETTINGS.SLAYER_SIGIL]: {
+        label: 'Slayer sigil',
+        default: SETTINGS.SLAYER_SIGIL.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.SLAYER_SIGIL_VALUES.NONE },
+            { text: 'Undead', value: SETTINGS.SLAYER_SIGIL_VALUES.UNDEAD},
+            { text: 'Dragon', value: SETTINGS.SLAYER_SIGIL_VALUES.DRAGON},
+            { text: 'Demon', value: SETTINGS.SLAYER_SIGIL_VALUES.DEMON},
+        ]
     },
     [SETTINGS.HAUNTED]: {
         label: 'Haunted',

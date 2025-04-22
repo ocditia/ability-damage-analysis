@@ -1090,32 +1090,32 @@ function calc_on_npc(settings, dmgObject) {
         }*/
 
         // undead slayer perk
-        if (settings[SETTINGS.SLAYER_PERK_UNDEAD] === true) {
+        if (settings[SETTINGS.SLAYER_PERK] === SETTINGS.SLAYER_PERK_VALUES.UNDEAD) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.07);
         }
 
         // undead slayer sigil
-        if (settings[SETTINGS.SLAYER_SIGIL_UNDEAD] === true) {
+        if (settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.UNDEAD) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.15);
         }
 
         // dragon slayer perk
-        if (settings[SETTINGS.SLAYER_PERK_DRAGON] === true) {
+        if (settings[SETTINGS.SLAYER_PERK] === SETTINGS.SLAYER_PERK_VALUES.DRAGON) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.07);
         }
 
         // dragon slayer sigil
-        if (settings[SETTINGS.SLAYER_SIGIL_DRAGON] === true) {
+        if (settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DRAGON) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.15);
         }
 
         // demon slayer perk
-        if (settings[SETTINGS.SLAYER_PERK_DEMON] === true) {
+        if (settings[SETTINGS.SLAYER_PERK] === SETTINGS.SLAYER_PERK_VALUES.DEMON) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.07);
         }
 
         // demon slayer sigil
-        if (settings[SETTINGS.SLAYER_SIGIL_DEMON] === true) {
+        if (settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DEMON) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.15);
         }
 
