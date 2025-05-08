@@ -1,129 +1,7 @@
 import { create_object } from './object_helper';
 import { SETTINGS } from './settings';
-import { ABILITIES, abils, armour, gear, prayers, weapons } from './const';
-import { hit_damage_calculation, calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
-    calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
-get_user_value, get_rotation, add_split_soul, apply_additional_rota} from './damage_calc';
-import { next_cast, next_hit, next_tick } from './ability_helper';
-import { on_cast, on_hit, on_damage } from './damage_calc_new';
-
-/**
- * Calculates effects that are applied when ability is cast (when adren changes?)
- * Rewrite of calc_damage_object from damage_calc.js
- * @param {} settings
- * @returns {*} dmgObject
- */
-function calc_on_cast(settings) {
-    settings = style_specific_unification(settings); // initialise some settings
-    const dmgObject = create_object(settings);
-    for (let key in dmgObject) {
-        // calc base AD
-        dmgObject[key]['base AD'] = calc_base_ad(settings);
-        // calc buffed AD
-        dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
-        // ability specific
-        dmgObject[key] = ability_specific_effects(settings, dmgObject[key]);
-        // set min and var
-        dmgObject[key] = set_min_var(settings, dmgObject[key]);
-        // style specific
-        dmgObject[key] = calc_style_specific(settings, dmgObject[key]);
-        //calc on hit effects
-        if (abils[settings['ability']]['on-hit effects']) {
-            dmgObject[key] = calc_on_hit(settings, dmgObject[key]);
-        }
-        // roll damage
-        dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
-        // calc core
-        if (abils[settings['ability']]['on-hit effects']) {
-            dmgObject[key] = calc_core(settings, dmgObject, key);
-        } 
-    }
-    //next_hit();
-    //TODO get user value
-    return dmgObject;
-}
-
-/**
- * On NPC calculator for rotation calculating
- * Rewrite of calc_on_npc from damage_calc.js
- * @param {} settings 
- * @param {*} dmgObject 
- * @returns 
- */
-function rotation_on_npc(settings, dmgObject, experimentalData) {
-    for (let key in dmgObject) {  
-        if (key == 'ability') {
-            continue;
-        }      
-        // calc on npc
-        dmgObject[key] = calc_on_npc(settings, dmgObject[key]);
-
-        // add split soul damage
-        if (
-            settings['split soul'] === true &&
-            ['magic', 'melee', 'ranged', 'necrotic'].includes(
-                abils[settings['ability']]['damage type']
-            )
-        ) {
-            dmgObject[key] = add_split_soul(settings, dmgObject[key]);
-            //TODO make split soul its own hitsplat
-        }
-    }
-    experimentalData.push({...dmgObject});
-    let total_damage = get_user_value(settings, dmgObject);
-    total_damage = apply_additional_rota(settings, total_damage);
-
-    return total_damage;
-}
-
-function rotation_on_npc_test(settings, dmgObject) {
-    for (let key in dmgObject) {  
-        if (key == 'ability') {
-            continue;
-        }      
-        // calc on npc
-        dmgObject[key] = calc_on_npc(settings, dmgObject[key]);
-
-        // add split soul damage
-        if (
-            settings['split soul'] === true &&
-            ['magic', 'melee', 'ranged', 'necrotic'].includes(
-                abils[settings['ability']]['damage type']
-            )
-        ) {
-            dmgObject[key] = add_split_soul(settings, dmgObject[key]);
-            //TODO make split soul its own hitsplat
-        }
-    }
-    let total_damage = apply_additional_rota(settings, total_damage);
-
-    return total_damage;
-}
-
-/**
- * Calculates the damage objects for multi-hit non-channelled abilities.
- * Rewrite of ability_damage_calculation from damage_calc.js
- * @param {*} settings 
- * @returns 
- */
-function rotation_ability_damage(settings) {
-    let rotation = get_rotation(settings);
-    let damages = [];
-    for (let key in rotation) {
-        for (let iter = 0; iter < rotation[key].length; iter++) {
-            if (rotation[key][iter] === 'next cast') {
-                settings = next_cast(settings);
-            } else if (rotation[key][iter] === 'next hit') {
-                settings = next_hit(settings);
-            } else {
-                settings['ability'] = rotation[key][iter];
-                damages.push(calc_on_cast(settings));
-            }
-        }
-        settings = next_tick(settings);
-    }
-    return damages;
-}
+import { ABILITIES, abils } from './const';
+import { on_cast, on_hit } from './damage_calc_new';
 
 /**
  * Calculates the damage object for a single tick of a channelled ability
@@ -151,10 +29,10 @@ function calc_channelled_hit(settings, hit_index, rotation, timers) {
  * @param {String} abilityKey 
  */
 function handle_ranged_buffs(settings, timers, abilityKey) {
-    //TODO handle swiftness' weird damage calc
+    //TODO handle swiftness' weird damage calc + cleanup format
     if (abilityKey == ABILITIES.DEATHS_SWIFTNESS) {
         settings['death swiftness'] = true;
-        timers['death swiftness'] = 51;
+        timers['death swiftness'] = 50;
     }
     else if (abilityKey == ABILITIES.GREATER_DEATHS_SWIFTNESS) {
         settings['death swiftness'] = true;
@@ -164,6 +42,18 @@ function handle_ranged_buffs(settings, timers, abilityKey) {
     else if (abilityKey == ABILITIES.SPLIT_SOUL_ECB) {
         settings['split soul'] = true; //TODO dont let non ranged hits proc split soul
         timers['split soul'] = 25;
+    }
+    else if (abilityKey == ABILITIES.BALANCE_BY_FORCE) {
+        settings[ABILITIES.BALANCE_BY_FORCE] = true; 
+        timers[ABILITIES.BALANCE_BY_FORCE] = 50;
+    }
+    else if ([ABILITIES.INCENDIARY_SHOT, ABILITIES.METEOR_STRIKE, ABILITIES.TSUNAMI].includes(abilityKey)) {
+        settings[SETTINGS.CRIT_BUFF] = true; 
+        timers[SETTINGS.CRIT_BUFF] = 50;
+    }
+    else if (abilityKey == ABILITIES.NATURAL_INSTINCT) {
+        settings[SETTINGS.NATURAL_INSTINCT] = true; 
+        timers[ABILITIES.NATURAL_INSTINCT] = 34;
     }
 }
 
@@ -184,21 +74,23 @@ function handle_edraco(settings, timers, abilityKey) {
     let boots = settings['boots'];
 
     let items = [body, helmet, gloves, legs, boots];
-    const edraco = 'elite dracolich';
-    let count = items.filter(item => item && item.startsWith(edraco)).length;
-    //Handle adrenaline gain
-    if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT || abilityKey == ABILITIES.RAPID_FIRE_HIT) {
-        settings[SETTINGS.ADRENALINE] += (count * 0.5);
-    }
-    //Handle crit chance buff
-    if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
-        if (count >= 3) {
-            let buff_duration = 5 + (3 * Math.max(count - 3, 0)); // 5 tick base duration
-            settings['dracolich infusion'] = 'greater';
-            timers['dracolich infusion'] = buff_duration; 
+    function dracoBuff(startString, adrenGain, infusionTier) {
+        let count = items.filter(item => item && item.startsWith(startString)).length;
+        if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT || abilityKey == ABILITIES.RAPID_FIRE_HIT) {
+            settings[SETTINGS.ADRENALINE] += count * adrenGain;
+        }
+        //Handle crit chance buff
+        if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
+            if (count >= 3) {
+                let buff_duration = 5 + (3 * Math.max(count - 3, 0)); // 5 tick base duration
+                settings['dracolich infusion'] = infusionTier;
+                timers['dracolich infusion'] = buff_duration; 
+            }
         }
     }
-    //TODO regular dracolich
+    dracoBuff('elite dracolich', 0.5, 'greater');
+    //dracoBuff('dracolich', 0.2, 'regular'); 
+    //TOOD solve the floating point error for regular draco
 }
 
 /**
@@ -214,6 +106,6 @@ function handle_sgb(settings, dmgObject, damageTracker, hitTick) {
 }
 
 export { 
-    calc_on_cast, rotation_on_npc,  rotation_ability_damage, handle_ranged_buffs,
-    handle_edraco, handle_sgb, calc_channelled_hit, rotation_on_npc_test
+    handle_ranged_buffs,
+    calc_channelled_hit
 };

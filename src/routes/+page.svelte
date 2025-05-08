@@ -61,7 +61,7 @@
                         </div>
                     </a>
                     <a href="/necromancy" class="flex flex-col group">
-                        <div class="card">
+                        <div class="card border-b border-card-light">
                             <div
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
                             >
@@ -75,7 +75,7 @@
                             <div
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
                             >
-                                <img class="card-icon" src="style_icons/necro-white.svg" alt="" />
+                                <img class="card-icon" src="style_icons/rota_icon_white.svg" alt="" />
                                 <div class="card-title">Rotation Builder</div>
                             </div>
                         </div>

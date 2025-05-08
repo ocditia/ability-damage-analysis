@@ -350,19 +350,19 @@
                                     img="/effect_icons/25px-Undead_Slayer.webp"
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_UNDEAD]}
+                                    bind:setting={settings[SETTINGS.UNDEAD_SLAYER_ABILITY]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
+                                    img="/ability_icons/special/Undead_Slayer_(ability).png"
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_DRAGON]}
+                                    bind:setting={settings[SETTINGS.DRAGON_SLAYER_ABILITY]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
+                                    img="/ability_icons/special/Dragon_Slayer_(ability).png"
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.SLAYER_SIGIL_DEMON]}
+                                    bind:setting={settings[SETTINGS.DEMON_SLAYER_ABILITY]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Undead_slayer_sigil_detail.png"
+                                    img="/ability_icons/special/Demon_Slayer_(ability).png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.NOPE]}
