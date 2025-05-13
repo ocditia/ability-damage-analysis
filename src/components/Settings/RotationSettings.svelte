@@ -9,9 +9,8 @@
     export let settings;
     export let updateDamages; 
 
-    
-    settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH; 
-    settings[SETTINGS.AMMO]['value'] = 'wen arrows';
+
+    settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH;
     settings[SETTINGS.ICY_PRECISION]['value'] = 0;
     settings[SETTINGS.BALANCE_BY_FORCE]['value'] = false;
         
@@ -266,6 +265,7 @@
                     <Select
                         bind:setting={settings[SETTINGS.SLAYER_HELM]}
                         onchange={() => updateDamages()}
+                        img="/effect_icons/slayer_helmet.png"
                     />
                     <Select
                         bind:setting={settings[SETTINGS.GUARDHOUSE]}
@@ -274,6 +274,7 @@
                     <Checkbox
                         bind:setting={settings[SETTINGS.SWIFTNESS_OF_THE_AVIANSIE]}
                         onchange={() => updateDamages()}
+                        img="/effect_icons/swiftness_of_the_avianse.png"
                     />
                 </div>
                 <div class="md:col-span-1">
@@ -281,6 +282,7 @@
                     <Number
                         bind:setting={settings[SETTINGS.BERSERKERS_FURY]}
                         onchange={() => updateDamages()}
+                        img="/effect_icons/berserkers_fury.png"
                         step="0.5"
                         max="5.5"
                         min="0"
@@ -300,6 +302,10 @@
                         bind:setting={settings[SETTINGS.VULN]}
                         onchange={() => updateDamages()}
                         img="/effect_icons/Vulnerability_icon.webp"
+                    />
+                    <Select
+                        bind:setting={settings[SETTINGS.ENDURING_RUIN_BLEED]}
+                        onchange={() => updateDamages()}
                     />
                     <Number
                         bind:setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
@@ -331,17 +337,17 @@
                     <Checkbox
                         bind:setting={settings[SETTINGS.UNDEAD_SLAYER_ABILITY]}
                         onchange={() => updateDamages()}
-                        img="/ability_icons/special/Undead_Slayer_(ability).png"
+                        img="/effect_icons/Undead_slayer_sigil_detail.png"
                     />
                     <Checkbox
                         bind:setting={settings[SETTINGS.DRAGON_SLAYER_ABILITY]}
                         onchange={() => updateDamages()}
-                        img="/ability_icons/special/Dragon_Slayer_(ability).png"
+                        img="/effect_icons/Undead_slayer_sigil_detail.png"
                     />
                     <Checkbox
                         bind:setting={settings[SETTINGS.DEMON_SLAYER_ABILITY]}
                         onchange={() => updateDamages()}
-                        img="/ability_icons/special/Demon_Slayer_(ability).png"
+                        img="/effect_icons/Undead_slayer_sigil_detail.png"
                     />
                     <Number
                         bind:setting={settings[SETTINGS.NOPE]}
@@ -402,12 +408,13 @@
                     <Select
                         bind:setting={settings[SETTINGS.AURA]}
                         onchange={() => updateDamages()}
+                        img="/effect_icons/aura.png"
                     />
                     <Select
                         bind:setting={settings[SETTINGS.FAMILIAR]}
                         onchange={() => updateDamages()}
+                        img="/effect_icons/familiar.png"
                     />
-                
                 </div>
                 <div class="md:col-span-1">
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Perks</h5>
@@ -535,10 +542,12 @@
                     <Select
                         bind:setting={settings[SETTINGS.AMMO]}
                         onchange={() => updateDamages()}
+                        img="/effect_icons/ammo.png"
                     />
                     <Checkbox
                         bind:setting={settings[SETTINGS.INNATE_MASTERY]}
                         onchange={() => updateDamages()}
+                        img="/effect_icons/shard_of_genesis.png"
                     />
                 </div>
             {:else if tab === 'bosses'}

@@ -2,10 +2,30 @@ import { ABILITIES } from '../calc/const.js';
 import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
 
 const abilities = {
+    [ABILITIES.GREATER_RICOCHET]: {
+        title: 'Greater ricochet',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/ranged/30x30/grico.png'
+    },
+    [ABILITIES.DAZING_SHOT]: {
+        title: 'Dazing shot',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/ranged/30x30/dazing.png'
+    },
     [ABILITIES.PIERCING_SHOT]: {
         title: 'Piercing shot',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/piercing.png'
+    },
+    [ABILITIES.FRAGMENTATION_SHOT]: {
+        title: 'Fragmentation shot',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/ranged/30x30/frag-shot.png'
+    },
+    [ABILITIES.CORRUPTION_SHOT]: {
+        title: 'Corruption shot',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/ranged/30x30/corrupt-shot.png'
     },
     [ABILITIES.BINDING_SHOT]: {
         title: 'Binding shot',
@@ -17,11 +37,6 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/snipe.png'
     },
-    [ABILITIES.DAZING_SHOT]: {
-        title: 'Dazing shot',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/dazing.png'
-    },
     [ABILITIES.DEMORALISE]: {
         title: 'Demoralise',
         calc: hit_damage_calculation,
@@ -32,30 +47,25 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/needle.png'
     },
-    [ABILITIES.FRAGMENTATION_SHOT]: {
-        title: 'Fragmentation shot',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/frag-shot.png'
-    },
     [ABILITIES.RICOCHET]: {
         title: 'Ricochet',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/rico.png'
     },
-    [ABILITIES.GREATER_RICOCHET]: {
-        title: 'Greater ricochet',
+    [ABILITIES.RAPID_FIRE]: {
+        title: 'Rapid fire',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/grico.png'
-    },
-    [ABILITIES.CORRUPTION_SHOT]: {
-        title: 'Corruption shot',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/corrupt-shot.png'
+        icon: '/ability_icons/ranged/30x30/rapid.png'
     },
     [ABILITIES.SNAP_SHOT]: {
         title: 'Snap shot',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/snapshot.png'
+    },
+    [ABILITIES.SHADOW_TENDRILS]: {
+        title: 'Shadow tendrils',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/ranged/30x30/tendril.png'
     },
     [ABILITIES.TIGHT_BINDINGS]: {
         title: 'Tight bindings',
@@ -67,11 +77,6 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/rout.png'
     },
-    [ABILITIES.RAPID_FIRE]: {
-        title: 'Rapid fire',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/rapid.png'
-    },
     [ABILITIES.BOMBARDMENT]: {
         title: 'Bombardment',
         calc: hit_damage_calculation,
@@ -82,20 +87,15 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/salt.png'
     },
-    [ABILITIES.SHADOW_TENDRILS]: {
-        title: 'Shadow tendrils',
+    [ABILITIES.INCENDIARY_SHOT]: {
+        title: 'Incendiary shot',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/tendril.png'
+        icon: '/ability_icons/ranged/30x30/incend.png'
     },
     [ABILITIES.DEADSHOT]: {
         title: 'Deadshot',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/deadshot.png'
-    },
-    [ABILITIES.INCENDIARY_SHOT]: {
-        title: 'Incendiary shot',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/incend.png'
     },
     [ABILITIES.UNLOAD]: {
         title: 'Unload',
@@ -111,6 +111,11 @@ const abilities = {
         title: 'Balance by force',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/bolg.png'
+    },
+    [ABILITIES.DESTRUCTIVE_SHOT]: {
+        title: 'Destructive shot',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/ranged/30x30/zamorak_bow.png'
     },
     [ABILITIES.DESCENT_OF_DARKNESS]: {
         title: 'Descent of Darkness',
@@ -171,11 +176,6 @@ const abilities = {
         title: 'Deep burn',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/strykebow.png'
-    },
-    [ABILITIES.DESTRUCTIVE_SHOT]: {
-        title: 'Destrucive shot',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/zamorak_bow.png'
     },
     [ABILITIES.DEFIANCE]: {
         title: 'Defiance',

@@ -151,9 +151,14 @@ function calc_crit_chance(settings) {
         }
 
         // no fear (pof meteor strike)
-        // if (settings['ability'] === 'meteor strike') {
-        //     crit_chance += 0.2 * settings['no fear'];
-        // }
+        if (settings['ability'] === 'meteor strike') {
+            if (settings[SETTINGS.POF_DINOS] === SETTINGS.POF_DINOS_VALUES.CORBICULA_1) {
+                crit_chance += 0.2;
+            }
+            else if (settings[SETTINGS.POF_DINOS] === SETTINGS.POF_DINOS_VALUES.CORBICULA_2) {
+                crit_chance += 0.4;
+            }   
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {

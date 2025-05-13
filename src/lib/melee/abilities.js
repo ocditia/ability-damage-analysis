@@ -2,15 +2,45 @@ import { ABILITIES } from '../calc/const.js';
 import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
 
 const abilities = {
-    [ABILITIES.SLICE]: {
-        title: 'Slice',
+    [ABILITIES.SEVER]: {
+        title: 'Sever',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/slice.png'
+        icon: '/ability_icons/melee/30x30/sever.png'
     },
-    [ABILITIES.BACKHAND]: {
-        title: 'Backhand',
+    [ABILITIES.CLEAVE]: {
+        title: 'Cleave',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/backhand.png'
+        icon: '/ability_icons/melee/30x30/cleave.png'
+    },
+    [ABILITIES.DECIMATE]: {
+        title: 'Decimate',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/deci.png'
+    },
+    [ABILITIES.GREATER_BARGE]: {
+        title: 'Greater barge',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/gbarge.png'
+    },
+    [ABILITIES.PUNISH]: {
+        title: 'Punish',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/punish.png'
+    },
+    [ABILITIES.GREATER_FURY]: {
+        title: 'Greater fury',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/gfury.png'
+    },
+    [ABILITIES.CHAOS_ROAR]: {
+        title: 'Chaos roar',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/roar.png'
+    },
+    [ABILITIES.DISMEMBER]: {
+        title: 'Dismember',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/melee/30x30/dismember.png'
     },
     [ABILITIES.HAVOC]: {
         title: 'Havoc',
@@ -22,25 +52,60 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/smash.png'
     },
+    [ABILITIES.SLICE]: {
+        title: 'Slice',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/slice.png'
+    },
+    [ABILITIES.FURY]: {
+        title: 'Fury',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/fury.png'
+    },
+    [ABILITIES.KICK]: {
+        title: 'Kick',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/kick.png'
+    },
+    [ABILITIES.BACKHAND]: {
+        title: 'Backhand',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/backhand.png'
+    },
     [ABILITIES.BARGE]: {
         title: 'Barge',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/barge.png'
     },
-    [ABILITIES.GREATER_BARGE]: {
-        title: 'Greater barge',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/gbarge.png'
-    },
-    [ABILITIES.SEVER]: {
-        title: 'Sever',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/sever.png'
-    },
     [ABILITIES.BLADED_DIVE]: {
         title: 'Bladed dive',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/bd.png'
+    },
+    [ABILITIES.DESTROY]: {
+        title: 'Destroy',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/melee/30x30/destroy.png'
+    },
+    [ABILITIES.ASSAULT]: {
+        title: 'Assault',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/melee/30x30/assault.png'
+    },
+    [ABILITIES.GREATER_FLURRY]: {
+        title: 'Greater flurry',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/melee/30x30/gflurry.png'
+    },
+    [ABILITIES.HURRICANE]: {
+        title: 'Hurricane',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/melee/30x30/cane.png'
+    },
+    [ABILITIES.QUAKE]: {
+        title: 'Quake',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/quake.png'
     },
     [ABILITIES.SLAUGHTER]: {
         title: 'Slaughter',
@@ -57,95 +122,30 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/flurry.png'
     },
-    [ABILITIES.GREATER_FLURRY]: {
-        title: 'Greater flurry',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/gflurry.png'
-    },
-    [ABILITIES.HURRICANE]: {
-        title: 'Hurricane',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/cane.png'
-    },
     [ABILITIES.BLOOD_TENDRILS]: {
         title: 'Blood tendrils',
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/blood-tend.png'
-    },
-    [ABILITIES.OVERPOWER]: {
-        title: 'Overpower',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/overpower.png'
-    },
-    [ABILITIES.MASSACRE]: {
-        title: 'Massacre',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/massacre.png'
-    },
-    [ABILITIES.METEOR_STRIKE]: {
-        title: 'Meteor strike',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/meteor.png'
-    },
-    [ABILITIES.KICK]: {
-        title: 'Kick',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/kick.png'
-    },
-    [ABILITIES.PUNISH]: {
-        title: 'Punish',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/punish.png'
-    },
-    [ABILITIES.DISMEMBER]: {
-        title: 'Dismember',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/dismember.png'
-    },
-    [ABILITIES.FURY]: {
-        title: 'Fury',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/fury.png'
-    },
-    [ABILITIES.GREATER_FURY]: {
-        title: 'Greater fury',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/gfury.png'
-    },
-    [ABILITIES.CLEAVE]: {
-        title: 'Cleave',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/cleave.png'
-    },
-    [ABILITIES.DECIMATE]: {
-        title: 'Decimate',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/deci.png'
-    },
-    [ABILITIES.CHAOS_ROAR]: {
-        title: 'Chaos roar',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/roar.png'
     },
     [ABILITIES.STOMP]: {
         title: 'Stomp',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/stomp.png'
     },
-    [ABILITIES.DESTROY]: {
-        title: 'Destroy',
+    [ABILITIES.OVERPOWER]: {
+        title: 'Overpower',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/destroy.png'
+        icon: '/ability_icons/melee/30x30/overpower.png'
     },
-    [ABILITIES.QUAKE]: {
-        title: 'Quake',
+    [ABILITIES.METEOR_STRIKE]: {
+        title: 'Meteor strike',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/quake.png'
+        icon: '/ability_icons/melee/30x30/meteor.png'
     },
-    [ABILITIES.ASSAULT]: {
-        title: 'Assault',
+    [ABILITIES.MASSACRE]: {
+        title: 'Massacre',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/assault.png'
+        icon: '/ability_icons/melee/30x30/massacre.png'
     },
     [ABILITIES.PULVERISE]: {
         title: 'Pulverise',
@@ -157,6 +157,36 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/frenzy.png'
     },
+    [ABILITIES.SLICE_N_DICE]: {
+        title: 'Slice & dice',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/melee/30x30/dclaw-bg.png'
+    },
+    [ABILITIES.ICY_TEMPEST]: {
+        title: 'Icy tempest',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/melee/leng.png'
+    },
+    [ABILITIES.QUICK_SMASH]: {
+        title: 'Quick smash',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/gmaul-bg.png'
+    },
+    [ABILITIES.IGNEOUS_CLEAVE]: {
+        title: 'Igneous cleave',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/melee/30x30/slice.png'
+    },
+    [ABILITIES.ARMADYLS_JUDGEMENT]: {
+        title: "Armadyl's judgement",
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/ags.png'
+    },
+    [ABILITIES.DRACONIC_CLEAVE]: {
+        title: 'Draconic cleave',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/dlong-bg.png'
+    },
     [ABILITIES.ENERGY_DRAIN]: {
         title: 'Energy drain',
         calc: hit_damage_calculation,
@@ -166,11 +196,6 @@ const abilities = {
         title: 'Favour of the war god',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/ancient_mace.png'
-    },
-    [ABILITIES.ARMADYLS_JUDGEMENT]: {
-        title: "Armadyl's judgement",
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/ags.png'
     },
     [ABILITIES.WARSTRIKE]: {
         title: 'Warstrike',
@@ -197,11 +222,6 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/dragon_hatchet.png'
     },
-    [ABILITIES.ICY_TEMPEST]: {
-        title: 'Icy tempest',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/leng.png'
-    },
     [ABILITIES.WEAKEN_SPECIAL_ATTACK]: {
         title: 'Weaken',
         calc: hit_damage_calculation,
@@ -212,11 +232,6 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/dragon_2h_sword.png'
     },
-    [ABILITIES.SLICE_N_DICE]: {
-        title: 'Slice & dice',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/dclaw-bg.png'
-    },
     [ABILITIES.DRACONIC_PUNCTURE]: {
         title: 'Draconic puncture',
         calc: ability_damage_calculation,
@@ -226,11 +241,6 @@ const abilities = {
         title: 'Sweep',
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/dhally.png'
-    },
-    [ABILITIES.DRACONIC_CLEAVE]: {
-        title: 'Draconic cleave',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/dlong-bg.png'
     },
     [ABILITIES.DRACONIC_BLOW]: {
         title: 'Draconic blow',
@@ -248,16 +258,6 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/dragon_spear.png'
     },*/
-    [ABILITIES.IGNEOUS_CLEAVE]: {
-        title: 'Igneous cleave',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/slice.png'
-    },
-    [ABILITIES.QUICK_SMASH]: {
-        title: 'Quick smash',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/gmaul-bg.png'
-    },
     [ABILITIES.AIMED_STRIKE]: {
         title: 'Aimed strike',
         calc: hit_damage_calculation,

@@ -222,6 +222,16 @@ function calc_boosted_ad(settings, dmgObject) {
             boosted_AD = Math.floor(boosted_AD * 1.175);
         }
 
+        // keris
+        if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
+            if ([SETTINGS.MELEE_MH_VALUES.KERIS, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS].includes(settings[SETTINGS.MH])) {
+                boosted_AD = Math.floor(boosted_AD * 1.333);
+            }
+            else if ([SETTINGS.MELEE_MH_VALUES.KERIS_PROC, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
+                boosted_AD = Math.floor(boosted_AD*2);
+            }
+        }
+
         // chaos roar
         if (settings['chaos roar'] === true) {
             boosted_AD = 2 * boosted_AD;
@@ -297,9 +307,19 @@ function ability_specific_effects(settings, dmgObject) {
             }
         }
 
+        // combust lunging
+        if (settings['ability'] === ABILITIES.COMBUST_HIT) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
+        }
+
         // combust walk
         if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
+            if (settings[SETTINGS.LUNGING]>0) {
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);    
+            }
+            else {
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
+            }
         }
 
         // wrack bound
@@ -344,6 +364,11 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
         }
 
+        // dismember lunging
+        if (settings['ability'] === ABILITIES.DISMEMBER_HIT) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + 0.06 * settings[SETTINGS.LUNGING]));
+        }
+
         // slaughter walk
         if (settings['ability'] === ABILITIES.SLAUGHTER_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 3);
@@ -366,9 +391,19 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
         }
 
+        // frag lunging
+        if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
+        }
+
         // frag walk
         if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
+            if (settings[SETTINGS.LUNGING]>0) {
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);    
+            }
+            else {
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
+            }
         }
     }
 
@@ -490,6 +525,14 @@ function set_min_var(settings, dmgObject) {
 function calc_style_specific(settings, dmgObject) {
     if (abils[settings['ability']]['on-hit effects'] === true) {
         if (abils[settings['ability']]['main style'] === 'ranged') {
+            // add bolg damage
+            if (settings['ability'] === 'bolg proc') {
+                dmgObject['min hit'] += Math.floor(settings['bolg damage']['crit']['damage list'][0] * 0.33);
+                dmgObject['var hit'] += Math.floor(settings['bolg damage']['crit']['damage list'][settings['bolg damage']['crit']['damage list'].length-1] * 0.37 -
+                    settings['bolg damage']['crit']['damage list'][0] * 0.33
+                );
+            }
+
             // og bane ammo
             if (settings['ammunition'] === 'bane bolts' || settings['ammunition'] === 'bane arrows') {
                 if (
@@ -1042,7 +1085,7 @@ function calc_on_npc(settings, dmgObject) {
 
         // nopenopenope (pof spider buff)
         dmgObject['damage list'][i] = Math.floor(
-            dmgObject['damage list'][i] * (1 + settings[SETTINGS.NOPE])
+            dmgObject['damage list'][i] * (1 + 0.01*settings[SETTINGS.NOPE])
         );
 
         // ghost hunter outfit
@@ -1250,40 +1293,9 @@ function calc_damage_object(settings, newBolg = false) {
 
 function calc_bolg(settings) {
     settings['ability'] = 'bolg proc';
-
     // calc base bolg damage
     let bolg_base = calc_damage_object(settings);
-
-    settings['ability'] = 'bolg proc percentages';
-    let bolg_damage_based = create_object(settings);
-
-    // calc the damage based proc
-    for (let key in bolg_damage_based) {
-        bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
-        bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = ability_specific_effects(settings, bolg_damage_based[key]);
-        bolg_damage_based[key]['min hit'] = abils[settings['ability']]['min hit'] * settings['bolg damage'][key]['damage list'][0];
-        bolg_damage_based[key]['var hit'] = (abils[settings['ability']]['min hit'] + abils[settings['ability']]['var hit']) * 
-            settings['bolg damage'][key]['damage list'][settings['bolg damage'][key]['damage list'].length-1] -
-            bolg_damage_based[key]['min hit'];
-        bolg_damage_based[key] = calc_style_specific(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
-        bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
-        bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key);
-        bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
-        if (
-            settings['split soul'] === true &&
-            ['magic', 'melee', 'ranged', 'necrotic'].includes(
-                abils[settings['ability']]['damage type']
-            )
-        ) {
-            bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
-        }
-    }
-
-    const bolg_perc_damage = get_user_value(settings, bolg_damage_based);
-
-    return bolg_perc_damage + bolg_base;
+    return bolg_base;
 }
 
 function calc_bolg_new(settings) {
@@ -1337,6 +1349,7 @@ function calc_bloat(settings) {
             );
         }
         bloat_dot[key] = calc_on_npc(settings, bloat_dot[key]);
+        bloat_dot[key] = add_split_soul(settings, bloat_dot[key]);
     }
     const dmg = get_user_value(settings, bloat_dot);
     return 10 * dmg;
@@ -1667,10 +1680,11 @@ function apply_additional(settings, total_damage, newbolg = false) {
         total_damage += calc_corruption(settings);
         delete settings['corruption damage'];
     }
-
+    
     // handle instability (fsoa)
     if ('fsoa damage' in settings) {
         total_damage += calc_fsoa(settings);
+        delete settings['fsoa damage'];
     }
 
     // handle igneous cleave bleed
