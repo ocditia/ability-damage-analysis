@@ -13,7 +13,7 @@
     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH;
     settings[SETTINGS.ICY_PRECISION]['value'] = 0;
     settings[SETTINGS.BALANCE_BY_FORCE]['value'] = false;
-        
+
 
     function makeNaked() {
         settings[SETTINGS.RANGED_HELMET]['value'] = 'none';
@@ -63,44 +63,9 @@
         
         
     }
-
-    function rakshaPreset() {
-        settings[SETTINGS.NECKLACE]['value'] = 'essence of finality amulet';
-        settings[SETTINGS.POCKET]['value'] = 'gwd3 scripture';
-        settings[SETTINGS.AURA]['value'] = 'inspiration';
-
-        settings[SETTINGS.LVL20ARMOUR]['value'] = false;
-        settings[SETTINGS.BITING]['value'] = 3;
-        settings[SETTINGS.REAPER_CREW]['value'] = false;
-        settings[SETTINGS.RANGED_PRAYER]['value'] = 'anguish';
-        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
-
-        settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]['value'] = 0;
-        settings[SETTINGS.KALG_SPEC]['value'] = true;
-        settings[SETTINGS.INNATE_MASTERY]['value'] = false;
-        settings[SETTINGS.ADRENALINE]['value'] = 130;
-    }
-
-    function kerapac() {
-        settings[SETTINGS.NECKLACE]['value'] = 'essence of finality amulet';
-        settings[SETTINGS.POCKET]['value'] = 'gwd3 scripture';
-        settings[SETTINGS.AURA]['value'] = 'reckless';
-
-        settings[SETTINGS.LVL20ARMOUR]['value'] = false;
-        settings[SETTINGS.BITING]['value'] = 3;
-        settings[SETTINGS.REAPER_CREW]['value'] = false;
-        settings[SETTINGS.RANGED_PRAYER]['value'] = 'anguish';
-        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
-
-        settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]['value'] = 0;
-        settings[SETTINGS.KALG_SPEC]['value'] = true;
-        settings[SETTINGS.INNATE_MASTERY]['value'] = false;
-        settings[SETTINGS.ADRENALINE]['value'] = 110;
-        settings[SETTINGS.SLAYER_HELM]['value'] = SETTINGS.SLAYER_HELM_VALUES.MIGHTY;
-        settings[SETTINGS.TARGET_SIZE]['value'] = 3;
-    }
-    
-    kerapac();
+    //makeNaked();
+    // testPreset();
+    //settings[SETTINGS.ICY_CHILL_STACKS].value = 10;
     updateDamages();
 
     
@@ -290,10 +255,7 @@
                     <Checkbox
                         bind:setting={settings[SETTINGS.SMOKE_CLOUD]}
                         onchange={() => updateDamages()}
-                    />
-                    <Checkbox
-                        bind:setting={settings[SETTINGS.KALG_SPEC]}
-                        onchange={() => updateDamages()}
+                        img="/effect_icons/smoke_cloud.png"
                     />
                 </div>
                 <div class="md:col-span-1">
@@ -335,17 +297,17 @@
                         img="/effect_icons/25px-Undead_Slayer.webp"
                     />
                     <Checkbox
-                        bind:setting={settings[SETTINGS.UNDEAD_SLAYER_ABILITY]}
+                        bind:setting={settings[SETTINGS.SLAYER_SIGIL_UNDEAD]}
                         onchange={() => updateDamages()}
                         img="/effect_icons/Undead_slayer_sigil_detail.png"
                     />
                     <Checkbox
-                        bind:setting={settings[SETTINGS.DRAGON_SLAYER_ABILITY]}
+                        bind:setting={settings[SETTINGS.SLAYER_SIGIL_DRAGON]}
                         onchange={() => updateDamages()}
                         img="/effect_icons/Undead_slayer_sigil_detail.png"
                     />
                     <Checkbox
-                        bind:setting={settings[SETTINGS.DEMON_SLAYER_ABILITY]}
+                        bind:setting={settings[SETTINGS.SLAYER_SIGIL_DEMON]}
                         onchange={() => updateDamages()}
                         img="/effect_icons/Undead_slayer_sigil_detail.png"
                     />
