@@ -21,9 +21,7 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 # IDE and Editor files
-.idea/
 .fleet/
-.run/
 .parcel-cache/
 *.iml
 *.iws
