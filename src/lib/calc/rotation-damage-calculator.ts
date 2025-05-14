@@ -79,8 +79,9 @@ function processCurrentTick(state: DamageCalculationState, gameState: GameState,
             processRangedAbility(state, settingsCopy, stalledAbility, hit_tick);
         }
     }
-
     // Then process any regular ability on this tick
+
+    // handle either afking or chanelling if no ability on this tick
     const abilityKey = gameState.abilityBar[state.tick];
     if (abilityKey == null) {
         handleNullAbilityTick(state, gameState, settingsCopy);

@@ -317,9 +317,6 @@ function on_hit(settings, dmgObject) {
     // this function runs for all hits (note: not hitsplats)
 
     // set min and var percentages
-
-    
-    
     for (let key in dmgObject) {
         dmgObject[key]['min hit'] = abils[settings['ability']]['min hit'];
         dmgObject[key]['var hit'] = abils[settings['ability']]['var hit'];
@@ -348,7 +345,6 @@ function on_hit(settings, dmgObject) {
                 dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + Math.min(0.05 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.5);
                 dmgObject[key]['var hit'] = dmgObject[key]['var hit'] + Math.min(0.02 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
             }
-
             // icy tempest
             if (
                 settings['ability'] === ABILITIES.ICY_TEMPEST_1 ||
@@ -357,7 +353,6 @@ function on_hit(settings, dmgObject) {
                 dmgObject[key]['min hit'] += 0.18 * settings[SETTINGS.PRIMORDIAL_ICE];
                 dmgObject[key]['var hit'] += 0.04 * settings[SETTINGS.PRIMORDIAL_ICE];
             }
-
             // flank
             if (settings['ability'] === ABILITIES.BACKHAND) {
                 dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
