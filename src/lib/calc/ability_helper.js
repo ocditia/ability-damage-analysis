@@ -15,15 +15,15 @@ function next_tick(settings) {
     }
 
     // enduring ruin / gloves of passage logic
-    if (settings['enduring ruin - hit'] === true) {
+    if (settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED || settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR) {
         let single_tick_gear = [SETTINGS.NECKLACE_VALUES.AOS, SETTINGS.NECKLACE_VALUES.AOSOR, SETTINGS.NECKLACE_VALUES.EOF, SETTINGS.NECKLACE_VALUES.EOFOR];
         if (single_tick_gear.includes(settings['necklace'])) {
-            settings['enduring ruin - hit'] = false;
+            settings[SETTINGS.ENDURING_RUIN_HIT] = false;
         } else {
-            settings['enduring ruin - hit'] = 'fleeting';
+            settings[SETTINGS.ENDURING_RUIN_HIT] = 'fleeting';
         }
-    } else if (settings['enduring ruin - hit'] === 'fleeting') {
-        settings['enduring ruin - hit'] = false;
+    } else if (settings[SETTINGS.ENDURING_RUIN_HIT] === 'fleeting') {
+        settings[SETTINGS.ENDURING_RUIN_HIT] = false;
     }
 
     settings = next_cast(settings);

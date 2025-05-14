@@ -163,6 +163,60 @@ const weapons = {
         type: 'shield',
         classification: 'none'
     },
+    'keris': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 50,
+        type: 'none',
+        classification: 'none'
+    },
+    'keris proc': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 50,
+        type: 'none',
+        classification: 'none'
+    },
+    'primed keris': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 70,
+        type: 'none',
+        classification: 'none'
+    },
+    'primed keris proc': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 70,
+        type: 'none',
+        classification: 'none'
+    },
+    'consecrated keris': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 80,
+        type: 'none',
+        classification: 'none'
+    },
+    'consecrated keris proc': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 80,
+        type: 'none',
+        classification: 'none'
+    },
+    'ful arrows': {
+        tier: 99
+    },
+    'wen arrows':{
+        tier: 99
+    },
+    'deathspore arrows':{
+        tier: 99
+    },
+    'jas arrows':{
+        tier: 99
+    },
 };
 
 const gear = {
@@ -900,7 +954,6 @@ const armour = {
         slot: 'ring',
         style: 'hybrid'
     },
-    // done till here
     'channelers ring': {
         'necromancy strength': 0,
         'magic strength': 30.4,
@@ -994,6 +1047,38 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        slot: 'ring',
+        style: 'hybrid'
+    },
+    'luck of the dwarves': {
+        'necromancy strength': 17.3,
+        'magic strength': 17.3,
+        'melee strength': 17.3,
+        'ranged strength': 17.3,
+        slot: 'ring',
+        style: 'hybrid'
+    },
+    'luck of the dwarves (i)': {
+        'necromancy strength': 19.8,
+        'magic strength': 19.8,
+        'melee strength': 19.8,
+        'ranged strength': 19.8,
+        slot: 'ring',
+        style: 'hybrid'
+    },
+    'hazelmeres signet ring': {
+        'necromancy strength': 21.0,
+        'magic strength': 21.0,
+        'melee strength': 21.0,
+        'ranged strength': 21.0,
+        slot: 'ring',
+        style: 'hybrid'
+    },
+    'hazelmeres signet ring (i)': {
+        'necromancy strength': 23.7,
+        'magic strength': 23.7,
+        'melee strength': 23.7,
+        'ranged strength': 23.7,
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1392,7 +1477,11 @@ const ABILITIES = {
     OMNIPOWER: 'omnipower',
     TSUNAMI: 'tsunami',
     SUNSHINE_DOT: 'sunshine dot',
-    TEMPEST_OF_ARMADYL_HIT: 'tempest of armadyl hit',
+    TEMPEST_OF_ARMADYL_HIT_1: 'tempest of armadyl hit 1',
+    TEMPEST_OF_ARMADYL_HIT_2: 'tempest of armadyl hit 2',
+    TEMPEST_OF_ARMADYL_HIT_3: 'tempest of armadyl hit 3',
+    TEMPEST_OF_ARMADYL_HIT_4: 'tempest of armadyl hit 4',
+    TEMPEST_OF_ARMADYL_HIT_5: 'tempest of armadyl hit 5',
     TEMPEST_OF_ARMADYL: 'tempest of armadyl',
     INSTABILITY: 'instability',
     CLAWS_OF_GUTHIX: 'claws of guthix',
@@ -3274,9 +3363,57 @@ const abils = {
         'main style': 'magic',
         'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
-    [ABILITIES.TEMPEST_OF_ARMADYL_HIT]: {
+    [ABILITIES.TEMPEST_OF_ARMADYL_HIT_1]: {
         // ability name
         'min hit': 0.45, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
+    [ABILITIES.TEMPEST_OF_ARMADYL_HIT_2]: {
+        // ability name
+        'min hit': 0.5, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
+    [ABILITIES.TEMPEST_OF_ARMADYL_HIT_3]: {
+        // ability name
+        'min hit': 0.55, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
+    [ABILITIES.TEMPEST_OF_ARMADYL_HIT_4]: {
+        // ability name
+        'min hit': 0.6, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
+    [ABILITIES.TEMPEST_OF_ARMADYL_HIT_5]: {
+        // ability name
+        'min hit': 0.65, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3298,11 +3435,11 @@ const abils = {
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
-            1: [ABILITIES.TEMPEST_OF_ARMADYL_HIT],
-            2: [ABILITIES.TEMPEST_OF_ARMADYL_HIT],
-            3: [ABILITIES.TEMPEST_OF_ARMADYL_HIT],
-            4: [ABILITIES.TEMPEST_OF_ARMADYL_HIT],
-            5: [ABILITIES.TEMPEST_OF_ARMADYL_HIT]
+            1: [ABILITIES.TEMPEST_OF_ARMADYL_HIT_1],
+            2: [ABILITIES.TEMPEST_OF_ARMADYL_HIT_2],
+            3: [ABILITIES.TEMPEST_OF_ARMADYL_HIT_3],
+            4: [ABILITIES.TEMPEST_OF_ARMADYL_HIT_4],
+            5: [ABILITIES.TEMPEST_OF_ARMADYL_HIT_5]
         }
     },
     [ABILITIES.INSTABILITY]: {
@@ -3421,7 +3558,6 @@ const abils = {
                 ABILITIES.SOULFIRE_BURN,
                 ABILITIES.SOULFIRE_BURN,
                 ABILITIES.SOULFIRE_BURN,
-                ABILITIES.SOULFIRE_BURN
             ]
         }
     },
@@ -3549,7 +3685,7 @@ const abils = {
         'var hit': 0.06,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
+        'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'conjure', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
@@ -3561,7 +3697,7 @@ const abils = {
         'var hit': 0.06,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
+        'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'conjure', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
@@ -4316,7 +4452,7 @@ const abils = {
         'var hit': 0.0, // 0.1 TODO change back
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
+        'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
@@ -4860,129 +4996,154 @@ const prayers = {
     'charge': {
         'boost': 0.02,
         'style': 'magic',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'super charge': {
         'boost': 0.04,
         'style': 'magic',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'overcharge': {
         'boost': 0.06,
         'style': 'magic',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'augury': {
         'boost': 0.08,
         'style': 'magic',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'normal'
     },
     'leech magic strength 2': {
         'boost': 0.02,
         'style': 'magic',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech magic strength 4': {
         'boost': 0.04,
         'style': 'magic',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech magic strength 6': {
         'boost': 0.06,
         'style': 'magic',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech magic strength 8': {
         'boost': 0.08,
         'style': 'magic',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'torment': {
         'boost': 0.1,
         'style': 'magic',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'curses'
     },
     'affliction': {
         'boost': 0.12,
         'style': 'magic',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'curses'
     },
 
     'burst of strength': {
         'boost': 0.02,
         'style': 'melee',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'superhuman strength': {
         'boost': 0.04,
         'style': 'melee',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'ultimate strength': {
         'boost': 0.06,
         'style': 'melee',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'chivalry': {
         'boost': 0.07,
         'style': 'melee',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'normal'
     },
     'piety': {
         'boost': 0.08,
         'style': 'melee',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'normal'
     },
     'leech melee strength 2': {
         'boost': 0.02,
         'style': 'melee',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech melee strength 4': {
         'boost': 0.04,
         'style': 'melee',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech melee strength 6': {
         'boost': 0.06,
         'style': 'melee',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech melee strength 8': {
         'boost': 0.08,
         'style': 'melee',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'turmoil': {
         'boost': 0.1,
         'style': 'melee',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'curses'
     },
     'malevolence': {
         'boost': 0.12,
         'style': 'melee',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'curses'
     },
 
     'unstoppable force': {
         'boost': 0.02,
         'style': 'ranged',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'unrelenting force': {
         'boost': 0.04,
         'style': 'ranged',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'overpowering force': {
         'boost': 0.06,
         'style': 'ranged',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'rigour': {
         'boost': 0.08,
         'style': 'ranged',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'normal'
     },
     'leech ranged strength 2': {
         'boost': 0.02,
@@ -4992,99 +5153,118 @@ const prayers = {
     'leech ranged strength 4': {
         'boost': 0.04,
         'style': 'ranged',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech ranged strength 6': {
         'boost': 0.06,
         'style': 'ranged',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech ranged strength 8': {
         'boost': 0.08,
         'style': 'ranged',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'anguish': {
         'boost': 0.1,
         'style': 'ranged',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'curses'
     },
     'desolation': {
         'boost': 0.12,
         'style': 'ranged',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'curses'
     },
 
     'decay': {
         'boost': 0.02,
         'style': 'necromancy',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'hastened decay': {
         'boost': 0.04,
         'style': 'necromancy',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'accelerated decay': {
         'boost': 0.06,
         'style': 'necromancy',
-        'category': 'single-stat boosting'
+        'category': 'single-stat boosting',
+        'book': 'normal'
     },
     'sanctity': {
         'boost': 0.08,
         'style': 'necromancy',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'normal'
     },
     'leech necromancy strength 2': {
         'boost': 0.02,
         'style': 'necromancy',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech necromancy strength 4': {
         'boost': 0.04,
         'style': 'necromancy',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech necromancy strength 6': {
         'boost': 0.06,
         'style': 'necromancy',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech necromancy strength 8': {
         'boost': 0.08,
         'style': 'necromancy',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'sorrow': {
         'boost': 0.1,
         'style': 'necromancy',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'curses'
     },
     'ruination': {
         'boost': 0.12,
         'style': 'necromancy',
-        'category': 'multi-stat boosting'
+        'category': 'multi-stat boosting',
+        'book': 'curses'
     },
 
     'none necro': {
         'boost': 0,
         'style': 'necromancy',
-        'category': 'none'
+        'category': 'none',
+        'book': 'none'
     },
     'none magic': {
         'boost': 0,
         'style': 'magic',
-        'category': 'none'
+        'category': 'none',
+        'book': 'none'
     },
     'none ranged': {
         'boost': 0,
         'style': 'ranged',
-        'category': 'none'
+        'category': 'none',
+        'book': 'none'
     },
     'none melee': {
         'boost': 0,
         'style': 'melee',
-        'category': 'none'
+        'category': 'none',
+        'book': 'none'
     },
 };
 

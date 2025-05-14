@@ -1,4 +1,4 @@
-import { ABILITIES, abils, weapons } from './const';
+import { ABILITIES, abils, weapons, prayers } from './const';
 import { SETTINGS } from './settings';
 
 function create_object(settings) {
@@ -41,7 +41,8 @@ function calc_crit_chance(settings) {
     let crit_chance = 0.1;
 
     // eclipsed soul
-    if (settings['eclipsed soul'] === true) {
+    if (settings[SETTINGS.ECLIPSED_SOUL] === true && 
+        (prayers[settings[SETTINGS.PRAYER]]['book'] === "normal" || prayers[settings[SETTINGS.PRAYER]]['style'] === "none")) {
         crit_chance += 0.04;
     }
 
@@ -151,9 +152,14 @@ function calc_crit_chance(settings) {
         }
 
         // no fear (pof meteor strike)
-        // if (settings['ability'] === 'meteor strike') {
-        //     crit_chance += 0.2 * settings['no fear'];
-        // }
+        if (settings['ability'] === 'meteor strike') {
+            if (settings[SETTINGS.POF_DINOS] === SETTINGS.POF_DINOS_VALUES.CORBICULA_1) {
+                crit_chance += 0.2;
+            }
+            else if (settings[SETTINGS.POF_DINOS] === SETTINGS.POF_DINOS_VALUES.CORBICULA_2) {
+                crit_chance += 0.4;
+            }   
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
