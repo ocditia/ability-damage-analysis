@@ -614,7 +614,7 @@
 </style>
 
 <Navbar />
-<Header img="/range_background.png" text="Rotation Calculator BETA" icon="/style_icons/rota_icon.svg" />
+<Header img="/range_background.png" text="Rotation Calculator Beta" icon="/style_icons/rota_icon.svg" />
 
 <div class="space-y-14 mt-10 z-20">
 	<div class="responsive-container {uiState.activeTool.toLowerCase()}-cursor {uiState.stallingAbility ? 'stalling' : ''}" 
@@ -781,98 +781,46 @@
                     → Hide
                 </button>
                 <div class="settings-content">
-                    <RotationSettings bind:settings={gameState.settings} updateDamages={calculateTotalDamageNew} />
+                    <RotationSettings bind:settings={gameState.settings} updateDamages={calculateTotalDamageNew} stacks={gameState.stacks} />
                 </div>
             </div>
             <div class="col-span-12 mt-8">
                 <div class="grid grid-cols-2 gap-6">
-                    <div class="card card-rotation">
-                        <h2 class="card-title pb-5">Additional Settings</h2>
-                        {#each Object.keys(gameState.stacks) as key}
-                <div>
-                        <Checkbox
-                                    bind:setting={gameState.settings[gameState.stacks[key].displaySetting]}
-                    		onchange={() => refreshUI()}
-                        />
-                </div>
-                <br>
-            {/each}
-            <div>
-                <Checkbox
-                                bind:setting={gameState.settings[SETTINGS.VIGOUR]}
-                    onchange={() => refreshUI()}
-                />
-                <br>
-                <Checkbox
-                                bind:setting={gameState.settings[SETTINGS.FURY_OF_THE_SMALL]}
-                    onchange={() => refreshUI()}
-                />
-                <br>
-                <Checkbox
-                                bind:setting={gameState.settings[SETTINGS.CONSERVATION_OF_ENERGY]}
-                    onchange={() => refreshUI()}
-                />
-                <br>
-                <Checkbox
-                                bind:setting={gameState.settings[SETTINGS.HEIGHTENED_SENSES]}
-                    onchange={() => refreshUI()}
-                />
-                <br>
-                <Number
-                                bind:setting={gameState.settings[SETTINGS.ICY_CHILL_STACKS]}
-                    onchange={() => refreshUI()}
-                    step="1"
-                    max="10"
-                    min="0"
-                />
-				<br>
-				<Number
-                                bind:setting={gameState.settings[SETTINGS.ADRENALINE]}
-                    onchange={() => refreshUI()}
-                    step="1"
-                    max="200"
-                    min="0"
-                />
-				<Checkbox
-                                bind:setting={gameState.settings[SETTINGS.EXPECTED_ADRENALINE]}
-                    onchange={() => refreshUI()}
-                />
-            </div>
-                    </div>
-                    <div class="card card-rotation">
-                        <h2 class="card-title pb-5">User Guide</h2>
-                        <div class="pb-5">
-                            <p>
-                                This is a beta of the rotation builder. Currently, only ranged is supported.
-								To add abilities, left clicking will add a new ability to the end of your 
-								bar. You can also drag abilities for more control. Right clicking an ability
-								on the bar will remove it. 
-								There are 3 tools - regular, stall, and null.
-								Regular is the default mode (keyboard R) - left click to add abilities, right click to remove, drag to move.
-								Stall mode (keyboard S) will allows you to stall the ability you left click on, and release
-								it on any tick on the bar. Stalled abilities can be removed by clicking them in stall mode.
-								Null mode (keyboard N) will null the ability you left click on, which is equivalent to casting that ability
-								on a dummy.
-								
-                            </p>
-                        </div>
-                        <div class="pb-5">
-                            <p>
-                                You can configure the additional settings to decide how much information
-								you are shown, as well as how much adrenaline and how many stacks you start
-								with. As adren pots/renewals are not yet implemented, please add additional 
-								starting adrenaline to replicate them for now. Additionally, the damage over time 
-								from Death's Swiftness has been turned off currently while a better 
-								implementation is being written.
-                            </p>
-                        </div>
-						<div class="pb-5">
-                            <p>
-                                Please report any bugs or errors you find in the RSA discord.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+					<div class="card card-rotation col-span-2">
+					<h2 class="card-title pb-5">User Guide</h2>
+					<div class="pb-5">
+						<p>
+							This is a beta of the rotation builder. Currently, only ranged is supported.
+							<br>
+							To add abilities, left clicking will add a new ability to the end of your 
+							bar. You can also drag abilities for more control. Right clicking an ability
+							on the bar will remove it. 
+							<br><br>
+							There are 3 tools - regular, stall, and null.
+							<br>
+							<strong>Regular</strong> is the default mode (keyboard <strong>R</strong>) - left click to add abilities, right click to remove, drag to move.
+							<br>
+							<strong>Stall</strong> mode (keyboard <strong>S</strong>) will allows you to stall the ability you left click on, and release
+							it on any tick on the bar. Stalled abilities can be removed by clicking them in stall mode.
+							<br>
+							<strong>Null</strong> mode (keyboard <strong>N</strong>) will null the ability you left click on, which is equivalent to casting that ability
+							on a dummy.
+							
+						</p>
+					</div>
+					<div class="pb-5">
+						<p>
+							You can configure how much information you are shown, as well as how much 
+							adrenaline and how many stacks you start with in settings.
+						</p>
+					</div>
+					<div class="pb-5">
+						<p>
+							Please report any bugs or errors you find in the RSA discord.
+						</p>
+					</div>
+					</div>
+				</div>
             </div>
 		</section>
 	</div>

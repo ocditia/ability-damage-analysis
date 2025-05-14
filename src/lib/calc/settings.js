@@ -986,15 +986,15 @@ const settingsConfig = {
         default: false
     },
     [SETTINGS.SLAYER_PERK_UNDEAD]: {
-        label: 'Undead slayer Perk',
+        label: 'Undead Slayer Perk',
         default: false
     },
     [SETTINGS.SLAYER_PERK_DRAGON]: {
-        label: 'Dragon slayer Perk',
+        label: 'Dragon Slayer Perk',
         default: false
     },
     [SETTINGS.SLAYER_PERK_DEMON]: {
-        label: 'Demon slayer Perk',
+        label: 'Demon Slayer Perk',
         default: false
     },
     [SETTINGS.SLAYER_PERK]: {
@@ -1692,7 +1692,7 @@ const settingsConfig = {
         default: 15
     },
     [SETTINGS.ICY_CHILL_STACKS]: {
-        label: 'Icy Chill stacks',
+        label: 'Icy Chill',
         default: 0
     },
     [SETTINGS.PUNCTURE_STACKS]: {
@@ -1915,7 +1915,7 @@ const settingsConfig = {
         default: false
     },
     [SETTINGS.DETONATE]: {
-        label: 'Deto charge percent',
+        label: 'Deto Charge percent',
         default: 100
     },
     [SETTINGS.DIVINE_RAGE]: {
@@ -1927,7 +1927,7 @@ const settingsConfig = {
         default: true
     },
     [SETTINGS.SHOW_BOLG_STACKS]: {
-        label: 'Show bolg stacks',
+        label: 'Show Bolg Stacks',
         default: true
     },
     [SETTINGS.SHOW_ICY_CHILL_STACKS]: {
@@ -1939,11 +1939,11 @@ const settingsConfig = {
         default: true
     },
     [SETTINGS.ADRENALINE]: {
-        label: 'Starting Adrenaline',
+        label: 'Adrenaline',
         default: 100
     },
     [SETTINGS.EXPECTED_ADRENALINE]: {
-        label: 'Expected adrenaline rng?',
+        label: 'Expected Adrenaline RNG',
         default: true
     },
     [SETTINGS.VIGOUR]: {
