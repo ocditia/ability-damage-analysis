@@ -564,7 +564,7 @@ function calc_style_specific(settings, dmgObject) {
     if (abils[settings['ability']]['on-hit effects'] === true) {
         if (abils[settings['ability']]['main style'] === 'ranged') {
             // add bolg damage (rot builder)
-            if (settings['ability'] === 'bolg proc' && typeof settings['bolg damage'] === 'object') {
+            if (settings['ability'] === 'bolg proc' && Array.isArray(settings['bolg damage'])) {
                 dmgObject['min hit'] += Math.floor(settings['bolg damage'][0]['crit']['damage list'][0] * 0.33);
                 dmgObject['var hit'] += Math.floor(settings['bolg damage'][0]['crit']['damage list'][settings['bolg damage'][0]['crit']['damage list'].length-1] * 0.37 -
                     settings['bolg damage'][0]['crit']['damage list'][0] * 0.33
