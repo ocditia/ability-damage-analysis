@@ -158,7 +158,7 @@
                 <form class="w-full">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
                         {#if tab === 'general'}
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">General</h5>
                                 <Select
                                     bind:setting={settings[SETTINGS.MODE]}
@@ -209,7 +209,7 @@
                                     onchange={() => updateDamages()}
                                 />
                             </div>
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">
                                     Applies to dots
                                 </h5>
@@ -259,7 +259,7 @@
                                     onchange={() => updateDamages()}
                                 />
                             </div>
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">
                                     Applies to general abilities only
                                 </h5>
@@ -373,7 +373,7 @@
                                 />
                             </div>
                         {:else if tab === 'equipment'}
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Armour</h5>
                                 <Select
                                     bind:setting={settings[SETTINGS.NECRO_HELMET]}
@@ -431,7 +431,7 @@
                                     img="/effect_icons/familiar.png"
                                 />
                             </div>
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Perks</h5>
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.LVL20ARMOUR]}
@@ -491,7 +491,7 @@
                                     min="0"
                                 />
                             </div>
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>
                                 <Select
                                     bind:setting={settings[SETTINGS.WEAPON]}
@@ -529,7 +529,7 @@
                                 />
                             </div>
                         {:else if tab === 'bosses'}
-                        <div class="md:col-span-1">
+                        <div class="md:col-span-1 space-y-2">
                             <Number
                                 bind:setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
                                 onchange={() => updateDamages()}
