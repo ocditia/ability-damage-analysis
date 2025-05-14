@@ -563,8 +563,16 @@ function set_min_var(settings, dmgObject) {
 function calc_style_specific(settings, dmgObject) {
     if (abils[settings['ability']]['on-hit effects'] === true) {
         if (abils[settings['ability']]['main style'] === 'ranged') {
-            // add bolg damage
-            if (settings['ability'] === 'bolg proc') {
+            // add bolg damage (rot builder)
+            if (settings['ability'] === 'bolg proc' && typeof settings['bolg damage'] === 'object') {
+                dmgObject['min hit'] += Math.floor(settings['bolg damage'][0]['crit']['damage list'][0] * 0.33);
+                dmgObject['var hit'] += Math.floor(settings['bolg damage'][0]['crit']['damage list'][settings['bolg damage'][0]['crit']['damage list'].length-1] * 0.37 -
+                    settings['bolg damage'][0]['crit']['damage list'][0] * 0.33
+                );
+            }
+
+            // add bolg damage (damage sheets)
+            else if (settings['ability'] === 'bolg proc') {
                 dmgObject['min hit'] += Math.floor(settings['bolg damage']['crit']['damage list'][0] * 0.33);
                 dmgObject['var hit'] += Math.floor(settings['bolg damage']['crit']['damage list'][settings['bolg damage']['crit']['damage list'].length-1] * 0.37 -
                     settings['bolg damage']['crit']['damage list'][0] * 0.33
@@ -1344,7 +1352,7 @@ function calc_bolg(settings) {
 }
 
 function calc_bolg_new(settings) {
-    settings['ability'] = 'bolg proc';
+    /*settings['ability'] = 'bolg proc';
 
     // calc base bolg damage
     let bolg_base = calc_damage_object(settings, true);
@@ -1377,12 +1385,16 @@ function calc_bolg_new(settings) {
         
         bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
         
-    }
+    }*/
+
+    settings['ability'] = 'bolg proc';
+    // calc base bolg damage
+    let bolg_base = calc_damage_object(settings);
 
     settings['bolg damage'].shift(); // delete this bolg proc
 
-    const bolg_perc_damage = get_user_value(settings, bolg_damage_based);;
-    return bolg_perc_damage + bolg_base;
+    //const bolg_perc_damage = get_user_value(settings, bolg_damage_based);;
+    return bolg_base;
 }
 
 function calc_bloat(settings) {
