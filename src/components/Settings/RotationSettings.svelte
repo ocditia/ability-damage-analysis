@@ -8,15 +8,14 @@
     export let tab = 'general'; // Options as props
     export let settings;
     export let stacks;
-    export let updateDamages; 
+    export let updateDamages;
     export let refreshUI;
 
 
-    settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH; 
-    settings[SETTINGS.AMMO]['value'] = 'wen arrows';
+    settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH;
     settings[SETTINGS.ICY_PRECISION]['value'] = 0;
     settings[SETTINGS.BALANCE_BY_FORCE]['value'] = false;
-
+        
 
     function makeNaked() {
         settings[SETTINGS.RANGED_HELMET]['value'] = 'none';
