@@ -109,6 +109,7 @@ const SETTINGS = {
     },
     TARGET_HP_PERCENT: 'target hp percent',
     GENOCIDAL: 'genocidal',
+    IMPATIENT: 'impatient',
     FAMILIAR: 'familiar',
     FAMILIAR_VALUES: {
         NONE: 'none',
@@ -119,6 +120,7 @@ const SETTINGS = {
     AURA_VALUES: {
         NONE: 'none',
         MAHJARRAT: 'mahjarrat',
+        INSPIRATION: 'inspiration',
         EQUILIBRIUM: 'equilibrium',
         RECKLESS: 'reckless',
         BERSERKER: 'berserker',
@@ -173,10 +175,10 @@ const SETTINGS = {
     RANGED_HELMET: 'ranged helmet',
     RANGED_HELMET_VALUES: {
         NONE: 'none',
-        SIRENIC: 'sirenic mask',
-        ELITE_SIRENIC: 'elite sirenic mask',
-        DRACOLICH: 'dracolich coif',
         ELITE_DRACOLICH: 'elite dracolich coif',
+        DRACOLICH: 'dracolich coif',
+        ELITE_SIRENIC: 'elite sirenic mask',
+        SIRENIC: 'sirenic mask',
         GHOST_HUNTER: 'ghost hunter goggles',
     },
     MELEE_HELMET: 'melee helmet',
@@ -199,18 +201,18 @@ const SETTINGS = {
     MAGIC_BODY: 'magic body',
     MAGIC_BODY_VALUES: {
         NONE: 'none',
-        TECTONIC: 'tectonic robe top',
-        ELITE_TECTONIC: 'elite tectonic robe top',
         SLISKE: 'anima core body of sliske',
+        ELITE_TECTONIC: 'elite tectonic robe top',
+        TECTONIC: 'tectonic robe top',
         GHOST_HUNTER: 'ghost hunter body',
     },
     RANGED_BODY: 'ranged body',
     RANGED_BODY_VALUES: {
         NONE: 'none',
-        SIRENIC: 'sirenic hauberk',
-        ELITE_SIRENIC: 'elite sirenic hauberk',
-        DRACOLICH: 'dracolich hauberk',
         ELITE_DRACOLICH: 'elite dracolich hauberk',
+        DRACOLICH: 'dracolich hauberk',
+        ELITE_SIRENIC: 'elite sirenic hauberk',
+        SIRENIC: 'sirenic hauberk',
         GHOST_HUNTER: 'ghost hunter body',
     },
     MELEE_BODY: 'melee body',
@@ -240,10 +242,10 @@ const SETTINGS = {
     RANGED_LEGS: 'ranged legs',
     RANGED_LEGS_VALUES: {
         NONE: 'none',
-        SIRENIC: 'sirenic chaps',
-        ELITE_SIRENIC: 'elite sirenic chaps',
-        DRACOLICH: 'dracolich chaps',
         ELITE_DRACOLICH: 'elite dracolich chaps',
+        DRACOLICH: 'dracolich chaps',
+        ELITE_SIRENIC: 'elite sirenic chaps',
+        SIRENIC: 'sirenic chaps',
         GHOST_HUNTER: 'ghost hunter legs',
     },
     MELEE_LEGS: 'melee legs',
@@ -273,8 +275,8 @@ const SETTINGS = {
     RANGED_GLOVES: 'ranged gloves',
     RANGED_GLOVES_VALUES: {
         NONE: 'none',
-        DRACOLICH: 'dracolich vambraces',
         ELITE_DRACOLICH: 'elite dracolich vambraces',
+        DRACOLICH: 'dracolich vambraces',
         DTB: 'deathtouch bracelet',
         CINDERS: 'cinderbane gloves',
         NIGHTMARES: 'nightmare gauntlets',
@@ -309,10 +311,10 @@ const SETTINGS = {
     RANGED_BOOTS: 'ranged boots',
     RANGED_BOOTS_VALUES: {
         NONE: 'none',
-        DRACOLICH: 'dracolich boots',
         ELITE_DRACOLICH: 'elite dracolich boots',
-        FLEETING: 'fleeting boots',
+        DRACOLICH: 'dracolich boots',
         ENHANCED_FLEETING: 'enhanced fleeting boots',
+        FLEETING: 'fleeting boots',
         SH: 'silverhawk boots'
     },
     MELEE_BOOTS: 'melee boots',
@@ -374,6 +376,87 @@ const SETTINGS = {
         LOTD_I: 'luck of the dwarves (i)',
         HSR: 'hazelmeres signet ring',
         HSR_I: 'hazelmeres signet ring (i)',
+    },
+    /*
+    MAGIC_RING: 'magic ring',
+    MAGIC_RING_VALUES: {
+        NONE: 'none',
+        REAVERS: 'reavers ring',
+        RODI: 'ring of death (i)',
+        ROD: 'ring of death',
+        ASRI: 'asylum surgeons ring (i)',
+        ASR: 'asylum surgeons ring',
+        CHANNELER: 'channelers ring',
+        CHANNELER_E: 'channelers ring+'
+    },
+    RANGED_RING: 'range ring',
+    RANGED_RING_VALUES: {
+        NONE: 'none',
+        REAVERS: 'reavers ring',
+        RODI: 'ring of death (i)',
+        ROD: 'ring of death',
+        ASRI: 'asylum surgeons ring (i)',
+        ASR: 'asylum surgeons ring',
+        STALKER: 'stalkers ring',
+        STALKER_E: 'stalkers ring+'
+    },
+    MELEE_RING: 'melee ring',
+    MELEE_RING_VALUES: {
+        NONE: 'none',
+        REAVERS: 'reavers ring',
+        RODI: 'ring of death (i)',
+        ROD: 'ring of death',
+        ASRI: 'asylum surgeons ring (i)',
+        ASR: 'asylum surgeons ring',
+        CHAMPION: 'champions ring',
+        CHAMPION_E: 'champions ring+'
+    },
+    NECRO_RING: 'necro ring',
+    NECRO_RING_VALUES: {
+        NONE: 'none',
+        REAVERS: 'reavers ring',
+        ZORGOTH: 'zorgoths soul ring',
+        RODI: 'ring of death (i)',
+        ROD: 'ring of death',
+        ASRI: 'asylum surgeons ring (i)',
+        ASR: 'asylum surgeons ring'
+    },
+    MAGIC_POCKET: 'mage pocket',
+    MAGIC_POCKET_VALUES: {
+        NONE: 'none',
+        GRIM: 'erethdors grimoire',
+        FUL: 'scripture of ful',
+        JAS: 'scripture of jas',
+        AMASCUT: 'scripture of amascut',
+        GWD3: 'gwd3 scripture',
+        IGOD: 'illuminated god book',
+        UNDERWORLD_GRIM: 'underworld grimoire 4',
+        ELEMENTS: 'scrimshaw of elements',
+        SUPERIOR_ELEMENTS: 'superior scrimshaw of elements'
+    },
+    RANGED_POCKET: 'range pocket',
+    RANGED_POCKET_VALUES: {
+        NONE: 'none',
+        GRIM: 'erethdors grimoire',
+        FUL: 'scripture of ful',
+        JAS: 'scripture of jas',
+        AMASCUT: 'scripture of amascut',
+        GWD3: 'gwd3 scripture',
+        IGOD: 'illuminated god book',
+        UNDERWORLD_GRIM: 'underworld grimoire 4',
+        CRUELTY: 'scrimshaw of cruelty',
+        SUPERIOR_CRUELTY: 'superior scrimshaw of cruelty'
+    },
+    MELEE_POCKET: 'melee pocket',
+    MELEE_POCKET_VALUES: {
+        NONE: 'none',
+        GRIM: 'erethdors grimoire',
+        FUL: 'scripture of ful',
+        JAS: 'scripture of jas',
+        AMASCUT: 'scripture of amascut',
+        GWD3: 'gwd3 scripture',
+        IGOD: 'illuminated god book',
+        UNDERWORLD_GRIM: 'underworld grimoire 4'
     },
     /*
     MAGIC_RING: 'magic ring',
@@ -558,8 +641,8 @@ const SETTINGS = {
     RANGED_TH_VALUES: {
         CUSTOM: 'custom th',
         BOLG: 'bow of the last guardian',
+        HEX_E: 'hexhunter bow+',
         HEX: 'hexhunter bow',
-        HEX_E: 'hexhunter bow+'
     },
     MELEE_TH: 'melee two-hand weapon',
     MELEE_TH_VALUES: {
@@ -677,6 +760,7 @@ const SETTINGS = {
     DEATH_SWIFTNESS: 'death swiftness',
     SWIFTNESS_ACTIVE: 'swiftness',
     SPLIT_SOUL: 'split soul',
+    NATURAL_INSTINCT: 'natural instinct',
     //SPLIT_SOUL_ECB: 'split soul ecb',
     ZGS: 'zgs',
     BERSERK: 'berserk',
@@ -687,6 +771,8 @@ const SETTINGS = {
     SHOW_BOLG_STACKS: 'show bolg stacks',
     SHOW_ICY_CHILL_STACKS: 'show icy chill stacks',
     ADRENALINE: 'adrenaline',
+    EXPECTED_ADRENALINE: 'expected adrenaline',
+    CRIT_BUFF: 'crit buff',
     VIGOUR: 'vigour',
     FURY_OF_THE_SMALL: 'fots',
     HEIGHTENED_SENSES: 'heightened senses',
@@ -937,6 +1023,10 @@ const settingsConfig = {
         label: 'Genocidal %',
         default: 0
     },
+    [SETTINGS.IMPATIENT]: {
+        label: 'Impatient',
+        default: 4
+    },
     [SETTINGS.FAMILIAR]: {
         label: 'Familiar',
         default: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON,
@@ -951,6 +1041,7 @@ const settingsConfig = {
         default: SETTINGS.AURA_VALUES.MAHJARRAT,
         options: [
             { text: 'None', value: SETTINGS.AURA_VALUES.NONE },
+            { text: 'Inspiration', value: SETTINGS.AURA_VALUES.INSPIRATION},
             { text: 'Mahjarrat', value: SETTINGS.AURA_VALUES.MAHJARRAT },
             { text: 'Equilibrium', value: SETTINGS.AURA_VALUES.EQUILIBRIUM },
             { text: 'Reckless', value: SETTINGS.AURA_VALUES.RECKLESS },
@@ -976,15 +1067,15 @@ const settingsConfig = {
         default: false
     },
     [SETTINGS.SLAYER_PERK_UNDEAD]: {
-        label: 'Undead slayer Perk',
+        label: 'Undead Slayer Perk',
         default: false
     },
     [SETTINGS.SLAYER_PERK_DRAGON]: {
-        label: 'Dragon slayer Perk',
+        label: 'Dragon Slayer Perk',
         default: false
     },
     [SETTINGS.SLAYER_PERK_DEMON]: {
-        label: 'Demon slayer Perk',
+        label: 'Demon Slayer Perk',
         default: false
     },
     [SETTINGS.SLAYER_PERK]: {
@@ -1448,6 +1539,123 @@ const settingsConfig = {
         ]
     },
     */
+    /*
+    [SETTINGS.MAGIC_RING]: {
+        label: 'Ring',
+        default: SETTINGS.MAGIC_RING_VALUES.REAVERS,
+        options: [
+            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
+            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
+            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
+            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
+            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
+            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
+            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELER },
+            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELER_E }
+        ]
+    },
+    [SETTINGS.RANGED_RING]: {
+        label: 'Ring',
+        default: SETTINGS.RANGED_RING_VALUES.REAVERS,
+        options: [
+            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
+            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
+            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
+            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
+            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
+            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
+            { text: 'Stalker', value: SETTINGS.RING_VALUES.STALKER },
+            { text: 'Stalker+', value: SETTINGS.RING_VALUES.STALKER_E }
+        ]
+    },
+    [SETTINGS.MELEE_RING]: {
+        label: 'Ring',
+        default: SETTINGS.MELEE_RING_VALUES.REAVERS,
+        options: [
+            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
+            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
+            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
+            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
+            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
+            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
+            { text: 'Champion', value: SETTINGS.RING_VALUES.CHAMPION },
+            { text: 'Champion+', value: SETTINGS.RING_VALUES.CHAMPION_E }
+        ]
+    },
+    [SETTINGS.NECRO_RING]: {
+        label: 'Ring',
+        default: SETTINGS.NECRO_RING_VALUES.REAVERS,
+        options: [
+            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
+            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
+            { text: "Zorg/Occ", value: SETTINGS.RING_VALUES.ZORGOTH },
+            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
+            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
+            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
+            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR }
+        ]
+    },
+    [SETTINGS.MAGIC_POCKET]: {
+        label: 'Pocket',
+        default: SETTINGS.POCKET_VALUES.GRIM,
+        options: [
+            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
+            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
+            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
+            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
+            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
+            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
+            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
+            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM },
+            { text: 'Elements', value: SETTINGS.POCKET_VALUES.ELEMENTS },
+            { text: 'Superior elements', value: SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS }
+        ]
+    },
+    [SETTINGS.RANGED_POCKET]: {
+        label: 'Pocket',
+        default: SETTINGS.POCKET_VALUES.GRIM,
+        options: [
+            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
+            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
+            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
+            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
+            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
+            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
+            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
+            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM },
+            { text: 'Cruelty', value: SETTINGS.POCKET_VALUES.CRUELTY },
+            { text: 'Superior cruelty', value: SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY }
+        ]
+    },
+    [SETTINGS.MELEE_POCKET]: {
+        label: 'Pocket',
+        default: SETTINGS.POCKET_VALUES.GRIM,
+        options: [
+            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
+            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
+            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
+            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
+            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
+            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
+            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
+            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM }
+        ]
+    },
+    [SETTINGS.NECRO_POCKET]: {
+        label: 'Pocket',
+        default: SETTINGS.POCKET_VALUES.GRIM,
+        options: [
+            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
+            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
+            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
+            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
+            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
+            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
+            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
+            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM }
+        ]
+    },
+    */
     [SETTINGS.POCKET]: {
         label: 'Pocket',
         default: SETTINGS.POCKET_VALUES.GRIM,
@@ -1682,8 +1890,8 @@ const settingsConfig = {
         default: 15
     },
     [SETTINGS.ICY_CHILL_STACKS]: {
-        label: 'Icy Chill stacks',
-        default: 2
+        label: 'Icy Chill',
+        default: 0
     },
     [SETTINGS.PUNCTURE_STACKS]: {
         label: 'Puncture Stacks',
@@ -1905,7 +2113,7 @@ const settingsConfig = {
         default: false
     },
     [SETTINGS.DETONATE]: {
-        label: 'Deto charge percent',
+        label: 'Deto Charge percent',
         default: 100
     },
     [SETTINGS.DIVINE_RAGE]: {
@@ -1917,16 +2125,24 @@ const settingsConfig = {
         default: true
     },
     [SETTINGS.SHOW_BOLG_STACKS]: {
-        label: 'Show bolg stacks',
+        label: 'Show Bolg Stacks',
         default: true
     },
     [SETTINGS.SHOW_ICY_CHILL_STACKS]: {
         label: 'Show Icy Chill Stacks',
         default: true
     },
+    [SETTINGS.SHOW_ADRENALINE]: {
+        label: 'Show Adrenaline',
+        default: true
+    },
     [SETTINGS.ADRENALINE]: {
-        label: 'Starting Adrenaline',
+        label: 'Adrenaline',
         default: 100
+    },
+    [SETTINGS.EXPECTED_ADRENALINE]: {
+        label: 'Expected Adrenaline RNG',
+        default: true
     },
     [SETTINGS.VIGOUR]: {
         label: 'Vigour Passive',

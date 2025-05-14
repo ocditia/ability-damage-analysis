@@ -104,6 +104,10 @@ body {
     --tw-border-color: #8c52ff;
 }
 
+.card-rotation {
+    --tw-border-color: #cccb74;
+}
+
 .card-title {
     font-family:
         Kumbh Sans,

@@ -174,7 +174,7 @@
                 <form class="w-full">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
                         {#if tab === 'general'}
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">General</h5>
                                 <Select
                                     bind:setting={settings[SETTINGS.MODE]}
@@ -250,7 +250,7 @@
                                     onchange={() => updateDamages()}
                                 />
                             </div>
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">
                                     Applies to dots
                                 </h5>
@@ -305,7 +305,7 @@
                                     onchange={() => updateDamages()}
                                 />
                             </div>
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Applies to regular abilities only</h5>
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.WALKED_TARGET]}

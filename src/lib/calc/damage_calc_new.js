@@ -5,24 +5,41 @@ import { SETTINGS } from './settings';
 import { calc_crit_damage, get_rotation, add_split_soul } from './damage_calc';
 import { handle_wen_buff } from './rotation_damage_helper';
 
-//Handle adren and cooldowns before on_cast is called
+//TODO move this AND make edraco adren use it
+function add_adrenaline(settings, amount) {
+    if (settings[SETTINGS.NATURAL_INSTINCT] && amount > 0) {
+        amount *= 2;
+    }
+    let new_adren = settings[SETTINGS.ADRENALINE] + amount;
+    const max_adren = settings[SETTINGS.HEIGHTENED_SENSES] ? 110 : 100; //TODO vestements
+    settings[SETTINGS.ADRENALINE] = (amount > 0) ? Math.min(max_adren, new_adren) : new_adren;
+}
+// These are the things that happen before an ability is released - 
+// adrenaline and cooldowns before on_cast is called.
+// This is at the same time, except when an ability is stalled.
 function on_stall(settings) {
     const type = abils[settings['ability']]['ability type'];
     if (type == 'basic') {
-        settings[SETTINGS.ADRENALINE] += settings[SETTINGS.FURY_OF_THE_SMALL] ? 9 : 8; //fots
-        const max_adren = settings[SETTINGS.HEIGHTENED_SENSES] ? 110 : 100;
-        settings[SETTINGS.ADRENALINE] = Math.min(max_adren, settings[SETTINGS.ADRENALINE]);
+        add_adrenaline(settings, settings[SETTINGS.FURY_OF_THE_SMALL] ? 9 : 8); // Normal 8/9%
+        if (settings[SETTINGS.EXPECTED_ADRENALINE]) {
+            add_adrenaline(settings, settings[SETTINGS.IMPATIENT] * 0.09 * 3); // Impatient
+        }
     }
-    else if (type == 'threshold') settings[SETTINGS.ADRENALINE] -= 15;
+    else if (type == 'threshold') {
+        add_adrenaline(settings, -15);
+    }
     else if (type == 'ultimate') { 
         let cost = 100;
         cost -= settings[SETTINGS.VIGOUR] ? 10 : 0;
         cost -= settings[SETTINGS.CONSERVATION_OF_ENERGY] ? 10 : 0;
-        settings[SETTINGS.ADRENALINE] -= cost;
+        add_adrenaline(settings, -cost);
+        //TODO zuk capes
     }
     else if (type == 'special attack') {
+        let cost = abils[settings['ability']]['adren cost'];
         const multi = settings[SETTINGS.VIGOUR] ? 0.9 : 1;
-        settings[SETTINGS.ADRENALINE] -= multi * abils[settings['ability']]['adren cost'];
+        cost *= multi;
+        add_adrenaline(settings, -cost)
     }
 }
 
@@ -37,13 +54,15 @@ function on_cast(settings, dmgObject, timers) {
             Math.min(settings[SETTINGS.HIT_CHANCE] / 100, 1));
     }
     
-
-    
-    //TODO fix - this is turning off active when buff when using a non basic second abiltiy
+    //TODO fix - there's gotta be a better way to handle abilities which don't consume wen buff...
     if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
         ['threshold', 'special attack', 'ultimate'].includes(abils[settings['ability']]['ability type']) &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-        (!timers[SETTINGS.ICY_PRECISION] || timers[SETTINGS.ICY_PRECISION] < 0)
+        (!timers[SETTINGS.ICY_PRECISION] || timers[SETTINGS.ICY_PRECISION] < 0) &&
+        (settings['ability'] !== ABILITIES.GREATER_DEATHS_SWIFTNESS) &&
+        (settings['ability'] !== ABILITIES.SPLIT_SOUL_ECB) &&
+        (settings['ability'] !== ABILITIES.DEATHS_SWIFTNESS_DOT) &&
+        (settings['ability'] !== ABILITIES.DEATHS_SWIFTNESS) 
     ) {
             handle_wen_buff(settings, timers);
     }
@@ -115,7 +134,7 @@ function on_cast(settings, dmgObject, timers) {
                 ['threshold', 'ultimate', 'special attack'].includes(abils[settings['ability']]['ability type']) &&
                 settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * (1 + 0.03 * settings[SETTINGS.ICY_PRECISION]));
+                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * (1 + 0.02 * settings[SETTINGS.ICY_PRECISION]));
             }
 
             // balance by force (bolg spec)
@@ -298,9 +317,6 @@ function on_hit(settings, dmgObject) {
     // this function runs for all hits (note: not hitsplats)
 
     // set min and var percentages
-
-    
-    
     for (let key in dmgObject) {
         dmgObject[key]['min hit'] = abils[settings['ability']]['min hit'];
         dmgObject[key]['var hit'] = abils[settings['ability']]['var hit'];
@@ -329,7 +345,6 @@ function on_hit(settings, dmgObject) {
                 dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + Math.min(0.05 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.5);
                 dmgObject[key]['var hit'] = dmgObject[key]['var hit'] + Math.min(0.02 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
             }
-
             // icy tempest
             if (
                 settings['ability'] === ABILITIES.ICY_TEMPEST_1 ||
@@ -338,7 +353,6 @@ function on_hit(settings, dmgObject) {
                 dmgObject[key]['min hit'] += 0.18 * settings[SETTINGS.PRIMORDIAL_ICE];
                 dmgObject[key]['var hit'] += 0.04 * settings[SETTINGS.PRIMORDIAL_ICE];
             }
-
             // flank
             if (settings['ability'] === ABILITIES.BACKHAND) {
                 dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
@@ -738,9 +752,9 @@ function on_hit(settings, dmgObject) {
 
             // ruthless
             //TODO fix - current breaks calc if no ruthless stacks
-            // boost = Math.floor(
-            //     boost * (1 + settings[SETTINGS.RUTHLESS_STACKS] * settings[SETTINGS.RUTHLESS_RANK] * 0.005)
-            // );
+            boost = Math.floor(
+                boost * (1 + settings[SETTINGS.RUTHLESS_STACKS] * settings[SETTINGS.RUTHLESS_RANK] * 0.005)
+            );
 
             // apply buff            
             dmgObject[key]['min hit'] = Math.floor((dmgObject[key]['min hit'] * boost) / 10000); 
@@ -930,7 +944,7 @@ function on_hit(settings, dmgObject) {
         // Marco - Discrete example: bolg
         // if bolg procced set bolg stacks back to 0
         if (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 8 ||
-            (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 4 &&
+            (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 4 &&
             settings[SETTINGS.BALANCE_BY_FORCE] === true)) 
         {
             settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] = 0;
@@ -997,7 +1011,7 @@ function on_damage(settings, dmgObject) {
             }
 
             // undead slayer sigil
-            if (settings[SETTINGS.SLAYER_SIGIL_UNDEAD] === true) {
+            if (settings[SETTINGS.UNDEAD_SLAYER_ABILITY] === true) {
                 dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.15);
             }
 
@@ -1007,7 +1021,7 @@ function on_damage(settings, dmgObject) {
             }
 
             // dragon slayer sigil
-            if (settings[SETTINGS.SLAYER_SIGIL_DRAGON] === true) {
+            if (settings[SETTINGS.DRAGON_SLAYER_ABILITY] === true) {
                 dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.15);
             }
 
@@ -1159,12 +1173,27 @@ function on_damage(settings, dmgObject) {
             dmgObject[key] = add_split_soul(settings, dmgObject[key]);
         }
     }
+    // Adrenaline from crit buff/inspiration
+    // TODO check when this actually applies
+    // TODO Nat instinct
+    if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.INSPIRATION) {
+        add_adrenaline(settings, 0.5);
+    }
+    if (
+        (abils[settings['ability']]['crit effects'] === true) &&
+        settings[SETTINGS.CRIT_BUFF] && settings[SETTINGS.EXPECTED_ADRENALINE]
+    ) {
+        let prob = dmgObject['crit']['probability'];
+        add_adrenaline(settings, (prob * 8));
+    }
+
     return dmgObject;
 
-
+    // TODO
     // Marco - apply any effects that happen on-damage here
     // I think currently that is only rng stuff like applying poison
     // also if the hit is a crit it should proc fsoa and give crit adren here for example
+
 }
 
 export {on_stall, on_cast, on_hit, on_damage}

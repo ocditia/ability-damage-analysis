@@ -6,293 +6,144 @@
     import { abilities as magic_dmg_abilities } from '$lib/magic/abilities';
     import { abilities as melee_dmg_abilities } from '$lib/melee/abilities';
     import { abilities as necro_dmg_abilities } from '$lib/necromancy/abilities';
+    import { abilities as def_abilities } from '$lib/defence/abilities';
+	import { offGcdAbilities } from '$lib/special/abilities';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings';
 	import Checkbox from '../../components/Settings/Checkbox.svelte';
 	import Number from '../../components/Settings/Number.svelte';
-	import { abils } from '$lib/calc/const.js';
-	import { hit_damage_calculation, get_rotation,
-		style_specific_unification, calc_base_ad, get_user_value, apply_additional
-	} from '$lib/calc/damage_calc.js';
-	import { handle_ranged_buffs, calc_channelled_hit } from '$lib/calc/rotation_damage_helper.js';
-    import RangedSettings from '../../components/Settings/RangedSettings.svelte';
+	import Select from '../../components/Settings/Select.svelte';
+	import { abils } from '$lib/calc/const';
+    import RotationSettings from '../../components/Settings/RotationSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
-	import { on_stall, on_cast, on_hit, on_damage} from '$lib/calc/damage_calc_new.js';
-	import { create_object } from '$lib/calc/object_helper.js';
+	import {buffs, createBuffTimings, createStackTimings} from '$lib/calc/rotation_builder/rotation_consts.ts';
+	import {ToolMode} from '$lib/calc/rotation_builder/ui_material/toolModes.ts';
+    import ExtraActionsPanel from '../../components/RotationBuilder/ExtraActionsPanel.svelte';
+    import { calculateTotalDamage } from '$lib/calc/rotation-damage-calculator';
 
     let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abils eventually
     let meleeAbils = {...melee_dmg_abilities};
     let magicAbils = {...magic_dmg_abilities};
 	let rangedAbils = {...r_dmg_abilities, ...ranged_buff_abilities};
-    let allAbils = {...magicAbils, ...rangedAbils, ...necroAbils, ...meleeAbils};
-	let settings = $state(Object.fromEntries(
-		Object.entries(settingsConfig).map(([key, value]) => [
-			key,
-			{ ...value, key: key, value: value.default?.ranged ?? value.default }
-		])
-	));
+	let defAbils = {...def_abilities};
+    let allAbils = {...magicAbils, ...rangedAbils, ...necroAbils, ...meleeAbils, ...def_abilities};
 
-    let totalDamage = $state(0);
+	let specialAbils = {...offGcdAbilities};
+	let extraActions = {...specialAbils};
 
-	function calculateTotalDamageNew() {
-		console.log('Running calc total damage new')
-		let dmgs = [];
-		totalDamage = 0;
-        const adaptedSettings = Object.fromEntries(
-            			Object.entries(settings).map(([key, value]) => [key, value.value])
-            		);
-		const settingsCopy = structuredClone(adaptedSettings);
-
-		let tick = 0;
-		let damageTracker = {};
-		let timers = {};
-		let hit_delay = 1; //TODO actually implement hit delay properly (define min delay for each ability)
-		let start_tick = tick;
-		function processQueuedDamage(tick) {
-			if (damageTracker[tick]) {
-				damageTracker[tick].forEach(namedDmgObject => {
-					settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
-					let dmg = get_user_value(settingsCopy, on_damage(settingsCopy, namedDmgObject));
-					dmg = apply_additional(settingsCopy, dmg, true);
-					dmgs.push(dmg);
-				});
-			}
-		}
-
-		function copyStacks(settings) {
-			//Track number of each stack, and whether buffs are on during this tick
-			for(let key in stacks) {
-				stacks[key].stackTicks[tick] = settings[key];
-			}
-			buffs.forEach(buffTitle => {
-				buffTimings[buffTitle].buffTicks[tick] = settings[buffTitle];
-			});
-		}
-
-		//TODO implement non ability actions
-		while (tick < barSize + 20) {
-			let abilityKey = abilityBar[tick];
-			if (abilityKey == null) {
-				//Todo make a function which combines all these 3 (i.e. handle buff timers,
-				//process damage queue, copy buff info for this tick to ui)
-				handleTimers(timers, settingsCopy);
-				processQueuedDamage(tick);
-				copyStacks(settingsCopy);
-				tick += 1;
-				continue;
-			}
-
-			let abil_duration = 3; //assume ability is 3t unless duration is explicitly specified
-            if (abils[abilityKey]['duration'])
-				abil_duration = abils[abilityKey]['duration'];
-			settingsCopy['ability'] = abilityKey;
-			on_stall(settingsCopy);
-			style_specific_unification(settingsCopy, 'ranged');
-			settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
-            start_tick = tick;
-            let hit_tick = tick + hit_delay;
-            damageTracker[hit_tick] ??= [];
-
-			if (abilityKey in ranged_buff_abilities) {
-				handle_ranged_buffs(settingsCopy, timers, abilityKey);
-			}
-            else if (abilityKey in rangedAbils) {
-                //Handle single-hit abilities (one cast, one hit, one hitsplat)
-                if (rangedAbils[abilityKey].calc === hit_damage_calculation) {
-                    let dmgObject = create_object(settingsCopy);
-                    style_specific_unification(settingsCopy);
-                    dmgObject = on_cast(settingsCopy, dmgObject, timers);
-                    on_hit(settingsCopy, dmgObject);
-                    dmgObject['non_crit']['ability'] = abilityKey;
-                    damageTracker[hit_tick].push(dmgObject);
-                }
-                //Multi-hits (one cast, multiple hits, many hitsplats)
-                else if (abils[abilityKey]['ability classification'] === 'multihit') {
-                    let dmgObject = create_object(settingsCopy);
-                    let dmgObjects = on_cast(settingsCopy, dmgObject, timers);
-                    dmgObjects.forEach(element => {
-                        settingsCopy['ability'] = element['crit']['ability'];
-                        let namedDmgObject = on_hit(settingsCopy, element);
-                        damageTracker[hit_tick].push(namedDmgObject);
-                    });
-                    settingsCopy['ability'] = abilityKey;
-                }
-                // Bleeds, dots, burns (one cast, one hit, many hitsplats)
-                else if (!isChannelled(abilityKey)) { // (handle channels at the end)
-                    let dmgObject = create_object(settingsCopy);
-                    settingsCopy['ability'] = abils[abilityKey]['hits'][1][0];
-                    dmgObject = on_cast(settingsCopy, dmgObject, timers);
-                    dmgObject = on_hit(settingsCopy, dmgObject);
-                    let n_hits = abils[abilityKey]['hits'][1].length;
-                    for (let i = 0; i < n_hits; i++) {
-                        let clone = structuredClone(dmgObject);
-                        clone['non_crit']['ability'] = abils[abilityKey]['hits'][1][i];
-                        let htick = hit_tick + abils[abilityKey]['hit_timings'][i];
-                        damageTracker[htick] ??= [];
-                        damageTracker[htick].push(clone);
-                    }
-                }
-            }
-
-            // Handles channelled abilities (many casts, many hits, many hitsplats)
-			// Process hitsplats and decrement timers
-            let rota;
-            if (isChannelled(abilityKey)) {
-                rota = get_rotation(settingsCopy);
-            }
-			let end_tick = start_tick + abil_duration;
-			for (let i = start_tick; i < end_tick; i++) {
-                //Perform any necessary hits from channelled abilities on this tick
-                if (isChannelled(abilityKey)) {
-					//If there's a new ability cast on this tick, cancel the channel and exit early
-					if (i > start_tick && abilityBar[tick]) {
-						break;
-					}
-					else {
-						let dmgObject = calc_channelled_hit(settingsCopy, 1 + i - start_tick, rota, timers); //i+1 because hits are 1 indexed
-						dmgObject['non_crit']['ability'] = abilityKey;
-						if (dmgObject['non_crit']['damage list'].length > 0 ) {
-							let hit_tick = i + hit_delay;
-							(damageTracker[hit_tick] ??= []).push(dmgObject);
-						}
-					}
-                }
-				handleTimers(timers, settingsCopy);
-                //Apply on npc modifiers to already queued damage for this to tick
-				processQueuedDamage(i);
-				copyStacks(settingsCopy);
-                tick += 1;
-            }
-            end_tick = tick;
-		}
-		totalDamage = dmgs.reduce((acc, current) => acc + current, 0);
-		console.log('New Impl Total Damage = ' + totalDamage);
-	}
-
-	function handleTimers(timers, settings) {
-		if (Object.keys(timers).length > 0) {
-			for (let key in timers) {
-				// console.log('Key = ' + key);
-				// console.log('Time = ' + timers[key]);
-				// console.log(settings[key]);
-				timers[key] -= 1;
-				if (timers[key] < 0) {
-					if (key === SETTINGS.ICY_PRECISION) {
-						settings[key] = 0; //TODO better solution
-					}
-					else {
-					settings[key] = false;
-					}
-				}
-			}
-		}
-	}
-
-	function isChannelled(key) {
-        return abils[key]['ability classification'] === 'channel';
-    }
-
-	//UI
-	const barSize = 200;
-    let abilityBar = $state(Array(barSize).fill(null)); // Empty slots on the bar
-	let abilityTab = $state('ranged');
-	let abilityBarIndex = 0;
-	let lastAbilityIndex = 0;
-	const baseBarRowGap = 30;
-	let barRowGap = $state(baseBarRowGap);
-	let lineGap = $state(0);
-
-	const stackFontSize = 12;
+	// Constants
+	const BASE_BAR_ROW_GAP = 30;
+	const BAR_SIZE = 200;
+	const EXTRA_BAR_SIZE = 12;
+	const stackFontSize = 10;//12
 	const baseStackOffset = 32;
 	const stackPadding = 2;
 	const buffLineWidth = 32;
 	const buffLineHeight = 6;
 
-	const stacks = $state({
-		[SETTINGS.ADRENALINE]: {
-			title: 'Adrenaline',
-			displaySetting: SETTINGS.ADRENALINE,
-			idx: -1,
-			image: '/effect_icons/Crit_buff.png',
-			stackTicks: Array(barSize).fill(0),
-			colour: '#f5e942',
-			number: 'true'
+	let uiState = $state({
+		activeTab: 'ranged',
+		activeTool: ToolMode.Regular,
+		settingsPanelCollapsed: false,
+		
+		extraActions: {
+			show: false,
+			tick: -1,
+			tab: 'abilities',
+			infoAbility: null,
+			barIndex: 0
 		},
-		[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
-			title: 'Perfect Equilibrium stacks',
-			displaySetting: SETTINGS.SHOW_BOLG_STACKS,
-			idx: -1,
-			image: '/effect_icons/Perfect Equilibrium (self status).png',
-			stackTicks: Array(barSize).fill(0),
-			colour: '#4cfc42'
+		
+		bar: {
+			size: BAR_SIZE,
+			index: 0,
+			lastIndex: 0,
+			rowGap: BASE_BAR_ROW_GAP,
+			lineGap: 0
 		},
-		[SETTINGS.ICY_CHILL_STACKS]: {
-			title: 'Icy Chill stacks',
-			displaySetting: SETTINGS.SHOW_ICY_CHILL_STACKS,
-			idx: -1,
-			image: '/effect_icons/Icy_Chill.png',
-			stackTicks: Array(barSize).fill(0),
-			colour: '#03f4fc'
-		}
+		
+		dragDrop: {
+			hoveredSlot: null,
+			validSlot: true
+		},
+
+		stallingAbility: null // Track which ability is being stalled
 	});
-	
 
-
-	const buffs = [SETTINGS.DEATH_SWIFTNESS, SETTINGS.SUNSHINE, SETTINGS.BERSERK,
-	SETTINGS.SPLIT_SOUL, SETTINGS.ICY_PRECISION];
-
-
-	let buffTimings = $state( {
-		[SETTINGS.DEATH_SWIFTNESS]: {
-			title: 'Death\'s Swiftness',
-			idx: -1,
-			buffTicks: Array(barSize).fill(0),
-			colour: '#00bf63'
-		},
-		[SETTINGS.SUNSHINE]: {
-			title: 'Sunshine',
-			idx: -1,
-			buffTicks: Array(barSize).fill(0),
-			colour: '#86F6FE'
-		},
-		[SETTINGS.BERSERK]: {
-			title: 'Berserk',
-			idx: -1,
-			buffTicks: Array(barSize).fill(0),
-			colour: '#E28329'
-		},
-		[SETTINGS.SPLIT_SOUL]: {
-			title: 'Split Soul',
-			idx: -1,
-			buffTicks: Array(barSize).fill(0),
-			colour: '#5b1db6'//'#9303ec'
-		},
-		[SETTINGS.ICY_PRECISION]: {
-			title: 'Icy Precision',
-			idx: -1,
-			buffTicks: Array(barSize).fill(0),
-			colour: '#5AC8E1'
-		}
+	let gameState = $state({
+		totalDamage: 0,
+		poisonDamage: 0,
+		settings: Object.fromEntries(
+		Object.entries(settingsConfig).map(([key, value]) => [
+			key,
+			{ ...value, key: key, value: value.default }
+		])
+		),
+		abilityBar: Array(BAR_SIZE).fill(null),
+		extraActionBar: Array(BAR_SIZE).fill(null),
+		buffs: createBuffTimings(BAR_SIZE),
+		stacks: createStackTimings(BAR_SIZE),
+		nulledTicks: Array(BAR_SIZE).fill(false),
+		stalledAbilities: Array(BAR_SIZE).fill(null)
 	});
+
+	const tabs = [
+		{ id: 'melee', label: 'Melee', abilities: meleeAbils },
+		{ id: 'ranged', label: 'Ranged', abilities: rangedAbils },
+		{ id: 'magic', label: 'Magic', abilities: magicAbils },
+		{ id: 'defence', label: 'Defence', abilities: defAbils },
+		{ id: 'necro', label: 'Necro', abilities: necroAbils }
+	];
+
+	function calculateTotalDamageNew() {
+		const dmgResult = calculateTotalDamage(gameState, BAR_SIZE);
+		gameState.totalDamage = dmgResult[0];
+		gameState.poisonDamage = dmgResult[1];
+		console.log('New Impl Total Damage = ' + gameState.totalDamage + ' (Poison Damage = ' + gameState.poisonDamage + ')');
+	}
 		
 	//UI functions
 	//TODO handle this differently
-    function handleAbilityClick(event, abilityKey) {
-		abilityBar[abilityBarIndex] = abilityKey;
+    function handleAbilityClick(event, abilityKey, mainBar = true) {
+        if (uiState.activeTool === ToolMode.Stall) {
+            // Check if ability is channeled
+            if (abils[abilityKey]['ability classification'] === 'channel') {
+                alert("Channeled abilities cannot be stalled currently.");
+                return;
+            }
+            uiState.stallingAbility = abilityKey;
+            return;
+        }
+
+        let size = mainBar ? BAR_SIZE : EXTRA_BAR_SIZE;
+        let idx = mainBar ? uiState.bar.index : uiState.extraActions.barIndex;
+
+		if (idx >= size) {
+			alert("You're trying to add an ability after the end of the rotation.");
+			return;
+		}
+
+		if (mainBar) {
+            gameState.abilityBar[idx] = abilityKey;
+        } else {
+            gameState.extraActionBar[uiState.extraActions.tick][idx] = abilityKey;
+		}
 		calculateTotalDamageNew();
         refreshUI(false);
-        
+    }
+
+	function handleAbilityClickExtra(event, abilityKey) {
+		handleAbilityClick(event, abilityKey, false);
     }
 
 	function buffActive(key, index) {
 		let active = false;
-		//TODO make seperate ranged and necro split souls
-		if (key == 'split soul ecb') {
-			active = buffTimings['split soul'].buffTicks[index];
+		//TODO make separate ranged and necro split souls
+		if (key === 'split soul ecb') {
+			active = gameState.buffs['split soul'].buffTicks[index];
+		} else {
+			active = gameState.buffs[key].buffTicks[index];
 		}
-		else {
-			active = buffTimings[key].buffTicks[index];
-		}
-		return active
+		return active;
 	}
 
     function handleDragStart(event, ability) {
@@ -301,18 +152,22 @@
 
     function handleDrop(event, index) {
         event.preventDefault();
-        const abilityKey = event.dataTransfer.getData('text/plain');
-        if (rangedAbils[abilityKey]) {
-            abilityBar[index] = abilityKey;
-        } else {
-            const dragObj = JSON.parse(event.dataTransfer.getData('text/plain'));
-            const swapAbil = abilityBar[index];
-            abilityBar[index] = dragObj['ability'];
-            abilityBar[dragObj['startIndex']] = swapAbil;
-        }
-		hoveredSlot = null;
-        refreshUI();
-        calculateTotalDamageNew();
+		const abilityKey = event.dataTransfer.getData('text/plain');
+		if (allAbils[abilityKey]) {
+			gameState.abilityBar[index] = abilityKey;
+		} else {
+			try {
+			const dragObj = JSON.parse(event.dataTransfer.getData('text/plain'));
+				const swapAbil = gameState.abilityBar[index];
+				gameState.abilityBar[index] = dragObj.ability;
+				gameState.abilityBar[dragObj.startIndex] = swapAbil;
+			} catch (e) {
+				console.error('Error parsing drag data:', e);
+			}
+		}
+		uiState.dragDrop.hoveredSlot = null;
+		refreshUI();
+			calculateTotalDamageNew();
     }
 
 	function handleDragStartBar(event, ability, startIndex) {
@@ -324,117 +179,187 @@
         event.preventDefault();
     }
 
-	let validSlot = $state(true);
-	let hoveredSlot = $state(null); //rename to hovered slot?
-	/**
-	 * Flag slot to be highlighted if on gcd
-	 */
-	//TODO there's gotta be a better way...
 	function handleDragEnter(event, index) {
-		hoveredSlot = index;
-		validSlot = true;
-		//Handle case where we are moving ability 
+		uiState.dragDrop.hoveredSlot = index;
+		uiState.dragDrop.validSlot = true;
+		
 		let data = event.dataTransfer.getData('text/plain');
 		if (!allAbils[data]) {
+			try {
 			data = JSON.parse(event.dataTransfer.getData('text/plain'));
 			if ((index - data.startIndex) <= 2 && index >= data.startIndex) {
-				validSlot = true;
+					uiState.dragDrop.validSlot = true;
 				return;
 			}
+			} catch (e) {
+				console.error('Error parsing drag data:', e);
 		}
+		}
+		
 		for (let i = index-1; i >= (index - 2); i--) {
 			if (i < 0) return;
-			if (abilityBar[i] != null) {
-        		validSlot = false;
+			if (gameState.abilityBar[i] != null) {
+        		uiState.dragDrop.validSlot = false;
 			}
 		}
     }
 
     function handleDragLeave(event, index) {
-        if (hoveredSlot === index) {
-            hoveredSlot = null;
+        if (uiState.dragDrop.hoveredSlot === index) {
+            uiState.dragDrop.hoveredSlot = null;
         }
     }
 
-    function handleBarRightClick(event, index) {
+	function handleBarLeftClick(event, ability, index) {
+        event.currentTarget.focus();
+
+		if (uiState.activeTool === ToolMode.Null) {
+			gameState.nulledTicks[index] = !gameState.nulledTicks[index];
+			refreshUI();
+			return;
+		}
+
+		if (uiState.activeTool === ToolMode.Stall) {
+			if (gameState.stalledAbilities[index]) {
+				gameState.stalledAbilities[index] = null;
+			} else if (uiState.stallingAbility) {
+				gameState.stalledAbilities[index] = uiState.stallingAbility;
+				uiState.stallingAbility = null;
+			} else {
+				// Find the last non-null ability before this tick
+				let stalledAbility = null;
+				for (let i = index - 1; i >= 0; i--) {
+					if (gameState.abilityBar[i]) {
+						stalledAbility = gameState.abilityBar[i];
+						break;
+					}
+				}
+				if (stalledAbility) {
+					gameState.stalledAbilities[index] = stalledAbility;
+				}
+			}
+			refreshUI();
+			return;
+		}
+
+		if (!gameState.extraActionBar[index]){
+			gameState.extraActionBar[index] = Array(EXTRA_BAR_SIZE).fill(null);
+		}
+
+		if (uiState.extraActions.show) {
+			if (index == uiState.extraActions.tick) {
+				uiState.extraActions.show = false;
+			}
+			else {
+				uiState.extraActions.tick = index;
+			}
+		}
+		else {
+			uiState.extraActions.show = true;
+			uiState.extraActions.tick = index;
+		}
+		uiState.extraActions.infoAbility = ability;
+    }
+
+    function handleBarRightClick(event, index, innerIdx = null) {
         event.preventDefault();
-        abilityBar[index] = null;
+		if (innerIdx != null) {
+			gameState.extraActionBar[index][innerIdx] = null;
+		}
+		else {
+        	gameState.abilityBar[index] = null;
+		}
         refreshUI();
         calculateTotalDamageNew();
     }
 
     function clearRotation() {
-        for (let i = 0; i < barSize; i++) {
-            abilityBar[i] = null;
-            stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[i] = 0;
-            stacks[SETTINGS.PERFECT_EQUILIBRIUM_STACKS].stackTicks[i] = 0;
+        gameState.abilityBar = Array(BAR_SIZE).fill(null);
+        gameState.extraActionBar = Array(BAR_SIZE).fill(null);
+		gameState.nulledTicks = Array(BAR_SIZE).fill(false);
+		gameState.stalledAbilities = Array(BAR_SIZE).fill(null);
+        gameState.totalDamage = 0;
+        
+        // Reset stacks
+        for (let i = 0; i < BAR_SIZE; i++) {
+            gameState.stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[i] = 0;
+            gameState.stacks[SETTINGS.PERFECT_EQUILIBRIUM_STACKS].stackTicks[i] = 0;
         }
-        totalDamage = 0;
-        refreshUI();
-        calculateTotalDamageNew();
-        //Reset the visual indicators for buffs
-        for (let key in buffTimings) {
-            if (Object.hasOwnProperty.call(buffTimings, key)) {
-                buffTimings[key].buffTicks = Array(barSize).fill(0); // Reset each key to an empty array
+
+        // Reset buffs
+        for (let key in gameState.buffs) {
+            if (Object.hasOwnProperty.call(gameState.buffs, key)) {
+                gameState.buffs[key].buffTicks = Array(BAR_SIZE).fill(0);
             }
         }
+
+        refreshUI();
+        calculateTotalDamageNew();
     }
 
-	//TODO rename (refreshUIData?)
+	/**
+	 * Updates ability bar pointers, recalculates stacks, recalculates buff bars
+	 * @param calcDmg - Whether to recalculate damage
+	 */
 	function refreshUI(calcDmg = true) {
-		//Ability bar pointer 
-		lastAbilityIndex = 0;
-		for (let i = 0; i < barSize; i++) {
-			if (abilityBar[i] != null) {
-				lastAbilityIndex = i;
+		//Update ability bar pointer
+		uiState.bar.lastIndex = 0;
+		for (let i = 0; i < BAR_SIZE; i++) {
+			if (gameState.abilityBar[i] != null) {
+				uiState.bar.lastIndex = i;
 			}
 		}
-		abilityBarIndex = lastAbilityIndex;
-		let abilToAdd = abils[abilityBar[lastAbilityIndex]];
+		uiState.bar.index = uiState.bar.lastIndex;
+		let abilToAdd = abils[gameState.abilityBar[uiState.bar.lastIndex]];
 		if (abilToAdd) {
-			if (abilToAdd['duration']) {
-				abilityBarIndex += abilToAdd['duration'];
+			uiState.bar.index += abilToAdd['duration'] || 3;
+		}
+
+		//Update extra action bar pointer
+		uiState.extraActions.barIndex = 0;
+		if (uiState.extraActions.show) {
+			for (let i = 0; i < EXTRA_BAR_SIZE; i++) {
+				if (gameState.extraActionBar[uiState.extraActions.tick][i] === null) {
+					uiState.extraActions.barIndex = i;
+					break;
+				}
 			}
-			else abilityBarIndex += 3;
 		}
 
 		//Handle stacks
 		let i = 0;
-		barRowGap = baseBarRowGap;
-		for (let key in stacks) {
-			let displaySetting = stacks[key]['displaySetting'];
-			let disp = settings[displaySetting];
+		uiState.bar.rowGap = BASE_BAR_ROW_GAP;
+		for (let key in gameState.stacks) {
+			let displaySetting = gameState.stacks[key]['displaySetting'];
+			let disp = gameState.settings[displaySetting];
 			if (disp['value']) {
-				stacks[key]['idx'] = i;
-				barRowGap += (stackFontSize + stackPadding);
+				gameState.stacks[key]['idx'] = i;
+				uiState.bar.rowGap += (stackFontSize + stackPadding);
 				i++;
-			}
-			else {
-				stacks[key]['idx'] = -1;
+			} else {
+				gameState.stacks[key]['idx'] = -1;
 			}
 		}
 
-		//handle bars
+		//handle buff indicator bars
 		i = 0;
-		lineGap = 0;
-		for (let key in buffTimings) {
-			if (buffTimings[key].buffTicks.some(value => value !== 0 && value !== false)) {
-				buffTimings[key].idx = i;
-				barRowGap += (buffLineHeight);
-				lineGap += buffLineHeight;
+		uiState.bar.lineGap = 0;
+		for (let key in gameState.buffs) {
+			if (gameState.buffs[key].buffTicks.some(value => value !== 0 && value !== false)) {
+				gameState.buffs[key].idx = i;
+				uiState.bar.rowGap += buffLineHeight;
+				uiState.bar.lineGap += buffLineHeight;
 				i++;
-			}
-			else {
-				buffTimings[key].idx = -1;
+			} else {
+				gameState.buffs[key].idx = -1;
 			}
 		}
+
 		if (calcDmg) {
 			calculateTotalDamageNew();
 		}
-		console.log('UI Reresh');
 	}
 
-	//TODO delete
 	function showStack(idx, arr) {
 		if (idx == 0) {
 			return true;
@@ -443,76 +368,336 @@
 			return !(arr[idx] == arr[idx-1]);
 		}
 	}
-	refreshUI();
+	// Initial UI setup without damage calculation
+	refreshUI(false);
+
+	let activeTool = $state(ToolMode.Regular);
+
+    function handleKeypress(event) {
+		if (event.key === "r") {
+			uiState.activeTool = ToolMode.Regular;
+			uiState.stallingAbility = null;
+        }
+        if (event.key === "s") {
+			uiState.activeTool = ToolMode.Stall;
+			uiState.stallingAbility = null;
+        }
+		if (event.key === "n") {
+			uiState.activeTool = ToolMode.Null;
+			uiState.stallingAbility = null;
+        }
+		console.log('Tool mode: ' + uiState.activeTool);
+    }
+
+    function exportToString() {
+        try {
+            const exportData = {
+                a: gameState.abilityBar.map(a => a || ''),
+                e: gameState.extraActionBar.map(row => row ? row.map(a => a || '') : []),
+                n: gameState.nulledTicks,
+                t: gameState.stalledAbilities.map(a => a || '')
+            };
+            const jsonStr = JSON.stringify(exportData);
+            const rotationString = btoa(jsonStr);
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(rotationString);
+            alert('Rotation copied to clipboard!');
+        } catch (e) {
+            console.error('Export failed:', e);
+            alert('Failed to export rotation');
+        }
+    }
+
+    function importFromString() {
+        try {
+            const importStr = prompt('Paste rotation string:');
+            if (!importStr) return;
+            
+            const jsonStr = atob(importStr);
+            const importData = JSON.parse(jsonStr);
+            
+            gameState.abilityBar = importData.a.map(a => a || null);
+            gameState.extraActionBar = importData.e.map(row => row.map(a => a || null));
+            gameState.nulledTicks = importData.n;
+            gameState.stalledAbilities = importData.t.map(a => a || null);
+            
+            
+            calculateTotalDamageNew();refreshUI();
+        } catch (e) {
+            console.error('Import failed:', e);
+            alert('Invalid rotation string');
+        }
+    }
 </script>
 
+<style>
+	.ability-bar {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, 30px);
+		column-gap: 0;
+		position: relative;
+		padding-top: 25px;
+	}
+
+	.ability-slot {
+		position: relative;
+		width: 30px;
+		height: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		border: 1px solid #878787;
+		box-sizing: border-box;
+		cursor: inherit !important; /* Force inherit cursor from parent */
+		transition: all 0.1s ease;
+	}
+
+	.ability-slot:hover {
+		cursor: inherit !important; /* Force inherit cursor even on hover */
+		border: 1px solid #c5c5c5;
+		box-shadow: 0 0 3px rgba(255, 255, 255, 0.572);
+		z-index: 3; /* Ensure the hover effect appears above other elements */
+	}
+
+	.ability-slot.nulled::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: repeating-linear-gradient(
+			45deg,
+			rgba(255, 0, 0, 0.55),
+			rgba(255, 0, 0, 0.55) 2px,
+			transparent 3px,
+			transparent 6px
+		);
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.ability-slot.has-extra-actions::after {
+		content: '';
+		position: absolute;
+		bottom: -2px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 6px;
+		height: 6px;
+		background-color: #ffff00;
+		border-radius: 50%;
+		z-index: 2;
+	}
+
+	.cell-number {
+		position: absolute;
+		top: -18px;
+		left: 50%;
+		transform: translateX(-50%);
+		font-size: 12px; 
+		color: #bababa;
+	}
+
+	.extra-action-section {
+		border: 2px solid #ffff00df;
+		margin-top: 5%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.bolg-stacks {
+		position: absolute;
+		top: +38px;
+		left: auto;
+		transform: translateX(+50%);
+	}
+
+	.pe-icon {
+		position: absolute;
+		width: 12px;
+		height: 12px;
+		transform: translateX(-70%) translateY(32px);
+	}
+
+	.highlight-red {
+		border: 1px solid rgba(255, 51, 0, 0.789);
+	}
+
+	.highlight-green {
+		border: 1px solid rgba(0, 231, 54, 0.789);
+	}
+
+	.regular-cursor {
+		cursor: default; /* Cursor for regular tool */
+	}
+
+	.regular-cursor .ability-slot {
+		cursor: pointer !important; /* Only show pointer in regular mode */
+	}
+
+	.regular-cursor .ability-slot:hover {
+		cursor: pointer !important;
+	}
+
+	.stall-cursor {
+		cursor: wait; /* Default stall cursor */
+	}
+
+	.stall-cursor.stalling {
+		cursor: wait; /* Will be overridden if there's an ability being stalled */
+	}
+
+	.null-cursor {
+		cursor: url('/cursor_icons/abort-icon.svg') 16 16, not-allowed; 
+	}
+
+	.stalled-ability {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 55%;
+		height: 55%;
+		opacity: 0.8;
+		border: 1px solid #ffff72;
+		box-sizing: border-box;
+		z-index: 2;
+	}
+
+	.settings-panel {
+		transition: all 0.3s ease;
+		overflow: hidden;
+		min-width: 0; /* Allow panel to shrink below content size */
+		position: relative; /* Ensure proper positioning context for the button */
+	}
+
+	.settings-panel.collapsed {
+		flex-basis: 0;
+		width: 0;
+		padding: 0;
+		margin: 0;
+		visibility: hidden;
+		height: 0;
+		opacity: 0;
+	}
+
+	.settings-content {
+		padding-top: 50px; /* Add space for the button */
+		height: 100%;
+	}
+
+	.card-rotation {
+		height: fit-content;
+	}
+
+	.collapse-button, .expand-button {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		background: none;
+		border: 2px solid #C2BA9E;
+		color: #C2BA9E;
+		cursor: pointer;
+		padding: 8px 12px;
+		z-index: 10;
+		font-size: 18px;
+		border-radius: 4px;
+	}
+
+	.collapse-button:hover, .expand-button:hover {
+		color: #968A5C;
+		border-color: #968A5C;
+	}
+</style>
+
 <Navbar />
-<Header img="/range_background.png" text="Rotation Calculator" icon="/style_icons/ranged-white.svg" />
+<Header img="/range_background.png" text="Rotation Calculator Beta" icon="/style_icons/rota_icon.svg" />
 
 <div class="space-y-14 mt-10 z-20">
-	<div class="responsive-container">
-		<section class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8">
-			<div class="xl:col-span-6 xl:row-start-1 xl:row-span-4">
-				<div class="card card-ranged">
+	<div class="responsive-container {uiState.activeTool.toLowerCase()}-cursor {uiState.stallingAbility ? 'stalling' : ''}" 
+		tabindex="-1" 
+		role="button" 
+		onkeydown={handleKeypress}
+		style={uiState.stallingAbility ? `cursor: url('${allAbils[uiState.stallingAbility].icon}') 15 15, wait;` : ''}>
+		<section class="grid grid-cols-12 gap-6 auto-rows-min">
+			<div class="col-span-{uiState.settingsPanelCollapsed ? '12' : '6'} relative">
+				<div class="card card-rotation">
+					{#if uiState.settingsPanelCollapsed}
+						<button 
+							class="expand-button"
+							onclick={() => uiState.settingsPanelCollapsed = false}
+						>
+							Settings ←
+						</button>
+					{/if}
 					<h1 class="main-header mb-6 ml-3">Rotation</h1>
                     <div class="table-container">
+						<p>Press R to toggle regular mode, S to toggle stall mode, and N to toggle null mode.
+						</p><!-- TODO make guide, add link to guide-->
+						<br>
 						<button onclick={() => clearRotation()}>Reset</button>
 						<br>
                         <button onclick={() => calculateTotalDamageNew()}>Calculate Damage</button>
-                        <p>Total Damage: {totalDamage}</p>
+                        <p>Total Damage: {gameState.totalDamage} 
+                            {#if gameState.poisonDamage > 0}
+                                <span style="color: #4CAF50" 
+								title="Expected poison damage (approximate - assumes poison+++)">(+{gameState.poisonDamage} )
+								</span>
+                            {/if}
+                        </p>
+					</div>
+                    <div class="space-y-4 mt-4">
+						<button onclick={() => importFromString()}>Import Rotation</button>
+                        <button onclick={() => exportToString()} alt="Copy Rotation to Clipboard">Export Rotation</button>
 					</div>
                     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
-                        <!-- <li class="flex-grow me-2">
-                            <button
-                                onclick={() => (abilityTab = 'magic')}
-                                class:text-[#968A5C]={abilityTab === 'magic'}
-                                class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                                >Magic</button
-                            >
-                        </li> -->
-                        <!-- <li class="flex-grow me-2">
-                            <button
-                                onclick={() => (abilityTab = 'melee')}
-                                class:text-[#968A5C]={abilityTab === 'melee'}
-                                class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                                >Melee</button
-                            >
-                        </li> -->
-
+                        {#each tabs as tab}
                         <li class="flex-grow me-2">
                             <button
-                                onclick={() => (abilityTab = 'ranged')}
-                                class:text-[#968A5C]={abilityTab === 'ranged'}
+                                    onclick={() => (uiState.activeTab = tab.id)}
                                 class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                                >Ranged</button
-                            >
+                                    class:text-[#968A5C]={uiState.activeTab === tab.id}
+                                >{tab.label}</button>
                         </li>
-                        <!-- <li class="flex-grow me-2">
-                            <button
-                                onclick={() => (abilityTab = 'necro')}
-                                class:text-[#968A5C]={abilityTab === 'necro'}
-                                class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                                >Necro</button
-                            >
-                        </li> -->
+                        {/each}
                     </ul>
 					<br>
-                    {#if abilityTab === 'ranged'}
-                        <AbilityChoice abilities={rangedAbils} handleAbilityClick={handleAbilityClick} handleDragStart={handleDragStart} style={abilityTab}/>
-                    {:else if abilityTab === 'magic'}
-                        <AbilityChoice abilities={magicAbils} handleAbilityClick={handleAbilityClick} handleDragStart={handleDragStart} style={abilityTab}/>
-                    {:else if abilityTab === 'melee'}
-                        <AbilityChoice abilities={meleeAbils} handleAbilityClick={handleAbilityClick} handleDragStart={handleDragStart} style={abilityTab}/>
-                    {:else if abilityTab === 'necro'}
-                        <AbilityChoice abilities={necroAbils} handleAbilityClick={handleAbilityClick} handleDragStart={handleDragStart} style={abilityTab}/>
-                    {/if}
-                    <div style="row-gap:{barRowGap}px;" class="ability-bar">
-						{#each abilityBar as ability, index}
-							<div 
-									class="ability-slot {hoveredSlot === index ? (validSlot? 'highlight-green' : 'highlight-red') : ''}"
-									role="button"
+                    {#each tabs as tab}
+                        {#if uiState.activeTab === tab.id}
+                            <AbilityChoice 
+                                abilities={tab.abilities}
+                                handleAbilityClick={handleAbilityClick}
+									handleDragStart={handleDragStart} 
+                                style={tab.id}
+											/>
+										{/if}
+								{/each}
+					{#if uiState.extraActions.show}
+						<ExtraActionsPanel
+							{uiState}
+							{gameState}
+							{allAbils}
+							{handleAbilityClickExtra}
+							{handleDragStart}
+							{handleBarRightClick}
+							{handleDragStartBar}
+							{extraActions}
+						/>
+					{/if}
+                    <div style="row-gap:{uiState.bar.rowGap}px;" class="ability-bar">
+						{#each gameState.abilityBar as ability, index}
+							<button
+									class="ability-slot"
+									class:highlight-red={uiState.dragDrop.hoveredSlot === index && !uiState.dragDrop.validSlot}
+									class:highlight-green={uiState.dragDrop.hoveredSlot === index && uiState.dragDrop.validSlot}
+									class:nulled={gameState.nulledTicks[index]}
+									class:has-extra-actions={gameState.extraActionBar[index]?.some(action => action !== null)}
 									tabindex="0"
 									aria-label="Ability slot"
+									onclick={(e) => handleBarLeftClick(e, ability, index)}
 									oncontextmenu={(e) => handleBarRightClick(e, index)}
 									ondrop={(e) => handleDrop(e, index)}
 									ondragover={(e) => allowDrop(e)}
@@ -528,192 +713,116 @@
 										draggable="true"
             							ondragstart={(e) => handleDragStartBar(e, ability, index)}
 									/>
+									
 								{/if}
-								{#each Object.keys(buffTimings) as key}
+								{#if gameState.stalledAbilities[index]}
+									<img 
+										class="stalled-ability"
+										src={allAbils[gameState.stalledAbilities[index]].icon}
+										alt="Stalled ability"
+										title="Stalled: {allAbils[gameState.stalledAbilities[index]].title}"
+									/>
+								{/if}
+								{#each Object.keys(gameState.buffs) as key}
 									{#if buffActive(key, index)}
-										<div title="{buffTimings[key].title}" 
+										<div title="{gameState.buffs[key].title}" 
 											style="
 											position: absolute;
-											bottom: {-(buffLineHeight * 1.5) - (buffLineHeight * buffTimings[key].idx)}px;
+											bottom: {-(buffLineHeight * 1.5) - (buffLineHeight * gameState.buffs[key].idx)}px;
 											left: -1px;
 											width: {buffLineWidth}px;
 											height: {buffLineHeight}px;
-											background-color: {buffTimings[key].colour};
+											background-color: {gameState.buffs[key].colour};
 											box-sizing: border-box; ">
 										</div>
 									{/if}
 								{/each}
-								{#each Object.keys(stacks) as key}
-									{#if showStack(index,  stacks[key].stackTicks) && stacks[key].idx >= 0}
+								{#each Object.keys(gameState.stacks) as key}
+									{#if showStack(index, gameState.stacks[key].stackTicks) && gameState.stacks[key].idx >= 0}
 										<span
-											title="{stacks[key].title}"
+											title="{gameState.stacks[key].title}"
 											style="
 												transform: translateX(0px);
-												top: {baseStackOffset + lineGap + 3 + (stackFontSize+stackPadding) * stacks[key].idx}px;
+												top: {baseStackOffset + uiState.bar.lineGap + 3 + (stackFontSize+stackPadding) * gameState.stacks[key].idx}px;
 												left: {stackFontSize+stackPadding*2}px;
 												font-size: {stackFontSize}px;
-												color: {stacks[key].colour};
+												color: {gameState.stacks[key].colour};
 												"
 											class="bolg-stacks"
 										>
-											{stacks[key].stackTicks[index]}
+											{+gameState.stacks[key].stackTicks[index].toFixed(0)}
 										</span>
-										<img src={stacks[key].image}
+										<img src={gameState.stacks[key].image}
 											style=
 												"transform:translateX({2-(30-stackFontSize)/2}px);
-												top: {baseStackOffset + lineGap + 6 + (stackFontSize+stackPadding) * stacks[key].idx}px;
+												top: {baseStackOffset + uiState.bar.lineGap + 6 + (stackFontSize+stackPadding) * gameState.stacks[key].idx}px;
 												height: {stackFontSize}px;
 												width: {stackFontSize}px;
 												"
 											class="pe-icon"
-											title={stacks[key].title}
-											alt={stacks[key].title}
+											title={gameState.stacks[key].title}
+											alt={gameState.stacks[key].title}
 										/>
 									{/if}
 								{/each}
 
-                            </div>
+							</button>
                         {/each}
                     </div>
                 </div>
             </div>
-            <RangedSettings bind:settings={settings} updateDamages={calculateTotalDamageNew} />
-            {#each Object.keys(stacks) as key}
-                <div>
-                    {#if stacks[key].number}
-                        <Number
-                            bind:setting={settings[stacks[key].displaySetting]}
-                    		onchange={() => refreshUI()}
-                            step="1"
-                            max="200"
-                            min="0"
-                        />
-                    {:else}
-                        <Checkbox
-                            bind:setting={settings[stacks[key].displaySetting]}
-                    		onchange={() => refreshUI()}
-                        />
-                    {/if}
+            <div class="settings-panel col-span-{uiState.settingsPanelCollapsed ? '0' : '6'} {uiState.settingsPanelCollapsed ? 'collapsed' : ''}"
+				style={uiState.settingsPanelCollapsed ? 'visibility: hidden; height: 0; margin: 0;' : ''}>
+                <button 
+                    class="collapse-button"
+                    onclick={() => uiState.settingsPanelCollapsed = true}
+                    style="visibility: visible;"
+                >
+                    → Hide
+                </button>
+                <div class="settings-content">
+                    <RotationSettings bind:settings={gameState.settings} updateDamages={calculateTotalDamageNew} stacks={gameState.stacks} />
                 </div>
-                <br>
-            {/each}
-            <br>
-            <div>
-                <Checkbox
-                    bind:setting={settings[SETTINGS.VIGOUR]}
-                    onchange={() => refreshUI()}
-                />
-                <br>
-                <Checkbox
-                    bind:setting={settings[SETTINGS.FURY_OF_THE_SMALL]}
-                    onchange={() => refreshUI()}
-                />
-                <br>
-                <Checkbox
-                    bind:setting={settings[SETTINGS.CONSERVATION_OF_ENERGY]}
-                    onchange={() => refreshUI()}
-                />
-                <br>
-                <Checkbox
-                    bind:setting={settings[SETTINGS.HEIGHTENED_SENSES]}
-                    onchange={() => refreshUI()}
-                />
-                <br>
-                <Number
-                    bind:setting={settings[SETTINGS.ICY_CHILL_STACKS]}
-                    onchange={() => refreshUI()}
-                    step="1"
-                    max="10"
-                    min="0"
-                />
             </div>
-            <div class="xl:col-span-6 xl:row-start-2 xl:col-start-0">
-                <div class="flex flex-col">
-                    <div class="card card-ranged">
-                        <div class="card-title pb-5">User Guide</div>
-                        <div class="pb-5">
-                            <p>
-                                This is a first beta of the rotation builder. Currently, only ranged is supported.
-								To add abilities, left clicking will add a new ability to the end of your 
-								bar. You can also drag abilities for more control. Right clicking an ability
-								on the bar will remove it. 
-                            </p>
-                        </div>
-                        <div class="pb-5">
-                            <p>
-                                You can configure the additional settings to decide how much information
-								you are shown, as well as how much adrenaline and how many stacks you start
-								with. As adren pots/renewals are not yet implemented, please add additional 
-								starting adrenaline to replicate them for now. Additionally, the damage over time 
-								from Death's Swiftness has been turned off currently while a better 
-								implementation is being written.
-                            </p>
-                        </div>
-						<div class="pb-5">
-                            <p>
-                                Please report any bugs or errors you find in the RSA discord.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-span-12 mt-8">
+                <div class="grid grid-cols-2 gap-6">
+					<div class="card card-rotation col-span-2">
+					<h2 class="card-title pb-5">User Guide</h2>
+					<div class="pb-5">
+						<p>
+							This is a beta of the rotation builder. Currently, only ranged is supported.
+							<br>
+							To add abilities, left clicking will add a new ability to the end of your 
+							bar. You can also drag abilities for more control. Right clicking an ability
+							on the bar will remove it. 
+							<br><br>
+							There are 3 tools - regular, stall, and null.
+							<br>
+							<strong>Regular</strong> is the default mode (keyboard <strong>R</strong>) - left click to add abilities, right click to remove, drag to move.
+							<br>
+							<strong>Stall</strong> mode (keyboard <strong>S</strong>) will allows you to stall the ability you left click on, and release
+							it on any tick on the bar. Stalled abilities can be removed by clicking them in stall mode.
+							<br>
+							<strong>Null</strong> mode (keyboard <strong>N</strong>) will null the ability you left click on, which is equivalent to casting that ability
+							on a dummy.
+							
+						</p>
+					</div>
+					<div class="pb-5">
+						<p>
+							You can configure how much information you are shown, as well as how much 
+							adrenaline and how many stacks you start with in settings.
+						</p>
+					</div>
+					<div class="pb-5">
+						<p>
+							Please report any bugs or errors you find in the RSA discord.
+						</p>
+					</div>
+					</div>
+				</div>
             </div>
 		</section>
 	</div>
 </div>
 
-<style>
-	/* TODO - move these into their own css file */
-	.ability-bar {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, 30px);
-		column-gap: 0px;
-		position: relative;
-	}
-
-	.ability-slot {
-        position: relative;
-		width: 30px;
-		height: 30px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		position: relative;
-		border: 1px solid #878787;
-		box-sizing: border-box;
-    }
-
-	.ability-bar {
-		padding-top: 25px;
-	}
-
-    .cell-number {
-        position: absolute;
-        top: -18px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 12px; 
-        color: #bababa;
-	}
-
-	.bolg-stacks {
-        position: absolute;
-        top: +38px;
-        left: auto;
-        transform: translateX(+50%);
-	}
-
-	.pe-icon {
-		position: absolute;
-		width: 12px;
-		height: 12px;
-		transform: translateX(-70%) translateY(32px);
-	}
-
-	.highlight-red {
-		border: 1px solid rgba(255, 51, 0, 0.789);
-    }
-
-	.highlight-green {
-		border: 1px solid rgba(0, 231, 54, 0.789);
-    }
-</style>

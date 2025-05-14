@@ -119,7 +119,7 @@ function calc_base_ad(settings) {
             base_AD = AD_mh + AD_oh;
         }
     }
-    
+
     // eruptive perk
     base_AD = Math.floor(base_AD * (1 + settings[SETTINGS.ERUPTIVE] * 0.005));
 
@@ -127,7 +127,7 @@ function calc_base_ad(settings) {
     if (settings[SETTINGS.AURA] === 'equilibrium') {
         base_AD = Math.floor(base_AD * 1.12);
     }
-    
+
     return base_AD;
 }
 
@@ -340,7 +340,7 @@ function ability_specific_effects(settings, dmgObject) {
         // combust walk
         if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
             if (settings[SETTINGS.LUNGING]>0) {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);    
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
             }
             else {
                 dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
@@ -424,7 +424,7 @@ function ability_specific_effects(settings, dmgObject) {
         // frag walk
         if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
             if (settings[SETTINGS.LUNGING]>0) {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);    
+                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
             }
             else {
                 dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
@@ -755,14 +755,14 @@ function calc_prayer(settings) {
     let boost = 0;
     if (abils[settings['ability']]['main style'] === prayers[settings[SETTINGS.PRAYER]]['style']) {
         boost += prayers[settings[SETTINGS.PRAYER]]['boost'];
-        
+
         if (['single-stat boosting', 'leech curse'].includes(prayers[settings[SETTINGS.PRAYER]]['category']) &&
-            settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.ZEALOTS                
+            settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.ZEALOTS
         ) {
             boost += 0.1;
         }
     }
-    if (settings[SETTINGS.DIVINE_RAGE] === true && 
+    if (settings[SETTINGS.DIVINE_RAGE] === true &&
         (prayers[settings[SETTINGS.PRAYER]]['book'] === "normal" || prayers[settings[SETTINGS.PRAYER]]['style'] === "none")) {
         boost += 0.05;
     }
@@ -1034,7 +1034,7 @@ function calc_crit_damage(settings) {
 
     // stalkers ring
     if (abils[settings['ability']]['main style'] === 'ranged' &&
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E && 
+        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
         (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)) {
             crit_buff += 0.03;
@@ -1726,48 +1726,11 @@ function apply_additional(settings, total_damage, newbolg = false) {
         total_damage += calc_corruption(settings);
         delete settings['corruption damage'];
     }
-    
+
     // handle instability (fsoa)
     if ('fsoa damage' in settings) {
         total_damage += calc_fsoa(settings);
         delete settings['fsoa damage'];
-    }
-
-    // handle igneous cleave bleed
-    if (settings['ability'] === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
-        total_damage += calc_igneous_bleed(settings);
-    }
-    return total_damage;
-}
-
-function apply_additional_rota(settings, total_damage) {
-    // handle sgb logic
-    if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
-        total_damage += calc_sgb(settings, total_damage);
-    }
-
-    // handle bolg logic
-    if ('bolg damage' in settings) {
-        total_damage += calc_bolg(settings);
-        delete settings['bolg damage'];
-    }
-
-    // handle bloat logic
-    if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
-        total_damage += calc_bloat(settings);
-        delete settings['bloat damage'];
-    }
-
-    // handle corruption shot/blast
-    if ('corruption damage' in settings) {
-        total_damage += calc_corruption(settings);
-        delete settings['corruption damage'];
-    }
-
-    // handle instability (fsoa)
-    if ('fsoa damage' in settings) {
-        total_damage += calc_fsoa(settings);
-        delete settings['fsoa damage']
     }
 
     // handle igneous cleave bleed
@@ -1793,7 +1756,7 @@ function ability_damage_calculation(settings) {
                 }
             }
             settings = next_tick(settings);
-        }  
+        }
     }
     return damage;
 }
@@ -1867,6 +1830,6 @@ function get_rotation(settings) {
 export { ability_damage_calculation, hit_damage_calculation, 
     calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
-    get_user_value, get_rotation, add_split_soul, apply_additional, apply_additional_rota,
+    get_user_value, get_rotation, add_split_soul, apply_additional,
     calc_crit_damage
 };

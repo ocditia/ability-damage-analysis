@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "$lib/*": ["src/lib/*"],
+        "$components/*": ["src/components/*"]
+      }
+    },
+    "exclude": [
+        "node_modules",
+        "build",
+        ".svelte-kit",
+        "static",
+        "dist",
+        "coverage",
+        "tests",
+        "**/*.spec.js",
+        "**/*.test.js"
+      ]
+  }
