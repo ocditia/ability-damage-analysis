@@ -650,6 +650,7 @@ const SETTINGS = {
         T_MAUL: 'terrasaur maul',
         T_MAUL_E: 'terrasaur maul+',
         MW_SPEAR: 'masterwork spear of annihilation',
+        EZK: 'ezk',
     },
     NECRO_TH: 'necro two-hand weapon',
     NECRO_TH_VALUES: {
@@ -795,6 +796,7 @@ const SETTINGS = {
         PER_ADREN: 'per adren',
     },
     MAX_CHANNEL_DURATION: 'max channel duration',
+    FLAMEBOUND_RIVAL: 'flamebound rival'
 };
 
 const settingsConfig = {
@@ -1782,7 +1784,8 @@ const settingsConfig = {
             { text: 'Custom', value: SETTINGS.MELEE_TH_VALUES.CUSTOM },
             { text: 'Terrasaur maul', value: SETTINGS.MELEE_TH_VALUES.T_MAUL },
             { text: 'Terrasaur maul+', value: SETTINGS.MELEE_TH_VALUES.T_MAUL_E },
-            { text: 'MW Spear', value: SETTINGS.MELEE_TH_VALUES.MW_SPEAR}
+            { text: 'MW Spear', value: SETTINGS.MELEE_TH_VALUES.MW_SPEAR},
+            { text: 'EZK', value: SETTINGS.MELEE_TH_VALUES.EZK},
         ]
     },
     [SETTINGS.NECRO_TH]: {
@@ -2201,6 +2204,10 @@ const settingsConfig = {
     [SETTINGS.MAX_CHANNEL_DURATION]: {
         label: 'Max channel length',
         default: 1000
+    },
+    [SETTINGS.FLAMEBOUND_RIVAL]: {
+        label: 'Flamebound',
+        default: false
     },
 };
 

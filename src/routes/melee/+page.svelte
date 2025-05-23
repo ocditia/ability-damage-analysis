@@ -237,6 +237,10 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/chaos_roar.png"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.FLAMEBOUND_RIVAL]}
+                                    onchange={() => updateDamages()}
+                                />
                                 <Select
                                     bind:setting={settings[SETTINGS.VULN]}
                                     onchange={() => updateDamages()}

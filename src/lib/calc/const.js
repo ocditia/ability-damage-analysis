@@ -217,6 +217,13 @@ const weapons = {
     'jas arrows':{
         tier: 99
     },
+    'ezk':{
+        style: 'melee',
+        'weapon type': 'two-hand',
+        tier: 95,
+        type: 'none',
+        classification: 'none'
+    }
 };
 
 const gear = {
