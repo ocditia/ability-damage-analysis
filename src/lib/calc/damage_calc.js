@@ -525,6 +525,12 @@ function set_min_var(settings, dmgObject) {
             min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
             var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
         }
+
+        // bolstered smash
+        if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.MH] === SETTINGS.MELEE_TH_VALUES.EZK) {
+            min_percent = 1.6;
+            var_percent = 1.8;
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
