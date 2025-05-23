@@ -223,7 +223,14 @@ const weapons = {
         tier: 95,
         type: 'none',
         classification: 'none'
-    }
+    },
+    'fractured staff of armadyl':{
+        style: 'magic',
+        'weapon type': 'two-hand',
+        tier: 95,
+        type: 'staff',
+        classification: 'none'
+    },
 };
 
 const gear = {

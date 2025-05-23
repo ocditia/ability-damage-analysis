@@ -635,7 +635,8 @@ const SETTINGS = {
     MAGIC_TH_VALUES: {
         CUSTOM: 'custom th',
         INQ_STAFF: 'inquisitor staff',
-        INQ_STAFF_E: 'inquisitor staff+'
+        INQ_STAFF_E: 'inquisitor staff+',
+        FSOA: 'fractured staff of armadyl',
     },
     RANGED_TH: 'ranged two-hand weapon',
     RANGED_TH_VALUES: {
@@ -1764,7 +1765,8 @@ const settingsConfig = {
         options: [
             { text: 'Custom', value: SETTINGS.MAGIC_TH_VALUES.CUSTOM },
             { text: 'Inq', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF },
-            { text: 'Inq+', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF_E }
+            { text: 'Inq+', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF_E },
+            { text: 'FSOA (+22.5% crit dmg)', value: SETTINGS.MAGIC_TH_VALUES.FSOA },
         ]
     },
     [SETTINGS.RANGED_TH]: {
