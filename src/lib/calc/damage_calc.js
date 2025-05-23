@@ -531,6 +531,12 @@ function set_min_var(settings, dmgObject) {
             min_percent = 1.6;
             var_percent = 1.8;
         }
+
+        // flamebound igneous shutdown
+        if (settings['ability'] === abils[ABILITIES.IGNEOUS_SHUTDOWN] && settings[SETTINGS.FLAMEBOUND_RIVAL] === true) {
+            min_percent += 1.3;
+            var_percent += 0.4;
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {

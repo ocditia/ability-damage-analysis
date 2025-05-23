@@ -177,6 +177,11 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/slice.png'
     },
+    [ABILITIES.IGNEOUS_SHUTDOWN]: {
+        title: 'Igneous shutdown',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/slice.png'
+    },
     [ABILITIES.ARMADYLS_JUDGEMENT]: {
         title: "Armadyl's judgement",
         calc: hit_damage_calculation,
