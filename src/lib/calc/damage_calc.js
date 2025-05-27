@@ -1067,11 +1067,18 @@ function calc_crit_damage(settings) {
             crit_buff += 0.03;
         }
 
-    // fsoa
+    // fsoa 22.5%
     if (settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
-        crit_buff += 0.225;
+        if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
+            crit_buff += 0.3;
+        }
+        else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_CRIT) {
+            crit_buff += 0.15;
+        }
+        else {
+            crit_buff += 0.225;
+        }
     }
-
     return crit_buff;
 }
 
