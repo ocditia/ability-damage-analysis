@@ -258,11 +258,6 @@ function calc_boosted_ad(settings, dmgObject) {
         if (settings['chaos roar'] === true) {
             base_ad_boost += 1;
         }
-
-        // Flamebound rival
-        if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK) {
-            base_ad_boost += 0.05;
-        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
@@ -721,6 +716,13 @@ function calc_additive_boosts(settings, dmgObject) {
     }
 
     // zerk necklace
+
+    // Flamebound rival
+        if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK
+            && abils[settings['ability']]['main style'] === 'melee'
+        ) {
+            base_ad_boost += 0.05;
+        }
 
     // dominion marker (wtf does this do lol?)
 
