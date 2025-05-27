@@ -1268,7 +1268,7 @@ function calc_on_npc(settings, dmgObject) {
 
         // necklace of salamancy
         if (settings[SETTINGS.NECKLACE] === 'necklace of salamancy') {
-            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.15);
         }
 
         // balance of power
