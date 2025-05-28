@@ -721,7 +721,7 @@ function calc_additive_boosts(settings, dmgObject) {
         if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK
             && abils[settings['ability']]['main style'] === 'melee'
         ) {
-            base_ad_boost += 0.05;
+            boost += 0.05;
         }
 
     // dominion marker (wtf does this do lol?)
