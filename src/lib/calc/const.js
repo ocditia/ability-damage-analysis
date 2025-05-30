@@ -1605,6 +1605,9 @@ const ABILITIES = {
     SPEAR_WALL: 'spear wall',
     ICE_CLEAVE: 'ice cleave',
 
+    // perks damage
+    AFTERSHOCK: 'aftershock',
+
     // Defensives
     FREEDOM: 'freedom',
     ANTICIPATION: 'anticipation',
@@ -5017,6 +5020,19 @@ const abils = {
         'damage type': 'melee',//TODO??
         'duration': 0
     },
+
+    [ABILITIES.AFTERSHOCK]: {
+        // ability name
+        'min hit': 0.24, // min % of abil expressed as a decimal
+        'var hit': 0.156,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': false, // is the ability affected by damage potential
+        'ability classification': 'perk', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'perk', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    }
 };
 
 const prayers = {
@@ -5175,7 +5191,8 @@ const prayers = {
     'leech ranged strength 2': {
         'boost': 0.02,
         'style': 'ranged',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech ranged strength 4': {
         'boost': 0.04,

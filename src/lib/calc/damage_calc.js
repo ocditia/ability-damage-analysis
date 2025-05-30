@@ -1870,9 +1870,38 @@ function get_rotation(settings) {
     return rotation;
 }
 
+function calc_aftershock(settings) {
+    settings = style_specific_unification(settings);
+    const dmgObject = create_object(settings);
+    for (let key in dmgObject) {
+        // calc base AD
+        dmgObject[key]['base AD'] = calc_base_ad(settings);
+        // calc buffed AD
+        dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
+        dmgObject[key]['damage list'] = [];
+        for (let i=0; i<39; i++) {
+            dmgObject[key]['damage list'].push(Math.floor(dmgObject[key]['boosted AD'] * (0.24 + 0.04*i)));
+        }
+        // calc core
+        if (abils[settings['ability']]['on-hit effects']) {
+            dmgObject[key] = calc_core(settings, dmgObject, key, newBolg);
+        }
+        // calc on npc
+        dmgObject[key] = calc_on_npc(settings, dmgObject[key]);
+        // add split soul damage
+        if (
+            settings['split soul'] === true
+        ) {
+            dmgObject[key] = add_split_soul(settings, dmgObject[key]);
+        }
+    }
+    // get user value
+    return get_user_value(settings, dmgObject);
+}
+
 export { ability_damage_calculation, hit_damage_calculation, 
     calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
     get_user_value, get_rotation, add_split_soul, apply_additional,
-    calc_crit_damage
+    calc_crit_damage, calc_aftershock
 };
