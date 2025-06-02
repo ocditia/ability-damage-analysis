@@ -522,9 +522,11 @@ function set_min_var(settings, dmgObject) {
         }
 
         // bolstered smash
-        if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.MH] === SETTINGS.MELEE_TH_VALUES.EZK) {
+        if (settings['ability'] === ABILITIES.SMASH && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && 
+            settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK) {
             min_percent = 1.6;
-            var_percent = 1.8;
+            var_percent = 0.2;
+            console.log(min_percent)
         }
     }
 
