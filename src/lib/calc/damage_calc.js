@@ -526,12 +526,6 @@ function set_min_var(settings, dmgObject) {
             min_percent = 1.6;
             var_percent = 1.8;
         }
-
-        // flamebound igneous shutdown
-        if (settings['ability'] === abils[ABILITIES.IGNEOUS_SHUTDOWN] && settings[SETTINGS.FLAMEBOUND_RIVAL] === true) {
-            min_percent += 1.3;
-            var_percent += 0.4;
-        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
@@ -721,7 +715,7 @@ function calc_additive_boosts(settings, dmgObject) {
         if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK
             && abils[settings['ability']]['main style'] === 'melee'
         ) {
-            boost += 0.05;
+            boost += 0.12;
         }
 
     // dominion marker (wtf does this do lol?)
@@ -1821,19 +1815,23 @@ function get_rotation(settings) {
     }
 
     if (settings['ability'] === ABILITIES.DEADSHOT && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-        rotation[1].push(ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED)
+        rotation[1].push(ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED);
     }
 
     if (settings['ability'] === ABILITIES.OVERPOWER && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-        rotation[1].push("next hit")
-        rotation[1].push(ABILITIES.OVERPOWER_HIT)
+        rotation[1].push("next hit");
+        rotation[1].push(ABILITIES.OVERPOWER_HIT);
     }
 
     if (settings['ability'] === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] !== SETTINGS.CAPE_VALUES.ZUK) {
-        rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]}
+        rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]};
     }
 
-    // mastework spear of annihilation
+    if (settings['ability'] === ABILITIES.IGNEOUS_SHUTDOWN && settings[SETTINGS.FLAMEBOUND_RIVAL] === true) {
+        rotation[1].push("next hit", ABILITIES.IGNEOUS_SHUTDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHUTDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHUTDOWN_BONUS);
+    }
+
+    // masterwork spear of annihilation
     if (settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR && 
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
         if (settings['ability'] === ABILITIES.DISMEMBER) {

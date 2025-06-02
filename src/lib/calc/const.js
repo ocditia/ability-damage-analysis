@@ -1591,6 +1591,8 @@ const ABILITIES = {
     IGNEOUS_CLEAVE_INITIAL: 'igneous cleave initial',
     IGNEOUS_CLEAVE_BLEED: 'igneous bleed bleed',
     IGNEOUS_CLEAVE: 'igneous cleave',
+    IGNEOUS_SHUTDOWN_HIT: 'igneous shutdown hit',
+    IGNEOUS_SHUTDOWN_BONUS: 'igneous shutdown bonus',
     IGNEOUS_SHUTDOWN: 'igneous shutdown',
     QUICK_SMASH: 'quick smash',
     AIMED_STRIKE: 'aimed strike',
@@ -2713,7 +2715,7 @@ const abils = {
             1: [ABILITIES.IGNEOUS_CLEAVE_INITIAL, ABILITIES.IGNEOUS_CLEAVE_BLEED]
         }
     },
-    [ABILITIES.IGNEOUS_SHUTDOWN]: {
+    [ABILITIES.IGNEOUS_SHUTDOWN_HIT]: {
         // ability name
         'min hit': 2.3, // min % of abil expressed as a decimal
         'var hit': 0.4,
@@ -2724,6 +2726,33 @@ const abils = {
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
+    },
+    [ABILITIES.IGNEOUS_SHUTDOWN_BONUS]: {
+        // ability name
+        'min hit': 2.15, // min % of abil expressed as a decimal
+        'var hit': 0.02,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
+    [ABILITIES.IGNEOUS_SHUTDOWN]: {
+        // ability name
+        'min hit': 2.3, // min % of abil expressed as a decimal
+        'var hit': 0.4,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        'hits': {
+            1: [ABILITIES.IGNEOUS_SHUTDOWN_HIT]
+        }
     },
     [ABILITIES.QUICK_SMASH]: {
         // ability name

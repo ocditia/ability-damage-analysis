@@ -170,6 +170,10 @@
                                     bind:setting={settings[SETTINGS.MODE]}
                                     onchange={() => updateDamages()}
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.FLAMEBOUND_RIVAL]}
+                                    onchange={() => updateDamages()}
+                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.NUMBER_OF_BLEEDS]}
                                     onchange={() => updateDamages()}
@@ -236,10 +240,6 @@
                                     bind:setting={settings[SETTINGS.CHAOS_ROAR]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/chaos_roar.png"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.FLAMEBOUND_RIVAL]}
-                                    onchange={() => updateDamages()}
                                 />
                                 <Select
                                     bind:setting={settings[SETTINGS.VULN]}
