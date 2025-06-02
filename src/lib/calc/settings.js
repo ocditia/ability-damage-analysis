@@ -344,7 +344,8 @@ const SETTINGS = {
         AOS: 'amulet of souls',
         SALVEE: 'salve amulet (e)',
         SALVE: 'salve amulet',
-        ZEALOTS: 'amulet of zealots'
+        ZEALOTS: 'amulet of zealots',
+        BERSERKER: 'berserker necklace',
     },
     CAPE: 'cape',
     CAPE_VALUES: {
@@ -1389,7 +1390,8 @@ const settingsConfig = {
             { text: 'Reaper', value: SETTINGS.NECKLACE_VALUES.REAPER },
             { text: 'Salve (e)', value: SETTINGS.NECKLACE_VALUES.SALVEE },
             { text: 'Salve', value: SETTINGS.NECKLACE_VALUES.SALVE },
-            { text: 'Zealots', value: SETTINGS.NECKLACE_VALUES.ZEALOTS }
+            { text: 'Zealots', value: SETTINGS.NECKLACE_VALUES.ZEALOTS },
+            { text: 'Berserker', value: SETTINGS.NECKLACE_VALUES.BERSERKER },
         ]
     },
     [SETTINGS.CAPE]: {

@@ -709,14 +709,20 @@ function calc_additive_boosts(settings, dmgObject) {
         boost += 0.02;
     }
 
-    // zerk necklace
+    // berserker necklace
+    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.BERSERKER && 
+        (weapons[settings[SETTINGS.TH]]['classification'] === 'obsidian' && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH ||
+        weapons[settings[SETTINGS.MH]]['classification'] === 'obsidian' && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW)
+    ) {
+        boost += 0.05;
+    }
 
     // Flamebound rival
-        if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK
-            && abils[settings['ability']]['main style'] === 'melee'
-        ) {
-            boost += 0.12;
-        }
+    if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK
+        && abils[settings['ability']]['main style'] === 'melee'
+    ) {
+         boost += 0.12;
+    }
 
     // dominion marker (wtf does this do lol?)
 

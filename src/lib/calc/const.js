@@ -222,7 +222,7 @@ const weapons = {
         'weapon type': 'two-hand',
         tier: 95,
         type: 'none',
-        classification: 'none'
+        classification: 'obsidian'
     },
     'fractured staff of armadyl':{
         style: 'magic',
@@ -823,6 +823,14 @@ const armour = {
         'ranged strength': 48,
         slot: 'necklace',
         style: 'hybrid'
+    },
+    'berserker necklace': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 30.2,
+        'ranged strength': 0,
+        slot: 'necklace',
+        style: 'melee'
     },
     'erethdors grimoire': {
         'necromancy strength': 7,
