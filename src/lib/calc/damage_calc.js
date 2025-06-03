@@ -713,8 +713,7 @@ function calc_additive_boosts(settings, dmgObject) {
 
     // berserker necklace
     if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.BERSERKER && 
-        (weapons[settings[SETTINGS.TH]]['classification'] === 'obsidian' && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH ||
-        weapons[settings[SETTINGS.MH]]['classification'] === 'obsidian' && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW)
+        settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         boost += 0.05;
     }
@@ -1269,7 +1268,10 @@ function calc_on_npc(settings, dmgObject) {
         // essence corruption 25 stack bonus
         if (
             abils[settings['ability']]['damage type'] === 'magic' &&
-            settings[SETTINGS.ESSENCE_CORRUPTION] >= 25
+            settings[SETTINGS.ESSENCE_CORRUPTION] >= 25 &&
+            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
+            (settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING || 
+                settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT)
         ) {
             dmgObject['damage list'][i] =
                 dmgObject['damage list'][i] +
