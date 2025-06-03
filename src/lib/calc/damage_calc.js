@@ -1835,10 +1835,10 @@ function get_rotation(settings) {
         rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]};
     }
 
-    if (settings['ability'] === ABILITIES.IGNEOUS_SHUTDOWN && settings[SETTINGS.FLAMEBOUND_RIVAL] === true
+    if (settings['ability'] === ABILITIES.IGNEOUS_SHOWDOWN && settings[SETTINGS.FLAMEBOUND_RIVAL] === true
         && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK
     ) {
-        rotation[1].push("next hit", ABILITIES.IGNEOUS_SHUTDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHUTDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHUTDOWN_BONUS);
+        rotation[1].push("next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS);
     }
 
     // masterwork spear of annihilation

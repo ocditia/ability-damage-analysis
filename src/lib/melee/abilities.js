@@ -177,7 +177,7 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/slice.png'
     },
-    [ABILITIES.IGNEOUS_SHUTDOWN]: {
+    [ABILITIES.IGNEOUS_SHOWDOWN]: {
         title: 'Igneous shutdown',
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/slice.png'
