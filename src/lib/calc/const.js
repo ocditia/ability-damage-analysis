@@ -2759,7 +2759,7 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee',
         'hits': {
-            1: [ABILITIES.IGNEOUS_SHUTDOWN_HIT]
+            1: [ABILITIES.IGNEOUS_SHOWDOWN_HIT]
         }
     },
     [ABILITIES.QUICK_SMASH]: {

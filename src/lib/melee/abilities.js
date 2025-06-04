@@ -175,12 +175,12 @@ const abilities = {
     [ABILITIES.IGNEOUS_CLEAVE]: {
         title: 'Igneous cleave',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/slice.png'
+        icon: '/ability_icons/melee/30x30/ezk-bg.png'
     },
     [ABILITIES.IGNEOUS_SHOWDOWN]: {
-        title: 'Igneous shutdown',
+        title: 'Igneous showdown',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/slice.png'
+        icon: '/ability_icons/melee/30x30/ezk-bg.png'
     },
     [ABILITIES.ARMADYLS_JUDGEMENT]: {
         title: "Armadyl's judgement",
