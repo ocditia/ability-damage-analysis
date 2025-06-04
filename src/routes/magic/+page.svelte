@@ -177,6 +177,14 @@
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">General</h5>
                                 <Select
+                                    bind:setting={settings[SETTINGS.AUTO_HAND]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Select
+                                    bind:setting={settings[SETTINGS.AUTO_SPEED]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Select
                                     bind:setting={settings[SETTINGS.MODE]}
                                     onchange={() => updateDamages()}
                                 />

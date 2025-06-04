@@ -1407,6 +1407,7 @@ const ABILITIES = {
     DEATH_GRASP: 'death grasp',
     DEATH_ESSENCE: 'death essence',
 
+    RANGED_AUTO: 'ranged auto',
     PIERCING_SHOT_HIT: 'piercing shot hit',
     PIERCING_SHOT: 'piercing shot',
     BINDING_SHOT: 'binding shot',
@@ -1468,6 +1469,7 @@ const ABILITIES = {
     DESTRUCTIVE_SHOT: 'destructive shot',
     DEFIANCE: 'defiance',
 
+    MAGIC_AUTO: 'magic auto',
     WRACK: 'wrack',
     IMPACT: 'impact',
     WRACK_AND_RUIN: 'wrack and ruin',
@@ -1530,6 +1532,7 @@ const ABILITIES = {
     MIASMIC_BARRAGE: 'miasmic barrage',
     TIME_STRIKE: 'time strike',
 
+    MELEE_AUTO: 'melee auto',
     SLICE: 'slice',
     BACKHAND: 'backhand',
     HAVOC: 'havoc',
@@ -1652,6 +1655,18 @@ const ABILITIES = {
 };
 
 const abils = {
+    [ABILITIES.MELEE_AUTO]: {
+        // ability name
+        'min hit': 0.2, // min % of abil expressed as a decimal
+        'var hit': 0.8,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'auto', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'auto', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
     [ABILITIES.SLICE]: {
         // ability name
         'min hit': 0.95, // min % of abil expressed as a decimal
@@ -2918,6 +2933,18 @@ const abils = {
         'damage type': 'melee'
     },
 
+    [ABILITIES.MAGIC_AUTO]: {
+        // ability name
+        'min hit': 0.2, // min % of abil expressed as a decimal
+        'var hit': 0.8,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'auto', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'auto', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
     [ABILITIES.WRACK]: {
         // ability name
         'min hit': 0.9, // min % of abil expressed as a decimal
@@ -4098,6 +4125,18 @@ const abils = {
         'damage type': 'necrotic'
     },
 
+    [ABILITIES.RANGED_AUTO]: {
+        // ability name
+        'min hit': 0.2, // min % of abil expressed as a decimal
+        'var hit': 0.8,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'auto', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'auto', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged'
+    },
     [ABILITIES.PIERCING_SHOT_HIT]: {
         // ability name
         'min hit': 0.45, // min % of abil expressed as a decimal

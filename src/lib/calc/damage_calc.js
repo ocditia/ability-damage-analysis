@@ -303,6 +303,29 @@ function calc_boosted_ad(settings, dmgObject) {
 function ability_specific_effects(settings, dmgObject) {
     // order of these effects in unknown and should be researched properly still.
     if (abils[settings['ability']]['main style'] === 'magic') {
+        // auto attack
+        if (settings['ability'] === ABILITIES.MAGIC_AUTO) {
+            let hand_modifier = 1;
+            if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.MH) {
+                hand_modifier = 1;
+            } else if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.OH) {
+                hand_modifier = 0.5;
+            } else {
+                hand_modifier = 1.5;
+            }
+            console.log(settings[SETTINGS.AUTO_HAND])
+
+            let speed_modifier = 1;
+            if (settings[SETTINGS.AUTO_SPEED] === SETTINGS.AUTO_SPEED_VALUES.FASTEST) {
+                speed_modifier = 1;
+            } else if (settings[SETTINGS.AUTO_SPEED] === SETTINGS.AUTO_SPEED_VALUES.FAST) {
+                speed_modifier = 1225/960;
+            } else {
+                speed_modifier = 1490/960;
+            }
+            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier) * speed_modifier);
+        }
+
         // conflagrate
         if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.CONFLAGRATE] === true) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);

@@ -799,7 +799,19 @@ const SETTINGS = {
         PER_ADREN: 'per adren',
     },
     MAX_CHANNEL_DURATION: 'max channel duration',
-    FLAMEBOUND_RIVAL: 'flamebound rival'
+    FLAMEBOUND_RIVAL: 'flamebound rival',
+    AUTO_SPEED: 'auto speed',
+    AUTO_SPEED_VALUES: {
+        FASTEST: 'fastest',
+        FAST: 'fast',
+        AVERAGE: 'average',
+    },
+    AUTO_HAND: 'auto hand',
+    AUTO_HAND_VALUES: {
+        MH: 'main hand',
+        OH: 'off hand',
+        TH: 'two hand',
+    }
 };
 
 const settingsConfig = {
@@ -2214,6 +2226,24 @@ const settingsConfig = {
     [SETTINGS.FLAMEBOUND_RIVAL]: {
         label: 'Flamebound',
         default: false
+    },
+    [SETTINGS.AUTO_SPEED]: {
+        label: 'Attack speed',
+        default: SETTINGS.AUTO_SPEED_VALUES.AVERAGE,
+        options: [
+            { text: 'Average (6t)', value: SETTINGS.AUTO_SPEED_VALUES.AVERAGE },
+            { text: 'Fast (5t)', value: SETTINGS.AUTO_SPEED_VALUES.FAST },
+            { text: 'Fastest (4t)', value: SETTINGS.AUTO_SPEED_VALUES.FASTEST }
+        ]
+    },
+    [SETTINGS.AUTO_HAND]: {
+        label: 'Attack speed',
+        default: SETTINGS.AUTO_HAND_VALUES.TH,
+        options: [
+            { text: '2h auto', value: SETTINGS.AUTO_HAND_VALUES.TH },
+            { text: 'mh auto', value: SETTINGS.AUTO_HAND_VALUES.MH },
+            { text: 'oh auto', value: SETTINGS.AUTO_HAND_VALUES.OH }
+        ]
     },
 };
 
