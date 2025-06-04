@@ -832,6 +832,14 @@ const armour = {
         slot: 'necklace',
         style: 'melee'
     },
+    'desert amulet 4': {
+        'necromancy strength': 30.2,
+        'magic strength': 30.2,
+        'melee strength': 30.2,
+        'ranged strength': 30.2,
+        slot: 'necklace',
+        style: 'hybrid'
+    },
     'erethdors grimoire': {
         'necromancy strength': 7,
         'magic strength': 7,

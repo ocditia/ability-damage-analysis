@@ -346,6 +346,7 @@ const SETTINGS = {
         SALVE: 'salve amulet',
         ZEALOTS: 'amulet of zealots',
         BERSERKER: 'berserker necklace',
+        DESERT: 'desert amulet 4',
     },
     CAPE: 'cape',
     CAPE_VALUES: {
@@ -1392,6 +1393,7 @@ const settingsConfig = {
             { text: 'Salve', value: SETTINGS.NECKLACE_VALUES.SALVE },
             { text: 'Zealots', value: SETTINGS.NECKLACE_VALUES.ZEALOTS },
             { text: 'Berserker', value: SETTINGS.NECKLACE_VALUES.BERSERKER },
+            { text: 'Desert ammy 4', value: SETTINGS.NECKLACE_VALUES.DESERT },
         ]
     },
     [SETTINGS.CAPE]: {
