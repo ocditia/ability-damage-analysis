@@ -313,17 +313,17 @@ function ability_specific_effects(settings, dmgObject) {
             } else {
                 hand_modifier = 1.5;
             }
-            console.log(settings[SETTINGS.AUTO_HAND])
 
-            let speed_modifier = 1;
+            /*let speed_modifier = 1;
             if (settings[SETTINGS.AUTO_SPEED] === SETTINGS.AUTO_SPEED_VALUES.FASTEST) {
                 speed_modifier = 1;
             } else if (settings[SETTINGS.AUTO_SPEED] === SETTINGS.AUTO_SPEED_VALUES.FAST) {
                 speed_modifier = 1225/960;
             } else {
                 speed_modifier = 1490/960;
-            }
-            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier) * speed_modifier);
+            }*/
+            //dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier) * speed_modifier);
+            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
         }
 
         // conflagrate
