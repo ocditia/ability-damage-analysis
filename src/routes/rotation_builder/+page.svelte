@@ -18,9 +18,9 @@
 	import {buffs, createBuffTimings, createStackTimings} from '$lib/calc/rotation_builder/rotation_consts.ts';
 	import {ToolMode} from '$lib/calc/rotation_builder/ui_material/toolModes.ts';
     import ExtraActionsPanel from '../../components/RotationBuilder/ExtraActionsPanel.svelte';
-    import { calculateTotalDamage } from '$lib/calc/rotation-damage-calculator';
+    import { calculateTotalDamage } from '$lib/calc/rotation_builder/rotation-damage-calculator';
 
-    let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abils eventually
+    let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abilities eventually
     let meleeAbils = {...melee_dmg_abilities};
     let magicAbils = {...magic_dmg_abilities};
 	let rangedAbils = {...r_dmg_abilities, ...ranged_buff_abilities};
@@ -30,11 +30,11 @@
 	let specialAbils = {...offGcdAbilities};
 	let extraActions = {...specialAbils};
 
-	// Constants
+	// UI Constants
 	const BASE_BAR_ROW_GAP = 30;
 	const BAR_SIZE = 200;
 	const EXTRA_BAR_SIZE = 12;
-	const stackFontSize = 10;//12
+	const stackFontSize = 10;
 	const baseStackOffset = 32;
 	const stackPadding = 2;
 	const buffLineWidth = 32;

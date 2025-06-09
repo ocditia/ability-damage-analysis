@@ -32,7 +32,7 @@
 
         settings[SETTINGS.LVL20ARMOUR]['value'] = false;
         settings[SETTINGS.BITING]['value'] = 0;
-        settings[SETTINGS.ERUPTIVE]['value'] = 0;
+        settings[SETTINGS.ERUPTIVE]['value'] = 2;
         settings[SETTINGS.VULN]['value'] = 'none';
 
         settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
@@ -41,8 +41,9 @@
         settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
         settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
         
-        settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 92;
-        settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.CUSTOM;
+        settings[SETTINGS.SHARD_OF_GENESIS]['value'] = false;
+
+        settings[SETTINGS.INNATE_MASTERY]['value'] = false;
         settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MIN_NO_CRIT;
         
     }
@@ -65,7 +66,7 @@
         
         
     }
-    //makeNaked();
+    makeNaked();
     // testPreset();
     //settings[SETTINGS.ICY_CHILL_STACKS].value = 10;
     updateDamages();

@@ -1,7 +1,8 @@
-import { create_object } from './object_helper';
-import { SETTINGS } from './settings';
-import { ABILITIES, abils } from './const';
+import { create_damage_object } from './rota_object_helper';
+import { SETTINGS } from '../settings';
+import { ABILITIES, abils } from '../const';
 import { on_cast, on_hit } from './damage_calc_new';
+
 
 /**
  * Calculates the damage object for a single tick of a channelled ability
@@ -11,15 +12,21 @@ import { on_cast, on_hit } from './damage_calc_new';
  * @param {} timers - timers object containing buff timer information
  * @returns
  */
-function calc_channelled_hit(settings, hit_index, rotation, timers) {
-    let dmgObject = create_object(settings);
+function calc_channelled_hit(settings, hit_index, rotation, timers, abilityKey) {
+    let hits = [];
+    let dmgObject = create_damage_object(settings, abilityKey);
     for (let iter = 0; iter < rotation[hit_index].length; iter++) {
         settings['ability'] = rotation[hit_index][iter];
-        on_cast(settings, dmgObject, timers);
-        on_hit(settings, dmgObject);
-        handle_edraco(settings, timers, rotation[hit_index][iter]);
+        let dmgObjects = on_cast(settings, dmgObject, timers, abilityKey);
+        for (let obj of dmgObjects) {
+            let o = on_hit(settings, obj, timers, obj['crit']['ability']);
+            for (let hit of o) {
+                hits.push(hit);
+                handle_edraco(settings, timers, hit['crit']['ability']);
+            }
+        }
     }
-    return dmgObject;
+    return hits;
 }
 
 /**
@@ -28,7 +35,7 @@ function calc_channelled_hit(settings, hit_index, rotation, timers) {
  * @param {Object} timers - map of (buff_name -> buff_duration)
  * @param {String} abilityKey 
  */
-function handle_ranged_buffs(settings, timers, abilityKey) {
+function handle_buffs(settings, timers, abilityKey) {
     //TODO handle swiftness' weird damage calc + cleanup format
     if (abilityKey == ABILITIES.DEATHS_SWIFTNESS) {
         settings['death swiftness'] = true;
@@ -106,6 +113,6 @@ function handle_sgb(settings, dmgObject, damageTracker, hitTick) {
 }
 
 export { 
-    handle_ranged_buffs,
+    handle_buffs,
     calc_channelled_hit
 };
