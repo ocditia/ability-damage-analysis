@@ -103,6 +103,28 @@ function calc_crit_chance(settings) {
         crit_chance += 0.05;
     }
 
+    // tectonic armour
+    if (settings[SETTINGS.HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TECTONIC) {
+        crit_chance += 0.01;
+    }
+    if (settings[SETTINGS.BODY] === SETTINGS.MAGIC_BODY_VALUES.TECTONIC) {
+        crit_chance += 0.01;
+    }
+    if (settings[SETTINGS.LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TECTONIC) {
+        crit_chance += 0.01
+    }
+
+    // elite tectonic armour'
+    if (settings[SETTINGS.HELMET] === SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC) {
+        crit_chance += 0.02;
+    }
+    if (settings[SETTINGS.BODY] === SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC) {
+        crit_chance += 0.02;
+    }
+    if (settings[SETTINGS.LEGS] === SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC) {
+        crit_chance += 0.02;
+    }
+
     if (abils[settings['ability']]['main style'] === 'magic') {
         // channeller's ring
         if (

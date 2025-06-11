@@ -170,6 +170,10 @@
                                     bind:setting={settings[SETTINGS.MODE]}
                                     onchange={() => updateDamages()}
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.FLAMEBOUND_RIVAL]}
+                                    onchange={() => updateDamages()}
+                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.NUMBER_OF_BLEEDS]}
                                     onchange={() => updateDamages()}

@@ -344,7 +344,9 @@ const SETTINGS = {
         AOS: 'amulet of souls',
         SALVEE: 'salve amulet (e)',
         SALVE: 'salve amulet',
-        ZEALOTS: 'amulet of zealots'
+        ZEALOTS: 'amulet of zealots',
+        BERSERKER: 'berserker necklace',
+        DESERT: 'desert amulet 4',
     },
     CAPE: 'cape',
     CAPE_VALUES: {
@@ -635,7 +637,8 @@ const SETTINGS = {
     MAGIC_TH_VALUES: {
         CUSTOM: 'custom th',
         INQ_STAFF: 'inquisitor staff',
-        INQ_STAFF_E: 'inquisitor staff+'
+        INQ_STAFF_E: 'inquisitor staff+',
+        FSOA: 'fractured staff of armadyl',
     },
     RANGED_TH: 'ranged two-hand weapon',
     RANGED_TH_VALUES: {
@@ -650,6 +653,7 @@ const SETTINGS = {
         T_MAUL: 'terrasaur maul',
         T_MAUL_E: 'terrasaur maul+',
         MW_SPEAR: 'masterwork spear of annihilation',
+        EZK: 'ezk',
     },
     NECRO_TH: 'necro two-hand weapon',
     NECRO_TH_VALUES: {
@@ -795,6 +799,19 @@ const SETTINGS = {
         PER_ADREN: 'per adren',
     },
     MAX_CHANNEL_DURATION: 'max channel duration',
+    FLAMEBOUND_RIVAL: 'flamebound rival',
+    AUTO_SPEED: 'auto speed',
+    AUTO_SPEED_VALUES: {
+        FASTEST: 'fastest',
+        FAST: 'fast',
+        AVERAGE: 'average',
+    },
+    AUTO_HAND: 'auto hand',
+    AUTO_HAND_VALUES: {
+        MH: 'main hand',
+        OH: 'off hand',
+        TH: 'two hand',
+    }
 };
 
 const settingsConfig = {
@@ -1386,7 +1403,9 @@ const settingsConfig = {
             { text: 'Reaper', value: SETTINGS.NECKLACE_VALUES.REAPER },
             { text: 'Salve (e)', value: SETTINGS.NECKLACE_VALUES.SALVEE },
             { text: 'Salve', value: SETTINGS.NECKLACE_VALUES.SALVE },
-            { text: 'Zealots', value: SETTINGS.NECKLACE_VALUES.ZEALOTS }
+            { text: 'Zealots', value: SETTINGS.NECKLACE_VALUES.ZEALOTS },
+            { text: 'Berserker', value: SETTINGS.NECKLACE_VALUES.BERSERKER },
+            { text: 'Desert ammy 4', value: SETTINGS.NECKLACE_VALUES.DESERT },
         ]
     },
     [SETTINGS.CAPE]: {
@@ -1762,7 +1781,8 @@ const settingsConfig = {
         options: [
             { text: 'Custom', value: SETTINGS.MAGIC_TH_VALUES.CUSTOM },
             { text: 'Inq', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF },
-            { text: 'Inq+', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF_E }
+            { text: 'Inq+', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF_E },
+            { text: 'FSOA (+22.5% crit dmg)', value: SETTINGS.MAGIC_TH_VALUES.FSOA },
         ]
     },
     [SETTINGS.RANGED_TH]: {
@@ -1782,7 +1802,8 @@ const settingsConfig = {
             { text: 'Custom', value: SETTINGS.MELEE_TH_VALUES.CUSTOM },
             { text: 'Terrasaur maul', value: SETTINGS.MELEE_TH_VALUES.T_MAUL },
             { text: 'Terrasaur maul+', value: SETTINGS.MELEE_TH_VALUES.T_MAUL_E },
-            { text: 'MW Spear', value: SETTINGS.MELEE_TH_VALUES.MW_SPEAR}
+            { text: 'MW Spear', value: SETTINGS.MELEE_TH_VALUES.MW_SPEAR},
+            { text: 'EZK', value: SETTINGS.MELEE_TH_VALUES.EZK},
         ]
     },
     [SETTINGS.NECRO_TH]: {
@@ -2201,6 +2222,28 @@ const settingsConfig = {
     [SETTINGS.MAX_CHANNEL_DURATION]: {
         label: 'Max channel length',
         default: 1000
+    },
+    [SETTINGS.FLAMEBOUND_RIVAL]: {
+        label: 'Flamebound',
+        default: false
+    },
+    [SETTINGS.AUTO_SPEED]: {
+        label: 'Attack speed',
+        default: SETTINGS.AUTO_SPEED_VALUES.AVERAGE,
+        options: [
+            { text: 'Average (6t)', value: SETTINGS.AUTO_SPEED_VALUES.AVERAGE },
+            { text: 'Fast (5t)', value: SETTINGS.AUTO_SPEED_VALUES.FAST },
+            { text: 'Fastest (4t)', value: SETTINGS.AUTO_SPEED_VALUES.FASTEST }
+        ]
+    },
+    [SETTINGS.AUTO_HAND]: {
+        label: 'Attack speed',
+        default: SETTINGS.AUTO_HAND_VALUES.TH,
+        options: [
+            { text: '2h auto', value: SETTINGS.AUTO_HAND_VALUES.TH },
+            { text: 'mh auto', value: SETTINGS.AUTO_HAND_VALUES.MH },
+            { text: 'oh auto', value: SETTINGS.AUTO_HAND_VALUES.OH }
+        ]
     },
 };
 

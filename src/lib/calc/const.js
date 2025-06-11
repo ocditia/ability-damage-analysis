@@ -217,6 +217,20 @@ const weapons = {
     'jas arrows':{
         tier: 99
     },
+    'ezk':{
+        style: 'melee',
+        'weapon type': 'two-hand',
+        tier: 95,
+        type: 'none',
+        classification: 'obsidian'
+    },
+    'fractured staff of armadyl':{
+        style: 'magic',
+        'weapon type': 'two-hand',
+        tier: 95,
+        type: 'staff',
+        classification: 'none'
+    },
 };
 
 const gear = {
@@ -810,6 +824,22 @@ const armour = {
         slot: 'necklace',
         style: 'hybrid'
     },
+    'berserker necklace': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 30.2,
+        'ranged strength': 0,
+        slot: 'necklace',
+        style: 'melee'
+    },
+    'desert amulet 4': {
+        'necromancy strength': 30.2,
+        'magic strength': 30.2,
+        'melee strength': 30.2,
+        'ranged strength': 30.2,
+        slot: 'necklace',
+        style: 'hybrid'
+    },
     'erethdors grimoire': {
         'necromancy strength': 7,
         'magic strength': 7,
@@ -1377,6 +1407,7 @@ const ABILITIES = {
     DEATH_GRASP: 'death grasp',
     DEATH_ESSENCE: 'death essence',
 
+    RANGED_AUTO: 'ranged auto',
     PIERCING_SHOT_HIT: 'piercing shot hit',
     PIERCING_SHOT: 'piercing shot',
     BINDING_SHOT: 'binding shot',
@@ -1438,6 +1469,7 @@ const ABILITIES = {
     DESTRUCTIVE_SHOT: 'destructive shot',
     DEFIANCE: 'defiance',
 
+    MAGIC_AUTO: 'magic auto',
     WRACK: 'wrack',
     IMPACT: 'impact',
     WRACK_AND_RUIN: 'wrack and ruin',
@@ -1502,6 +1534,7 @@ const ABILITIES = {
     MIASMIC_BARRAGE: 'miasmic barrage',
     TIME_STRIKE: 'time strike',
 
+    MELEE_AUTO: 'melee auto',
     SLICE: 'slice',
     BACKHAND: 'backhand',
     HAVOC: 'havoc',
@@ -1579,6 +1612,9 @@ const ABILITIES = {
     IGNEOUS_CLEAVE_INITIAL: 'igneous cleave initial',
     IGNEOUS_CLEAVE_BLEED: 'igneous bleed bleed',
     IGNEOUS_CLEAVE: 'igneous cleave',
+    IGNEOUS_SHOWDOWN_HIT: 'igneous showdown hit',
+    IGNEOUS_SHOWDOWN_BONUS: 'igneous showdown bonus',
+    IGNEOUS_SHOWDOWN: 'igneous showdown',
     QUICK_SMASH: 'quick smash',
     AIMED_STRIKE: 'aimed strike',
     DISRUPT: 'disrupt',
@@ -1591,6 +1627,9 @@ const ABILITIES = {
     FEINT: 'feint',
     SPEAR_WALL: 'spear wall',
     ICE_CLEAVE: 'ice cleave',
+
+    // perks damage
+    AFTERSHOCK: 'aftershock',
 
     // Defensives
     FREEDOM: 'freedom',
@@ -1618,6 +1657,18 @@ const ABILITIES = {
 };
 
 const abils = {
+    [ABILITIES.MELEE_AUTO]: {
+        // ability name
+        'min hit': 0.2, // min % of abil expressed as a decimal
+        'var hit': 0.8,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'auto', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'auto', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
     [ABILITIES.SLICE]: {
         // ability name
         'min hit': 0.95, // min % of abil expressed as a decimal
@@ -2697,6 +2748,45 @@ const abils = {
             1: [ABILITIES.IGNEOUS_CLEAVE_INITIAL, ABILITIES.IGNEOUS_CLEAVE_BLEED]
         }
     },
+    [ABILITIES.IGNEOUS_SHOWDOWN_HIT]: {
+        // ability name
+        'min hit': 2.3, // min % of abil expressed as a decimal
+        'var hit': 0.4,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
+    [ABILITIES.IGNEOUS_SHOWDOWN_BONUS]: {
+        // ability name
+        'min hit': 2.15, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
+    [ABILITIES.IGNEOUS_SHOWDOWN]: {
+        // ability name
+        'min hit': 2.3, // min % of abil expressed as a decimal
+        'var hit': 0.4,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        'hits': {
+            1: [ABILITIES.IGNEOUS_SHOWDOWN_HIT]
+        }
+    },
     [ABILITIES.QUICK_SMASH]: {
         // ability name
         'min hit': 1.0, // min % of abil expressed as a decimal
@@ -2845,6 +2935,18 @@ const abils = {
         'damage type': 'melee'
     },
 
+    [ABILITIES.MAGIC_AUTO]: {
+        // ability name
+        'min hit': 0.2, // min % of abil expressed as a decimal
+        'var hit': 0.8,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'auto', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'auto', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
     [ABILITIES.WRACK]: {
         // ability name
         'min hit': 0.9, // min % of abil expressed as a decimal
@@ -4069,6 +4171,18 @@ const abils = {
         'damage type': 'necrotic'
     },
 
+    [ABILITIES.RANGED_AUTO]: {
+        // ability name
+        'min hit': 0.2, // min % of abil expressed as a decimal
+        'var hit': 0.8,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'auto', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'auto', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged'
+    },
     [ABILITIES.PIERCING_SHOT_HIT]: {
         // ability name
         'min hit': 0.45, // min % of abil expressed as a decimal
@@ -5036,6 +5150,19 @@ const abils = {
         'damage type': 'melee',//TODO??
         'duration': 0
     },
+
+    [ABILITIES.AFTERSHOCK]: {
+        // ability name
+        'min hit': 0.24, // min % of abil expressed as a decimal
+        'var hit': 0.156,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': false, // is the ability affected by damage potential
+        'ability classification': 'perk', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'perk', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    }
 };
 
 const prayers = {
@@ -5194,7 +5321,8 @@ const prayers = {
     'leech ranged strength 2': {
         'boost': 0.02,
         'style': 'ranged',
-        'category': 'leech curse'
+        'category': 'leech curse',
+        'book': 'curses'
     },
     'leech ranged strength 4': {
         'boost': 0.04,

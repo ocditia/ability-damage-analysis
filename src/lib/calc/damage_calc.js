@@ -303,6 +303,29 @@ function calc_boosted_ad(settings, dmgObject) {
 function ability_specific_effects(settings, dmgObject) {
     // order of these effects in unknown and should be researched properly still.
     if (abils[settings['ability']]['main style'] === 'magic') {
+        // auto attack
+        if (settings['ability'] === ABILITIES.MAGIC_AUTO) {
+            let hand_modifier = 1;
+            if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.MH) {
+                hand_modifier = 1;
+            } else if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.OH) {
+                hand_modifier = 0.5;
+            } else {
+                hand_modifier = 1.5;
+            }
+
+            /*let speed_modifier = 1;
+            if (settings[SETTINGS.AUTO_SPEED] === SETTINGS.AUTO_SPEED_VALUES.FASTEST) {
+                speed_modifier = 1;
+            } else if (settings[SETTINGS.AUTO_SPEED] === SETTINGS.AUTO_SPEED_VALUES.FAST) {
+                speed_modifier = 1225/960;
+            } else {
+                speed_modifier = 1490/960;
+            }*/
+            //dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier) * speed_modifier);
+            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
+        }
+
         // conflagrate
         if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.CONFLAGRATE] === true) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
@@ -520,6 +543,14 @@ function set_min_var(settings, dmgObject) {
             min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
             var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
         }
+
+        // bolstered smash
+        if (settings['ability'] === ABILITIES.SMASH && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+            settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK) {
+            min_percent = 1.6;
+            var_percent = 0.2;
+            console.log(min_percent)
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
@@ -703,7 +734,19 @@ function calc_additive_boosts(settings, dmgObject) {
         boost += 0.02;
     }
 
-    // zerk necklace
+    // berserker necklace
+    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.BERSERKER &&
+        settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
+    ) {
+        boost += 0.05;
+    }
+
+    // Flamebound rival
+    if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK
+        && abils[settings['ability']]['main style'] === 'melee'
+    ) {
+         boost += 0.12;
+    }
 
     // dominion marker (wtf does this do lol?)
 
@@ -1045,6 +1088,18 @@ function calc_crit_damage(settings) {
             crit_buff += 0.03;
         }
 
+    // fsoa 22.5%
+    if (settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
+        if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
+            crit_buff += 0.3;
+        }
+        else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_CRIT) {
+            crit_buff += 0.15;
+        }
+        else {
+            crit_buff += 0.225;
+        }
+    }
     return crit_buff;
 }
 
@@ -1233,7 +1288,10 @@ function calc_on_npc(settings, dmgObject) {
         // essence corruption 25 stack bonus
         if (
             abils[settings['ability']]['damage type'] === 'magic' &&
-            settings[SETTINGS.ESSENCE_CORRUPTION] >= 25
+            settings[SETTINGS.ESSENCE_CORRUPTION] >= 25 &&
+            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
+            (settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING ||
+                settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT)
         ) {
             dmgObject['damage list'][i] =
                 dmgObject['damage list'][i] +
@@ -1243,7 +1301,7 @@ function calc_on_npc(settings, dmgObject) {
 
         // necklace of salamancy
         if (settings[SETTINGS.NECKLACE] === 'necklace of salamancy') {
-            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.15);
         }
 
         // balance of power
@@ -1734,19 +1792,25 @@ function get_hit_sequence(settings) {
     }
 
     if (settings['ability'] === ABILITIES.DEADSHOT && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-        rotation[1].push(ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED)
+        rotation[1].push(ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED);
     }
 
     if (settings['ability'] === ABILITIES.OVERPOWER && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-        rotation[1].push("next hit")
-        rotation[1].push(ABILITIES.OVERPOWER_HIT)
+        rotation[1].push("next hit");
+        rotation[1].push(ABILITIES.OVERPOWER_HIT);
     }
 
     if (settings['ability'] === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] !== SETTINGS.CAPE_VALUES.ZUK) {
-        rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]}
+        rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]};
     }
 
-    // mastework spear of annihilation
+    if (settings['ability'] === ABILITIES.IGNEOUS_SHOWDOWN && settings[SETTINGS.FLAMEBOUND_RIVAL] === true
+        && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK
+    ) {
+        rotation[1].push("next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS);
+    }
+
+    // masterwork spear of annihilation
     if (settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR && 
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
         if (settings['ability'] === ABILITIES.DISMEMBER) {
@@ -1783,9 +1847,38 @@ function get_hit_sequence(settings) {
     return rotation;
 }
 
-export { ability_damage_calculation, hit_damage_calculation, 
+function calc_aftershock(settings) {
+    settings = style_specific_unification(settings);
+    const dmgObject = create_object(settings);
+    for (let key in dmgObject) {
+        // calc base AD
+        dmgObject[key]['base AD'] = calc_base_ad(settings);
+        // calc buffed AD
+        dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
+        dmgObject[key]['damage list'] = [];
+        for (let i=0; i<39; i++) {
+            dmgObject[key]['damage list'].push(Math.floor(dmgObject[key]['boosted AD'] * (0.24 + 0.04*i)));
+        }
+        // calc core
+        if (abils[settings['ability']]['on-hit effects']) {
+            dmgObject[key] = calc_core(settings, dmgObject, key, newBolg);
+        }
+        // calc on npc
+        dmgObject[key] = calc_on_npc(settings, dmgObject[key]);
+        // add split soul damage
+        if (
+            settings['split soul'] === true
+        ) {
+            dmgObject[key] = add_split_soul(settings, dmgObject[key]);
+        }
+    }
+    // get user value
+    return get_user_value(settings, dmgObject);
+}
+
+export { ability_damage_calculation, hit_damage_calculation,
     calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
     get_user_value, get_hit_sequence, add_split_soul, apply_additional,
-    calc_crit_damage, calc_split_soul_hit
+    calc_crit_damage, calc_split_soul_hit, calc_aftershock
 };

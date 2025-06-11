@@ -1,7 +1,12 @@
 import { ABILITIES } from '../calc/const.js';
-import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
+import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc.js';
 
 const abilities = {
+    [ABILITIES.MAGIC_AUTO]: {
+        title: 'Auto (I think)',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png'
+    },
     [ABILITIES.GREATER_CONCENTRATED_BLAST]: {
         title: 'Gconc',
         calc: ability_damage_calculation,
@@ -175,6 +180,11 @@ const abilities = {
     [ABILITIES.MIASMIC_BARRAGE]: {
         title: 'Miasmic barrage',
         calc: hit_damage_calculation,
+        icon: '/ability_icons/magic/30x30/zuriels_staff.png'
+    },
+    [ABILITIES.AFTERSHOCK]: {
+        title: 'Aftershock',
+        calc: calc_aftershock,
         icon: '/ability_icons/magic/30x30/zuriels_staff.png'
     }
 };
