@@ -1314,6 +1314,16 @@ function calc_on_npc(settings, dmgObject) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * (1 + 0.06 * settings[SETTINGS.BALANCE_OF_POWER]));
         }
 
+        // telos red beam
+        if (settings[SETTINGS.TELOS_RED_BEAM] === true) {
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.3);
+        }
+
+        // telos black beam
+        if (settings[SETTINGS.TELOS_BLACK_BEAM] === true) {
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 0.7);
+        }
+
         // anachronia slayer lodge buff
         // dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * (1 + settings['anachronia slayer lodge buff']));
 

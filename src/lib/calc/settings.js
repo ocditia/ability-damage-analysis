@@ -811,7 +811,10 @@ const SETTINGS = {
         MH: 'main hand',
         OH: 'off hand',
         TH: 'two hand',
-    }
+    },
+
+    TELOS_RED_BEAM: 'telos red beam',
+    TELOS_BLACK_BEAM: 'telos black beam',
 };
 
 const settingsConfig = {
@@ -2244,6 +2247,14 @@ const settingsConfig = {
             { text: 'mh auto', value: SETTINGS.AUTO_HAND_VALUES.MH },
             { text: 'oh auto', value: SETTINGS.AUTO_HAND_VALUES.OH }
         ]
+    },
+    [SETTINGS.TELOS_RED_BEAM]: {
+        label: 'Red beam',
+        default: false
+    },
+    [SETTINGS.TELOS_BLACK_BEAM]: {
+        label: 'Black beam',
+        default: false
     },
 };
 
