@@ -6,6 +6,10 @@ export const offGcdAbilities = {
         title: 'Adrenaline renewal potion',
         icon: '/ability_icons/special/Adrenaline_renewal_potion.png'
     },
+    ["Add 100 Adrenaline"]: {
+        title: 'Add 100 Adrenaline',
+        icon: '/ability_icons/special/Adrenaline_renewal_potion.png'
+    },
     [ABILITIES.INGENUITY_OF_THE_HUMANS]: {
         title: 'Ingenuity of the Humans',
         icon: '/ability_icons/special/Ingenuity_of_the_Humans.png'

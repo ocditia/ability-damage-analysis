@@ -1,13 +1,15 @@
 import { abils } from '../const';
-import { hit_damage_calculation, get_hit_sequence, style_specific_unification, calc_base_ad, get_user_value, apply_additional } from '../damage_calc';
-import { calc_channelled_hit, handle_buffs } from './rotation_damage_helper';
+import { hit_damage_calculation, get_hit_sequence, style_specific_unification, calc_base_ad, apply_additional } from '../damage_calc';
+import { calc_channelled_hit, handle_buffs, get_user_value, handle_edraco } from './rotation_damage_helper';
 import { SETTINGS } from '../settings';
 import { on_stall, on_cast, on_hit, on_damage } from './damage_calc_new.js';
 import { create_object } from '../object_helper';
 import { create_damage_object } from './rota_object_helper';
 import { buffs } from './rotation_consts';
 import { abilities as rangedAbils } from '../../ranged/abilities';
+import { abilities as magicAbils } from '../../magic/abilities';
 import { gearSwaps, offGcdAbilities as specialAbils } from '../../special/abilities';
+import { DamageObject } from '../types';
 
 // Interface for the game state
 interface GameState {
@@ -21,7 +23,6 @@ interface GameState {
     stalledAbilities: string[];
 }
 
-//TODO rename to RotationState
 interface RotationState {
     dmgs: number[];
     damageQueue: Record<number, any[]>;
@@ -32,6 +33,13 @@ interface RotationState {
     hitCount: number;
 }
 
+//TODO use this for the return type of calculateTotalDamage
+interface DamageResult {
+    regularDamage: number;
+    poisonDamage: number;
+}
+
+const allAbilities = { ...rangedAbils, ...magicAbils };
 /**
  * Calculates the total damage for a given rotation over a specified number of ticks.
  * 
@@ -40,6 +48,7 @@ interface RotationState {
  * 2. For each tick:
  *    - Handles any stalled abilities that should activate
  *    - Processes the current ability if one exists
+ *    - Performs chanelled hit if channelling 
  *    - Manages damage queues and timers
  *    - Handles extra actions and buffs
  * 3. Approximates poison damage
@@ -97,11 +106,12 @@ function processCurrentTick(state: RotationState, gameState: GameState, settings
     // Store nulled state at the start
     const isNulledTick = gameState.nulledTicks[state.tick];
     settingsCopy.isNulledTick = isNulledTick;
-    style_specific_unification(settingsCopy, 'ranged'); //Update gear/combat style
+    
 
     // First process any stalled ability on this tick
     const stalledAbility = gameState.stalledAbilities[state.tick];
     if (stalledAbility) {
+        style_specific_unification(settingsCopy, abils[stalledAbility]['main style']); //Update gear/combat style
         const abil_duration = typeof abils[stalledAbility]['duration'] === 'number' ? abils[stalledAbility]['duration'] : 3;
         settingsCopy['ability'] = stalledAbility;
         // Skip on_stall() call but do everything else
@@ -114,7 +124,7 @@ function processCurrentTick(state: RotationState, gameState: GameState, settings
         handle_buffs(settingsCopy, state.timers, stalledAbility);
 
         if (stalledAbility in rangedAbils) {
-            processRangedAbility(state, settingsCopy, stalledAbility, hit_tick);
+            processRangedAbility(state, settingsCopy, stalledAbility, hit_tick); //TODO fix / remove
         }
     }
     // Then process any regular ability on this tick
@@ -148,6 +158,7 @@ function processAbility(
     abil_duration: number
 ) {
     //TODO release stalled abilities here
+    style_specific_unification(settingsCopy, abils[abilityKey]['main style']); //Update gear/combat style
     on_stall(settingsCopy, abilityKey);
     settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
     
@@ -156,9 +167,17 @@ function processAbility(
     state.damageQueue[hit_tick] ??= [];
     
     handle_buffs(settingsCopy, state.timers, abilityKey);
-
-    if (abilityKey in rangedAbils) {
-        processRangedAbility(state, settingsCopy, abilityKey, hit_tick);
+    
+    if (abilityKey in allAbilities) {
+        if (allAbilities[abilityKey].calc == hit_damage_calculation) {
+            processSingleHitAbility(state, settingsCopy, abilityKey, hit_tick);
+        } else if (isChannelled(settingsCopy, abilityKey)) {
+            // Handled in processAbilityTicks
+        } else if (abils[abilityKey]['ability classification'] === 'multihit') {
+            processMultiHitAbility(state, settingsCopy, abilityKey, hit_tick);
+        } else {
+            processBleedAbility(state, settingsCopy, abilityKey, hit_tick);
+        }
     }
 
     processAbilityTicks(state, gameState, settingsCopy, abilityKey, abil_duration);
@@ -216,20 +235,16 @@ function processSingleHitAbility(
     let dmgObject = create_damage_object(settingsCopy, abilityKey);
     let dmgObjects = on_cast(settingsCopy, dmgObject, state.timers, abilityKey);
     dmgObjects.forEach(element => {
-        element['non_crit']['ability'] = abilityKey;
-        let hitKey = element['crit']['ability'];
+        let hitKey = element.ability;
         settingsCopy['ability'] = hitKey;
         let namedDmgObjects = on_hit(settingsCopy, element, state.timers, hitKey);
         namedDmgObjects.forEach(namedDmgObject => {
-        
-        if (settingsCopy.isNulledTick) {
-            namedDmgObject = zeroDamageObject(namedDmgObject);
-        }
-        
+            if (settingsCopy.isNulledTick) {
+                namedDmgObject = zeroDamageObject(namedDmgObject);
+            }
             state.damageQueue[hit_tick].push(namedDmgObject);
         });
     });
-    settingsCopy['ability'] = abilityKey;
 }
 
 function processMultiHitAbility(
@@ -241,21 +256,14 @@ function processMultiHitAbility(
 
     let dmgObject = create_damage_object(settingsCopy, abilityKey);
     let dmgObjects = on_cast(settingsCopy, dmgObject, state.timers, abilityKey);
+    console.log(dmgObjects);
     dmgObjects.forEach(element => {
-        element['non_crit']['ability'] = abilityKey;
-        let hitKey = element['crit']['ability'];
-        settingsCopy['ability'] = hitKey;
-        let namedDmgObjects = on_hit(settingsCopy, element, state.timers, hitKey);
+        let namedDmgObjects = on_hit(settingsCopy, element, state.timers, element.ability);
         namedDmgObjects.forEach(namedDmgObject => {
-        
-        if (settingsCopy.isNulledTick) {
-            namedDmgObject = zeroDamageObject(namedDmgObject);
-        }
-        
+            namedDmgObject = settingsCopy.isNulledTick ? zeroDamageObject(namedDmgObject) : namedDmgObject;
             state.damageQueue[hit_tick].push(namedDmgObject);
         });
     });
-    settingsCopy['ability'] = abilityKey;
 }
 
 function processBleedAbility(
@@ -264,39 +272,19 @@ function processBleedAbility(
     abilityKey: string, 
     hit_tick: number
 ) {
-    // let dmgObject = create_damage_object(settingsCopy, abilityKey);
-    // settingsCopy['ability'] = abils[abilityKey]['hits'][1][0];
-    // dmgObject = on_cast(settingsCopy, dmgObject, state.timers, abilityKey)[0];
-    // dmgObject = on_hit(settingsCopy, dmgObject, state.timers, abilityKey)[0]; // todo fix
-    
-    // if (settingsCopy.isNulledTick) {
-    //     dmgObject = zeroDamageObject(dmgObject);
-    // }
-    // let n_hits = abils[abilityKey]['hits'][1].length;
-    // for (let i = 0; i < n_hits; i++) {
-    //     let clone = structuredClone(dmgObject);
-    //     clone['non_crit']['ability'] = abils[abilityKey]['hits'][1][i];
-    //     clone['crit']['ability'] = abils[abilityKey]['hits'][1][i];
-    //     let htick = hit_tick + abils[abilityKey]['hit_timings'][i];
-    //     state.damageQueue[htick] ??= [];
-    //     state.damageQueue[htick].push(clone);
-    // }
     let dmgObject = create_damage_object(settingsCopy, abilityKey);
-    dmgObject = on_cast(settingsCopy, dmgObject, state.timers, abilityKey)[0];
-    dmgObject = on_hit(settingsCopy, dmgObject, state.timers, abilityKey)[0]; // todo fix
-    
-    if (settingsCopy.isNulledTick) {
-        dmgObject = zeroDamageObject(dmgObject);
-    }
-    let n_hits = abils[abilityKey]['hits'][1].length;
-    for (let i = 0; i < n_hits; i++) {
-        let clone = structuredClone(dmgObject);
-        clone['non_crit']['ability'] = abils[abilityKey]['hits'][1][i];
-        clone['crit']['ability'] = abils[abilityKey]['hits'][1][i];
+    let dmgObjects = on_cast(settingsCopy, dmgObject, state.timers, abilityKey);
+    let i = 0;
+    dmgObjects.forEach(element => {
+        let hit = on_hit(settingsCopy, element, state.timers, abilityKey)[0]; // todo fix
+        if (settingsCopy.isNulledTick) {
+            dmgObject = zeroDamageObject(dmgObject);
+        }
         let htick = hit_tick + abils[abilityKey]['hit_timings'][i];
         state.damageQueue[htick] ??= [];
-        state.damageQueue[htick].push(clone);
-    }
+        state.damageQueue[htick].push(hit);
+        i++;
+    });
 }
 
 function processAbilityTicks(
@@ -333,24 +321,35 @@ function processChannelledTick(
     settingsCopy: any, 
     abilityKey: string, 
     currentTick: number, 
-    rota: any
+    rotation: string[][]
 ) {
     if (currentTick > state.start_tick && gameState.abilityBar[state.tick]) {
         return; // Cancel channel if new ability
     }
-
-    let dmgObjects = calc_channelled_hit(settingsCopy, 1 + currentTick - state.start_tick, rota, state.timers, abilityKey);
+    let hit_index = 1 + currentTick - state.start_tick;
+    let dmgObjects: DamageObject[] = [];
+    
+    if (rotation[hit_index].length > 0) {
+        let hitKey = rotation[hit_index][0];
+        let dmgObject = create_damage_object(settingsCopy, hitKey);
+        let dmgObjs = on_cast(settingsCopy, dmgObject, state.timers, hitKey);
+        dmgObjs.forEach(dmgObj => {
+            let o = on_hit(settingsCopy, dmgObj, state.timers, dmgObj.ability);
+            for (let hit of o) {
+                dmgObjects.push(hit);
+            }
+        });
+            handle_edraco(settingsCopy, state.timers, hitKey);
+    }
     dmgObjects.forEach(dmgObject => {
-        dmgObject['non_crit']['ability'] = abilityKey;
-        
         if (settingsCopy.isNulledTick) {
             dmgObject = zeroDamageObject(dmgObject);
         }
         
-        if (dmgObject['non_crit']['damage list'].length > 0) {
+        if (dmgObject.distributions['non_crit']['damage list'].length > 0) {
             let hit_tick = currentTick + state.hit_delay;
             (state.damageQueue[hit_tick] ??= []).push(dmgObject);
-    }
+        }
     });
 }
 
@@ -372,11 +371,21 @@ function processChannelledTick(
 function processQueuedDamage(tick: number, state: RotationState, settingsCopy: any) {
     if (state.damageQueue[tick]) {
         state.damageQueue[tick].forEach(namedDmgObject => {
-            settingsCopy['ability'] = namedDmgObject['non_crit']['ability'];
-            let dmg = get_user_value(settingsCopy, on_damage(settingsCopy, namedDmgObject));
-            dmg = apply_additional(settingsCopy, dmg, true);
-            state.dmgs.push(dmg);
-            state.hitCount++;
+            settingsCopy['ability'] = namedDmgObject.ability;
+            const scale = namedDmgObject.likelihood;
+            
+            // on_damage now returns an array of damage objects
+            const damageObjects = on_damage(settingsCopy, namedDmgObject);
+            damageObjects.forEach(dmgObj => {
+                let dmg = get_user_value(settingsCopy, dmgObj);
+                state.dmgs.push(dmg * scale); // Scale damage by likelihood of hit occuring 
+                state.hitCount += scale;
+
+            
+                console.log('Ability: ', dmgObj.ability || 'unknown');
+                console.log('dmgObject - on_damage', dmg);
+                console.log('tick', tick);
+            });
         });
     }
 }
@@ -418,6 +427,9 @@ function handleExtraActions(settings: any, timers: Record<string, number>, tick:
         if (specialAbils[element]) {
             if (element === "Adrenaline renewal potion") {
                 timers[element] = 10;
+            }
+            if (element === "Add 100 Adrenaline") {
+                settings[SETTINGS.ADRENALINE] += 100;
             }
         }
         // Handle gear swaps

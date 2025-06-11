@@ -1,32 +1,43 @@
 import { ABILITIES, abils, weapons, prayers } from '../const';
 import { on_cast, on_hit } from './damage_calc_new';
 import { SETTINGS } from '../settings';
-import { DamageObject } from '../types';
+import { DamageObject, DamageKind, DamageDistribution } from '../types';
 
 function create_damage_object(settings: Record<string, any>, ability: string): DamageObject {
     let crit_chance = 0
     if (abils[ability]['crit effects'] === true) {
-        crit_chance = calc_crit_chance(settings);
+        crit_chance = calc_crit_chance(settings, ability);
     }
+    
+    const nonCritDistribution: DamageDistribution = {
+        'min hit': 0,
+        'var hit': 0,
+        'crit': false,
+        'probability': 1 - crit_chance,
+        'damage list': []
+    };
+    
+    const critDistribution: DamageDistribution = {
+        'min hit': 0,
+        'var hit': 0,
+        'crit': true,
+        'probability': crit_chance,
+        'damage list': []
+    };
+    
+    const distributions: Record<DamageKind, DamageDistribution | undefined> = {
+        'non_crit': nonCritDistribution,
+        'crit': critDistribution
+    };
+    
     return {
-        'non_crit': {
-            'min hit': 0,
-            'var hit': 0,
-            'crit': false,
-            'probability': 1 - crit_chance,
-            'damage list': []
-        },
-        'crit': {
-            'min hit': 0,
-            'var hit': 0,
-            'crit': true,
-            'probability': crit_chance,
-            'damage list': []
-        }
+        distributions,
+        ability: ability,
+        likelihood: 1.0
     };   
 }
 
-function calc_crit_chance(settings: Record<string, any>): number {
+function calc_crit_chance(settings: Record<string, any>, abilityKey: string): number {
     // base crit chance
     let crit_chance = 0.1;
 
@@ -93,11 +104,11 @@ function calc_crit_chance(settings: Record<string, any>): number {
         crit_chance += 0.05;
     }
 
-    if (abils[settings['ability']]['main style'] === 'magic') {
+    if (abils[abilityKey]['main style'] === 'magic') {
         // channeller's ring
         if (
             (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
-            abils[settings['ability']]['ability classification'] === 'channel'
+            abils[abilityKey]['ability classification'] === 'channel'
         ) {
             crit_chance += 0.04;
             crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
@@ -108,24 +119,24 @@ function calc_crit_chance(settings: Record<string, any>): number {
 
         // (g)conc self boost
         if (
-            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_2 ||
-            settings['ability'] === ABILITIES.GREATER_CONCENTRATED_BLAST_2
+            abilityKey === ABILITIES.CONCENTRATED_BLAST_2 ||
+            abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_2
         ) {
             crit_chance += 0.05;
         } else if (
-            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_3 ||
-            settings['ability'] === ABILITIES.GREATER_CONCENTRATED_BLAST_3
+            abilityKey === ABILITIES.CONCENTRATED_BLAST_3 ||
+            abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3
         ) {
             crit_chance += 0.1;
         }
 
         // smoke tendrils
-        if ([ABILITIES.SMOKE_TENDRILS_1, ABILITIES.SMOKE_TENDRILS_2, ABILITIES.SMOKE_TENDRILS_3, ABILITIES.SMOKE_TENDRILS_4].includes(settings['ability'])) {
+        if ([ABILITIES.SMOKE_TENDRILS_1, ABILITIES.SMOKE_TENDRILS_2, ABILITIES.SMOKE_TENDRILS_3, ABILITIES.SMOKE_TENDRILS_4].includes(abilityKey)) {
             crit_chance = 1;
         }
     }
 
-    if (abils[settings['ability']]['main style'] === 'melee') {
+    if (abils[abilityKey]['main style'] === 'melee') {
         // champion's ring
         if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E) {
             crit_chance += 0.03;
@@ -142,7 +153,7 @@ function calc_crit_chance(settings: Record<string, any>): number {
         }
 
         // no fear (pof meteor strike)
-        if (settings['ability'] === 'meteor strike') {
+        if (abilityKey === 'meteor strike') {
             if (settings[SETTINGS.POF_DINOS] === SETTINGS.POF_DINOS_VALUES.CORBICULA_1) {
                 crit_chance += 0.2;
             }
@@ -152,7 +163,7 @@ function calc_crit_chance(settings: Record<string, any>): number {
         }
     }
 
-    if (abils[settings['ability']]['main style'] === 'ranged') {
+    if (abils[abilityKey]['main style'] === 'ranged') {
         // stalker's ring
         if (
             (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E) &&
@@ -167,7 +178,7 @@ function calc_crit_chance(settings: Record<string, any>): number {
         }
 
         // shadow tendril
-        if (settings['ability'] === ABILITIES.SHADOW_TENDRILS) {
+        if (abilityKey === ABILITIES.SHADOW_TENDRILS) {
             crit_chance = 1;
         }
 

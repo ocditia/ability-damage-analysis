@@ -1660,18 +1660,18 @@ function hit_damage_calculation(settings, rotationCalc = false) {
 }
 
 //todo rename
-function apply_additional(settings, total_damage, rotationCalc = false) {
-    if (!rotationCalc) {
-        // handle sgb logic
-        if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
-            total_damage += calc_sgb(settings, total_damage);
-        }
+function apply_additional(settings, total_damage) {
 
-        if (settings['bolg damage']) {
-                total_damage += calc_bolg(settings)
-                delete settings['bolg damage'];
-        }
+    // handle sgb logic
+    if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
+        total_damage += calc_sgb(settings, total_damage);
     }
+
+    if (settings['bolg damage']) {
+            total_damage += calc_bolg(settings)
+            delete settings['bolg damage'];
+    }
+
     // handle bloat logic
     if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
         total_damage += calc_bloat(settings);
@@ -1787,5 +1787,5 @@ export { ability_damage_calculation, hit_damage_calculation,
     calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
     get_user_value, get_hit_sequence, add_split_soul, apply_additional,
-    calc_crit_damage
+    calc_crit_damage, calc_split_soul_hit
 };

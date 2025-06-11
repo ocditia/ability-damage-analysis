@@ -2,10 +2,31 @@ import { next_cast, next_hit, next_tick } from '../ability_helper';
 import { ABILITIES, abils, armour, gear, prayers, weapons } from '../const';
 import { create_damage_object } from './rota_object_helper';
 import { SETTINGS } from '../settings';
-import { calc_crit_damage, get_hit_sequence, add_split_soul } from '../damage_calc';
-import { handle_wen_buff } from './rotation_damage_helper';
+import { calc_crit_damage, get_hit_sequence, add_split_soul, calc_split_soul_hit } from '../damage_calc';
+import { handle_sgb, handle_wen_buff } from './rotation_damage_helper';
 import { aB } from 'vitest/dist/chunks/reporters.D7Jzd9GS';
-import { DamageObject } from '../types';
+import { DamageObject, DamageKind, DamageDistribution } from '../types';
+
+// Helper functions for accessing the new DamageObject structure
+function getDamageDistribution(dmgObject: DamageObject, kind: DamageKind): DamageDistribution | undefined {
+    return dmgObject.distributions[kind];
+}
+
+function setDamageDistributionProperty(dmgObject: DamageObject, kind: DamageKind, property: string, value: any): void {
+    const distribution = dmgObject.distributions[kind];
+    if (distribution) {
+        (distribution as any)[property] = value;
+    }
+}
+
+function iterateDistributions(dmgObject: DamageObject, callback: (distribution: DamageDistribution, kind: DamageKind) => void): void {
+    for (const kind of ['non_crit', 'crit'] as DamageKind[]) {
+        const distribution = dmgObject.distributions[kind];
+        if (distribution) {
+            callback(distribution, kind);
+        }
+    }
+}
 
 //TODO move this AND make edraco adren use it
 function add_adrenaline(settings, amount: number) {
@@ -53,11 +74,10 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
     // This function happens as an ability is cast
     // scale to hit chance / damage potential
     const dmgObjects = [];
-    for (let key in dmgObject) {
-        dmgObject[key]['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 
+    iterateDistributions(dmgObject, (distribution) => {
+        distribution['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 
             Math.min(settings[SETTINGS.HIT_CHANCE] / 100, 1));
-        dmgObject[key]['ability'] = abilityKey;
-    }
+    });
     
     //TODO fix - there's gotta be a better way to handle abilities which don't consume wen buff...
     if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
@@ -72,7 +92,7 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
     // Marco - turn off hit chance stuff here (idt anything exists)
     // TODO - ingenuity of the humans, and check if accuracy penalty from wrong style gear is implemented
     // calculate boosted AD / invisible AD
-    for (let key in dmgObject) {
+    iterateDistributions(dmgObject, (distribution) => {
         
         if (abils[abilityKey]['main style'] === 'magic') {
             // inq staff
@@ -80,18 +100,18 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
                 settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
                 settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.INQ_STAFF
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.125);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.125);
             }
             // inq staff upgraded
             else if (
                 settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
                 settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.INQ_STAFF_E
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.175);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.175);
             }
 
             // flow stacks
-            dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD']* (1 + 0.01 * settings[SETTINGS.FLOW_STACKS]));
+            distribution['boosted AD'] = Math.floor(distribution['boosted AD']* (1 + 0.01 * settings[SETTINGS.FLOW_STACKS]));
         }
     
         else if (abils[abilityKey]['main style'] === 'melee') {
@@ -100,19 +120,19 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
                 settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
                 settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.T_MAUL
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.125);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.125);
             }
             // terrasaur maul upgraded
             else if (
                 settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
                 settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.T_MAUL_E
             ) {
-                dmgObject[key]['boosted AD']= Math.floor(dmgObject[key]['boosted AD'] * 1.175);
+                distribution['boosted AD']= Math.floor(distribution['boosted AD'] * 1.175);
             }
             
             // chaos roar
             if (settings[SETTINGS.CHAOS_ROAR] === true) {
-                dmgObject[key]['boosted AD'] = 2 * dmgObject[key]['boosted AD'];
+                distribution['boosted AD'] = 2 * distribution['boosted AD'];
             }
         }
 
@@ -122,14 +142,14 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
                 settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
                 settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.HEX
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.125);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.125);
             }
             // hex bow upgraded
             else if (
                 settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
                 settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.HEX_E
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.175);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.175);
             }
 
             // icy precision (wen arrows)
@@ -137,7 +157,7 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
                 ['threshold', 'ultimate', 'special attack'].includes(abils[abilityKey]['ability type']) &&
                 settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * (1 + 0.02 * settings[SETTINGS.ICY_PRECISION]));
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + 0.02 * settings[SETTINGS.ICY_PRECISION]));
             }
 
             // balance by force (bolg spec)
@@ -154,18 +174,18 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
 
         // scripture of Amascut
         if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.AMASCUT) {
-            dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.1);
+            distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.1);
         }
-    }
+    });
     // TODO - turn off boosted AD stuff here
     // e.g. turn off chaos roar after it's been used
 
     // apply ability specific effects
-    for (let key in dmgObject) {
+    iterateDistributions(dmgObject, (distribution) => {
         if (abils[abilityKey]['main style'] === 'magic') {
             // conflagrate
             if (abilityKey === ABILITIES.COMBUST_HIT && settings[SETTINGS.CONFLAGRATE] === true) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.4);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.4);
             }
 
             // song of destruction 2 item set effect
@@ -175,7 +195,7 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
                     settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT && 
                     settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.3);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.3);
             }
 
             // kerapac's wristwraps
@@ -183,18 +203,18 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
                 if (
                     settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR
                 ) {
-                    dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.25);
+                    distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.25);
                 } else if (
                     settings[SETTINGS.KERAPACS_WRIST_WRAPS] ===
                     SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED
                 ) {
-                    dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.4);
+                    distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.4);
                 }
             }
 
             // combust walk
             if (abilityKey === ABILITIES.COMBUST_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 2);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2);
             }
 
             // wrack bound
@@ -205,7 +225,7 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
                     settings[SETTINGS.TARGET_DISABILITY] ===
                         SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.3);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.3);
             }
 
             // wrack and ruin bound
@@ -216,7 +236,7 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
                     settings[SETTINGS.TARGET_DISABILITY] ===
                         SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.6);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.6);
             }
         }
 
@@ -228,17 +248,17 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
                     settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
                     settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.4);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.4);
             }
 
             // slaughter walk
             if (abilityKey === ABILITIES.SLAUGHTER_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 3);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 3);
             }
 
             // punish low
             if (abilityKey === ABILITIES.PUNISH && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 2.5);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2.5);
             }
         }
 
@@ -250,20 +270,20 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
                     settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
                     settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.3);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.3);
             }
 
             // frag walk
             if ((abilityKey === ABILITIES.FRAGMENTATION_SHOT_HIT || abilityKey === ABILITIES.FRAGMENTATION_SHOT)
                 && settings[SETTINGS.WALKED_TARGET] === true) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 2);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2);
             }
         }
 
         if (abils[abilityKey]['main style'] === 'necromancy') {
             // death spark (omni guard passive)
             if (settings[SETTINGS.DEATH_SPARK] === true && abilityKey === ABILITIES.NECRO_AUTO) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 1.5);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.5);
             }
 
             // living dead - finger of death
@@ -271,20 +291,20 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
                 settings[SETTINGS.LIVING_DEATH] === true &&
                 abilityKey === ABILITIES.FINGER_OF_DEATH
             ) {
-                dmgObject[key]['boosted AD'] = Math.floor(dmgObject[key]['boosted AD'] * 2);
+                distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2);
             }
 
             // skeleton warrior stacks
             if (abilityKey === ABILITIES.SKELETON_WARRIOR_AUTO) {
-                dmgObject[key]['boosted AD'] = Math.floor(
-                    dmgObject[key]['boosted AD'] *
+                distribution['boosted AD'] = Math.floor(
+                    distribution['boosted AD'] *
                         (1 + 0.03 * settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS])
                 );
             }
 
             // The first necromancer armour + conjurer's amulet
         }
-    }
+    });
     
     // Marco - turn off ability specific stuff here
     // e.g. turn off conflagrate after it's been used
@@ -300,16 +320,30 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
             for (let hit in hits[tick]) {
                 if (abils[hits[tick][hit]]) { //filter 'next tick'/'next hit' entries 
                     let clone = create_damage_object(settings, hits[tick][hit]);
-                    for (let key in clone){
-                        clone[key]['probability'] = dmgObject[key]['probability'];
-                        clone[key]['boosted AD'] = dmgObject[key]['boosted AD'];
-                        clone[key]['ability'] = hits[tick][hit];
-                    }
+                    iterateDistributions(clone, (cloneDist, kind) => {
+                        const sourceDist = getDamageDistribution(dmgObject, kind);
+                        if (sourceDist && cloneDist) {
+                            cloneDist['probability'] = sourceDist['probability'];
+                            cloneDist['boosted AD'] = sourceDist['boosted AD'];
+                        }
+                    });
+                    clone.ability = hits[tick][hit];
                     dmgObjects.push(clone);
                 }
             }
         }
         
+    }
+    else if (abils[abilityKey]['ability classification'] == 'bleed' || abils[abilityKey]['ability classification'] == 'burn') {
+        let n_hits = abils[abilityKey]['hits'][1].length;
+        for (let i = 0; i < n_hits; i++) {
+            const clone = structuredClone(dmgObject);
+            const hitAbility = abils[abilityKey]['hits'][1][i];
+            clone.ability = hitAbility;
+            dmgObjects.push(clone);
+        }
+    }
+    else if (abils[abilityKey]['ability classification'] == 'channel') {
     }
     else {
         dmgObjects.push(dmgObject);
@@ -323,105 +357,15 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
 function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number>, abilityKey: string): DamageObject[] {
     // this function runs for all hits (note: not hitsplats)
     const dmgObjects = [dmgObject];
-    // set min and var percentages
-    //dmgObject = set_min_var(settings, dmgObject);
-    // for (let key in dmgObject) {
-    //     dmgObject[key]['min hit'] = abils[abilityKey]['min hit'];
-    //     dmgObject[key]['var hit'] = abils[abilityKey]['var hit'];
-
-    //     if (abils[abilityKey]['main style'] === 'magic') {
-    //         // detonate
-    //         if (abilityKey === ABILITIES.DETONATE) {
-    //             dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + 0.45 * settings[SETTINGS.DETONATE]; // TODO: fix missing reference for SETTINGS.DETONATE
-    //             dmgObject[key]['var hit'] = dmgObject[key]['var hit'] + 0.1 * settings[SETTINGS.DETONATE];
-    //         }
-
-    //         // flank
-    //         if (abilityKey === ABILITIES.IMPACT) {
-    //             dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
-    //             dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
-    //         }
-    //         else if (abilityKey === ABILITIES.DEEP_IMPACT) {
-    //             dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
-    //             dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
-    //         }
-    //     }
-
-    //     if (abils[abilityKey]['main style'] === 'melee') {
-    //         // greater barge tick bonus
-    //         if (abilityKey === ABILITIES.GREATER_BARGE) {
-    //             dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + Math.min(0.05 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.5);
-    //             dmgObject[key]['var hit'] = dmgObject[key]['var hit'] + Math.min(0.02 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
-    //         }
-    //         // icy tempest
-    //         if (
-    //             abilityKey=== ABILITIES.ICY_TEMPEST_1 ||
-    //             settings['ability'] === ABILITIES.ICY_TEMPEST_2
-    //         ) {
-    //             dmgObject[key]['min hit'] += 0.18 * settings[SETTINGS.PRIMORDIAL_ICE];
-    //             dmgObject[key]['var hit'] += 0.04 * settings[SETTINGS.PRIMORDIAL_ICE];
-    //         }
-    //         // flank
-    //         if (abilityKey === ABILITIES.BACKHAND) {
-    //             dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
-    //             dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
-    //         }
-
-    //         if (abilityKey === ABILITIES.FORCEFUL_BACKHAND) {
-    //             dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
-    //             dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
-    //         }
-    //     }
-
-    //     if (abils[abilityKey]['main style'] === 'ranged') {
-    //         // salt the wound stack bonus
-    //         if (abilityKey === ABILITIES.SALT_THE_WOUND) {
-    //             dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + 0.1 * settings[SETTINGS.PUNCTURE_STACKS];
-    //             dmgObject[key]['var hit'] = dmgObject[key]['var hit'] + 0.05 * settings[SETTINGS.PUNCTURE_STACKS];
-    //         }
-    //         // flank
-    //         if (settings[SETTINGS.FLANKING] > 0) {
-    //             if (abilityKey === ABILITIES.BINDING_SHOT) {
-    //                 dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
-    //                 dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
-    //             }
-    //             else if (abilityKey === ABILITIES.TIGHT_BINDINGS) {
-    //                 dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
-    //                 dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
-    //             }
-    //         }
-    //     }
-
-    //     if (abils[abilityKey]['main style'] === 'necromancy') {
-    //         // death grasp (death guard spec)
-    //         if (abilityKey === ABILITIES.DEATH_GRASP) {
-    //             dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
-    //         }
-
-    //         // flank
-    //         if (abilityKey === ABILITIES.SOUL_STRIKE) {
-    //             dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
-    //             dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
-    //         }
-    //     }
-    // }
-    // // // set actual min var values
-    // for (let key in dmgObject) {
-    //     dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * dmgObject[key]['boosted AD']);
-    //     dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * dmgObject[key]['boosted AD']);
-    // }
 
     // compute on-hit effects
     if (abils[abilityKey]['on-hit effects'] === true) {
         // Marco - turn on any style specific effects (idt there are any)
-
-        for (let key in dmgObject) {
+        iterateDistributions(dmgObject, (distribution) => {
             if (abils[abilityKey]['main style'] === 'magic') {
-
             }
 
             if (abils[abilityKey]['main style'] === 'melee') {
-                
             }
 
             if (abils[abilityKey]['main style'] === 'ranged') {
@@ -432,11 +376,11 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
                         abilityKey === 'ranged two-hand auto' ||
                         abilityKey === 'ranged off-hand auto'
                     ) {
-                        dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * 1.4);
-                        dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * 1.4);
+                        distribution['min hit'] = Math.floor(distribution['min hit'] * 1.4);
+                        distribution['var hit'] = Math.floor(distribution['var hit'] * 1.4);
                     } else {
-                        dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * 1.25);
-                        dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * 1.25);
+                        distribution['min hit'] = Math.floor(distribution['min hit'] * 1.25);
+                        distribution['var hit'] = Math.floor(distribution['var hit'] * 1.25);
                     }
                 }
 
@@ -444,14 +388,14 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
                 if (
                     settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.JAS_ARROWS
                 ) {
-                    dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * 1.3);
-                    dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * 1.3);
+                    distribution['min hit'] = Math.floor(distribution['min hit'] * 1.3);
+                    distribution['var hit'] = Math.floor(distribution['var hit'] * 1.3);
                 }
 
                 // ful arrows
                 if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.FUL_ARROWS) {
-                    dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * 1.15);
-                    dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * 1.15);
+                    distribution['min hit'] = Math.floor(distribution['min hit'] * 1.15);
+                    distribution['var hit'] = Math.floor(distribution['var hit'] * 1.15);
                 }                
 
                 // enchanted bolts (proc based, will come later)
@@ -463,8 +407,8 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
                     settings['ammo slot'] === 'pernix quiver' &&
                     settings[SETTINGS.TARGET_HP_PERCENT] <= 25
                 ) {
-                    dmgObject[key]['var hit'] = Math.floor(
-                        (dmgObject[key]['var hit'] += 0.04 * (dmgObject[key]['min hit'] + dmgObject[key]['var hit']))
+                    distribution['var hit'] = Math.floor(
+                        (distribution['var hit'] += 0.04 * (distribution['min hit'] + distribution['var hit']))
                     );
                 }
             }
@@ -472,15 +416,15 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
             if (abils[abilityKey]['main style'] === 'necromancy') {
                 
             }
-        }
+        });
         // // Marco - turn off any style specific effects (idt there are any)
         // // apply precise
         if (settings[SETTINGS.PRECISE] > 0 ) {
-            for (let key in dmgObject) {
-                let max_hit = dmgObject[key]['min hit'] + dmgObject[key]['var hit'];
-                dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
-                dmgObject[key]['var hit'] = Math.max(0, dmgObject[key]['var hit'] - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit));
-            }
+            iterateDistributions(dmgObject, (distribution) => {
+                let max_hit = distribution['min hit'] + distribution['var hit'];
+                distribution['min hit'] = distribution['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
+                distribution['var hit'] = Math.max(0, distribution['var hit'] - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit));
+            });
         }
 
         // Marco - turn additive boosts on if appropriate
@@ -499,7 +443,7 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
             settings[SETTINGS.NEEDLE_STRIKE_BUFFER] = 0;
         }
         // apply additive boosts
-        for (let key in dmgObject) {
+        iterateDistributions(dmgObject, (distribution) => {
             let boost = 0;
 
             // add stone of jas boost
@@ -627,16 +571,16 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
             }*/
 
             // apply boost
-            dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * (1 + boost));
-            dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * (1 + boost));
-        }
+            distribution['min hit'] = Math.floor(distribution['min hit'] * (1 + boost));
+            distribution['var hit'] = Math.floor(distribution['var hit'] * (1 + boost));
+        });
         
         // Marco - turn off additive boosts, note that needle strike should get turned off when the tick changes, not here
     
         // Marco - turn on multiplicative shared boosts
 
         // apply multiplicative shared buffs
-        for (let key in dmgObject) {
+        iterateDistributions(dmgObject, (distribution) => {
             let boost = 10000;
             if (abils[abilityKey]['main style'] === 'magic') {
                 // prayer boost
@@ -760,16 +704,16 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
             );
 
             // apply buff            
-            dmgObject[key]['min hit'] = Math.floor((dmgObject[key]['min hit'] * boost) / 10000); 
-            dmgObject[key]['var hit'] = Math.floor((dmgObject[key]['var hit'] * boost) / 10000);
+            distribution['min hit'] = Math.floor((distribution['min hit'] * boost) / 10000); 
+            distribution['var hit'] = Math.floor((distribution['var hit'] * boost) / 10000);
 
-        }
+        });
         // Marco - turn off multiplicative shared boosts
     
         // Marco - turn on multiplicative pve only buffs
 
         // apply multiplicative pve only buffs
-        for (let key in dmgObject) {
+        iterateDistributions(dmgObject, (distribution) => {
             let boost = 10000;
             if (abils[abilityKey]['main style'] === 'magic') {
                 // spellcaster gloves (proc based, so added later)
@@ -835,14 +779,14 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
             }
         
             // apply buff
-            dmgObject[key]['min hit'] = Math.floor((dmgObject[key]['min hit'] * boost) / 10000);
-            dmgObject[key]['var hit'] = Math.floor((dmgObject[key]['var hit'] * boost) / 10000);
-        }
+            distribution['min hit'] = Math.floor((distribution['min hit'] * boost) / 10000);
+            distribution['var hit'] = Math.floor((distribution['var hit'] * boost) / 10000);
+        });
 
         // Marco - turn off multiplicative pve only buffs
     
         // add bonus damage
-        for (let key in dmgObject) {
+        iterateDistributions(dmgObject, (distribution) => {
             if (abils[abilityKey]['main style'] === 'melee') {
                 // frostblades (leng off-hand effects)
                 if (
@@ -851,17 +795,17 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
                     settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
                     settings[SETTINGS.FROSTBLADES] === true
                 ) {
-                    dmgObject[key]['min hit'] += Math.floor(0.24 * dmgObject[key]['boosted AD']);
+                    distribution['min hit'] += Math.floor(0.24 * distribution['boosted AD']);
                 }
             }   
-        }
+        });
     }
     // roll damage
-    for (let key in dmgObject) {
-        for (let i = 0; i <= dmgObject[key]['var hit']; i++) {
-            dmgObject[key]['damage list'].push(dmgObject[key]['min hit'] + i);
+    iterateDistributions(dmgObject, (distribution) => {
+        for (let i = 0; i <= distribution['var hit']; i++) {
+            distribution['damage list'].push(distribution['min hit'] + i);
         }
-    }
+    });
     
     // store corruption shot/blast damage
     if ([ABILITIES.CORRUPTION_BLAST, ABILITIES.CORRUPTION_SHOT].includes(abilityKey)) {
@@ -898,22 +842,24 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
 
     // calc core
     if (abils[abilityKey]['on-hit effects'] === true) {
-        for (let key in dmgObject) {
-            for (let i=0; i<dmgObject[key]['damage list'].length; i++) {
+        iterateDistributions(dmgObject, (distribution) => {
+            for (let i=0; i<distribution['damage list'].length; i++) {
                 // berserker's fury
-                dmgObject[key]['damage list'][i] = Math.floor(
-                    dmgObject[key]['damage list'][i] * (1 + settings[SETTINGS.BERSERKERS_FURY] / 100)
+                distribution['damage list'][i] = Math.floor(
+                    distribution['damage list'][i] * (1 + settings[SETTINGS.BERSERKERS_FURY] / 100)
                 );
         
                 // dharock's gear (proc based, so added later)
                 //crits
-                if (dmgObject[key]['crit'] === true && abils[abilityKey]['crit effects'] === true) {
-                    dmgObject[key]['damage list'][i] = Math.floor(
-                        dmgObject[key]['damage list'][i] * (1 + calc_crit_damage(settings))
+                if (distribution['crit'] === true && abils[abilityKey]['crit effects'] === true) {
+                    distribution['damage list'][i] = Math.floor(
+                        distribution['damage list'][i] * (1 + calc_crit_damage(settings))
                     );
                 }
             }
-        }
+        });
+
+        //Handle Bolg proc
         if (
             settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
@@ -924,16 +870,24 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
             settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] = 0;
             let bolgDmgObject = create_damage_object(settings, 'bolg proc');
             bolgDmgObject = on_cast(settings, bolgDmgObject, timers, 'bolg proc')[0]; //TODO remove [0]
-            const dmgList = dmgObject['non_crit']['damage list'];
+            const dmgList = getDamageDistribution(dmgObject, 'non_crit')['damage list'];
 
-            bolgDmgObject['crit']['min hit'] += Math.floor(dmgList[0] * 0.33);
-            bolgDmgObject['crit']['var hit'] += Math.floor(dmgList[dmgList.length-1] * 0.37 - dmgList[0] * 0.33);
-            bolgDmgObject['non_crit']['min hit'] += Math.floor(dmgList[0] * 0.33);
-            bolgDmgObject['non_crit']['var hit'] += Math.floor(dmgList[dmgList.length-1] * 0.37 - dmgList[0] * 0.33);
+            const bolgCritDist = getDamageDistribution(bolgDmgObject, 'crit');
+            const bolgNonCritDist = getDamageDistribution(bolgDmgObject, 'non_crit');
+            
+            if (bolgCritDist && dmgList.length > 0) {
+                bolgCritDist['min hit'] += Math.floor(dmgList[0] * 0.33);
+                bolgCritDist['var hit'] += Math.floor(dmgList[dmgList.length-1] * 0.37 - dmgList[0] * 0.33);
+            }
+            if (bolgNonCritDist && dmgList.length > 0) {
+                bolgNonCritDist['min hit'] += Math.floor(dmgList[0] * 0.33);
+                bolgNonCritDist['var hit'] += Math.floor(dmgList[dmgList.length-1] * 0.37 - dmgList[0] * 0.33);
+            }
 
             let bolgDmgObjects = on_hit(settings, bolgDmgObject, timers, 'bolg proc');
             dmgObjects.push(...bolgDmgObjects);
         }
+
 
         // store fsoa damage
         if (abils[abilityKey]['crit effects'] === true 
@@ -948,94 +902,97 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
         if (abilityKey === ABILITIES.BLOAT) {
             settings['bloat damage'] = structuredClone(dmgObject);
         }
+
+        if (abilityKey == ABILITIES.CRYSTAL_RAIN) {
+            dmgObjects.push(...handle_sgb(settings, dmgObject));            
+        }
     }    
     return dmgObjects;
 }
 
-function on_damage(settings, dmgObject: DamageObject) {
-    console.log('Ability: ', dmgObject['non_crit']['ability']);
-    console.log('dmgObject - on_damage', dmgObject);
-    for (let key in dmgObject) {
-        for (let i = 0; i < dmgObject[key]['damage list'].length; i++) {
+function on_damage(settings, dmgObject: DamageObject): DamageObject[] {
+    const abilityKey = dmgObject.ability;
+    iterateDistributions(dmgObject, (distribution) => {
+        for (let i = 0; i < distribution['damage list'].length; i++) {
             // set haunted
             let haunted = Math.min(
-                Math.floor(dmgObject[key]['damage list'][i] * 0.1),
+                Math.floor(distribution['damage list'][i] * 0.1),
                 Math.floor(0.2 * settings['haunted AD'])
             );
 
             // vulnerability / curse
             if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.VULNERABILITY) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.1);
             } else if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.CURSE) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.05);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.05);
             }
 
             // // enduring ruin bleed (gop)
             // if (
             //     settings['enduring ruin - bleed'] === 'regular' &&
-            //     abils[settings['ability']]['ability classification'] === 'bleed'
+            //     abils[abilityKey]['ability classification'] === 'bleed'
             // ) {
-            //     dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.2);
+            //     distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.2);
             // } else if (
             //     settings['enduring ruin - bleed'] === 'enhanced' &&
-            //     abils[settings['ability']]['ability classification'] === 'bleed'
+            //     abils[abilityKey]['ability classification'] === 'bleed'
             // ) {
-            //     dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.25);
+            //     distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.25);
             // }
 
             // wilderness puzzlebox
             if (settings['wilderness puzzlebox'] > 1) {
-                dmgObject[key]['damage list'][i] = Math.floor(
-                    dmgObject[key]['damage list'][i] * (1 + 0.03 + settings['wilderness puzzlebox'])
+                distribution['damage list'][i] = Math.floor(
+                    distribution['damage list'][i] * (1 + 0.03 + settings['wilderness puzzlebox'])
                 );
             }
 
             // croesus deathspores (crypt flanking)
             if (settings[SETTINGS.CRYPTBLOOM] === true) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.1);
             }
 
             // zamorak's guardian triumph
             /*if (
                 settings['guardian triump'] === true &&
-                abils[settings['ability']]['ability type'] === 'basic'
+                abils[abilityKey]['ability type'] === 'basic'
             ) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.2);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.2);
             }*/
 
             // undead slayer perk
             if (settings[SETTINGS.SLAYER_PERK_UNDEAD] === true) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.07);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.07);
             }
 
             // undead slayer sigil
             if (settings[SETTINGS.UNDEAD_SLAYER_ABILITY] === true) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.15);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.15);
             }
 
             // dragon slayer perk
             if (settings[SETTINGS.SLAYER_PERK_DRAGON] === true) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.07);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.07);
             }
 
             // dragon slayer sigil
             if (settings[SETTINGS.DRAGON_SLAYER_ABILITY] === true) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.15);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.15);
             }
 
             // demon slayer perk
             if (settings[SETTINGS.SLAYER_PERK_DEMON] === true) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.07);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.07);
             }
 
             // demon slayer sigil
             if (settings[SETTINGS.SLAYER_SIGIL_DEMON] === true) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.15);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.15);
             }
 
             // nopenopenope (pof spider buff)
-            dmgObject[key]['damage list'][i] = Math.floor(
-                dmgObject[key]['damage list'][i] * (1 + settings[SETTINGS.NOPE])
+            distribution['damage list'][i] = Math.floor(
+                distribution['damage list'][i] * (1 + settings[SETTINGS.NOPE])
             );
 
             // ghost hunter outfit
@@ -1056,22 +1013,22 @@ function on_damage(settings, dmgObject: DamageObject) {
 
             // apply buff
             if (ghost_hunter_pieces === 1) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.03);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.03);
             } else if (ghost_hunter_pieces === 2) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.06);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.06);
             } else if (ghost_hunter_pieces === 3 || ghost_hunter_pieces === 4) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.1);
             }
 
             // vanquish (quest point weapon)
             if (settings['two-hand weapon'] === 'vanquish') {
-                dmgObject[key]['damage list'][i] = Math.floor(
-                    dmgObject[key]['damage list'][i] * (1 + 0.05 * settings['quest deaths'])
+                distribution['damage list'][i] = Math.floor(
+                    distribution['damage list'][i] * (1 + 0.05 * settings['quest deaths'])
                 );
             }
 
-            if (settings['meta'] === true && abils[settings['ability']]['damage type'] === 'magic') {
-                dmgObject[key]['damage list'][i] = Math.floor(1.66 * dmgObject[key]['damage list'][i])
+            if (settings['meta'] === true && abils[abilityKey]['damage type'] === 'magic') {
+                distribution['damage list'][i] = Math.floor(1.66 * distribution['damage list'][i])
             }
 
             // zerk auras
@@ -1082,109 +1039,134 @@ function on_damage(settings, dmgObject: DamageObject) {
             ) {
                 if (
                     settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.MANIACAL &&
-                    abils[settings['ability']]['damage type'] === 'magic'
+                    abils[abilityKey]['damage type'] === 'magic'
                 ) {
-                    dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+                    distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.1);
                 } else if (
                     settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.BERSERKER &&
-                    abils[settings['ability']]['damage type'] === 'melee'
+                    abils[abilityKey]['damage type'] === 'melee'
                 ) {
-                    dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+                    distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.1);
                 } else if (
                     settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.RECKLESS &&
-                    abils[settings['ability']]['damage type'] === 'ranged'
+                    abils[abilityKey]['damage type'] === 'ranged'
                 ) {
-                    dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+                    distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.1);
                 }
             }
 
             // mahjarrat aura
             if (
                 settings[SETTINGS.AURA] === 'mahjarrat' &&
-                abils[settings['ability']]['damage type'] !== 'spirit'
+                abils[abilityKey]['damage type'] !== 'spirit'
             ) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.05);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.05);
             }
 
             // scrimshaw of elements
             if (
                 settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.ELEMENTS &&
-                abils[settings['ability']]['main style'] === 'magic'
+                abils[abilityKey]['main style'] === 'magic'
             ) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.05);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.05);
             } else if (
                 settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS &&
-                abils[settings['ability']]['main style'] === 'magic'
+                abils[abilityKey]['main style'] === 'magic'
             ) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.0666);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.0666);
             }
 
             // scrimshaw of cruelty
             if (
                 settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.CRUELTY &&
-                abils[settings['ability']]['main style'] === 'ranged'
+                abils[abilityKey]['main style'] === 'ranged'
             ) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.05);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.05);
             } else if (
                 settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY &&
-                abils[settings['ability']]['main style'] === 'ranged'
+                abils[abilityKey]['main style'] === 'ranged'
             ) {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.0666);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.0666);
             }
 
             // apply haunted
             if (settings[SETTINGS.HAUNTED] === true) {
-                dmgObject[key]['damage list'][i] = dmgObject[key]['damage list'][i] + haunted;
+                distribution['damage list'][i] = distribution['damage list'][i] + haunted;
             }
 
             // essence corruption 25 stack bonus
             if (
-                abils[settings['ability']]['damage type'] === 'magic' &&
+                abils[abilityKey]['damage type'] === 'magic' &&
                 settings[SETTINGS.ESSENCE_CORRUPTION] >= 25
             ) {
-                dmgObject[key]['damage list'][i] =
-                    dmgObject[key]['damage list'][i] +
+                distribution['damage list'][i] =
+                    distribution['damage list'][i] +
                     settings[SETTINGS.MAGIC_LEVEL] +
                     settings[SETTINGS.ESSENCE_CORRUPTION];
             }
 
             // necklace of salamancy
             if (settings[SETTINGS.NECKLACE] === 'necklace of salamancy') {
-                dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * 1.1);
+                distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 1.1);
             }
 
             // anachronia slayer lodge buff
-            // dmgObject[key]['damage list'][i] = Math.floor(dmgObject[key]['damage list'][i] * (1 + settings['anachronia slayer lodge buff']));
+            // distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * (1 + settings['anachronia slayer lodge buff']));
 
             
 
             // hit cap
-            dmgObject[key]['damage list'][i] = Math.min(dmgObject[key]['damage list'][i], 30000);
+            distribution['damage list'][i] = Math.min(distribution['damage list'][i], 30000);
             
         }
-        // store damage into soul split
-        settings['soul split'] = dmgObject[key];
-        // add split soul damage
-        if (settings['split soul'] === true && ['magic', 'melee', 'ranged', 'necrotic'].includes(
-                abils[settings['ability']]['damage type']) && settings['soul split']['damage list'])
-        {
-            dmgObject[key] = add_split_soul(settings, dmgObject[key]);
-        }
+        // store damage into soul split for reference
+        settings['soul split'] = distribution;
+    });
+
+    // Prepare result array starting with original damage object
+    const results: DamageObject[] = [dmgObject];
+
+    // Create split soul damage object if applicable
+    if (settings['split soul'] === true && ['magic', 'melee', 'ranged', 'necrotic'].includes(
+            abils[abilityKey]['damage type']) && settings['soul split']['damage list'])
+    {
+        // Create a new damage object for split soul
+        const splitSoulObject = create_damage_object(settings, ABILITIES.SPLIT_SOUL_ECB);
+        splitSoulObject.likelihood = dmgObject.likelihood;
+
+        // Calculate only the split soul damage for each distribution
+        iterateDistributions(dmgObject, (distribution, kind) => {
+            const splitSoulDist = getDamageDistribution(splitSoulObject, kind);
+            if (splitSoulDist && distribution['damage list']) {
+                // Copy basic properties
+                splitSoulDist['probability'] = distribution['probability'];
+                splitSoulDist['crit'] = distribution['crit'];
+                
+                // Calculate only the split soul damage (not adding to original)
+                splitSoulDist['damage list'] = distribution['damage list'].map(damage => 
+                    calc_split_soul_hit(damage, settings)
+                );
+            }
+        });
+
+        results.push(splitSoulObject);
     }
+
     // Adrenaline from crit buff/inspiration
     // TODO check when this actually applies
     if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.INSPIRATION) {
         add_adrenaline(settings, 0.5);
     }
     if (
-        (abils[settings['ability']]['crit effects'] === true) &&
+        (abils[abilityKey]['crit effects'] === true) &&
         settings[SETTINGS.CRIT_BUFF] && settings[SETTINGS.EXPECTED_ADRENALINE]
     ) {
-        let prob = dmgObject['crit']['probability'];
+        const critDist = getDamageDistribution(dmgObject, 'crit');
+        let prob = critDist ? critDist['probability'] : 0;
         add_adrenaline(settings, (prob * 8));
     }
 
-    return dmgObject;
+    return results;
 
     // TODO
     // Marco - apply any effects that happen on-damage here
@@ -1203,70 +1185,70 @@ function on_damage(settings, dmgObject: DamageObject) {
  * @returns The dmgObject 
  */
 function set_min_var(settings, dmgObject: DamageObject) {
-    let abilityKey = dmgObject['non_crit']['ability'];
-    for (let key in dmgObject) {
-        dmgObject[key]['min hit'] = abils[abilityKey]['min hit'];
-        dmgObject[key]['var hit'] = abils[abilityKey]['var hit'];
+    let abilityKey = dmgObject.ability;
+    iterateDistributions(dmgObject, (distribution) => {
+        distribution['min hit'] = abils[abilityKey]['min hit'];
+        distribution['var hit'] = abils[abilityKey]['var hit'];
 
         if (abils[abilityKey]['main style'] === 'magic') {
             // detonate
             if (abilityKey === ABILITIES.DETONATE) {
-                dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + 0.45 * settings[SETTINGS.DETONATE]; // TODO: fix missing reference for SETTINGS.DETONATE
-                dmgObject[key]['var hit'] = dmgObject[key]['var hit'] + 0.1 * settings[SETTINGS.DETONATE];
+                distribution['min hit'] = distribution['min hit'] + 0.45 * settings[SETTINGS.DETONATE]; // TODO: fix missing reference for SETTINGS.DETONATE
+                distribution['var hit'] = distribution['var hit'] + 0.1 * settings[SETTINGS.DETONATE];
             }
 
             // flank
             if (abilityKey === ABILITIES.IMPACT) {
-                dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
-                dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
+                distribution['min hit'] += distribution['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
+                distribution['var hit'] += distribution['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
             }
             else if (abilityKey === ABILITIES.DEEP_IMPACT) {
-                dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
-                dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
+                distribution['min hit'] += distribution['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
+                distribution['var hit'] += distribution['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
             }
         }
 
         if (abils[abilityKey]['main style'] === 'melee') {
             // greater barge tick bonus
             if (abilityKey === ABILITIES.GREATER_BARGE) {
-                dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + Math.min(0.05 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.5);
-                dmgObject[key]['var hit'] = dmgObject[key]['var hit'] + Math.min(0.02 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
+                distribution['min hit'] = distribution['min hit'] + Math.min(0.05 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.5);
+                distribution['var hit'] = distribution['var hit'] + Math.min(0.02 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
             }
             // icy tempest
             if (
-                abilityKey=== ABILITIES.ICY_TEMPEST_1 ||
-                settings['ability'] === ABILITIES.ICY_TEMPEST_2
+                abilityKey === ABILITIES.ICY_TEMPEST_1 ||
+                abilityKey === ABILITIES.ICY_TEMPEST_2
             ) {
-                dmgObject[key]['min hit'] += 0.18 * settings[SETTINGS.PRIMORDIAL_ICE];
-                dmgObject[key]['var hit'] += 0.04 * settings[SETTINGS.PRIMORDIAL_ICE];
+                distribution['min hit'] += 0.18 * settings[SETTINGS.PRIMORDIAL_ICE];
+                distribution['var hit'] += 0.04 * settings[SETTINGS.PRIMORDIAL_ICE];
             }
             // flank
             if (abilityKey === ABILITIES.BACKHAND) {
-                dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
-                dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
+                distribution['min hit'] += distribution['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
+                distribution['var hit'] += distribution['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
             }
 
             if (abilityKey === ABILITIES.FORCEFUL_BACKHAND) {
-                dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
-                dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
+                distribution['min hit'] += distribution['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
+                distribution['var hit'] += distribution['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
             }
         }
 
         if (abils[abilityKey]['main style'] === 'ranged') {
             // salt the wound stack bonus
             if (abilityKey === ABILITIES.SALT_THE_WOUND) {
-                dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + 0.1 * settings[SETTINGS.PUNCTURE_STACKS];
-                dmgObject[key]['var hit'] = dmgObject[key]['var hit'] + 0.05 * settings[SETTINGS.PUNCTURE_STACKS];
+                distribution['min hit'] = distribution['min hit'] + 0.1 * settings[SETTINGS.PUNCTURE_STACKS];
+                distribution['var hit'] = distribution['var hit'] + 0.05 * settings[SETTINGS.PUNCTURE_STACKS];
             }
             // flank
             if (settings[SETTINGS.FLANKING] > 0) {
                 if (abilityKey === ABILITIES.BINDING_SHOT) {
-                    dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
-                    dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
+                    distribution['min hit'] += distribution['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
+                    distribution['var hit'] += distribution['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
                 }
                 else if (abilityKey === ABILITIES.TIGHT_BINDINGS) {
-                    dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
-                    dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
+                    distribution['min hit'] += distribution['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
+                    distribution['var hit'] += distribution['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
                 }
             }
         }
@@ -1274,23 +1256,23 @@ function set_min_var(settings, dmgObject: DamageObject) {
         if (abils[abilityKey]['main style'] === 'necromancy') {
             // death grasp (death guard spec)
             if (abilityKey === ABILITIES.DEATH_GRASP) {
-                dmgObject[key]['min hit'] = dmgObject[key]['min hit'] + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
+                distribution['min hit'] = distribution['min hit'] + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
             }
 
             // flank
             if (abilityKey === ABILITIES.SOUL_STRIKE) {
-                dmgObject[key]['min hit'] += dmgObject[key]['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
-                dmgObject[key]['var hit'] += dmgObject[key]['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
+                distribution['min hit'] += distribution['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
+                distribution['var hit'] += distribution['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
             }
         }
-    }
+    });
     
     // // Marco - turn off min/var percent boosts
     // // set actual min var values
-    for (let key in dmgObject) {
-        dmgObject[key]['min hit'] = Math.floor(dmgObject[key]['min hit'] * dmgObject[key]['boosted AD']);
-        dmgObject[key]['var hit'] = Math.floor(dmgObject[key]['var hit'] * dmgObject[key]['boosted AD']);
-    }
+    iterateDistributions(dmgObject, (distribution) => {
+        distribution['min hit'] = Math.floor(distribution['min hit'] * distribution['boosted AD']);
+        distribution['var hit'] = Math.floor(distribution['var hit'] * distribution['boosted AD']);
+    });
 
     return dmgObject;
 }
