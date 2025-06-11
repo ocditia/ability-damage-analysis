@@ -742,8 +742,10 @@ function calc_additive_boosts(settings, dmgObject) {
     }
 
     // Flamebound rival
-    if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK
-        && abils[settings['ability']]['main style'] === 'melee'
+    if ( (settings[SETTINGS.FLAMEBOUND_RIVAL] === true || settings['ability'] === ABILITIES.IGNEOUS_SHOWDOWN) && 
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && 
+        settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK && 
+        abils[settings['ability']]['main style'] === 'melee'
     ) {
          boost += 0.12;
     }
