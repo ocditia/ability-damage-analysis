@@ -371,6 +371,16 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/crit_i_kal.png"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.TELOS_RED_BEAM]}
+                                    onchange={() => updateDamages()}
+                                    img="effect_icons/Red_virus.png"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.TELOS_BLACK_BEAM]}
+                                    onchange={() => updateDamages()}
+                                    img="effect_icons/Black_virus.png"
+                                />
                             </div>
                         {:else if tab === 'equipment'}
                             <div class="md:col-span-1 space-y-2">

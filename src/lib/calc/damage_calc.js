@@ -742,8 +742,10 @@ function calc_additive_boosts(settings, dmgObject) {
     }
 
     // Flamebound rival
-    if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK
-        && abils[settings['ability']]['main style'] === 'melee'
+    if ( (settings[SETTINGS.FLAMEBOUND_RIVAL] === true || settings['ability'] === ABILITIES.IGNEOUS_SHOWDOWN) && 
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && 
+        settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK && 
+        abils[settings['ability']]['main style'] === 'melee'
     ) {
          boost += 0.12;
     }
@@ -1307,6 +1309,16 @@ function calc_on_npc(settings, dmgObject) {
         // balance of power
         if (settings[SETTINGS.BALANCE_OF_POWER] > 0) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * (1 + 0.06 * settings[SETTINGS.BALANCE_OF_POWER]));
+        }
+
+        // telos red beam
+        if (settings[SETTINGS.TELOS_RED_BEAM] === true) {
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.3);
+        }
+
+        // telos black beam
+        if (settings[SETTINGS.TELOS_BLACK_BEAM] === true) {
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 0.7);
         }
 
         // anachronia slayer lodge buff
