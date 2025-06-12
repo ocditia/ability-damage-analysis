@@ -9,20 +9,21 @@
     import { abilities as def_abilities } from '$lib/defence/abilities';
 	import { offGcdAbilities } from '$lib/special/abilities';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings';
-	import Checkbox from '../../components/Settings/Checkbox.svelte';
-	import Number from '../../components/Settings/Number.svelte';
-	import Select from '../../components/Settings/Select.svelte';
 	import { abils } from '$lib/calc/const';
     import RotationSettings from '../../components/Settings/RotationSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
-	import {buffs, createBuffTimings, createStackTimings} from '$lib/calc/rotation_builder/rotation_consts.ts';
+	import { createBuffTimings, createStackTimings} from '$lib/calc/rotation_builder/rotation_consts.ts';
 	import {ToolMode} from '$lib/calc/rotation_builder/ui_material/toolModes.ts';
     import ExtraActionsPanel from '../../components/RotationBuilder/ExtraActionsPanel.svelte';
-    import { calculateTotalDamage } from '$lib/calc/rotation-damage-calculator';
-
-    let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abils eventually
+    import { calculateTotalDamage } from '$lib/calc/rotation_builder/rotation-damage-calculator';
+	import { magic_buff_abilities } from '$lib/magic/buff_abilities';
+	import TabButton from '../../components/UI/TabButton.svelte';
+	import Button from '../../components/UI/Button.svelte';
+	import GradientSeparator from '../../components/UI/GradientSeparator.svelte';
+	
+    let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abilities eventually
     let meleeAbils = {...melee_dmg_abilities};
-    let magicAbils = {...magic_dmg_abilities};
+    let magicAbils = {...magic_dmg_abilities, ...magic_buff_abilities};
 	let rangedAbils = {...r_dmg_abilities, ...ranged_buff_abilities};
 	let defAbils = {...def_abilities};
     let allAbils = {...magicAbils, ...rangedAbils, ...necroAbils, ...meleeAbils, ...def_abilities};
@@ -30,11 +31,11 @@
 	let specialAbils = {...offGcdAbilities};
 	let extraActions = {...specialAbils};
 
-	// Constants
+	// UI Constants
 	const BASE_BAR_ROW_GAP = 30;
 	const BAR_SIZE = 200;
 	const EXTRA_BAR_SIZE = 12;
-	const stackFontSize = 10;//12
+	const stackFontSize = 10;
 	const baseStackOffset = 32;
 	const stackPadding = 2;
 	const buffLineWidth = 32;
@@ -87,11 +88,11 @@
 	});
 
 	const tabs = [
-		{ id: 'melee', label: 'Melee', abilities: meleeAbils },
 		{ id: 'ranged', label: 'Ranged', abilities: rangedAbils },
 		{ id: 'magic', label: 'Magic', abilities: magicAbils },
-		{ id: 'defence', label: 'Defence', abilities: defAbils },
-		{ id: 'necro', label: 'Necro', abilities: necroAbils }
+		{ id: 'melee', label: 'Melee', abilities: meleeAbils },
+		{ id: 'necro', label: 'Necro', abilities: necroAbils },
+		{ id: 'defence', label: 'Defence', abilities: defAbils }
 	];
 
 	function calculateTotalDamageNew() {
@@ -386,7 +387,6 @@
 			uiState.activeTool = ToolMode.Null;
 			uiState.stallingAbility = null;
         }
-		console.log('Tool mode: ' + uiState.activeTool);
     }
 
     function exportToString() {
@@ -405,7 +405,7 @@
             alert('Rotation copied to clipboard!');
         } catch (e) {
             console.error('Export failed:', e);
-            alert('Failed to export rotation');
+            alert('Failed to export rotation. Please report this bug.');
         }
     }
 
@@ -585,7 +585,6 @@
 	}
 
 	.settings-content {
-		padding-top: 50px; /* Add space for the button */
 		height: 100%;
 	}
 
@@ -593,24 +592,7 @@
 		height: fit-content;
 	}
 
-	.collapse-button, .expand-button {
-		position: absolute;
-		top: 10px;
-		right: 10px;
-		background: none;
-		border: 2px solid #C2BA9E;
-		color: #C2BA9E;
-		cursor: pointer;
-		padding: 8px 12px;
-		z-index: 10;
-		font-size: 18px;
-		border-radius: 4px;
-	}
-
-	.collapse-button:hover, .expand-button:hover {
-		color: #968A5C;
-		border-color: #968A5C;
-	}
+	
 </style>
 
 <Navbar />
@@ -633,14 +615,12 @@
 							Settings ←
 						</button>
 					{/if}
-					<h1 class="main-header mb-6 ml-3">Rotation</h1>
+					<h1 class="rotation-header">Rotation</h1>
+					<GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
                     <div class="table-container">
-						<p>Press R to toggle regular mode, S to toggle stall mode, and N to toggle null mode.
+						<p>Press R to toggle regular mode, S to toggle stall mode, and N to toggle null mode. Scroll down to see the guide.
 						</p><!-- TODO make guide, add link to guide-->
 						<br>
-						<button onclick={() => clearRotation()}>Reset</button>
-						<br>
-                        <button onclick={() => calculateTotalDamageNew()}>Calculate Damage</button>
                         <p>Total Damage: {gameState.totalDamage} 
                             {#if gameState.poisonDamage > 0}
                                 <span style="color: #4CAF50" 
@@ -650,18 +630,25 @@
                         </p>
 					</div>
                     <div class="space-y-4 mt-4">
-						<button onclick={() => importFromString()}>Import Rotation</button>
-                        <button onclick={() => exportToString()} alt="Copy Rotation to Clipboard">Export Rotation</button>
+						<Button onClick={() => clearRotation()} variant="reset">
+							Reset
+						</Button>
+						<Button onClick={() => importFromString()} variant="primary">
+							Import Rotation
+						</Button>
+                        <Button onClick={() => exportToString()} variant="primary" title="Copy Rotation to Clipboard">
+							Export Rotation
+						</Button>
 					</div>
+					
                     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
                         {#each tabs as tab}
-                        <li class="flex-grow me-2">
-                            <button
-                                    onclick={() => (uiState.activeTab = tab.id)}
-                                class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                                    class:text-[#968A5C]={uiState.activeTab === tab.id}
-                                >{tab.label}</button>
-                        </li>
+                            <TabButton 
+                                id={tab.id}
+                                label={tab.label}
+                                isActive={uiState.activeTab === tab.id}
+                                onClick={() => (uiState.activeTab = tab.id)}
+                            />
                         {/each}
                     </ul>
 					<br>
@@ -773,15 +760,8 @@
             </div>
             <div class="settings-panel col-span-{uiState.settingsPanelCollapsed ? '0' : '6'} {uiState.settingsPanelCollapsed ? 'collapsed' : ''}"
 				style={uiState.settingsPanelCollapsed ? 'visibility: hidden; height: 0; margin: 0;' : ''}>
-                <button 
-                    class="collapse-button"
-                    onclick={() => uiState.settingsPanelCollapsed = true}
-                    style="visibility: visible;"
-                >
-                    → Hide
-                </button>
                 <div class="settings-content">
-                    <RotationSettings bind:settings={gameState.settings} updateDamages={calculateTotalDamageNew} stacks={gameState.stacks} />
+                    <RotationSettings bind:settings={gameState.settings} updateDamages={calculateTotalDamageNew} stacks={gameState.stacks} {uiState} />
                 </div>
             </div>
             <div class="col-span-12 mt-8">

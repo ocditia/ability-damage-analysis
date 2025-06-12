@@ -545,7 +545,7 @@ function set_min_var(settings, dmgObject) {
         }
 
         // bolstered smash
-        if (settings['ability'] === ABILITIES.SMASH && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && 
+        if (settings['ability'] === ABILITIES.SMASH && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
             settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK) {
             min_percent = 1.6;
             var_percent = 0.2;
@@ -735,7 +735,7 @@ function calc_additive_boosts(settings, dmgObject) {
     }
 
     // berserker necklace
-    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.BERSERKER && 
+    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.BERSERKER &&
         settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         boost += 0.05;
@@ -1003,7 +1003,7 @@ function calc_bonus_damage(settings, dmgObject) {
     return dmgObject;
 }
 
-function calc_core(settings, dmgObject, key, newBolg = false) {
+function calc_core(settings, dmgObject, key) {
     for (let i = 0; i < dmgObject[key]['damage list'].length; i++) {
         // berserker's fury
         dmgObject[key]['damage list'][i] = Math.floor(
@@ -1017,17 +1017,14 @@ function calc_core(settings, dmgObject, key, newBolg = false) {
             settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
             (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 7 ||
-                (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 3 &&
+                (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 3 &&
                     settings[SETTINGS.BALANCE_BY_FORCE] === true))
         ) {
-            if (!newBolg) {
-                if (!('bolg damage' in settings)) {
-                    settings['bolg damage'] = create_object(settings);
-                }
-                settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
+            if (!('bolg damage' in settings)) {
+                settings['bolg damage'] = create_object(settings);
             }
+            settings['bolg damage'][key]['damage list'].push(dmgObject[key]['damage list'][i]);
         }
-
         // crits
         if (dmgObject[key]['crit'] === true && abils[settings['ability']]['crit effects'] === true) {
             dmgObject[key]['damage list'][i] = Math.floor(
@@ -1295,7 +1292,7 @@ function calc_on_npc(settings, dmgObject) {
             abils[settings['ability']]['damage type'] === 'magic' &&
             settings[SETTINGS.ESSENCE_CORRUPTION] >= 25 &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
-            (settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING || 
+            (settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING ||
                 settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT)
         ) {
             dmgObject['damage list'][i] =
@@ -1374,7 +1371,7 @@ function calc_on_hit(settings, dmgObject) {
     return dmgObject;
 }
 
-function calc_damage_object(settings, newBolg = false) {
+function calc_damage_object(settings) {
     const dmgObject = create_object(settings);
     for (let key in dmgObject) {
         // calc base AD
@@ -1395,7 +1392,7 @@ function calc_damage_object(settings, newBolg = false) {
         dmgObject[key]['damage list'] = roll_damage(settings, dmgObject, key);
         // calc core
         if (abils[settings['ability']]['on-hit effects']) {
-            dmgObject[key] = calc_core(settings, dmgObject, key, newBolg);
+            dmgObject[key] = calc_core(settings, dmgObject, key);
         }
         // calc on npc
         dmgObject[key] = calc_on_npc(settings, dmgObject[key]);
@@ -1421,51 +1418,6 @@ function calc_bolg(settings) {
     return bolg_base;
 }
 
-function calc_bolg_new(settings) {
-    /*settings['ability'] = 'bolg proc';
-
-    // calc base bolg damage
-    let bolg_base = calc_damage_object(settings, true);
-
-    settings['ability'] = 'bolg proc percentages';
-    let bolg_damage_based = create_object(settings);
-    const bolgDmgObject = settings['bolg damage'][0];
-
-    // calc the damage based proc
-    for (let key in bolg_damage_based) {
-        bolg_damage_based[key]['base AD'] = calc_base_ad(settings);
-        bolg_damage_based[key]['boosted AD'] = calc_boosted_ad(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = ability_specific_effects(settings, bolg_damage_based[key]);
-        bolg_damage_based[key]['min hit'] = abils[settings['ability']]['min hit'] * bolgDmgObject[key]['damage list'][0];
-        bolg_damage_based[key]['var hit'] = 
-            (abils[settings['ability']]['min hit'] + abils[settings['ability']]['var hit']) * 
-            bolgDmgObject[key]['damage list'][bolgDmgObject[key]['damage list'].length-1] -
-            bolg_damage_based[key]['min hit'];
-        bolg_damage_based[key] = calc_style_specific(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_on_hit(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_additive_boosts(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_multiplicative_shared_buffs(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_multiplicative_pve_buffs(settings, bolg_damage_based[key]);
-        bolg_damage_based[key] = calc_bonus_damage(settings, bolg_damage_based[key]);
-        
-        bolg_damage_based[key]['damage list'] = roll_damage(settings, bolg_damage_based, key);
-        bolg_damage_based[key] = calc_core(settings, bolg_damage_based, key, true);
-        bolg_damage_based[key] = calc_on_npc(settings, bolg_damage_based[key]);
-        
-        
-        bolg_damage_based[key] = add_split_soul(settings, bolg_damage_based[key]);
-        
-    }*/
-
-    settings['ability'] = 'bolg proc';
-    // calc base bolg damage
-    let bolg_base = calc_damage_object(settings);
-
-    settings['bolg damage'].shift(); // delete this bolg proc
-
-    //const bolg_perc_damage = get_user_value(settings, bolg_damage_based);;
-    return bolg_base;
-}
 
 function calc_bloat(settings) {
     let bloat_dot = create_object(settings);
@@ -1769,35 +1721,27 @@ function style_specific_unification(settings, style = null) {
     return settings;
 }
 
-function hit_damage_calculation(settings) {
+function hit_damage_calculation(settings, rotationCalc = false) {
     settings = style_specific_unification(settings); // initialise some settings
     let total_damage = calc_damage_object(settings); // calculate the ability
-    total_damage = apply_additional(settings, total_damage);
+    total_damage = apply_additional(settings, total_damage, rotationCalc);
     //TODO add next cast next hit next tick etc
     return total_damage;
 }
 
 //todo rename
-function apply_additional(settings, total_damage, newbolg = false) {
+function apply_additional(settings, total_damage) {
+
     // handle sgb logic
     if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
         total_damage += calc_sgb(settings, total_damage);
     }
-    // handle bolg logic
-    if (newbolg) {
-        if (!settings['bolg damage']) {
-            settings['bolg damage'] = [];
-        }
-        if (settings['bolg damage'].length > 0) {
-            total_damage += calc_bolg_new(settings);
-        }
-    }
-    else {
-        if (settings['bolg damage']) {
+
+    if (settings['bolg damage']) {
             total_damage += calc_bolg(settings)
             delete settings['bolg damage'];
-        }
     }
+
     // handle bloat logic
     if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
         total_damage += calc_bloat(settings);
@@ -1823,7 +1767,7 @@ function apply_additional(settings, total_damage, newbolg = false) {
 }
 
 function ability_damage_calculation(settings) {
-    let rotation = get_rotation(settings);
+    let rotation = get_hit_sequence(settings);
     let damage = 0;
     for (let key in rotation) {
         if (key <= settings[SETTINGS.MAX_CHANNEL_DURATION]) {
@@ -1849,7 +1793,7 @@ function ability_damage_calculation(settings) {
  * @param {*} settings 
  * @returns 
  */
-function get_rotation(settings) {
+function get_hit_sequence(settings) {
     let rotation = JSON.parse(JSON.stringify(abils[settings['ability']]['hits'])); //Deep copy
 
     if (settings['ability'] === ABILITIES.GREATER_RICOCHET) {
@@ -1944,9 +1888,9 @@ function calc_aftershock(settings) {
     return get_user_value(settings, dmgObject);
 }
 
-export { ability_damage_calculation, hit_damage_calculation, 
+export { ability_damage_calculation, hit_damage_calculation,
     calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
-    get_user_value, get_rotation, add_split_soul, apply_additional,
-    calc_crit_damage, calc_aftershock
+    get_user_value, get_hit_sequence, add_split_soul, apply_additional,
+    calc_crit_damage, calc_split_soul_hit, calc_aftershock
 };

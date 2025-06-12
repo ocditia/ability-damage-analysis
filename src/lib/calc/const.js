@@ -1509,6 +1509,8 @@ const ABILITIES = {
     OMNIPOWER: 'omnipower',
     TSUNAMI: 'tsunami',
     SUNSHINE_DOT: 'sunshine dot',
+    SUNSHINE: 'sunshine',
+    GREATER_SUNSHINE: 'greater sunshine',
     TEMPEST_OF_ARMADYL_HIT_1: 'tempest of armadyl hit 1',
     TEMPEST_OF_ARMADYL_HIT_2: 'tempest of armadyl hit 2',
     TEMPEST_OF_ARMADYL_HIT_3: 'tempest of armadyl hit 3',
@@ -3154,7 +3156,8 @@ const abils = {
                 ABILITIES.COMBUST_HIT,
                 ABILITIES.COMBUST_HIT
             ]
-        }
+        },
+        hit_timings: [0, 2, 4, 6, 8]
     },
     [ABILITIES.CHAIN]: {
         // ability name
@@ -3434,12 +3437,13 @@ const abils = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         hits: {
             1: [ABILITIES.OMNIPOWER_IGNEOUS, "next hit", ABILITIES.OMNIPOWER_IGNEOUS, "next hit", ABILITIES.OMNIPOWER_IGNEOUS, "next hit", ABILITIES.OMNIPOWER_IGNEOUS]
-        }
+        },
+        hit_timings: [0, 0, 0, 0]
     },
     [ABILITIES.TSUNAMI]: {
         // ability name
@@ -3464,6 +3468,46 @@ const abils = {
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
+    [ABILITIES.SUNSHINE]: {
+        //TODO check number of dot hits
+        // ability name
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+        hits: {
+            1: new Array(17).fill(ABILITIES.SUNSHINE_DOT)
+           },
+        hit_timings: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49]//TODO Find out what these actually are
+    },
+    [ABILITIES.GREATER_SUNSHINE]: {
+        //TODO check number of dot hits
+        // ability name
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+        hits: {
+            1: new Array(17).fill(ABILITIES.SUNSHINE_DOT)
+           },
+        hit_timings: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49]//TODO Find out what these actually are
+    },
+    [ABILITIES.GREATER_SUNSHINE_DOT]: {
+        // ability name
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': false, // does the ability get on-hit effects
     },
     [ABILITIES.TEMPEST_OF_ARMADYL_HIT_1]: {
         // ability name
@@ -3647,7 +3691,7 @@ const abils = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'burn', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic',
@@ -3661,7 +3705,9 @@ const abils = {
                 ABILITIES.SOULFIRE_BURN,
                 ABILITIES.SOULFIRE_BURN,
             ]
-        }
+        },
+        hit_timings: [0, 3, 6, 9, 12, 15, 18],
+        'adren cost': 35
     },
     [ABILITIES.SARADOMIN_STRIKE]: {
         // ability name
@@ -4184,7 +4230,7 @@ const abils = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
