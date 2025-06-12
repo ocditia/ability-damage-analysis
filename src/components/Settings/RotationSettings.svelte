@@ -88,6 +88,7 @@
         → Hide
     </button>
     <h1 class="rotation-header">Settings</h1>
+    <GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
         <TabButton 
             id="ranged"

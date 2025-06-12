@@ -256,7 +256,6 @@ function processMultiHitAbility(
 
     let dmgObject = create_damage_object(settingsCopy, abilityKey);
     let dmgObjects = on_cast(settingsCopy, dmgObject, state.timers, abilityKey);
-    console.log(dmgObjects);
     dmgObjects.forEach(element => {
         let namedDmgObjects = on_hit(settingsCopy, element, state.timers, element.ability);
         namedDmgObjects.forEach(namedDmgObject => {
@@ -382,9 +381,9 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
                 state.hitCount += scale;
 
             
-                console.log('Ability: ', dmgObj.ability || 'unknown');
-                console.log('dmgObject - on_damage', dmg);
-                console.log('tick', tick);
+//                 console.log('Ability: ', dmgObj.ability || 'unknown');
+//                 console.log('dmgObject - on_damage', dmg);
+//                 console.log('tick', tick);
             });
         });
     }

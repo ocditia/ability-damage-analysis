@@ -21,6 +21,7 @@
     $: buttonClasses = `
         ${variants[variant]}
         ${sizes[size]}
+        font-family:roboto, sans-serif;
         font-semibold
         rounded-md
         transition-all

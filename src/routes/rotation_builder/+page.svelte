@@ -9,19 +9,17 @@
     import { abilities as def_abilities } from '$lib/defence/abilities';
 	import { offGcdAbilities } from '$lib/special/abilities';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings';
-	import Checkbox from '../../components/Settings/Checkbox.svelte';
-	import Number from '../../components/Settings/Number.svelte';
-	import Select from '../../components/Settings/Select.svelte';
 	import { abils } from '$lib/calc/const';
     import RotationSettings from '../../components/Settings/RotationSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
-	import {buffs, createBuffTimings, createStackTimings} from '$lib/calc/rotation_builder/rotation_consts.ts';
+	import { createBuffTimings, createStackTimings} from '$lib/calc/rotation_builder/rotation_consts.ts';
 	import {ToolMode} from '$lib/calc/rotation_builder/ui_material/toolModes.ts';
     import ExtraActionsPanel from '../../components/RotationBuilder/ExtraActionsPanel.svelte';
     import { calculateTotalDamage } from '$lib/calc/rotation_builder/rotation-damage-calculator';
 	import { magic_buff_abilities } from '$lib/magic/buff_abilities';
 	import TabButton from '../../components/UI/TabButton.svelte';
 	import Button from '../../components/UI/Button.svelte';
+	import GradientSeparator from '../../components/UI/GradientSeparator.svelte';
 	
     let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abilities eventually
     let meleeAbils = {...melee_dmg_abilities};
@@ -389,7 +387,6 @@
 			uiState.activeTool = ToolMode.Null;
 			uiState.stallingAbility = null;
         }
-		console.log('Tool mode: ' + uiState.activeTool);
     }
 
     function exportToString() {
@@ -408,7 +405,7 @@
             alert('Rotation copied to clipboard!');
         } catch (e) {
             console.error('Export failed:', e);
-            alert('Failed to export rotation');
+            alert('Failed to export rotation. Please report this bug.');
         }
     }
 
@@ -595,7 +592,7 @@
 		height: fit-content;
 	}
 
-
+	
 </style>
 
 <Navbar />
@@ -619,6 +616,7 @@
 						</button>
 					{/if}
 					<h1 class="rotation-header">Rotation</h1>
+					<GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
                     <div class="table-container">
 						<p>Press R to toggle regular mode, S to toggle stall mode, and N to toggle null mode. Scroll down to see the guide.
 						</p><!-- TODO make guide, add link to guide-->
@@ -642,6 +640,7 @@
 							Export Rotation
 						</Button>
 					</div>
+					
                     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
                         {#each tabs as tab}
                             <TabButton 

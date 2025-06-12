@@ -169,21 +169,11 @@ body {
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale)
         var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia)
         var(--tw-drop-shadow);
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.5rem;
     margin-top: 0;
     margin-left: 0.75rem;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.25rem;
     position: relative;
-}
-
-.rotation-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(156, 163, 175, 0.6), transparent);
 }
 
 .settings-panel {
