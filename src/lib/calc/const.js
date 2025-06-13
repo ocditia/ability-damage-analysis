@@ -384,6 +384,30 @@ const armour = {
         slot: 'boots',
         style: 'ranged'
     },
+    'virtus mask': {
+        'necromancy strength': 0,
+        'magic strength': 20.3,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'helmet',
+        style: 'magic'
+    },
+    'virtus robe top': {
+        'necromancy strength': 0,
+        'magic strength': 30.5,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'body',
+        style: 'magic'
+    },
+    'virtus robe legs': {
+        'necromancy strength': 0,
+        'magic strength': 25.4,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'legs',
+        style: 'magic'
+    },
     'tectonic mask': {
         'necromancy strength': 0,
         'magic strength': 23.2,
