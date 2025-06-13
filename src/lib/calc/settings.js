@@ -167,6 +167,7 @@ const SETTINGS = {
     MAGIC_HELMET: 'magic helmet',
     MAGIC_HELMET_VALUES: {
         NONE: 'none',
+        VIRTUS: 'virtus mask',
         TECTONIC: 'tectonic mask',
         ELITE_TECTONIC: 'elite tectonic mask',
         SLISKE: 'anima core helm of sliske',
@@ -201,6 +202,7 @@ const SETTINGS = {
     MAGIC_BODY: 'magic body',
     MAGIC_BODY_VALUES: {
         NONE: 'none',
+        VIRTUS: 'virtus robe top',
         SLISKE: 'anima core body of sliske',
         ELITE_TECTONIC: 'elite tectonic robe top',
         TECTONIC: 'tectonic robe top',
@@ -234,6 +236,7 @@ const SETTINGS = {
     MAGIC_LEGS: 'magic legs',
     MAGIC_LEGS_VALUES: {
         NONE: 'none',
+        VIRTUS: 'virtus robe legs',
         TECTONIC: 'tectonic robe bottom',
         ELITE_TECTONIC: 'elite tectonic robe bottom',
         SLISKE: 'anima core legs of sliske',
