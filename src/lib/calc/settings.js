@@ -1176,6 +1176,7 @@ const settingsConfig = {
             { text: 'None/Tank', value: SETTINGS.MAGIC_HELMET_VALUES.NONE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC },
+            { text: 'Virtus', value: SETTINGS.MAGIC_HELMET_VALUES.VIRTUS },
             { text: 'Sliske', value: SETTINGS.MAGIC_HELMET_VALUES.SLISKE },
             { text: 'Ghost hunter', value: SETTINGS.MAGIC_HELMET_VALUES.GHOST_HUNTER},
         ]
@@ -1221,6 +1222,7 @@ const settingsConfig = {
             { text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.NONE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_BODY_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC },
+            { text: 'Virtus', value: SETTINGS.MAGIC_BODY_VALUES.VIRTUS },
             { text: 'Sliske', value: SETTINGS.MAGIC_BODY_VALUES.SLISKE },
             { text: 'Ghost hunter', value: SETTINGS.MAGIC_BODY_VALUES.GHOST_HUNTER},
         ]
@@ -1265,6 +1267,7 @@ const settingsConfig = {
             { text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.NONE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC },
+            { text: 'Virtus', value: SETTINGS.MAGIC_LEGS_VALUES.VIRTUS },
             { text: 'Sliske', value: SETTINGS.MAGIC_LEGS_VALUES.SLISKE },
             { text: 'Ghost hunter', value: SETTINGS.MAGIC_LEGS_VALUES.GHOST_HUNTER},
         ]
