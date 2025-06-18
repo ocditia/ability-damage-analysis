@@ -172,6 +172,7 @@ const SETTINGS = {
         ELITE_TECTONIC: 'elite tectonic mask',
         SLISKE: 'anima core helm of sliske',
         GHOST_HUNTER: 'ghost hunter goggles',
+        MASTERWORK: 'masterwork magic hat'
     },
     RANGED_HELMET: 'ranged helmet',
     RANGED_HELMET_VALUES: {
@@ -207,6 +208,7 @@ const SETTINGS = {
         ELITE_TECTONIC: 'elite tectonic robe top',
         TECTONIC: 'tectonic robe top',
         GHOST_HUNTER: 'ghost hunter body',
+        MASTERWORK: 'masterwork magic robe top',
     },
     RANGED_BODY: 'ranged body',
     RANGED_BODY_VALUES: {
@@ -241,6 +243,7 @@ const SETTINGS = {
         ELITE_TECTONIC: 'elite tectonic robe bottom',
         SLISKE: 'anima core legs of sliske',
         GHOST_HUNTER: 'ghost hunter legs',
+        MASTERWORK: 'masterwork magic robe bottom',
     },
     RANGED_LEGS: 'ranged legs',
     RANGED_LEGS_VALUES: {
@@ -273,7 +276,8 @@ const SETTINGS = {
         DTB: 'deathtouch bracelet',
         CINDERS: 'cinderbane gloves',
         KWW: 'kerapacs wristwraps',
-        KWW_E: 'enhanced kerapacs wristwraps'
+        KWW_E: 'enhanced kerapacs wristwraps',
+        MASTERWORK: 'masterwork magic gloves',
     },
     RANGED_GLOVES: 'ranged gloves',
     RANGED_GLOVES_VALUES: {
@@ -309,7 +313,8 @@ const SETTINGS = {
         NONE: 'none',
         BLAST: 'blast diffusion boots',
         BLAST_E: 'enhanced blast diffusion boots',
-        SH: 'silverhawk boots'
+        SH: 'silverhawk boots',
+        MASTERWORK: 'masterwork magic boots',
     },
     RANGED_BOOTS: 'ranged boots',
     RANGED_BOOTS_VALUES: {
@@ -1307,13 +1312,14 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_GLOVES]: {
         label: 'Gloves',
-        default: SETTINGS.MAGIC_GLOVES_VALUES.CINDERS,
+        default: SETTINGS.MAGIC_GLOVES_VALUES.MASTERWORK,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_GLOVES_VALUES.NONE },
             { text: 'DTB', value: SETTINGS.MAGIC_GLOVES_VALUES.DTB },
             { text: 'Cinderbanes', value: SETTINGS.MAGIC_GLOVES_VALUES.CINDERS },
             { text: 'Kerrywaps', value: SETTINGS.MAGIC_GLOVES_VALUES.KWW },
-            { text: 'Kerrywaps+', value: SETTINGS.MAGIC_GLOVES_VALUES.KWW_E }
+            { text: 'Kerrywaps+', value: SETTINGS.MAGIC_GLOVES_VALUES.KWW_E },
+            { text: 'Masterwork', value: SETTINGS.MAGIC_GLOVES_VALUES.MASTERWORK },
         ]
     },
     [SETTINGS.RANGED_GLOVES]: {
@@ -1355,12 +1361,13 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_BOOTS]: {
         label: 'Boots',
-        default: SETTINGS.MAGIC_BOOTS_VALUES.BLAST_E,
+        default: SETTINGS.MAGIC_BOOTS_VALUES.MASTERWORK,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_BOOTS_VALUES.NONE },
             { text: 'Blast diff', value: SETTINGS.MAGIC_BOOTS_VALUES.BLAST },
             { text: 'Blast diff+', value: SETTINGS.MAGIC_BOOTS_VALUES.BLAST_E },
-            { text: 'Silverhawks', value: SETTINGS.MAGIC_BOOTS_VALUES.SH }
+            { text: 'Masterwork', value: SETTINGS.MAGIC_BOOTS_VALUES.MASTERWORK },
+            { text: 'Silverhawks', value: SETTINGS.MAGIC_BOOTS_VALUES.SH },
         ]
     },
     [SETTINGS.RANGED_BOOTS]: {

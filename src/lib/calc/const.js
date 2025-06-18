@@ -1400,6 +1400,46 @@ const armour = {
         slot: 'cape',
         style: 'hybrid'
     },
+    'masterwork magic hat': {
+        'necromancy strength': 0,
+        'magic strength': 28,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'helm',
+        style: 'magic'
+    },
+    'masterwork magic robe top': {
+        'necromancy strength': 0,
+        'magic strength': 42,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'body',
+        style: 'magic'
+    },
+    'masterwork magic robe bottom': {
+        'necromancy strength': 0,
+        'magic strength': 37,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'legs',
+        style: 'magic'
+    },
+    'masterwork magic gloves': {
+        'necromancy strength': 0,
+        'magic strength': 19,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'gloves',
+        style: 'magic'
+    },
+    'masterwork magic boots': {
+        'necromancy strength': 0,
+        'magic strength': 19,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'boots',
+        style: 'magic'
+    },
 };
 
 const ABILITIES = {

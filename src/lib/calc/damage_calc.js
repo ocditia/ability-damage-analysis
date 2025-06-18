@@ -170,6 +170,7 @@ function calc_bonus(settings) {
     if (settings[SETTINGS.REAPER_CREW] === true) {
         bonus += 12;
     }
+    console.log(settings[SETTINGS.BODY])
 
     bonus += armour[settings[SETTINGS.HELMET]][style_str];
     bonus += armour[settings[SETTINGS.BODY]][style_str];
