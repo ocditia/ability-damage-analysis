@@ -2,6 +2,11 @@ import { ABILITIES } from '../calc/const.js';
 import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
 
 const abilities = {
+    [ABILITIES.MELEE_AUTO]: {
+        title: 'Auto',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/sever.png'
+    },
     [ABILITIES.SEVER]: {
         title: 'Sever',
         calc: hit_damage_calculation,

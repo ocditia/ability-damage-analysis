@@ -170,7 +170,6 @@ function calc_bonus(settings) {
     if (settings[SETTINGS.REAPER_CREW] === true) {
         bonus += 12;
     }
-    console.log(settings[SETTINGS.BODY])
 
     bonus += armour[settings[SETTINGS.HELMET]][style_str];
     bonus += armour[settings[SETTINGS.BODY]][style_str];
@@ -314,16 +313,6 @@ function ability_specific_effects(settings, dmgObject) {
             } else {
                 hand_modifier = 1.5;
             }
-
-            /*let speed_modifier = 1;
-            if (settings[SETTINGS.AUTO_SPEED] === SETTINGS.AUTO_SPEED_VALUES.FASTEST) {
-                speed_modifier = 1;
-            } else if (settings[SETTINGS.AUTO_SPEED] === SETTINGS.AUTO_SPEED_VALUES.FAST) {
-                speed_modifier = 1225/960;
-            } else {
-                speed_modifier = 1490/960;
-            }*/
-            //dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier) * speed_modifier);
             dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
         }
 
@@ -403,6 +392,19 @@ function ability_specific_effects(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
+        // auto attack
+        if (settings['ability'] === ABILITIES.MELEE_AUTO) {
+            let hand_modifier = 1;
+            if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.MH) {
+                hand_modifier = 1;
+            } else if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.OH) {
+                hand_modifier = 0.5;
+            } else {
+                hand_modifier = 1.5;
+            }
+            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
+        }
+
         // slice bound
         if (
             settings['ability'] === 'slice' &&
@@ -430,6 +432,19 @@ function ability_specific_effects(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
+        // auto attack
+        if (settings['ability'] === ABILITIES.RANGED_AUTO) {
+            let hand_modifier = 1;
+            if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.MH) {
+                hand_modifier = 1;
+            } else if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.OH) {
+                hand_modifier = 0.5;
+            } else {
+                hand_modifier = 1.5;
+            }
+            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
+        }
+
         // piercing shot bound
         if (
             settings['ability'] === 'piercing shot' &&
@@ -550,7 +565,6 @@ function set_min_var(settings, dmgObject) {
             settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK) {
             min_percent = 1.6;
             var_percent = 0.2;
-            console.log(min_percent)
         }
     }
 

@@ -2256,7 +2256,7 @@ const settingsConfig = {
         ]
     },
     [SETTINGS.AUTO_HAND]: {
-        label: 'Attack speed',
+        label: 'Auto type',
         default: SETTINGS.AUTO_HAND_VALUES.TH,
         options: [
             { text: '2h auto', value: SETTINGS.AUTO_HAND_VALUES.TH },

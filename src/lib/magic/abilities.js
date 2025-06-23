@@ -3,7 +3,7 @@ import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } f
 
 const abilities = {
     [ABILITIES.MAGIC_AUTO]: {
-        title: 'Auto (I think)',
+        title: 'Auto',
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png'
     },

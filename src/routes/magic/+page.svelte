@@ -181,10 +181,6 @@
                                     onchange={() => updateDamages()}
                                 />
                                 <Select
-                                    bind:setting={settings[SETTINGS.AUTO_SPEED]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Select
                                     bind:setting={settings[SETTINGS.MODE]}
                                     onchange={() => updateDamages()}
                                 />

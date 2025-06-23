@@ -2,6 +2,10 @@ import { ABILITIES } from '../calc/const.js';
 import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
 
 const abilities = {
+    [ABILITIES.RANGED_AUTO]: {
+        title: 'Auto',
+        calc: hit_damage_calculation,
+    },
     [ABILITIES.GREATER_RICOCHET]: {
         title: 'Greater ricochet',
         calc: ability_damage_calculation,
