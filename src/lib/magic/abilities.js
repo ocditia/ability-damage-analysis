@@ -5,7 +5,6 @@ const abilities = {
     [ABILITIES.MAGIC_AUTO]: {
         title: 'Auto',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png'
     },
     [ABILITIES.GREATER_CONCENTRATED_BLAST]: {
         title: 'Gconc',

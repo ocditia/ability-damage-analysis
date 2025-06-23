@@ -5,7 +5,6 @@ const abilities = {
     [ABILITIES.MELEE_AUTO]: {
         title: 'Auto',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/sever.png'
     },
     [ABILITIES.SEVER]: {
         title: 'Sever',
