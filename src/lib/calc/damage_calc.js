@@ -380,6 +380,16 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.6);
         }
 
+        // wrack energising
+        if (settings['ability'] === ABILITIES.WRACK && settings[SETTINGS.ENERGISING] > 0) {
+            dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
+        }
+
+        // wrack and ruin energising
+        if (settings['ability'] === ABILITIES.WRACK_AND_RUIN && settings[SETTINGS.ENERGISING] > 0) {
+            dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
+        }
+
         // greater chain half damage
         const gchain_not_halved = ['bleed', 'burn', 'dot'];
         if (
@@ -411,6 +421,11 @@ function ability_specific_effects(settings, dmgObject) {
                 settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
         ) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
+        }
+
+        // slice energising
+        if (settings['ability'] === ABILITIES.SLICE && settings[SETTINGS.ENERGISING] > 0) {
+            dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD'])
         }
 
         // dismember lunging
@@ -451,6 +466,11 @@ function ability_specific_effects(settings, dmgObject) {
                 settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
         ) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
+        }
+
+        // piercing energising
+        if (settings['ability'] === ABILITIES.PIERCING_SHOT_HIT && settings[SETTINGS.ENERGISING] > 0) {
+            dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
         }
 
         // frag lunging

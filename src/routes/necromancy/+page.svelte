@@ -507,6 +507,13 @@
                                     step="1"
                                     min="0"
                                 />
+                                <Number
+                                    bind:setting={settings[SETTINGS.ENERGISING]}
+                                    onchange={() => updateDamages()}
+                                    max="4"
+                                    step="1"
+                                    min="0"
+                                />
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>

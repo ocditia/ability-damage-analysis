@@ -823,6 +823,7 @@ const SETTINGS = {
 
     TELOS_RED_BEAM: 'telos red beam',
     TELOS_BLACK_BEAM: 'telos black beam',
+    ENERGISING: 'energising',
 };
 
 const settingsConfig = {
@@ -2271,6 +2272,10 @@ const settingsConfig = {
     [SETTINGS.TELOS_BLACK_BEAM]: {
         label: 'Black beam',
         default: false
+    },
+    [SETTINGS.ENERGISING]: {
+        label: 'Energising',
+        default: 0
     },
 };
 
