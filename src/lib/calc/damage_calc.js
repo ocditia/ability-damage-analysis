@@ -365,8 +365,7 @@ function ability_specific_effects(settings, dmgObject) {
             settings['ability'] === 'wrack' &&
             (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
                 settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-                settings[SETTINGS.TARGET_DISABILITY] ===
-                    SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
+                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
         ) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
         }
@@ -376,8 +375,7 @@ function ability_specific_effects(settings, dmgObject) {
             settings['ability'] === 'wrack and ruin' &&
             (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
                 settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-                settings[SETTINGS.TARGET_DISABILITY] ===
-                    SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
+                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
         ) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.6);
         }
@@ -408,9 +406,9 @@ function ability_specific_effects(settings, dmgObject) {
         // slice bound
         if (
             settings['ability'] === 'slice' &&
-            (settings['target disability'] === 'stunned' ||
-                settings['target disability'] === 'bound' ||
-                settings['target disability'] === 'stunned and bound')
+            (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
+                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
+                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
         ) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
         }
@@ -448,9 +446,9 @@ function ability_specific_effects(settings, dmgObject) {
         // piercing shot bound
         if (
             settings['ability'] === 'piercing shot' &&
-            (settings['target disability'] === 'stunned' ||
-                settings['target disability'] === 'bound' ||
-                settings['target disability'] === 'stunned and bound')
+            (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
+                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
+                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
         ) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
         }
