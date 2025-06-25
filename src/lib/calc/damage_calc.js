@@ -142,19 +142,21 @@ function calc_weapon_tier(settings, hand) {
         }
     }
 
-    let tier = 0;
+    let weapon_tier = 0;
     // custom weapon tier
     if (
         settings[hand] === 'custom' ||
         settings[hand] === 'custom oh' ||
         settings[hand] === 'custom th'
     ) {
-        tier = Math.min(settings[hand + ' custom tier'], ammo_tier);
+        weapon_tier = settings[hand + ' custom tier'];
     }
     // standard weapon
     else {
-        tier = Math.min(weapons[settings[hand]]['tier'], ammo_tier);
+        weapon_tier = weapons[settings[hand]]['tier'];
     }
+    tier = Math.min(weapon_tier, ammo_tier)
+
     // innate mastery (shard of genesis essence)
     if (tier === 95 && settings[SETTINGS.INNATE_MASTERY] === true) {
         tier += 5;
