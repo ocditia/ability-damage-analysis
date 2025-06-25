@@ -155,7 +155,7 @@ function calc_weapon_tier(settings, hand) {
     else {
         weapon_tier = weapons[settings[hand]]['tier'];
     }
-    tier = Math.min(weapon_tier, ammo_tier);
+    let tier = Math.min(weapon_tier, ammo_tier);
 
     // innate mastery (shard of genesis essence)
     if (tier === 95 && settings[SETTINGS.INNATE_MASTERY] === true) {
