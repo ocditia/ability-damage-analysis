@@ -1490,7 +1490,7 @@ function calc_fsoa(settings) {
 }
 
 function calc_sgb(settings, dmg) {
-    const hits = [0, 1.16, 1.64, 2.44, 3.56, 5.0];
+    const hits = [0, 1, 1.5, 2.33, 3.5, 5.0];
     const size = Math.min(settings[SETTINGS.TARGET_SIZE], 5);
 
     return Math.floor(dmg * (hits[size] - 1));
