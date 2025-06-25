@@ -41,6 +41,20 @@
     $effect(() => {
         table = createTable(options);
     })
+
+    async function copyCSV() {
+        let csv = '';
+        csv += columns.map(col => col.header).join(',') + '\n';
+        table.getRowModel().rows.forEach(row => {
+            csv += columns.map((col, index) => index === 0 ? row.original[col.accessorKey].title : row.original[col.accessorKey]).join(',') + '\n';
+        });
+
+        try {
+            await navigator.clipboard.writeText(csv);
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+    }
 </script>
 
 <table class="w-full">
@@ -93,3 +107,7 @@
     {/each}
     </tfoot>
 </table>
+
+<button onclick={copyCSV}>
+    <img class="w-auto h-[64px]" src="/csv.png" alt="copy-to-csv" />
+</button>
