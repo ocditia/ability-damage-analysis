@@ -256,6 +256,30 @@ const gear = {
 };
 
 const armour = {
+    'warpriest of tuska gauntlets': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'gloves',
+        style: 'hybrid'
+    },
+    'warpriest of tuska boots': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'boots',
+        style: 'hybrid'
+    },
+    'warpriest of tuska cape': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'cape',
+        style: 'hybrid'
+    },
     'sirenic mask': {
         'necromancy strength': 0,
         'magic strength': 0,

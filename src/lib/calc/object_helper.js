@@ -125,6 +125,13 @@ function calc_crit_chance(settings) {
         crit_chance += 0.02;
     }
 
+    if (settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.TUSKA &&
+        settings[SETTINGS.GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUSKA &&
+        settings[SETTINGS.GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUSKA
+    ) {
+        crit_chance += 0.03;
+    }
+
     if (abils[settings['ability']]['main style'] === 'magic') {
         // channeller's ring
         if (
