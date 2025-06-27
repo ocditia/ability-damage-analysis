@@ -127,7 +127,7 @@ function calc_crit_chance(settings) {
 
     if (settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.TUSKA &&
         settings[SETTINGS.GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUSKA &&
-        settings[SETTINGS.GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUSKA
+        settings[SETTINGS.BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUSKA
     ) {
         crit_chance += 0.03;
     }
