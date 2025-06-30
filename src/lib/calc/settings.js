@@ -389,6 +389,7 @@ const SETTINGS = {
         LOTD_I: 'luck of the dwarves (i)',
         HSR: 'hazelmeres signet ring',
         HSR_I: 'hazelmeres signet ring (i)',
+        TOKKUL: 'tokkul-zo',
     },
     /*
     MAGIC_RING: 'magic ring',
@@ -1465,6 +1466,7 @@ const settingsConfig = {
             { text: 'LOTD (i)', value: SETTINGS.RING_VALUES.LOTD_I },
             { text: 'HSR', value: SETTINGS.RING_VALUES.HSR },
             { text: 'HSR (i)', value: SETTINGS.RING_VALUES.HSR_I },
+            { text: 'Tokkul-Zo', value: SETTINGS.RING_VALUES.TOKKUL },
         ]
     },
     /*

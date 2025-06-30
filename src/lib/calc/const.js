@@ -256,6 +256,14 @@ const gear = {
 };
 
 const armour = {
+    'tokkul-zo': {
+        'necromancy strength': 2.4,
+        'magic strength': 2.4,
+        'melee strength': 2.4,
+        'ranged strength': 2.4,
+        slot: 'ring',
+        style: 'hybrid'
+    },
     'warpriest of tuska gauntlets': {
         'necromancy strength': 0,
         'magic strength': 0,

@@ -1336,6 +1336,11 @@ function calc_on_npc(settings, dmgObject) {
                 settings[SETTINGS.ESSENCE_CORRUPTION];
         }
 
+        // tokkul-zo
+        if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.TOKKUL) {
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1);
+        }
+
         // necklace of salamancy
         if (settings[SETTINGS.NECKLACE] === 'necklace of salamancy') {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.15);
