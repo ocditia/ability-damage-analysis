@@ -3,8 +3,9 @@ import { ability_damage_calculation, hit_damage_calculation } from '../calc/dama
 
 const abilities = {
     [ABILITIES.RANGED_AUTO]: {
-        title: 'Auto',
+        title: 'Auto Attack',
         calc: hit_damage_calculation,
+        icon: '/effect_icons/ranged_level.png'
     },
     [ABILITIES.GREATER_RICOCHET]: {
         title: 'Greater ricochet',

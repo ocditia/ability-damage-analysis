@@ -1,6 +1,9 @@
 import { settingsConfig, SETTINGS } from '../settings.js';
+import { SettingsCombatStyles } from './types/SettingsCombatStyles';
 
-// All the limited duration buffs displayed as bars under the rotation
+/*
+ * All the buffs displayed as bars under the rotation in the UI.
+ */
 export const buffs = [
     SETTINGS.CRIT_BUFF, 
     SETTINGS.NATURAL_INSTINCT, 
@@ -8,6 +11,7 @@ export const buffs = [
 	SETTINGS.SUNSHINE, 
     SETTINGS.BERSERK, 
     SETTINGS.SPLIT_SOUL, 
+    SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER,
 	SETTINGS.ICY_PRECISION, 
     SETTINGS.BALANCE_BY_FORCE,
     SETTINGS.INSTABILITY
@@ -21,12 +25,6 @@ export function createBuffTimings(barSize: number) {
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 colour: '#FFD700'
-            },
-            [SETTINGS.NATURAL_INSTINCT]: {
-                title: 'Natural Instinct',
-                idx: -1,
-                buffTicks: Array(barSize).fill(0),
-                colour: '#B3B3B4'
             },
             [SETTINGS.DEATH_SWIFTNESS]: {
                 title: 'Death\'s Swiftness',
@@ -46,11 +44,23 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 colour: '#E28329'
             },
+            [SETTINGS.NATURAL_INSTINCT]: {
+                title: 'Natural Instinct',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                colour: '#B3B3B4'
+            },
             [SETTINGS.SPLIT_SOUL]: {
                 title: 'Split Soul',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                colour: '#5b1db6'//'#9303ec'
+                colour: '#5b1db6'//
+            },
+            [SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER]: {
+                title: 'Dracolich Infusion (Greater)',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                colour: '#0D1EB1'
             },
             [SETTINGS.ICY_PRECISION]: {
                 title: 'Icy Precision',
@@ -84,7 +94,8 @@ export function createStackTimings(barSize: number) {
                 image: '/effect_icons/Crit_buff.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: '#f5e942',
-                number: 'true'
+                number: 'true',
+                combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
                 title: 'Perfect Equilibrium stacks',
@@ -92,7 +103,8 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/Perfect Equilibrium (self status).png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#4cfc42'
+                colour: '#4cfc42',
+                combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.ICY_CHILL_STACKS]: {
                 title: 'Icy Chill stacks',
@@ -100,7 +112,8 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/Icy_Chill.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#03f4fc'
+                colour: '#03f4fc',
+                combatStyle: SettingsCombatStyles.RANGED
             }
         }
     )

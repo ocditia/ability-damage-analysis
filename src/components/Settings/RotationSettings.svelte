@@ -5,8 +5,10 @@
     import TabButton from '../UI/TabButton.svelte';
     import GradientSeparator from '../UI/GradientSeparator.svelte';
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
+    import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';  
+    import '../../css/style.css';
     export let tab = 'general'; // Options as props
-    export let styleTab = 'ranged';
+    export let styleTab = SettingsCombatStyles.RANGED;
     export let settings;
     export let stacks;
     export let updateDamages;
@@ -120,7 +122,7 @@
 
 <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-rotation">
     <button 
-        class="collapse-button"
+        class="collapse-button-settings"
         on:click={() => uiState.settingsPanelCollapsed = true}
     >
         → Hide
@@ -131,26 +133,26 @@
         <TabButton 
             id="ranged"
             label="Ranged"
-            isActive={styleTab === 'ranged'}
-            onClick={() => (styleTab = 'ranged')}
+            isActive={styleTab === SettingsCombatStyles.RANGED}
+            onClick={() => (styleTab = SettingsCombatStyles.RANGED)}
         />
         <TabButton 
             id="magic"
             label="Magic"
-            isActive={styleTab === 'magic'}
-            onClick={() => (styleTab = 'magic')}
+            isActive={styleTab === SettingsCombatStyles.MAGIC}
+            onClick={() => (styleTab = SettingsCombatStyles.MAGIC)}
         />
         <TabButton 
             id="melee"
             label="Melee"
-            isActive={styleTab === 'melee'}
-            onClick={() => (styleTab = 'melee')}
+            isActive={styleTab === SettingsCombatStyles.MELEE}
+            onClick={() => (styleTab = SettingsCombatStyles.MELEE)}
         />
         <TabButton 
             id="necro"
             label="Necro"
-            isActive={styleTab === 'necro'}
-            onClick={() => (styleTab = 'necro')}
+            isActive={styleTab === SettingsCombatStyles.NECROMANCY}
+            onClick={() => (styleTab = SettingsCombatStyles.NECROMANCY)}
         />
     </ul>
     <GradientSeparator marginTop="0.0rem" marginBottom="0.25rem" />
@@ -182,9 +184,10 @@
                     <h5 class="uppercase font-bold text-lg text-center mb-4">General</h5>
                     <Select
                         bind:setting={settings[SETTINGS.MODE]}
+                        img="/settings_icons/Skills_icon.png"
                         onchange={() => updateDamages()}
                     />
-                    {#if styleTab == 'ranged'}
+                    {#if styleTab == SettingsCombatStyles.RANGED}
                         <Number
                             bind:setting={settings[SETTINGS.RANGED_LEVEL]}
                             onchange={() => updateDamages()}
@@ -192,27 +195,30 @@
                             max="150"
                             min="1"
                         />
-                    {:else if styleTab == 'magic'}
+                    {:else if styleTab == SettingsCombatStyles.MAGIC}
                         <Number
                             bind:setting={settings[SETTINGS.MAGIC_LEVEL]}
                             onchange={() => updateDamages()}
-                            img="/effect_icons/magic.png"step="1"
+                            img="/effect_icons/magic.png"
+                            step="1"
                             max="150"
                             min="1"
                         />
-                    {:else if styleTab == 'melee'}
+                    {:else if styleTab == SettingsCombatStyles.MELEE}
                         <Number
                             bind:setting={settings[SETTINGS.STRENGTH_LEVEL]}
                             onchange={() => updateDamages()}
-                            img="/effect_icons/strength.png"step="1"
+                            img="/effect_icons/strength.png"
+                            step="1"
                             max="150"
                             min="1"
                         />
-                    {:else if styleTab == 'necro'}
+                    {:else if styleTab == SettingsCombatStyles.NECROMANCY}
                         <Number
                             bind:setting={settings[SETTINGS.NECROMANCY_LEVEL]}
                             onchange={() => updateDamages()}
-                            img="/effect_icons/necromancy.png"step="1"
+                            img="/effect_icons/necromancy.png"
+                            step="1"
                             max="150"
                             min="1"
                         />
@@ -240,6 +246,7 @@
                     <Number
                         bind:setting={settings[SETTINGS.TARGET_SIZE]}
                         onchange={() => updateDamages()}
+                        img="/settings_icons/target_size.webp"
                         step="1"
                         max="5"
                         min="0"
@@ -259,30 +266,30 @@
                 </div>
                 <div class="md:col-span-1 space-y-2">
                     <h5 class="uppercase font-bold text-lg text-center">Damage Buffs</h5>
-                    {#if styleTab === 'ranged'}
-                    <Select
-                            bind:setting={settings[SETTINGS.RANGED_PRAYER]}
-                            onchange={() => updateDamages()}
-                            img="/effect_icons/Prayer.webp"
-                    />
-                    {:else if styleTab === 'magic'}
-                    <Select
-                            bind:setting={settings[SETTINGS.MAGIC_PRAYER]}
-                            onchange={() => updateDamages()}
-                            img="/effect_icons/Prayer.webp"
-                    />
-                    {:else if styleTab === 'melee'}
+                    {#if styleTab === SettingsCombatStyles.RANGED}
+                        <Select
+                                bind:setting={settings[SETTINGS.RANGED_PRAYER]}
+                                onchange={() => updateDamages()}
+                                img="/effect_icons/ranged_prayer.webp"
+                        />
+                    {:else if styleTab === SettingsCombatStyles.MAGIC}
+                        <Select
+                                bind:setting={settings[SETTINGS.MAGIC_PRAYER]}
+                                onchange={() => updateDamages()}
+                                img="/effect_icons/magic_prayer.webp"
+                        />
+                    {:else if styleTab === SettingsCombatStyles.MELEE}
                     <Select
                             bind:setting={settings[SETTINGS.MELEE_PRAYER]}
                             onchange={() => updateDamages()}
-                            img="/effect_icons/Prayer.webp"
+                            img="/effect_icons/melee_prayer.webp"
                     />
-                    {:else if styleTab === 'necro'} 
-                    <Select
-                            bind:setting={settings[SETTINGS.NECROMANCY_PRAYER]}
-                            onchange={() => updateDamages()}
-                            img="/effect_icons/Prayer.webp"
-                    />
+                    {:else if styleTab === SettingsCombatStyles.NECROMANCY} 
+                        <Select
+                                bind:setting={settings[SETTINGS.NECRO_PRAYER]}
+                                onchange={() => updateDamages()}
+                                img="/effect_icons/necro_prayer.webp"
+                        />
                     {/if}
                     <Select
                         bind:setting={settings[SETTINGS.SLAYER_HELM]}
@@ -343,13 +350,19 @@
                 <div class="md:col-span-1" space-y-2>
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Stacks</h5>
                     {#each Object.keys(stacks) as key}
+                        {#if stacks[key].combatStyle === styleTab || stacks[key].combatStyle === SettingsCombatStyles.ALL}
                         <Checkbox
                             bind:setting={settings[stacks[key].displaySetting]}
                             img={stacks[key].image}
                             onchange={() => updateDamages()}
                         />
+                        {/if}
                     {/each}
-                    {#if styleTab === 'ranged'}
+                    <Checkbox
+                        bind:setting={settings[SETTINGS.CAP_ADRENALINE]}
+                        onchange={() => refreshUI(false)}
+                    />
+                    {#if styleTab === SettingsCombatStyles.RANGED}
                     <Number
                         bind:setting={settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS]}
                         onchange={() => updateDamages()}
@@ -366,7 +379,7 @@
                         min="0"
                         img="/effect_icons/Icy_Chill.png"
                     />
-                    {:else if styleTab === 'magic'}
+                    {:else if styleTab === SettingsCombatStyles.MAGIC}
                         <Number
                             bind:setting={settings[SETTINGS.BLOOD_TITHE]}
                             onchange={() => updateDamages()}
@@ -381,6 +394,24 @@
                             img="/effect_icons/essence_corruption.png"
                             step="1"
                             max="100"
+                            min="0"
+                        />
+                    {:else if styleTab === SettingsCombatStyles.MELEE}
+                        <Number
+                            bind:setting={settings[SETTINGS.PRIMORDIAL_ICE]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/primordial_ice.png"
+                            step="1"
+                            max="10"
+                            min="0"
+                        />
+                    {:else if styleTab === SettingsCombatStyles.NECROMANCY}
+                        <Number
+                            bind:setting={settings[SETTINGS.NECROSIS_STACKS]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/necrosis.png"
+                            step="1"
+                            max="12"
                             min="0"
                         />
                     {/if}
@@ -425,7 +456,7 @@
             {:else if tab === 'equipment'}
                 <div class="md:col-span-1">
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Armour</h5>
-                        {#if styleTab === 'ranged'}
+                        {#if styleTab === SettingsCombatStyles.RANGED}
                             <Select
                                 bind:setting={settings[SETTINGS.RANGED_HELMET]}
                                 onchange={() => updateDamages()}
@@ -466,7 +497,7 @@
                                 onchange={() => updateDamages()}
                                 img="/armour_icons/Ring_slot.png"
                             />
-                        {:else if styleTab === 'magic'}
+                        {:else if styleTab === SettingsCombatStyles.MAGIC}
                             <Select
                             bind:setting={settings[SETTINGS.MAGIC_HELMET]}
                             onchange={() => updateDamages()}
@@ -512,7 +543,7 @@
                                 bind:setting={settings[SETTINGS.AUTO_CAST]}
                                 onchange={() => updateDamages()}
                             />
-                        {:else if styleTab === 'melee'}
+                        {:else if styleTab === SettingsCombatStyles.MELEE}
                         {/if}
                         <Select
                             bind:setting={settings[SETTINGS.POCKET]}
@@ -642,7 +673,7 @@
                 </div>   
                 <div class="md:col-span-1">
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Weapons</h5>
-                    {#if styleTab === 'ranged'}
+                    {#if styleTab === SettingsCombatStyles.RANGED}
                         <Select
                             bind:setting={settings[SETTINGS.WEAPON_TYPE_RANGED]}
                             onchange={() => updateDamages()}
@@ -699,7 +730,7 @@
                             onchange={() => updateDamages()}
                             img="/effect_icons/shard_of_genesis.png"
                         />
-                    {:else if styleTab === 'magic'}
+                    {:else if styleTab === SettingsCombatStyles.MAGIC}
                         <div class="md:col-span-1">
                             <Select
                                 bind:setting={settings[SETTINGS.WEAPON_TYPE_MAGE]}
@@ -748,8 +779,50 @@
                                 img="/effect_icons/shard_of_genesis.png"
                             />
                         </div>
-                    {:else if styleTab === 'melee'}
-                    {:else if styleTab === 'necro'}
+                    {:else if styleTab === SettingsCombatStyles.MELEE}
+                    <Select
+                                bind:setting={settings[SETTINGS.WEAPON_TYPE_MELEE]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Main_hand_slot.webp"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.MELEE_MH]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Main_hand_slot.webp"
+                            />
+                            <Number
+                                bind:setting={settings[SETTINGS.MH_TIER_CUSTOM]}
+                                onchange={() => updateDamages()}
+                                max="100"
+                                step="1"
+                                min="0"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.MELEE_OH]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Off-hand_slot.webp"
+                            />
+                            <Number
+                                bind:setting={settings[SETTINGS.OH_TIER_CUSTOM]}
+                                onchange={() => updateDamages()}
+                                max="100"
+                                step="1"
+                                min="0"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.MELEE_TH]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Off-hand_slot.webp"
+                            />
+                            <Number
+                                bind:setting={settings[SETTINGS.TH_TIER_CUSTOM]}
+                                onchange={() => updateDamages()}
+                                max="100"
+                                step="1"
+                                min="0"
+                            />
+                    {:else if styleTab === SettingsCombatStyles.NECROMANCY}
+                    <p>TODO =D</p>
                     {/if}
                 </div>
 

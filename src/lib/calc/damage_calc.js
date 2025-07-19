@@ -1413,10 +1413,6 @@ function calc_on_hit(settings, dmgObject) {
 
 function calc_damage_object(settings) {
     const dmgObject = create_object(settings);
-    
-    if (settings['ability'] === ABILITIES.DAZING_SHOT) {
-        console.log('Dazing shot')
-    }
 
     for (let key in dmgObject) {
         // calc base AD
@@ -1450,9 +1446,6 @@ function calc_damage_object(settings) {
             )
         ) {
             dmgObject[key] = add_split_soul(settings, dmgObject[key]);
-        }
-        if (settings['ability'] === ABILITIES.DAZING_SHOT) {
-            console.log(dmgObject);
         }
     }
     // get user value

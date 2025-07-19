@@ -2,6 +2,9 @@
     import { rangedGear } from '$lib/special/abilities';
     import { SETTINGS } from '$lib/calc/settings';
     import { GearSlots } from '$lib/calc/rotation_builder/gear';
+    import { Logger, LogCategory } from '$lib/utils/Logger';
+
+    const logger = Logger.getInstance();
 
     export let gearItems = {}; // Default to an empty object if no data is provided
     export let handleAbilityClick;
@@ -23,7 +26,7 @@
             baseString = style + ' ';
         }
         const slotKey =  baseString + slot;
-        // console.log('Slot key!!!! = ' + slotKey);
+        logger.log(LogCategory.GEAR, 'Slot key!!!! = ' + slotKey);
         const item = settings[slotKey].value;
         return iconPath + item + png; 
     }

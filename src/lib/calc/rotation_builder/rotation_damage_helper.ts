@@ -24,7 +24,7 @@ export function add_adrenaline(settings, amount: number) {
     }
     let new_adren = settings[SETTINGS.ADRENALINE] + amount;
     const max_adren = settings[SETTINGS.HEIGHTENED_SENSES] ? 110 : 100; //TODO vestements
-    settings[SETTINGS.ADRENALINE] = (amount > 0) ? Math.min(max_adren, new_adren) : new_adren;
+    settings[SETTINGS.ADRENALINE] = settings[SETTINGS.CAP_ADRENALINE] ? Math.min(max_adren, new_adren) : new_adren;
 }
 
 /**
@@ -54,6 +54,7 @@ function calc_channelled_hit(settings: Record<string, any>, hit_index: number, r
 
 /**
  * Handles the toggling and timer initialisation of most ranged buffs, exlcuding (e)dracolich
+ * The buffs handled are those which are activated upon casting the ability
  * @param settings 
  * @param timers - map of (buff_name -> buff_duration)
  * @param abilityKey 
@@ -121,21 +122,21 @@ function handle_edraco(settings: Record<string, any>, timers: Record<string, num
 
     let items = [body, helmet, gloves, legs, boots];
     function dracoBuff(startString: string, adrenGain: number, infusionTier: string) {
-        let count = items.filter(item => item && item.startsWith(startString)).length;
-        if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT || abilityKey == ABILITIES.RAPID_FIRE_HIT) {
-            
-            add_adrenaline(settings, count * adrenGain);
+        let nDracoPieces = items.filter(item => item && item.startsWith(startString)).length;
+        if (abilityKey == ABILITIES.RAPID_FIRE_HIT || abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
+
+            add_adrenaline(settings, nDracoPieces * adrenGain);
         }
         //Handle crit chance buff
         if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
-            if (count >= 3) {
-                let buff_duration = 5 + (3 * Math.max(count - 3, 0)); // 5 tick base duration
-                settings['dracolich infusion'] = infusionTier;
-                timers['dracolich infusion'] = buff_duration; 
+            if (nDracoPieces >= 3) {
+                let buff_duration = 5 + (3 * Math.max(nDracoPieces - 3, 0)); // 5 tick base duration
+                settings[SETTINGS.DRACOLICH_INFUSION] = infusionTier;
+                timers[SETTINGS.DRACOLICH_INFUSION] = buff_duration; 
             }
         }
     }
-    dracoBuff('elite dracolich', 0.5, 'greater');
+    dracoBuff('elite dracolich', 0.5, SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER);
     //dracoBuff('dracolich', 0.2, 'regular'); 
     //TOOD solve the floating point error for regular draco
 }

@@ -14,12 +14,17 @@
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
 	import { createBuffTimings, createStackTimings} from '$lib/calc/rotation_builder/rotation_consts.ts';
 	import {ToolMode} from '$lib/calc/rotation_builder/ui_material/toolModes.ts';
-    import ExtraActionsPanel from '../../components/RotationBuilder/ExtraActionsPanel.svelte';
-    import { calculateTotalDamage } from '$lib/calc/rotation_builder/rotation-damage-calculator';
-	import { magic_buff_abilities } from '$lib/magic/buff_abilities';
-	import TabButton from '../../components/UI/TabButton.svelte';
-	import Button from '../../components/UI/Button.svelte';
-	import GradientSeparator from '../../components/UI/GradientSeparator.svelte';
+        import ExtraActionsPanel from '../../components/RotationBuilder/ExtraActionsPanel.svelte';
+    import DamageDistributionChart from '../../components/RotationBuilder/DamageDistributionChart.svelte';
+    import { calculateTotalDamage, calculateGaussianParameters } from '$lib/calc/rotation_builder/rotation-damage-calculator';
+    import { magic_buff_abilities } from '$lib/magic/buff_abilities';
+    	import TabButton from '../../components/UI/TabButton.svelte';
+    import Button from '../../components/UI/Button.svelte';
+    import GradientSeparator from '../../components/UI/GradientSeparator.svelte';
+    import Popup from '../../components/UI/Popup.svelte';
+    import { uiStore, uiActions } from '$lib/stores/uiStore.js';
+    import { notificationStore, notifActions } from '$lib/stores/notificationStore.js';
+    import { rotationStore, rotationActions } from '$lib/stores/rotationStore.js';
 	
     let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abilities eventually
     let meleeAbils = {...melee_dmg_abilities};
@@ -41,52 +46,15 @@
 	const buffLineWidth = 32;
 	const buffLineHeight = 6;
 
-	let uiState = $state({
-		activeTab: 'ranged',
-		activeTool: ToolMode.Regular,
-		settingsPanelCollapsed: false,
-		
-		extraActions: {
-			show: false,
-			tick: -1,
-			tab: 'abilities',
-			infoAbility: null,
-			barIndex: 0
-		},
-		
-		bar: {
-			size: BAR_SIZE,
-			index: 0,
-			lastIndex: 0,
-			rowGap: BASE_BAR_ROW_GAP,
-			lineGap: 0
-		},
-		
-		dragDrop: {
-			hoveredSlot: null,
-			validSlot: true
-		},
+	// Configuration management is now handled by rotationStore
+	
+	// Notification state is now managed by notificationStore
 
-		stallingAbility: null // Track which ability is being stalled
-	});
+	// Rotation management is now handled by rotationStore
+	
+	// Notification helpers now use notificationStore
 
-	let gameState = $state({
-		totalDamage: 0,
-		poisonDamage: 0,
-		familiarDamage: 0,
-		settings: Object.fromEntries(
-		Object.entries(settingsConfig).map(([key, value]) => [
-			key,
-			{ ...value, key: key, value: value.default }
-		])
-		),
-		abilityBar: Array(BAR_SIZE).fill(null),
-		extraActionBar: Array(BAR_SIZE).fill(null),
-		buffs: createBuffTimings(BAR_SIZE),
-		stacks: createStackTimings(BAR_SIZE),
-		nulledTicks: Array(BAR_SIZE).fill(false),
-		stalledAbilities: Array(BAR_SIZE).fill(null)
-	});
+	// Game state is now managed by rotationStore
 
 	const tabs = [
 		{ id: 'ranged', label: 'Ranged', abilities: rangedAbils },
@@ -96,36 +64,79 @@
 		{ id: 'defence', label: 'Defence', abilities: defAbils }
 	];
 
+	// Configuration management functions now use rotationStore
+
+	function exportToFile() {
+		notifActions.showInputPrompt(
+			'Export Rotation',
+			'Enter a name for your rotation file:',
+			'Rotation name...',
+			(rotationName) => {
+				rotationActions.exportToFile(
+					rotationName,
+					(message) => notifActions.showNotification('Success!', message, 'success'),
+					(message) => notifActions.showNotification('Failed', message, 'error')
+				);
+			}
+		);
+	}
+
+	function importFromFile() {
+		rotationActions.importFromFile(
+			(message) => notifActions.showNotification('Success!', message, 'success'),
+			(message) => notifActions.showNotification('Failed', message, 'error')
+		);
+	}
+
+	function clearAllSavedConfigs() {
+		notifActions.showConfirmation(
+			'Clear All Configurations?',
+			'Are you sure you want to delete ALL saved configurations? This action cannot be undone.',
+			() => {
+				rotationActions.clearAllSavedConfigs(
+					(message) => notifActions.showNotification('Success!', message, 'success'),
+					(message) => notifActions.showNotification('Failed', message, 'error')
+				);
+			}
+		);
+	}
+
 	function calculateTotalDamageNew() {
 		const dmgResult = calculateTotalDamage(gameState, BAR_SIZE);
 		gameState.totalDamage = dmgResult[0];
 		gameState.poisonDamage = dmgResult[1];
 		gameState.familiarDamage = dmgResult[2];
+		distributionStats = dmgResult[3];
+		
+		// Calculate Gaussian parameters for more accurate damage modeling
+		const gaussianParams = calculateGaussianParameters(distributionStats);
 		console.log(
 			'Total Damage = ' + gameState.totalDamage + 
 			' (Poison Damage = ' + gameState.poisonDamage + '; ' + 
-			'Familiar Damage = ' + gameState.familiarDamage + ')'
+			'Familiar Damage = ' + gameState.familiarDamage + ')' +
+			' | Gaussian Model: Mean = ' + Math.round(gaussianParams.mean) + 
+			', StdDev = ' + Math.round(gaussianParams.stdDev)
 		);
 	}
 		
 	//UI functions
 	//TODO handle this differently
     function handleAbilityClick(event, abilityKey, mainBar = true) {
-        if (uiState.activeTool === ToolMode.Stall) {
+        if (uiStore.activeTool === ToolMode.Stall) {
             // Check if ability is channeled
             if (abils[abilityKey]['ability classification'] === 'channel') {
-                alert("Channeled abilities cannot be stalled currently.");
+                notifActions.showNotification('Sorry!','Channeled abilities cannot be stalled currently.', 'info');
                 return;
             }
-            uiState.stallingAbility = abilityKey;
+            uiActions.setStallingAbility(abilityKey);
             return;
         }
 
         let size = mainBar ? BAR_SIZE : EXTRA_BAR_SIZE;
-        let idx = mainBar ? uiState.bar.index : uiState.extraActions.barIndex;
+        let idx = mainBar ? uiStore.bar.index : uiStore.extraActions.barIndex;
 
 		if (idx >= size) {
-			alert("You're trying to add an ability after the end of the rotation.");
+			notifActions.showNotification('Sorry!','You\'re trying to add an ability after the end of the rotation.', 'error');
 			return;
 		}
 
@@ -142,13 +153,30 @@
 		handleAbilityClick(event, abilityKey, false);
     }
 
-	function buffActive(key, index) {
+	/**
+	 * Checks if a buff is active at a given tick
+	 * @param key - The key of the buff to check
+	 * @param tick - The tick to check
+	 */
+	function buffActive(key, tick) {
 		let active = false;
 		//TODO make separate ranged and necro split souls
 		if (key === 'split soul ecb') {
-			active = gameState.buffs['split soul'].buffTicks[index];
-		} else {
-			active = gameState.buffs[key].buffTicks[index];
+			active = gameState.buffs['split soul'].buffTicks[tick];
+		} 
+		else if (key === SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER) {
+			console.log(`Tick ${tick} - gameState.buffs[key].buffTicks[${tick}] = ${gameState.buffs[key].buffTicks[tick]}`);
+			if (tick > 0) {
+				active = gameState.buffs[key].buffTicks[tick]; 
+				// Edraco is calced after the last rapid hit, so we offset by one
+				active = active != false && active !== SETTINGS.DRACOLICH_INFUSION_VALUES.NONE;
+			}
+			else {
+				active = false;
+			}
+		}
+		else {
+			active = gameState.buffs[key].buffTicks[tick];
 		}
 		return active;
 	}
@@ -172,7 +200,7 @@
 				console.error('Error parsing drag data:', e);
 			}
 		}
-		uiState.dragDrop.hoveredSlot = null;
+		uiActions.clearDragDrop();
 		refreshUI();
 			calculateTotalDamageNew();
     }
@@ -187,15 +215,15 @@
     }
 
 	function handleDragEnter(event, index) {
-		uiState.dragDrop.hoveredSlot = index;
-		uiState.dragDrop.validSlot = true;
+		uiActions.setDragDropHoveredSlot(index);
+		uiActions.setDragDropValidSlot(true);
 		
 		let data = event.dataTransfer.getData('text/plain');
 		if (!allAbils[data]) {
 			try {
 			data = JSON.parse(event.dataTransfer.getData('text/plain'));
 			if ((index - data.startIndex) <= 2 && index >= data.startIndex) {
-					uiState.dragDrop.validSlot = true;
+					uiActions.setDragDropValidSlot(true);
 				return;
 			}
 			} catch (e) {
@@ -206,32 +234,32 @@
 		for (let i = index-1; i >= (index - 2); i--) {
 			if (i < 0) return;
 			if (gameState.abilityBar[i] != null) {
-        		uiState.dragDrop.validSlot = false;
+        		uiActions.setDragDropValidSlot(false);
 			}
 		}
     }
 
     function handleDragLeave(event, index) {
-        if (uiState.dragDrop.hoveredSlot === index) {
-            uiState.dragDrop.hoveredSlot = null;
+        if (uiStore.dragDrop.hoveredSlot === index) {
+            uiActions.setDragDropHoveredSlot(null);
         }
     }
 
 	function handleBarLeftClick(event, ability, index) {
         event.currentTarget.focus();
 
-		if (uiState.activeTool === ToolMode.Null) {
+		if (uiStore.activeTool === ToolMode.Null) {
 			gameState.nulledTicks[index] = !gameState.nulledTicks[index];
 			refreshUI();
 			return;
 		}
 
-		if (uiState.activeTool === ToolMode.Stall) {
+		if (uiStore.activeTool === ToolMode.Stall) {
 			if (gameState.stalledAbilities[index]) {
 				gameState.stalledAbilities[index] = null;
-			} else if (uiState.stallingAbility) {
-				gameState.stalledAbilities[index] = uiState.stallingAbility;
-				uiState.stallingAbility = null;
+			} else if (uiStore.stallingAbility) {
+				gameState.stalledAbilities[index] = uiStore.stallingAbility;
+				uiActions.clearStallingAbility();
 			} else {
 				// Find the last non-null ability before this tick
 				let stalledAbility = null;
@@ -253,19 +281,17 @@
 			gameState.extraActionBar[index] = Array(EXTRA_BAR_SIZE).fill(null);
 		}
 
-		if (uiState.extraActions.show) {
-			if (index == uiState.extraActions.tick) {
-				uiState.extraActions.show = false;
+		if (uiStore.extraActions.show) {
+			if (index == uiStore.extraActions.tick) {
+				uiActions.hideExtraActions();
 			}
 			else {
-				uiState.extraActions.tick = index;
+				uiActions.showExtraActions(index, ability);
 			}
 		}
 		else {
-			uiState.extraActions.show = true;
-			uiState.extraActions.tick = index;
+			uiActions.showExtraActions(index, ability);
 		}
-		uiState.extraActions.infoAbility = ability;
     }
 
     function handleBarRightClick(event, index, innerIdx = null) {
@@ -310,24 +336,24 @@
 	 */
 	function refreshUI(calcDmg = true) {
 		//Update ability bar pointer
-		uiState.bar.lastIndex = 0;
+		uiActions.updateBarLastIndex(0);
 		for (let i = 0; i < BAR_SIZE; i++) {
 			if (gameState.abilityBar[i] != null) {
-				uiState.bar.lastIndex = i;
+				uiActions.updateBarLastIndex(i);
 			}
 		}
-		uiState.bar.index = uiState.bar.lastIndex;
-		let abilToAdd = abils[gameState.abilityBar[uiState.bar.lastIndex]];
+		uiActions.updateBarIndex(uiStore.bar.lastIndex);
+		let abilToAdd = abils[gameState.abilityBar[uiStore.bar.lastIndex]];
 		if (abilToAdd) {
-			uiState.bar.index += abilToAdd['duration'] || 3;
+			uiActions.updateBarIndex(uiStore.bar.lastIndex + (abilToAdd['duration'] || 3));
 		}
 
 		//Update extra action bar pointer
-		uiState.extraActions.barIndex = 0;
-		if (uiState.extraActions.show) {
+		uiStore.extraActions.barIndex = 0;
+		if (uiStore.extraActions.show) {
 			for (let i = 0; i < EXTRA_BAR_SIZE; i++) {
-				if (gameState.extraActionBar[uiState.extraActions.tick][i] === null) {
-					uiState.extraActions.barIndex = i;
+				if (gameState.extraActionBar[uiStore.extraActions.tick][i] === null) {
+					uiStore.extraActions.barIndex = i;
 					break;
 				}
 			}
@@ -335,13 +361,13 @@
 
 		//Handle stacks
 		let i = 0;
-		uiState.bar.rowGap = BASE_BAR_ROW_GAP;
+		uiActions.updateBarRowGap(BASE_BAR_ROW_GAP);
 		for (let key in gameState.stacks) {
 			let displaySetting = gameState.stacks[key]['displaySetting'];
 			let disp = gameState.settings[displaySetting];
 			if (disp['value']) {
 				gameState.stacks[key]['idx'] = i;
-				uiState.bar.rowGap += (stackFontSize + stackPadding);
+				uiActions.updateBarRowGap(uiStore.bar.rowGap + (stackFontSize + stackPadding));
 				i++;
 			} else {
 				gameState.stacks[key]['idx'] = -1;
@@ -350,12 +376,12 @@
 
 		//handle buff indicator bars
 		i = 0;
-		uiState.bar.lineGap = 0;
+		uiActions.updateBarLineGap(0);
 		for (let key in gameState.buffs) {
-			if (gameState.buffs[key].buffTicks.some(value => value !== 0 && value !== false)) {
+			if (gameState.buffs[key].buffTicks.some(value => value !== 0 && value !== false && value !== null && value !== 'none')) {
 				gameState.buffs[key].idx = i;
-				uiState.bar.rowGap += buffLineHeight;
-				uiState.bar.lineGap += buffLineHeight;
+				uiActions.updateBarRowGap(uiStore.bar.rowGap + buffLineHeight);
+				uiActions.updateBarLineGap(uiStore.bar.lineGap + buffLineHeight);
 				i++;
 			} else {
 				gameState.buffs[key].idx = -1;
@@ -381,63 +407,42 @@
 	let activeTool = $state(ToolMode.Regular);
 
     function handleKeypress(event) {
-		if (event.key === "r") {
-			uiState.activeTool = ToolMode.Regular;
-			uiState.stallingAbility = null;
-        }
-        if (event.key === "s") {
-			uiState.activeTool = ToolMode.Stall;
-			uiState.stallingAbility = null;
-        }
-		if (event.key === "n") {
-			uiState.activeTool = ToolMode.Null;
-			uiState.stallingAbility = null;
-        }
+        uiActions.handleKeypress(event);
     }
 
     function exportToString() {
-        try {
-            const exportData = {
-                a: gameState.abilityBar.map(a => a || ''),
-                e: gameState.extraActionBar.map(row => row ? row.map(a => a || '') : []),
-                n: gameState.nulledTicks,
-                t: gameState.stalledAbilities.map(a => a || '')
-            };
-            const jsonStr = JSON.stringify(exportData);
-            const rotationString = btoa(jsonStr);
-            
-            // Copy to clipboard
-            navigator.clipboard.writeText(rotationString);
-            alert('Rotation copied to clipboard!');
-        } catch (e) {
-            console.error('Export failed:', e);
-            alert('Failed to export rotation. Please report this bug.');
-        }
+        rotationActions.exportToString(
+            (message) => notifActions.showNotification('Success!', message, 'success'),
+            (message) => notifActions.showNotification('Failed', message, 'error')
+        );
     }
 
     function importFromString() {
-        try {
-            const importStr = prompt('Paste rotation string:');
-            if (!importStr) return;
-            
-            const jsonStr = atob(importStr);
-            const importData = JSON.parse(jsonStr);
-            
-            gameState.abilityBar = importData.a.map(a => a || null);
-            gameState.extraActionBar = importData.e.map(row => row.map(a => a || null));
-            gameState.nulledTicks = importData.n;
-            gameState.stalledAbilities = importData.t.map(a => a || null);
-            
-            
-            calculateTotalDamageNew();refreshUI();
-        } catch (e) {
-            console.error('Import failed:', e);
-            alert('Invalid rotation string');
-        }
+        notifActions.showInputPrompt(
+            'Import Rotation String',
+            'Paste your rotation string:',
+            'Paste rotation string here...',
+            (importStr) => {
+                rotationActions.importFromString(
+					importStr,
+					(message) => notifActions.showNotification('Success!', message, 'success'),
+					(message) => notifActions.showNotification('Failed', message, 'error')
+				);
+            }
+        );
     }
 </script>
 
 <style>
+
+	.responsive-container {
+		margin-left: 0% !important;
+		margin-right: 0% !important;
+		padding-left: 3% !important;
+		padding-right: 3% !important;
+		max-width: 100% !important;
+	}
+
 	.ability-bar {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, 30px);
@@ -553,6 +558,94 @@
 		cursor: wait; /* Default stall cursor */
 	}
 
+	/* Configuration Management Styles */
+	.config-section {
+		margin-top: 0rem;
+		margin-bottom: 1.0rem;
+		padding: 0.0rem 0.0rem 0.5rem 0.0rem;
+		border: 1px solid #444;
+		border-radius: 8px;
+		background: rgba(0, 0, 0, 0.2);
+	}
+
+	.config-title {
+		margin: 0 0 1rem 0;
+		padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+		font-size: 1.1rem;
+		color: #fff;
+		font-weight: 600;
+	}
+
+	.config-buttons {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.0rem;
+		margin-bottom: 0rem;
+	}
+
+	.saved-configs {
+		margin-top: 1rem;
+	}
+
+	.saved-configs h4 {
+		margin: 0 0 0.5rem 0;
+		font-size: 0.9rem;
+		color: #ccc;
+	}
+
+	.config-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.config-item {
+		display: flex;
+		gap: 0.25rem;
+		align-items: center;
+	}
+
+	.config-load-btn {
+		flex: 1;
+		text-align: left;
+		font-size: 0.85rem;
+		padding: 0.25rem 0.5rem;
+	}
+
+	.config-delete-btn {
+		padding: 0.25rem 0.5rem;
+		min-width: auto;
+	}
+
+	.show-more-btn {
+		font-size: 0.8rem;
+		padding: 0.25rem 0.5rem;
+	}
+
+	/* Configuration Management Styles */
+	.config-selector {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.config-management {
+		margin-top: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid #444;
+	}
+
+	.clear-all-btn {
+		width: 100%;
+		background: #8b0000;
+		color: #fff;
+	}
+
+	.clear-all-btn:hover {
+		background: #a00000;
+	}
+
 	.stall-cursor.stalling {
 		cursor: wait; /* Will be overridden if there's an ability being stalled */
 	}
@@ -605,51 +698,176 @@
 <Header img="/range_background.png" text="Rotation Calculator Beta" icon="/style_icons/rota_icon.svg" />
 
 <div class="space-y-14 mt-10 z-20">
-	<div class="responsive-container {uiState.activeTool.toLowerCase()}-cursor {uiState.stallingAbility ? 'stalling' : ''}" 
+	<div class="responsive-container {uiStore.activeTool.toLowerCase()}-cursor {uiStore.stallingAbility ? 'stalling' : ''}" 
 		tabindex="-1" 
 		role="button" 
 		onkeydown={handleKeypress}
-		style={uiState.stallingAbility ? `cursor: url('${allAbils[uiState.stallingAbility].icon}') 15 15, wait;` : ''}>
+		style={uiStore.stallingAbility ? `cursor: url('${allAbils[uiStore.stallingAbility].icon}') 15 15, wait;` : ''}>
 		<section class="grid grid-cols-12 gap-6 auto-rows-min">
-			<div class="col-span-{uiState.settingsPanelCollapsed ? '12' : '6'} relative">
+			<div class="col-span-{uiStore.settingsPanelCollapsed ? '12' : '6'} relative">
 				<div class="card card-rotation">
-					{#if uiState.settingsPanelCollapsed}
+					{#if uiStore.settingsPanelCollapsed}
 						<button 
 							class="expand-button"
-							onclick={() => uiState.settingsPanelCollapsed = false}
+							onclick={() => uiActions.toggleSettingsPanel()}
 						>
 							Settings ←
 						</button>
 					{/if}
 					<h1 class="rotation-header">Rotation</h1>
 					<GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
-                    <div class="table-container">
-						<p>Press R to toggle regular mode, S to toggle stall mode, and N to toggle null mode. Scroll down to see the guide.
-						</p><!-- TODO make guide, add link to guide-->
-						<br>
-                        <p>Total Damage: {gameState.totalDamage} 
-                            {#if gameState.poisonDamage > 0}
-                                <span style="color: #4CAF50" 
-								title="Expected poison damage (approximate - assumes poison+++)">(+{gameState.poisonDamage} )
-								</span>
-                            {/if}
-                            {#if gameState.familiarDamage > 0}
-                                <span style="color: #00FFFF" 
-								title="Expected familiar damage (approximate)">(+{gameState.familiarDamage} )
-								</span>
-                            {/if}
-                        </p>
-					</div>
+					
+					<!-- Damage Distribution Chart -->
+					{#if rotationStore.distributionStats.length > 0}
+						<DamageDistributionChart 
+							distributionStats={rotationStore.distributionStats}
+							totalDamage={rotationStore.totalDamage}
+							poisonDamage={rotationStore.poisonDamage}
+							familiarDamage={rotationStore.familiarDamage}
+						/>
+					{/if}
                     <div class="space-y-4 mt-4">
 						<Button onClick={() => clearRotation()} variant="reset">
 							Reset
 						</Button>
-						<Button onClick={() => importFromString()} variant="primary">
-							Import Rotation
-						</Button>
-                        <Button onClick={() => exportToString()} variant="primary" title="Copy Rotation to Clipboard">
-							Export Rotation
-						</Button>
+						
+						<!-- IO Management -->
+						<div>
+							<div class="config-section">
+								<div class="config-header" 
+									onclick={() => uiActions.toggleConfigSection()}
+									onkeydown={(e) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											uiActions.toggleConfigSection();
+										}
+									}}
+									role="button"
+									tabindex="0"
+								>
+									<h3 class="config-title">Save & Load Rotations</h3>
+									<button class="config-toggle">
+										{uiStore.configSectionCollapsed ? '▼' : '▲'}
+									</button>
+								</div>
+								
+								{#if !uiStore.configSectionCollapsed}
+									<div class="config-content">
+										<div class="config-buttons">
+											<Button onClick={() => notifActions.showInputPrompt(
+												'Save Rotation',
+												'Enter a name for your rotation:',
+												'Rotation name...',
+												(rotationName) => {
+													const result = rotationActions.saveRotation(
+														rotationName,
+														(message) => notifActions.showNotification('Success!', message, 'success'),
+														(message) => notifActions.showNotification('Failed', message, 'warning')
+													);
+													
+													if (result && result.needsConfirmation) {
+														notifActions.showConfirmation(
+															'Overwrite Rotation?',
+															`A rotation named "${rotationName.trim()}" already exists. Do you want to overwrite it?`,
+															() => {
+																rotationActions.overwriteRotation(
+																	result.config,
+																	result.existingIndex,
+																	(message) => notifActions.showNotification('Success!', message, 'success'),
+																	(message) => notifActions.showNotification('Failed', message, 'error')
+																);
+															}
+														);
+													}
+												}
+											)} variant="primary">
+												💾 Save Rotation
+											</Button>
+											<Button onClick={() => exportToFile()} variant="secondary">
+												📄 Export to File
+											</Button>
+											<Button onClick={() => importFromFile()} variant="secondary">
+												📄 Import from File
+											</Button>
+										</div>
+										
+										<!-- Quick Access to Saved Configs -->
+										{#if rotationStore.savedRotations.length > 0}
+											<div class="saved-configs">
+												<h4>Quick Load:</h4>
+												<div class="config-list">
+													{#each rotationStore.savedRotations.slice(0, 5) as config}
+														<div class="config-item">
+															<Button 
+																onClick={() => rotationActions.loadRotation(
+																	config.id,
+																	(message) => notifActions.showNotification('Success!', message, 'success'),
+																	(message) => notifActions.showNotification('Failed', message, 'error')
+																)} 
+																variant="secondary" 
+																class="config-load-btn"
+																title="Load {config.name}"
+															>
+																{config.name}
+															</Button>
+															<Button 
+																onClick={() => notifActions.showConfirmation(
+																	'Delete Rotation?',
+																	`Are you sure you want to delete "${config.name}"? This action cannot be undone.`,
+																	() => {
+																		rotationActions.deleteRotation(
+																			config.id,
+																			(message) => notifActions.showNotification('Success!', message, 'success'),
+																			(message) => notifActions.showNotification('Failed', message, 'error')
+																		);
+																	}
+																)} 
+																variant="reset" 
+																class="config-delete-btn"
+																title="Delete {config.name}"
+															>
+																🗑️
+															</Button>
+														</div>
+													{/each}
+												</div>
+												{#if rotationStore.savedRotations.length > 5}
+													<Button onClick={() => {
+														const configOptions = rotationStore.savedRotations.slice(5).map(config => ({
+															value: config.id,
+															label: `${config.name} (${new Date(config.timestamp).toLocaleDateString()})`
+														}));
+														
+														notifActions.showInputPrompt(
+															'Load Rotation',
+															'Select a rotation to load:',
+															'Choose rotation...',
+															(configId) => {
+																rotationActions.loadRotation(
+																	configId,
+																	(message) => notifActions.showNotification('Success!', message, 'success'),
+																	(message) => notifActions.showNotification('Failed', message, 'error')
+																);
+															}
+														);
+													}} variant="secondary" class="show-more-btn">
+														Show {rotationStore.savedRotations.length - 5} more...
+													</Button>
+												{/if}
+											</div>
+										{/if}
+
+										<div class="config-buttons">
+											<Button onClick={() => importFromString()} variant="secondary">
+												Import String
+											</Button>
+											<Button onClick={() => exportToString()} variant="secondary" title="Copy Rotation to Clipboard">
+												Export String
+											</Button>
+										</div>
+									</div>
+								{/if}
+							</div>
+						</div>
 					</div>
 					
                     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
@@ -657,14 +875,14 @@
                             <TabButton 
                                 id={tab.id}
                                 label={tab.label}
-                                isActive={uiState.activeTab === tab.id}
-                                onClick={() => (uiState.activeTab = tab.id)}
+                                isActive={uiStore.activeTab === tab.id}
+                                onClick={() => uiActions.setActiveTab(tab.id)}
                             />
                         {/each}
                     </ul>
 					<br>
                     {#each tabs as tab}
-                        {#if uiState.activeTab === tab.id}
+                        {#if uiStore.activeTab === tab.id}
                             <AbilityChoice 
                                 abilities={tab.abilities}
                                 handleAbilityClick={handleAbilityClick}
@@ -673,26 +891,28 @@
 											/>
 										{/if}
 								{/each}
-					{#if uiState.extraActions.show}
+					{#if uiStore.extraActions.show}
 						<ExtraActionsPanel
-							{uiState}
+							uiState={uiStore}
 							{gameState}
 							{allAbils}
 							{handleAbilityClickExtra}
 							{handleDragStart}
 							{handleBarRightClick}
 							{handleDragStartBar}
-							{extraActions}
+							extraActions={uiStore.extraActions}
+							closeExtraActions={() => uiActions.hideExtraActions()}
+							setExtraActionsTab={(tab) => uiActions.setExtraActionsTab(tab)}
 						/>
 					{/if}
-                    <div style="row-gap:{uiState.bar.rowGap}px;" class="ability-bar">
-						{#each gameState.abilityBar as ability, index}
+                    <div style="row-gap:{uiStore.bar.rowGap}px;" class="ability-bar">
+						{#each rotationStore.abilityBar as ability, index}
 							<button
 									class="ability-slot"
-									class:highlight-red={uiState.dragDrop.hoveredSlot === index && !uiState.dragDrop.validSlot}
-									class:highlight-green={uiState.dragDrop.hoveredSlot === index && uiState.dragDrop.validSlot}
-									class:nulled={gameState.nulledTicks[index]}
-									class:has-extra-actions={gameState.extraActionBar[index]?.some(action => action !== null)}
+									class:highlight-red={uiStore.dragDrop.hoveredSlot === index && !uiStore.dragDrop.validSlot}
+									class:highlight-green={uiStore.dragDrop.hoveredSlot === index && uiStore.dragDrop.validSlot}
+									class:nulled={rotationStore.nulledTicks[index]}
+									class:has-extra-actions={rotationStore.extraActionBar[index]?.some(action => action !== null)}
 									tabindex="0"
 									aria-label="Ability slot"
 									onclick={(e) => handleBarLeftClick(e, ability, index)}
@@ -741,7 +961,7 @@
 											title="{gameState.stacks[key].title}"
 											style="
 												transform: translateX(0px);
-												top: {baseStackOffset + uiState.bar.lineGap + 3 + (stackFontSize+stackPadding) * gameState.stacks[key].idx}px;
+												top: {baseStackOffset + uiStore.bar.lineGap + 3 + (stackFontSize+stackPadding) * gameState.stacks[key].idx}px;
 												left: {stackFontSize+stackPadding*2}px;
 												font-size: {stackFontSize}px;
 												color: {gameState.stacks[key].colour};
@@ -753,7 +973,7 @@
 										<img src={gameState.stacks[key].image}
 											style=
 												"transform:translateX({2-(30-stackFontSize)/2}px);
-												top: {baseStackOffset + uiState.bar.lineGap + 6 + (stackFontSize+stackPadding) * gameState.stacks[key].idx}px;
+												top: {baseStackOffset + uiStore.bar.lineGap + 6 + (stackFontSize+stackPadding) * gameState.stacks[key].idx}px;
 												height: {stackFontSize}px;
 												width: {stackFontSize}px;
 												"
@@ -769,10 +989,10 @@
                     </div>
                 </div>
             </div>
-            <div class="settings-panel col-span-{uiState.settingsPanelCollapsed ? '0' : '6'} {uiState.settingsPanelCollapsed ? 'collapsed' : ''}"
-				style={uiState.settingsPanelCollapsed ? 'visibility: hidden; height: 0; margin: 0;' : ''}>
+            <div class="settings-panel col-span-{uiStore.settingsPanelCollapsed ? '0' : '6'} {uiStore.settingsPanelCollapsed ? 'collapsed' : ''}"
+				style={uiStore.settingsPanelCollapsed ? 'visibility: hidden; height: 0; margin: 0;' : ''}>
                 <div class="settings-content">
-                    <RotationSettings bind:settings={gameState.settings} updateDamages={calculateTotalDamageNew} stacks={gameState.stacks} {uiState} />
+                    <RotationSettings bind:settings={gameState.settings} updateDamages={calculateTotalDamageNew} stacks={gameState.stacks} uiState={uiStore} />
                 </div>
             </div>
             <div class="col-span-12 mt-8">
@@ -781,7 +1001,7 @@
 					<h2 class="card-title pb-5">User Guide</h2>
 					<div class="pb-5">
 						<p>
-							This is a beta of the rotation builder. Currently, only ranged is supported.
+							This is a beta of the rotation builder. Currently, only ranged is fully supported; magic is in progress.
 							<br>
 							To add abilities, left clicking will add a new ability to the end of your 
 							bar. You can also drag abilities for more control. Right clicking an ability
@@ -795,19 +1015,15 @@
 							it on any tick on the bar. Stalled abilities can be removed by clicking them in stall mode.
 							<br>
 							<strong>Null</strong> mode (keyboard <strong>N</strong>) will null the ability you left click on, which is equivalent to casting that ability
-							on a dummy.
-							
+							on a dummy - any buffs or self-stacks will be applied normally, but damage will be 0.
 						</p>
 					</div>
 					<div class="pb-5">
 						<p>
-							You can configure how much information you are shown, as well as how much 
-							adrenaline and how many stacks you start with in settings.
-						</p>
-					</div>
-					<div class="pb-5">
-						<p>
-							Please report any bugs or errors you find in the RSA discord.
+							Please report any bugs or errors you find in the RSA discord. For a more comprehensive guide, check out our 
+							<a href="/rotation_builder_guide" class="text-blue-400 hover:underline hover:text-blue-300">
+							User Guide
+							</a>.
 						</p>
 					</div>
 					</div>
@@ -817,3 +1033,59 @@
 	</div>
 </div>
 
+<!-- Save and Load dialogs are now handled by Popup components -->
+
+<!-- Notification Popup -->
+<Popup 
+    bind:show={notificationStore.notification.show}
+    title={notificationStore.notification.title}
+    message={notificationStore.notification.message}
+    type={notificationStore.notification.type}
+/>
+
+<!-- Confirmation Dialog -->
+<Popup 
+    bind:show={notificationStore.confirmationDialog.show}
+    title={notificationStore.confirmationDialog.title}
+    message={notificationStore.confirmationDialog.message}
+    type="warning"
+    confirmText="Confirm"
+    cancelText="Cancel"
+    on:confirm={() => {
+        if (notificationStore.confirmationDialog.onConfirm) notificationStore.confirmationDialog.onConfirm();
+        notifActions.hideConfirmationDialog();
+    }}
+    on:cancel={() => {
+        if (notificationStore.confirmationDialog.onCancel) notificationStore.confirmationDialog.onCancel();
+        notifActions.hideConfirmationDialog();
+    }}
+/>
+
+<!-- Input Prompt Dialog -->
+<Popup 
+    bind:show={notificationStore.inputPrompt.show}
+    title={notificationStore.inputPrompt.title}
+    message={notificationStore.inputPrompt.message}
+    type="info"
+    confirmText="Submit"
+    cancelText="Cancel"
+    on:confirm={() => {
+        if (notificationStore.inputPrompt.onSubmit && notificationStore.inputPrompt.value.trim()) {
+            notificationStore.inputPrompt.onSubmit(notificationStore.inputPrompt.value.trim());
+        }
+        notifActions.hideInputPrompt();
+    }}
+    on:cancel={() => {
+        if (notificationStore.inputPrompt.onCancel) notificationStore.inputPrompt.onCancel();
+        notifActions.hideInputPrompt();
+    }}
+>
+    <input 
+        type="text" 
+        bind:value={notificationStore.inputPrompt.value} 
+        placeholder={notificationStore.inputPrompt.placeholder}
+        onkeydown={(e) => e.key === 'Enter' && notificationStore.inputPrompt.value.trim() && notificationStore.inputPrompt.onSubmit && notificationStore.inputPrompt.onSubmit(notificationStore.inputPrompt.value.trim())}
+        autofocus
+        style="width: 100%; padding: 0.5rem; border: 1px solid #555; border-radius: 4px; background: #1a1a1a; color: #fff; font-size: 0.9rem;"
+    />
+</Popup>

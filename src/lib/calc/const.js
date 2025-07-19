@@ -4524,7 +4524,7 @@ const abils = {
         'min hit': 0.45, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
+        'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate

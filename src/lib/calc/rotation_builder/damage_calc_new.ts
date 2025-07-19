@@ -6,6 +6,10 @@ import { calc_crit_damage, get_hit_sequence, add_split_soul, calc_split_soul_hit
 import { handle_sgb, handle_wen_buff } from './rotation_damage_helper'
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
 import { add_adrenaline } from './rotation_damage_helper';
+import { Logger, LogCategory } from '../../utils/Logger';
+
+// Initialize logger at the top of the file
+const logger = Logger.getInstance();
 
 // Helper functions for accessing the new DamageObject structure
 function getDamageDistribution(dmgObject: DamageObject, kind: DamageKind): DamageDistribution | undefined {
@@ -66,8 +70,7 @@ function on_stall(settings, abilityKey: string) {
 function on_cast(settings, dmgObject: DamageObject, timers: Record<string, number>, abilityKey: string): DamageObject[] {
     // This function happens as an ability is cast
     // scale to hit chance / damage potential
-    // console.log('BASE AD');
-    // console.log(settings[SETTINGS.ABILITY_DAMAGE]);
+    logger.log(LogCategory.ABILITY_DAMAGE, 'BASE AD', settings[SETTINGS.ABILITY_DAMAGE]);
     const dmgObjects = [];
     iterateDistributions(dmgObject, (distribution) => {
         distribution['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 
@@ -337,7 +340,6 @@ function on_cast(settings, dmgObject: DamageObject, timers: Record<string, numbe
             const hitAbility = abils[abilityKey]['hits'][1][i];
             clone.ability = hitAbility;
             if (clone.ability === ABILITIES.SOULFIRE_INITIAL) {
-                // console.log('soulfire initial');
                 iterateDistributions(clone, (distribution) => {
                     distribution['boosted AD'] = preability_AD;
                 });
@@ -1173,6 +1175,7 @@ function on_damage(settings, dmgObject: DamageObject): DamageObject[] {
     ) {
         const critDist = getDamageDistribution(dmgObject, 'crit');
         let prob = critDist ? critDist['probability'] : 0;
+        prob = prob * dmgObject.likelihood; 
         add_adrenaline(settings, (prob * 8));
     }
 

@@ -12,7 +12,8 @@ import { gearSwaps, offGcdAbilities as specialAbils } from '../../special/abilit
 import { DamageObject } from '../types';
 import { ABILITIES } from '../const';
 import { familiars } from '$lib/familiars/familiars';
-import { B } from 'vitest/dist/chunks/benchmark.geERunq4';
+import { Logger, LogCategory } from '$lib/utils/Logger';
+const logger = Logger.getInstance();
 
 // Interface for the game state
 interface GameState {
@@ -35,6 +36,23 @@ interface RotationState {
     start_tick: number;
     hitCount: number;
     lastAftershockProc: number; // Track damage at last proc
+    distributionStats: DamageDistributionStat[]; // Track distribution statistics for Gaussian modeling
+}
+
+interface DamageDistributionStat {
+    tick: number;
+    likelihood: number;
+    minDamage: number;
+    maxDamage: number;
+    ability: string;
+    distributionType: 'crit' | 'non_crit' | 'combined';
+    // For combined distributions, store the mixture components
+    critProbability?: number;
+    critMean?: number;
+    critVariance?: number;
+    nonCritProbability?: number;
+    nonCritMean?: number;
+    nonCritVariance?: number;
 }
 
 //TODO use this for the return type of calculateTotalDamage
@@ -57,13 +75,14 @@ const allAbilities = { ...rangedAbils, ...magicAbils };
  *    - Manages damage queues and timers
  *    - Handles extra actions and buffs
  * 3. Approximates poison damage
+ * 4. Approximates familiar damage
  * 
  * @param gameState - The current state of the game, including settings, ability bar, and buffs
  * @param BAR_SIZE - The number of ticks to process in the rotation
  * @returns A tuple containing [totalDamage, poisonDamage]:
 
  */
-export function calculateTotalDamage(gameState: GameState, BAR_SIZE: number): [number, number, number] {
+export function calculateTotalDamage(gameState: GameState, BAR_SIZE: number): [number, number, number, DamageDistributionStat[]] {
     const state: RotationState = {
         dmgs: [],
         damageQueue: {},
@@ -72,7 +91,8 @@ export function calculateTotalDamage(gameState: GameState, BAR_SIZE: number): [n
         hit_delay: 1, // TODO implement hit delay properly (define min delay for each ability)
         start_tick: 0,
         hitCount: 0,
-        lastAftershockProc: 0
+        lastAftershockProc: 0,
+        distributionStats: []
     };
 
     const adaptedSettings = Object.fromEntries(
@@ -81,14 +101,14 @@ export function calculateTotalDamage(gameState: GameState, BAR_SIZE: number): [n
     const settingsCopy = structuredClone(adaptedSettings);
 
     // Process through each tick until we reach the end, +20 to finish handling bleeds
-    const extraTicks = 10;
+    const extraTicks = 20;
     while (state.tick < BAR_SIZE + extraTicks) {
         processCurrentTick(state, gameState, settingsCopy, BAR_SIZE);
     }
     const totalDamage = state.dmgs.reduce((acc, current) => acc + current, 0);
     const poisonDamage = calcPoisonDamage(state.hitCount, settingsCopy);
     const familiarDamage = calcFamiliarDamage(gameState.abilityBar, settingsCopy);
-    return [totalDamage, poisonDamage, familiarDamage];
+    return [totalDamage, poisonDamage, familiarDamage, state.distributionStats];
 }
 
 /**
@@ -130,7 +150,6 @@ function processCurrentTick(state: RotationState, gameState: GameState, settings
         const hit_tick = state.tick + state.hit_delay;
         state.damageQueue[hit_tick] ??= [];
         handle_buffs(settingsCopy, state.timers, stalledAbility);
-        console.log(state.timers);
         if (stalledAbility in allAbilities) {
             processStalledAbility(state, settingsCopy, stalledAbility, hit_tick); //TODO fix / remove
         }
@@ -181,7 +200,7 @@ function handleNullAbilityTick(state: RotationState, gameState: GameState, setti
 }
 
 function processAbility(
-    state: RotationState, 
+    rotationState: RotationState, 
     gameState: GameState, 
     settingsCopy: any, 
     abilityKey: string, 
@@ -194,25 +213,25 @@ function processAbility(
     on_stall(settingsCopy, abilityKey);
     settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
     
-    state.start_tick = state.tick;
-    const hit_tick = state.tick + state.hit_delay;
-    state.damageQueue[hit_tick] ??= [];
+    rotationState.start_tick = rotationState.tick;
+    const hit_tick = rotationState.tick + rotationState.hit_delay;
+    rotationState.damageQueue[hit_tick] ??= [];
     
-    handle_buffs(settingsCopy, state.timers, abilityKey);
+    handle_buffs(settingsCopy, rotationState.timers, abilityKey);
     
     if (abilityKey in allAbilities) {
         if (allAbilities[abilityKey].calc == hit_damage_calculation) {
-            processSingleHitAbility(state, settingsCopy, abilityKey, hit_tick);
+            processSingleHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         } else if (isChannelled(settingsCopy, abilityKey)) {
             // Handled in processAbilityTicks
         } else if (allAbilities[abilityKey]['ability classification'] === 'multihit') {
-            processMultiHitAbility(state, settingsCopy, abilityKey, hit_tick);
+            processMultiHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         } else {
-            processBleedAbility(state, settingsCopy, abilityKey, hit_tick);
+            processBleedAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         }
     }
 
-    processAbilityTicks(state, gameState, settingsCopy, abilityKey, abil_duration);
+    processAbilityTicks(rotationState, gameState, settingsCopy, abilityKey, abil_duration);
 }
 
 function processStalledAbility(
@@ -379,9 +398,8 @@ function processChannelledTick(
  * 1. Sets the current ability context
  * 2. Gets user-selected damage metric
  * 3. Calculates the final damage value by:
- *    - Applying damage modifiers
- *    - Adding any additional effects
- * 4. Records the damage and increments hit counter
+ *    - Applying on damage effects
+ * 4. Scales damage by likelihood of hit occuring 
  * 
  * @param tick - The current game tick being processed
  * @param state - The rotation state containing damage queue and tracking arrays
@@ -393,17 +411,73 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
             settingsCopy['ability'] = namedDmgObject.ability;
             const scale = namedDmgObject.likelihood;
             
-            // on_damage now returns an array of damage objects
             const damageObjects = on_damage(settingsCopy, namedDmgObject);
             damageObjects.forEach(dmgObj => {
                 let dmg = get_user_value(settingsCopy, dmgObj);
                 state.dmgs.push(Math.floor(dmg * scale)); // Scale damage by likelihood of hit occuring 
                 state.hitCount += scale;
 
-            
-//                 console.log('Ability: ', dmgObj.ability || 'unknown');
-//                 console.log('dmgObject - on_damage', dmg);
-//                 console.log('tick', tick);
+                // Collect distribution statistics for Gaussian modeling
+                // Treat crit and non-crit as a single combined distribution per ability
+                const critDist = dmgObj.distributions['crit'];
+                const nonCritDist = dmgObj.distributions['non_crit'];
+                
+                if (critDist && critDist['damage list'].length > 0 && 
+                    nonCritDist && nonCritDist['damage list'].length > 0) {
+                    
+                    // Calculate crit and non-crit components for mixture
+                    const critDamageList = critDist['damage list'];
+                    const nonCritDamageList = nonCritDist['damage list'];
+                    
+                    const critMean = (Math.min(...critDamageList) + Math.max(...critDamageList)) / 2;
+                    const critVariance = Math.pow((Math.max(...critDamageList) - Math.min(...critDamageList)) / 2, 2) / 3;
+                    
+                    const nonCritMean = (Math.min(...nonCritDamageList) + Math.max(...nonCritDamageList)) / 2;
+                    const nonCritVariance = Math.pow((Math.max(...nonCritDamageList) - Math.min(...nonCritDamageList)) / 2, 2) / 3;
+                    
+                    // Calculate combined min/max for display
+                    const allDamage = [...critDamageList, ...nonCritDamageList];
+                    const minDamage = Math.min(...allDamage);
+                    const maxDamage = Math.max(...allDamage);
+                    
+                    // Store as a single distribution with mixture components
+                    state.distributionStats.push({
+                        tick: tick,
+                        likelihood: scale, // Total likelihood (crit + non-crit = 1)
+                        minDamage: minDamage,
+                        maxDamage: maxDamage,
+                        ability: namedDmgObject.ability,
+                        distributionType: 'combined',
+                        critProbability: critDist['probability'],
+                        critMean: critMean,
+                        critVariance: critVariance,
+                        nonCritProbability: nonCritDist['probability'],
+                        nonCritMean: nonCritMean,
+                        nonCritVariance: nonCritVariance
+                    });
+                } else if (critDist && critDist['damage list'].length > 0) {
+                    // Only crit distribution exists
+                    const damageList = critDist['damage list'];
+                    state.distributionStats.push({
+                        tick: tick,
+                        likelihood: scale * critDist['probability'],
+                        minDamage: Math.min(...damageList),
+                        maxDamage: Math.max(...damageList),
+                        ability: namedDmgObject.ability,
+                        distributionType: 'crit'
+                    });
+                } else if (nonCritDist && nonCritDist['damage list'].length > 0) {
+                    // Only non-crit distribution exists
+                    const damageList = nonCritDist['damage list'];
+                    state.distributionStats.push({
+                        tick: tick,
+                        likelihood: scale * nonCritDist['probability'],
+                        minDamage: Math.min(...damageList),
+                        maxDamage: Math.max(...damageList),
+                        ability: namedDmgObject.ability,
+                        distributionType: 'non_crit'
+                    });
+                }
             });
         });
     }
@@ -443,6 +517,12 @@ export function calcFamiliarDamage(abilityBar: string[], settingsCopy: any) {
     return Math.floor(familiar_dmg);
 }
 
+/*
+ * Copies stacks from the settings to the GameState.
+ * @param tick - The current tick being processed
+ * @param settings - The current settings used for rotation damage calculation.
+ * @param gameState - The game state containing stacks and buffs.
+*/
 function copyStacks(tick: number, settings: any, gameState: GameState) {
     for(let key in gameState.stacks) {
         // Convert to number before storing
@@ -450,7 +530,13 @@ function copyStacks(tick: number, settings: any, gameState: GameState) {
         gameState.stacks[key].stackTicks[tick] = value;
     }
     buffs.forEach(buffTitle => {
-        gameState.buffs[buffTitle].buffTicks[tick] = settings[buffTitle];
+        if (buffTitle === SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER) {
+            gameState.buffs[buffTitle].buffTicks[tick] = settings[SETTINGS.DRACOLICH_INFUSION];
+            logger.log(LogCategory.BUFFS, `Tick ${tick} - gameState.buffs['greater'].buffTicks[${tick}] = ${settings[SETTINGS.DRACOLICH_INFUSION]}`);
+        }
+        else {
+            gameState.buffs[buffTitle].buffTicks[tick] = settings[buffTitle];
+        }
     });
 }
 
@@ -516,11 +602,54 @@ function handleAftershock(state: RotationState, settingsCopy: any) {
 }
 
 function findLastValueIndex(arr) {
-    console.log(arr);
     for (let i = arr.length - 1; i >= 0; i--) {
         if (arr[i] != null && arr[i] !== '' && arr[i] !== undefined) {
             return i;
         }
     }
     return -1; // No value found
+}
+
+/**
+ * Calculates Gaussian parameters (mean and standard deviation) from the collected damage distribution statistics.
+ * This models the total damage as a Gaussian distribution for more accurate damage prediction.
+ * 
+ * @param distributionStats - Array of damage distribution statistics collected during calculation
+ * @returns Object containing mean and standard deviation of the total damage distribution
+ */
+export function calculateGaussianParameters(distributionStats: DamageDistributionStat[]): { mean: number; stdDev: number } {
+    if (distributionStats.length === 0) {
+        return { mean: 0, stdDev: 0 };
+    }
+
+    // Calculate weighted mean and variance
+    let totalWeight = 0;
+    let weightedSum = 0;
+    let weightedSumSquares = 0;
+
+    distributionStats.forEach(stat => {
+        const weight = stat.likelihood;
+        const meanDamage = (stat.minDamage + stat.maxDamage) / 2;
+        const variance = Math.pow((stat.maxDamage - stat.minDamage) / 2, 2) / 3; // Uniform distribution variance
+
+        totalWeight += weight;
+        weightedSum += weight * meanDamage;
+        weightedSumSquares += weight * (Math.pow(meanDamage, 2) + variance);
+    });
+
+    const mean = weightedSum / totalWeight;
+    const variance = (weightedSumSquares / totalWeight) - Math.pow(mean, 2);
+    const stdDev = Math.sqrt(variance);
+
+    return { mean, stdDev };
+}
+
+/**
+ * Returns the collected distribution statistics for external analysis.
+ * 
+ * @param state - The rotation state containing the distribution statistics
+ * @returns Array of damage distribution statistics
+ */
+export function getDistributionStats(state: RotationState): DamageDistributionStat[] {
+    return state.distributionStats;
 } 

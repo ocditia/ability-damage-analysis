@@ -11,6 +11,10 @@
     export let handleBarRightClick;
     export let handleDragStartBar;
     export let extraActions;
+    
+    // Mutation functions to avoid prop mutation warnings
+    export let closeExtraActions = () => {};
+    export let setExtraActionsTab = (tab) => {};
 
     const EXTRA_BAR_SIZE = 12;
 
@@ -28,7 +32,7 @@
         <p class="flex-grow text-center">Tick {uiState.extraActions.tick}</p>
         <button 
             class="text-[#C2BA9E] font-bold text-xl hover:text-[#968A5C]"
-            on:click={() => uiState.extraActions.show = false}
+            on:click={closeExtraActions}
         >
             ✕
         </button>
@@ -58,14 +62,14 @@
     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
         <li class="flex-grow me-2">
             <button
-                on:click={() => (uiState.extraActions.tab = 'abilities')}
+                on:click={() => setExtraActionsTab('abilities')}
                 class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                 class:text-[#968A5C]={uiState.extraActions.tab === 'abilities'}
             >Abilities</button>
         </li>
         <li class="flex-grow me-2">
             <button
-                on:click={() => (uiState.extraActions.tab = 'gear')}
+                on:click={() => setExtraActionsTab('gear')}
                 class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                 class:text-[#968A5C]={uiState.extraActions.tab === 'gear'}
             >Gear</button>

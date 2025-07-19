@@ -72,10 +72,13 @@
                     </a>
                     <a href="/rotation_builder" class="flex flex-col group">
                         <div class="card">
-                            <div
-                                class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
-                            >
-                                <img class="card-icon" src="style_icons/rota_icon_white.svg" alt="" />
+                            <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
+                                <div class="icon-position">
+                                    <!-- Static base icon (invisible during hover) -->
+                                    <img class="card-icon base-icon" src="style_icons/rota_icon_white.svg" alt="" />
+                                    <!-- Spinning overlay icon (only visible during hover) -->
+                                    <img class="card-icon spin-icon" src="style_icons/rota_icon2.svg" alt="" />
+                                </div>
                                 <div class="card-title">Rotation Builder</div>
                             </div>
                         </div>
@@ -356,3 +359,46 @@
         </section>
     </div>
 </div>
+
+<style>
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(-3600deg); }
+    }
+    
+    .icon-position {
+        position: relative;
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+    }
+    
+    .base-icon {
+        width: 100%;
+        height: auto;
+        opacity: 1;
+        transition: opacity 0.7s ease-in-out;
+    }
+    
+    .spin-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 120%;
+        height: auto;
+        opacity: 0;
+        transition: opacity 0.7s ease-in-out;
+        /* Pre-apply animation but with 0 opacity */
+        animation: spin 18s cubic-bezier(0.1, 0.25, 0.7, 1) infinite;
+        animation-play-state: paused;
+    }
+    
+    .group:hover .base-icon {
+        opacity: 0;
+    }
+    
+    .group:hover .spin-icon {
+        opacity: 1;
+        animation-play-state: running;
+    }
+</style>

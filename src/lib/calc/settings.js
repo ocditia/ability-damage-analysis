@@ -795,6 +795,7 @@ const SETTINGS = {
     SHOW_ICY_CHILL_STACKS: 'show icy chill stacks',
     ADRENALINE: 'adrenaline',
     EXPECTED_ADRENALINE: 'expected adrenaline',
+    CAP_ADRENALINE: 'cap adrenaline',
     CRIT_BUFF: 'crit buff',
     VIGOUR: 'vigour',
     FURY_OF_THE_SMALL: 'fots',
@@ -2230,6 +2231,14 @@ const settingsConfig = {
     },
     [SETTINGS.EXPECTED_ADRENALINE]: {
         label: 'Expected Adrenaline RNG',
+        default: true
+    },
+    [SETTINGS.CRIT_BUFF]: {
+        label: 'Crit Buff',
+        default: false
+    },
+    [SETTINGS.CAP_ADRENALINE]: {
+        label: 'Cap Adrenaline',
         default: true
     },
     [SETTINGS.VIGOUR]: {
