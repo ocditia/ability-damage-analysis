@@ -1536,7 +1536,10 @@ const ABILITIES = {
     DEADSHOT_BLEED: 'deadshot bleed',
     DEADSHOT: 'deadshot',
     INCENDIARY_SHOT: 'incendiary shot',
-    UNLOAD_HIT: 'unload hit',
+    UNLOAD_HIT_1: 'unload hit 1',
+    UNLOAD_HIT_2: 'unload hit 2',
+    UNLOAD_HIT_3: 'unload hit 3',
+    UNLOAD_HIT_4: 'unload hit 4',
     UNLOAD: 'unload',
     DEATHS_SWIFTNESS_DOT: 'death\'s swiftness dot',
     DEATHS_SWIFTNESS: 'death\'s swiftness',
@@ -4760,9 +4763,45 @@ const abils = {
         'main style': 'ranged',
         'damage type': 'ranged'
     },
-    [ABILITIES.UNLOAD_HIT]: {
+    [ABILITIES.UNLOAD_HIT_1]: {
         // ability name
         'min hit': 1.3, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged'
+    },
+    [ABILITIES.UNLOAD_HIT_2]: {
+        // ability name
+        'min hit': 1.5, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged'
+    },
+    [ABILITIES.UNLOAD_HIT_3]: {
+        // ability name
+        'min hit': 1.7, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged'
+    },
+    [ABILITIES.UNLOAD_HIT_4]: {
+        // ability name
+        'min hit': 1.9, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -4785,13 +4824,13 @@ const abils = {
         'damage type': 'ranged',
         'duration': '7',
         hits: {
-            1: [ABILITIES.UNLOAD_HIT],
+            1: [ABILITIES.UNLOAD_HIT_1],
             2: [],
-            3: [ABILITIES.UNLOAD_HIT],
+            3: [ABILITIES.UNLOAD_HIT_2],
             4: [],
-            5: [ABILITIES.UNLOAD_HIT],
+            5: [ABILITIES.UNLOAD_HIT_3],
             6: [],
-            7: [ABILITIES.UNLOAD_HIT]
+            7: [ABILITIES.UNLOAD_HIT_4]
         }
     },
     [ABILITIES.BALANCE_BY_FORCE]: {
