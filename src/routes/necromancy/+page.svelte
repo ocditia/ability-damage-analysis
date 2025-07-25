@@ -164,6 +164,10 @@
                                     bind:setting={settings[SETTINGS.MODE]}
                                     onchange={() => updateDamages()}
                                 />
+                                <Select
+                                    bind:setting={settings[SETTINGS.DAMAGE_PER_UNIT]}
+                                    onchange={() => updateDamages()}
+                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.TARGET_HP_PERCENT]}
                                     onchange={() => updateDamages()}

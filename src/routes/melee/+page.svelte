@@ -174,6 +174,10 @@
                                     bind:setting={settings[SETTINGS.MODE]}
                                     onchange={() => updateDamages()}
                                 />
+                                <Select
+                                    bind:setting={settings[SETTINGS.DAMAGE_PER_UNIT]}
+                                    onchange={() => updateDamages()}
+                                />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.FLAMEBOUND_RIVAL]}
                                     onchange={() => updateDamages()}

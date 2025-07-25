@@ -1575,21 +1575,24 @@ function calc_soul_split_hit(hit, settings) {
 }
 
 function get_user_value(settings, dmgObject) {
+    if (abils[settings['ability']]['ability classification'] != 'channel' && settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) { 
+        settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 3;
+    }
     switch (settings[SETTINGS.MODE]) {
         case SETTINGS.MODE_VALUES.MEAN:
-            return get_mean_damage(settings, dmgObject);
+            return Math.floor(get_mean_damage(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MEAN_NO_CRIT:
-            return get_mean_no_crit(settings, dmgObject);
+            return Math.floor(get_mean_no_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MEAN_CRIT:
-            return get_mean_crit(settings, dmgObject);
+            return Math.floor(get_mean_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MIN_NO_CRIT:
-            return get_min_no_crit(settings, dmgObject);
+            return Math.floor(get_min_no_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MIN_CRIT:
-            return get_min_crit(settings, dmgObject);
+            return Math.floor(get_min_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MAX_NO_CRIT:
-            return get_max_no_crit(settings, dmgObject);
+            return Math.floor(get_max_no_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MAX_CRIT:
-            return get_max_crit(settings, dmgObject);
+            return Math.floor(get_max_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         default:
             return null;
     }
@@ -1807,6 +1810,15 @@ function apply_additional(settings, total_damage) {
 }
 
 function ability_damage_calculation(settings) {
+    settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 1;
+    if (settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) {
+        settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 3;
+        if (abils[settings['ability']]['ability classification'] === 'channel') {
+            settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = Math.min(settings[SETTINGS.MAX_CHANNEL_DURATION], 
+                Object.keys(abils[settings['ability']]['hits']).map(item => parseInt(item, 10)).pop());
+        }
+    }
+
     let rotation = get_hit_sequence(settings);
     let damage = 0;
     for (let key in rotation) {

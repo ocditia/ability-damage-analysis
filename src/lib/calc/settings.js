@@ -824,6 +824,12 @@ const SETTINGS = {
         OH: 'off hand',
         TH: 'two hand',
     },
+    DAMAGE_PER_UNIT: 'damage per unit',
+    DAMAGE_PER_UNIT_VALUES: {
+        ABIL: 'abil',
+        TICK: 'tick',
+    },
+    DAMAGE_PER_UNIT_DIVIDER: 'damage per time unit divider',
 
     TELOS_RED_BEAM: 'telos red beam',
     TELOS_BLACK_BEAM: 'telos black beam',
@@ -2284,6 +2290,18 @@ const settingsConfig = {
     [SETTINGS.ENERGISING]: {
         label: 'Energising',
         default: 0
+    },
+    [SETTINGS.DAMAGE_PER_UNIT]: {
+        label: 'Damage per',
+        default: SETTINGS.DAMAGE_PER_UNIT_VALUES.ABIL,
+        options: [
+            { text: 'abil', value: SETTINGS.DAMAGE_PER_UNIT_VALUES.ABIL },
+            { text: 'tick', value: SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK },
+        ]
+    },
+    [SETTINGS.DAMAGE_PER_UNIT_DIVIDER]: {
+        label: 'Damager per unit divider',
+        default: 1
     },
 };
 
