@@ -133,7 +133,7 @@ const abilities = {
     },
     [ABILITIES.AIMED_SHOT]: {
         title: 'Aimed shot',
-        calc: hit_damage_calculation,
+        calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/hand_cannon.png'
     },
     [ABILITIES.POWER_SHOT]: {

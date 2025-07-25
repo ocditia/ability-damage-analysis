@@ -1548,6 +1548,7 @@ const ABILITIES = {
     DESCENT_OF_DARKNESS_HIT: 'descent of darkness hit',
     DESCENT_OF_DARKNESS: 'descent of darkness',
     BALANCED_SHOT: 'balanced shot',
+    AIMED_SHOT_HIT: 'aimed shot hit',
     AIMED_SHOT: 'aimed shot',
     POWER_SHOT: 'power shot',
     TWIN_FANG_HIT: 'twin fang hit',
