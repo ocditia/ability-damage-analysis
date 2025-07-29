@@ -279,6 +279,14 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/death_spark.png"
                                 />
+                                <Number
+                                    bind:setting={settings[SETTINGS.RESIDUAL_SOULS]}
+                                    onchange={() => updateDamages()}
+                                    img="/ability_icons/necro/30x30/soul-sap.png"
+                                    step="1"
+                                    max="5"
+                                    min="0"
+                                />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.LIVING_DEATH]}
                                     onchange={() => updateDamages()}

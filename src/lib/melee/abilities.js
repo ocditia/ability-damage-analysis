@@ -317,6 +317,14 @@ const abilities = {
         title: 'Ice cleave',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/zamorak_godsword.png'
+    },
+    [ABILITIES.SUNFALL_SLAM]: {
+        title: 'Sunfall slam',
+        calc: hit_damage_calculation,
+    },
+    [ABILITIES.LESSER_PURIFYING_LIGHT]: {
+        title: 'Lesser purifying light',
+        calc: hit_damage_calculation,
     }
 };
 

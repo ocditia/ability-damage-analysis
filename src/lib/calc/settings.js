@@ -830,6 +830,7 @@ const SETTINGS = {
         TICK: 'tick',
     },
     DAMAGE_PER_UNIT_DIVIDER: 'damage per time unit divider',
+    RESIDUAL_SOULS: 'residual souls',
 
     TELOS_RED_BEAM: 'telos red beam',
     TELOS_BLACK_BEAM: 'telos black beam',
@@ -2302,6 +2303,10 @@ const settingsConfig = {
     [SETTINGS.DAMAGE_PER_UNIT_DIVIDER]: {
         label: 'Damager per unit divider',
         default: 1
+    },
+    [SETTINGS.RESIDUAL_SOULS]: {
+        label: 'Residual souls',
+        default: 0
     },
 };
 

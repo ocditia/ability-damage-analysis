@@ -131,6 +131,10 @@ const abilities = {
         title: 'Death essence',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/omniguard-bg.png'
+    },
+    [ABILITIES.SOUL_CRUSH]: {
+        title: 'Soul crush',
+        calc: hit_damage_calculation,
     }
 };
 

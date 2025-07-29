@@ -613,6 +613,12 @@ function set_min_var(settings, dmgObject) {
             min_percent = min_percent + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
         }
 
+        // soul crush
+        if (settings['ability'] === ABILITIES.SOUL_CRUSH) {
+            min_percent += 1.35 * settings[SETTINGS.RESIDUAL_SOULS];
+            var_percent += 0.3 * settings[SETTINGS.RESIDUAL_SOULS];
+        }
+
         // flank
         if (settings['ability'] === ABILITIES.SOUL_STRIKE) {
             min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];

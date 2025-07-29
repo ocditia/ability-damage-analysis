@@ -1502,6 +1502,7 @@ const ABILITIES = {
     BLOAT: 'bloat',
     DEATH_GRASP: 'death grasp',
     DEATH_ESSENCE: 'death essence',
+    SOUL_CRUSH: 'soul crush',
 
     RANGED_AUTO: 'ranged auto',
     PIERCING_SHOT_HIT: 'piercing shot hit',
@@ -1727,6 +1728,8 @@ const ABILITIES = {
     FEINT: 'feint',
     SPEAR_WALL: 'spear wall',
     ICE_CLEAVE: 'ice cleave',
+    SUNFALL_SLAM: 'sunfall slam',
+    LESSER_PURIFYING_LIGHT: 'lesser purifying light',
 
     // perks damage
     AFTERSHOCK: 'aftershock',
@@ -3034,6 +3037,30 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee'
     },
+    [ABILITIES.SUNFALL_SLAM]: {
+        // ability name
+        'min hit': 2.55, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
+    [ABILITIES.LESSER_PURIFYING_LIGHT]: {
+        // ability name
+        'min hit': 0.25, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
 
     [ABILITIES.MAGIC_AUTO]: {
         // ability name
@@ -4262,6 +4289,18 @@ const abils = {
         // ability name
         'min hit': 3.6, // min % of abil expressed as a decimal
         'var hit': 0.8,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'necromancy',
+        'damage type': 'necrotic'
+    },
+    [ABILITIES.SOUL_CRUSH]: {
+        // ability name
+        'min hit': 1.35, // min % of abil expressed as a decimal
+        'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
