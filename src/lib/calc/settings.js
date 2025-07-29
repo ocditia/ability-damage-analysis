@@ -804,6 +804,7 @@ const SETTINGS = {
     VALOUR_STACKS: 'valour stacks',
     HITCAP: 'hit cap',
     QUIVER: 'quiver',
+    DEVOURER_NEXUS: 'devourer nexus',
     DAMAGE_QUALIFIER: 'damage qualifier',
     DAMAGE_QUALIFIER_VALUES: {
         TOTAL: 'total',
@@ -2307,6 +2308,10 @@ const settingsConfig = {
     [SETTINGS.RESIDUAL_SOULS]: {
         label: 'Residual souls',
         default: 0
+    },
+    [SETTINGS.DEVOURER_NEXUS]: {
+        label: 'Devourer nexus',
+        default: false
     },
 };
 

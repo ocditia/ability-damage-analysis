@@ -1149,10 +1149,17 @@ function calc_crit_damage(settings) {
 function calc_on_npc(settings, dmgObject) {
     for (let i = 0; i < dmgObject['damage list'].length; i++) {
         // set haunted
-        let haunted = Math.min(
-            Math.floor(dmgObject['damage list'][i] * 0.1),
-            Math.floor(0.2 * settings['haunted AD'])
-        );
+        let haunted = 0;
+
+        if (settings[SETTINGS.DEVOURER_NEXUS] === true) {
+            haunted = Math.min(
+            Math.floor(dmgObject['damage list'][i] * 0.15),
+            Math.floor(0.3 * settings['haunted AD']));
+        } else {
+            haunted = Math.min(
+                Math.floor(dmgObject['damage list'][i] * 0.1),
+                Math.floor(0.2 * settings['haunted AD']));
+        }
 
         // vulnerability / curse
         if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.VULNERABILITY) {

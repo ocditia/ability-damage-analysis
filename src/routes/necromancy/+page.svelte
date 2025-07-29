@@ -563,6 +563,10 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/shard_of_genesis.png"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.DEVOURER_NEXUS]}
+                                    onchange={() => updateDamages()}
+                                />
                             </div>
                         {:else if tab === 'bosses'}
                         <div class="md:col-span-1 space-y-2">
