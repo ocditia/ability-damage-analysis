@@ -551,6 +551,30 @@ function set_min_var(settings, dmgObject) {
             min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
             var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
         }
+
+        // asphyxiate
+        if (settings['ability'] === ABILITIES.ASPHYXIATE_HIT) {
+            let tumekens_resplendence = 0;
+            if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
+                tumekens_resplendence += 1;
+            }
+            if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
+                tumekens_resplendence += 1;
+            }
+            if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
+                tumekens_resplendence += 1;
+            }
+            if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
+                tumekens_resplendence += 1;
+            }
+            if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
+                tumekens_resplendence += 1;
+            }
+            if (tumekens_resplendence >= 3) {
+                min_percent = 0.825;
+                var_percent = 0.15;
+            }
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
@@ -1866,6 +1890,29 @@ function get_hit_sequence(settings) {
             rotation[1].push('next hit');
             rotation[1].push(ABILITIES.GREATER_RICOCHET_3);
         }
+    }
+
+    let tumekens_resplendence = 0;
+    if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
+        tumekens_resplendence += 1;
+    }
+    if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
+        tumekens_resplendence += 1;
+    }
+    if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
+        tumekens_resplendence += 1;
+    }
+    if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
+        tumekens_resplendence += 1;
+    }
+    if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
+        tumekens_resplendence += 1;
+    }
+    if (settings['ability'] === ABILITIES.ASPHYXIATE && tumekens_resplendence >= 3) {
+        rotation[2].push(ABILITIES.ASPHYXIATE_HIT);
+        rotation[4].push(ABILITIES.ASPHYXIATE_HIT);
+        rotation[6].push(ABILITIES.ASPHYXIATE_HIT);
+        rotation[8].push(ABILITIES.ASPHYXIATE_HIT);
     }
 
     if (settings['ability'] === ABILITIES.DEADSHOT && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {

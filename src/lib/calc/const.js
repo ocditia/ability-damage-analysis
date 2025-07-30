@@ -808,6 +808,46 @@ const armour = {
         slot: 'boots',
         style: 'melee'
     },
+    'tumekens resplendence helmet': {
+        'necromancy strength': 0,
+        'magic strength': 25,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'helmet',
+        style: 'necromancy'
+    },
+    'tumekens resplendence body': {
+        'necromancy strength': 0,
+        'magic strength': 37,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'helmet',
+        style: 'necromancy'
+    },
+    'tumekens resplendence legs': {
+        'necromancy strength': 0,
+        'magic strength': 32,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'helmet',
+        style: 'necromancy'
+    },
+    'tumekens resplendence gloves': {
+        'necromancy strength': 0,
+        'magic strength': 16,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'helmet',
+        style: 'necromancy'
+    },
+    'tumekens resplendence boots': {
+        'necromancy strength': 0,
+        'magic strength': 16,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'helmet',
+        style: 'necromancy'
+    },
     'igneous kal-zuk': {
         'necromancy strength': 43,
         'magic strength': 43,
@@ -3398,7 +3438,8 @@ const abils = {
             4: [],
             5: [ABILITIES.ASPHYXIATE_HIT],
             6: [],
-            7: [ABILITIES.ASPHYXIATE_HIT]
+            7: [ABILITIES.ASPHYXIATE_HIT],
+            8: []
         }
     },
     [ABILITIES.DEEP_IMPACT]: {

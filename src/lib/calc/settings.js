@@ -172,7 +172,8 @@ const SETTINGS = {
         ELITE_TECTONIC: 'elite tectonic mask',
         SLISKE: 'anima core helm of sliske',
         GHOST_HUNTER: 'ghost hunter goggles',
-        MASTERWORK: 'masterwork magic hat'
+        MASTERWORK: 'masterwork magic hat',
+        TUMEKENS_RESPLENDENCE: 'tumekens resplendence helmet'
     },
     RANGED_HELMET: 'ranged helmet',
     RANGED_HELMET_VALUES: {
@@ -209,6 +210,7 @@ const SETTINGS = {
         TECTONIC: 'tectonic robe top',
         GHOST_HUNTER: 'ghost hunter body',
         MASTERWORK: 'masterwork magic robe top',
+        TUMEKENS_RESPLENDENCE: 'tumekens resplendence body'
     },
     RANGED_BODY: 'ranged body',
     RANGED_BODY_VALUES: {
@@ -244,6 +246,7 @@ const SETTINGS = {
         SLISKE: 'anima core legs of sliske',
         GHOST_HUNTER: 'ghost hunter legs',
         MASTERWORK: 'masterwork magic robe bottom',
+        TUMEKENS_RESPLENDENCE: 'tumekens resplendence legs'
     },
     RANGED_LEGS: 'ranged legs',
     RANGED_LEGS_VALUES: {
@@ -279,6 +282,7 @@ const SETTINGS = {
         KWW_E: 'enhanced kerapacs wristwraps',
         MASTERWORK: 'masterwork magic gloves',
         TUSKA: 'warpriest of tuska gauntlets',
+        TUMEKENS_RESPLENDENCE: 'tumekens resplendence gloves'
     },
     RANGED_GLOVES: 'ranged gloves',
     RANGED_GLOVES_VALUES: {
@@ -316,7 +320,8 @@ const SETTINGS = {
         BLAST_E: 'enhanced blast diffusion boots',
         SH: 'silverhawk boots',
         MASTERWORK: 'masterwork magic boots',
-        TUSKA: 'warpriest of tuska boots'
+        TUSKA: 'warpriest of tuska boots',
+        TUMEKENS_RESPLENDENCE: 'tumekens resplendence boots'
     },
     RANGED_BOOTS: 'ranged boots',
     RANGED_BOOTS_VALUES: {
@@ -1192,6 +1197,7 @@ const settingsConfig = {
         default: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_HELMET_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC },
             { text: 'Masterwork', value: SETTINGS.MAGIC_HELMET_VALUES.MASTERWORK },
@@ -1239,6 +1245,7 @@ const settingsConfig = {
         default: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_BODY_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC },
             { text: 'Masterwork', value: SETTINGS.MAGIC_BODY_VALUES.MASTERWORK },
@@ -1285,6 +1292,7 @@ const settingsConfig = {
         default: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC },
             { text: 'Masterwork', value: SETTINGS.MAGIC_LEGS_VALUES.MASTERWORK },
@@ -1331,6 +1339,7 @@ const settingsConfig = {
         default: SETTINGS.MAGIC_GLOVES_VALUES.MASTERWORK,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_GLOVES_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'DTB', value: SETTINGS.MAGIC_GLOVES_VALUES.DTB },
             { text: 'Cinderbanes', value: SETTINGS.MAGIC_GLOVES_VALUES.CINDERS },
             { text: 'Kerrywaps', value: SETTINGS.MAGIC_GLOVES_VALUES.KWW },
@@ -1381,6 +1390,7 @@ const settingsConfig = {
         default: SETTINGS.MAGIC_BOOTS_VALUES.MASTERWORK,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_BOOTS_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Blast diff', value: SETTINGS.MAGIC_BOOTS_VALUES.BLAST },
             { text: 'Blast diff+', value: SETTINGS.MAGIC_BOOTS_VALUES.BLAST_E },
             { text: 'Masterwork', value: SETTINGS.MAGIC_BOOTS_VALUES.MASTERWORK },
