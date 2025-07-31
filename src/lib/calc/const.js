@@ -2348,8 +2348,8 @@ const abils = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'channel', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
@@ -3439,7 +3439,6 @@ const abils = {
             5: [ABILITIES.ASPHYXIATE_HIT],
             6: [],
             7: [ABILITIES.ASPHYXIATE_HIT],
-            8: []
         }
     },
     [ABILITIES.DEEP_IMPACT]: {

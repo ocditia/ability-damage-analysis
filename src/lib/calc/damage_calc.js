@@ -1648,12 +1648,15 @@ function calc_soul_split_hit(hit, settings) {
 }
 
 function get_user_value(settings, dmgObject) {
-    if (abils[settings['ability']]['ability classification'] != 'channel' && settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) { 
-        settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 3;
+    let divider = 1
+    if (settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) {
+        divider = 3;
     }
+    divider = Math.max(divider, settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER])
+
     switch (settings[SETTINGS.MODE]) {
         case SETTINGS.MODE_VALUES.MEAN:
-            return Math.floor(get_mean_damage(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
+            return Math.floor(get_mean_damage(settings, dmgObject)/divider);
         case SETTINGS.MODE_VALUES.MEAN_NO_CRIT:
             return Math.floor(get_mean_no_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MEAN_CRIT:
@@ -1889,6 +1892,8 @@ function ability_damage_calculation(settings) {
         if (abils[settings['ability']]['ability classification'] === 'channel') {
             settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = Math.min(settings[SETTINGS.MAX_CHANNEL_DURATION], 
                 Object.keys(abils[settings['ability']]['hits']).map(item => parseInt(item, 10)).pop());
+                console.log(settings['ability'])
+                console.log(settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER])
         }
     }
 
@@ -1948,7 +1953,7 @@ function get_hit_sequence(settings) {
         rotation[2].push(ABILITIES.ASPHYXIATE_HIT);
         rotation[4].push(ABILITIES.ASPHYXIATE_HIT);
         rotation[6].push(ABILITIES.ASPHYXIATE_HIT);
-        rotation[8].push(ABILITIES.ASPHYXIATE_HIT);
+        rotation[8] = [ABILITIES.ASPHYXIATE_HIT];
     }
 
     if (settings['ability'] === ABILITIES.DEADSHOT && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
