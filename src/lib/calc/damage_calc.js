@@ -244,7 +244,7 @@ function calc_boosted_ad(settings, dmgObject) {
         if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
             tumekens_resplendence += 1;
         }
-        if (settings[SETTINGS.SUNSHINE] === true && tumekens_resplendence >= 4) {
+        if (settings[SETTINGS.SUNSHINE] === true && tumekens_resplendence >= 3) {
             base_ad_boost += 0.5;
         }
     }
@@ -932,7 +932,7 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
             if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
                 tumekens_resplendence += 1;
             }
-        if (settings['sunshine'] === true && tumekens_resplendence <= 3) {
+        if (settings['sunshine'] === true && tumekens_resplendence <= 2) {
             boost = Math.floor(boost * 1.5);
         }
 
@@ -1954,7 +1954,7 @@ function get_hit_sequence(settings) {
     if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
         tumekens_resplendence += 1;
     }
-    if (settings['ability'] === ABILITIES.ASPHYXIATE && tumekens_resplendence >= 3) {
+    if (settings['ability'] === ABILITIES.ASPHYXIATE && tumekens_resplendence >= 4) {
         rotation[2].push(ABILITIES.ASPHYXIATE_HIT);
         rotation[4].push(ABILITIES.ASPHYXIATE_HIT);
         rotation[6].push(ABILITIES.ASPHYXIATE_HIT);
