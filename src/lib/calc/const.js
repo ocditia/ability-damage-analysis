@@ -3235,8 +3235,10 @@ const abils = {
         'damage type': 'magic',
         hits: {
             1: [ABILITIES.CONCENTRATED_BLAST_1],
-            2: [ABILITIES.CONCENTRATED_BLAST_2],
-            3: [ABILITIES.CONCENTRATED_BLAST_3]
+            2: [],
+            3: [ABILITIES.CONCENTRATED_BLAST_2],
+            4: [],
+            5: [ABILITIES.CONCENTRATED_BLAST_3]
         }
     },
     [ABILITIES.GREATER_CONCENTRATED_BLAST_1]: {
