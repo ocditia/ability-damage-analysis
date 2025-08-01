@@ -138,7 +138,6 @@ function calc_crit_chance(settings) {
             (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
             abils[settings['ability']]['ability classification'] === 'channel'
         ) {
-            crit_chance += 0.04;
             crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
         }
 

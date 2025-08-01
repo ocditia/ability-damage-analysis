@@ -1,5 +1,5 @@
 import { SETTINGS } from './settings';
-import { ABILITIES } from './const';
+import { abils, ABILITIES } from './const';
 
 function next_tick(settings) {
     // needle strike logic
@@ -35,6 +35,14 @@ function next_cast(settings) {
     // turn off chaos roar
     if (settings[SETTINGS.CHAOS_ROAR] === true) {
         settings[SETTINGS.CHAOS_ROAR] = false;
+    }
+
+    // channeller's ring
+    if (
+        (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
+        abils[settings['ability']]['ability classification'] === 'channel'
+    ) {
+        settings[SETTINGS.CHANNELER_RING_STACKS] += 1
     }
 
     settings = next_hit(settings);

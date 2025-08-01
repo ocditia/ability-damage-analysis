@@ -1901,17 +1901,22 @@ function ability_damage_calculation(settings) {
     let damage = 0;
     for (let key in rotation) {
         if (key <= settings[SETTINGS.MAX_CHANNEL_DURATION]) {
+            const abil_cast = rotation[key].length;
             for (let iter = 0; iter < rotation[key].length; iter++) {
                 if (rotation[key][iter] === 'next cast') {
                     settings = next_cast(settings);
                 } else if (rotation[key][iter] === 'next hit') {
                     settings = next_hit(settings);
                 } else {
+                    let abil = settings['ability'];
                     settings['ability'] = rotation[key][iter];
                     damage += hit_damage_calculation(settings);
+                    settings['ability'] = abil;
                 }
             }
-            settings = next_tick(settings);
+            if (abil_cast >= 1) {
+                settings = next_tick(settings);
+            }       
         }
     }
     return damage;
