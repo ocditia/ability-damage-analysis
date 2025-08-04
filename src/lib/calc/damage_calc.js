@@ -1203,6 +1203,11 @@ function calc_crit_damage(settings) {
             crit_buff += 0.225;
         }
     }
+
+    if (abils[settings['ability']]['main style'] === 'magic' && settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] === true) {
+        crit_buff += 0.5;
+    }
+
     return crit_buff;
 }
 

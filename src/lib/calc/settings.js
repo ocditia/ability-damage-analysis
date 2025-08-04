@@ -837,6 +837,7 @@ const SETTINGS = {
     },
     DAMAGE_PER_UNIT_DIVIDER: 'damage per time unit divider',
     RESIDUAL_SOULS: 'residual souls',
+    TUMEKENS_RESPLENDENCE_ASPHYX: 'tumekens resplendence asphyx',
 
     TELOS_RED_BEAM: 'telos red beam',
     TELOS_BLACK_BEAM: 'telos black beam',
@@ -2321,6 +2322,10 @@ const settingsConfig = {
     },
     [SETTINGS.DEVOURER_NEXUS]: {
         label: 'Devourer nexus',
+        default: false
+    },
+    [SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX]: {
+        label: 'Tumekens asphyx',
         default: false
     },
 };

@@ -437,6 +437,10 @@
                                     img="/effect_icons/smoke_cloud.png"
                                 />
                                 <Checkbox
+                                    bind:setting={settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
                                     bind:setting={settings[SETTINGS.KALG_SPEC]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/crit_i_kal.png"
