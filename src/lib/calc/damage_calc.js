@@ -1204,7 +1204,9 @@ function calc_crit_damage(settings) {
         }
     }
 
-    if (abils[settings['ability']]['main style'] === 'magic' && settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] === true) {
+    if (abils[settings['ability']]['main style'] === 'magic' && settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] === true
+        && abils[settings['ability']]['ability classification'] != 'channel'
+    ) {
         crit_buff += 0.5;
     }
 
