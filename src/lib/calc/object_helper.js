@@ -142,7 +142,9 @@ function calc_crit_chance(settings) {
         }
 
         // (g)conc
-        crit_chance += 0.05 * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
+        if (abils[settings['ability']]['ability classification'] != 'proc') {
+            crit_chance += 0.05 * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
+        } 
 
         // (g)conc self boost
         if (
