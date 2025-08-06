@@ -196,8 +196,7 @@ function calc_damage_potential(settings, dmgObject) {
 
 // calculate boosted AD
 function calc_boosted_ad(settings, dmgObject) {
-    let boosted_AD = calc_damage_potential(settings, dmgObject);
-    let base_ad_boost = 1;
+    let base_ad_boost = calc_damage_potential(settings, dmgObject);
 
     if (abils[settings['ability']]['main style'] === 'magic') {
         // inq staff
@@ -316,10 +315,7 @@ function calc_boosted_ad(settings, dmgObject) {
         base_ad_boost = Math.floor(1.1 * base_ad_boost);
     }
 
-
-    boosted_AD = Math.floor(boosted_AD * base_ad_boost);
-
-    return boosted_AD;
+    return base_ad_boost;
 }
 
 function ability_specific_effects(settings, dmgObject) {
