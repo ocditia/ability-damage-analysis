@@ -42,7 +42,7 @@ const abilities = {
         icon: '/ability_icons/magic/30x30/combust.png'
     },
     [ABILITIES.TIME_STRIKE]: {
-        title: 'Timestrike',
+        title: 'Lightning strike',
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/time_strike-bg.png'
     },
