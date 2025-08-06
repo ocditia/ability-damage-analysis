@@ -76,7 +76,9 @@ function next_hit(settings) {
         }
     }
 
-    if (settings['ability'] === ABILITIES.SKELETON_WARRIOR_AUTO) {
+    if (settings['ability'] === ABILITIES.SKELETON_WARRIOR_AUTO_10 ||
+        settings['ability'] === ABILITIES.SKELETON_WARRIOR_AUTO
+    ) {
         settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS] = Math.min(
             25,
             settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS] + 1

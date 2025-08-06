@@ -1897,8 +1897,6 @@ function ability_damage_calculation(settings) {
         if (abils[settings['ability']]['ability classification'] === 'channel') {
             settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = Math.min(settings[SETTINGS.MAX_CHANNEL_DURATION], 
                 Object.keys(abils[settings['ability']]['hits']).map(item => parseInt(item, 10)).pop());
-                console.log(settings['ability'])
-                console.log(settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER])
         }
     }
 
