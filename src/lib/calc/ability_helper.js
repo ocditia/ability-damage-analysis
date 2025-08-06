@@ -59,7 +59,7 @@ function next_hit(settings) {
 
     // turn off (g)conc
     settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 0; // this does not properly handle conc buffing itself
-
+    
     // bolg stack tracker
     if (
         settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
@@ -71,7 +71,7 @@ function next_hit(settings) {
             settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 4
         ) {
             settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] = 0;
-        } else if (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 7) {
+        } else if (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 8) {
             settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] = 0;
         }
     }
