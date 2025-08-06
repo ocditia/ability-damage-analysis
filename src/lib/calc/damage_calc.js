@@ -206,7 +206,7 @@ function calc_boosted_ad(settings, dmgObject) {
             settings['two-hand weapon'] === 'inquisitor staff'
         ) {
             //boosted_AD = Math.floor(boosted_AD * 1.125);
-            base_ad_boost += 0.125;
+            base_ad_boost = Math.floor(1.125 * base_ad_boost);
         }
 
         // inq staff upgraded
@@ -215,18 +215,18 @@ function calc_boosted_ad(settings, dmgObject) {
             settings['two-hand weapon'] === 'inquisitor staff+'
         ) {
             //boosted_AD = Math.floor(boosted_AD * 1.175);
-            base_ad_boost += 0.175;
+            base_ad_boost = Math.floor(1.175 * base_ad_boost);
         }
 
         // crumble undead
         if (settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.CRUMBLE_UNDEAD) {
-            //boosted_AD = Math.floor(boosted_AD * 1.3);
-            base_ad_boost += 0.3;
+            base_ad_boost = Math.floor(1.3 * base_ad_boost);
         }
 
         // flow stacks
-        //boosted_AD = Math.floor(boosted_AD * (1 + 0.01 * settings[SETTINGS.FLOW_STACKS]));
-        base_ad_boost += 0.01 * settings[SETTINGS.FLOW_STACKS];
+        if (abils[settings['ability']]['main style'] === 'magic') {
+            base_ad_boost = Math.floor((1 + 0.01 * settings[SETTINGS.FLOW_STACKS]) * base_ad_boost);
+        }
 
         let tumekens_resplendence = 0;
         if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
@@ -245,8 +245,7 @@ function calc_boosted_ad(settings, dmgObject) {
             tumekens_resplendence += 1;
         }
         if (settings[SETTINGS.SUNSHINE] === true && tumekens_resplendence >= 3) {
-            //base_ad_boost = Math.floor(1.5 * base_ad_boost);
-            base_ad_boost += 0.5;
+            base_ad_boost = Math.floor(1.5 * base_ad_boost);
         }
     }
 
@@ -256,7 +255,7 @@ function calc_boosted_ad(settings, dmgObject) {
             settings[SETTINGS.WEAPON] === 'two-hand' &&
             settings['two-hand weapon'] === 'terrasaur maul'
         ) {
-            base_ad_boost += 0.125;
+            base_ad_boost = Math.floor(1.125 * base_ad_boost);
         }
 
         // terrasaur maul upgraded
@@ -264,22 +263,22 @@ function calc_boosted_ad(settings, dmgObject) {
             settings[SETTINGS.WEAPON] === 'two-hand' &&
             settings['two-hand weapon'] === 'terrasaur maul+'
         ) {
-            base_ad_boost += 0.175;
+            base_ad_boost = Math.floor(1.175 * base_ad_boost);
         }
 
         // keris
         if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
             if ([SETTINGS.MELEE_MH_VALUES.KERIS, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS].includes(settings[SETTINGS.MH])) {
-                base_ad_boost += 0.333;
+                base_ad_boost = Math.floor(1.333 * base_ad_boost);
             }
             else if ([SETTINGS.MELEE_MH_VALUES.KERIS_PROC, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
-                base_ad_boost += 1;
+                base_ad_boost = 2 * base_ad_boost;
             }
         }
 
         // chaos roar
         if (settings['chaos roar'] === true) {
-            base_ad_boost += 1;
+            base_ad_boost = 2 * base_ad_boost;
         }
     }
 
@@ -289,7 +288,7 @@ function calc_boosted_ad(settings, dmgObject) {
             settings[SETTINGS.WEAPON] === 'two-hand' &&
             settings['two-hand weapon'] === 'hexhunter bow'
         ) {
-            base_ad_boost += 0.125;
+            base_ad_boost = Math.floor(1.125 * base_ad_boost);
         }
 
         // hex bow upgraded
@@ -297,7 +296,7 @@ function calc_boosted_ad(settings, dmgObject) {
             settings[SETTINGS.WEAPON] === 'two-hand' &&
             settings['two-hand weapon'] === 'hexhunter bow+'
         ) {
-            base_ad_boost += 0.175;
+            base_ad_boost = Math.floor(1.175 * base_ad_boost);
         }
 
         // icy precision (wen arrows)
@@ -306,7 +305,7 @@ function calc_boosted_ad(settings, dmgObject) {
             wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type']) &&
             settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS
         ) {
-            base_ad_boost += 0.02 * settings[SETTINGS.ICY_PRECISION];
+            base_ad_boost = Math.floor((1 +0.02 * settings[SETTINGS.ICY_PRECISION]) * base_ad_boost);
         }
     }
 
@@ -314,7 +313,7 @@ function calc_boosted_ad(settings, dmgObject) {
 
     // Scripture of Amascut
     if (settings[SETTINGS.POCKET] === 'scripture of amascut') {
-        base_ad_boost += 0.1;
+        base_ad_boost = Math.floor(1.1 * base_ad_boost);
     }
 
 
