@@ -1163,7 +1163,7 @@ const settingsConfig = {
     },
     [SETTINGS.HAUNTED_AD]: {
         label: 'Haunted AD',
-        default: 2345
+        default: 2712
     },
     [SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]: {
         label: 'Skeleton rage stacks',
