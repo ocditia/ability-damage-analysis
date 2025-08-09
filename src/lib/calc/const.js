@@ -1515,6 +1515,7 @@ const armour = {
 };
 
 const ABILITIES = {
+    NECRO_AD: 'necro base damage',
     NECRO_AUTO: 'necromancy auto',
     TOUCH_OF_DEATH: 'touch of death',
     SOUL_SAP: 'soul sap',
@@ -3948,6 +3949,9 @@ const abils = {
         'damage type': 'magic'
     },
 
+    [ABILITIES.NECRO_AD]: {
+        'main style': 'necromancy'
+    },
     [ABILITIES.NECRO_AUTO]: {
         // ability name
         'min hit': 0.9, // min % of abil expressed as a decimal

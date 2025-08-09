@@ -104,6 +104,10 @@ function calc_base_ad(settings) {
                 Math.floor(
                     9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
                 );
+            if (settings['ability'] === ABILITIES.NECRO_AD) {
+                console.log(settings['ability'])
+                console.log(AD_mh)
+            }
 
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
@@ -2049,9 +2053,14 @@ function calc_aftershock(settings) {
     return get_user_value(settings, dmgObject);
 }
 
+function calc_base_damage_ability_page(settings) {
+        settings = style_specific_unification(settings);
+        return calc_base_ad(settings);
+}
+
 export { ability_damage_calculation, hit_damage_calculation,
     calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
     get_user_value, get_hit_sequence, add_split_soul, apply_additional,
-    calc_crit_damage, calc_split_soul_hit, calc_aftershock
+    calc_crit_damage, calc_split_soul_hit, calc_aftershock, calc_base_damage_ability_page
 };

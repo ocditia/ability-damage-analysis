@@ -1,7 +1,12 @@
 import { ABILITIES } from '../calc/const.js';
-import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
+import { ability_damage_calculation, hit_damage_calculation, calc_base_damage_ability_page } from '../calc/damage_calc.js';
 
 const abilities = {
+    [ABILITIES.NECRO_AD]: {
+        title: 'Necro auto',
+        calc: calc_base_damage_ability_page,
+        icon: '/ability_icons/necro/30x30/auto.png'
+    },
     [ABILITIES.NECRO_AUTO]: {
         title: 'Necro auto',
         calc: hit_damage_calculation,
