@@ -3,9 +3,8 @@ import { ability_damage_calculation, hit_damage_calculation, calc_base_damage_ab
 
 const abilities = {
     [ABILITIES.NECRO_AD]: {
-        title: 'Necro auto',
+        title: 'Base damage',
         calc: calc_base_damage_ability_page,
-        icon: '/ability_icons/necro/30x30/auto.png'
     },
     [ABILITIES.NECRO_AUTO]: {
         title: 'Necro auto',
