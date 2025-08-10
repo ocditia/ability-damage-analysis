@@ -339,14 +339,6 @@
                                     min="0"
                                 />
                                 <Number
-                                    bind:setting={settings[SETTINGS.IGNEOUS_EXTENSIOS]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/igneous_extensions.png"
-                                    step="1"
-                                    max="5"
-                                    min="0"
-                                />
-                                <Number
                                     bind:setting={settings[SETTINGS.TIME_SINCE_ATTACK]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/cease.png"
