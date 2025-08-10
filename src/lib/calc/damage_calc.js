@@ -104,10 +104,6 @@ function calc_base_ad(settings) {
                 Math.floor(
                     9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
                 );
-            if (settings['ability'] === ABILITIES.NECRO_AD) {
-                console.log(settings['ability'])
-                console.log(AD_mh)
-            }
 
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
@@ -1215,7 +1211,7 @@ function calc_crit_damage(settings) {
     return crit_buff;
 }
 
-function calc_on_npc(settings, dmgObject) {
+function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
     for (let i = 0; i < dmgObject['damage list'].length; i++) {
         // set haunted
         let haunted = 0;
@@ -1447,7 +1443,9 @@ function calc_on_npc(settings, dmgObject) {
         // dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * (1 + settings['anachronia slayer lodge buff']));
 
         // store damage into soul split
-        settings['soul split'] = dmgObject;
+        if (split_soul_flag) {
+            settings['soul split'] = JSON.parse(JSON.stringify(dmgObject));
+        }
 
         // hit cap
         if (settings[SETTINGS.HITCAP] === true) {
@@ -1493,7 +1491,7 @@ function calc_on_hit(settings, dmgObject) {
     return dmgObject;
 }
 
-function calc_damage_object(settings) {
+function calc_damage_object(settings,) {
     const dmgObject = create_object(settings);
     for (let key in dmgObject) {
         // calc base AD
@@ -1610,11 +1608,13 @@ function calc_igneous_bleed(settings) {
 
 function add_split_soul(settings, dmgObject) {
     if (settings[SETTINGS.SPLIT_SOUL]) {
+        let split_soul_damage_object = {'damage list': []}
         for (let i = 0; i < dmgObject['damage list'].length; i++) {
-            dmgObject['damage list'][i] += calc_split_soul_hit(
-                settings['soul split']['damage list'][i],
-                settings
-            );
+            split_soul_damage_object['damage list'].push(calc_split_soul_hit(settings['soul split']['damage list'][i], settings));
+        }
+        split_soul_damage_object = calc_on_npc(settings, split_soul_damage_object, false);
+        for (let i = 0; i < dmgObject['damage list'].length; i++) {
+            dmgObject['damage list'][i] += split_soul_damage_object['damage list'][i];
         }
     }
     return dmgObject;
