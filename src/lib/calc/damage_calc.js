@@ -1212,6 +1212,7 @@ function calc_crit_damage(settings) {
 }
 
 function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
+    
     for (let i = 0; i < dmgObject['damage list'].length; i++) {
         // set haunted
         let haunted = 0;
@@ -1441,13 +1442,14 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
 
         // anachronia slayer lodge buff
         // dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * (1 + settings['anachronia slayer lodge buff']));
+    }
+    // store damage into soul split
+    if (split_soul_flag) {
+        settings['soul split'] = JSON.parse(JSON.stringify(dmgObject));
+    }
 
-        // store damage into soul split
-        if (split_soul_flag) {
-            settings['soul split'] = JSON.parse(JSON.stringify(dmgObject));
-        }
-
-        // hit cap
+    // hit cap
+    for (let i=0; i<dmgObject['damage list'].length; i++) {
         if (settings[SETTINGS.HITCAP] === true) {
             dmgObject['damage list'][i] = Math.min(dmgObject['damage list'][i], 30000);
         }
