@@ -142,7 +142,9 @@ function calc_crit_chance(settings) {
         }
 
         // (g)conc
-        if (abils[settings['ability']]['ability classification'] != 'proc') {
+        if (abils[settings['ability']]['ability classification'] != 'proc' &&
+            abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
+        ) {
             crit_chance += 0.05 * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
         } 
 
