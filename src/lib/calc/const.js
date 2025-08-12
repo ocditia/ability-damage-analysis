@@ -1771,6 +1771,7 @@ const ABILITIES = {
     ICE_CLEAVE: 'ice cleave',
     SUNFALL_SLAM: 'sunfall slam',
     LESSER_PURIFYING_LIGHT: 'lesser purifying light',
+    PURIFYING_LIGHT: 'puyrifying light',
 
     // perks damage
     AFTERSHOCK: 'aftershock',
@@ -3093,6 +3094,18 @@ const abils = {
     [ABILITIES.LESSER_PURIFYING_LIGHT]: {
         // ability name
         'min hit': 0.25, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
+    [ABILITIES.PURIFYING_LIGHT]: {
+        // ability name
+        'min hit': 0.35, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
