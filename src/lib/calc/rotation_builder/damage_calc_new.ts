@@ -823,7 +823,8 @@ function on_hit(settings, dmgObject: DamageObject, timers: Record<string, number
         // Marco - Discrete example: bolg
         // add a bolg stack
         if (settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
-            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
+            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+            abilityKey != 'bolg proc') {
                 settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] += 1;
         }
     }
