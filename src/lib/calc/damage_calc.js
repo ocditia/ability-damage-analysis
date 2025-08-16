@@ -1203,7 +1203,7 @@ function calc_crit_damage(settings) {
         settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] === true && 
         abils[settings['ability']]['ability classification'] != 'channel' &&
         abils[settings['ability']]['ability classification'] != 'proc' &&
-        abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
+        abils[settings['ability']]['ability type'] != 'combatv2_passive_ability'
     ) {
         crit_buff += 0.5;
     }
