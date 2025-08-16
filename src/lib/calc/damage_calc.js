@@ -120,13 +120,12 @@ function calc_base_ad(settings) {
         }
     }
 
-    // eruptive perk
-    base_AD = Math.floor(base_AD * (1 + settings[SETTINGS.ERUPTIVE] * 0.005));
-
-    // equilibrium aura
-    if (settings[SETTINGS.AURA] === 'equilibrium') {
-        base_AD = Math.floor(base_AD * 1.12);
+	// base damage buffs (eruptive / equilibrium)
+	let buff = 1 + settings[SETTINGS.ERUPTIVE] * 0.005;
+	if (settings[SETTINGS.AURA] === 'equilibrium') {
+        buff += 0.12;
     }
+    base_AD = Math.floor(base_AD * buff);
 
     return base_AD;
 }
