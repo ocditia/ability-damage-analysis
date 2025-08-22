@@ -932,7 +932,7 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
         }
 
         // blood tithe (exsanguinate)
-        if (abils[settings['ability']]['ability type'] === 'basic') {
+        if (abils[settings['ability']]['ability type'] === 'basic' || settings['ability'] === ABILITIES.TIME_STRIKE) {
             boost = Math.floor(boost * (1 + settings[SETTINGS.BLOOD_TITHE] / 100));
         }
     }
