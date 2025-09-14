@@ -246,6 +246,10 @@
                                     max="1000"
                                     min="0"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.MELEE_LEAGUES_AD_RELIC]}
+                                    onchange={() => updateDamages()}
+                                />
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">
