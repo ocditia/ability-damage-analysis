@@ -248,6 +248,12 @@ function calc_boosted_ad(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
+		// league relic
+		if (settings[SETTINGS.MELEE_LEAGUES_AD_RELIC] === true) {
+			base_ad_boost += 500;
+		}
+
+		
         // terrasaur maul
         if (
             settings[SETTINGS.WEAPON] === 'two-hand' &&
