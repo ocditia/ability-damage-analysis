@@ -842,6 +842,7 @@ const SETTINGS = {
     TELOS_RED_BEAM: 'telos red beam',
     TELOS_BLACK_BEAM: 'telos black beam',
     ENERGISING: 'energising',
+    MELEE_LEAGUES_AD_RELIC: 'melee league ad relic'
 };
 
 const settingsConfig = {
@@ -2326,6 +2327,10 @@ const settingsConfig = {
     },
     [SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX]: {
         label: 'Tumekens asphyx',
+        default: false
+    },
+    [SETTINGS.MELEE_LEAGUES_AD_RELIC]: {
+        label: 'League relic',
         default: false
     },
 };
