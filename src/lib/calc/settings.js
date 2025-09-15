@@ -2335,11 +2335,11 @@ const settingsConfig = {
         label: 'League relic',
         default: false
     },
-    [SETTINGS.NECRO_LEAGUES_AD_RELIC]: {
+    [SETTINGS.NECRO_LEAGUES_RELIC]: {
         label: 'League relic',
         default: false
     },
-    [SETTINGS.MAGIC_LEAGUES_AD_RELIC]: {
+    [SETTINGS.MAGIC_LEAGUES_RELIC]: {
         label: 'League relic',
         default: false
     },
