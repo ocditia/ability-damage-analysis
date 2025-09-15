@@ -252,6 +252,10 @@
                                     max="1000"
                                     min="0"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.MAGIC_LEAGUES_RELIC]}
+                                    onchange={() => updateDamages()}
+                                />
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">
