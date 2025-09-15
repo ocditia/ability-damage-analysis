@@ -220,7 +220,7 @@
                                     min="0"
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.MELEE_LEAGUES_RELIC]}
+                                    bind:setting={settings[SETTINGS.NECRO_LEAGUES_RELIC]}
                                     onchange={() => updateDamages()}
                                 />
                             </div>
