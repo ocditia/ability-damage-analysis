@@ -842,7 +842,9 @@ const SETTINGS = {
     TELOS_RED_BEAM: 'telos red beam',
     TELOS_BLACK_BEAM: 'telos black beam',
     ENERGISING: 'energising',
-    MELEE_LEAGUES_AD_RELIC: 'melee league ad relic'
+    MELEE_LEAGUES_AD_RELIC: 'melee league ad relic',
+    NECRO_LEAGUES_RELIC: 'necro league relic',
+    MAGIC_LEAGUES_RELIC: 'magic league relic'
 };
 
 const settingsConfig = {
@@ -2330,6 +2332,14 @@ const settingsConfig = {
         default: false
     },
     [SETTINGS.MELEE_LEAGUES_AD_RELIC]: {
+        label: 'League relic',
+        default: false
+    },
+    [SETTINGS.NECRO_LEAGUES_AD_RELIC]: {
+        label: 'League relic',
+        default: false
+    },
+    [SETTINGS.MAGIC_LEAGUES_AD_RELIC]: {
         label: 'League relic',
         default: false
     },
