@@ -1214,6 +1214,12 @@ function calc_crit_damage(settings) {
         crit_buff += 0.5;
     }
 
+	// magic leagues relic
+	if (abils[settings['ability']]['main style'] === 'magic' && 
+		settings[SETTINGS.MAGIC_LEAGUES_RELIC] === true) {
+		crit_buff += 0.5;
+		}
+
     return crit_buff;
 }
 
@@ -1232,6 +1238,12 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
                 Math.floor(dmgObject['damage list'][i] * 0.1),
                 Math.floor(0.2 * settings['haunted AD']));
         }
+
+		// necro leagues relic
+		if (abils[settings['ability']]['damage type'] === 'spirit' && 
+			settings[SETTINGS.NECRO_LEAGUES_RELIC] === true) {
+			dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.25);
+		}
 
         // vulnerability / curse
         if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.VULNERABILITY) {
