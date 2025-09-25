@@ -607,6 +607,10 @@
                                     onchange={() => updateDamages()}
                                 />
                                 <Checkbox
+                                    bind:setting={settings[SETTINGS.LEAGUES_EOF_RELIC]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
                                     bind:setting={settings[SETTINGS.LEAGUES_POCKET_AMASCUT]}
                                     onchange={() => updateDamages()}
                                 />

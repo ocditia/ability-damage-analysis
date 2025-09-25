@@ -848,7 +848,8 @@ const SETTINGS = {
     MAGIC_LEAGUES_RELIC: 'magic league relic',
     LEAGUES_POCKET_JAS: 'leagues pocket jas',
     LEAGUES_POCKET_FUL: 'leagues pocket ful',
-    LEAGUES_POCKET_AMASCUT: 'leagues pocket amascut'
+    LEAGUES_POCKET_AMASCUT: 'leagues pocket amascut',
+    LEAGUES_EOF_RELIC: 'leagues eof relic',
 };
 
 const settingsConfig = {
@@ -2358,6 +2359,10 @@ const settingsConfig = {
     },
     [SETTINGS.LEAGUES_POCKET_JAS]: {
         label: 'League pocket jas',
+        default: false
+    },
+    [SETTINGS.LEAGUES_EOF_RELIC]: {
+        label: 'League eof relic',
         default: false
     },
 };

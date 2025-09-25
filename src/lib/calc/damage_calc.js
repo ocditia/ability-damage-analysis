@@ -200,6 +200,12 @@ function calc_boosted_ad(settings, dmgObject) {
         return base_ad_boost;
     }
 
+    if (settings[SETTINGS.LEAGUES_EOF_RELIC] === true
+        && abils[settings['ability']]['ability type'] === 'special attack'
+    ) {
+        base_ad_boost = Math.floor(1.5 * base_ad_boost);
+    }
+
     if (abils[settings['ability']]['main style'] === 'magic') {
         // inq staff
         if (
