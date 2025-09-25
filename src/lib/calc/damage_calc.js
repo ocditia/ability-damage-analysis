@@ -196,6 +196,9 @@ function calc_damage_potential(settings, dmgObject) {
 // calculate boosted AD
 function calc_boosted_ad(settings, dmgObject) {
     let base_ad_boost = calc_damage_potential(settings, dmgObject);
+    if (abils[settings['ability']]['ability type'] === 'conjure') {
+        return base_ad_boost;
+    }
 
     if (abils[settings['ability']]['main style'] === 'magic') {
         // inq staff
