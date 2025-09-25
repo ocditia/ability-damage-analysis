@@ -160,6 +160,15 @@
                             Bosses
                         </button>
                     </li>
+                    <li class="flex-grow me-2">
+                        <button
+                            onclick={() => (tab = 'leagues')}
+                            class:text-[#968A5C]={tab === 'leagues'}
+                            class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
+                        >
+                            Bosses
+                        </button>
+                    </li>
                 </ul>
                 <form class="w-full">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
@@ -245,10 +254,6 @@
                                     step="1"
                                     max="1000"
                                     min="0"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.MELEE_LEAGUES_AD_RELIC]}
-                                    onchange={() => updateDamages()}
                                 />
                             </div>
                             <div class="md:col-span-1 space-y-2">
@@ -655,6 +660,25 @@
                                     step="1"
                                     min="0"
                                     max="6"
+                                />
+                            </div>
+                            {:else if tab === 'leagues'}
+                            <div class="md:col-span-1">
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.MELEE_LEAGUES_AD_RELIC]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_AMASCUT]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_FUL]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_JAS]}
+                                    onchange={() => updateDamages()}
                                 />
                             </div>
                         {/if}

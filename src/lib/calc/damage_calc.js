@@ -321,7 +321,9 @@ function calc_boosted_ad(settings, dmgObject) {
     }
 
     // leagues book amascut
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET) {
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET &&
+        settings[SETTINGS.LEAGUES_POCKET_AMASCUT] === true
+    ) {
         base_ad_boost = Math.floor(1.1 * base_ad_boost);
     }
 
@@ -884,7 +886,9 @@ function calc_additive_boosts(settings, dmgObject) {
     }
 
     // leagues pocket ful
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET) {
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET &&
+        settings[SETTINGS.LEAGUES_POCKET_FUL] === true
+    ) {
         boost += 0.2;
     }
 
@@ -1938,7 +1942,9 @@ function apply_additional(settings, total_damage) {
     }
 
     // leagues pocket jas
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET) {
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET &&
+        settings[SETTINGS.LEAGUES_POCKET_JAS] === true
+    ) {
         let hitcap = 30000;
         if (settings[SETTINGS.HITCAP] === false) {
             hitcap = 1000000000

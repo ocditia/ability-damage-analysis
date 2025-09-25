@@ -845,7 +845,10 @@ const SETTINGS = {
     ENERGISING: 'energising',
     MELEE_LEAGUES_AD_RELIC: 'melee league ad relic',
     NECRO_LEAGUES_RELIC: 'necro league relic',
-    MAGIC_LEAGUES_RELIC: 'magic league relic'
+    MAGIC_LEAGUES_RELIC: 'magic league relic',
+    LEAGUES_POCKET_JAS: 'leagues pocket jas',
+    LEAGUES_POCKET_FUL: 'leagues pocket ful',
+    LEAGUES_POCKET_AMASCUT: 'leagues pocket amascut'
 };
 
 const settingsConfig = {
@@ -2343,6 +2346,18 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_LEAGUES_RELIC]: {
         label: 'League relic',
+        default: false
+    },
+    [SETTINGS.LEAGUES_POCKET_AMASCUT]: {
+        label: 'League pocket amascut',
+        default: false
+    },
+    [SETTINGS.LEAGUES_POCKET_FUL]: {
+        label: 'League pocket ful',
+        default: false
+    },
+    [SETTINGS.LEAGUES_POCKET_JAS]: {
+        label: 'League pocket jas',
         default: false
     },
 };
