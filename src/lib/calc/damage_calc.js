@@ -1124,7 +1124,7 @@ function calc_core(settings, dmgObject, key) {
 
         // dharock's gear (proc based, so added later)
 
-        // store damage into bolg
+        // store bolg damage
         if (
             settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
@@ -1568,7 +1568,6 @@ function calc_bolg(settings) {
     return bolg_base;
 }
 
-
 function calc_bloat(settings) {
     let bloat_dot = create_object(settings);
     for (let key in settings['bloat damage']) {
@@ -1921,6 +1920,39 @@ function apply_additional(settings, total_damage) {
     if (settings['ability'] === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
         total_damage += calc_igneous_bleed(settings);
     }
+
+    // scripture of jas
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.JAS) {
+        let hitcap = 30000;
+        if (settings[SETTINGS.HITCAP] === false) {
+            hitcap = 1000000000
+        }
+        if (!('jas damage' in settings)) {
+            settings['jas damage'] = 0;
+        }
+        let jas_damage = {'damage list': [Math.floor(Math.min(hitcap, 0.15*total_damage))]};
+        jas_damage = calc_on_npc(settings,jas_damage);
+        jas_damage = Math.min(jas_damage['damage list'][0], 30000 - settings['jas damage'])
+        settings['jas damage'] += jas_damage;
+        total_damage += jas_damage;
+    }
+
+    // leagues pocket jas
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET) {
+        let hitcap = 30000;
+        if (settings[SETTINGS.HITCAP] === false) {
+            hitcap = 1000000000
+        }
+        if (!('jas damage' in settings)) {
+            settings['jas damage'] = 0;
+        }
+        let jas_damage = {'damage list': [Math.floor(Math.min(hitcap, 0.15*total_damage))]};
+        jas_damage = calc_on_npc(settings,jas_damage);
+        jas_damage = Math.min(jas_damage['damage list'][0], 30000 - settings['jas damage'])
+        settings['jas damage'] += jas_damage;
+        total_damage += jas_damage;
+    }
+
     return total_damage;
 }
 
