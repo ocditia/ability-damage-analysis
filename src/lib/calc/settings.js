@@ -584,6 +584,7 @@ const SETTINGS = {
         SUPERIOR_ELEMENTS: 'superior scrimshaw of elements',
         CRUELTY: 'scrimshaw of cruelty',
         SUPERIOR_CRUELTY: 'superior scrimshaw of elements',
+        LEAGUES_POCKET: 'leagues pocket',
     },
     WEAPON: 'weapon type',
     WEAPON_VALUES: {
@@ -1741,6 +1742,7 @@ const settingsConfig = {
             { text: 'Superior elements', value: SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS },
             { text: 'Cruelty', value: SETTINGS.POCKET_VALUES.CRUELTY },
             { text: 'Superior cruelty', value: SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY },
+            { text: 'Leagues pocket book', value: SETTINGS.POCKET_VALUES.LEAGUES_POCKET },
         ]
     },
     [SETTINGS.WEAPON]: {

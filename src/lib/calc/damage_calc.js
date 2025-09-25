@@ -320,6 +320,11 @@ function calc_boosted_ad(settings, dmgObject) {
         base_ad_boost = Math.floor(1.1 * base_ad_boost);
     }
 
+    // leagues book amascut
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET) {
+        base_ad_boost = Math.floor(1.1 * base_ad_boost);
+    }
+
     return base_ad_boost;
 }
 
@@ -875,6 +880,11 @@ function calc_additive_boosts(settings, dmgObject) {
 
     // scripture of ful
     if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.FUL) {
+        boost += 0.2;
+    }
+
+    // leagues pocket ful
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET) {
         boost += 0.2;
     }
 

@@ -256,6 +256,14 @@ const gear = {
 };
 
 const armour = {
+    'leagues pocket': {
+        'necromancy strength': 15.0,
+        'magic strength': 15.0,
+        'melee strength': 15.0,
+        'ranged strength': 15.0,
+        slot: 'pocket',
+        style: 'hybrid'
+    },
     'tokkul-zo': {
         'necromancy strength': 2.4,
         'magic strength': 2.4,
