@@ -1208,11 +1208,9 @@ function calc_crit_damage(settings) {
         }
     }
 
+    // tumeken's resplendence pc
     if (abils[settings['ability']]['main style'] === 'magic' && 
-        settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] === true && 
-        abils[settings['ability']]['ability classification'] != 'channel' &&
-        abils[settings['ability']]['ability classification'] != 'proc' &&
-        abils[settings['ability']]['ability type'] != 'combatv2_passive_ability'
+        settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] === true
     ) {
         crit_buff += 0.5;
     }
