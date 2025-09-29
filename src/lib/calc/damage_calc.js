@@ -920,23 +920,7 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
         boost = Math.floor(boost * (1 + calc_prayer(settings)));
 
         // sunshine
-        let tumekens_resplendence = 0;
-            if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
-                tumekens_resplendence += 1;
-            }
-            if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
-                tumekens_resplendence += 1;
-            }
-            if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
-                tumekens_resplendence += 1;
-            }
-            if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
-                tumekens_resplendence += 1;
-            }
-            if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
-                tumekens_resplendence += 1;
-            }
-        if (settings['sunshine'] === true && tumekens_resplendence <= 2) {
+        if (settings['sunshine'] === true) {
             boost = Math.floor(boost * 1.5);
         }
 
