@@ -3101,7 +3101,7 @@ const abils = {
     },
     [ABILITIES.LESSER_PURIFYING_LIGHT]: {
         // ability name
-        'min hit': 0.25, // min % of abil expressed as a decimal
+        'min hit': 0.45, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3113,7 +3113,7 @@ const abils = {
     },
     [ABILITIES.PURIFYING_LIGHT]: {
         // ability name
-        'min hit': 0.35, // min % of abil expressed as a decimal
+        'min hit': 0.65, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
