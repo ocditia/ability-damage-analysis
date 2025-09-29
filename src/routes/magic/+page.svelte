@@ -448,6 +448,7 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX]}
                                     onchange={() => updateDamages()}
+                                    img="/ability_icons/magic/30x30/asphyxiate.png"
                                 />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.KALG_SPEC]}
