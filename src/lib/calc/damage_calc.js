@@ -234,26 +234,6 @@ function calc_boosted_ad(settings, dmgObject) {
         if (abils[settings['ability']]['main style'] === 'magic') {
             base_ad_boost = Math.floor((1 + 0.01 * settings[SETTINGS.FLOW_STACKS]) * base_ad_boost);
         }
-
-        let tumekens_resplendence = 0;
-        if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
-            tumekens_resplendence += 1;
-        }
-        if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
-            tumekens_resplendence += 1;
-        }
-        if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
-            tumekens_resplendence += 1;
-        }
-        if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
-            tumekens_resplendence += 1;
-        }
-        if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
-            tumekens_resplendence += 1;
-        }
-        if (settings[SETTINGS.SUNSHINE] === true && tumekens_resplendence >= 3) {
-            base_ad_boost = Math.floor(1.5 * base_ad_boost);
-        }
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {

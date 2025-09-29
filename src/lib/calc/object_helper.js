@@ -130,6 +130,26 @@ function calc_crit_chance(settings) {
         crit_chance += 0.02;
     }
 
+    let tumekens_resplendence = 0;
+        if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.SUNSHINE] === true && tumekens_resplendence >= 3) {
+            crit_chance += 0.015 * tumekens_resplendence;
+        }
+
     if (settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.TUSKA &&
         settings[SETTINGS.GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUSKA &&
         settings[SETTINGS.BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUSKA
