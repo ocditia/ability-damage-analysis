@@ -166,7 +166,7 @@
                             class:text-[#968A5C]={tab === 'leagues'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                         >
-                            Bosses
+                            Leagues
                         </button>
                     </li>
                 </ul>
@@ -254,6 +254,11 @@
                                     step="1"
                                     max="1000"
                                     min="0"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.INSTABILITY]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/instability.png"
                                 />
                             </div>
                             <div class="md:col-span-1 space-y-2">
