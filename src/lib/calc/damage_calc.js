@@ -1984,6 +1984,10 @@ function get_hit_sequence(settings) {
         }
     }
 
+    if (settings['ability'] === ABILITIES.SNIPE && settings[SETTINGS.RANGED_GLOVES] === SETTINGS.RANGED_GLOVES_VALUES.NIGHTMARES_E) {
+        rotation[4].push(ABILITIES.SNIPE_HIT_2)
+    }
+
     let tumekens_resplendence = 0;
     if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
         tumekens_resplendence += 1;

@@ -1041,18 +1041,18 @@ const armour = {
         style: 'magic'
     },
     'nightmare gauntlets': {
-        'necromancy strength': 13.5,
+        'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
-        'ranged strength': 0,
+        'ranged strength': 13.5,
         slot: 'gloves',
         style: 'ranged'
     },
     'enhanced nightmare gauntlets': {
-        'necromancy strength': 14.5,
+        'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
-        'ranged strength': 0,
+        'ranged strength': 14.5,
         slot: 'gloves',
         style: 'ranged'
     },
@@ -1558,6 +1558,7 @@ const ABILITIES = {
     PIERCING_SHOT: 'piercing shot',
     BINDING_SHOT: 'binding shot',
     SNIPE_HIT: 'snipe hit',
+    SNIPE_HIT_2: 'snipe hit nightmare gauntlets',
     SNIPE: 'snipe',
     DAZING_SHOT: 'dazing shot',
     GREATER_DAZING_SHOT: 'greater dazing shot',
@@ -4433,6 +4434,18 @@ const abils = {
         // ability name
         'min hit': 1.6, // min % of abil expressed as a decimal
         'var hit': 0.5,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+    },
+    [ABILITIES.SNIPE_HIT_2]: {
+        // ability name
+        'min hit': 0.8, // min % of abil expressed as a decimal
+        'var hit': 0.25,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
