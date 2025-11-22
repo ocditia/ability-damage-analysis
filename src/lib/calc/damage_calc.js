@@ -1985,6 +1985,7 @@ function get_hit_sequence(settings) {
     }
 
     if (settings['ability'] === ABILITIES.SNIPE && settings[SETTINGS.RANGED_GLOVES] === SETTINGS.RANGED_GLOVES_VALUES.NIGHTMARES_E) {
+        rotation[4].push("next hit")
         rotation[4].push(ABILITIES.SNIPE_HIT_2)
     }
 
