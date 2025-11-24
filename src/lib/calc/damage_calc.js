@@ -335,6 +335,12 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
         }
 
+        
+        // the last command effect
+        if (settings['ability'] === ABILITIES.THE_LAST_COMMAND) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + 0.01 * (100 - Math.max(settings[SETTINGS.TARGET_HP_PERCENT],25))));
+        }
+
         // conflagrate
         if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.CONFLAGRATE] === true) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
@@ -1061,8 +1067,7 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
     // ripper demon familiar buff
     if (settings[SETTINGS.FAMILIAR] === SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON) {
         boost += Math.floor(boost * 0.05 * (1 - settings[SETTINGS.TARGET_HP_PERCENT] / 100));
-    }
-    
+    }    
 
     dmgObject['min hit'] = Math.floor((dmgObject['min hit'] * boost) / 10000);
     dmgObject['var hit'] = Math.floor((dmgObject['var hit'] * boost) / 10000);

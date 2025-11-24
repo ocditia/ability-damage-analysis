@@ -1687,6 +1687,7 @@ const ABILITIES = {
     FLAMES_OF_ZAMORAK: 'flames of zamorak',
     MIASMIC_BARRAGE: 'miasmic barrage',
     TIME_STRIKE: 'time strike',
+    THE_LAST_COMMAND: 'the last command',
 
     MELEE_AUTO: 'melee auto',
     SLICE: 'slice',
@@ -3992,6 +3993,19 @@ const abils = {
         'main style': 'magic',
         'damage type': 'magic'
     },
+    [ABILITIES.THE_LAST_COMMAND]: {
+        // ability name
+        'min hit': 2.4, // min % of abil expressed as a decimal
+        'var hit': 0.4,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
+
 
     [ABILITIES.NECRO_AD]: {
         'main style': 'necromancy'
@@ -5379,7 +5393,7 @@ const abils = {
         'damage type': 'ranged',
         'adren cost': 65,
         hits: {
-            1: [SHADOWFALL_1, 'next hit', SHADOWFALL_1, 'next hit', SHADOWFALL_2]
+            1: [ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_2]
         }
     },
 

@@ -141,6 +141,11 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/Fractured_Staff_of_Armadyl.webp'
     },
+    [ABILITIES.THE_LAST_COMMAND]: {
+        title: 'The last command',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/magic/Fractured_Staff_of_Armadyl.webp'
+    },
     [ABILITIES.RUNE_FLAME]: {
         title: 'Rune flame',
         calc: hit_damage_calculation,
