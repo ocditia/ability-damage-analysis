@@ -182,7 +182,7 @@ const abilities = {
         icon: '/ability_icons/melee/30x30/ezk-bg.png'
     },
     [ABILITIES.THE_FINAL_FLURRY]: {
-        title: 'Igneous showdown',
+        title: 'The final flurry',
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/ezk-bg.png'
     },
