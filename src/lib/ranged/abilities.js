@@ -121,6 +121,11 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/zamorak_bow.png'
     },
+    [ABILITIES.SHADOWFALL]: {
+        title: 'Shadowfall',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/ranged/30x30/dbow.png'
+    },
     [ABILITIES.DESCENT_OF_DARKNESS]: {
         title: 'Descent of Darkness',
         calc: ability_damage_calculation,

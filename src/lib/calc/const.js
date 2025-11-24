@@ -1619,6 +1619,9 @@ const ABILITIES = {
     DESTRUCTIVE_SHOT_HIT: 'destructive shot hit',
     DESTRUCTIVE_SHOT: 'destructive shot',
     DEFIANCE: 'defiance',
+    SHADOWFALL_1: 'shadowfall 1',
+    SHADOWFALL_2: 'shadowfall 2',
+    SHADOWFALL: 'shadowfall',
 
     MAGIC_AUTO: 'magic auto',
     WRACK: 'wrack',
@@ -5336,6 +5339,48 @@ const abils = {
         'main style': 'ranged',
         'damage type': 'ranged',
         'adren cost': 40
+    },
+    [ABILITIES.SHADOWFALL_1]: {
+        // ability name
+        'min hit': 0.85, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 40
+    },
+    [ABILITIES.SHADOWFALL_2]: {
+        // ability name
+        'min hit': 2.55, // min % of abil expressed as a decimal
+        'var hit': 0.4,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 40
+    },
+    [ABILITIES.SHADOWFALL]: {
+        // ability name
+        'min hit': 0.85, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 65,
+        hits: {
+            1: [SHADOWFALL_1, 'next hit', SHADOWFALL_1, 'next hit', SHADOWFALL_2]
+        }
     },
 
     [ABILITIES.TIME_STRIKE]: {
