@@ -840,7 +840,7 @@ function calc_additive_boosts(settings, dmgObject) {
 
     // dominion marker (wtf does this do lol?)
 
-    // regular gloves of passive next abil boost if style is melee
+    // regular gloves of passage next abil boost if style is melee
     if (
         settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR &&
         abils[settings['ability']]['main style'] === 'melee'
@@ -852,6 +852,11 @@ function calc_additive_boosts(settings, dmgObject) {
     ) {
         boost += 0.16;
     }
+
+    if (abils[settings['ability']]['main style'] === 'melee' &&
+        settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.AM_HEJ) {
+            boost += Math.floor(0.05 * STRENGTH_LEVEL);
+        }
 
     // needle strike next abil boost if style is ranged
     if (
@@ -1092,7 +1097,7 @@ function calc_bonus_damage(settings, dmgObject) {
 
         // Am-zi necklace
         if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.AM_ZI) {
-            min_hit += Math.floor(1.35 * settings[SETTINGS.ATTACK_LEVEL]);
+            min_hit += Math.floor(1.35 * settings[SETTINGS.ATTACK_LEVEL]);  
         }
     }
 
