@@ -552,6 +552,14 @@ const armour = {
         slot: 'helmet',
         style: 'necromancy'
     },
+    'crown of the first necromancer with addon': {
+        'necromancy strength': 25,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        slot: 'helmet',
+        style: 'necromancy'
+    },
     'robe top of the first necromancer': {
         'necromancy strength': 37,
         'magic strength': 0,

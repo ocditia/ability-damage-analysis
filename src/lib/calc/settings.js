@@ -198,6 +198,7 @@ const SETTINGS = {
     NECRO_HELMET_VALUES: {
         NONE: 'none',
         TFN: 'crown of the first necromancer',
+        TFN_ADDON: 'crown of the first necromancer with addon',
         T90DD: 'deathdealer hood (tier 90)',
         GHOST_HUNTER: 'ghost hunter goggles',
     },
@@ -1270,6 +1271,7 @@ const settingsConfig = {
         options: [
             { text: 'None/Tank', value: SETTINGS.NECRO_HELMET_VALUES.NONE },
             { text: 'TFN', value: SETTINGS.NECRO_HELMET_VALUES.TFN },
+            { text: 'TFN + addon', value: SETTINGS.NECRO_HELMET_VALUES.TFN_ADDON },
             { text: 't90 deathdealer', value: SETTINGS.NECRO_HELMET_VALUES.T90DD },
             { text: 'Ghost hunter', value: SETTINGS.NECRO_HELMET_VALUES.GHOST_HUNTER},
         ]

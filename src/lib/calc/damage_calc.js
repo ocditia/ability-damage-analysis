@@ -2,6 +2,7 @@ import { next_cast, next_hit, next_tick } from './ability_helper';
 import { ABILITIES, abils, armour, gear, prayers, weapons } from './const';
 import { create_object } from './object_helper';
 import { SETTINGS } from './settings';
+import { calc_tfn_pieces } from './helper_funcs';
 
 function calc_base_ad(settings) {
     // see wiki page /ability_damage for more info
@@ -200,7 +201,16 @@ function calc_damage_potential(settings, dmgObject) {
 function calc_boosted_ad(settings, dmgObject) {
     let base_ad_boost = calc_damage_potential(settings, dmgObject);
     if (abils[settings['ability']]['ability type'] === 'conjure') {
-        return base_ad_boost;
+        let conj_add_boost = 0;
+        // TFN set effect, Conjurer's raising amulet
+        if (calc_tfn_pieces(settings) >= 2) {
+            conj_add_boost += 0.07 * calc_tfn_pieces(settings);
+        }
+        // Conjurer's raising amulet
+        if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.MOONSTONE) {
+            conj_add_boost += 0.05;
+        }
+        return base_ad_boost = Math.floor((1 + conj_add_boost) * base_ad_boost);;
     }
 
     if (settings[SETTINGS.LEAGUES_EOF_RELIC] === true
