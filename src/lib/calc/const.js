@@ -1312,6 +1312,22 @@ const armour = {
         slot: 'necklace',
         style: 'hybrid'
     },
+    'am-zi': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 52,
+        'ranged strength': 0,
+        slot: 'necklace',
+        style: 'melee'
+    },
+    'am-hej': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 52,
+        'ranged strength': 0,
+        slot: 'necklace',
+        style: 'melee'
+    },
     'conjurers raising amulet': {
         'necromancy strength': 44.1,
         'magic strength': 0,

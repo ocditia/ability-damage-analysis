@@ -232,6 +232,14 @@
                                     max="150"
                                     min="1"
                                 />
+                                <Number
+                                    bind:setting={settings[SETTINGS.ATTACK_LEVEL]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/strength.png"
+                                    step="1"
+                                    max="150"
+                                    min="1"
+                                />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.REAPER_CREW]}
                                     onchange={() => updateDamages()}

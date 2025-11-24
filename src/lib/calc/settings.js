@@ -13,6 +13,7 @@ const SETTINGS = {
     NECROMANCY_LEVEL: 'necromancy level',
     MAGIC_LEVEL: 'magic level',
     STRENGTH_LEVEL: 'strength level',
+    ATTACK_LEVEL: 'attack level',
     RANGED_LEVEL: 'ranged level',
     POTION: 'potion',
     POTION_VALUES: {
@@ -361,6 +362,8 @@ const SETTINGS = {
         SALVE: 'salve amulet',
         ZEALOTS: 'amulet of zealots',
         BERSERKER: 'berserker necklace',
+        AM_ZI: 'am-zi',
+        AM_HEJ: 'am-hej',
         DESERT: 'desert amulet 4',
     },
     CAPE: 'cape',
@@ -881,6 +884,10 @@ const settingsConfig = {
         style: 'magic'
     },
     [SETTINGS.STRENGTH_LEVEL]: {
+        label: 'Strength Level',
+        default: 120
+    },
+    [SETTINGS.ATTACK_LEVEL]: {
         label: 'Strength Level',
         default: 120
     },
@@ -1458,6 +1465,8 @@ const settingsConfig = {
             { text: 'Salve', value: SETTINGS.NECKLACE_VALUES.SALVE },
             { text: 'Zealots', value: SETTINGS.NECKLACE_VALUES.ZEALOTS },
             { text: 'Berserker', value: SETTINGS.NECKLACE_VALUES.BERSERKER },
+            { text: 'Am-zi', value: SETTINGS.NECKLACE_VALUES.AM_ZI },
+            { text: 'Am-hej', value: SETTINGS.NECKLACE_VALUES.AM_HEJ },
             { text: 'Desert ammy 4', value: SETTINGS.NECKLACE_VALUES.DESERT },
         ]
     },
