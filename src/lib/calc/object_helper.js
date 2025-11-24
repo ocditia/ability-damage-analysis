@@ -217,6 +217,13 @@ function calc_crit_chance(settings) {
                 crit_chance += 0.4;
             }   
         }
+
+        if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_1) {
+            crit_chance += 0.25;
+        }
+        if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_2) {
+            crit_chance += 0.5;
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
@@ -274,7 +281,7 @@ function calc_crit_chance(settings) {
     if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.EQUILIBRIUM) {
         crit_chance = 0;
     }
-
+    console.log(crit_chance)
     return Math.min(1, crit_chance);
 }
 

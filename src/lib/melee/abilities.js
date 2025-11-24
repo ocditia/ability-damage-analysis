@@ -181,6 +181,11 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/ezk-bg.png'
     },
+    [ABILITIES.THE_FINAL_FLURRY]: {
+        title: 'Igneous showdown',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/melee/30x30/ezk-bg.png'
+    },
     [ABILITIES.ARMADYLS_JUDGEMENT]: {
         title: "Armadyl's judgement",
         calc: hit_damage_calculation,

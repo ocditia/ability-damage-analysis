@@ -1818,6 +1818,9 @@ const ABILITIES = {
     SUNFALL_SLAM: 'sunfall slam',
     LESSER_PURIFYING_LIGHT: 'lesser purifying light',
     PURIFYING_LIGHT: 'puyrifying light',
+    THE_FINAL_FLURRY_1:'the final flurry 1',
+    THE_FINAL_FLURRY_2: 'the final flurry 2',
+    THE_FINAL_FLURRY: 'the final flurry',
 
     // perks damage
     AFTERSHOCK: 'aftershock',
@@ -3178,6 +3181,45 @@ const abils = {
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee'
+    },
+    [ABILITIES.THE_FINAL_FLURRY_1]: {
+        // ability name
+        'min hit': 0.65, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
+    [ABILITIES.THE_FINAL_FLURRY_2]: {
+        // ability name
+        'min hit': 1.35, // min % of abil expressed as a decimal
+        'var hit': 0.3,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
+    [ABILITIES.THE_FINAL_FLURRY]: {
+        // ability name
+        'min hit': 0.65, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        hits: {
+            1: [ABILITIES.THE_FINAL_FLURRY_1, 'next hit', ABILITIES.THE_FINAL_FLURRY_1, 'next hit', ABILITIES.THE_FINAL_FLURRY_2]
+        },
     },
 
     [ABILITIES.MAGIC_AUTO]: {
