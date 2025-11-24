@@ -813,6 +813,24 @@ const SETTINGS = {
     VALOUR_STACKS: 'valour stacks',
     HITCAP: 'hit cap',
     QUIVER: 'quiver',
+    AMMO_SLOT: 'ammo slot',
+    MELEE_AMMO_SLOT: 'melee ammo slot',
+    MELEE_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+        NODON_SPIKE_HARNESS: 'nodon spike harness',
+    },
+    RANGED_AMMO_SLOT: 'ranged ammo slot',
+    RANGED_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+    },
+    MAGIC_AMMO_SLOT: 'magic ammo slot',
+    MAGIC_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+    },
+    NECRO_AMMO_SLOT: 'necro ammo slot',
+    NECRO_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+    },
     DEVOURER_NEXUS: 'devourer nexus',
     DAMAGE_QUALIFIER: 'damage qualifier',
     DAMAGE_QUALIFIER_VALUES: {
@@ -2373,6 +2391,35 @@ const settingsConfig = {
     [SETTINGS.LEAGUES_EOF_RELIC]: {
         label: 'League eof relic',
         default: false
+    },
+    [SETTINGS.MELEE_AMMO_SLOT]: {
+        label: 'Ammo slot',
+        default: SETTINGS.MELEE_AMMO_SLOT_VALUES.NODON_SPIKE_HARNESS,
+        options: [
+            { text: 'None', value: SETTINGS.MELEE_AMMO_SLOT_VALUES.NONE },
+            { text: 'Nodon harness', value: SETTINGS.MELEE_AMMO_SLOT_VALUES.NODON_SPIKE_HARNESS },
+        ]
+    },
+    [SETTINGS.RANGED_AMMO_SLOT]: {
+        label: 'Ammo slot',
+        default: SETTINGS.RANGED_AMMO_SLOT_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.RANGED_AMMO_SLOT_VALUES.NONE },
+        ]
+    },
+    [SETTINGS.MAGIC_AMMO_SLOT]: {
+        label: 'Ammo slot',
+        default: SETTINGS.MAGIC_AMMO_SLOT_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.MAGIC_AMMO_SLOT_VALUES.NONE },
+        ]
+    },
+    [SETTINGS.NECRO_AMMO_SLOT]: {
+        label: 'Ammo slot',
+        default: SETTINGS.NECRO_AMMO_SLOT_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.NECRO_AMMO_SLOT_VALUES.NONE },
+        ]
     },
 };
 

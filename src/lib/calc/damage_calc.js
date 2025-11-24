@@ -181,6 +181,9 @@ function calc_bonus(settings) {
     bonus += armour[settings[SETTINGS.RING]][style_str];
     bonus += armour[settings[SETTINGS.CAPE]][style_str];
     bonus += armour[settings[SETTINGS.POCKET]][style_str];
+    if (settings[SETTINGS.AMMO_SLOT] != 'none') {     
+        bonus += armour[settings[SETTINGS.AMMO_SLOT]][style_str];
+    }
     return bonus;
 }
 
@@ -1831,6 +1834,7 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.LEGS] = settings[SETTINGS.MAGIC_LEGS];
         settings[SETTINGS.GLOVES] = settings[SETTINGS.MAGIC_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.MAGIC_BOOTS];
+        settings[SETTINGS.AMMO_SLOT] = settings[SETTINGS.MAGIC_AMMO_SLOT];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.MAGIC_PRAYER];
     } else if (style == 'ranged' || abils[settings['ability']]['main style'] === 'ranged') {
         settings[SETTINGS.MH] = settings[SETTINGS.RANGED_MH];
@@ -1841,6 +1845,7 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.LEGS] = settings[SETTINGS.RANGED_LEGS];
         settings[SETTINGS.GLOVES] = settings[SETTINGS.RANGED_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.RANGED_BOOTS];
+        settings[SETTINGS.AMMO_SLOT] = settings[SETTINGS.RANGED_AMMO_SLOT];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.RANGED_PRAYER];
     } else if (style == 'melee' || abils[settings['ability']]['main style'] === 'melee') {
         settings[SETTINGS.MH] = settings[SETTINGS.MELEE_MH];
@@ -1851,6 +1856,7 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.LEGS] = settings[SETTINGS.MELEE_LEGS];
         settings[SETTINGS.GLOVES] = settings[SETTINGS.MELEE_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.MELEE_BOOTS];
+        settings[SETTINGS.AMMO_SLOT] = settings[SETTINGS.MELEE_AMMO_SLOT];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.MELEE_PRAYER];
     } else if (style == 'necromancy' || abils[settings['ability']]['main style'] === 'necromancy') {
         settings[SETTINGS.MH] = settings[SETTINGS.NECRO_MH];
@@ -1861,6 +1867,7 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.LEGS] = settings[SETTINGS.NECRO_LEGS];
         settings[SETTINGS.GLOVES] = settings[SETTINGS.NECRO_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.NECRO_BOOTS];
+        settings[SETTINGS.AMMO_SLOT] = settings[SETTINGS.NECRO_AMMO_SLOT];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.NECRO_PRAYER];
         settings[SETTINGS.WEAPON] = SETTINGS.WEAPON_VALUES.DW
     }
