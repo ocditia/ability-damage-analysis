@@ -865,11 +865,12 @@ function calc_additive_boosts(settings, dmgObject) {
     ) {
         boost += 0.16;
     }
-
+    console.log(0.0005 * settings[SETTINGS.STRENGTH_LEVEL])
     // am-hej
     if (abils[settings['ability']]['main style'] === 'melee' &&
         settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.AM_HEJ) {
-            boost += Math.floor(0.05 * SETTINGS.STRENGTH_LEVEL);
+            
+            boost += Math.floor(0.0005 * settings[SETTINGS.STRENGTH_LEVEL]);
         }
 
     // needle strike next abil boost if style is ranged
