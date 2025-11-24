@@ -48,7 +48,7 @@ const abilities = {
     },
     [ABILITIES.HAVOC]: {
         title: 'Havoc',
-        calc: hit_damage_calculation,
+        calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/havoc.png'
     },
     [ABILITIES.SMASH]: {

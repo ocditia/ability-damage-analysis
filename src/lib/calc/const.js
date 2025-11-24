@@ -1688,6 +1688,7 @@ const ABILITIES = {
     MELEE_AUTO: 'melee auto',
     SLICE: 'slice',
     BACKHAND: 'backhand',
+    HAVOC_HIT: 'havoc hit',
     HAVOC: 'havoc',
     SMASH: 'smash',
     BARGE: 'barge',
@@ -1847,6 +1848,18 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee'
     },
+    [ABILITIES.HAVOC_HIT]: {
+        // ability name
+        'min hit': 0.5, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
     [ABILITIES.HAVOC]: {
         // ability name
         'min hit': 1.0, // min % of abil expressed as a decimal
@@ -1857,7 +1870,10 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'damage type': 'melee',
+        hits: {
+            1: [ABILITIES.HAVOC_HIT, 'next hit', ABILITIES.HAVOC_HIT]
+        },
     },
     [ABILITIES.SMASH]: {
         // ability name
@@ -1966,7 +1982,7 @@ const abils = {
     },
     [ABILITIES.FLURRY_HIT]: {
         // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
+        'min hit': 0.5, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -1978,8 +1994,8 @@ const abils = {
     },
     [ABILITIES.FLURRY]: {
         // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
-        'var hit': 0.1,
+        'min hit': 0.3, // min % of abil expressed as a decimal
+        'var hit': 0.05,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -1989,18 +2005,19 @@ const abils = {
         'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
         hits: {
             1: [ABILITIES.FLURRY_HIT],
-            2: [],
+            2: [ABILITIES.FLURRY_HIT],
             3: [ABILITIES.FLURRY_HIT],
-            4: [],
+            4: [ABILITIES.FLURRY_HIT],
             5: [ABILITIES.FLURRY_HIT],
-            6: [],
-            7: [ABILITIES.FLURRY_HIT]
+            6: [ABILITIES.FLURRY_HIT],
+            7: [ABILITIES.FLURRY_HIT],
+            8: [ABILITIES.FLURRY_HIT]
         }
     },
     [ABILITIES.GREATER_FLURRY_HIT]: {
         // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
-        'var hit': 0.2,
+        'min hit': 0.6, // min % of abil expressed as a decimal
+        'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2022,12 +2039,13 @@ const abils = {
         'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
         hits: {
             1: [ABILITIES.GREATER_FLURRY_HIT],
-            2: [],
+            2: [ABILITIES.GREATER_FLURRY_HIT],
             3: [ABILITIES.GREATER_FLURRY_HIT],
-            4: [],
+            4: [ABILITIES.GREATER_FLURRY_HIT],
             5: [ABILITIES.GREATER_FLURRY_HIT],
-            6: [],
-            7: [ABILITIES.GREATER_FLURRY_HIT]
+            6: [ABILITIES.GREATER_FLURRY_HIT],
+            7: [ABILITIES.GREATER_FLURRY_HIT],
+            8: [ABILITIES.GREATER_FLURRY_HIT],
         }
     },
     [ABILITIES.HURRICANE_1]: {
@@ -2342,8 +2360,8 @@ const abils = {
     },
     [ABILITIES.DESTROY_HIT]: {
         // ability name
-        'min hit': 1.2, // min % of abil expressed as a decimal
-        'var hit': 0.2,
+        'min hit': 0.6, // min % of abil expressed as a decimal
+        'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2364,13 +2382,13 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
-            1: [ABILITIES.DESTROY_HIT],
+            1: [ABILITIES.DESTROY_HIT, "next hit", ABILITIES.DESTROY_HIT],
             2: [],
-            3: [ABILITIES.DESTROY_HIT],
+            3: [ABILITIES.DESTROY_HIT, "next hit", ABILITIES.DESTROY_HIT],
             4: [],
-            5: [ABILITIES.DESTROY_HIT],
+            5: [ABILITIES.DESTROY_HIT, "next hit", ABILITIES.DESTROY_HIT],
             6: [],
-            7: [ABILITIES.DESTROY_HIT]
+            7: [ABILITIES.DESTROY_HIT, "next hit", ABILITIES.DESTROY_HIT]
         }
     },
     [ABILITIES.QUAKE]: {
@@ -2432,7 +2450,7 @@ const abils = {
     },
     [ABILITIES.FRENZY_HIT]: {
         // ability name
-        'min hit': 1.45, // min % of abil expressed as a decimal
+        'min hit': 0.65, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2455,12 +2473,13 @@ const abils = {
         'damage type': 'melee',
         hits: {
             1: [ABILITIES.FRENZY_HIT],
-            2: [],
+            2: [ABILITIES.FRENZY_HIT],
             3: [ABILITIES.FRENZY_HIT],
-            4: [],
+            4: [ABILITIES.FRENZY_HIT],
             5: [ABILITIES.FRENZY_HIT],
-            6: [],
-            7: [ABILITIES.FRENZY_HIT]
+            6: [ABILITIES.FRENZY_HIT],
+            7: [ABILITIES.FRENZY_HIT],
+            8: [ABILITIES.FRENZY_HIT],
         }
     },
     [ABILITIES.VINE_CALL_INTIAL]: {
