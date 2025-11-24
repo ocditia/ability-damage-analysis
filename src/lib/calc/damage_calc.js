@@ -1089,6 +1089,11 @@ function calc_bonus_damage(settings, dmgObject) {
         ) {
             min_hit += Math.floor(0.24 * dmgObject['base AD']);
         }
+
+        // Am-zi necklace
+        if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.AM_ZI) {
+            min_hit += Math.floor(1.35 * settings[SETTINGS.ATTACK_LEVEL]);
+        }
     }
 
     dmgObject['min hit'] = min_hit;
