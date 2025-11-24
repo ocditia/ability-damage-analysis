@@ -907,7 +907,7 @@ const settingsConfig = {
         default: 120
     },
     [SETTINGS.ATTACK_LEVEL]: {
-        label: 'Strength Level',
+        label: 'Attack Level',
         default: 120
     },
     [SETTINGS.RANGED_LEVEL]: {
