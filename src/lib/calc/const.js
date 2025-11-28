@@ -2021,8 +2021,8 @@ const abils = {
     },
     [ABILITIES.FLURRY_HIT]: {
         // ability name
-        'min hit': 0.5, // min % of abil expressed as a decimal
-        'var hit': 0.1,
+        'min hit': 0.3, // min % of abil expressed as a decimal
+        'var hit': 0.05,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2055,7 +2055,7 @@ const abils = {
     },
     [ABILITIES.GREATER_FLURRY_HIT]: {
         // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
+        'min hit': 0.5, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
