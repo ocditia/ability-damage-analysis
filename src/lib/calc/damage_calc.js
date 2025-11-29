@@ -646,6 +646,12 @@ function set_min_var(settings, dmgObject) {
             min_percent = 1.6;
             var_percent = 0.2;
         }
+
+		// frenzy
+        if (settings['ability'] === ABILITIES.FRENZY_HIT) {
+            min_percent += 0.1 * (settings['rotation key'] - 1);
+            var_percent += 0.1 * (settings['rotation key'] - 1);
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
@@ -1987,6 +1993,7 @@ function ability_damage_calculation(settings) {
     let rotation = get_hit_sequence(settings);
     let damage = 0;
     for (let key in rotation) {
+		settings['rotation key'] = key;
         if (key <= settings[SETTINGS.MAX_CHANNEL_DURATION]) {
             const abil_cast = rotation[key].length;
             for (let iter = 0; iter < rotation[key].length; iter++) {
