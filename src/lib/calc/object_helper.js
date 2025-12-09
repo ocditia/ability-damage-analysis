@@ -42,12 +42,13 @@ function calc_crit_chance(settings) {
 
     // eclipsed soul
     if (settings[SETTINGS.ECLIPSED_SOUL] === true && 
-        (prayers[settings[SETTINGS.PRAYER]]['book'] === "normal" || prayers[settings[SETTINGS.PRAYER]]['style'] === "none")) {
+        (prayers[settings[SETTINGS.PRAYER]]['book'] === "normal" || prayers[settings[SETTINGS.PRAYER]]['style'] === "none"
+            || prayers[settings[SETTINGS.PRAYER]]['book'] === "none")) {
         crit_chance += 0.04;
     }
 
     // biting
-    crit_chance += 0.02 * settings[SETTINGS.BITING];
+    crit_chance += 0.02 * settings[SETTINGS.BITING];    
 
     // level 20 armour
     if (settings[SETTINGS.LVL20ARMOUR] === true) {
