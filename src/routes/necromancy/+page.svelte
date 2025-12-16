@@ -579,14 +579,11 @@
                             </div>
                         {:else if tab === 'bosses'}
                         <div class="md:col-span-1 space-y-2">
-                            <Number
-                                bind:setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
-                                onchange={() => updateDamages()}
-                                img="/effect_icons/Guardian's_Triumph_Edict_(self_status).png"
-                                step="1"
-                                min="0"
-                            />
-                            <Number
+                            <Checkbox
+                                    bind:setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Number
                                     bind:setting={settings[SETTINGS.BALANCE_OF_POWER]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/Balance_of_Power_Edict_(self_status).png"
@@ -594,10 +591,20 @@
                                     min="0"
                                     max="6"
                                 />
-                            <Select
-                                    bind:setting={settings[SETTINGS.NECRO_TH]}
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.SWORD_OF_EDICTS]}
                                     onchange={() => updateDamages()}
-                                    img="/armour_icons/Off-hand_slot.webp"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.INNER_CHAOS]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.ZAMORAK_CHOKE_STACKS]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    min="0"
+                                    max="20"
                                 />
                         </div>
                         {:else if tab === 'leagues'}

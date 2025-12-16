@@ -1306,14 +1306,6 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
         }
 
-        // zamorak's guardian triumph
-        /*if (
-            settings['guardian triump'] === true &&
-            abils[settings['ability']]['ability type'] === 'basic'
-        ) {
-            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.2);
-        }*/
-
         // undead slayer perk
         if (settings[SETTINGS.SLAYER_PERK] === SETTINGS.SLAYER_PERK_VALUES.UNDEAD) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.07);
@@ -1475,6 +1467,29 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
         // balance of power
         if (settings[SETTINGS.BALANCE_OF_POWER] > 0) {
             dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * (1 + 0.06 * settings[SETTINGS.BALANCE_OF_POWER]));
+        }
+
+        // zamorak's guardian triumph
+        if (
+            settings[SETTINGS.GUARDIANS_TRIUMPH] === true &&
+            abils[settings['ability']]['ability type'] === 'basic'
+        ) {
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.2);
+        }
+
+        // sword of edicts
+        if (settings[SETTINGS.SWORD_OF_EDICTS] === true) {
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 0.95);
+        }
+
+        // inner chaos
+        if (settings[SETTINGS.INNER_CHAOS] === true) {
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.05);
+        }
+        
+        // choking
+        if (settings[SETTINGS.ZAMORAK_CHOKE_STACKS] > 0) {
+            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * (1 - 0.01 * settings[SETTINGS.ZAMORAK_CHOKE_STACKS]));
         }
 
         // telos red beam

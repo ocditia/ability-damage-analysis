@@ -1969,7 +1969,7 @@ const settingsConfig = {
     },
     [SETTINGS.GUARDIANS_TRIUMPH]: {
         label: 'Guardians Triumph',
-        default: 0
+        default: false
     },
     [SETTINGS.BALANCE_OF_POWER]: {
         label: 'Balance of power',
