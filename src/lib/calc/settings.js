@@ -1229,7 +1229,7 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_HELMET]: {
         label: 'Helmet',
-        default: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC,
+        default: SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_HELMET_VALUES.NONE },
             { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE },
@@ -1278,7 +1278,7 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_BODY]: {
         label: 'Body',
-        default: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC,
+        default: SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.NONE },
             { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE },
@@ -1325,7 +1325,7 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_LEGS]: {
         label: 'Legs',
-        default: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC,
+        default: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.NONE },
             { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE },
@@ -1372,7 +1372,7 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_GLOVES]: {
         label: 'Gloves',
-        default: SETTINGS.MAGIC_GLOVES_VALUES.MASTERWORK,
+        default: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_GLOVES_VALUES.NONE },
             { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE },
@@ -1423,7 +1423,7 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_BOOTS]: {
         label: 'Boots',
-        default: SETTINGS.MAGIC_BOOTS_VALUES.MASTERWORK,
+        default: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_BOOTS_VALUES.NONE },
             { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE },
