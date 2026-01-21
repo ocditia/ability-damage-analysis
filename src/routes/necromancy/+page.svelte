@@ -228,6 +228,20 @@
                                     max="1000"
                                     min="0"
                                 />
+                                <Number
+                                    bind:setting={settings[SETTINGS.HIT_COUNTER_START]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="1000"
+                                    min="0"
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.HIT_COUNTER_END]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="1000"
+                                    min="0"
+                                />
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">

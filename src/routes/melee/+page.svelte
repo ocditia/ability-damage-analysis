@@ -263,6 +263,20 @@
                                     max="1000"
                                     min="0"
                                 />
+                                <Number
+                                    bind:setting={settings[SETTINGS.HIT_COUNTER_START]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="1000"
+                                    min="0"
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.HIT_COUNTER_END]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="1000"
+                                    min="0"
+                                />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.INSTABILITY]}
                                     onchange={() => updateDamages()}

@@ -872,6 +872,8 @@ const SETTINGS = {
     LEAGUES_POCKET_FUL: 'leagues pocket ful',
     LEAGUES_POCKET_AMASCUT: 'leagues pocket amascut',
     LEAGUES_EOF_RELIC: 'leagues eof relic',
+    HIT_COUNTER_START: 'hit counter start',
+    HIT_COUNTER_END: 'hit counter end',
 };
 
 const settingsConfig = {
@@ -2422,6 +2424,14 @@ const settingsConfig = {
         options: [
             { text: 'None', value: SETTINGS.NECRO_AMMO_SLOT_VALUES.NONE },
         ]
+    },
+    [SETTINGS.HIT_COUNTER_START]: {
+        label: 'Start tracking hit',
+        default: 1
+    },
+    [SETTINGS.HIT_COUNTER_END]: {
+        label: 'End tracking hit',
+        default: 10000
     },
 };
 
