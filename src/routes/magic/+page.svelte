@@ -3,6 +3,7 @@
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
     import { abilities } from '$lib/magic/abilities';
+    import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
 
     import AbilityDamageTable from '$components/AbilityDamageTable/AbilityDamageTable.svelte';
     import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
@@ -64,12 +65,25 @@
         );
 
         damages = damages.map(ability => {
-            adaptedSettings['ability'] = ability.key;
+            ability.regular = calculateSingleAbilityDamage(
+                { ...adaptedSettings, meta: false },
+                { ability: ability.key, buffs: {} }
+            ).expected;
 
-            ability.regular = ability.calc({ ...adaptedSettings, sunshine: false, meta: false });
-            ability.sunshine = ability.calc({ ...adaptedSettings, sunshine: true, meta: false });
-            ability.meta = ability.calc({ ...adaptedSettings, sunshine: false, meta: true });
-            ability.smeta = ability.calc({ ...adaptedSettings, sunshine: true, meta: true });
+            ability.sunshine = calculateSingleAbilityDamage(
+                { ...adaptedSettings, meta: false },
+                { ability: ability.key, buffs: { sunshine: true } }
+            ).expected;
+
+            ability.meta = calculateSingleAbilityDamage(
+                { ...adaptedSettings, meta: true },
+                { ability: ability.key, buffs: {} }
+            ).expected;
+
+            ability.smeta = calculateSingleAbilityDamage(
+                { ...adaptedSettings, meta: true },
+                { ability: ability.key, buffs: { sunshine: true } }
+            ).expected;
 
             return ability;
         })

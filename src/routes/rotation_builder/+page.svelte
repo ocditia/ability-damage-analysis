@@ -1,60 +1,207 @@
-<script>
+<script lang="ts">
+	import { onMount, onDestroy } from 'svelte';
 	import Navbar from '$components/Layout/Navbar.svelte';
 	import Header from '$components/Layout/Header.svelte';
 	import { abilities  as r_dmg_abilities } from '$lib/ranged/abilities';
 	import { ranged_buff_abilities } from '$lib/ranged/buff_abilities';
+	import { melee_buff_abilities } from '$lib/melee/buff_abilities';
     import { abilities as magic_dmg_abilities } from '$lib/magic/abilities';
     import { abilities as melee_dmg_abilities } from '$lib/melee/abilities';
     import { abilities as necro_dmg_abilities } from '$lib/necromancy/abilities';
     import { abilities as def_abilities } from '$lib/defence/abilities';
-	import { offGcdAbilities } from '$lib/special/abilities';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings';
-	import { abils } from '$lib/calc/const';
     import RotationSettings from '../../components/Settings/RotationSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
-	import { createBuffTimings, createStackTimings} from '$lib/calc/rotation_builder/rotation_consts.ts';
-	import {ToolMode} from '$lib/calc/rotation_builder/ui_material/toolModes.ts';
         import ExtraActionsPanel from '../../components/RotationBuilder/ExtraActionsPanel.svelte';
     import DamageDistributionChart from '../../components/RotationBuilder/DamageDistributionChart.svelte';
-    import { calculateTotalDamage, calculateGaussianParameters } from '$lib/calc/rotation_builder/rotation-damage-calculator';
     import { magic_buff_abilities } from '$lib/magic/buff_abilities';
     	import TabButton from '../../components/UI/TabButton.svelte';
-    import Button from '../../components/UI/Button.svelte';
     import GradientSeparator from '../../components/UI/GradientSeparator.svelte';
     import Popup from '../../components/UI/Popup.svelte';
-    import { uiStore, uiActions } from '$lib/stores/uiStore.js';
-    import { notificationStore, notifActions } from '$lib/stores/notificationStore.js';
-    import { rotationStore, rotationActions } from '$lib/stores/rotationStore.js';
-	
+    import RotationConfigManager from '../../components/RotationBuilder/RotationConfigManager.svelte';
+    import * as eventHandlers from '$lib/utils/rotationEventHandlers';
+    import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
+    import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
+    import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
+    import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
+
+
     let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abilities eventually
-    let meleeAbils = {...melee_dmg_abilities};
+    let meleeAbils = {...melee_dmg_abilities, ...melee_buff_abilities};
     let magicAbils = {...magic_dmg_abilities, ...magic_buff_abilities};
 	let rangedAbils = {...r_dmg_abilities, ...ranged_buff_abilities};
 	let defAbils = {...def_abilities};
     let allAbils = {...magicAbils, ...rangedAbils, ...necroAbils, ...meleeAbils, ...def_abilities};
 
-	let specialAbils = {...offGcdAbilities};
-	let extraActions = {...specialAbils};
 
 	// UI Constants
-	const BASE_BAR_ROW_GAP = 30;
-	const BAR_SIZE = 200;
-	const EXTRA_BAR_SIZE = 12;
 	const stackFontSize = 10;
 	const baseStackOffset = 32;
 	const stackPadding = 2;
 	const buffLineWidth = 32;
 	const buffLineHeight = 6;
+	const CELL_SIZE = 30;
+	const BASE_ROW_HEIGHT = 30;
+	const ROW_GAP = 20; // Constant gap between all rows
 
-	// Configuration management is now handled by rotationStore
-	
-	// Notification state is now managed by notificationStore
+	// Dynamic row layout state
+	let abilityBarElement: HTMLElement | null = null;
+	let columnsPerRow = $state(20); // Default, will be calculated
+	let rowLayoutData = $state<Array<{
+		startIndex: number;
+		endIndex: number;
+		activeBuffs: string[];
+		buffIndices: Record<string, number>;
+		buffCount: number;  // Number of active buffs on this row (for stack positioning)
+		height: number;
+		activeStacks: string[];
+		stackIndices: Record<string, number>;
+	}>>([]);
+	let resizeObserver: ResizeObserver | null = null;
 
-	// Rotation management is now handled by rotationStore
-	
-	// Notification helpers now use notificationStore
+	// Calculate which buffs are active on each visual row and assign compact indices
+	function recalculateRowLayout() {
+		if (!abilityBarElement) return;
 
-	// Game state is now managed by rotationStore
+		const containerWidth = abilityBarElement.clientWidth;
+		const newColumnsPerRow = Math.max(1, Math.floor(containerWidth / CELL_SIZE));
+		columnsPerRow = newColumnsPerRow;
+
+		const totalSlots = rotationStore.abilityBar.length;
+		const numRows = Math.ceil(totalSlots / columnsPerRow);
+		const newRowData: typeof rowLayoutData = [];
+
+		for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+			const startIndex = rowIndex * columnsPerRow;
+			const endIndex = Math.min(startIndex + columnsPerRow, totalSlots);
+
+			// Find which buffs are active on any tick in this row
+			const activeBuffsSet = new Set<string>();
+			for (let i = startIndex; i < endIndex; i++) {
+				for (const buffKey of Object.keys(rotationStore.buffs)) {
+					const buff = rotationStore.buffs[buffKey];
+					if (buff.activeRows && buff.activeRows.includes(i)) {
+						activeBuffsSet.add(buffKey);
+					}
+				}
+			}
+
+			// Find which stacks are displayed on any tick in this row
+			const activeStacksSet = new Set<string>();
+			for (let i = startIndex; i < endIndex; i++) {
+				for (const stackKey of Object.keys(rotationStore.stacks)) {
+					const stack = rotationStore.stacks[stackKey];
+					if (stack.idx >= 0 && stack.stackTicks && showStack(i, stack.stackTicks)) {
+						activeStacksSet.add(stackKey);
+					}
+				}
+			}
+
+			// Assign compact local indices to active buffs (0, 1, 2...)
+			const activeBuffs = [...activeBuffsSet];
+			const buffIndices: Record<string, number> = {};
+			activeBuffs.forEach((buffKey, idx) => {
+				buffIndices[buffKey] = idx;
+			});
+
+			// Assign compact local indices to active stacks
+			const activeStacks = [...activeStacksSet];
+			const stackIndices: Record<string, number> = {};
+			activeStacks.forEach((stackKey, idx) => {
+				stackIndices[stackKey] = idx;
+			});
+
+			// Calculate row height: base slot height + space for buffs below + space for stacks below buffs + constant gap
+			// Buff bars extend below slot: initial 9px offset + 6px per buff
+			const buffSpace = activeBuffs.length > 0 ? 9 + activeBuffs.length * buffLineHeight : 0;
+			// Stacks positioned below buffs: each stack takes ~12px
+			const stackSpace = activeStacks.length * (stackFontSize + stackPadding);
+			// Additional padding when there's content below the slot
+			const contentPadding = (activeBuffs.length > 0 || activeStacks.length > 0) ? 8 : 0;
+			const height = BASE_ROW_HEIGHT + buffSpace + stackSpace + contentPadding + ROW_GAP;
+
+			newRowData.push({
+				startIndex,
+				endIndex,
+				activeBuffs,
+				buffIndices,
+				buffCount: activeBuffs.length,
+				height,
+				activeStacks,
+				stackIndices
+			});
+		}
+
+		rowLayoutData = newRowData;
+	}
+
+	// Get the local buff index for a specific tick
+	function getBuffLocalIndex(buffKey: string, tickIndex: number): number {
+		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowData = rowLayoutData[rowIndex];
+		if (!rowData) return -1;
+		return rowData.buffIndices[buffKey] ?? -1;
+	}
+
+	// Get the local stack index for a specific tick
+	function getStackLocalIndex(stackKey: string, tickIndex: number): number {
+		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowData = rowLayoutData[rowIndex];
+		if (!rowData) return -1;
+		return rowData.stackIndices[stackKey] ?? -1;
+	}
+
+	// Get the local buff count for a specific tick (used for stack positioning)
+	function getLocalBuffCount(tickIndex: number): number {
+		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowData = rowLayoutData[rowIndex];
+		if (!rowData) return 0;
+		return rowData.buffCount;
+	}
+
+	// Calculate the vertical offset for stacks based on local buff count
+	function getStackTopOffset(tickIndex: number, localStackIdx: number): number {
+		const localBuffCount = getLocalBuffCount(tickIndex);
+		// Stacks are positioned below the slot and below any buff bars
+		// baseStackOffset (32) accounts for the slot height + some padding
+		// Then we add space for buff bars (buffLineHeight per buff + initial offset)
+		const buffSpace = localBuffCount > 0 ? (buffLineHeight * 1.5) + (localBuffCount * buffLineHeight) : 0;
+		return baseStackOffset + buffSpace + 3 + (stackFontSize + stackPadding) * localStackIdx;
+	}
+
+	// Generate CSS for grid-template-rows based on calculated row heights
+	function getGridTemplateRows(): string {
+		if (rowLayoutData.length === 0) return '';
+		return rowLayoutData.map(row => `${row.height}px`).join(' ');
+	}
+
+	onMount(() => {
+		// Set up ResizeObserver to recalculate on container resize
+		resizeObserver = new ResizeObserver(() => {
+			recalculateRowLayout();
+		});
+
+		// Initial calculation after DOM is ready
+		setTimeout(() => {
+			if (abilityBarElement) {
+				resizeObserver?.observe(abilityBarElement);
+				recalculateRowLayout();
+			}
+		}, 0);
+	});
+
+	onDestroy(() => {
+		resizeObserver?.disconnect();
+	});
+
+	// Recalculate row layout when buffs change
+	$effect(() => {
+		// Track changes to buff activeRows
+		const _trigger = Object.keys(rotationStore.buffs).map(k =>
+			rotationStore.buffs[k].activeRows?.length ?? 0
+		);
+		recalculateRowLayout();
+	});
 
 	const tabs = [
 		{ id: 'ranged', label: 'Ranged', abilities: rangedAbils },
@@ -64,377 +211,106 @@
 		{ id: 'defence', label: 'Defence', abilities: defAbils }
 	];
 
-	// Configuration management functions now use rotationStore
+	// Create stores object for event handlers
+	const stores = {
+		uiStore,
+		rotationStore,
+		settingsStore,
+		uiActions,
+		notifActions
+	};
 
-	function exportToFile() {
-		notifActions.showInputPrompt(
-			'Export Rotation',
-			'Enter a name for your rotation file:',
-			'Rotation name...',
-			(rotationName) => {
-				rotationActions.exportToFile(
-					rotationName,
-					(message) => notifActions.showNotification('Success!', message, 'success'),
-					(message) => notifActions.showNotification('Failed', message, 'error')
-				);
-			}
-		);
-	}
-
-	function importFromFile() {
-		rotationActions.importFromFile(
-			(message) => notifActions.showNotification('Success!', message, 'success'),
-			(message) => notifActions.showNotification('Failed', message, 'error')
-		);
-	}
-
-	function clearAllSavedConfigs() {
-		notifActions.showConfirmation(
-			'Clear All Configurations?',
-			'Are you sure you want to delete ALL saved configurations? This action cannot be undone.',
-			() => {
-				rotationActions.clearAllSavedConfigs(
-					(message) => notifActions.showNotification('Success!', message, 'success'),
-					(message) => notifActions.showNotification('Failed', message, 'error')
-				);
-			}
-		);
-	}
-
+	// Wrapper functions for event handlers
 	function calculateTotalDamageNew() {
-		const dmgResult = calculateTotalDamage(gameState, BAR_SIZE);
-		gameState.totalDamage = dmgResult[0];
-		gameState.poisonDamage = dmgResult[1];
-		gameState.familiarDamage = dmgResult[2];
-		distributionStats = dmgResult[3];
-		
-		// Calculate Gaussian parameters for more accurate damage modeling
-		const gaussianParams = calculateGaussianParameters(distributionStats);
-		console.log(
-			'Total Damage = ' + gameState.totalDamage + 
-			' (Poison Damage = ' + gameState.poisonDamage + '; ' + 
-			'Familiar Damage = ' + gameState.familiarDamage + ')' +
-			' | Gaussian Model: Mean = ' + Math.round(gaussianParams.mean) + 
-			', StdDev = ' + Math.round(gaussianParams.stdDev)
-		);
+		eventHandlers.calculateTotalDamageNew();
 	}
-		
+
+	function refreshUI(calcDmg = true) {
+		eventHandlers.refreshUI(calcDmg, stores, calculateTotalDamageNew);
+	}
+
+	function clearRotation() {
+		eventHandlers.clearRotation(stores, refreshUI, calculateTotalDamageNew);
+	}
+
 	//UI functions
 	//TODO handle this differently
     function handleAbilityClick(event, abilityKey, mainBar = true) {
-        if (uiStore.activeTool === ToolMode.Stall) {
-            // Check if ability is channeled
-            if (abils[abilityKey]['ability classification'] === 'channel') {
-                notifActions.showNotification('Sorry!','Channeled abilities cannot be stalled currently.', 'info');
-                return;
-            }
-            uiActions.setStallingAbility(abilityKey);
-            return;
-        }
-
-        let size = mainBar ? BAR_SIZE : EXTRA_BAR_SIZE;
-        let idx = mainBar ? uiStore.bar.index : uiStore.extraActions.barIndex;
-
-		if (idx >= size) {
-			notifActions.showNotification('Sorry!','You\'re trying to add an ability after the end of the rotation.', 'error');
-			return;
-		}
-
-		if (mainBar) {
-            gameState.abilityBar[idx] = abilityKey;
-        } else {
-            gameState.extraActionBar[uiState.extraActions.tick][idx] = abilityKey;
-		}
-		calculateTotalDamageNew();
-        refreshUI(false);
+		eventHandlers.handleAbilityClick(event, abilityKey, mainBar, stores, calculateTotalDamageNew, refreshUI);
     }
 
 	function handleAbilityClickExtra(event, abilityKey) {
-		handleAbilityClick(event, abilityKey, false);
+		eventHandlers.handleAbilityClickExtra(event, abilityKey, stores, calculateTotalDamageNew, refreshUI);
     }
 
-	/**
-	 * Checks if a buff is active at a given tick
-	 * @param key - The key of the buff to check
-	 * @param tick - The tick to check
-	 */
-	function buffActive(key, tick) {
-		let active = false;
-		//TODO make separate ranged and necro split souls
-		if (key === 'split soul ecb') {
-			active = gameState.buffs['split soul'].buffTicks[tick];
-		} 
-		else if (key === SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER) {
-			console.log(`Tick ${tick} - gameState.buffs[key].buffTicks[${tick}] = ${gameState.buffs[key].buffTicks[tick]}`);
-			if (tick > 0) {
-				active = gameState.buffs[key].buffTicks[tick]; 
-				// Edraco is calced after the last rapid hit, so we offset by one
-				active = active != false && active !== SETTINGS.DRACOLICH_INFUSION_VALUES.NONE;
-			}
-			else {
-				active = false;
-			}
-		}
-		else {
-			active = gameState.buffs[key].buffTicks[tick];
-		}
-		return active;
-	}
-
+    // Wrapper functions for remaining event handlers
     function handleDragStart(event, ability) {
-        event.dataTransfer.setData('text/plain', ability);
+        eventHandlers.handleDragStart(event, ability);
     }
 
     function handleDrop(event, index) {
-        event.preventDefault();
-		const abilityKey = event.dataTransfer.getData('text/plain');
-		if (allAbils[abilityKey]) {
-			gameState.abilityBar[index] = abilityKey;
-		} else {
-			try {
-			const dragObj = JSON.parse(event.dataTransfer.getData('text/plain'));
-				const swapAbil = gameState.abilityBar[index];
-				gameState.abilityBar[index] = dragObj.ability;
-				gameState.abilityBar[dragObj.startIndex] = swapAbil;
-			} catch (e) {
-				console.error('Error parsing drag data:', e);
-			}
-		}
-		uiActions.clearDragDrop();
-		refreshUI();
-			calculateTotalDamageNew();
+        eventHandlers.handleDrop(event, index, stores, refreshUI, calculateTotalDamageNew, allAbils);
     }
 
 	function handleDragStartBar(event, ability, startIndex) {
-        const dragData = JSON.stringify({ ability, startIndex });
-    	event.dataTransfer.setData('text/plain', dragData);
+        eventHandlers.handleDragStartBar(event, ability, startIndex);
     }
 
     function allowDrop(event) {
-        event.preventDefault();
+        eventHandlers.allowDrop(event);
     }
 
 	function handleDragEnter(event, index) {
-		uiActions.setDragDropHoveredSlot(index);
-		uiActions.setDragDropValidSlot(true);
-		
-		let data = event.dataTransfer.getData('text/plain');
-		if (!allAbils[data]) {
-			try {
-			data = JSON.parse(event.dataTransfer.getData('text/plain'));
-			if ((index - data.startIndex) <= 2 && index >= data.startIndex) {
-					uiActions.setDragDropValidSlot(true);
-				return;
-			}
-			} catch (e) {
-				console.error('Error parsing drag data:', e);
-		}
-		}
-		
-		for (let i = index-1; i >= (index - 2); i--) {
-			if (i < 0) return;
-			if (gameState.abilityBar[i] != null) {
-        		uiActions.setDragDropValidSlot(false);
-			}
-		}
+		eventHandlers.handleDragEnter(event, index, stores, allAbils);
     }
 
     function handleDragLeave(event, index) {
-        if (uiStore.dragDrop.hoveredSlot === index) {
-            uiActions.setDragDropHoveredSlot(null);
-        }
+        eventHandlers.handleDragLeave(event, index, stores);
     }
 
 	function handleBarLeftClick(event, ability, index) {
-        event.currentTarget.focus();
-
-		if (uiStore.activeTool === ToolMode.Null) {
-			gameState.nulledTicks[index] = !gameState.nulledTicks[index];
-			refreshUI();
-			return;
-		}
-
-		if (uiStore.activeTool === ToolMode.Stall) {
-			if (gameState.stalledAbilities[index]) {
-				gameState.stalledAbilities[index] = null;
-			} else if (uiStore.stallingAbility) {
-				gameState.stalledAbilities[index] = uiStore.stallingAbility;
-				uiActions.clearStallingAbility();
-			} else {
-				// Find the last non-null ability before this tick
-				let stalledAbility = null;
-				for (let i = index - 1; i >= 0; i--) {
-					if (gameState.abilityBar[i]) {
-						stalledAbility = gameState.abilityBar[i];
-						break;
-					}
-				}
-				if (stalledAbility) {
-					gameState.stalledAbilities[index] = stalledAbility;
-				}
-			}
-			refreshUI();
-			return;
-		}
-
-		if (!gameState.extraActionBar[index]){
-			gameState.extraActionBar[index] = Array(EXTRA_BAR_SIZE).fill(null);
-		}
-
-		if (uiStore.extraActions.show) {
-			if (index == uiStore.extraActions.tick) {
-				uiActions.hideExtraActions();
-			}
-			else {
-				uiActions.showExtraActions(index, ability);
-			}
-		}
-		else {
-			uiActions.showExtraActions(index, ability);
-		}
+		eventHandlers.handleBarLeftClick(event, ability, index, stores, refreshUI);
     }
 
     function handleBarRightClick(event, index, innerIdx = null) {
-        event.preventDefault();
-		if (innerIdx != null) {
-			gameState.extraActionBar[index][innerIdx] = null;
-		}
-		else {
-        	gameState.abilityBar[index] = null;
-		}
-        refreshUI();
-        calculateTotalDamageNew();
+        eventHandlers.handleBarRightClick(event, index, innerIdx, stores, refreshUI, calculateTotalDamageNew);
     }
 
-    function clearRotation() {
-        gameState.abilityBar = Array(BAR_SIZE).fill(null);
-        gameState.extraActionBar = Array(BAR_SIZE).fill(null);
-		gameState.nulledTicks = Array(BAR_SIZE).fill(false);
-		gameState.stalledAbilities = Array(BAR_SIZE).fill(null);
-        gameState.totalDamage = 0;
-        
-        // Reset stacks
-        for (let i = 0; i < BAR_SIZE; i++) {
-            gameState.stacks[SETTINGS.ICY_CHILL_STACKS].stackTicks[i] = 0;
-            gameState.stacks[SETTINGS.PERFECT_EQUILIBRIUM_STACKS].stackTicks[i] = 0;
+
+
+    function handleKeypress(event: KeyboardEvent) {
+        eventHandlers.handleKeypress(event, stores);
+    }
+
+    // Helper functions
+    function showStack(idx: number, arr) {
+        if (idx == 0) {
+            return true;
         }
-
-        // Reset buffs
-        for (let key in gameState.buffs) {
-            if (Object.hasOwnProperty.call(gameState.buffs, key)) {
-                gameState.buffs[key].buffTicks = Array(BAR_SIZE).fill(0);
-            }
+        else {
+            return !(arr[idx] == arr[idx-1]);
         }
-
-        refreshUI();
-        calculateTotalDamageNew();
     }
 
-	/**
-	 * Updates ability bar pointers, recalculates stacks, recalculates buff bars
-	 * @param calcDmg - Whether to recalculate damage
-	 */
-	function refreshUI(calcDmg = true) {
-		//Update ability bar pointer
-		uiActions.updateBarLastIndex(0);
-		for (let i = 0; i < BAR_SIZE; i++) {
-			if (gameState.abilityBar[i] != null) {
-				uiActions.updateBarLastIndex(i);
-			}
-		}
-		uiActions.updateBarIndex(uiStore.bar.lastIndex);
-		let abilToAdd = abils[gameState.abilityBar[uiStore.bar.lastIndex]];
-		if (abilToAdd) {
-			uiActions.updateBarIndex(uiStore.bar.lastIndex + (abilToAdd['duration'] || 3));
-		}
-
-		//Update extra action bar pointer
-		uiStore.extraActions.barIndex = 0;
-		if (uiStore.extraActions.show) {
-			for (let i = 0; i < EXTRA_BAR_SIZE; i++) {
-				if (gameState.extraActionBar[uiStore.extraActions.tick][i] === null) {
-					uiStore.extraActions.barIndex = i;
-					break;
-				}
-			}
-		}
-
-		//Handle stacks
-		let i = 0;
-		uiActions.updateBarRowGap(BASE_BAR_ROW_GAP);
-		for (let key in gameState.stacks) {
-			let displaySetting = gameState.stacks[key]['displaySetting'];
-			let disp = gameState.settings[displaySetting];
-			if (disp['value']) {
-				gameState.stacks[key]['idx'] = i;
-				uiActions.updateBarRowGap(uiStore.bar.rowGap + (stackFontSize + stackPadding));
-				i++;
-			} else {
-				gameState.stacks[key]['idx'] = -1;
-			}
-		}
-
-		//handle buff indicator bars
-		i = 0;
-		uiActions.updateBarLineGap(0);
-		for (let key in gameState.buffs) {
-			if (gameState.buffs[key].buffTicks.some(value => value !== 0 && value !== false && value !== null && value !== 'none')) {
-				gameState.buffs[key].idx = i;
-				uiActions.updateBarRowGap(uiStore.bar.rowGap + buffLineHeight);
-				uiActions.updateBarLineGap(uiStore.bar.lineGap + buffLineHeight);
-				i++;
-			} else {
-				gameState.buffs[key].idx = -1;
-			}
-		}
-
-		if (calcDmg) {
-			calculateTotalDamageNew();
-		}
-	}
-
-	function showStack(idx, arr) {
-		if (idx == 0) {
-			return true;
-		}
-		else {
-			return !(arr[idx] == arr[idx-1]);
-		}
-	}
-	// Initial UI setup without damage calculation
-	refreshUI(false);
-
-	let activeTool = $state(ToolMode.Regular);
-
-    function handleKeypress(event) {
-        uiActions.handleKeypress(event);
-    }
-
-    function exportToString() {
-        rotationActions.exportToString(
-            (message) => notifActions.showNotification('Success!', message, 'success'),
-            (message) => notifActions.showNotification('Failed', message, 'error')
-        );
-    }
-
-    function importFromString() {
-        notifActions.showInputPrompt(
-            'Import Rotation String',
-            'Paste your rotation string:',
-            'Paste rotation string here...',
-            (importStr) => {
-                rotationActions.importFromString(
-					importStr,
-					(message) => notifActions.showNotification('Success!', message, 'success'),
-					(message) => notifActions.showNotification('Failed', message, 'error')
-				);
-            }
-        );
-    }
+    /**
+     * Checks if a buff is active at a given tick
+     * @param key - The key of the buff to check
+     * @param tick - The tick to check
+     */
+    function buffActive(key: string, tick: number) {
+        let active = false;
+        //TODO make separate ranged and necro split souls
+        if (key === 'split soul ecb') {
+            active = rotationStore.buffs['split soul'].activeRows.includes(tick);
+        } 
+        else {
+            active = rotationStore.buffs[key].activeRows.includes(tick);
+        }
+        return active;
+    }   
 </script>
 
 <style>
-
 	.responsive-container {
 		margin-left: 0% !important;
 		margin-right: 0% !important;
@@ -443,10 +319,43 @@
 		max-width: 100% !important;
 	}
 
+	.extra-action-section {
+		border: 2px solid #ffff00df;
+		margin-top: 5%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.regular-cursor {
+		cursor: default; /* Cursor for regular tool */
+	}
+
+	.regular-cursor .ability-slot {
+		cursor: pointer !important; /* Only show pointer in regular mode */
+	}
+
+	.regular-cursor .ability-slot:hover {
+		cursor: pointer !important;
+	}
+
+	.stall-cursor {
+		cursor: wait; /* Default stall cursor */
+	}
+
+	.stall-cursor.stalling {
+		cursor: wait; /* Will be overridden if there's an ability being stalled */
+	}
+
+	.null-cursor {
+		cursor: url('/cursor_icons/abort-icon.svg') 16 16, not-allowed; 
+	}
+
 	.ability-bar {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, 30px);
+		/* grid-template-columns and grid-template-rows set dynamically via inline style */
 		column-gap: 0;
+		row-gap: 0;
 		position: relative;
 		padding-top: 25px;
 	}
@@ -461,15 +370,15 @@
 		position: relative;
 		border: 1px solid #878787;
 		box-sizing: border-box;
-		cursor: inherit !important; /* Force inherit cursor from parent */
+		cursor: inherit !important;
 		transition: all 0.1s ease;
 	}
 
 	.ability-slot:hover {
-		cursor: inherit !important; /* Force inherit cursor even on hover */
+		cursor: inherit !important;
 		border: 1px solid #c5c5c5;
 		box-shadow: 0 0 3px rgba(255, 255, 255, 0.572);
-		z-index: 3; /* Ensure the hover effect appears above other elements */
+		z-index: 3;
 	}
 
 	.ability-slot.nulled::before {
@@ -512,22 +421,15 @@
 		color: #bababa;
 	}
 
-	.extra-action-section {
-		border: 2px solid #ffff00df;
-		margin-top: 5%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	.bolg-stacks {
+	.stacks-text {
 		position: absolute;
 		top: +38px;
 		left: auto;
 		transform: translateX(+50%);
+		font-size: var(--stack-font-size);
 	}
 
-	.pe-icon {
+	.stacks-icon {
 		position: absolute;
 		width: 12px;
 		height: 12px;
@@ -542,118 +444,6 @@
 		border: 1px solid rgba(0, 231, 54, 0.789);
 	}
 
-	.regular-cursor {
-		cursor: default; /* Cursor for regular tool */
-	}
-
-	.regular-cursor .ability-slot {
-		cursor: pointer !important; /* Only show pointer in regular mode */
-	}
-
-	.regular-cursor .ability-slot:hover {
-		cursor: pointer !important;
-	}
-
-	.stall-cursor {
-		cursor: wait; /* Default stall cursor */
-	}
-
-	/* Configuration Management Styles */
-	.config-section {
-		margin-top: 0rem;
-		margin-bottom: 1.0rem;
-		padding: 0.0rem 0.0rem 0.5rem 0.0rem;
-		border: 1px solid #444;
-		border-radius: 8px;
-		background: rgba(0, 0, 0, 0.2);
-	}
-
-	.config-title {
-		margin: 0 0 1rem 0;
-		padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-		font-size: 1.1rem;
-		color: #fff;
-		font-weight: 600;
-	}
-
-	.config-buttons {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.0rem;
-		margin-bottom: 0rem;
-	}
-
-	.saved-configs {
-		margin-top: 1rem;
-	}
-
-	.saved-configs h4 {
-		margin: 0 0 0.5rem 0;
-		font-size: 0.9rem;
-		color: #ccc;
-	}
-
-	.config-list {
-		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
-		margin-bottom: 0.5rem;
-	}
-
-	.config-item {
-		display: flex;
-		gap: 0.25rem;
-		align-items: center;
-	}
-
-	.config-load-btn {
-		flex: 1;
-		text-align: left;
-		font-size: 0.85rem;
-		padding: 0.25rem 0.5rem;
-	}
-
-	.config-delete-btn {
-		padding: 0.25rem 0.5rem;
-		min-width: auto;
-	}
-
-	.show-more-btn {
-		font-size: 0.8rem;
-		padding: 0.25rem 0.5rem;
-	}
-
-	/* Configuration Management Styles */
-	.config-selector {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.config-management {
-		margin-top: 1rem;
-		padding-top: 1rem;
-		border-top: 1px solid #444;
-	}
-
-	.clear-all-btn {
-		width: 100%;
-		background: #8b0000;
-		color: #fff;
-	}
-
-	.clear-all-btn:hover {
-		background: #a00000;
-	}
-
-	.stall-cursor.stalling {
-		cursor: wait; /* Will be overridden if there's an ability being stalled */
-	}
-
-	.null-cursor {
-		cursor: url('/cursor_icons/abort-icon.svg') 16 16, not-allowed; 
-	}
-
 	.stalled-ability {
 		position: absolute;
 		top: 0;
@@ -664,6 +454,15 @@
 		border: 1px solid #ffff72;
 		box-sizing: border-box;
 		z-index: 2;
+	}
+
+
+	.stall-cursor.stalling {
+		cursor: wait; /* Will be overridden if there's an ability being stalled */
+	}
+
+	.null-cursor {
+		cursor: url('/cursor_icons/abort-icon.svg') 16 16, not-allowed; 
 	}
 
 	.settings-panel {
@@ -702,7 +501,7 @@
 		tabindex="-1" 
 		role="button" 
 		onkeydown={handleKeypress}
-		style={uiStore.stallingAbility ? `cursor: url('${allAbils[uiStore.stallingAbility].icon}') 15 15, wait;` : ''}>
+		style="--stack-font-size: {stackFontSize}px; {uiStore.stallingAbility ? `cursor: url('${allAbils[uiStore.stallingAbility].icon}') 15 15, wait;` : ''}">
 		<section class="grid grid-cols-12 gap-6 auto-rows-min">
 			<div class="col-span-{uiStore.settingsPanelCollapsed ? '12' : '6'} relative">
 				<div class="card card-rotation">
@@ -726,149 +525,10 @@
 							familiarDamage={rotationStore.familiarDamage}
 						/>
 					{/if}
-                    <div class="space-y-4 mt-4">
-						<Button onClick={() => clearRotation()} variant="reset">
-							Reset
-						</Button>
-						
-						<!-- IO Management -->
-						<div>
-							<div class="config-section">
-								<div class="config-header" 
-									onclick={() => uiActions.toggleConfigSection()}
-									onkeydown={(e) => {
-										if (e.key === 'Enter' || e.key === ' ') {
-											uiActions.toggleConfigSection();
-										}
-									}}
-									role="button"
-									tabindex="0"
-								>
-									<h3 class="config-title">Save & Load Rotations</h3>
-									<button class="config-toggle">
-										{uiStore.configSectionCollapsed ? '▼' : '▲'}
-									</button>
-								</div>
-								
-								{#if !uiStore.configSectionCollapsed}
-									<div class="config-content">
-										<div class="config-buttons">
-											<Button onClick={() => notifActions.showInputPrompt(
-												'Save Rotation',
-												'Enter a name for your rotation:',
-												'Rotation name...',
-												(rotationName) => {
-													const result = rotationActions.saveRotation(
-														rotationName,
-														(message) => notifActions.showNotification('Success!', message, 'success'),
-														(message) => notifActions.showNotification('Failed', message, 'warning')
-													);
-													
-													if (result && result.needsConfirmation) {
-														notifActions.showConfirmation(
-															'Overwrite Rotation?',
-															`A rotation named "${rotationName.trim()}" already exists. Do you want to overwrite it?`,
-															() => {
-																rotationActions.overwriteRotation(
-																	result.config,
-																	result.existingIndex,
-																	(message) => notifActions.showNotification('Success!', message, 'success'),
-																	(message) => notifActions.showNotification('Failed', message, 'error')
-																);
-															}
-														);
-													}
-												}
-											)} variant="primary">
-												💾 Save Rotation
-											</Button>
-											<Button onClick={() => exportToFile()} variant="secondary">
-												📄 Export to File
-											</Button>
-											<Button onClick={() => importFromFile()} variant="secondary">
-												📄 Import from File
-											</Button>
-										</div>
-										
-										<!-- Quick Access to Saved Configs -->
-										{#if rotationStore.savedRotations.length > 0}
-											<div class="saved-configs">
-												<h4>Quick Load:</h4>
-												<div class="config-list">
-													{#each rotationStore.savedRotations.slice(0, 5) as config}
-														<div class="config-item">
-															<Button 
-																onClick={() => rotationActions.loadRotation(
-																	config.id,
-																	(message) => notifActions.showNotification('Success!', message, 'success'),
-																	(message) => notifActions.showNotification('Failed', message, 'error')
-																)} 
-																variant="secondary" 
-																class="config-load-btn"
-																title="Load {config.name}"
-															>
-																{config.name}
-															</Button>
-															<Button 
-																onClick={() => notifActions.showConfirmation(
-																	'Delete Rotation?',
-																	`Are you sure you want to delete "${config.name}"? This action cannot be undone.`,
-																	() => {
-																		rotationActions.deleteRotation(
-																			config.id,
-																			(message) => notifActions.showNotification('Success!', message, 'success'),
-																			(message) => notifActions.showNotification('Failed', message, 'error')
-																		);
-																	}
-																)} 
-																variant="reset" 
-																class="config-delete-btn"
-																title="Delete {config.name}"
-															>
-																🗑️
-															</Button>
-														</div>
-													{/each}
-												</div>
-												{#if rotationStore.savedRotations.length > 5}
-													<Button onClick={() => {
-														const configOptions = rotationStore.savedRotations.slice(5).map(config => ({
-															value: config.id,
-															label: `${config.name} (${new Date(config.timestamp).toLocaleDateString()})`
-														}));
-														
-														notifActions.showInputPrompt(
-															'Load Rotation',
-															'Select a rotation to load:',
-															'Choose rotation...',
-															(configId) => {
-																rotationActions.loadRotation(
-																	configId,
-																	(message) => notifActions.showNotification('Success!', message, 'success'),
-																	(message) => notifActions.showNotification('Failed', message, 'error')
-																);
-															}
-														);
-													}} variant="secondary" class="show-more-btn">
-														Show {rotationStore.savedRotations.length - 5} more...
-													</Button>
-												{/if}
-											</div>
-										{/if}
-
-										<div class="config-buttons">
-											<Button onClick={() => importFromString()} variant="secondary">
-												Import String
-											</Button>
-											<Button onClick={() => exportToString()} variant="secondary" title="Copy Rotation to Clipboard">
-												Export String
-											</Button>
-										</div>
-									</div>
-								{/if}
-							</div>
-						</div>
-					</div>
+                    <RotationConfigManager
+                        {clearRotation}
+                        {refreshUI}
+                    />
 					
                     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
                         {#each tabs as tab}
@@ -894,7 +554,7 @@
 					{#if uiStore.extraActions.show}
 						<ExtraActionsPanel
 							uiState={uiStore}
-							{gameState}
+							gameState={rotationStore}
 							{allAbils}
 							{handleAbilityClickExtra}
 							{handleDragStart}
@@ -905,86 +565,89 @@
 							setExtraActionsTab={(tab) => uiActions.setExtraActionsTab(tab)}
 						/>
 					{/if}
-                    <div style="row-gap:{uiStore.bar.rowGap}px;" class="ability-bar">
-						{#each rotationStore.abilityBar as ability, index}
-							<button
-									class="ability-slot"
-									class:highlight-red={uiStore.dragDrop.hoveredSlot === index && !uiStore.dragDrop.validSlot}
-									class:highlight-green={uiStore.dragDrop.hoveredSlot === index && uiStore.dragDrop.validSlot}
-									class:nulled={rotationStore.nulledTicks[index]}
-									class:has-extra-actions={rotationStore.extraActionBar[index]?.some(action => action !== null)}
-									tabindex="0"
-									aria-label="Ability slot"
-									onclick={(e) => handleBarLeftClick(e, ability, index)}
-									oncontextmenu={(e) => handleBarRightClick(e, index)}
-									ondrop={(e) => handleDrop(e, index)}
-									ondragover={(e) => allowDrop(e)}
-									ondragenter={(e) => handleDragEnter(e, index)}
-           							ondragleave={(e) => handleDragLeave(e, index)}
-							>
-								<span class="cell-number">{index}</span>
-								{#if ability}
-									<img src={allAbils[ability].icon}
-										alt={allAbils[ability].title}
-										style="width: 100%; height: 100%;"
-										title="{allAbils[ability].title}"
-										draggable="true"
-            							ondragstart={(e) => handleDragStartBar(e, ability, index)}
-									/>
-									
-								{/if}
-								{#if gameState.stalledAbilities[index]}
-									<img 
-										class="stalled-ability"
-										src={allAbils[gameState.stalledAbilities[index]].icon}
-										alt="Stalled ability"
-										title="Stalled: {allAbils[gameState.stalledAbilities[index]].title}"
-									/>
-								{/if}
-								{#each Object.keys(gameState.buffs) as key}
-									{#if buffActive(key, index)}
-										<div title="{gameState.buffs[key].title}" 
-											style="
-											position: absolute;
-											bottom: {-(buffLineHeight * 1.5) - (buffLineHeight * gameState.buffs[key].idx)}px;
-											left: -1px;
-											width: {buffLineWidth}px;
-											height: {buffLineHeight}px;
-											background-color: {gameState.buffs[key].colour};
-											box-sizing: border-box; ">
-										</div>
-									{/if}
-								{/each}
-								{#each Object.keys(gameState.stacks) as key}
-									{#if showStack(index, gameState.stacks[key].stackTicks) && gameState.stacks[key].idx >= 0}
-										<span
-											title="{gameState.stacks[key].title}"
-											style="
-												transform: translateX(0px);
-												top: {baseStackOffset + uiStore.bar.lineGap + 3 + (stackFontSize+stackPadding) * gameState.stacks[key].idx}px;
-												left: {stackFontSize+stackPadding*2}px;
-												font-size: {stackFontSize}px;
-												color: {gameState.stacks[key].colour};
-												"
-											class="bolg-stacks"
-										>
-											{+gameState.stacks[key].stackTicks[index].toFixed(0)}
-										</span>
-										<img src={gameState.stacks[key].image}
-											style=
-												"transform:translateX({2-(30-stackFontSize)/2}px);
-												top: {baseStackOffset + uiStore.bar.lineGap + 6 + (stackFontSize+stackPadding) * gameState.stacks[key].idx}px;
-												height: {stackFontSize}px;
-												width: {stackFontSize}px;
-												"
-											class="pe-icon"
-											title={gameState.stacks[key].title}
-											alt={gameState.stacks[key].title}
-										/>
-									{/if}
-								{/each}
-
-							</button>
+                    <div
+						bind:this={abilityBarElement}
+						style="grid-template-rows: {getGridTemplateRows()}; grid-template-columns: repeat({columnsPerRow}, {CELL_SIZE}px);"
+						class="ability-bar"
+					>
+                        {#each rotationStore.abilityBar as ability, index (index)}
+                            <button
+                                class="ability-slot"
+                                class:highlight-red={uiStore.dragDrop.hoveredSlot === index && !uiStore.dragDrop.validSlot}
+                                class:highlight-green={uiStore.dragDrop.hoveredSlot === index && uiStore.dragDrop.validSlot}
+                                class:nulled={rotationStore.nulledTicks[index]}
+                                class:has-extra-actions={rotationStore.extraActionBar[index]?.some(action => action !== null)}
+                                tabindex="0"
+                                aria-label="Ability slot"
+                                onclick={(e) => handleBarLeftClick(e, ability, index)}
+                                oncontextmenu={(e) => handleBarRightClick(e, index)}
+                                ondrop={(e) => handleDrop(e, index)}
+                                ondragover={(e) => allowDrop(e)}
+                                ondragenter={(e) => handleDragEnter(e, index)}
+                                ondragleave={(e) => handleDragLeave(e, index)}
+                            >
+                                <span class="cell-number">{index}</span>
+                                {#if ability}
+                                    <img src={allAbils[ability].icon}
+                                        alt={allAbils[ability].title}
+                                        style="width: 100%; height: 100%;"
+                                        title="{allAbils[ability].title}"
+                                        draggable="true"
+                                        ondragstart={(e) => handleDragStartBar(e, ability, index)}
+                                    />
+                                {/if}
+                                {#if rotationStore.stalledAbilities[index]}
+                                    <img 
+                                        class="stalled-ability"
+                                        src={allAbils[rotationStore.stalledAbilities[index]].icon}
+                                        alt="Stalled ability"
+                                        title="Stalled: {allAbils[rotationStore.stalledAbilities[index]].title}"
+                                    />
+                                {/if}
+                                {#each Object.keys(rotationStore.buffs) as key}
+                                    {#if buffActive(key, index) && getBuffLocalIndex(key, index) >= 0}
+                                        <div title="{rotationStore.buffs[key].title}"
+                                            style="
+                                            position: absolute;
+                                            bottom: {-(buffLineHeight * 1.5) - (buffLineHeight * getBuffLocalIndex(key, index))}px;
+                                            left: -1px;
+                                            width: {buffLineWidth}px;
+                                            height: {buffLineHeight}px;
+                                            background-color: {rotationStore.buffs[key].colour};
+                                            box-sizing: border-box; ">
+                                        </div>
+                                    {/if}
+                                {/each}
+                                {#each Object.keys(rotationStore.stacks) as key}
+                                    {#if showStack(index, rotationStore.stacks[key].stackTicks) && getStackLocalIndex(key, index) >= 0}
+                                        {@const localStackIdx = getStackLocalIndex(key, index)}
+                                        {@const stackTop = getStackTopOffset(index, localStackIdx)}
+                                        <span
+                                            title="{rotationStore.stacks[key].title}"
+                                            style="
+                                                transform: translateX(0px);
+                                                top: {stackTop}px;
+                                                left: {stackFontSize+stackPadding*2}px;
+                                                color: {rotationStore.stacks[key].colour};
+                                                "
+                                            class="stacks-text"
+                                        >
+                                            {+rotationStore.stacks[key].stackTicks[index].toFixed(0)}
+                                        </span>
+                                        <img src={rotationStore.stacks[key].image}
+                                            style=
+                                                "transform:translateX({2-(30-stackFontSize)/2}px);
+                                                top: {stackTop + 3}px;
+                                                height: {stackFontSize}px;
+                                                width: {stackFontSize}px;
+                                                "
+                                            class="stacks-icon"
+                                            title={rotationStore.stacks[key].title}
+                                            alt={rotationStore.stacks[key].title}
+                                        />
+                                    {/if}
+                                {/each}
+                            </button>
                         {/each}
                     </div>
                 </div>
@@ -992,7 +655,7 @@
             <div class="settings-panel col-span-{uiStore.settingsPanelCollapsed ? '0' : '6'} {uiStore.settingsPanelCollapsed ? 'collapsed' : ''}"
 				style={uiStore.settingsPanelCollapsed ? 'visibility: hidden; height: 0; margin: 0;' : ''}>
                 <div class="settings-content">
-                    <RotationSettings bind:settings={gameState.settings} updateDamages={calculateTotalDamageNew} stacks={gameState.stacks} uiState={uiStore} />
+                    <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
                 </div>
             </div>
             <div class="col-span-12 mt-8">

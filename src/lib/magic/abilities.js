@@ -1,4 +1,4 @@
-import { ABILITIES } from '../calc/const.js';
+import { ABILITIES } from '../calc/const/const';
 import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc.js';
 
 const abilities = {
@@ -183,7 +183,7 @@ const abilities = {
     },
     [ABILITIES.AFTERSHOCK]: {
         title: 'Aftershock',
-        calc: calc_aftershock,
+        calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/zuriels_staff.png'
     }
 };

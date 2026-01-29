@@ -1,4 +1,5 @@
 const SETTINGS = {
+    // General
     MODE: 'user value',
     MODE_VALUES: {
         MEAN: 'mean',
@@ -25,8 +26,8 @@ const SETTINGS = {
         REGULAR: 'necromancy potion'
     },
     HIT_CHANCE: 'hit chance',
-    NECROSIS_STACKS: 'necrosis stacks',
     REAPER_CREW: 'reaper crew',
+    //Prayers
     PRAYER: 'prayer',
     MAGIC_PRAYER: 'magic prayer',
     MAGIC_PRAYER_VALUES: {
@@ -85,6 +86,7 @@ const SETTINGS = {
         HASTENED_DECAY: 'hastened decay',
         DECAY: 'decay'
     },
+    // Misc
     RUBY_AURORA: 'ruby aurora',
     REVENGE: 'revenge',
     BERSERKERS_FURY: 'berserkers fury',
@@ -115,9 +117,11 @@ const SETTINGS = {
     FAMILIAR_VALUES: {
         NONE: 'none',
         RIPPER_DEMON: 'ripper demon',
-        KALGERION_DEMON: 'kalgerion demon'
+        KALGERION_DEMON: 'kalgerion demon',
+        STEEL_TITAN: 'steel titan'
     },
     FAMILIAR_ACCURACY: 'familiar accuracy',
+    USE_FAMILIAR_SCROLLS: 'use familiar scrolls',
     AURA: 'aura',
     AURA_VALUES: {
         NONE: 'none',
@@ -134,14 +138,22 @@ const SETTINGS = {
         CURSE: 'curse',
         VULNERABILITY: 'vuln'
     },
+    POISON: 'poison',
+    POISON_VALUES: {
+        NONE: 'none',
+        WEAPON_POISON0: 'weapon poison',
+        WEAPON_POISON1: 'weapon poison+',
+        WEAPON_POISON2: 'weapon poison++',
+        WEAPON_POISON3: 'weapon poison+++',
+    },
     SMOKE_CLOUD: 'smoke cloud',
     CRYPTBLOOM: 'cryptbloom',
     SLAYER_PERK_UNDEAD: 'undead slayer perk',
     SLAYER_PERK_DRAGON: 'dragon slayer perk',
     SLAYER_PERK_DEMON: 'demon slayer perk',
-    SLAYER_SIGIL_UNDEAD: 'undead slayer sigil',
-    SLAYER_SIGIL_DRAGON: 'dragon slayer sigil',
-    SLAYER_SIGIL_DEMON: 'demon slayer sigil',
+    UNDEAD_SLAYER_ABILITY: 'undead slayer ability',
+    DRAGON_SLAYER_ABILITY: 'dragon slayer ability',
+    DEMON_SLAYER_ABILITY: 'demon slayer ability',
     SLAYER_PERK: 'slayer perk',
     SLAYER_PERK_VALUES: {
         NONE: 'none',
@@ -224,6 +236,8 @@ const SETTINGS = {
     MELEE_BODY: 'melee body',
     MELEE_BODY_VALUES: {
         NONE: 'none',
+        BANDOS: 'bandos chestplate',
+        TORVA: 'torva platebody',
         MASTERWORK: 'masterwork platebody',
         TMW: 'trimmed masterwork platebody',
         VESTMENTS: 'vestments of havoc robe top',
@@ -259,6 +273,8 @@ const SETTINGS = {
     MELEE_LEGS: 'melee legs',
     MELEE_LEGS_VALUES: {
         NONE: 'none',
+        BANDOS: 'bandos tassets',
+        TORVA: 'torva platelegs',
         MASTERWORK: 'masterwork platelegs',
         TMW: 'trimmed masterwork platelegs',
         VESTMENTS: 'vestments of havoc robe bottom',
@@ -685,6 +701,7 @@ const SETTINGS = {
         WEN_ARROWS: 'wen arrows',
         DEATHSPORE_ARROWS: 'deathspore arrows',
         JAS_ARROWS: 'jas arrows',
+        BIK_ARROWS: 'bik arrows'
     },
     AMMO_TIER: 'ammo tier',
     AUTO_CAST: 'auto cast',
@@ -692,6 +709,7 @@ const SETTINGS = {
         NONE: 'none',
         CRUMBLE_UNDEAD: 'crumble undead',
     },
+    // Perks
     LVL20ARMOUR: 'level 20 armour',
     BITING: 'biting',
     PRECISE: 'precise',
@@ -699,6 +717,7 @@ const SETTINGS = {
     FLANKING: 'flanking',
     CAROMING: 'caroming',
     RUTHLESS_RANK: 'ruthless rank',
+    // Boss Specific Buffs
     TELOS_RED_BEAM: 'Telos red beam',
     TELOS_BLACK_BEAM: 'Telos black beam',
     TOKKUL_ZO: 'Tokkul-zo',
@@ -711,6 +730,9 @@ const SETTINGS = {
     RAKSHA_INNER_POWER: 'Raksha inner power',
     STONE_OF_JAS: 'stone of jas',
     INFERNAL_PUZZLE_BOX: 'Infernal puzzle box',
+    // Stacks and Buffs
+    RESIDUAL_SOULS: 'residual souls',
+    NECROSIS_STACKS: 'necrosis stacks',
     ICY_PRECISION: 'icy precision',
     ICY_CHILL_STACKS: 'icy chill stacks',
     PUNCTURE_STACKS: 'puncture stacks',
@@ -767,17 +789,14 @@ const SETTINGS = {
     FROSTBLADES: 'frostblades',
     IGNEOUS_EXTENSIOS: 'igneous extensions',
     DRACOLICH_INFUSION: 'dracolich infusion',
-    DRACOLICH_INFUSION_VALUES: {
-        NONE: 'none',
-        REGULAR: 'regular',
-        GREATER: 'greater',
-    },
+    GREATER_DRACOLICH_INFUSION: 'greater dracolich infusion',
     INSTABILITY: 'instability',
     TIME_SINCE_ATTACK: 'time since attack',
     INNATE_MASTERY: 'innate mastery',
     CHANNELER_RING_STACKS: 'channelers ring stacks',
     NUMBER_OF_BLEEDS: 'number of bleeds',
     STRENGTH_CAPE: 'strength cape',
+    GORAJAN_TRAILBLAZER: 'gorajan trailblazer',
     SUNSHINE: 'sunshine',
     META: 'meta',
     DEATH_SWIFTNESS: 'death swiftness',
@@ -785,14 +804,21 @@ const SETTINGS = {
     SPLIT_SOUL: 'split soul',
     NATURAL_INSTINCT: 'natural instinct',
     //SPLIT_SOUL_ECB: 'split soul ecb',
-    ZGS: 'zgs',
+    BLACKHOLE: 'blackhole',
     BERSERK: 'berserk',
     DETONATE: 'detonate charge percent',
     DIVINE_RAGE: 'divine rage',
     ECLIPSED_SOUL: 'eclipsed soul',
 
+    // Dungeoneering
+    DESPERADO: 'desperado',    
+
     SHOW_BOLG_STACKS: 'show bolg stacks',
     SHOW_ICY_CHILL_STACKS: 'show icy chill stacks',
+    SHOW_BIK_STACKS: 'show bik stacks',
+    SHOW_NECROSIS_STACKS: 'show necrosis stacks',
+    SHOW_RESIDUAL_SOULS: 'show residual souls',
+    SHOW_ESSENCE_CORRUPTION: 'show essence corruption',
     ADRENALINE: 'adrenaline',
     EXPECTED_ADRENALINE: 'expected adrenaline',
     CAP_ADRENALINE: 'cap adrenaline',
@@ -836,6 +862,9 @@ const SETTINGS = {
     TELOS_RED_BEAM: 'telos red beam',
     TELOS_BLACK_BEAM: 'telos black beam',
     ENERGISING: 'energising',
+
+    // Testing/utility flags
+    USE_RAW_ABILITY_DAMAGE: 'use raw ability damage', // Skip recalculating AD from equipment
 };
 
 const settingsConfig = {
@@ -1078,12 +1107,17 @@ const settingsConfig = {
         options: [
             { text: 'None', value: SETTINGS.FAMILIAR_VALUES.NONE },
             { text: 'Ripper demon', value: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON },
-            { text: 'Kalgerion demon', value: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON }
+            { text: 'Kalgerion demon', value: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON },
+            { text: 'Steel titan', value: SETTINGS.FAMILIAR_VALUES.STEEL_TITAN }
         ]
     },
     [SETTINGS.FAMILIAR_ACCURACY]: {
         label: 'Familiar Accuracy',
         default: 100,
+    },
+    [SETTINGS.USE_FAMILIAR_SCROLLS]: {
+        label: 'Use Scrolls',
+        default: false,
     },
     [SETTINGS.AURA]: {
         label: 'Aura',
@@ -1096,6 +1130,17 @@ const settingsConfig = {
             { text: 'Reckless', value: SETTINGS.AURA_VALUES.RECKLESS },
             { text: 'Berserker', value: SETTINGS.AURA_VALUES.BERSERKER },
             { text: 'Maniacal', value: SETTINGS.AURA_VALUES.MANIACAL },
+        ]
+    },
+    [SETTINGS.POISON]: {
+        label: 'Poison',
+        default: SETTINGS.POISON_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.POISON_VALUES.NONE },
+            { text: 'Weapon poison', value: SETTINGS.POISON_VALUES.WEAPON_POISON0 },
+            { text: 'Weapon poison+', value: SETTINGS.POISON_VALUES.WEAPON_POISON1 },
+            { text: 'Weapon poison++', value: SETTINGS.POISON_VALUES.WEAPON_POISON2 },
+            { text: 'Weapon poison+++', value: SETTINGS.POISON_VALUES.WEAPON_POISON3 },
         ]
     },
     [SETTINGS.VULN]: {
@@ -1137,15 +1182,15 @@ const settingsConfig = {
             { text: 'Demon', value: SETTINGS.SLAYER_PERK_VALUES.DEMON},
         ]
     },
-    [SETTINGS.SLAYER_SIGIL_UNDEAD]: {
-        label: 'Undead slayer Sigil',
+    [SETTINGS.UNDEAD_SLAYER_ABILITY]: {
+        label: 'Undead slayer ability',
         default: false
     },
-    [SETTINGS.SLAYER_SIGIL_DRAGON]: {
+    [SETTINGS.DRAGON_SLAYER_ABILITY]: {
         label: 'Dragon slayer Sigil',
         default: false
     },
-    [SETTINGS.SLAYER_SIGIL_DEMON]: {
+    [SETTINGS.DEMON_SLAYER_ABILITY]: {
         label: 'Demon slayer Sigil',
         default: false
     },
@@ -1272,6 +1317,8 @@ const settingsConfig = {
         default: SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
         options: [
             { text: 'None/Tank', value: SETTINGS.MELEE_BODY_VALUES.NONE },
+            { text: 'Bandos', value: SETTINGS.MELEE_LEGS_VALUES.BANDOS },
+            { text: 'Torva', value: SETTINGS.MELEE_LEGS_VALUES.TORVA },
             { text: 'Masterwork', value: SETTINGS.MELEE_BODY_VALUES.MASTERWORK },
             { text: 'TMW', value: SETTINGS.MELEE_BODY_VALUES.TMW },
             { text: 'Vestments', value: SETTINGS.MELEE_BODY_VALUES.VESTMENTS },
@@ -1318,6 +1365,8 @@ const settingsConfig = {
         default: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
         options: [
             { text: 'None/Tank', value: SETTINGS.MELEE_LEGS_VALUES.NONE },
+            { text: 'Bandos', value: SETTINGS.MELEE_LEGS_VALUES.BANDOS },
+            { text: 'Torva', value: SETTINGS.MELEE_LEGS_VALUES.TORVA },
             { text: 'Masterwork', value: SETTINGS.MELEE_LEGS_VALUES.MASTERWORK },
             { text: 'TMW', value: SETTINGS.MELEE_LEGS_VALUES.TMW },
             { text: 'Vestments', value: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS },
@@ -1743,7 +1792,8 @@ const settingsConfig = {
             melee: SETTINGS.WEAPON_VALUES.TH,
             ranged: SETTINGS.WEAPON_VALUES.TH,
             magic: SETTINGS.WEAPON_VALUES.TH,
-            necromancy: SETTINGS.WEAPON_VALUES.DW
+            necromancy: SETTINGS.WEAPON_VALUES.DW,
+            rotation: SETTINGS.WEAPON_VALUES.TH
         },
         options: [
             { text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW },
@@ -1772,6 +1822,13 @@ const settingsConfig = {
         options: [
             { text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW },
             { text: 'Two handed', value: SETTINGS.WEAPON_VALUES.TH }
+        ]
+    },
+    [SETTINGS.WEAPON_TYPE_NECRO]: {
+        label: 'Weapon type',
+        default: SETTINGS.WEAPON_VALUES.DW,
+        options: [
+            { text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW }
         ]
     },
     [SETTINGS.MAGIC_MH]: {
@@ -1887,7 +1944,8 @@ const settingsConfig = {
             { text: 'Ful', value: SETTINGS.AMMO_VALUES.FUL_ARROWS },
             { text: 'Wen', value: SETTINGS.AMMO_VALUES.WEN_ARROWS },
             { text: 'Jas', value: SETTINGS.AMMO_VALUES.JAS_ARROWS },
-            { text: 'Deathspore arrows', value: SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS }
+            { text: 'Deathspore arrows', value: SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS },
+            { text: 'Bik arrows', value: SETTINGS.AMMO_VALUES.BIK_ARROWS }
         ]
     },
     [SETTINGS.AMMO_TIER]: {
@@ -1973,6 +2031,10 @@ const settingsConfig = {
     [SETTINGS.INFERNAL_PUZZLE_BOX]: {
         label: 'Infernal Puzzle Box %',
         default: 0
+    },
+    [SETTINGS.RESIDUAL_SOULS]: {
+        label: 'Residual Souls',
+        default: 2
     },
     [SETTINGS.ICY_PRECISION]: {
         label: 'Icy Precision stacks',
@@ -2146,12 +2208,11 @@ const settingsConfig = {
     },
     [SETTINGS.DRACOLICH_INFUSION]: {
         label: 'Dracolich infusion',
-        default: SETTINGS.DRACOLICH_INFUSION_VALUES.NONE,
-        options: [
-            { text: 'None', value: SETTINGS.DRACOLICH_INFUSION_VALUES.NONE },
-            { text: 'Regular', value: SETTINGS.DRACOLICH_INFUSION_VALUES.REGULAR },
-            { text: 'Greater', value: SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER }
-        ]
+        default: false
+    },
+    [SETTINGS.GREATER_DRACOLICH_INFUSION]: {
+        label: 'Greater dracolich infusion',
+        default: true
     },
     [SETTINGS.INSTABILITY]: {
         label: 'Instability',
@@ -2193,7 +2254,7 @@ const settingsConfig = {
         label: 'Split soul',
         default: false
     },
-    [SETTINGS.ZGS]: {
+    [SETTINGS.BLACKHOLE]: {
         label: 'ZGS',
         default: false
     },
@@ -2221,6 +2282,22 @@ const settingsConfig = {
         label: 'Show Icy Chill Stacks',
         default: true
     },
+    [SETTINGS.SHOW_BIK_STACKS]: {
+        label: 'Show Evolving Toxin Stacks',
+        default: true
+    },
+    [SETTINGS.SHOW_NECROSIS_STACKS]: {
+        label: 'Show Necrosis Stacks',
+        default: true
+    },
+    [SETTINGS.SHOW_RESIDUAL_SOULS]: {
+        label: 'Show Residual Souls',
+        default: true
+    },
+    [SETTINGS.SHOW_ESSENCE_CORRUPTION]: {
+        label: 'Show Essence Corruption',
+        default: true
+    },
     [SETTINGS.SHOW_ADRENALINE]: {
         label: 'Show Adrenaline',
         default: true
@@ -2235,6 +2312,10 @@ const settingsConfig = {
     },
     [SETTINGS.CRIT_BUFF]: {
         label: 'Crit Buff',
+        default: false
+    },
+    [SETTINGS.NATURAL_INSTINCT]: {
+        label: 'Natural Instinct',
         default: false
     },
     [SETTINGS.CAP_ADRENALINE]: {

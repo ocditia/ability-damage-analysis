@@ -1,5 +1,6 @@
 import { next_cast, next_hit, next_tick } from './ability_helper';
-import { ABILITIES, abils, armour, gear, prayers, weapons } from './const';
+import { ABILITIES, abils, armour, gear, weapons } from './const/const';
+import { prayers } from './const/prayers';
 import { create_object } from './object_helper.js';
 import { SETTINGS } from './settings';
 
@@ -842,7 +843,7 @@ function calc_additive_boosts(settings, dmgObject) {
 function calc_prayer(settings) {
     let boost = 0;
     if (abils[settings['ability']]['main style'] === prayers[settings[SETTINGS.PRAYER]]['style']) {
-        boost += prayers[settings[SETTINGS.PRAYER]]['boost'];
+        boost += prayers[settings[SETTINGS.PRAYER]].boost;
 
         if (['single-stat boosting', 'leech curse'].includes(prayers[settings[SETTINGS.PRAYER]]['category']) &&
             settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.ZEALOTS
@@ -887,7 +888,7 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
         }
 
         // zaros godsword
-        if (settings['zgs'] === true) {
+        if (settings[SETTINGS.BLACKHOLE] === true) {
             boost = Math.floor(boost * 1.25);
         }
 
@@ -1415,8 +1416,10 @@ function calc_damage_object(settings) {
     const dmgObject = create_object(settings);
 
     for (let key in dmgObject) {
-        // calc base AD
-        dmgObject[key]['base AD'] = calc_base_ad(settings);
+        // calc base AD - use raw value if flag is set, otherwise calculate from equipment
+        dmgObject[key]['base AD'] = settings[SETTINGS.USE_RAW_ABILITY_DAMAGE]
+            ? settings[SETTINGS.ABILITY_DAMAGE]
+            : calc_base_ad(settings);
         // calc buffed AD
         dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
         // ability specific
@@ -1898,6 +1901,20 @@ function get_hit_sequence(settings) {
         for (let i=0; i<2*settings[SETTINGS.RUIN]; i++) {
             rotation[1].push(ABILITIES.COMBUST_HIT);
         }
+    }
+
+    // Residual souls - total hits equals residual souls count (minimum 2 required)
+    if (settings['ability'] === ABILITIES.VOLLEY_OF_SOULS_DYNAMIC) {
+        const residualSouls = settings[SETTINGS.RESIDUAL_SOULS] || 0;
+        if (residualSouls >= 2) {
+            // First hit
+            rotation[1].push(ABILITIES.VOLLEY_OF_SOULS);
+            // Additional hits (residualSouls - 1 more)
+            for (let i = 1; i < residualSouls; i++) {
+                rotation[1].push('next hit', ABILITIES.VOLLEY_OF_SOULS);
+            }
+        }
+        // If residualSouls < 2, rotation[1] stays empty (no damage)
     }
 
     return rotation;

@@ -1,4 +1,4 @@
-import { ABILITIES } from '../calc/const.js';
+import { ABILITIES } from '../calc/const/const';
 import { SETTINGS } from '../calc/settings.js';
 
 export const offGcdAbilities = {

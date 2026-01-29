@@ -1,5 +1,5 @@
 import { SETTINGS } from './settings';
-import { ABILITIES } from './const';
+import { ABILITIES } from './const/const';
 
 function next_tick(settings) {
     // needle strike logic

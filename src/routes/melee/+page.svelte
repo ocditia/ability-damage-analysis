@@ -3,6 +3,7 @@
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
     import { abilities } from '$lib/melee/abilities';
+    import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
 
     import AbilityDamageTable from '$components/AbilityDamageTable/AbilityDamageTable.svelte';
     import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
@@ -63,11 +64,20 @@
         );
 
         damages = damages.map(ability => {
-            adaptedSettings['ability'] = ability.key;
+            ability.regular = calculateSingleAbilityDamage(adaptedSettings, {
+                ability: ability.key,
+                buffs: {}
+            }).expected;
 
-            ability.regular = ability.calc({ ...adaptedSettings, zgs: false, berserk: false });
-            ability.zgs = ability.calc({ ...adaptedSettings, zgs: true, berserk: false });
-            ability.berserk = ability.calc({ ...adaptedSettings, zgs: false, berserk: true });
+            ability.blackhole = calculateSingleAbilityDamage(adaptedSettings, {
+                ability: ability.key,
+                buffs: { blackhole: true }
+            }).expected;
+
+            ability.berserk = calculateSingleAbilityDamage(adaptedSettings, {
+                ability: ability.key,
+                buffs: { berserk: true }
+            }).expected;
 
             return ability;
         })
@@ -98,7 +108,7 @@
             }
         },
         {
-            accessorKey: 'zgs',
+            accessorKey: 'blackhole',
             header: 'ZGS',
             sortDescFirst: true,
             meta: {

@@ -9,12 +9,15 @@ export const buffs = [
     SETTINGS.NATURAL_INSTINCT, 
     SETTINGS.DEATH_SWIFTNESS, 
 	SETTINGS.SUNSHINE, 
-    SETTINGS.BERSERK, 
+    SETTINGS.BERSERK,
+    
     SETTINGS.SPLIT_SOUL, 
-    SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER,
+    SETTINGS.GREATER_DRACOLICH_INFUSION,
 	SETTINGS.ICY_PRECISION, 
     SETTINGS.BALANCE_BY_FORCE,
-    SETTINGS.INSTABILITY
+    SETTINGS.INSTABILITY,
+    SETTINGS.CHAOS_ROAR,
+    SETTINGS.BLACKHOLE
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -24,61 +27,85 @@ export function createBuffTimings(barSize: number) {
                 title: 'Crit Buff',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
                 colour: '#FFD700'
             },
             [SETTINGS.DEATH_SWIFTNESS]: {
                 title: 'Death\'s Swiftness',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
                 colour: '#00bf63'
             },
             [SETTINGS.SUNSHINE]: {
                 title: 'Sunshine',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
                 colour: '#86F6FE'
             },
             [SETTINGS.BERSERK]: {
                 title: 'Berserk',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
                 colour: '#E28329'
             },
             [SETTINGS.NATURAL_INSTINCT]: {
                 title: 'Natural Instinct',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
                 colour: '#B3B3B4'
             },
             [SETTINGS.SPLIT_SOUL]: {
                 title: 'Split Soul',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
                 colour: '#5b1db6'//
             },
-            [SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER]: {
+            [SETTINGS.GREATER_DRACOLICH_INFUSION]: {
                 title: 'Dracolich Infusion (Greater)',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
                 colour: '#0D1EB1'
             },
             [SETTINGS.ICY_PRECISION]: {
                 title: 'Icy Precision',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
                 colour: '#5AC8E1'
             },
             [SETTINGS.BALANCE_BY_FORCE]: {
                 title: 'Balance By Force',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
                 colour: '#266d63'
             },
             [SETTINGS.INSTABILITY]: {
                 title: 'Instability',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
                 colour: '#76ffbc'
+            },
+            [SETTINGS.CHAOS_ROAR]: {
+                title: 'Chaos Roar',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
+                colour: '#ef353a'
+            },
+            [SETTINGS.BLACKHOLE]: {
+                title: 'Blackhole',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [], // Array of row indices where this buff is active
+                colour: '#efbdf7'
             }
         }
     )
@@ -114,7 +141,43 @@ export function createStackTimings(barSize: number) {
                 stackTicks: Array(barSize).fill(0),
                 colour: '#03f4fc',
                 combatStyle: SettingsCombatStyles.RANGED
-            }
+            },
+            [SETTINGS.BIK_STACKS]: {
+                title: 'Evolving Toxin stacks',
+                displaySetting: SETTINGS.SHOW_BIK_STACKS,
+                idx: -1,
+                image: '/effect_icons/evolving_toxin.png',
+                stackTicks: Array(barSize).fill(0),
+                colour: '#8CFA3A',
+                combatStyle: SettingsCombatStyles.RANGED
+            },
+            [SETTINGS.NECROSIS_STACKS]: {
+                title: 'Necrosis stacks',
+                displaySetting: SETTINGS.SHOW_NECROSIS_STACKS,
+                idx: -1,
+                image: '/effect_icons/necrosis.png',
+                stackTicks: Array(barSize).fill(0),
+                colour: '#8B008B',
+                combatStyle: SettingsCombatStyles.NECROMANCY
+            },
+            [SETTINGS.RESIDUAL_SOULS]: {
+                title: 'Residual Souls',
+                displaySetting: SETTINGS.SHOW_RESIDUAL_SOULS,
+                idx: -1,
+                image: '/effect_icons/residual_soul.png',
+                stackTicks: Array(barSize).fill(0),
+                colour: '#00CED1',
+                combatStyle: SettingsCombatStyles.NECROMANCY
+            },
+            [SETTINGS.ESSENCE_CORRUPTION]: {
+                title: 'Essence Corruption',
+                displaySetting: SETTINGS.SHOW_ESSENCE_CORRUPTION,
+                idx: -1,
+                image: '/effect_icons/essence_corruption.png',
+                stackTicks: Array(barSize).fill(0),
+                colour: '#9932CC',
+                combatStyle: SettingsCombatStyles.NECROMANCY
+            },
         }
     )
 }

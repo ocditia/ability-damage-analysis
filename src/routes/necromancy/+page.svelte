@@ -3,6 +3,7 @@
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
     import { abilities } from '$lib/necromancy/abilities';
+    import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
 
     import AbilityDamageTable from '$components/AbilityDamageTable/AbilityDamageTable.svelte';
     import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
@@ -62,10 +63,15 @@
         );
 
         damages = damages.map(ability => {
-            adaptedSettings['ability'] = ability.key;
+            ability.regular = calculateSingleAbilityDamage(
+                { ...adaptedSettings, 'split soul': false },
+                { ability: ability.key, buffs: {} }
+            ).expected;
 
-            ability.regular = ability.calc({ ...adaptedSettings, 'split soul': false });
-            ability.ss = ability.calc({ ...adaptedSettings, 'split soul': true });
+            ability.ss = calculateSingleAbilityDamage(
+                { ...adaptedSettings, 'split soul': true },
+                { ability: ability.key, buffs: {} }
+            ).expected;
 
             return ability;
         })
@@ -302,6 +308,14 @@
                                     img="/effect_icons/necrosis.png"
                                     step="1"
                                     max="12"
+                                    min="0"
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.RESIDUAL_SOULS]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/residual_soul.png"
+                                    step="1"
+                                    max="7"
                                     min="0"
                                 />
                                 <Number

@@ -3,6 +3,7 @@
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
     import { abilities } from '$lib/ranged/abilities';
+    import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
 
     import AbilityDamageTable from '$components/AbilityDamageTable/AbilityDamageTable.svelte';
     import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
@@ -64,12 +65,25 @@
         );
 
         damages = damages.map(ability => {
-            adaptedSettings['ability'] = ability.key;
+            ability.regular = calculateSingleAbilityDamage(
+                { ...adaptedSettings, 'split soul': false },
+                { ability: ability.key, buffs: {} }
+            ).expected;
 
-            ability.regular = ability.calc({ ...adaptedSettings, 'split soul': false, 'death swiftness': false });
-            ability.ss = ability.calc({ ...adaptedSettings, 'split soul': true, 'death swiftness': false });
-            ability.swift = ability.calc({ ...adaptedSettings, 'split soul': false, 'death swiftness': true });
-            ability.ssSwift = ability.calc({ ...adaptedSettings, 'split soul': true, 'death swiftness': true });
+            ability.ss = calculateSingleAbilityDamage(
+                { ...adaptedSettings, 'split soul': true },
+                { ability: ability.key, buffs: {} }
+            ).expected;
+
+            ability.swift = calculateSingleAbilityDamage(
+                { ...adaptedSettings, 'split soul': false },
+                { ability: ability.key, buffs: { deathSwiftness: true } }
+            ).expected;
+
+            ability.ssSwift = calculateSingleAbilityDamage(
+                { ...adaptedSettings, 'split soul': true },
+                { ability: ability.key, buffs: { deathSwiftness: true } }
+            ).expected;
 
             return ability;
         })
@@ -204,8 +218,13 @@
                                     max="5"
                                     min="0"
                                 />
-                                <Select
+                                <Checkbox
                                     bind:setting={settings[SETTINGS.DRACOLICH_INFUSION]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/dracolich_infusion.png"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.GREATER_DRACOLICH_INFUSION]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/dracolich_infusion.png"
                                 />

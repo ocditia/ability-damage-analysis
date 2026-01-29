@@ -1,8 +1,8 @@
-import { ABILITIES } from '../calc/const.js';
+import { ABILITIES } from '../calc/const/const';
 import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
 
 const abilities = {
-    // these need adding to const.js
+    // these need adding to const
     // [ABILITIES.FREEDOM]: { 
     //     title: 'Natural Instinct',
     //     calc: null,

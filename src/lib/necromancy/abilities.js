@@ -1,4 +1,4 @@
-import { ABILITIES } from '../calc/const.js';
+import { ABILITIES } from '../calc/const/const';
 import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
 
 const abilities = {
@@ -77,25 +77,11 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/soul_strike.png'
     },
-    [ABILITIES.VOLLEY_OF_SOULS_2]: {
-        title: 'Volley of souls (2)',
+    [ABILITIES.VOLLEY_OF_SOULS_DYNAMIC]: {
+        title: 'Volley of souls',
         calc: ability_damage_calculation,
+        'ability classification': 'multihit',
         icon: '/ability_icons/necro/30x30/volley-2.png'
-    },
-    [ABILITIES.VOLLEY_OF_SOULS_3]: {
-        title: 'Volley of souls (3)',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/necro/30x30/volley-3.png'
-    },
-    [ABILITIES.VOLLEY_OF_SOULS_4]: {
-        title: 'Volley of souls (4)',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/necro/30x30/volley-4.png'
-    },
-    [ABILITIES.VOLLEY_OF_SOULS_5]: {
-        title: 'Volley of souls (5)',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/necro/30x30/volley-5.png'
     },
     [ABILITIES.SPECTRAL_SCYTHE_1]: {
         title: 'Spectral scythe 1',

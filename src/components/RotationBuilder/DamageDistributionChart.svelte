@@ -2,6 +2,9 @@
     import { onMount, onDestroy } from 'svelte';
     import { Chart, registerables } from 'chart.js';
     import '../../css/colors.css';
+    import { Logger, LogCategory } from '../../lib/utils/Logger';
+    
+    const logger = Logger.getInstance();
     
     // Register all Chart.js components
     Chart.register(...registerables);
@@ -12,7 +15,7 @@
     export let familiarDamage = 0;
     
     // Collapse state
-    let isCollapsed = false;
+    let isCollapsed = true;
     
     // Calculate confidence intervals
     $: gaussianParams = calculateGaussianParameters(distributionStats);
@@ -35,7 +38,9 @@
     
     // Calculate Gaussian parameters for TOTAL damage (sum of all hits)
     function calculateGaussianParameters(stats) {
+        logger.log(LogCategory.ROTATION, 'calculateGaussianParameters called with stats', stats);
         if (stats.length === 0) {
+            logger.log(LogCategory.ROTATION, 'No stats provided, returning default values');
             return { mean: 0, stdDev: 0 };
         }
 
@@ -62,8 +67,7 @@
                 // Add to total (each ability contributes to the sum)
                 totalMean += mixtureMean * stat.likelihood;
                 totalVariance += mixtureVariance * stat.likelihood;
-                console.log(`Combined - Crit: ${p1*100}% (${mu1.toFixed(0)}±${Math.sqrt(sigma1Squared).toFixed(0)}), Non-crit: ${p2*100}% (${mu2.toFixed(0)}±${Math.sqrt(sigma2Squared).toFixed(0)}), Mixture: ${mixtureMean.toFixed(0)}±${Math.sqrt(mixtureVariance).toFixed(0)}, Ability: ${stat.ability}`);
-            } else {
+            } else if (stat.distributionType === 'crit' || stat.distributionType === 'non_crit') {
                 // For individual crit/non-crit distributions, treat as independent
                 const meanDamage = (stat.minDamage + stat.maxDamage) / 2;
                 const variance = Math.pow((stat.maxDamage - stat.minDamage) / 2, 2) / 3;
@@ -71,7 +75,6 @@
                 // Add to total (each hit contributes to the sum)
                 totalMean += meanDamage * stat.likelihood;
                 totalVariance += variance * stat.likelihood;
-                console.log(`${stat.distributionType} - Min: ${stat.minDamage}, Max: ${stat.maxDamage}, Mean: ${meanDamage}, Variance: ${variance}, Ability: ${stat.ability}`);
             }
         });
 
@@ -82,10 +85,15 @@
     
     // Create histogram data for TOTAL damage distribution
     function createHistogramData(stats, gaussianParams) {
-        if (stats.length === 0) return { labels: [], data: [] };
+        logger.log(LogCategory.ROTATION, 'createHistogramData called', { stats, gaussianParams });
+        if (stats.length === 0) {
+            logger.log(LogCategory.ROTATION, 'No stats provided to createHistogramData');
+            return { labels: [], data: [], cumulativeData: [] };
+        }
         
         if (gaussianParams.stdDev === 0) {
-            return { labels: [], data: [] };
+            logger.log(LogCategory.ROTATION, 'Standard deviation is 0, returning empty data');
+            return { labels: [], data: [], cumulativeData: [] };
         }
         
         // Create range around the total damage mean (±4 standard deviations)
@@ -195,7 +203,7 @@
         
         const adjustedRangeStart = Math.floor(rangeStart / tickSpacing) * tickSpacing;
         const adjustedRangeEnd = Math.ceil(rangeEnd / tickSpacing) * tickSpacing;
-        const dataPointSpacing = (adjustedRangeEnd - adjustedRangeStart) / (histogramData.data.length - 1);
+        const dataPointSpacing = (adjustedRangeEnd - adjustedRangeStart) / (Math.max(histogramData.data.length - 1, 1));
         
         // Create vertical confidence bounds using scatter plot approach
         const createVerticalLineData = (xValue, yMax = 100) => {
@@ -218,7 +226,7 @@
                 datasets: [
                     {
                         label: 'Probability Density',
-                        data: histogramData.data.map((value, index) => ({
+                        data: (histogramData.data || []).map((value, index) => ({
                             x: adjustedRangeStart + index * dataPointSpacing,
                             y: value
                         })),
@@ -233,7 +241,7 @@
                     },
                     {
                         label: 'Cumulative Probability',
-                        data: histogramData.cumulativeData.map((value, index) => ({
+                        data: (histogramData.cumulativeData || []).map((value, index) => ({
                             x: adjustedRangeStart + index * dataPointSpacing,
                             y: value
                         })),
@@ -454,6 +462,7 @@
     
     // Update chart when props change
     $: if (distributionStats && chartCanvas) {
+        logger.log(LogCategory.ROTATION, 'DamageDistributionChart received distributionStats', distributionStats);
         updateChart();
     }
     

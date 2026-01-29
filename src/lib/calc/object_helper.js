@@ -1,4 +1,5 @@
-import { ABILITIES, abils, weapons, prayers } from './const';
+import { ABILITIES, abils, weapons } from './const/const';
+import { prayers } from './const/prayers';
 import { SETTINGS } from './settings';
 
 function create_object(settings) {
@@ -211,10 +212,10 @@ function calc_crit_chance(settings) {
         }
 
         // dracolich
-        if (settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES.REGULAR) {
-            crit_chance += 0.2;
-        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER) {
+        if (settings[SETTINGS.GREATER_DRACOLICH_INFUSION] === true) {
             crit_chance += 0.4;
+        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === true) { //regular dracolich infusion
+            crit_chance += 0.2;
         }
 
         // deathspore arrows

@@ -113,7 +113,7 @@ export const rotationActions = {
     },
 
     // Load a rotation
-    loadRotation(configId, onSuccess, onError) {
+    async loadRotation(configId, onSuccess, onError, refreshUICallback) {
         const config = rotationStore.savedRotations.find(c => c.id === configId);
         if (!config) {
             onError('Rotation not found.');
@@ -125,8 +125,18 @@ export const rotationActions = {
             rotationStore.extraActionBar = config.data.e.map(row => row.map(a => a || null));
             rotationStore.nulledTicks = config.data.n;
             rotationStore.stalledAbilities = config.data.t.map(a => a || null);
-            
+
+            // Import and call the damage calculation function
+            const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
+            calculateTotalDamageNew();
+
+            // Refresh UI if callback provided (updates row gap, etc.)
+            if (refreshUICallback) {
+                refreshUICallback();
+            }
+
             onSuccess(`Rotation "${config.name}" has been loaded!`);
+
         } catch (e) {
             onError('Failed to load rotation. The file might be corrupted.');
         }
@@ -180,21 +190,32 @@ export const rotationActions = {
         for (let key in rotationStore.buffs) {
             if (Object.hasOwnProperty.call(rotationStore.buffs, key)) {
                 rotationStore.buffs[key].buffTicks = Array(BAR_SIZE).fill(0);
+                rotationStore.buffs[key].activeRows = [];
+                rotationStore.buffs[key].idx = -1;
             }
         }
     },
 
     // Import rotation from data
-    importRotation(data, onSuccess, onError) {
+    async importRotation(data, onSuccess, onError, refreshUICallback) {
         try {
             // Handle both old format (just data) and new format (with metadata)
             const rotationData = data.data || data;
-            
+
             rotationStore.abilityBar = rotationData.a.map(a => a || null);
             rotationStore.extraActionBar = rotationData.e.map(row => row.map(a => a || null));
             rotationStore.nulledTicks = rotationData.n;
             rotationStore.stalledAbilities = rotationData.t.map(a => a || null);
-            
+
+            // Import and call the damage calculation function
+            const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
+            calculateTotalDamageNew();
+
+            // Refresh UI if callback provided (updates row gap, etc.)
+            if (refreshUICallback) {
+                refreshUICallback();
+            }
+
             onSuccess('Rotation imported successfully!');
         } catch (e) {
             onError('Failed to import rotation. The file might be corrupted or in an invalid format.');
@@ -203,21 +224,14 @@ export const rotationActions = {
 
     // Update damage calculations
     updateDamageCalculations(calculateTotalDamage, calculateGaussianParameters) {
-        const dmgResult = calculateTotalDamage(rotationStore, BAR_SIZE);
-        rotationStore.totalDamage = dmgResult[0];
-        rotationStore.poisonDamage = dmgResult[1];
-        rotationStore.familiarDamage = dmgResult[2];
-        rotationStore.distributionStats = dmgResult[3];
-        
+        const dmgResult = calculateTotalDamage(BAR_SIZE);
+        rotationStore.totalDamage = dmgResult.regularDamage;
+        rotationStore.poisonDamage = dmgResult.poisonDamage;
+        rotationStore.familiarDamage = dmgResult.familiarDamage;
+        rotationStore.distributionStats = dmgResult.distributionStats;
+
         // Calculate Gaussian parameters for more accurate damage modeling
         const gaussianParams = calculateGaussianParameters(rotationStore.distributionStats);
-        console.log(
-            'Total Damage = ' + rotationStore.totalDamage + 
-            ' (Poison Damage = ' + rotationStore.poisonDamage + '; ' + 
-            'Familiar Damage = ' + rotationStore.familiarDamage + ')' +
-            ' | Gaussian Model: Mean = ' + Math.round(gaussianParams.mean) + 
-            ', StdDev = ' + Math.round(gaussianParams.stdDev)
-        );
     }
 };
 

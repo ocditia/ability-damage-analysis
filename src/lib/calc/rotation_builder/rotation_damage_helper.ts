@@ -1,8 +1,12 @@
 import { create_damage_object } from './rota_object_helper';
 import { SETTINGS } from '../settings';
-import { ABILITIES, abils } from '../const';
+import { ABILITIES, abils } from '../const/const';
 import { on_cast, on_hit } from './damage_calc_new';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
+
+// Import and re-export from calculation_utils
+import { add_adrenaline } from './calculation_utils';
+export { add_adrenaline };
 
 // Helper functions
 function getDamageDistribution(dmgObject: DamageObject, kind: DamageKind): DamageDistribution | undefined {
@@ -18,15 +22,6 @@ function iterateDistributions(dmgObject: DamageObject, callback: (distribution: 
     }
 }
 
-export function add_adrenaline(settings, amount: number) {
-    if (settings[SETTINGS.NATURAL_INSTINCT] && amount > 0) {
-        amount *= 2;
-    }
-    let new_adren = settings[SETTINGS.ADRENALINE] + amount;
-    const max_adren = settings[SETTINGS.HEIGHTENED_SENSES] ? 110 : 100; //TODO vestements
-    settings[SETTINGS.ADRENALINE] = settings[SETTINGS.CAP_ADRENALINE] ? Math.min(max_adren, new_adren) : new_adren;
-}
-
 /**
  * Calculates the damage object for a single tick of a channelled ability
  * @param settings
@@ -35,7 +30,7 @@ export function add_adrenaline(settings, amount: number) {
  * @param timers - timers object containing buff timer information
  * @returns
  */
-function calc_channelled_hit(settings: Record<string, any>, hit_index: number, rotation: Record<number, string[]>, timers: Record<string, number>, abilityKey: string) {
+function calc_channelled_hit(settings: Record<string, any>, hit_index: number, rotation: Record<number, string[]>, timers: Record<string, number>, abilityKey: ABILITIES) {
     let hits: DamageObject[] = [];
     let dmgObject = create_damage_object(settings, abilityKey);
     for (let iter = 0; iter < rotation[hit_index].length; iter++) {
@@ -59,9 +54,10 @@ function calc_channelled_hit(settings: Record<string, any>, hit_index: number, r
  * @param timers - map of (buff_name -> buff_duration)
  * @param abilityKey 
  */
-function handle_buffs(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
+export function handleBuffs(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
     //TODO handle swiftness' weird damage calc + cleanup format
     switch (abilityKey) {
+        // Damage Buff Ults
         case ABILITIES.SUNSHINE:
             settings[SETTINGS.SUNSHINE] = true;
             timers[SETTINGS.SUNSHINE] = 50;
@@ -78,8 +74,16 @@ function handle_buffs(settings: Record<string, any>, timers: Record<string, numb
             settings['death swiftness'] = true;
             timers['death swiftness'] = 63;
             break;
-        //TODO remove split soul on changing weapon
-        case ABILITIES.SPLIT_SOUL_ECB:
+        case ABILITIES.BERSERK:
+            settings[SETTINGS.BERSERK] = true;
+            timers[SETTINGS.BERSERK] = 33;
+            break;
+        // Buff Special Attacks
+        case ABILITIES.BLACKHOLE:
+            settings[SETTINGS.BLACKHOLE] = true;
+            timers[SETTINGS.BLACKHOLE] = 35;
+            break;
+        case ABILITIES.SPLIT_SOUL_ECB: //TODO remove split soul on changing weapon
             settings['split soul'] = true; 
             timers['split soul'] = 25;
             break;
@@ -87,6 +91,11 @@ function handle_buffs(settings: Record<string, any>, timers: Record<string, numb
             settings[ABILITIES.BALANCE_BY_FORCE] = true; 
             timers[ABILITIES.BALANCE_BY_FORCE] = 50;
             break;
+            case ABILITIES.INSTABILITY:
+                settings[SETTINGS.INSTABILITY] = true; 
+                timers[SETTINGS.INSTABILITY] = 50;
+                break;
+        // Crit Buff
         case ABILITIES.INCENDIARY_SHOT:
         case ABILITIES.METEOR_STRIKE:
         case ABILITIES.TSUNAMI:
@@ -97,9 +106,15 @@ function handle_buffs(settings: Record<string, any>, timers: Record<string, numb
             settings[SETTINGS.NATURAL_INSTINCT] = true; 
             timers[ABILITIES.NATURAL_INSTINCT] = 34;
             break;
-        case ABILITIES.INSTABILITY:
-            settings[SETTINGS.INSTABILITY] = true; 
-            timers[SETTINGS.INSTABILITY] = 50;
+        // Melee Basic Buffs
+        case ABILITIES.FURY:
+            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.REGULAR; 
+            break;
+        case ABILITIES.GREATER_FURY:
+            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.GREATER; 
+            break;
+        case ABILITIES.CHAOS_ROAR:
+            settings[SETTINGS.CHAOS_ROAR] = true; 
             break;
     }
 }
@@ -113,7 +128,7 @@ export function handle_wen_buff(settings: Record<string, any>, timers: Record<st
 /**
  * Sets (greater) dracolich infusion buff to active if applicable
  */
-function handle_edraco(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
+export function handle_edraco(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
     let body = settings['body'];
     let helmet = settings['helmet'];
     let gloves = settings['gloves'];
@@ -121,7 +136,7 @@ function handle_edraco(settings: Record<string, any>, timers: Record<string, num
     let boots = settings['boots'];
 
     let items = [body, helmet, gloves, legs, boots];
-    function dracoBuff(startString: string, adrenGain: number, infusionTier: string) {
+    function dracoBuff(startString: string, adrenGain: number) {
         let nDracoPieces = items.filter(item => item && item.startsWith(startString)).length;
         if (abilityKey == ABILITIES.RAPID_FIRE_HIT || abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
 
@@ -131,12 +146,12 @@ function handle_edraco(settings: Record<string, any>, timers: Record<string, num
         if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
             if (nDracoPieces >= 3) {
                 let buff_duration = 5 + (3 * Math.max(nDracoPieces - 3, 0)); // 5 tick base duration
-                settings[SETTINGS.DRACOLICH_INFUSION] = infusionTier;
-                timers[SETTINGS.DRACOLICH_INFUSION] = buff_duration; 
+                settings[SETTINGS.GREATER_DRACOLICH_INFUSION] = true;
+                timers[SETTINGS.GREATER_DRACOLICH_INFUSION] = buff_duration; 
             }
         }
     }
-    dracoBuff('elite dracolich', 0.5, SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER);
+    dracoBuff('elite dracolich', 0.5);
     //dracoBuff('dracolich', 0.2, 'regular'); 
     //TOOD solve the floating point error for regular draco
 }
@@ -152,7 +167,7 @@ function handle_edraco(settings: Record<string, any>, timers: Record<string, num
  * @param hitTick - tick when hit occurs (unused currently)
  * @returns Array of damage objects representing all hits
  */
-function handle_sgb(settings: Record<string, any>, dmgObject: DamageObject): DamageObject[] {
+export function handle_sgb(settings: Record<string, any>, dmgObject: DamageObject): DamageObject[] {
     const hitMultipliers = [0, 1.16, 1.64, 2.44, 3.56, 5.0];
     const size = Math.min(settings[SETTINGS.TARGET_SIZE], 5);
     const hitMultiplier = hitMultipliers[size] - 1; // don't include guaranteed hit
@@ -182,7 +197,7 @@ function handle_sgb(settings: Record<string, any>, dmgObject: DamageObject): Dam
     return results;
 }
 
-function get_user_value(settings: Record<string, any>, dmgObject: DamageObject) {
+export function get_user_value(settings: Record<string, any>, dmgObject: DamageObject) {
     switch (settings[SETTINGS.MODE]) {
         case SETTINGS.MODE_VALUES.MEAN:
             return get_mean_damage(settings, dmgObject);
@@ -306,12 +321,4 @@ function get_max_crit(settings: Record<string, any>, dmgObject: DamageObject) {
     }
     return max_hit;
 }
-
-
-export { 
-    handle_buffs,
-    calc_channelled_hit,
-    get_user_value,
-    handle_sgb,
-    handle_edraco
-}; 
+ 

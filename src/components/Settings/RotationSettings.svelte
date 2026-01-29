@@ -1,4 +1,5 @@
 <script>
+    import { onMount } from 'svelte';
     import Checkbox from '../../components/Settings/Checkbox.svelte';
     import Number from '../../components/Settings/Number.svelte';
     import Select from '../../components/Settings/Select.svelte';
@@ -6,25 +7,29 @@
     import GradientSeparator from '../UI/GradientSeparator.svelte';
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';  
+    import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import '../../css/style.css';
     export let tab = 'general'; // Options as props
     export let styleTab = SettingsCombatStyles.RANGED;
-    export let settings;
     export let stacks;
     export let updateDamages;
     export let refreshUI;
     export let uiState;
 
+    // Local reference to settings store
+    $: settings = settingsStore.settings;
 
-    //raksha
-    //eyJhIjpbIm5hdHVyYWwgaW5zdGluY3QiLCIiLCIiLCJncmVhdGVyIGNvbmNlbnRyYXRlZCBibGFzdCIsIiIsIiIsImdyZWF0ZXIgcmljb2NoZXQiLCIiLCIiLCJkYXppbmcgc2hvdCIsIiIsIiIsIiIsIiIsImdyZWF0ZXIgZGVhdGgncyBzd2lmdG5lc3MiLCIiLCIiLCJyZXNvbmFuY2UiLCIiLCIiLCJzcGxpdCBzb3VsIGVjYiIsIiIsIiIsImdyZWF0ZXIgcmljb2NoZXQiLCIiLCIiLCJyYXBpZCBmaXJlIiwiIiwiIiwiIiwiIiwiIiwiIiwiIiwiYmFsYW5jZSBieSBmb3JjZSIsIiIsIiIsImRlc2NlbnQgb2YgZGFya25lc3MiLCIiLCIiLCJkZXNjZW50IG9mIGRhcmtuZXNzIiwiIiwiIiwiZ3JlYXRlciByaWNvY2hldCIsIiIsIiIsInNoYWRvdyB0ZW5kcmlscyIsIiIsIiIsImRhemluZyBzaG90IiwiIiwiIiwiaW5jZW5kaWFyeSBzaG90IiwiIiwiIiwic3BsaXQgc291bCBlY2IiLCIiLCIiLCJkZXNjZW50IG9mIGRhcmtuZXNzIiwiIiwiIiwiZ3JlYXRlciByaWNvY2hldCIsIiIsIiIsInJhcGlkIGZpcmUiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCJkZXNjZW50IG9mIGRhcmtuZXNzIiwiIiwiIiwiY3J5c3RhbCByYWluIiwiIiwiIiwiZGVzY2VudCBvZiBkYXJrbmVzcyIsIiIsIiIsImdyZWF0ZXIgcmljb2NoZXQiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiXSwiZSI6W1tdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFtdLFt7InRpdGxlIjoiZnVsIGFycm93cyIsImljb24iOiIvZ2Vhcl9pY29ucy9mdWwgYXJyb3dzLnBuZyJ9LCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiXSxbXSxbXSxbIiIseyJ0aXRsZSI6IndlbiBhcnJvd3MiLCJpY29uIjoiL2dlYXJfaWNvbnMvd2VuIGFycm93cy5wbmcifSwiIiwiIiwiIiwiIiwiIiwiIiwiIiwiIiwiIiwiIl0sW10sW10sW3sidGl0bGUiOiJkZWF0aHNwb3JlIGFycm93cyIsImljb24iOiIvZ2Vhcl9pY29ucy9kZWF0aHNwb3JlIGFycm93cy5wbmcifSwiIiwiIiwiIiwiIiwiIiwiIiwiIiwiIiwiIiwiIiwiIl0sW10sWyJBZGQgMTAwIEFkcmVuYWxpbmUiLHsidGl0bGUiOiJmdWwgYXJyb3dzIiwiaWNvbiI6Ii9nZWFyX2ljb25zL2Z1bCBhcnJvd3MucG5nIn0sIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiJdLFtdLFtdLFtdLFtdLFtdLFtdLFt7InRpdGxlIjoid2VuIGFycm93cyIsImljb24iOiIvZ2Vhcl9pY29ucy93ZW4gYXJyb3dzLnBuZyJ9LCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiLCIiXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXSxbXV0sIm4iOltmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZSxmYWxzZV0sInQiOlsidHN1bmFtaSIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiIsIiJdfQ==
-    settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH;
-    settings[SETTINGS.ICY_PRECISION]['value'] = 0;
-    settings[SETTINGS.BALANCE_BY_FORCE]['value'] = false;
-    settings[SETTINGS.INSTABILITY]['value'] = false;
+    // Initialize settings on component mount
+    onMount(async () => {
+        await initializeSettings();
+
+        // debugPreset2();
+        settings[SETTINGS.UNDEAD_SLAYER_ABILITY]['value'] = false;
+        settings[SETTINGS.BLACKHOLE]['value'] = false;
+    });
         
 
-    function makeNaked() {
+    function debugPreset() {
         const armour = [
             SETTINGS.RANGED_HELMET,
             SETTINGS.RANGED_BODY,
@@ -36,6 +41,11 @@
             SETTINGS.MAGIC_LEGS,
             SETTINGS.MAGIC_GLOVES,
             SETTINGS.MAGIC_BOOTS,
+            SETTINGS.MELEE_HELMET,
+            SETTINGS.MELEE_BODY,
+            SETTINGS.MELEE_LEGS,
+            SETTINGS.MELEE_GLOVES,
+            SETTINGS.MELEE_BOOTS,
             SETTINGS.NECKLACE,
             SETTINGS.CAPE,
             SETTINGS.RING,
@@ -47,31 +57,97 @@
             settings[armour]['value'] = 'none';
         });
         settings[SETTINGS.MAGIC_TH]['value'] = SETTINGS.MAGIC_TH_VALUES.CUSTOM;
-        settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 60
+        settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 90;
         settings[SETTINGS.MAGIC_PRAYER]['value'] = SETTINGS.MAGIC_PRAYER_VALUES.NONE;
         settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.DW;
-
 
         settings[SETTINGS.LVL20ARMOUR]['value'] = false;
         settings[SETTINGS.BITING]['value'] = 0;
         settings[SETTINGS.ERUPTIVE]['value'] = 0;
-        settings[SETTINGS.PRECISE]['value'] = 6;
+        settings[SETTINGS.PRECISE]['value'] = 0;
         settings[SETTINGS.AFTERSHOCK]['value'] = 0;
+        settings[SETTINGS.CAROMING]['value'] = 0;
+        
         
         settings[SETTINGS.VULN]['value'] = 'none';
 
         settings[SETTINGS.MAGIC_LEVEL]['value'] = 99;
         settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
+        settings[SETTINGS.STRENGTH_LEVEL]['value'] = 99;
         settings[SETTINGS.REAPER_CREW]['value'] = false;
         settings[SETTINGS.RANGED_PRAYER]['value'] = 'none ranged';
+        settings[SETTINGS.MELEE_PRAYER]['value'] = 'none melee';
         settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
         settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
         
-        settings[SETTINGS.SHARD_OF_GENESIS]['value'] = false;
-
-        settings[SETTINGS.INNATE_MASTERY]['value'] = false;
+        settings[SETTINGS.INNATE_MASTERY]['value'] = true;
         settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MIN_NO_CRIT;
+        settings[SETTINGS.KALG_SPEC]['value'] = false;
+        settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.CUSTOM;
+
+        settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
+        settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 80;
+        settings[SETTINGS.WEAPON_TYPE_MELEE]['value'] = SETTINGS.WEAPON_VALUES.TH;
+    }
+
+    function debugPreset2() {
+        const armour = [
+            SETTINGS.RANGED_HELMET,
+            SETTINGS.RANGED_BODY,
+            SETTINGS.RANGED_LEGS,
+            SETTINGS.RANGED_GLOVES,
+            SETTINGS.RANGED_BOOTS,
+            SETTINGS.MAGIC_HELMET,
+            SETTINGS.MAGIC_BODY,
+            SETTINGS.MAGIC_LEGS,
+            SETTINGS.MAGIC_GLOVES,
+            SETTINGS.MAGIC_BOOTS,
+            SETTINGS.MELEE_HELMET,
+            SETTINGS.MELEE_BODY,
+            SETTINGS.MELEE_LEGS,
+            SETTINGS.MELEE_GLOVES,
+            SETTINGS.MELEE_BOOTS,
+            SETTINGS.NECKLACE,
+            SETTINGS.CAPE,
+            SETTINGS.RING,
+            SETTINGS.POCKET,
+            SETTINGS.AURA,
+            SETTINGS.FAMILIAR,
+        ]
+        armour.forEach(armour => {
+            settings[armour]['value'] = 'none';
+        });
+        settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
+        settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 85;
+        settings[SETTINGS.MELEE_PRAYER]['value'] = SETTINGS.MELEE_PRAYER_VALUES.NONE;
+        settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH;
+
+        settings[SETTINGS.LVL20ARMOUR]['value'] = true;
+        settings[SETTINGS.BITING]['value'] = 4;
+        settings[SETTINGS.ERUPTIVE]['value'] = 0;
+        settings[SETTINGS.PRECISE]['value'] = 0;
+        settings[SETTINGS.AFTERSHOCK]['value'] = 0;
+        settings[SETTINGS.CAROMING]['value'] = 0;
         
+        
+        settings[SETTINGS.VULN]['value'] = 'none';
+
+        settings[SETTINGS.MAGIC_LEVEL]['value'] = 99;
+        settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
+        settings[SETTINGS.STRENGTH_LEVEL]['value'] = 99;
+        settings[SETTINGS.REAPER_CREW]['value'] = false;
+        settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
+        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
+        
+        settings[SETTINGS.INNATE_MASTERY]['value'] = false;
+        settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MEAN;
+        settings[SETTINGS.KALG_SPEC]['value'] = false;
+
+        settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
+        settings[SETTINGS.WEAPON_TYPE_MELEE]['value'] = SETTINGS.WEAPON_VALUES.TH;
+        settings[SETTINGS.NATURAL_INSTINCT]['value'] = true;
+
+        // settings[SETTINGS.CHAOS_ROAR]['value'] = true;
     }
 
     function testPreset() {
@@ -113,7 +189,7 @@
         
     }
     //makeNaked();
-    testPresetR();
+    //testPresetR();
     //settings[SETTINGS.ICY_CHILL_STACKS].value = 10;
     updateDamages();
 
@@ -177,6 +253,11 @@
         />
     </ul>
     <GradientSeparator marginTop="0.0rem" marginBottom="0.25rem" />
+    {#if !settingsStore.initialized}
+    <div class="w-full text-center py-8">
+        <p>Loading settings...</p>
+    </div>
+    {:else}
     <form class="w-full">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
             {#if tab === 'general'}
@@ -329,6 +410,11 @@
                         bind:setting={settings[SETTINGS.VULN]}
                         onchange={() => updateDamages()}
                         img="/effect_icons/Vulnerability_icon.webp"
+                    />
+                    <Select
+                        bind:setting={settings[SETTINGS.POISON]}
+                        onchange={() => updateDamages()}
+                        img="/effect_icons/poison.png"
                     />
                     <Number
                         bind:setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
@@ -544,6 +630,51 @@
                                 onchange={() => updateDamages()}
                             />
                         {:else if styleTab === SettingsCombatStyles.MELEE}
+                            <Select
+                                bind:setting={settings[SETTINGS.MELEE_HELMET]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Head_slot.webp"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.MELEE_BODY]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Torso_slot.png"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.MELEE_LEGS]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Legs_slot.png"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.MELEE_GLOVES]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Hands_slot.webp"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.MELEE_BOOTS]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Feet_slot.png"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.NECKLACE]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Neck_slot.png"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.CAPE]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Back_slot.png"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.RING]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Ring_slot.png"
+                            />
+                            
+                            <Select
+                                bind:setting={settings[SETTINGS.AUTO_CAST]}
+                                onchange={() => updateDamages()}
+                            />
                         {/if}
                         <Select
                             bind:setting={settings[SETTINGS.POCKET]}
@@ -554,21 +685,6 @@
                             bind:setting={settings[SETTINGS.AURA]}
                             onchange={() => updateDamages()}
                             img="/effect_icons/aura.png"
-                        />
-                        <Select
-                            bind:setting={settings[SETTINGS.FAMILIAR]}
-                            onchange={() => updateDamages()}
-                            img="/effect_icons/familiar.png"
-                        />
-                        <Number
-                                bind:setting={settings[SETTINGS.FAMILIAR_ACCURACY]}
-                                onchange={() => updateDamages()}
-                                img="/effect_icons/familiar.png"
-                            />
-                        <Checkbox
-                            bind:setting={settings[SETTINGS.KALG_SPEC]}
-                            onchange={() => updateDamages()}
-                            img="/effect_icons/crit_i_kal.png"
                         />
                     </div>
                 <div class="md:col-span-1">
@@ -825,7 +941,29 @@
                     <p>TODO =D</p>
                     {/if}
                 </div>
-
+                <div class="md:col-span-1">
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">Familiars</h5>
+                    <Select
+                            bind:setting={settings[SETTINGS.FAMILIAR]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/familiar.png"
+                        />
+                        <Number
+                                bind:setting={settings[SETTINGS.FAMILIAR_ACCURACY]}
+                                onchange={() => updateDamages()}
+                                img="/effect_icons/familiar.png"
+                            />
+                        <Checkbox
+                            bind:setting={settings[SETTINGS.KALG_SPEC]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/crit_i_kal.png"
+                        />
+                        <Checkbox
+                            bind:setting={settings[SETTINGS.USE_FAMILIAR_SCROLLS]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/familiar_icons/Steel_Titan_scroll_(Steel_of_Legends).png"
+                        />
+                </div>
                 
             {:else if tab === 'bosses'}
                 <div class="md:col-span-1 space-y-4">
@@ -843,4 +981,5 @@
             {/if}
         </div>
     </form>
+    {/if}
 </div>
