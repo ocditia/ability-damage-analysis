@@ -875,6 +875,7 @@ const SETTINGS = {
     HIT_COUNTER_START: 'hit counter start',
     HIT_COUNTER_END: 'hit counter end',
     IMBUE_GALES: 'imbue: gales',
+    RUNIC_CHARGE: 'runic charge',
 };
 
 const settingsConfig = {
@@ -2436,6 +2437,10 @@ const settingsConfig = {
     },
     [SETTINGS.IMBUE_GALES]: {
         label: 'Imbue: Gales',
+        default: false
+    },
+    [SETTINGS.RUNIC_CHARGE]: {
+        label: 'Runic charge',
         default: false
     },
 };

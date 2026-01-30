@@ -306,7 +306,7 @@ function calc_boosted_ad(settings, dmgObject) {
         }
 
         // icy precision (wen arrows)
-        const wen_arrow_abil_types_buffed = ['threshold', 'ultimate', 'special attack'];
+        const wen_arrow_abil_types_buffed = ['threshold', 'ultimate', 'special attack', 'ability'];
         if (
             wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type']) &&
             settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS
@@ -586,6 +586,12 @@ function set_min_var(settings, dmgObject) {
         if (settings['ability'] === ABILITIES.DEEP_IMPACT) {
             min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
             var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
+        }
+
+        // dragon breath runic charge beta
+        if (abils[settings['ability']] === ABILITIES.DRAGON_BREATH_BETA && settings[SETTINGS.RUNIC_CHARGE] === true) {
+            min_percent = 2.6;
+            var_percent = 0.5;
         }
 
         // asphyxiate

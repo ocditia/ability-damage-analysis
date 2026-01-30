@@ -1741,6 +1741,31 @@ const ABILITIES = {
     TIME_STRIKE: 'time strike',
     THE_LAST_COMMAND: 'the last command',
 
+    MAGIC_BETA: 'magic beta',
+    WILD_MAGIC_HIT_BETA: 'wild magic hit beta',
+    WILD_MAGIC_BETA: 'wild magic beta',
+    GSONIC_BETA: 'gsonic beta',
+    DRAGON_BREATH_BETA: 'dragon breath beta',
+    OMNIPOWER_HIT_BETA: 'omnipower hit beta',
+    OMNIPOWER_BETA: 'omnipower beta',
+    RUNIC_CHARGE: 'runic charge',
+    COMBUST_HIT_BETA: 'comust hit beta',
+    COMBUST_BETA: 'combust beta',
+    GCHAIN_BETA: 'gchain beta',
+    IMPACT_BETA: 'impact beta',
+    ASPHYX_HIT_BETA: 'asphyx hit beta',
+    ASPHYX_BETA: 'asphyx beta',
+    SMOKE_TENDRILS_1_BETA: 'smoke tendrils 1 beta',
+    SMOKE_TENDRILS_2_BETA: 'smoke tendrils 2 beta',
+    SMOKE_TENDRILS_3_BETA: 'smoke tendrils 3 beta',
+    SMOKE_TENDRILS_4_BETA: 'smoke tendrils 4 beta',
+    SMOKE_TENDRILS_BETA: 'smoke tendrils beta',
+    GCONC_HIT_BETA: 'gconc hit beta',
+    GCONC_BETA: 'gconc beta',
+    MAMGA_HIT_BETA: 'magma hit beta',
+    MAGMA_BETA: 'magma beta',
+
+
     MELEE_AUTO: 'melee auto',
     SLICE: 'slice',
     BACKHAND: 'backhand',
@@ -4099,6 +4124,274 @@ const abils = {
         'main style': 'magic',
         'damage type': 'magic'
     },
+
+    [ABILITIES.MAGIC_BETA]: {
+        // ability name
+        'min hit': 0.9, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
+    [ABILITIES.WILD_MAGIC_HIT_BETA]: {
+        // ability name
+        'min hit': 1.25, // min % of abil expressed as a decimal
+        'var hit': 0.3,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic'
+    },
+    [ABILITIES.WILD_MAGIC_BETA]: {
+        // ability name
+        'min hit': 1.25, // min % of abil expressed as a decimal
+        'var hit': 0.3,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+        hits: {
+            1: [
+                ABILITIES.WILD_MAGIC_HIT_BETA, 'next hit', ABILITIES.WILD_MAGIC_HIT_BETA
+            ]
+        }
+    },
+    [ABILITIES.GSONIC_BETA]: {
+        // ability name
+        'min hit': 1.15, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+    },
+    [ABILITIES.DRAGON_BREATH_BETA]: {
+        // ability name
+        'min hit': 1.1, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+    },
+    [ABILITIES.OMNIPOWER_HIT_BETA]: {
+        // ability name
+        'min hit': 1.2, // min % of abil expressed as a decimal
+        'var hit': 0.3,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+    },
+    [ABILITIES.OMNIPOWER_BETA]: {
+        // ability name
+        'min hit': 1.2, // min % of abil expressed as a decimal
+        'var hit': 0.3,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+        hits: {
+            1: [
+                ABILITIES.OMNIPOWER_HIT_BETA, 'next hit', ABILITIES.OMNIPOWER_HIT_BETA, 
+                'next hit', ABILITIES.OMNIPOWER_HIT_BETA, 'next hit', ABILITIES.OMNIPOWER_HIT_BETA
+            ]
+        }
+    },
+    [ABILITIES.OMNIPOWER_BETA]: {
+        // ability name
+        'min hit': 1.2, // min % of abil expressed as a decimal
+        'var hit': 0.3,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+        hits: {
+            1: [
+                ABILITIES.OMNIPOWER_HIT_BETA, 'next hit', ABILITIES.OMNIPOWER_HIT_BETA, 
+                'next hit', ABILITIES.OMNIPOWER_HIT_BETA, 'next hit', ABILITIES.OMNIPOWER_HIT_BETA
+            ]
+        }
+    },
+    [ABILITIES.COMBUST_HIT_BETA]: {
+        // ability name
+        'min hit': 0.3, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'burn', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+    },
+    [ABILITIES.COMBUST_BETA]: {
+        // ability name
+        'min hit': 0.3, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'burn', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+        hits: {
+            1: [
+                ABILITIES.COMBUST_HIT_BETA, ABILITIES.COMBUST_HIT_BETA, ABILITIES.COMBUST_HIT_BETA, ABILITIES.COMBUST_HIT_BETA,
+                ABILITIES.COMBUST_HIT_BETA, ABILITIES.COMBUST_HIT_BETA, ABILITIES.COMBUST_HIT_BETA, ABILITIES.COMBUST_HIT_BETA,
+                ABILITIES.COMBUST_HIT_BETA, ABILITIES.COMBUST_HIT_BETA,
+            ]
+        }
+    },
+    [ABILITIES.GCHAIN_BETA]: {
+        // ability name
+        'min hit': 0.65, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+    },
+    [ABILITIES.IMPACT_BETA]: {
+        // ability name
+        'min hit': 0.65, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+    },
+    [ABILITIES.SMOKE_TENDRILS_1_BETA]: {
+        // ability name
+        'min hit': 0.55, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
+    [ABILITIES.SMOKE_TENDRILS_2_BETA]: {
+        // ability name
+        'min hit': 0.65, // min % of abil expressed as a decimal
+        'var hit': 0.15,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
+    [ABILITIES.SMOKE_TENDRILS_3_BETA]: {
+        // ability name
+        'min hit': 0.75, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
+    [ABILITIES.SMOKE_TENDRILS_4_BETA]: {
+        // ability name
+        'min hit': 0.9, // min % of abil expressed as a decimal
+        'var hit': 0.25,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
+    [ABILITIES.SMOKE_TENDRILS_BETA]: {
+        // ability name
+        'min hit': 0.9, // min % of abil expressed as a decimal
+        'var hit': 0.4,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+        hits: {
+            1: [ABILITIES.SMOKE_TENDRILS_1_BETA],
+            2: [],
+            3: [ABILITIES.SMOKE_TENDRILS_2_BETA],
+            4: [],
+            5: [ABILITIES.SMOKE_TENDRILS_3_BETA],
+            6: [],
+            7: [ABILITIES.SMOKE_TENDRILS_4_BETA]
+        }
+    },
+    [ABILITIES.GCONC_HIT_BETA]: {
+        // ability name
+        'min hit': 0.4, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+    },
+    [ABILITIES.GCONC_BETA]: {
+        // ability name
+        'min hit': 0.9, // min % of abil expressed as a decimal
+        'var hit': 0.4,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+        hits: {
+            1: [ABILITIES.GCONC_HIT_BETA],
+            2: [ABILITIES.GCONC_HIT_BETA],
+            3: [ABILITIES.GCONC_HIT_BETA],
+        }
+    },
+    
 
 
     [ABILITIES.NECRO_AD]: {
