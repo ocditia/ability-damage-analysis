@@ -874,6 +874,7 @@ const SETTINGS = {
     LEAGUES_EOF_RELIC: 'leagues eof relic',
     HIT_COUNTER_START: 'hit counter start',
     HIT_COUNTER_END: 'hit counter end',
+    IMBUE_GALES: 'imbue: gales',
 };
 
 const settingsConfig = {
@@ -2432,6 +2433,10 @@ const settingsConfig = {
     [SETTINGS.HIT_COUNTER_END]: {
         label: 'End tracking hit',
         default: 10000
+    },
+    [SETTINGS.IMBUE_GALES]: {
+        label: 'Imbue: Gales',
+        default: false
     },
 };
 

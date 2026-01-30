@@ -1655,6 +1655,26 @@ const ABILITIES = {
     SHADOWFALL_2: 'shadowfall 2',
     SHADOWFALL: 'shadowfall',
 
+    RANGED_DW_BETA: 'ranged dw auto beta',
+    RANGED_TH_BETA: 'ranged 2h auto beta',
+    SNAP_SHOT_HIT_BETA: 'snap shot hit beta',
+    SNAP_SHOT_BETA: 'snap shot beta',
+    SNIPE_BETA: 'snipe beta',
+    PIERCING_SHOT_HIT_BETA: 'piercing shot hit beta',
+    PIERCING_SHOT_BETA: 'piercing shot beta',
+    DEADSHOT_HIT_BETA: 'deadshot hit beta',
+    DEADSHOT_BETA: 'deadshot beta',
+    BOMBARDMENT_BETA: 'bombardment beta',
+    BINDING_SHOT_BETA: 'binding shot beta',
+    RAPID_FIRE_HIT_BETA: 'rapid fire hit beta',
+    RAPID_FIRE_BETA: 'rapid fire beta',
+    SHADOW_TENDRILS_BETA: 'shadow tendrils beta',
+    GRICO_1_BETA: 'grico 1 beta',
+    GRICO_2_BETA: 'grico 2 beta',
+    GRICO_3_BETA: 'grico 3 beta',
+    GRICO_BETA: 'grico beta',
+    CORRUPTION_SHOT_BETA: 'corruption shot beta',
+
     MAGIC_AUTO: 'magic auto',
     WRACK: 'wrack',
     IMPACT: 'impact',
@@ -5470,6 +5490,252 @@ const abils = {
             1: [ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_2]
         }
     },
+
+    [ABILITIES.RANGED_DW_BETA]: {
+        'min hit': 0.6,
+        'var hit': 0.13,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.RANGED_TH_BETA]: {
+        'min hit': 0.9,
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.SNAP_SHOT_HIT_BETA]: {
+        'min hit': 1.35,
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.SNAP_SHOT_BETA]: {
+        'min hit': 1.35,
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 25,
+        hits: {
+            1: [ABILITIES.SNAP_SHOT_HIT_BETA, 'next hit', ABILITIES.SNAP_SHOT_HIT_BETA]
+        }
+    },
+    [ABILITIES.SNIPE_BETA]: {
+        'min hit': 3.0,
+        'var hit': 0.6,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.PIERCING_SHOT_HIT_BETA]: {
+        'min hit': 0.6,
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.PIERCING_SHOT_BETA]: {
+        'min hit': 0.6,
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+        hits: {
+            1: [ABILITIES.PIERCING_SHOT_HIT_BETA, 'next hit', ABILITIES.PIERCING_SHOT_HIT_BETA]
+        }
+    },
+    [ABILITIES.DEADSHOT_HIT_BETA]: {
+        'min hit': 1.1,
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.DEADSHOT_BETA]: {
+        'min hit': 0.6,
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 60,
+        hits: {
+            1: [ABILITIES.DEADSHOT_HIT_BETA, 'next hit', ABILITIES.DEADSHOT_HIT_BETA, 'next hit', ABILITIES.DEADSHOT_HIT_BETA
+                , 'next hit', ABILITIES.DEADSHOT_HIT_BETA, 'next hit', ABILITIES.DEADSHOT_HIT_BETA
+            ]
+        }
+    },
+    [ABILITIES.BOMBARDMENT_BETA]: {
+        'min hit': 1.5,
+        'var hit': 0.3,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 25,
+    },
+    [ABILITIES.BINDING_SHOT_BETA]: {
+        'min hit': 0.65,
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.RAPID_FIRE_HIT_BETA]: {
+        'min hit': 0.75,
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.RAPID_FIRE_BETA]: {
+        'min hit': 0.75,
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 20,
+        hits: {
+            1: [ABILITIES.RAPID_FIRE_HIT_BETA],
+            2: [ABILITIES.RAPID_FIRE_HIT_BETA],
+            3: [ABILITIES.RAPID_FIRE_HIT_BETA],
+            4: [ABILITIES.RAPID_FIRE_HIT_BETA],
+            5: [ABILITIES.RAPID_FIRE_HIT_BETA],
+            6: [ABILITIES.RAPID_FIRE_HIT_BETA],
+            7: [ABILITIES.RAPID_FIRE_HIT_BETA],
+            8: [ABILITIES.RAPID_FIRE_HIT_BETA],
+        }
+    },
+    [ABILITIES.SHADOW_TENDRILS_BETA]: {
+        'min hit': 2.3,
+        'var hit': 0.7,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 25,
+    },
+    [ABILITIES.GRICO_1_BETA]: {
+        'min hit': 0.65,
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic  ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.GRICO_2_BETA]: {
+        'min hit': 0.3,
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic  ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.GRICO_3_BETA]: {
+        'min hit': 0.1,
+        'var hit': 0.05,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic  ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.GRICO_BETA]: {
+        'min hit': 0.3,
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic  ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+        hits: {
+            1: [ABILITIES.GRICO_1_BETA, 'next hit', ABILITIES.GRICO_2_BETA, 'next hit', ABILITIES.GRICO_2_BETA,
+                'next hit', ABILITIES.GRICO_3_BETA, 'next hit', ABILITIES.GRICO_3_BETA,
+                'next hit', ABILITIES.GRICO_3_BETA, 'next hit', ABILITIES.GRICO_3_BETA,
+            ]
+        }
+    },
+
+
 
     [ABILITIES.TIME_STRIKE]: {
         // ability name
