@@ -1761,6 +1761,8 @@ const ABILITIES = {
     SMOKE_TENDRILS_4_BETA: 'smoke tendrils 4 beta',
     SMOKE_TENDRILS_BETA: 'smoke tendrils beta',
     GCONC_HIT_BETA: 'gconc hit beta',
+    GCONC_HIT_2_BETA: 'gconc hit 2 beta',
+    GCONC_HIT_3_BETA: 'gconc hit 3 beta',
     GCONC_BETA: 'gconc beta',
     MAMGA_HIT_BETA: 'magma hit beta',
     MAGMA_BETA: 'magma beta',
@@ -4674,6 +4676,30 @@ const abils = {
         'main style': 'magic',
         'damage type': 'magic',
     },
+    [ABILITIES.GCONC_HIT_2_BETA]: {
+        // ability name
+        'min hit': 0.4, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+    },
+    [ABILITIES.GCONC_HIT_3_BETA]: {
+        // ability name
+        'min hit': 0.4, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+    },
     [ABILITIES.GCONC_BETA]: {
         // ability name
         'min hit': 0.9, // min % of abil expressed as a decimal
@@ -4687,8 +4713,8 @@ const abils = {
         'damage type': 'magic',
         hits: {
             1: [ABILITIES.GCONC_HIT_BETA],
-            2: [ABILITIES.GCONC_HIT_BETA],
-            3: [ABILITIES.GCONC_HIT_BETA],
+            2: [ABILITIES.GCONC_HIT_2_BETA],
+            3: [ABILITIES.GCONC_HIT_3_BETA],
         }
     },
     

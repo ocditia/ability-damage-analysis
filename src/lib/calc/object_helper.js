@@ -167,10 +167,12 @@ function calc_crit_chance(settings) {
             crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
         }
 
+        
         // (g)conc
         if (abils[settings['ability']]['ability classification'] != 'proc' &&
             abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
         ) {
+            console.log("hey")
             crit_chance += 0.05 * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
         } 
 
@@ -187,8 +189,40 @@ function calc_crit_chance(settings) {
             crit_chance += 0.1;
         }
 
+        // (g)conc beta
+        if (settings[SETTINGS.RUNIC_CHARGE] === false) {
+            if (abils[settings['ability']]['ability classification'] != 'proc' &&
+                abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
+            ) {
+                crit_chance += 0.08 * settings[SETTINGS.GCONC_BETA_STACKS];
+            } 
+        } else {
+            if (abils[settings['ability']]['ability classification'] != 'proc' &&
+                abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
+            ) {
+                crit_chance += 0.28 * settings[SETTINGS.GCONC_BETA_STACKS];
+            } 
+        }
+        
+
+        // (g)conc beta self boost
+        if (
+            settings['ability'] === ABILITIES.GCONC_HIT_2_BETA
+        ) {
+            crit_chance += 0.08;
+        } else if (
+            settings['ability'] === ABILITIES.GCONC_HIT_3_BETA
+        ) {
+            crit_chance += 0.16;
+        }
+
         // smoke tendrils
         if ([ABILITIES.SMOKE_TENDRILS_1, ABILITIES.SMOKE_TENDRILS_2, ABILITIES.SMOKE_TENDRILS_3, ABILITIES.SMOKE_TENDRILS_4].includes(settings['ability'])) {
+            crit_chance = 1;
+        }
+
+        // smoke tendrils
+        if ([ABILITIES.SMOKE_TENDRILS_1_BETA, ABILITIES.SMOKE_TENDRILS_2_BETA, ABILITIES.SMOKE_TENDRILS_3_BETA, ABILITIES.SMOKE_TENDRILS_4_BETA].includes(settings['ability'])) {
             crit_chance = 1;
         }
     }

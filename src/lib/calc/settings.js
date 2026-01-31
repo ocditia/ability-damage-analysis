@@ -754,6 +754,7 @@ const SETTINGS = {
     ESSENCE_CORRUPTION: 'essence corruption',
     WALKED_TARGET: 'walked target',
     CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
+    GCONC_BETA_STACKS: 'gconc beta stacks',
     CHAOS_ROAR: 'chaos roar',
     FURY_BUFF: 'fury buff',
     FURY_BUFF_VALUES: {
@@ -2094,6 +2095,10 @@ const settingsConfig = {
     },
     [SETTINGS.CONCENTRATED_BLAST_STACKS]: {
         label: 'Conc stacks',
+        default: 0
+    },
+    [SETTINGS.GCONC_BETA_STACKS]: {
+        label: 'Gconc beta',
         default: 0
     },
     [SETTINGS.CHAOS_ROAR]: {

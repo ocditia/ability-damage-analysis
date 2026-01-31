@@ -594,7 +594,7 @@ function set_min_var(settings, dmgObject) {
         }
 
         // dragon breath runic charge beta
-        if (abils[settings['ability']] === ABILITIES.DRAGON_BREATH_BETA && settings[SETTINGS.RUNIC_CHARGE] === true) {
+        if (settings['ability'] === ABILITIES.DRAGON_BREATH_BETA && settings[SETTINGS.RUNIC_CHARGE] === true) {
             min_percent = 2.6;
             var_percent = 0.5;
         }

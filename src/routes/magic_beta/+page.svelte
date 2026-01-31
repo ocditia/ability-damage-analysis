@@ -372,6 +372,14 @@
                                     min="0"
                                 />
                                 <Number
+                                    bind:setting={settings[SETTINGS.GCONC_BETA_STACKS]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/gconc.png"
+                                    step="1"
+                                    max="3"
+                                    min="0"
+                                />
+                                <Number
                                     bind:setting={settings[SETTINGS.DETONATE]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/detonate.png"
