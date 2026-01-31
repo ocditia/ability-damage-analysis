@@ -80,6 +80,36 @@
                             </div>
                         </div>
                     </a>
+                    <a href="/magic_beta" class="flex flex-col group">
+                        <div class="card border-b border-card-light">
+                            <div
+                                class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
+                            >
+                                <img class="card-icon" src="/style_icons/magic.svg" alt="" />
+                                <div class="card-title">Magic Damage Calculator (beta)</div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="/melee_beta" class="flex flex-col group">
+                        <div class="card border-b border-card-light">
+                            <div
+                                class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
+                            >
+                                <img class="card-icon" src="style_icons/melee.svg" alt="" />
+                                <div class="card-title">Melee Damage Calculator (beta)</div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="/ranged_beta" class="flex flex-col group">
+                        <div class="card border-b border-card-light">
+                            <div
+                                class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
+                            >
+                                <img class="card-icon" src="style_icons/ranged.svg" alt="" />
+                                <div class="card-title">Ranged Damage Calculator (beta)</div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="xl:col-span-9 xl:row-start-5">
