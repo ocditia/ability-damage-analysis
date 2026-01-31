@@ -480,6 +480,11 @@ function ability_specific_effects(settings, dmgObject) {
         if (settings['ability'] === ABILITIES.PUNISH && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2.5);
         }
+
+        // punish low beta
+        if (settings['ability'] === ABILITIES.PUNISH_BETA && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2.5);
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
