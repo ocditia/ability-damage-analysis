@@ -6382,7 +6382,7 @@ const abils = {
         }
     },
     [ABILITIES.DEADSHOT_HIT_BETA]: {
-        'min hit': 1.1,
+        'min hit': 0.55,
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
