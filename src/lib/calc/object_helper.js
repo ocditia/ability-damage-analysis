@@ -260,7 +260,7 @@ function calc_crit_chance(settings) {
         }
 
         // Bloodlust
-        if (settings[SETTINGS.BLOODLUST] === true || settings['ability'] === ABILITIES.ASSAULT_HIT_BETA) {
+        if (settings[SETTINGS.BLOODLUST] === true && settings['ability'] === ABILITIES.ASSAULT_HIT_BETA) {
             crit_chance += 0.15;
         }
     }
