@@ -791,6 +791,7 @@ const SETTINGS = {
     //SPLIT_SOUL_ECB: 'split soul ecb',
     ZGS: 'zgs',
     BERSERK: 'berserk',
+    BERSERK_BETA: 'berserk_beta',
     DETONATE: 'detonate charge percent',
     DIVINE_RAGE: 'divine rage',
     ECLIPSED_SOUL: 'eclipsed soul',
@@ -2224,6 +2225,10 @@ const settingsConfig = {
         default: false
     },
     [SETTINGS.BERSERK]: {
+        label: 'Berserk',
+        default: false
+    },
+    [SETTINGS.BERSERK_BETA]: {
         label: 'Berserk',
         default: false
     },

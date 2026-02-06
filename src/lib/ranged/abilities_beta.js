@@ -1,5 +1,5 @@
 import { ABILITIES } from '../calc/const.js';
-import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
+import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc_beta.js';
 
 const abilities = {
     [ABILITIES.RANGED_DW_BETA]: {
@@ -20,7 +20,7 @@ const abilities = {
     },
     [ABILITIES.SNIPE_BETA]: {
         title: 'Snipe',
-        calc: hit_damage_calculation,
+        calc: ability_damage_calculation,
     },
     [ABILITIES.GRICO_BETA]: {
         title: 'Grico',

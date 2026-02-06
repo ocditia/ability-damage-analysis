@@ -1659,6 +1659,8 @@ const ABILITIES = {
     RANGED_TH_BETA: 'ranged 2h auto beta',
     SNAP_SHOT_HIT_BETA: 'snap shot hit beta',
     SNAP_SHOT_BETA: 'snap shot beta',
+    SNIPE_HIT_1_BETA: 'snipe hit 1 beta',
+    SNIPE_HIT_2_BETA: 'snipe hit 2 beta',
     SNIPE_BETA: 'snipe beta',
     PIERCING_SHOT_HIT_BETA: 'piercing shot hit beta',
     PIERCING_SHOT_BETA: 'piercing shot beta',
@@ -1870,11 +1872,13 @@ const ABILITIES = {
     THE_FINAL_FLURRY: 'the final flurry',
 
     ATTACK_BETA: 'attack beta',
+    ATTACK_DW_BETA: 'attack dw beta',
     ASSAULT_HIT_BETA: 'assault hit beta',
     ASSAULT_BETA: 'assault beta',
     ADAPTIVE_STRIKE_DW_HIT_BETA: 'adaptive strike dw hit beta',
     ADAPTIVE_STRIKE_DW_BETA: 'adaptive strike dw beta',
     ADAPTIVE_STRIKE_TH_BETA: 'adaptive strike 2h beta',
+    PRESSING_BLOW_BETA: 'pressing blow',
     OVERPOWER_HIT_BETA: 'overpower hit beta',
     OVERPOWER_BETA: 'overpower beta',
     GFURY_BETA: 'gfury beta',
@@ -1896,6 +1900,9 @@ const ABILITIES = {
     PULVERISE_BETA: 'pulverise beta',
     METEOR_STRIKE_BETA: 'meteor strike beta',
     CHAOS_ROAR_BETA: 'chaos roar beta',
+
+    ONSLAUGHT_HIT_MOLD: 'onslaught hit mold',
+    ONSLAUGHT_MOLD: 'onslaught mold',
 
     // perks damage
     AFTERSHOCK: 'aftershock',
@@ -2164,7 +2171,7 @@ const abils = {
     },
     [ABILITIES.HURRICANE_1]: {
         // ability name
-        'min hit': 1.2, // min % of abil expressed as a decimal
+        'min hit': 1.35, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2176,7 +2183,7 @@ const abils = {
     },
     [ABILITIES.HURRICANE_2]: {
         // ability name
-        'min hit': 1.35, // min % of abil expressed as a decimal
+        'min hit': 1.55, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3299,8 +3306,20 @@ const abils = {
 
     [ABILITIES.ATTACK_BETA]: {
         // ability name
-        'min hit': 0.9, // min % of abil expressed as a decimal
+        'min hit': 1.05, // min % of abil expressed as a decimal
         'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+    },
+    [ABILITIES.ATTACK_DW_BETA]: {
+        // ability name
+        'min hit': 0.7, // min % of abil expressed as a decimal
+        'var hit': 0.13,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -3311,7 +3330,7 @@ const abils = {
     },
     [ABILITIES.ASSAULT_HIT_BETA]: {
         // ability name
-        'min hit': 1.35, // min % of abil expressed as a decimal
+        'min hit': 1.55, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3344,7 +3363,7 @@ const abils = {
     },
     [ABILITIES.ADAPTIVE_STRIKE_DW_HIT_BETA]: {
         // ability name
-        'min hit': 0.45, // min % of abil expressed as a decimal
+        'min hit': 0.65, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3371,7 +3390,19 @@ const abils = {
     },
     [ABILITIES.ADAPTIVE_STRIKE_TH_BETA]: {
         // ability name
-        'min hit': 0.9, // min % of abil expressed as a decimal
+        'min hit': 1.35, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+    },
+    [ABILITIES.PRESSING_BLOW_BETA]: {
+        // ability name
+        'min hit': 1.2, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3434,7 +3465,7 @@ const abils = {
     },
     [ABILITIES.GLFURRY_HIT_BETA]: {
         // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
+        'min hit': 0.7, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3466,11 +3497,79 @@ const abils = {
             8: [ABILITIES.GLFURRY_HIT_BETA],
         }
     },
+    [ABILITIES.DISMEMBER_1_HIT_BETA]: {
+        // ability name
+        'min hit': 0.35, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
+    [ABILITIES.DISMEMBER_1_BETA]: {
+        // ability name
+        'min hit': 0.25, // min % of abil expressed as a decimal
+        'var hit': 0.06,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        hits: {
+            1: [
+                ABILITIES.DISMEMBER_1_HIT_BETA,
+                ABILITIES.DISMEMBER_1_HIT_BETA,
+                ABILITIES.DISMEMBER_1_HIT_BETA,
+                ABILITIES.DISMEMBER_1_HIT_BETA,
+                ABILITIES.DISMEMBER_1_HIT_BETA,
+                ABILITIES.DISMEMBER_1_HIT_BETA
+            ]
+        }
+    },
+    [ABILITIES.DISMEMBER_2_HIT_BETA]: {
+        // ability name
+        'min hit': 0.75, // min % of abil expressed as a decimal
+        'var hit': 0.3,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee'
+    },
+    [ABILITIES.DISMEMBER_2_BETA]: {
+        // ability name
+        'min hit': 0.25, // min % of abil expressed as a decimal
+        'var hit': 0.06,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        hits: {
+            1: [
+                ABILITIES.DISMEMBER_2_HIT_BETA,
+                ABILITIES.DISMEMBER_2_HIT_BETA,
+                ABILITIES.DISMEMBER_2_HIT_BETA,
+                ABILITIES.DISMEMBER_2_HIT_BETA,
+                ABILITIES.DISMEMBER_2_HIT_BETA,
+                ABILITIES.DISMEMBER_2_HIT_BETA
+            ]
+        }
+    },
     [ABILITIES.DISMEMBER_3_HIT_BETA]: {
-        'min hit': 0.7,
+        'min hit': 1.25,
         'var hit': 0.0,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
@@ -3503,12 +3602,12 @@ const abils = {
         'adren cost': 0,
         hits: {
             1: [ABILITIES.DISMEMBER_3_INITIAL_BETA, ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA
-                , ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA
+                , ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA
             ]
         }
     },
     [ABILITIES.BACKHAND_BETA]: {
-        'min hit': 0.65,
+        'min hit': 0.95,
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3520,7 +3619,7 @@ const abils = {
         'adren cost': 0,
     },
     [ABILITIES.PUNISH_BETA]: {
-        'min hit': 0.75,
+        'min hit': 1.0,
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3532,7 +3631,7 @@ const abils = {
         'adren cost': 0,
     },
     [ABILITIES.PULVERISE_BETA]: {
-        'min hit': 2.3,
+        'min hit': 2.7,
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -4583,6 +4682,40 @@ const abils = {
         'main style': 'magic',
         'damage type': 'magic',
     },
+    [ABILITIES.MAMGA_HIT_BETA]: {
+        // ability name
+        'min hit': 0.35, // min % of abil expressed as a decimal
+        'var hit': 0.1,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
+    [ABILITIES.MAGMA_BETA]: {
+        // ability name
+        'min hit': 0.25, // min % of abil expressed as a decimal
+        'var hit': 0.05,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+        hits: {
+            1: [ABILITIES.MAGMA_TEMPEST_HIT],
+            2: [ABILITIES.MAGMA_TEMPEST_HIT],
+            3: [ABILITIES.MAGMA_TEMPEST_HIT],
+            4: [ABILITIES.MAGMA_TEMPEST_HIT],
+            5: [ABILITIES.MAGMA_TEMPEST_HIT],
+            6: [ABILITIES.MAGMA_TEMPEST_HIT],
+            7: [ABILITIES.MAGMA_TEMPEST_HIT],
+            8: [ABILITIES.MAGMA_TEMPEST_HIT]
+        }
+    },
     [ABILITIES.IMPACT_BETA]: {
         // ability name
         'min hit': 0.65, // min % of abil expressed as a decimal
@@ -4700,6 +4833,24 @@ const abils = {
         'main style': 'magic',
         'damage type': 'magic',
     },
+    [ABILITIES.GCONC_BETA]: {
+        // ability name
+        'min hit': 0.9, // min % of abil expressed as a decimal
+        'var hit': 0.4,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+        hits: {
+            1: [ABILITIES.GCONC_HIT_BETA],
+            2: [ABILITIES.GCONC_HIT_2_BETA],
+            3: [ABILITIES.GCONC_HIT_3_BETA],
+        }
+    },
+
     [ABILITIES.GCONC_BETA]: {
         // ability name
         'min hit': 0.9, // min % of abil expressed as a decimal
@@ -6161,9 +6312,21 @@ const abils = {
             1: [ABILITIES.SNAP_SHOT_HIT_BETA, 'next hit', ABILITIES.SNAP_SHOT_HIT_BETA]
         }
     },
-    [ABILITIES.SNIPE_BETA]: {
+    [ABILITIES.SNIPE_HIT_1_BETA]: {
         'min hit': 3.0,
         'var hit': 0.6,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.SNIPE_HIT_2_BETA]: {
+        'min hit': 1.5,
+        'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -6172,6 +6335,24 @@ const abils = {
         'main style': 'ranged',
         'damage type': 'ranged',
         'adren cost': 0,
+    },
+    [ABILITIES.SNIPE_BETA]: {
+        'min hit': 3.0,
+        'var hit': 0.6,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+        'duration': 4,  
+        hits: {
+            1: [],
+            2: [],
+            3: [ABILITIES.SNIPE_HIT_1_BETA]
+        }
     },
     [ABILITIES.PIERCING_SHOT_HIT_BETA]: {
         'min hit': 0.6,
@@ -6225,6 +6406,7 @@ const abils = {
         'adren cost': 60,
         hits: {
             1: [ABILITIES.DEADSHOT_HIT_BETA, 'next hit', ABILITIES.DEADSHOT_HIT_BETA, 'next hit', ABILITIES.DEADSHOT_HIT_BETA
+                , 'next hit', ABILITIES.DEADSHOT_HIT_BETA, 'next hit', ABILITIES.DEADSHOT_HIT_BETA, 'next hit', ABILITIES.DEADSHOT_HIT_BETA
                 , 'next hit', ABILITIES.DEADSHOT_HIT_BETA, 'next hit', ABILITIES.DEADSHOT_HIT_BETA
             ]
         }
@@ -6351,6 +6533,57 @@ const abils = {
                 'next hit', ABILITIES.GRICO_3_BETA, 'next hit', ABILITIES.GRICO_3_BETA,
                 'next hit', ABILITIES.GRICO_3_BETA, 'next hit', ABILITIES.GRICO_3_BETA,
             ]
+        }
+    },
+
+    [ABILITIES.ONSLAUGHT_HIT_MOLD]: {
+        'min hit': 1.0,
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic',
+        'adren cost': 0,
+    },
+    [ABILITIES.ONSLAUGHT_MOLD]: {
+        'min hit': 1.0,
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+        hits: {
+            1: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            2: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            3: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            4: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            5: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            6: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            7: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            8: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            9: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            10: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            11: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            12: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            13: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            14: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            15: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            16: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            17: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            18: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            19: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            20: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            21: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            22: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            23: [ABILITIES.ONSLAUGHT_HIT_MOLD],
+            24: [ABILITIES.ONSLAUGHT_HIT_MOLD],
         }
     },
 

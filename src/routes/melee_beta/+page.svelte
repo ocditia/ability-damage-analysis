@@ -65,9 +65,9 @@
         damages = damages.map(ability => {
             adaptedSettings['ability'] = ability.key;
 
-            ability.regular = ability.calc({ ...adaptedSettings, zgs: false, berserk: false });
-            ability.zgs = ability.calc({ ...adaptedSettings, zgs: true, berserk: false });
-            ability.berserk = ability.calc({ ...adaptedSettings, zgs: false, berserk: true });
+            ability.regular = ability.calc({ ...adaptedSettings, zgs: false, berserk_beta: false });
+            ability.zgs = ability.calc({ ...adaptedSettings, zgs: true, berserk_beta: false });
+            ability.berserk = ability.calc({ ...adaptedSettings, zgs: false, berserk_beta: true });
 
             return ability;
         })

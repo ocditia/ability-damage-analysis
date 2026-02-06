@@ -172,7 +172,6 @@ function calc_crit_chance(settings) {
         if (abils[settings['ability']]['ability classification'] != 'proc' &&
             abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
         ) {
-            console.log("hey")
             crit_chance += 0.05 * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
         } 
 
@@ -194,13 +193,13 @@ function calc_crit_chance(settings) {
             if (abils[settings['ability']]['ability classification'] != 'proc' &&
                 abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
             ) {
-                crit_chance += 0.08 * settings[SETTINGS.GCONC_BETA_STACKS];
+                crit_chance += 0.07 * settings[SETTINGS.GCONC_BETA_STACKS];
             } 
         } else {
             if (abils[settings['ability']]['ability classification'] != 'proc' &&
                 abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
             ) {
-                crit_chance += 0.28 * settings[SETTINGS.GCONC_BETA_STACKS];
+                crit_chance += 0.27 * settings[SETTINGS.GCONC_BETA_STACKS];
             } 
         }
         

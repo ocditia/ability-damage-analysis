@@ -1,5 +1,5 @@
 import { ABILITIES } from '../calc/const.js';
-import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc.js';
+import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc_beta.js';
 
 const abilities = {
     [ABILITIES.MAGIC_BETA]: {
@@ -50,10 +50,6 @@ const abilities = {
         title: 'Smoke tendrils',
         calc: ability_damage_calculation,
     },
-    [ABILITIES.DETONATE]: {
-        title: 'Detonate',
-        calc: hit_damage_calculation,
-    },
     [ABILITIES.OMNIPOWER_BETA]: {
         title: 'Omnipower',
         calc: ability_damage_calculation,
@@ -61,6 +57,10 @@ const abilities = {
     [ABILITIES.TSUNAMI]: {
         title: 'Tsunami',
         calc: hit_damage_calculation,
+    },
+    [ABILITIES.ONSLAUGHT_MOLD]: {
+        title: 'Onslaught loles',
+        calc: ability_damage_calculation,
     },
 };
 
