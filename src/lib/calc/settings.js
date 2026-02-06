@@ -878,6 +878,7 @@ const SETTINGS = {
     HIT_COUNTER_END: 'hit counter end',
     IMBUE_GALES: 'imbue: gales',
     RUNIC_CHARGE: 'runic charge',
+    BLOODLUST: 'bloodlust',
 };
 
 const settingsConfig = {
@@ -2451,6 +2452,10 @@ const settingsConfig = {
     },
     [SETTINGS.RUNIC_CHARGE]: {
         label: 'Runic charge',
+        default: false
+    },
+    [SETTINGS.BLOODLUST]: {
+        label: 'Bloodlust',
         default: false
     },
 };

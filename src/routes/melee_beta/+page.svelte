@@ -709,23 +709,7 @@
                             {:else if tab === 'leagues'}
                             <div class="md:col-span-1">
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.MELEE_LEAGUES_AD_RELIC]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_EOF_RELIC]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_AMASCUT]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_FUL]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_JAS]}
+                                    bind:setting={settings[SETTINGS.BLOODLUST]}
                                     onchange={() => updateDamages()}
                                 />
                             </div>
