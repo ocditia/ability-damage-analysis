@@ -3643,7 +3643,7 @@ const abils = {
         'adren cost': 0,
     },
     [ABILITIES.METEOR_STRIKE_BETA]: {
-        'min hit': 1.5,
+        'min hit': 2.2,
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
