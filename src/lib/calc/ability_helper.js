@@ -45,6 +45,12 @@ function next_cast(settings) {
         settings[SETTINGS.CHANNELER_RING_STACKS] += 1
     }
 
+    // gconc bbeta
+    settings[SETTINGS.GCONC_BETA_STACKS] = 0;
+
+    // turn off (g)fury beta
+    settings[SETTINGS.GFURY_BETA] = false
+
     settings = next_hit(settings);
 
     return settings;

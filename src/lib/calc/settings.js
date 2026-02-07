@@ -879,6 +879,7 @@ const SETTINGS = {
     IMBUE_GALES: 'imbue: gales',
     RUNIC_CHARGE: 'runic charge',
     BLOODLUST: 'bloodlust',
+    GFURY_BETA: 'gfury beta',
 };
 
 const settingsConfig = {
@@ -2456,6 +2457,10 @@ const settingsConfig = {
     },
     [SETTINGS.BLOODLUST]: {
         label: 'Bloodlust',
+        default: false
+    },
+    [SETTINGS.GFURY_BETA]: {
+        label: 'Gfury beta',
         default: false
     },
 };
