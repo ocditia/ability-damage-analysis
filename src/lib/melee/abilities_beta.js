@@ -70,6 +70,10 @@ const abilities = {
         title: 'Chaos roar',
         calc: hit_damage_calculation,
     },
+    [ABILITIES.FINAL_FLURRY_BETA]: {
+        title: 'The final flurry',
+        calc: ability_damage_calculation,
+    },
 };
 
 export { abilities };

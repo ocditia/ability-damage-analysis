@@ -1900,6 +1900,9 @@ const ABILITIES = {
     PULVERISE_BETA: 'pulverise beta',
     METEOR_STRIKE_BETA: 'meteor strike beta',
     CHAOS_ROAR_BETA: 'chaos roar beta',
+    FINAL_FLURRY_1_HIT_BETA: 'final flurry 1 hit beta',
+    FINAL_FLURRY_2_HIT_BETA: 'final flurry 2 hit beta',
+    FINAL_FLURRY_BETA: 'final flurry beta',
 
     ONSLAUGHT_HIT_MOLD: 'onslaught hit mold',
     ONSLAUGHT_MOLD: 'onslaught mold',
@@ -3665,6 +3668,47 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee',
         'adren cost': 0,
+    },
+    [ABILITIES.FINAL_FLURRY_1_HIT_BETA]: {
+        'min hit': 0.8,
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        'adren cost': 0,
+    },
+    [ABILITIES.FINAL_FLURRY_2_HIT_BETA]: {
+        'min hit': 1.5,
+        'var hit': 0.3,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        'adren cost': 0,
+    },
+    [ABILITIES.FINAL_FLURRY_BETA]: {
+        'min hit': 0.85,
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        'adren cost': 0,
+        hits: {
+            1: [ABILITIES.FINAL_FLURRY_1_HIT_BETA, 'next hit', ABILITIES.FINAL_FLURRY_1_HIT_BETA,
+                'next hit', ABILITIES.FINAL_FLURRY_2_HIT_BETA
+            ]
+        }
     },
     
 
