@@ -58,6 +58,10 @@ const abilities = {
         title: 'Punish',
         calc: hit_damage_calculation,
     },
+    [ABILITIES.OVERPOWER]: {
+        title: 'Overpower',
+        calc: ability_damage_calculation,
+    },
     [ABILITIES.PULVERISE_BETA]: {
         title: 'Pulverise',
         calc: hit_damage_calculation,

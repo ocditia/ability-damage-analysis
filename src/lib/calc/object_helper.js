@@ -243,7 +243,6 @@ function calc_crit_chance(settings) {
         } else if(settings[SETTINGS.GFURY_BETA] === true) {
             crit_chance = 1;
         }
-        console.log(settings['ability'], crit_chance)
 
         // no fear (pof meteor strike)
         if (settings['ability'] === 'meteor strike') {
