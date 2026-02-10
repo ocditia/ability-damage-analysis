@@ -292,6 +292,11 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/chaos_roar.png"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.CHAOS_ROAR_BETA]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/chaos_roar.png"
+                                />
                                 <Select
                                     bind:setting={settings[SETTINGS.VULN]}
                                     onchange={() => updateDamages()}

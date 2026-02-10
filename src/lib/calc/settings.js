@@ -756,6 +756,7 @@ const SETTINGS = {
     CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
     GCONC_BETA_STACKS: 'gconc beta stacks',
     CHAOS_ROAR: 'chaos roar',
+    CHAOS_ROAR_BETA: 'chaos roar beta',
     FURY_BUFF: 'fury buff',
     FURY_BUFF_VALUES: {
         NONE: 'none',
@@ -2106,6 +2107,10 @@ const settingsConfig = {
     },
     [SETTINGS.CHAOS_ROAR]: {
         label: 'Chaos roar',
+        default: false
+    },
+    [SETTINGS.CHAOS_ROAR_BETA]: {
+        label: 'Chaos roar beta',
         default: false
     },
     [SETTINGS.FURY_BUFF]: {

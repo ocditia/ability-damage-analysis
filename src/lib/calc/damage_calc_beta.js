@@ -205,6 +205,11 @@ function calc_boosted_ad(settings, dmgObject) {
         if (settings['chaos roar'] === true) {
             base_ad_boost = 2 * base_ad_boost;
         }
+
+        // chaos roar beta
+        if (settings[SETTINGS.CHAOS_ROAR_BETA] === true) {
+            base_ad_boost = 1.75 * base_ad_boost;
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
