@@ -34,7 +34,7 @@ const abilities = {
         title: 'Combust',
         calc: ability_damage_calculation,
     },
-    [ABILITIES.CORRUPTION_BLAST]: {
+    [ABILITIES.CORRUPTION_BLAST_BETA]: {
         title: 'Corruption blast',
         calc: hit_damage_calculation,
     },

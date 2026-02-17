@@ -1753,6 +1753,8 @@ const ABILITIES = {
     RUNIC_CHARGE: 'runic charge',
     COMBUST_HIT_BETA: 'comust hit beta',
     COMBUST_BETA: 'combust beta',
+    CORRUPTION_BLAST_HIT_BETA: 'corruption blast hit beta',
+    CORRUPTION_BLAST_BETA: 'corruption blast beta',
     GCHAIN_BETA: 'gchain beta',
     IMPACT_BETA: 'impact beta',
     ASPHYX_HIT_BETA: 'asphyx hit beta',
@@ -4698,8 +4700,8 @@ const abils = {
     },
     [ABILITIES.COMBUST_HIT_BETA]: {
         // ability name
-        'min hit': 0.3, // min % of abil expressed as a decimal
-        'var hit': 0.1,
+        'min hit': 0.27, // min % of abil expressed as a decimal
+        'var hit': 0.06,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -4726,6 +4728,18 @@ const abils = {
                 ABILITIES.COMBUST_HIT_BETA, ABILITIES.COMBUST_HIT_BETA,
             ]
         }
+    },
+    [ABILITIES.CORRUPTION_BLAST_BETA]: {
+        // ability name
+        'min hit': 0.9, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'dot', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'magic',
+        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.GCHAIN_BETA]: {
         // ability name

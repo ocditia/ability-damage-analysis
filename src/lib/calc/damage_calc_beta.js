@@ -1500,7 +1500,7 @@ function roll_damage(settings, dmgObject, key) {
     }
 
     // store corruption shot/blast damage
-    if ([ABILITIES.CORRUPTION_BLAST, ABILITIES.CORRUPTION_SHOT].includes(settings['ability'])) {
+    if ([ABILITIES.CORRUPTION_BLAST, ABILITIES.CORRUPTION_SHOT, ABILITIES.CORRUPTION_BLAST_BETA].includes(settings['ability'])) {
         if (!('corruption damage' in settings)) {
             settings['corruption damage'] = create_object(settings);
         }
