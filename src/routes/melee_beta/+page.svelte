@@ -207,6 +207,14 @@
                                     max="100"
                                     min="0"
                                 />
+                                <Number
+                                    bind:setting={settings[SETTINGS.PLAYER_HP_PERCENT]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/target_hp.png"
+                                    step="1"
+                                    max="100"
+                                    min="0"
+                                />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.STRENGTH_CAPE]}
                                     onchange={() => updateDamages()}

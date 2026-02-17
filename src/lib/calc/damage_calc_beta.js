@@ -1055,6 +1055,11 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
         boost += Math.floor(boost * 0.05 * (1 - settings[SETTINGS.TARGET_HP_PERCENT] / 100));
     }    
 
+    // gflurry beta
+    if (settings['ability'] === ABILITIES.GLFURRY_HIT_BETA) {
+        boost += Math.floor(boost * Math.min((100 - settings[SETTINGS.PLAYER_HP_PERCENT])/50,0.5))
+    }
+
     dmgObject['min hit'] = Math.floor((dmgObject['min hit'] * boost) / 10000);
     dmgObject['var hit'] = Math.floor((dmgObject['var hit'] * boost) / 10000);
 

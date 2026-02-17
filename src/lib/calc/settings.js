@@ -109,6 +109,7 @@ const SETTINGS = {
         LVL3_UNDEAD: 'tier 3 undead'
     },
     TARGET_HP_PERCENT: 'target hp percent',
+    PLAYER_HP_PERCENT: 'player hp percent',
     GENOCIDAL: 'genocidal',
     IMPATIENT: 'impatient',
     FAMILIAR: 'familiar',
@@ -1107,6 +1108,10 @@ const settingsConfig = {
     },
     [SETTINGS.TARGET_HP_PERCENT]: {
         label: 'Target hp %',
+        default: 100
+    },
+    [SETTINGS.PLAYER_HP_PERCENT]: {
+        label: 'Player hp %',
         default: 100
     },
     [SETTINGS.GENOCIDAL]: {
