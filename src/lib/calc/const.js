@@ -4744,7 +4744,7 @@ const abils = {
     [ABILITIES.GCHAIN_BETA]: {
         // ability name
         'min hit': 0.65, // min % of abil expressed as a decimal
-        'var hit': 0.1,
+        'var hit': 0.15,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
