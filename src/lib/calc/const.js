@@ -3549,7 +3549,7 @@ const abils = {
     },
     [ABILITIES.DISMEMBER_2_HIT_BETA]: {
         // ability name
-        'min hit': 0.75, // min % of abil expressed as a decimal
+        'min hit': 1.1, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
