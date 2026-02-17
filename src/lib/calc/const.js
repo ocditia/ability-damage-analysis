@@ -1884,6 +1884,7 @@ const ABILITIES = {
     GFURY_BETA: 'gfury beta',
     HURRICANE_1_BETA: 'hurricane 1 beta',
     HURRICANE_2_BETA: 'hurricane 2 beta',
+    HURRICANE_3_BETA: 'hurricane 3 beta',
     HURRICANE_BETA: 'hurricane beta',
     GLFURRY_HIT_BETA: 'gflurry hit beta',
     GLFURRY_BETA: 'gflurry beta',
@@ -3443,6 +3444,18 @@ const abils = {
         // ability name
         'min hit': 1.35, // min % of abil expressed as a decimal
         'var hit': 0.3,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+    },
+    [ABILITIES.HURRICANE_3_BETA]: {
+        // ability name
+        'min hit': 0.75, // min % of abil expressed as a decimal
+        'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
