@@ -26,7 +26,7 @@ const abilities = {
         title: 'Grico',
         calc: ability_damage_calculation,
     },
-    [ABILITIES.CORRUPTION_SHOT]: {
+    [ABILITIES.CORRUPTION_SHOT_BETA]: {
         title: 'Corruption shot',
         calc: hit_damage_calculation,
     },

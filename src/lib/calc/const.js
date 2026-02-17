@@ -1657,6 +1657,7 @@ const ABILITIES = {
 
     RANGED_DW_BETA: 'ranged dw auto beta',
     RANGED_TH_BETA: 'ranged 2h auto beta',
+    GALESHOT: 'galeshot',
     SNAP_SHOT_HIT_BETA: 'snap shot hit beta',
     SNAP_SHOT_BETA: 'snap shot beta',
     SNIPE_HIT_1_BETA: 'snipe hit 1 beta',
@@ -6383,6 +6384,18 @@ const abils = {
         'damage type': 'ranged',
         'adren cost': 0,
     },
+    [ABILITIES.GALESHOT]: {
+        'min hit': 1.0,
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
     [ABILITIES.SNAP_SHOT_HIT_BETA]: {
         'min hit': 1.35,
         'var hit': 0.2,
@@ -6510,8 +6523,8 @@ const abils = {
         }
     },
     [ABILITIES.BOMBARDMENT_BETA]: {
-        'min hit': 1.5,
-        'var hit': 0.3,
+        'min hit': 2.2,
+        'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -6632,6 +6645,19 @@ const abils = {
                 'next hit', ABILITIES.GRICO_3_BETA, 'next hit', ABILITIES.GRICO_3_BETA,
             ]
         }
+    },
+    [ABILITIES.CORRUPTION_SHOT_BETA]: {
+        // ability name
+        'min hit': 0.9, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'dot', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        hit_timings: [1, 3, 5, 7, 9], 
     },
 
     [ABILITIES.ONSLAUGHT_HIT_MOLD]: {
