@@ -26,7 +26,7 @@ const abilities = {
         title: 'Gconc',
         calc: ability_damage_calculation,
     },
-    [ABILITIES.MAGMA_TEMPEST]: {
+    [ABILITIES.MAGMA_BETA]: {
         title: 'Magma tempest',
         calc: ability_damage_calculation,
     },
