@@ -166,6 +166,11 @@ function calc_boosted_ad(settings, dmgObject) {
         if (abils[settings['ability']]['main style'] === 'magic') {
             base_ad_boost = Math.floor((1 + 0.01 * settings[SETTINGS.FLOW_STACKS]) * base_ad_boost);
         }
+
+        // blood tithe (exsanguinate)
+        if (abils[settings['ability']]['ability type'] === 'basic') {
+            base_ad_boost = Math.floor(base_ad_boost * (1 + settings[SETTINGS.BLOOD_TITHE] / 100));
+        }
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
@@ -910,11 +915,6 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
         if (settings['sunshine'] === true) {
             boost = Math.floor(boost * 1.5);
         }
-
-        // blood tithe (exsanguinate)
-        if (abils[settings['ability']]['ability type'] === 'basic') {
-            boost = Math.floor(boost * (1 + settings[SETTINGS.BLOOD_TITHE] / 100));
-        }
     }
 
     // apply melee unique boosts
@@ -1415,15 +1415,15 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
         // essence corruption 25 stack bonus
         if (
             abils[settings['ability']]['damage type'] === 'magic' &&
-            settings[SETTINGS.ESSENCE_CORRUPTION] >= 25 &&
+            settings[SETTINGS.ESSENCE_CORRUPTION] >= 10 &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
             (settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING ||
                 settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT)
         ) {
             dmgObject['damage list'][i] =
                 dmgObject['damage list'][i] +
-                settings[SETTINGS.MAGIC_LEVEL] +
-                settings[SETTINGS.ESSENCE_CORRUPTION];
+                3* (settings[SETTINGS.MAGIC_LEVEL] +
+                settings[SETTINGS.ESSENCE_CORRUPTION]);
         }
 
         // tokkul-zo
