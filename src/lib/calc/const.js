@@ -3418,6 +3418,33 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee',
     },
+    [ABILITIES.OVERPOWER_HIT_BETA]: {
+        // ability name
+        'min hit': 3.1, // min % of abil expressed as a decimal
+        'var hit': 0.6,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
+    [ABILITIES.OVERPOWER_BETA]: {
+        // ability name
+        'min hit': 2.7, // min % of abil expressed as a decimal
+        'var hit': 0.6,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        hits: {
+            1: [ABILITIES.OVERPOWER_HIT]
+        }
+    },
     [ABILITIES.GFURY_BETA]: {
         // ability name
         'min hit': 1.2, // min % of abil expressed as a decimal

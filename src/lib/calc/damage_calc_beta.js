@@ -2077,6 +2077,11 @@ function get_hit_sequence(settings) {
         rotation[1].push(ABILITIES.OVERPOWER_HIT);
     }
 
+    if (settings['ability'] === ABILITIES.OVERPOWER_BETA && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
+        rotation[1].push("next hit");
+        rotation[1].push(ABILITIES.OVERPOWER_HIT);
+    }
+
     if (settings['ability'] === ABILITIES.HURRICANE_BETA && settings[SETTINGS.BLOODLUST] === true) {
         rotation[1].push("next hit");
         rotation[1].push(ABILITIES.HURRICANE_3_BETA);
