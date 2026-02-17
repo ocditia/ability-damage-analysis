@@ -1229,6 +1229,14 @@ function calc_crit_damage(settings) {
         crit_buff += 0.5;
     }
 
+    if (settings['ability'] === ABILITIES.FINAL_FLURRY_1_HIT_BETA) {
+        crit_buff += 0.25;
+    }
+
+    if (settings['ability'] === ABILITIES.FINAL_FLURRY_2_HIT_BETA) {
+        crit_buff += 0.5;
+    }
+
     return crit_buff;
 }
 
