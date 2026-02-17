@@ -118,7 +118,8 @@ function calc_damage_potential(settings, dmgObject) {
 
 // calculate boosted AD
 function calc_boosted_ad(settings, dmgObject) {
-    let base_ad_boost = calc_damage_potential(settings, dmgObject);
+    let ability_damage = dmgObject['base AD'];
+    let base_damage = calc_damage_potential(settings, dmgObject);
     if (abils[settings['ability']]['ability type'] === 'conjure') {
         let conj_add_boost = 0;
         // TFN set effect, Conjurer's raising amulet
@@ -129,136 +130,101 @@ function calc_boosted_ad(settings, dmgObject) {
         if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.MOONSTONE) {
             conj_add_boost += 0.05;
         }
-        return base_ad_boost = Math.floor((1 + conj_add_boost) * base_ad_boost);;
+        return base_damage = Math.floor((1 + conj_add_boost) * base_damage);;
     }
 
     if (settings[SETTINGS.LEAGUES_EOF_RELIC] === true
         && abils[settings['ability']]['ability type'] === 'special attack'
     ) {
-        base_ad_boost = Math.floor(1.5 * base_ad_boost);
+        base_damage = Math.floor(1.5 * base_damage);
     }
 
-    if (abils[settings['ability']]['main style'] === 'magic') {
-        // inq staff
-        if (
-            settings[SETTINGS.WEAPON] === 'two-hand' &&
-            settings['two-hand weapon'] === 'inquisitor staff'
-        ) {
-            //boosted_AD = Math.floor(boosted_AD * 1.125);
-            base_ad_boost = Math.floor(1.125 * base_ad_boost);
-        }
-
-        // inq staff upgraded
-        else if (
+    // inquisitor staff
+    if (abils[settings['ability']]['main style'] === 'magic' && 
+        settings[SETTINGS.WEAPON] === 'two-hand' &&
+        settings['two-hand weapon'] === 'inquisitor staff'
+    ) {
+        base_damage = Math.floor(base_damage/1000 * 1125);
+    }
+    else if (abils[settings['ability']]['main style'] === 'magic' && 
             settings[SETTINGS.WEAPON] === 'two-hand' &&
             settings['two-hand weapon'] === 'inquisitor staff+'
         ) {
-            //boosted_AD = Math.floor(boosted_AD * 1.175);
-            base_ad_boost = Math.floor(1.175 * base_ad_boost);
+            base_damage = Math.floor(base_damage/1000 * 1175);
         }
 
-        // crumble undead
-        if (settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.CRUMBLE_UNDEAD) {
-            base_ad_boost = Math.floor(1.3 * base_ad_boost);
-        }
-
-        // flow stacks
-        if (abils[settings['ability']]['main style'] === 'magic') {
-            base_ad_boost = Math.floor((1 + 0.01 * settings[SETTINGS.FLOW_STACKS]) * base_ad_boost);
-        }
-
-        // blood tithe (exsanguinate)
-        if (abils[settings['ability']]['ability type'] === 'basic') {
-            base_ad_boost = Math.floor(base_ad_boost * (1 + settings[SETTINGS.BLOOD_TITHE] / 100));
-        }
+    // terrasaur maul
+    if (abils[settings['ability']]['main style'] === 'melee' &&
+        settings[SETTINGS.WEAPON] === 'two-hand' &&
+        settings['two-hand weapon'] === 'terrasaur maul'
+    ) {
+        base_damage = Math.floor(base_damage/1000 * 1125);
+    }
+    else if (abils[settings['ability']]['main style'] === 'melee' &&
+        settings[SETTINGS.WEAPON] === 'two-hand' &&
+        settings['two-hand weapon'] === 'terrasaur maul+'
+    ) {
+        base_damage = Math.floor(base_damage/1000 * 1175);
     }
 
-    if (abils[settings['ability']]['main style'] === 'melee') {
-        // league relic
-        if (settings[SETTINGS.MELEE_LEAGUES_AD_RELIC] === true) {
-            base_ad_boost += 500;
-        }
-
-        
-        // terrasaur maul
-        if (
-            settings[SETTINGS.WEAPON] === 'two-hand' &&
-            settings['two-hand weapon'] === 'terrasaur maul'
-        ) {
-            base_ad_boost = Math.floor(1.125 * base_ad_boost);
-        }
-
-        // terrasaur maul upgraded
-        else if (
-            settings[SETTINGS.WEAPON] === 'two-hand' &&
-            settings['two-hand weapon'] === 'terrasaur maul+'
-        ) {
-            base_ad_boost = Math.floor(1.175 * base_ad_boost);
-        }
-
-        // keris
-        if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
-            if ([SETTINGS.MELEE_MH_VALUES.KERIS, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS].includes(settings[SETTINGS.MH])) {
-                base_ad_boost = Math.floor(1.333 * base_ad_boost);
-            }
-            else if ([SETTINGS.MELEE_MH_VALUES.KERIS_PROC, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
-                base_ad_boost = 2 * base_ad_boost;
-            }
-        }
-
-        // chaos roar
-        if (settings['chaos roar'] === true) {
-            base_ad_boost = 2 * base_ad_boost;
-        }
-
-        // chaos roar beta
-        if (settings[SETTINGS.CHAOS_ROAR_BETA] === true) {
-            base_ad_boost = 1.75 * base_ad_boost;
-        }
+    // hex bow
+    if (abils[settings['ability']]['main style'] === 'ranged' &&
+        settings[SETTINGS.WEAPON] === 'two-hand' &&
+        settings['two-hand weapon'] === 'hexhunter bow'
+    ) {
+        base_damage = Math.floor(base_damage/1000 * 1125);
     }
-
-    if (abils[settings['ability']]['main style'] === 'ranged') {
-        // hex bow
-        if (
-            settings[SETTINGS.WEAPON] === 'two-hand' &&
-            settings['two-hand weapon'] === 'hexhunter bow'
-        ) {
-            base_ad_boost = Math.floor(1.125 * base_ad_boost);
-        }
-
-        // hex bow upgraded
-        else if (
-            settings[SETTINGS.WEAPON] === 'two-hand' &&
-            settings['two-hand weapon'] === 'hexhunter bow+'
-        ) {
-            base_ad_boost = Math.floor(1.175 * base_ad_boost);
-        }
-
-        // icy precision (wen arrows)
-        const wen_arrow_abil_types_buffed = ['threshold', 'ultimate', 'special attack', 'ability'];
-        if (
-            wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type']) &&
-            settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS
-        ) {
-            base_ad_boost = Math.floor((1 +0.02 * settings[SETTINGS.ICY_PRECISION]) * base_ad_boost);
-        }
+    else if (abils[settings['ability']]['main style'] === 'ranged' &&
+        settings[SETTINGS.WEAPON] === 'two-hand' &&
+        settings['two-hand weapon'] === 'hexhunter bow+'
+    ) {
+        base_damage = Math.floor(base_damage/1000 * 1175);
     }
-
-    // necromancy has no (known) buffs of this type
 
     // Scripture of Amascut
     if (settings[SETTINGS.POCKET] === 'scripture of amascut') {
-        base_ad_boost = Math.floor(1.1 * base_ad_boost);
+        base_damage = Math.floor(base_damage/1000 * 1100);
     }
 
-    // leagues book amascut
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET &&
-        settings[SETTINGS.LEAGUES_POCKET_AMASCUT] === true
+    // icy precision (wen arrows)
+    const wen_arrow_abil_types_buffed = ['threshold', 'ultimate', 'special attack', 'ability'];
+    if (abils[settings['ability']]['main style'] === 'ranged' &&
+        wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type']) &&
+        settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS
     ) {
-        base_ad_boost = Math.floor(1.1 * base_ad_boost);
+        base_damage += Math.floor(base_damage/100 * settings[SETTINGS.ICY_PRECISION] * 0.02);
     }
 
-    return base_ad_boost;
+    if (abils[settings['ability']]['main style'] === 'melee' && settings[SETTINGS.CHAOS_ROAR_BETA] === true) {
+        base_damage = Math.floor(base_damage/100*175);
+    }
+
+    // keris
+    if (abils[settings['ability']]['main style'] === 'melee' && 
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
+        if ([SETTINGS.MELEE_MH_VALUES.KERIS, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS].includes(settings[SETTINGS.MH])) {
+            base_damage = Math.floor(base_damage/100*100*1.333);
+        }
+        else if ([SETTINGS.MELEE_MH_VALUES.KERIS_PROC, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
+            base_damage = Math.floor(base_damage/100*100*2);
+        }
+    }
+
+    // blood tithe (exsanguinate)
+    if (abils[settings['ability']]['main style'] === 'magic' && 
+        abils[settings['ability']]['ability type'] === 'basic'
+    ) {
+        base_damage += Math.floor(ability_damage/1000*settings[SETTINGS.BLOOD_TITHE]*10);
+    }
+      
+    // Crumble undead
+    if (abils[settings['ability']]['main style'] === 'magic' && 
+        settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.CRUMBLE_UNDEAD
+    ) {
+        base_damage += Math.floor(ability_damage/1000*settings[SETTINGS.BLOOD_TITHE]*10);
+    }
+
+    return base_damage;
 }
 
 function ability_specific_effects(settings, dmgObject) {
