@@ -124,7 +124,7 @@ const abilities = {
     [ABILITIES.SHADOWFALL]: {
         title: 'Shadowfall',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/dbow.png'
+        icon: '/gear_icons/gloomfire_bow.png'
     },
     [ABILITIES.DESCENT_OF_DARKNESS]: {
         title: 'Descent of Darkness',

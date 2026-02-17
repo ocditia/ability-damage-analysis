@@ -184,7 +184,7 @@ const abilities = {
     [ABILITIES.THE_FINAL_FLURRY]: {
         title: 'The final flurry',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/ezk-bg.png'
+        icon: '/gear_icons/varanuss_mercy.png'
     },
     [ABILITIES.ARMADYLS_JUDGEMENT]: {
         title: "Armadyl's judgement",
