@@ -267,11 +267,6 @@ function calc_crit_chance(settings) {
         if (settings['ability'] === ABILITIES.FINAL_FLURRY_2_HIT_BETA) {
             crit_chance += 0.5;
         }
-
-        // Bloodlust
-        if (settings[SETTINGS.BLOODLUST] === true && settings['ability'] === ABILITIES.ASSAULT_HIT_BETA) {
-            crit_chance += 0.15;
-        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
