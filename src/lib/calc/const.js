@@ -4795,7 +4795,7 @@ const abils = {
     },
     [ABILITIES.MAGMA_BETA]: {
         // ability name
-        'min hit': 0.25, // min % of abil expressed as a decimal
+        'min hit': 0.35, // min % of abil expressed as a decimal
         'var hit': 0.05,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
