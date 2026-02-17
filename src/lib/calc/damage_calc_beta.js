@@ -313,8 +313,8 @@ function ability_specific_effects(settings, dmgObject) {
         }
 
         // combust lunging
-        if (settings['ability'] === ABILITIES.COMBUST_HIT) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
+        if (settings['ability'] === ABILITIES.COMBUST_HIT_BETA && settings[SETTINGS.LUNGING] > 0) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1.1+0.03*settings[SETTINGS.LUNGING]));
         }
 
         // combust walk
@@ -1091,6 +1091,14 @@ function calc_bonus_damage(settings, dmgObject) {
         // Imbue: Gales
         if (settings[SETTINGS.IMBUE_GALES] === true) {
             min_hit += Math.floor(0.2 * dmgObject['base AD']);
+        }
+
+        // caroming beta
+        if ((settings['ability'] === ABILITIES.GRICO_1_BETA || settings['ability'] === ABILITIES.GRICO_2_BETA || 
+            settings['ability'] === ABILITIES.GRICO_1_BETA)) {
+                if (settings[SETTINGS.CAROMING] > 0) {
+                    min_hit += Math.floor((0.05 + 0.01 * settings[SETTINGS.CAROMING]) * dmgObject['base AD']);
+                }
         }
     }
 
