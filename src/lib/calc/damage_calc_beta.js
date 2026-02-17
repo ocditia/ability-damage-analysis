@@ -206,7 +206,7 @@ function calc_boosted_ad(settings, dmgObject) {
             base_damage = Math.floor(base_damage/100*100*1.333);
         }
         else if ([SETTINGS.MELEE_MH_VALUES.KERIS_PROC, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
-            base_damage = Math.floor(base_damage/100*100*2);
+            base_damage = Math.floor(base_damage/100*100*3);
         }
     }
 
