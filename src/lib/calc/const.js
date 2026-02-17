@@ -3582,7 +3582,7 @@ const abils = {
         }
     },
     [ABILITIES.DISMEMBER_3_HIT_BETA]: {
-        'min hit': 1.25,
+        'min hit': 1.0,
         'var hit': 0.0,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
