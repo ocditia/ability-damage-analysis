@@ -1034,7 +1034,7 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
 
     // gflurry beta
     if (settings['ability'] === ABILITIES.GLFURRY_HIT_BETA && settings[SETTINGS.BLOODLUST] === true) {
-        boost += Math.floor(boost * Math.min((100 - settings[SETTINGS.PLAYER_HP_PERCENT])/50,0.65))
+        boost += Math.floor(boost * Math.min((100 - settings[SETTINGS.TARGET_HP_PERCENT])/100,0.65))
     }
 
     dmgObject['min hit'] = Math.floor((dmgObject['min hit'] * boost) / 10000);
