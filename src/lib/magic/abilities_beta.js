@@ -58,10 +58,6 @@ const abilities = {
         title: 'Tsunami',
         calc: hit_damage_calculation,
     },
-    [ABILITIES.ONSLAUGHT_MOLD]: {
-        title: 'Onslaught loles',
-        calc: ability_damage_calculation,
-    },
 };
 
 export { abilities };
