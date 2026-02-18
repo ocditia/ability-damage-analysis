@@ -722,6 +722,10 @@
                                     bind:setting={settings[SETTINGS.RUNIC_CHARGE]}
                                     onchange={() => updateDamages()}
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.BLAST_INFUSED]}
+                                    onchange={() => updateDamages()}
+                                />
                             </div>
                         {/if}
                     </div>

@@ -884,6 +884,7 @@ const SETTINGS = {
     RUNIC_CHARGE: 'runic charge',
     BLOODLUST: 'bloodlust',
     GFURY_BETA: 'gfury beta',
+    BLAST_INFUSED: 'blast infused',
 };
 
 const settingsConfig = {
@@ -2481,6 +2482,10 @@ const settingsConfig = {
     },
     [SETTINGS.GFURY_BETA]: {
         label: 'Gfury beta',
+        default: false
+    },
+    [SETTINGS.BLAST_INFUSED]: {
+        label: 'Blast infused',
         default: false
     },
 };
