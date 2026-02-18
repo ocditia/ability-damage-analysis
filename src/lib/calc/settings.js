@@ -885,6 +885,7 @@ const SETTINGS = {
     BLOODLUST: 'bloodlust',
     GFURY_BETA: 'gfury beta',
     BLAST_INFUSED: 'blast infused',
+    COMBUSTED: 'combusted',
 };
 
 const settingsConfig = {
@@ -2486,6 +2487,10 @@ const settingsConfig = {
     },
     [SETTINGS.BLAST_INFUSED]: {
         label: 'Blast infused',
+        default: false
+    },
+    [SETTINGS.COMBUSTED]: {
+        label: 'Combust on target',
         default: false
     },
 };

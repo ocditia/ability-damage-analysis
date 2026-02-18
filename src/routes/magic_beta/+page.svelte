@@ -726,6 +726,10 @@
                                     bind:setting={settings[SETTINGS.BLAST_INFUSED]}
                                     onchange={() => updateDamages()}
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.COMBUSTED]}
+                                    onchange={() => updateDamages()}
+                                />
                             </div>
                         {/if}
                     </div>
