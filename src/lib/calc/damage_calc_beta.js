@@ -1063,7 +1063,7 @@ function calc_bonus_damage(settings, dmgObject) {
         if ((settings['ability'] === ABILITIES.GRICO_1_BETA || settings['ability'] === ABILITIES.GRICO_2_BETA || 
             settings['ability'] === ABILITIES.GRICO_1_BETA)) {
                 if (settings[SETTINGS.CAROMING] > 0) {
-                    min_hit += Math.floor((0.05 + 0.01 * settings[SETTINGS.CAROMING]) * dmgObject['base AD']);
+                    min_hit += Math.floor((0.025 * settings[SETTINGS.CAROMING]) * dmgObject['base AD']);
                 }
         }
     }
