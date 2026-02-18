@@ -341,6 +341,13 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.HAUNTED_AD]}
                                     onchange={() => updateDamages()}
+                                    step="1"
+                                    max="9999"
+                                    min="0"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.DEVOURER_NEXUS]}
+                                    onchange={() => updateDamages()}
                                 />
                             </div>
                             <div class="md:col-span-1 space-y-2">
