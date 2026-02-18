@@ -133,12 +133,6 @@ function calc_boosted_ad(settings, dmgObject) {
         return base_damage = Math.floor((1 + conj_add_boost) * base_damage);;
     }
 
-    if (settings[SETTINGS.LEAGUES_EOF_RELIC] === true
-        && abils[settings['ability']]['ability type'] === 'special attack'
-    ) {
-        base_damage = Math.floor(1.5 * base_damage);
-    }
-
     // inquisitor staff
     if (abils[settings['ability']]['main style'] === 'magic' && 
         settings[SETTINGS.WEAPON] === 'two-hand' &&
