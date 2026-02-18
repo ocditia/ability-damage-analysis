@@ -2076,6 +2076,14 @@ function get_hit_sequence(settings) {
             rotation[1].push(ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA);
         }
 
+        if (settings['ability'] === ABILITIES.DISMEMBER_2_BETA) {
+            rotation[1].push(ABILITIES.DISMEMBER_2_HIT_BETA, ABILITIES.DISMEMBER_2_HIT_BETA);
+        }
+
+        if (settings['ability'] === ABILITIES.DISMEMBER_3_BETA) {
+            rotation[1].push(ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA);
+        }
+
         if (settings['ability'] === ABILITIES.BLOOD_TENDRILS) {
             rotation[1].push(ABILITIES.BLOOD_TENDRILS_2, ABILITIES.BLOOD_TENDRILS_2);
         }
