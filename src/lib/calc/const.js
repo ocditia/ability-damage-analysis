@@ -3573,6 +3573,8 @@ const abils = {
                 ABILITIES.DISMEMBER_1_HIT_BETA,
                 ABILITIES.DISMEMBER_1_HIT_BETA,
                 ABILITIES.DISMEMBER_1_HIT_BETA,
+                ABILITIES.DISMEMBER_1_HIT_BETA,
+                ABILITIES.DISMEMBER_1_HIT_BETA,
                 ABILITIES.DISMEMBER_1_HIT_BETA
             ]
         }

@@ -193,6 +193,11 @@ function calc_boosted_ad(settings, dmgObject) {
         base_damage = Math.floor(base_damage/100*175);
     }
 
+    // ultimatus
+    if (abils[settings['ability']]['ability type'] === 'ultimate' && settings[SETTINGS.ULTIMATUS] > 0) {
+        base_damage = Math.floor(base_damage/100 * (100 + 3 + settings[SETTINGS.ULTIMATUS]));
+    }
+    
     // keris
     if (abils[settings['ability']]['main style'] === 'melee' && 
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
@@ -1017,7 +1022,7 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
 
     // gflurry beta
     if (settings['ability'] === ABILITIES.GLFURRY_HIT_BETA && settings[SETTINGS.BLOODLUST] === true) {
-        boost += Math.floor(boost * Math.min((100 - settings[SETTINGS.PLAYER_HP_PERCENT])/50,0.5))
+        boost += Math.floor(boost * Math.min((100 - settings[SETTINGS.PLAYER_HP_PERCENT])/50,0.65))
     }
 
     dmgObject['min hit'] = Math.floor((dmgObject['min hit'] * boost) / 10000);
@@ -2073,15 +2078,15 @@ function get_hit_sequence(settings) {
         }
 
         if (settings['ability'] === ABILITIES.DISMEMBER_1_BETA) {
-            rotation[1].push(ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA);
+            rotation[1].push(ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA );
         }
 
         if (settings['ability'] === ABILITIES.DISMEMBER_2_BETA) {
-            rotation[1].push(ABILITIES.DISMEMBER_2_HIT_BETA, ABILITIES.DISMEMBER_2_HIT_BETA);
+            rotation[1].push(ABILITIES.DISMEMBER_2_HIT_BETA, ABILITIES.DISMEMBER_2_HIT_BETA, ABILITIES.DISMEMBER_2_HIT_BETA);
         }
 
         if (settings['ability'] === ABILITIES.DISMEMBER_3_BETA) {
-            rotation[1].push(ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA);
+            rotation[1].push(ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA);
         }
 
         if (settings['ability'] === ABILITIES.BLOOD_TENDRILS) {

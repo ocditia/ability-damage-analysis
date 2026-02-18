@@ -702,6 +702,7 @@ const SETTINGS = {
     ERUPTIVE: 'eruptive',
     FLANKING: 'flanking',
     CAROMING: 'caroming',
+    ULTIMATUS: 'ultimatus',
     RUTHLESS_RANK: 'ruthless rank',
     TELOS_RED_BEAM: 'Telos red beam',
     TELOS_BLACK_BEAM: 'Telos black beam',
@@ -784,6 +785,7 @@ const SETTINGS = {
     CHANNELER_RING_STACKS: 'channelers ring stacks',
     NUMBER_OF_BLEEDS: 'number of bleeds',
     STRENGTH_CAPE: 'strength cape',
+    STRENGTH_MASTER_CAPE: 'strength master cape',
     SUNSHINE: 'sunshine',
     META: 'meta',
     DEATH_SWIFTNESS: 'death swiftness',
@@ -1953,6 +1955,10 @@ const settingsConfig = {
         label: 'Flanking',
         default: 0
     },
+    [SETTINGS.ULTIMATUS]: {
+        label: 'Ultimatus',
+        default: 0
+    },
     [SETTINGS.RUTHLESS_RANK]: {
         label: 'Ruthless rank',
         default: 0
@@ -2213,7 +2219,11 @@ const settingsConfig = {
         default: 1
     },
     [SETTINGS.STRENGTH_CAPE]: {
-        label: 'Str cape',
+        label: '99 str cape',
+        default: true
+    },
+    [SETTINGS.STRENGTH_MASTER_CAPE]: {
+        label: '120 str cape',
         default: true
     },
     [SETTINGS.SUNSHINE]: {
