@@ -2072,6 +2072,10 @@ function get_hit_sequence(settings) {
             rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
         }
 
+        if (settings['ability'] === ABILITIES.DISMEMBER_1_BETA) {
+            rotation[1].push(ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA);
+        }
+
         if (settings['ability'] === ABILITIES.BLOOD_TENDRILS) {
             rotation[1].push(ABILITIES.BLOOD_TENDRILS_2, ABILITIES.BLOOD_TENDRILS_2);
         }
@@ -2090,6 +2094,12 @@ function get_hit_sequence(settings) {
         settings['ability'] === ABILITIES.DISMEMBER
     ) {
         rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
+    }
+
+    if (settings[SETTINGS.STRENGTH_CAPE] === true &&
+        settings['ability'] === ABILITIES.DISMEMBER_1_BETA
+    ) {
+        rotation[1].push(ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA);
     }
 
     // Ruin stacks
