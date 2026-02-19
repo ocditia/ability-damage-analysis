@@ -261,7 +261,7 @@ function ability_specific_effects(settings, dmgObject) {
         }
 
         // conflagrate
-        if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.CONFLAGRATE] === true) {
+        if (settings['ability'] === ABILITIES.COMBUST_HIT_BETA && settings[SETTINGS.CONFLAGRATE] === true) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
         }
 
@@ -276,7 +276,7 @@ function ability_specific_effects(settings, dmgObject) {
         }
 
         // kerapac's wristwraps
-        if (settings['ability'] === ABILITIES.COMBUST_HIT) {
+        if (settings['ability'] === ABILITIES.COMBUST_HIT_BETA) {
             if (
                 settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR
             ) {
@@ -292,6 +292,9 @@ function ability_specific_effects(settings, dmgObject) {
         // combust lunging
         if (settings['ability'] === ABILITIES.COMBUST_HIT_BETA && settings[SETTINGS.LUNGING] > 0) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1.1+0.03*settings[SETTINGS.LUNGING]));
+        }
+        if (settings['ability'] === ABILITIES.COMBUST_HIT_BETA) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
         }
 
         // combust walk
@@ -375,6 +378,11 @@ function ability_specific_effects(settings, dmgObject) {
         // dismember lunging
         if (settings['ability'] === ABILITIES.DISMEMBER_HIT) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + 0.06 * settings[SETTINGS.LUNGING]));
+        }
+
+        // dismember lunging
+        if (settings['ability'] === ABILITIES.DISMEMBER_1_HIT_BETA) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
         }
 
         // slaughter walk
@@ -1034,7 +1042,7 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
 
     // gflurry beta
     if (settings['ability'] === ABILITIES.GLFURRY_HIT_BETA && settings[SETTINGS.BLOODLUST] === true) {
-        boost += Math.floor(boost * Math.min((100 - settings[SETTINGS.TARGET_HP_PERCENT])/100,0.65))
+        boost += Math.floor(boost * Math.min((100 - settings[SETTINGS.TARGET_HP_PERCENT])/100,0.35))
     }
 
     dmgObject['min hit'] = Math.floor((dmgObject['min hit'] * boost) / 10000);
