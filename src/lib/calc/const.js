@@ -1658,6 +1658,7 @@ const ABILITIES = {
     RANGED_DW_BETA: 'ranged dw auto beta',
     RANGED_TH_BETA: 'ranged 2h auto beta',
     GALESHOT: 'galeshot',
+    GALESHOT_BONUS: 'galeshot bonus',
     SNAP_SHOT_HIT_BETA: 'snap shot hit beta',
     SNAP_SHOT_BETA: 'snap shot beta',
     SNIPE_HIT_1_BETA: 'snipe hit 1 beta',
@@ -6358,6 +6359,18 @@ const abils = {
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        'adren cost': 0,
+    },
+    [ABILITIES.GALESHOT_BONUS]: {
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'something that doesnt exist', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         'adren cost': 0,

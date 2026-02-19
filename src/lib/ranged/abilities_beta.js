@@ -14,6 +14,10 @@ const abilities = {
         title: 'Galeshot',
         calc: hit_damage_calculation,
     },
+    [ABILITIES.GALESHOT_BONUS]: {
+        title: 'Galeshot bonus damage',
+        calc: hit_damage_calculation,
+    },
     [ABILITIES.BINDING_SHOT_BETA]: {
         title: 'Binding shot',
         calc: hit_damage_calculation,
