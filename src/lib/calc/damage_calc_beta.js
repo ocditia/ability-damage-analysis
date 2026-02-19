@@ -1079,7 +1079,7 @@ function calc_bonus_damage(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
-        // Imbue: Gales
+        // Galeshot
         if (settings[SETTINGS.IMBUE_GALES] === true) {
             min_hit += Math.floor(0.2 * dmgObject['base AD']);
         }

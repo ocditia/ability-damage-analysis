@@ -10,6 +10,10 @@ const abilities = {
         title: '2h auto',
         calc: hit_damage_calculation,
     },
+    [ABILITIES.GALESHOT]: {
+        title: 'Galeshot',
+        calc: hit_damage_calculation,
+    },
     [ABILITIES.BINDING_SHOT_BETA]: {
         title: 'Binding shot',
         calc: hit_damage_calculation,
