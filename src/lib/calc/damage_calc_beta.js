@@ -555,6 +555,12 @@ function set_min_var(settings, dmgObject) {
             var_percent = var_percent + Math.min(0.07 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
         }
 
+        // bloodlust assault
+        if (settings['ability'] === ABILITIES.ASSAULT_HIT_BETA && settings[SETTINGS.BLOODLUST] === true) {
+            min_percent = 1.85;
+            var_percent = 0.3;
+        }
+
         // icy tempest
         if (
             settings['ability'] === ABILITIES.ICY_TEMPEST_1 ||
