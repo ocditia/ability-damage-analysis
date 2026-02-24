@@ -186,7 +186,7 @@ function calc_boosted_ad(settings, dmgObject) {
         wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type']) &&
         settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS
     ) {
-        base_damage += Math.floor(base_damage/100 * settings[SETTINGS.ICY_PRECISION] * 0.02);
+        base_damage += Math.floor(base_damage/100 * settings[SETTINGS.ICY_PRECISION] * 2);
     }
 
     if (abils[settings['ability']]['main style'] === 'melee' && settings[SETTINGS.CHAOS_ROAR_BETA] === true) {
@@ -1048,7 +1048,7 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
 
     // gflurry beta
     if (settings['ability'] === ABILITIES.GLFURRY_HIT_BETA && settings[SETTINGS.BLOODLUST] === true) {
-        boost += Math.floor(boost * Math.min((100 - settings[SETTINGS.TARGET_HP_PERCENT])/100,0.35))
+        boost += Math.floor(boost * Math.min((100 - settings[SETTINGS.TARGET_HP_PERCENT])/100,0.65))
     }
 
     dmgObject['min hit'] = Math.floor((dmgObject['min hit'] * boost) / 10000);
