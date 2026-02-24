@@ -2179,7 +2179,7 @@ const abils = {
     },
     [ABILITIES.HURRICANE_1]: {
         // ability name
-        'min hit': 1.35, // min % of abil expressed as a decimal
+        'min hit': 1.2, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
