@@ -514,6 +514,12 @@ function set_min_var(settings, dmgObject) {
             var_percent = var_percent + 0.1 * (settings[SETTINGS.DETONATE]/20);
         }
 
+        // omnipower
+        if (settings['ability'] === ABILITIES.OMNIPOWER_HIT_BETA && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
+            min_percent = 1.2;
+            var_percent = 0.3;
+        }
+
         // flank
         if (settings['ability'] === ABILITIES.IMPACT) {
             min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
@@ -2094,8 +2100,8 @@ function get_hit_sequence(settings) {
         rotation[1].push(ABILITIES.HURRICANE_3_BETA);
     }
 
-    if (settings['ability'] === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] !== SETTINGS.CAPE_VALUES.ZUK) {
-        rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]};
+    if (settings['ability'] === ABILITIES.OMNIPOWER_BETA && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
+        rotation = {1:[ABILITIES.OMNIPOWER_HIT_BETA, 'next hit', ABILITIES.OMNIPOWER_HIT_BETA, 'next hit', ABILITIES.OMNIPOWER_HIT_BETA, 'next hit', ABILITIES.OMNIPOWER_HIT_BETA]};
     }
 
     if (settings['ability'] === ABILITIES.IGNEOUS_SHOWDOWN && settings[SETTINGS.FLAMEBOUND_RIVAL] === true
