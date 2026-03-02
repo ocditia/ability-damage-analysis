@@ -2112,10 +2112,6 @@ function get_hit_sequence(settings) {
     // masterwork spear of annihilation
     if (settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR && 
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
-        if (settings['ability'] === ABILITIES.DISMEMBER) {
-            rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
-        }
-
         if (settings['ability'] === ABILITIES.DISMEMBER_1_BETA) {
             rotation[1].push(ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA );
         }
@@ -2142,12 +2138,6 @@ function get_hit_sequence(settings) {
     }
 
     // strength cape
-    if (settings[SETTINGS.STRENGTH_CAPE] === true &&
-        settings['ability'] === ABILITIES.DISMEMBER
-    ) {
-        rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
-    }
-
     if (settings[SETTINGS.STRENGTH_CAPE] === true &&
         settings['ability'] === ABILITIES.DISMEMBER_1_BETA
     ) {
