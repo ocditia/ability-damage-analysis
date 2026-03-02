@@ -191,10 +191,16 @@ function calc_crit_chance(settings) {
             settings['ability'] === ABILITIES.GCONC_HIT_2_BETA
         ) {
             crit_chance += 0.07;
+            if (settings[SETTINGS.RUNIC_CHARGE] === true) {
+                crit_chance += 0.1;
+            }
         } else if (
             settings['ability'] === ABILITIES.GCONC_HIT_3_BETA
         ) {
             crit_chance += 0.14;
+            if (settings[SETTINGS.RUNIC_CHARGE] === true) {
+                crit_chance += 0.2;
+            }
         }
 
         // (g)conc beta
