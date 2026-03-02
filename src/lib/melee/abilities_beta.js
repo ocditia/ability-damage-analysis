@@ -6,10 +6,6 @@ const abilities = {
         title: '2h auto',
         calc: hit_damage_calculation,
     },
-    [ABILITIES.ATTACK_DW_BETA]: {
-        title: 'DW auto',
-        calc: hit_damage_calculation,
-    },
     [ABILITIES.BACKHAND_BETA]: {
         title: 'Backhand',
         calc: hit_damage_calculation,
@@ -26,8 +22,8 @@ const abilities = {
         title: 'Adaptive strike 2h',
         calc: hit_damage_calculation,
     },
-    [ABILITIES.PRESSING_BLOW_BETA]: {
-        title: 'Pressing blow',
+    [ABILITIES.REND]: {
+        title: 'Rend',
         calc: hit_damage_calculation,
     },
     [ABILITIES.GFURY_BETA]: {

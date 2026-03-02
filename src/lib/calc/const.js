@@ -1797,7 +1797,6 @@ const ABILITIES = {
     BLOOD_TENDRILS_1: 'blood tendrils 1',
     BLOOD_TENDRILS_2: 'blood tendrils 2',
     BLOOD_TENDRILS: 'blood tendrils',
-    OVERPOWER_HIT: 'overpower hit',
     OVERPOWER: 'overpower',
     MASSACRE_INITIAL: 'massacre initial',
     MASSACRE_BLEED: 'massacre bleed',
@@ -1876,16 +1875,16 @@ const ABILITIES = {
     THE_FINAL_FLURRY: 'the final flurry',
 
     ATTACK_BETA: 'attack beta',
-    ATTACK_DW_BETA: 'attack dw beta',
     ASSAULT_HIT_BETA: 'assault hit beta',
     ASSAULT_BETA: 'assault beta',
     ADAPTIVE_STRIKE_DW_HIT_BETA: 'adaptive strike dw hit beta',
     ADAPTIVE_STRIKE_DW_BETA: 'adaptive strike dw beta',
     ADAPTIVE_STRIKE_TH_BETA: 'adaptive strike 2h beta',
-    PRESSING_BLOW_BETA: 'pressing blow',
+    REND: 'rend',
     OVERPOWER_HIT_BETA: 'overpower hit beta',
     OVERPOWER_BETA: 'overpower beta',
     GFURY_BETA: 'gfury beta',
+    FURY: 'fury',
     HURRICANE_1_BETA: 'hurricane 1 beta',
     HURRICANE_2_BETA: 'hurricane 2 beta',
     HURRICANE_3_BETA: 'hurricane 3 beta',
@@ -1941,676 +1940,6 @@ const ABILITIES = {
 };
 
 const abils = {
-    [ABILITIES.MELEE_AUTO]: {
-        // ability name
-        'min hit': 0.2, // min % of abil expressed as a decimal
-        'var hit': 0.8,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'auto', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'auto', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.SLICE]: {
-        // ability name
-        'min hit': 0.95, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.BACKHAND]: {
-        // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.HAVOC_HIT]: {
-        // ability name
-        'min hit': 0.5, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.HAVOC]: {
-        // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee',
-        hits: {
-            1: [ABILITIES.HAVOC_HIT, 'next hit', ABILITIES.HAVOC_HIT]
-        },
-    },
-    [ABILITIES.SMASH]: {
-        // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.BARGE]: {
-        // ability name
-        'min hit': 0.75, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.GREATER_BARGE]: {
-        // ability name
-        'min hit': 0.75, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.SEVER]: {
-        // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.BLADED_DIVE]: {
-        // ability name
-        'min hit': 0.75, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.SLAUGHTER_HIT]: {
-        // ability name
-        'min hit': 0.3, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.SLAUGHTER]: {
-        // ability name
-        'min hit': 0.3, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        hits: {
-            1: [
-                ABILITIES.SLAUGHTER_HIT,
-                ABILITIES.SLAUGHTER_HIT,
-                ABILITIES.SLAUGHTER_HIT,
-                ABILITIES.SLAUGHTER_HIT,
-                ABILITIES.SLAUGHTER_HIT
-            ]
-        }
-    },
-    [ABILITIES.FORCEFUL_BACKHAND]: {
-        // ability name
-        'min hit': 1.2, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.FLURRY_HIT]: {
-        // ability name
-        'min hit': 0.3, // min % of abil expressed as a decimal
-        'var hit': 0.05,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.FLURRY]: {
-        // ability name
-        'min hit': 0.3, // min % of abil expressed as a decimal
-        'var hit': 0.05,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        hits: {
-            1: [ABILITIES.FLURRY_HIT],
-            2: [ABILITIES.FLURRY_HIT],
-            3: [ABILITIES.FLURRY_HIT],
-            4: [ABILITIES.FLURRY_HIT],
-            5: [ABILITIES.FLURRY_HIT],
-            6: [ABILITIES.FLURRY_HIT],
-            7: [ABILITIES.FLURRY_HIT],
-            8: [ABILITIES.FLURRY_HIT]
-        }
-    },
-    [ABILITIES.GREATER_FLURRY_HIT]: {
-        // ability name
-        'min hit': 0.5, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.GREATER_FLURRY]: {
-        // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        hits: {
-            1: [ABILITIES.GREATER_FLURRY_HIT],
-            2: [ABILITIES.GREATER_FLURRY_HIT],
-            3: [ABILITIES.GREATER_FLURRY_HIT],
-            4: [ABILITIES.GREATER_FLURRY_HIT],
-            5: [ABILITIES.GREATER_FLURRY_HIT],
-            6: [ABILITIES.GREATER_FLURRY_HIT],
-            7: [ABILITIES.GREATER_FLURRY_HIT],
-            8: [ABILITIES.GREATER_FLURRY_HIT],
-        }
-    },
-    [ABILITIES.HURRICANE_1]: {
-        // ability name
-        'min hit': 1.2, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.HURRICANE_2]: {
-        // ability name
-        'min hit': 1.55, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.HURRICANE]: {
-        // ability name
-        'min hit': 1.35, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        hits: {
-            1: [ABILITIES.HURRICANE_1, 'next hit', ABILITIES.HURRICANE_2]
-        }
-    },
-    [ABILITIES.BLOOD_TENDRILS_1]: {
-        // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.BLOOD_TENDRILS_2]: {
-        // ability name
-        'min hit': 0.5, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.BLOOD_TENDRILS]: {
-        // ability name
-        'min hit': 0.5, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        hits: {
-            1: [
-                ABILITIES.BLOOD_TENDRILS_1,
-                ABILITIES.BLOOD_TENDRILS_2,
-                ABILITIES.BLOOD_TENDRILS_2,
-                ABILITIES.BLOOD_TENDRILS_2,
-                ABILITIES.BLOOD_TENDRILS_2
-            ]
-        }
-    },
-    [ABILITIES.OVERPOWER_HIT]: {
-        // ability name
-        'min hit': 2.7, // min % of abil expressed as a decimal
-        'var hit': 0.6,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.OVERPOWER]: {
-        // ability name
-        'min hit': 2.7, // min % of abil expressed as a decimal
-        'var hit': 0.6,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee',
-        hits: {
-            1: [ABILITIES.OVERPOWER_HIT]
-        }
-    },
-    [ABILITIES.MASSACRE_INITIAL]: {
-        // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.MASSACRE_BLEED]: {
-        // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
-        'var hit': 0.0,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.MASSACRE]: {
-        // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
-        'var hit': 0.0,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        hits: {
-            1: [
-                ABILITIES.MASSACRE_INITIAL,
-                ABILITIES.MASSACRE_BLEED,
-                ABILITIES.MASSACRE_BLEED,
-                ABILITIES.MASSACRE_BLEED,
-                ABILITIES.MASSACRE_BLEED,
-                ABILITIES.MASSACRE_BLEED
-            ]
-        }
-    },
-    [ABILITIES.METEOR_STRIKE]: {
-        // ability name
-        'min hit': 2.7, // min % of abil expressed as a decimal
-        'var hit': 0.6,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.BALANCED_STRIKE]: {
-        // ability name
-        'min hit': 0.0, // min % of abil expressed as a decimal
-        'var hit': 0.0,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'idfk what this is', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.KICK]: {
-        // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.PUNISH]: {
-        // ability name
-        'min hit': 0.75, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    },
-    [ABILITIES.DISMEMBER_HIT]: {
-        // ability name
-        'min hit': 0.25, // min % of abil expressed as a decimal
-        'var hit': 0.06,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.DISMEMBER]: {
-        // ability name
-        'min hit': 0.25, // min % of abil expressed as a decimal
-        'var hit': 0.06,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee',
-        hits: {
-            1: [
-                ABILITIES.DISMEMBER_HIT,
-                ABILITIES.DISMEMBER_HIT,
-                ABILITIES.DISMEMBER_HIT,
-                ABILITIES.DISMEMBER_HIT,
-                ABILITIES.DISMEMBER_HIT
-            ]
-        }
-    },
-    [ABILITIES.FURY]: {
-        // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.GREATER_FURY]: {
-        // ability name
-        'min hit': 1.2, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.CLEAVE]: {
-        // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.DECIMATE]: {
-        // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.CHAOS_ROAR]: {
-        // ability name
-        'min hit': 0.85, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.STOMP]: {
-        // ability name
-        'min hit': 1.2, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.DESTROY_HIT]: {
-        // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'channel', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.DESTROY]: {
-        // ability name
-        'min hit': 1.2, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee',
-        hits: {
-            1: [ABILITIES.DESTROY_HIT, "next hit", ABILITIES.DESTROY_HIT],
-            2: [],
-            3: [ABILITIES.DESTROY_HIT, "next hit", ABILITIES.DESTROY_HIT],
-            4: [],
-            5: [ABILITIES.DESTROY_HIT, "next hit", ABILITIES.DESTROY_HIT],
-            6: [],
-            7: [ABILITIES.DESTROY_HIT, "next hit", ABILITIES.DESTROY_HIT]
-        }
-    },
-    [ABILITIES.QUAKE]: {
-        // ability name
-        'min hit': 1.3, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.ASSAULT_HIT]: {
-        // ability name
-        'min hit': 1.25, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'channel', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.ASSAULT]: {
-        // ability name
-        'min hit': 1.2, // min % of abil expressed as a decimal
-        'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee',
-        hits: {
-            1: [ABILITIES.ASSAULT_HIT],
-            2: [],
-            3: [ABILITIES.ASSAULT_HIT],
-            4: [],
-            5: [ABILITIES.ASSAULT_HIT],
-            6: [],
-            7: [ABILITIES.ASSAULT_HIT]
-        }
-    },
-    [ABILITIES.PULVERISE]: {
-        // ability name
-        'min hit': 2.7, // min % of abil expressed as a decimal
-        'var hit': 0.6,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.FRENZY_HIT]: {
-        // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.FRENZY]: {
-        // ability name
-        'min hit': 1.45, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee',
-        hits: {
-            1: [ABILITIES.FRENZY_HIT],
-            2: [ABILITIES.FRENZY_HIT],
-            3: [ABILITIES.FRENZY_HIT],
-            4: [ABILITIES.FRENZY_HIT],
-            5: [ABILITIES.FRENZY_HIT],
-            6: [ABILITIES.FRENZY_HIT],
-            7: [ABILITIES.FRENZY_HIT],
-            8: [ABILITIES.FRENZY_HIT],
-        }
-    },
     [ABILITIES.VINE_CALL_INTIAL]: {
         // ability name
         'min hit': 1.0, // min % of abil expressed as a decimal
@@ -3324,17 +2653,17 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee',
     },
-    [ABILITIES.ATTACK_DW_BETA]: {
+    [ABILITIES.BLADED_DIVE]: {
         // ability name
-        'min hit': 0.7, // min % of abil expressed as a decimal
-        'var hit': 0.13,
+        'min hit': 0.75, // min % of abil expressed as a decimal
+        'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee',
+        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
     [ABILITIES.ASSAULT_HIT_BETA]: {
         // ability name
@@ -3408,7 +2737,7 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee',
     },
-    [ABILITIES.PRESSING_BLOW_BETA]: {
+    [ABILITIES.REND]: {
         // ability name
         'min hit': 1.35, // min % of abil expressed as a decimal
         'var hit': 0.3,
@@ -3422,8 +2751,8 @@ const abils = {
     },
     [ABILITIES.OVERPOWER_HIT_BETA]: {
         // ability name
-        'min hit': 3.1, // min % of abil expressed as a decimal
-        'var hit': 0.6,
+        'min hit': 5.5, // min % of abil expressed as a decimal
+        'var hit': 0.5,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -3432,7 +2761,7 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
     },
-    [ABILITIES.OVERPOWER_BETA]: {
+    [ABILITIES.OVERPOWER]: {
         // ability name
         'min hit': 2.7, // min % of abil expressed as a decimal
         'var hit': 0.6,
@@ -3444,12 +2773,24 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
-            1: [ABILITIES.OVERPOWER_HIT]
+            1: [ABILITIES.OVERPOWER_HIT_BETA]
         }
     },
     [ABILITIES.GFURY_BETA]: {
         // ability name
         'min hit': 1.2, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+    },
+    [ABILITIES.FURY]: {
+        // ability name
+        'min hit': 1.1, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3466,7 +2807,7 @@ const abils = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
@@ -3651,7 +2992,8 @@ const abils = {
         'adren cost': 0,
         hits: {
             1: [ABILITIES.DISMEMBER_3_INITIAL_BETA, ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA
-                , ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA
+                , ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA, 
+                ABILITIES.DISMEMBER_3_HIT_BETA, ABILITIES.DISMEMBER_3_HIT_BETA
             ]
         }
     },
@@ -3698,7 +3040,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         'adren cost': 0,
