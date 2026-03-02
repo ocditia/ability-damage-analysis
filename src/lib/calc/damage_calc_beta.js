@@ -185,6 +185,7 @@ function calc_boosted_ad(settings, dmgObject) {
         base_damage += Math.floor(base_damage/100 * settings[SETTINGS.ICY_PRECISION] * 2);
     }
 
+    // chaos roar
     if (abils[settings['ability']]['main style'] === 'melee' && settings[SETTINGS.CHAOS_ROAR_BETA] === true) {
         base_damage = Math.floor(base_damage/100*175);
     }
