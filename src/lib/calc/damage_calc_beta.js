@@ -1845,7 +1845,6 @@ function get_max_crit(settings, dmgObject) {
  * @returns 
  */
 function style_specific_unification(settings, style = null) {
-    console.log(settings['ability'])
     if (style == 'magic' || abils[settings['ability']]['main style'] === 'magic') {
         settings[SETTINGS.MH] = settings[SETTINGS.MAGIC_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.MAGIC_OH];
