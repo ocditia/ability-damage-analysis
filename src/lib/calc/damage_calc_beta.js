@@ -2040,8 +2040,8 @@ function get_hit_sequence(settings) {
     }
 
     if (settings['ability'] === ABILITIES.SNIPE_BETA && settings[SETTINGS.RANGED_GLOVES] === SETTINGS.RANGED_GLOVES_VALUES.NIGHTMARES_E) {
-        rotation[3].push("next hit")
-        rotation[3].push(ABILITIES.SNIPE_HIT_2_BETA)
+        rotation[1].push("next hit")
+        rotation[1].push(ABILITIES.SNIPE_HIT_2_BETA)
     }
 
     let tumekens_resplendence = 0;
