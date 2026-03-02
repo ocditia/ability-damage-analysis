@@ -632,6 +632,12 @@ function set_min_var(settings, dmgObject) {
             var_percent = var_percent + 0.05 * settings[SETTINGS.PUNCTURE_STACKS];
         }
 
+        // deadshot
+        if (settings['ability'] === ABILITIES.DEADSHOT_HIT_BETA && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
+            min_percent = 0.55;
+            var_percent = 0.2;
+        } 
+
         // flank
         if (settings['ability'] === ABILITIES.BINDING_SHOT) {
             min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
@@ -2086,8 +2092,8 @@ function get_hit_sequence(settings) {
         rotation[8] = [ABILITIES.ASPHYXIATE_HIT];
     }
 
-    if (settings['ability'] === ABILITIES.DEADSHOT && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-        rotation[1].push(ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED);
+    if (settings['ability'] === ABILITIES.DEADSHOT_BETA && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
+        rotation[1].push('next hit', ABILITIES.DEADSHOT_HIT_BETA, 'next hit', ABILITIES.DEADSHOT_HIT_BETA, 'next hit', ABILITIES.DEADSHOT_HIT_BETA, 'next hit', ABILITIES.DEADSHOT_HIT_BETA);
     }
 
     if (settings['ability'] === ABILITIES.OVERPOWER && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
