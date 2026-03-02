@@ -886,6 +886,12 @@ const SETTINGS = {
     GFURY_BETA: 'gfury beta',
     BLAST_INFUSED: 'blast infused',
     COMBUSTED: 'combusted',
+    CHAIN_MODIFIER: 'chain modifier',
+    CHAIN_MODIFIER_VALUES: {
+        NONE: 'none',
+        REGULAR: 'regular',
+        GREATER: 'greater',
+    },
 };
 
 const settingsConfig = {
@@ -2492,6 +2498,15 @@ const settingsConfig = {
     [SETTINGS.COMBUSTED]: {
         label: 'Combust on target',
         default: false
+    },
+    [SETTINGS.CHAIN_MODIFIER]: {
+        label: 'Chain modifier',
+        default: SETTINGS.CHAIN_MODIFIER_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.CHAIN_MODIFIER_VALUES.NONE },
+            { text: 'Regular', value: SETTINGS.CHAIN_MODIFIER_VALUES.REGULAR },
+            { text: 'Greater', value: SETTINGS.CHAIN_MODIFIER_VALUES.GREATER },
+        ]
     },
 };
 

@@ -34,11 +34,7 @@ function calc_base_ad(settings) {
 
     // base damage buffs (eruptive / equilibrium)
     let buff = 1 + settings[SETTINGS.ERUPTIVE] * 0.005;
-    if (settings[SETTINGS.AURA] === 'equilibrium') {
-        buff += 0.12;
-    }
     base_AD = Math.floor(base_AD * buff);
-
     return base_AD;
 }
 
@@ -228,6 +224,22 @@ function calc_boosted_ad(settings, dmgObject) {
         settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.CRUMBLE_UNDEAD
     ) {
         base_damage += Math.floor(ability_damage/1000*settings[SETTINGS.BLOOD_TITHE]*10);
+    }
+
+    if (abils[settings['ability']]['main style'] === 'magic' && 
+        settings[SETTINGS.CHAIN_MODIFIER] != SETTINGS.CHAIN_MODIFIER_VALUES.NONE
+    ) {
+        let chain_modifier = 25;
+        
+        if (settings[SETTINGS.CHAIN_MODIFIER] === SETTINGS.CHAIN_MODIFIER_VALUES.GREATER) {
+            chain_modifier = 50;
+        }
+        
+        if (settings[SETTINGS.CAROMING] >= 1) {
+            chain_modifier += 5 * (1 + settings[SETTINGS.CAROMING]);
+        }
+        
+        base_damage = Math.floor(base_damage / 100 * chain_modifier);
     }
 
     return base_damage;
