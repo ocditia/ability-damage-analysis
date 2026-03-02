@@ -175,17 +175,26 @@ function calc_crit_chance(settings) {
             crit_chance += 0.05 * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
         } 
 
-        // (g)conc self boost
+        // conc self boost
         if (
-            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_2 ||
-            settings['ability'] === ABILITIES.GREATER_CONCENTRATED_BLAST_2
+            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_2
         ) {
             crit_chance += 0.05;
         } else if (
-            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_3 ||
-            settings['ability'] === ABILITIES.GREATER_CONCENTRATED_BLAST_3
+            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_3
         ) {
             crit_chance += 0.1;
+        }
+
+        // (g)conc beta self boost
+        if (
+            settings['ability'] === ABILITIES.GCONC_HIT_2_BETA
+        ) {
+            crit_chance += 0.07;
+        } else if (
+            settings['ability'] === ABILITIES.GCONC_HIT_3_BETA
+        ) {
+            crit_chance += 0.14;
         }
 
         // (g)conc beta
@@ -199,20 +208,8 @@ function calc_crit_chance(settings) {
             if (abils[settings['ability']]['ability classification'] != 'proc' &&
                 abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
             ) {
-                crit_chance += 0.27 * settings[SETTINGS.GCONC_BETA_STACKS];
+                crit_chance += 0.17 * settings[SETTINGS.GCONC_BETA_STACKS];
             } 
-        }
-        
-
-        // (g)conc beta self boost
-        if (
-            settings['ability'] === ABILITIES.GCONC_HIT_2_BETA
-        ) {
-            crit_chance += 0.08;
-        } else if (
-            settings['ability'] === ABILITIES.GCONC_HIT_3_BETA
-        ) {
-            crit_chance += 0.16;
         }
 
         // smoke tendrils
