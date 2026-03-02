@@ -382,11 +382,6 @@
                                     img="/effect_icons/greater_fury.png"
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.GFURY_BETA]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/greater_fury.png"
-                                />
-                                <Checkbox
                                     bind:setting={settings[SETTINGS.RAMPAGE]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/rampage.png"

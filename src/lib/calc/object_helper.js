@@ -238,9 +238,8 @@ function calc_crit_chance(settings) {
         // (g)fury
         if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.REGULAR) {
             crit_chance += 0.25;
-        } else if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.GREATER) {
-            crit_chance = 1;
-        } else if(settings[SETTINGS.GFURY_BETA] === true) {
+        } 
+        else if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.GREATER) {
             crit_chance = 1;
         }
 

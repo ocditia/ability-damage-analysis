@@ -883,7 +883,6 @@ const SETTINGS = {
     IMBUE_GALES: 'imbue: gales',
     RUNIC_CHARGE: 'runic charge',
     BLOODLUST: 'bloodlust',
-    GFURY_BETA: 'gfury beta',
     BLAST_INFUSED: 'blast infused',
     COMBUSTED: 'combusted',
     CHAIN_MODIFIER: 'chain modifier',
@@ -2485,10 +2484,6 @@ const settingsConfig = {
     },
     [SETTINGS.BLOODLUST]: {
         label: 'Bloodlust',
-        default: false
-    },
-    [SETTINGS.GFURY_BETA]: {
-        label: 'Gfury beta',
         default: false
     },
     [SETTINGS.BLAST_INFUSED]: {
