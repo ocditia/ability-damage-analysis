@@ -1098,7 +1098,7 @@ function calc_bonus_damage(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
-        // Galeshot
+        // Galeshot (searing wind)
         if (settings[SETTINGS.IMBUE_GALES] === true) {
             min_hit += Math.floor(0.2 * dmgObject['base AD']);
         }
