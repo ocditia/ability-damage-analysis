@@ -933,12 +933,7 @@ function calc_multiplicative_shared_buffs(settings, dmgObject) {
 
         // berserk
         if (settings['berserk'] === true) {
-            boost = Math.floor(boost * 2);
-        }
-
-        // berserk  beta
-        if (settings[SETTINGS.BERSERK_BETA] === true) {
-            boost = Math.floor(boost * 1.75);
+            boost = Math.floor(boost /100 * 175);
         }
 
         // zaros godsword
