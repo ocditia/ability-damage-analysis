@@ -268,7 +268,7 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + 0.01 * (100 - Math.max(settings[SETTINGS.TARGET_HP_PERCENT],25))));
         }
 
-        // dragonbreath
+        // dragon breath
         if (settings['ability'] === ABILITIES.DRAGON_BREATH_BETA && settings[SETTINGS.COMBUSTED] === true) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.25);
         }
