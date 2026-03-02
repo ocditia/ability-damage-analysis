@@ -34,7 +34,7 @@ const abilities = {
         title: 'Hurricane',
         calc: ability_damage_calculation,
     },
-    [ABILITIES.GLFURRY_BETA]: {
+    [ABILITIES.GREATER_FLURRY]: {
         title: 'Gflurry',
         calc: ability_damage_calculation,
     },
