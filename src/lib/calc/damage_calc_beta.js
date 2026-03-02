@@ -2050,6 +2050,7 @@ function ability_damage_calculation(settings) {
  * @returns 
  */
 function get_hit_sequence(settings) {
+    console.log(settings['ability'])
     let rotation = JSON.parse(JSON.stringify(abils[settings['ability']]['hits'])); //Deep copy
 
     if (settings['ability'] === ABILITIES.GREATER_RICOCHET) {
