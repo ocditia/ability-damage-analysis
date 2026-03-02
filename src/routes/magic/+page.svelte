@@ -2,7 +2,7 @@
     import { renderComponent } from '@tanstack/svelte-table';
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
-    import { abilities } from '$lib/magic/abilities';
+    import { abilities } from '$lib/magic/abilities_beta';
 
     import AbilityDamageTable from '$components/AbilityDamageTable/AbilityDamageTable.svelte';
     import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
@@ -176,7 +176,7 @@
                             class:text-[#968A5C]={tab === 'leagues'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                         >
-                            Leagues
+                            Beta
                         </button>
                     </li>
                 </ul>
@@ -369,6 +369,14 @@
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.CONCENTRATED_BLAST_STACKS]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/gconc.png"
+                                    step="1"
+                                    max="3"
+                                    min="0"
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.GCONC_BETA_STACKS]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/gconc.png"
                                     step="1"
@@ -583,6 +591,13 @@
                                     min="0"
                                 />
                                 <Number
+                                    bind:setting={settings[SETTINGS.ULTIMATUS]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    min="0"
+                                    max="4"
+                                />
+                                <Number
                                     bind:setting={settings[SETTINGS.LUNGING]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/Lunging.webp"
@@ -704,23 +719,15 @@
                             {:else if tab === 'leagues'}
                             <div class="md:col-span-1">
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.MAGIC_LEAGUES_RELIC]}
+                                    bind:setting={settings[SETTINGS.RUNIC_CHARGE]}
                                     onchange={() => updateDamages()}
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_EOF_RELIC]}
+                                    bind:setting={settings[SETTINGS.BLAST_INFUSED]}
                                     onchange={() => updateDamages()}
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_AMASCUT]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_FUL]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_JAS]}
+                                    bind:setting={settings[SETTINGS.COMBUSTED]}
                                     onchange={() => updateDamages()}
                                 />
                             </div>

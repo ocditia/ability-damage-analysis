@@ -2,7 +2,7 @@
     import { renderComponent } from '@tanstack/svelte-table';
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
-    import { abilities } from '$lib/ranged/abilities';
+    import { abilities } from '$lib/ranged/abilities_beta';
 
     import AbilityDamageTable from '$components/AbilityDamageTable/AbilityDamageTable.svelte';
     import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
@@ -127,7 +127,7 @@
 </script>
 
 <Navbar />
-<Header img="/range_background.png" text="Ranged Calculator" icon="/style_icons/ranged-white.svg" />
+<Header img="/range_background.png" text="Ranged Calculator Beta" icon="/style_icons/ranged-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
     <div class="responsive-container">
@@ -176,7 +176,7 @@
                             class:text-[#968A5C]={tab === 'leagues'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                         >
-                            Bosses
+                            Beta
                         </button>
                     </li>
                 </ul>
@@ -557,6 +557,13 @@
                                     min="0"
                                 />
                                 <Number
+                                    bind:setting={settings[SETTINGS.ULTIMATUS]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    min="0"
+                                    max="4"
+                                />
+                                <Number
                                     bind:setting={settings[SETTINGS.LUNGING]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/Lunging.webp"
@@ -707,21 +714,10 @@
                         {:else if tab === 'leagues'}
                         <div class="md:col-span-1">
                             <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_EOF_RELIC]}
+                                    bind:setting={settings[SETTINGS.IMBUE_GALES]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/balance_by_force.png"
                                 />
-                            <Checkbox
-                                bind:setting={settings[SETTINGS.LEAGUES_POCKET_AMASCUT]}
-                                onchange={() => updateDamages()}
-                            />
-                            <Checkbox
-                                bind:setting={settings[SETTINGS.LEAGUES_POCKET_FUL]}
-                                onchange={() => updateDamages()}
-                            />
-                            <Checkbox
-                                bind:setting={settings[SETTINGS.LEAGUES_POCKET_JAS]}
-                                onchange={() => updateDamages()}
-                            />
                         </div>
                         {/if}
                     </div>

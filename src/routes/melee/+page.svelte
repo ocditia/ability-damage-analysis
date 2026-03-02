@@ -2,7 +2,7 @@
     import { renderComponent } from '@tanstack/svelte-table';
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
-    import { abilities } from '$lib/melee/abilities';
+    import { abilities } from '$lib/melee/abilities_beta';
 
     import AbilityDamageTable from '$components/AbilityDamageTable/AbilityDamageTable.svelte';
     import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
@@ -65,9 +65,9 @@
         damages = damages.map(ability => {
             adaptedSettings['ability'] = ability.key;
 
-            ability.regular = ability.calc({ ...adaptedSettings, zgs: false, berserk: false });
-            ability.zgs = ability.calc({ ...adaptedSettings, zgs: true, berserk: false });
-            ability.berserk = ability.calc({ ...adaptedSettings, zgs: false, berserk: true });
+            ability.regular = ability.calc({ ...adaptedSettings, zgs: false, berserk_beta: false });
+            ability.zgs = ability.calc({ ...adaptedSettings, zgs: true, berserk_beta: false });
+            ability.berserk = ability.calc({ ...adaptedSettings, zgs: false, berserk_beta: true });
 
             return ability;
         })
@@ -166,7 +166,7 @@
                             class:text-[#968A5C]={tab === 'leagues'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                         >
-                            Leagues
+                            Beta
                         </button>
                     </li>
                 </ul>
@@ -201,6 +201,14 @@
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.TARGET_HP_PERCENT]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/target_hp.png"
+                                    step="1"
+                                    max="100"
+                                    min="0"
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.PLAYER_HP_PERCENT]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/target_hp.png"
                                     step="1"
@@ -292,6 +300,11 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/chaos_roar.png"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.CHAOS_ROAR_BETA]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/chaos_roar.png"
+                                />
                                 <Select
                                     bind:setting={settings[SETTINGS.VULN]}
                                     onchange={() => updateDamages()}
@@ -365,6 +378,11 @@
                                 />
                                 <Select
                                     bind:setting={settings[SETTINGS.FURY_BUFF]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/greater_fury.png"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.GFURY_BETA]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/greater_fury.png"
                                 />
@@ -595,6 +613,13 @@
                                     min="0"
                                 />
                                 <Number
+                                    bind:setting={settings[SETTINGS.ULTIMATUS]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    min="0"
+                                    max="4"
+                                />
+                                <Number
                                     bind:setting={settings[SETTINGS.LUNGING]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/Lunging.webp"
@@ -716,23 +741,7 @@
                             {:else if tab === 'leagues'}
                             <div class="md:col-span-1">
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.MELEE_LEAGUES_AD_RELIC]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_EOF_RELIC]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_AMASCUT]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_FUL]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_JAS]}
+                                    bind:setting={settings[SETTINGS.BLOODLUST]}
                                     onchange={() => updateDamages()}
                                 />
                             </div>
