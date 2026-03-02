@@ -2,12 +2,8 @@ import { ABILITIES } from '../calc/const.js';
 import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc_beta.js';
 
 const abilities = {
-    [ABILITIES.RANGED_DW_BETA]: {
+    [ABILITIES.RANGED_BETA]: {
         title: 'DW auto',
-        calc: hit_damage_calculation,
-    },
-    [ABILITIES.RANGED_TH_BETA]: {
-        title: '2h auto',
         calc: hit_damage_calculation,
     },
     [ABILITIES.GALESHOT]: {
