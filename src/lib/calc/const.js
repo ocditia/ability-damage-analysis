@@ -2009,7 +2009,7 @@ const abils = {
     },
     [ABILITIES.ENERGY_DRAIN]: {
         // ability name
-        'min hit': 0.55, // min % of abil expressed as a decimal
+        'min hit': 0.75, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2021,7 +2021,7 @@ const abils = {
     },
     [ABILITIES.FAVOUR_OF_THE_WAR_GOD]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.25, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2033,7 +2033,7 @@ const abils = {
     },
     [ABILITIES.ARMADYLS_JUDGEMENT]: {
         // ability name
-        'min hit': 3.6, // min % of abil expressed as a decimal
+        'min hit': 4.0, // min % of abil expressed as a decimal
         'var hit': 0.8,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2045,7 +2045,7 @@ const abils = {
     },
     [ABILITIES.WARSTRIKE]: {
         // ability name
-        'min hit': 2.0, // min % of abil expressed as a decimal
+        'min hit': 2.25, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2057,7 +2057,7 @@ const abils = {
     },
     [ABILITIES.SUNDER]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.25, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2069,7 +2069,7 @@ const abils = {
     },
     [ABILITIES.BACKSTAB]: {
         // ability name
-        'min hit': 1.3, // min % of abil expressed as a decimal
+        'min hit': 1.5, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2081,7 +2081,7 @@ const abils = {
     },
     [ABILITIES.LIQUEFY]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.25, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2105,7 +2105,7 @@ const abils = {
     },
     [ABILITIES.ICY_TEMPEST_1]: {
         // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
+        'min hit': 1.15, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2117,7 +2117,7 @@ const abils = {
     },
     [ABILITIES.ICY_TEMPEST_2]: {
         // ability name
-        'min hit': 1.5, // min % of abil expressed as a decimal
+        'min hit': 1.75, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2144,7 +2144,7 @@ const abils = {
     },
     [ABILITIES.WEAKEN_SPECIAL_ATTACK]: {
         // ability name
-        'min hit': 0.55, // min % of abil expressed as a decimal
+        'min hit': 0.75, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2168,8 +2168,8 @@ const abils = {
     },
     [ABILITIES.SLICE_N_DICE_1]: {
         // ability name
-        'min hit': 1.6, // min % of abil expressed as a decimal
-        'var hit': 0.4,
+        'min hit': 2.0, // min % of abil expressed as a decimal
+        'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2180,8 +2180,8 @@ const abils = {
     },
     [ABILITIES.SLICE_N_DICE_2]: {
         // ability name
-        'min hit': 0.8, // min % of abil expressed as a decimal
-        'var hit': 0.2,
+        'min hit': 1.0, // min % of abil expressed as a decimal
+        'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2192,7 +2192,7 @@ const abils = {
     },
     [ABILITIES.SLICE_N_DICE_3]: {
         // ability name
-        'min hit': 0.4, // min % of abil expressed as a decimal
+        'min hit': 0.45, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2254,7 +2254,7 @@ const abils = {
     },
     [ABILITIES.SWEEP_HIT]: {
         // ability name
-        'min hit': 1.05, // min % of abil expressed as a decimal
+        'min hit': 1.2, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2293,7 +2293,7 @@ const abils = {
     },
     [ABILITIES.DRACONIC_CLEAVE]: {
         // ability name
-        'min hit': 2.5, // min % of abil expressed as a decimal
+        'min hit': 2.75, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2305,7 +2305,7 @@ const abils = {
     },
     [ABILITIES.DRACONIC_BLOW]: {
         // ability name
-        'min hit': 2.1, // min % of abil expressed as a decimal
+        'min hit': 2.4, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2317,7 +2317,7 @@ const abils = {
     },
     [ABILITIES.DRACONIC_SLASH]: {
         // ability name
-        'min hit': 2.1, // min % of abil expressed as a decimal
+        'min hit': 2.4, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2339,48 +2339,9 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee'
     },
-    [ABILITIES.IGNEOUS_CLEAVE_INITIAL]: {
-        // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.IGNEOUS_CLEAVE_BLEED]: {
-        // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
-        'var hit': 0.15,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    },
-    [ABILITIES.IGNEOUS_CLEAVE]: {
-        // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee',
-        hits: {
-            1: [ABILITIES.IGNEOUS_CLEAVE_INITIAL, ABILITIES.IGNEOUS_CLEAVE_BLEED]
-        }
-    },
     [ABILITIES.IGNEOUS_SHOWDOWN_HIT]: {
         // ability name
-        'min hit': 2.3, // min % of abil expressed as a decimal
+        'min hit': 2.6, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2392,7 +2353,7 @@ const abils = {
     },
     [ABILITIES.IGNEOUS_SHOWDOWN_BONUS]: {
         // ability name
-        'min hit': 2.15, // min % of abil expressed as a decimal
+        'min hit': 2.45, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2419,7 +2380,7 @@ const abils = {
     },
     [ABILITIES.QUICK_SMASH]: {
         // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
+        'min hit': 1.15, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2431,7 +2392,7 @@ const abils = {
     },
     [ABILITIES.AIMED_STRIKE]: {
         // ability name
-        'min hit': 1.3, // min % of abil expressed as a decimal
+        'min hit': 1.5, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2443,7 +2404,7 @@ const abils = {
     },
     [ABILITIES.DISRUPT]: {
         // ability name
-        'min hit': 2.0, // min % of abil expressed as a decimal
+        'min hit': 2.3, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2467,7 +2428,7 @@ const abils = {
     },
     [ABILITIES.IMPALE]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.3, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2479,7 +2440,7 @@ const abils = {
     },
     [ABILITIES.HEALING_BLADE]: {
         // ability name
-        'min hit': 1.6, // min % of abil expressed as a decimal
+        'min hit': 1.85, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2491,7 +2452,7 @@ const abils = {
     },
     [ABILITIES.SARADOMINS_LIGHTNING_HIT]: {
         // ability name
-        'min hit': 2.5, // min % of abil expressed as a decimal
+        'min hit': 2.85, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2499,7 +2460,7 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee'
+        'damage type': 'magic'
     },
     [ABILITIES.SARADOMINS_LIGHTNING]: {
         // ability name
@@ -2511,14 +2472,14 @@ const abils = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee',
+        'damage type': 'magic',
         hits: {
             1: [ABILITIES.SARADOMINS_LIGHTNING_HIT, 'next hit', ABILITIES.SARADOMINS_LIGHTNING_HIT]
         }
     },
     [ABILITIES.OBLITERATE]: {
         // ability name
-        'min hit': 1.4, // min % of abil expressed as a decimal
+        'min hit': 1.6, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2530,7 +2491,7 @@ const abils = {
     },
     [ABILITIES.FEINT]: {
         // ability name
-        'min hit': 2.3, // min % of abil expressed as a decimal
+        'min hit': 2.55, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2542,7 +2503,7 @@ const abils = {
     },
     [ABILITIES.SPEAR_WALL]: {
         // ability name
-        'min hit': 0.9, // min % of abil expressed as a decimal
+        'min hit': 1.05, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2554,7 +2515,7 @@ const abils = {
     },
     [ABILITIES.ICE_CLEAVE]: {
         // ability name
-        'min hit': 1.6, // min % of abil expressed as a decimal
+        'min hit': 1.85, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2566,7 +2527,7 @@ const abils = {
     },
     [ABILITIES.SUNFALL_SLAM]: {
         // ability name
-        'min hit': 2.55, // min % of abil expressed as a decimal
+        'min hit': 2.9, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2602,7 +2563,7 @@ const abils = {
     },
     [ABILITIES.THE_FINAL_FLURRY_1]: {
         // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
+        'min hit': 0.8, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2614,7 +2575,7 @@ const abils = {
     },
     [ABILITIES.THE_FINAL_FLURRY_2]: {
         // ability name
-        'min hit': 1.35, // min % of abil expressed as a decimal
+        'min hit': 1.5, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
