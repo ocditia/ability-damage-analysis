@@ -356,11 +356,6 @@
                                     bind:setting={settings[SETTINGS.WALKED_TARGET]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.NEEDLE_STRIKE]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/needle_strike.png"
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.PUNCTURE_STACKS]}
                                     onchange={() => updateDamages()}
