@@ -747,7 +747,6 @@ const SETTINGS = {
         REGULAR: 'regular',
         ENCHANTED: 'enchanted'
     },
-    NEEDLE_STRIKE: 'needle strike',
     GRAVITATE: 'gravitate',
     BLOOD_TITHE: 'blood tithe',
     DEATH_SPARK: 'death spark',

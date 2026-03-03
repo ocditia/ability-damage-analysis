@@ -859,15 +859,6 @@ function calc_additive_boosts(settings, dmgObject) {
             boost += Math.floor(0.05 * settings[SETTINGS.STRENGTH_LEVEL])/100;
         }
 
-    // needle strike next abil boost if style is ranged
-    if (
-        (settings[SETTINGS.NEEDLE_STRIKE] === true ||
-            settings[SETTINGS.NEEDLE_STRIKE] === 'fleeting') &&
-        abils[settings['ability']]['main style'] === 'ranged'
-    ) {
-        boost += 0.07;
-    }
-
     // ruby aurora
     boost += settings[SETTINGS.RUBY_AURORA] * 0.01;
 

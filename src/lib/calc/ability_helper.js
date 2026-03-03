@@ -2,18 +2,6 @@ import { SETTINGS } from './settings';
 import { abils, ABILITIES } from './const';
 
 function next_tick(settings) {
-    // needle strike logic
-    if (settings['needle strike'] === true) {
-        let single_tick_gear = [SETTINGS.NECKLACE_VALUES.AOS, SETTINGS.NECKLACE_VALUES.AOSOR, SETTINGS.NECKLACE_VALUES.EOF, SETTINGS.NECKLACE_VALUES.EOFOR];
-        if (single_tick_gear.includes(settings['necklace'])) {
-            settings['needle strike'] = false;
-        } else {
-            settings['needle strike'] = 'fleeting';
-        }
-    } else if (settings['needle strike'] === 'fleeting') {
-        settings['needle strike'] = false;
-    }
-
     // enduring ruin / gloves of passage logic
     if (settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED || settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR) {
         let single_tick_gear = [SETTINGS.NECKLACE_VALUES.AOS, SETTINGS.NECKLACE_VALUES.AOSOR, SETTINGS.NECKLACE_VALUES.EOF, SETTINGS.NECKLACE_VALUES.EOFOR];
