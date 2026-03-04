@@ -10,6 +10,14 @@ const abilities = {
         title: 'Backhand',
         calc: hit_damage_calculation,
     },
+    [ABILITIES.BARGE]: {
+        title: 'Barge',
+        calc: hit_damage_calculation,
+    },
+    [ABILITIES.GREATER_BARGE]: {
+        title: 'Greater barge',
+        calc: hit_damage_calculation,
+    },
     [ABILITIES.ASSAULT_BETA]: {
         title: 'Assault',
         calc: ability_damage_calculation,

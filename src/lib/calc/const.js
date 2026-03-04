@@ -2613,6 +2613,30 @@ const abils = {
         'main style': 'melee',
         'damage type': 'melee',
     },
+    [ABILITIES.BARGE]: {
+        // ability name
+        'min hit': 1.1, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+    },
+    [ABILITIES.GREATER_BARGE]: {
+        // ability name
+        'min hit': 0.75, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+    },
     [ABILITIES.BLADED_DIVE]: {
         // ability name
         'min hit': 0.75, // min % of abil expressed as a decimal
