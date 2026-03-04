@@ -1,5 +1,5 @@
 import { ABILITIES } from '../calc/const.js';
-import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc_beta.js';
+import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc_beta.js';
 
 const abilities = {
     [ABILITIES.ATTACK_BETA]: {

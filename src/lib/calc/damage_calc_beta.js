@@ -2163,8 +2163,10 @@ function calc_aftershock(settings) {
         // calc buffed AD
         dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
         dmgObject[key]['damage list'] = [];
-        for (let i=0; i<39; i++) {
-            dmgObject[key]['damage list'].push(Math.floor(dmgObject[key]['boosted AD'] * (0.24 + 0.04*i)));
+        let min_aftershock = 0.24 * settings[SETTINGS.AFTERSHOCK];
+        let var_aftershock = 0.156 * settings[SETTINGS.AFTERSHOCK];
+        for (let i=0; i<var_aftershock/0.004; i++) {
+            dmgObject[key]['damage list'].push(Math.floor(dmgObject[key]['boosted AD'] * (min_aftershock + 0.04*i)));
         }
         // calc core
         if (abils[settings['ability']]['on-hit effects']) {

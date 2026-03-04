@@ -889,6 +889,7 @@ const SETTINGS = {
         REGULAR: 'regular',
         GREATER: 'greater',
     },
+    AFTERSHOCK: 'aftershock',
 };
 
 const settingsConfig = {
@@ -2496,6 +2497,10 @@ const settingsConfig = {
             { text: 'Regular', value: SETTINGS.CHAIN_MODIFIER_VALUES.REGULAR },
             { text: 'Greater', value: SETTINGS.CHAIN_MODIFIER_VALUES.GREATER },
         ]
+    },
+    [SETTINGS.AFTERSHOCK]: {
+        label: 'Aftershock',
+        default: 4
     },
 };
 
