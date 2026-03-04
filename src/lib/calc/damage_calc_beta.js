@@ -227,6 +227,7 @@ function calc_boosted_ad(settings, dmgObject) {
         base_damage += Math.floor(ability_damage/1000*settings[SETTINGS.BLOOD_TITHE]*10);
     }
 
+    // caroming chain
     if (abils[settings['ability']]['main style'] === 'magic' && 
         settings[SETTINGS.CHAIN_MODIFIER] != SETTINGS.CHAIN_MODIFIER_VALUES.NONE
     ) {
@@ -1100,9 +1101,9 @@ function calc_bonus_damage(settings, dmgObject) {
             min_hit += Math.floor(0.2 * dmgObject['base AD']);
         }
 
-        // caroming beta
+        // caroming ranged
         if ((settings['ability'] === ABILITIES.GRICO_1_BETA || settings['ability'] === ABILITIES.GRICO_2_BETA || 
-            settings['ability'] === ABILITIES.GRICO_1_BETA)) {
+            settings['ability'] === ABILITIES.GRICO_3_BETA)) {
                 if (settings[SETTINGS.CAROMING] > 0) {
                     min_hit += Math.floor((0.025 * settings[SETTINGS.CAROMING]) * dmgObject['base AD']);
                 }
