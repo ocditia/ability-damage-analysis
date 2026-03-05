@@ -907,20 +907,20 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_LEVEL]: {
         label: 'Magic Level',
-        default: 120,
+        default: 145,
         style: 'magic'
     },
     [SETTINGS.STRENGTH_LEVEL]: {
         label: 'Strength Level',
-        default: 120
+        default: 145
     },
     [SETTINGS.ATTACK_LEVEL]: {
         label: 'Attack Level',
-        default: 120
+        default: 145
     },
     [SETTINGS.RANGED_LEVEL]: {
         label: 'Ranged Level',
-        default: 120
+        default: 145
     },
     [SETTINGS.POTION]: {
         label: 'Potion',
