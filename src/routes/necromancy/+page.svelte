@@ -186,13 +186,6 @@
                                     min="0"
                                 />
                                 <Number
-                                    bind:setting={settings[SETTINGS.ABILITY_DAMAGE]}
-                                    onchange={() => updateDamages()}
-                                    step="1"
-                                    max="9999"
-                                    min="0"
-                                />
-                                <Number
                                     bind:setting={settings[SETTINGS.NECROMANCY_LEVEL]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/necromancy.png"
