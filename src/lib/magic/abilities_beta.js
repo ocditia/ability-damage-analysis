@@ -6,6 +6,10 @@ const abilities = {
         title: 'Auto',
         calc: hit_damage_calculation,
     },
+    [ABILITIES.SONIC_WAVE]: {
+        title: 'Gsonic',
+        calc: hit_damage_calculation,
+    },
     [ABILITIES.GSONIC_BETA]: {
         title: 'Gsonic',
         calc: hit_damage_calculation,
