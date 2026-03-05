@@ -1,4 +1,5 @@
 const SETTINGS = {
+    EQ_PERK: 'eq perk',
     MODE: 'user value',
     MODE_VALUES: {
         MEAN: 'mean',
@@ -2500,6 +2501,10 @@ const settingsConfig = {
     },
     [SETTINGS.AFTERSHOCK]: {
         label: 'Aftershock',
+        default: 4
+    },
+    [SETTINGS.EQ_PERK]: {
+        label: 'Eq perk',
         default: 4
     },
 };
