@@ -22,6 +22,10 @@ const abilities = {
         title: 'Impact',
         calc: hit_damage_calculation,
     },
+    [ABILITIES.CONCENTRATED_BLAST]: {
+        title: 'Concentrated blast',
+        calc: ability_damage_calculation,
+    },
     [ABILITIES.GCONC_BETA]: {
         title: 'Gconc',
         calc: ability_damage_calculation,
