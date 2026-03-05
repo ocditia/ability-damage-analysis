@@ -257,14 +257,6 @@
                                 <h5 class="uppercase font-bold text-lg text-center">
                                     Applies to dots
                                 </h5>
-                                <Number
-                                    bind:setting={settings[SETTINGS.FLOW_STACKS]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/greater_flow.png"
-                                    step="1"
-                                    max="100"
-                                    min="0"
-                                />
                                 <Select
                                     bind:setting={settings[SETTINGS.VULN]}
                                     onchange={() => updateDamages()}
