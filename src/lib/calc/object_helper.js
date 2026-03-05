@@ -168,7 +168,7 @@ function calc_crit_chance(settings) {
         }
 
         
-        // (g)conc
+        // conc
         if (abils[settings['ability']]['ability classification'] != 'proc' &&
             abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
         ) {
@@ -186,7 +186,7 @@ function calc_crit_chance(settings) {
             crit_chance += 0.1;
         }
 
-        // (g)conc beta self boost
+        // (g)conc self boost
         if (
             settings['ability'] === ABILITIES.GCONC_HIT_2_BETA
         ) {
@@ -203,18 +203,18 @@ function calc_crit_chance(settings) {
             }
         }
 
-        // (g)conc beta
+        // gconc
         if (settings[SETTINGS.RUNIC_CHARGE] === false) {
             if (abils[settings['ability']]['ability classification'] != 'proc' &&
                 abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
             ) {
-                crit_chance += 0.07 * settings[SETTINGS.GCONC_BETA_STACKS];
+                crit_chance += 0.07 * settings[SETTINGS.GCONC_STACKS];
             } 
         } else {
             if (abils[settings['ability']]['ability classification'] != 'proc' &&
                 abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
             ) {
-                crit_chance += 0.17 * settings[SETTINGS.GCONC_BETA_STACKS];
+                crit_chance += 0.17 * settings[SETTINGS.GCONC_STACKS];
             } 
         }
 

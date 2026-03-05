@@ -746,7 +746,7 @@ const SETTINGS = {
     SWIFTNESS_OF_THE_AVIANSIE: 'swiftness of the avianse',
     ESSENCE_CORRUPTION: 'essence corruption',
     CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
-    GCONC_BETA_STACKS: 'gconc beta stacks',
+    GCONC_STACKS: 'gconc stacks',
     CHAOS_ROAR: 'chaos roar',
     FURY_BUFF: 'fury buff',
     FURY_BUFF_VALUES: {
@@ -2068,8 +2068,8 @@ const settingsConfig = {
         label: 'Conc stacks',
         default: 0
     },
-    [SETTINGS.GCONC_BETA_STACKS]: {
-        label: 'Gconc beta',
+    [SETTINGS.GCONC_STACKS]: {
+        label: 'Gconc stacks',
         default: 0
     },
     [SETTINGS.CHAOS_ROAR]: {

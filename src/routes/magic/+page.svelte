@@ -345,7 +345,7 @@
                                     min="0"
                                 />
                                 <Number
-                                    bind:setting={settings[SETTINGS.GCONC_BETA_STACKS]}
+                                    bind:setting={settings[SETTINGS.GCONC_STACKS]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/gconc.png"
                                     step="1"

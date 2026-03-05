@@ -34,7 +34,8 @@ function next_cast(settings) {
     }
 
     // gconc bbeta
-    settings[SETTINGS.GCONC_BETA_STACKS] = 0;
+    settings[SETTINGS.GCONC_STACKS] = 0;
+    settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 0;
 
     
 
