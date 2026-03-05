@@ -252,21 +252,7 @@ function calc_boosted_ad(settings, dmgObject) {
 
 function ability_specific_effects(settings, dmgObject) {
     // order of these effects in unknown and should be researched properly still.
-    if (abils[settings['ability']]['main style'] === 'magic') {
-        // auto attack
-        if (settings['ability'] === ABILITIES.MAGIC_AUTO) {
-            let hand_modifier = 1;
-            if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.MH) {
-                hand_modifier = 1;
-            } else if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.OH) {
-                hand_modifier = 0.5;
-            } else {
-                hand_modifier = 1.5;
-            }
-            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
-        }
-
-        
+    if (abils[settings['ability']]['main style'] === 'magic') {        
         // the last command effect
         if (settings['ability'] === ABILITIES.THE_LAST_COMMAND) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + 0.01 * (100 - Math.max(settings[SETTINGS.TARGET_HP_PERCENT],25))));
@@ -364,19 +350,6 @@ function ability_specific_effects(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
-        // auto attack
-        if (settings['ability'] === ABILITIES.MELEE_AUTO) {
-            let hand_modifier = 1;
-            if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.MH) {
-                hand_modifier = 1;
-            } else if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.OH) {
-                hand_modifier = 0.5;
-            } else {
-                hand_modifier = 1.5;
-            }
-            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
-        }
-
         // slice bound
         if (
             settings['ability'] === 'slice' &&
@@ -424,19 +397,6 @@ function ability_specific_effects(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
-        // auto attack
-        if (settings['ability'] === ABILITIES.RANGED_AUTO) {
-            let hand_modifier = 1;
-            if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.MH) {
-                hand_modifier = 1;
-            } else if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.OH) {
-                hand_modifier = 0.5;
-            } else {
-                hand_modifier = 1.5;
-            }
-            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
-        }
-
         // piercing shot bound
         if (
             settings['ability'] === 'piercing shot' &&

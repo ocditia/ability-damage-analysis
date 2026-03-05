@@ -854,12 +854,6 @@ const SETTINGS = {
         FAST: 'fast',
         AVERAGE: 'average',
     },
-    AUTO_HAND: 'auto hand',
-    AUTO_HAND_VALUES: {
-        MH: 'main hand',
-        OH: 'off hand',
-        TH: 'two hand',
-    },
     DAMAGE_PER_UNIT: 'damage per unit',
     DAMAGE_PER_UNIT_VALUES: {
         ABIL: 'abil',
@@ -2360,15 +2354,6 @@ const settingsConfig = {
             { text: 'Average (6t)', value: SETTINGS.AUTO_SPEED_VALUES.AVERAGE },
             { text: 'Fast (5t)', value: SETTINGS.AUTO_SPEED_VALUES.FAST },
             { text: 'Fastest (4t)', value: SETTINGS.AUTO_SPEED_VALUES.FASTEST }
-        ]
-    },
-    [SETTINGS.AUTO_HAND]: {
-        label: 'Auto type',
-        default: SETTINGS.AUTO_HAND_VALUES.TH,
-        options: [
-            { text: '2h auto', value: SETTINGS.AUTO_HAND_VALUES.TH },
-            { text: 'mh auto', value: SETTINGS.AUTO_HAND_VALUES.MH },
-            { text: 'oh auto', value: SETTINGS.AUTO_HAND_VALUES.OH }
         ]
     },
     [SETTINGS.TELOS_RED_BEAM]: {
