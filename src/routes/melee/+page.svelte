@@ -162,8 +162,8 @@
                     </li>
                     <li class="flex-grow me-2">
                         <button
-                            onclick={() => (tab = 'leagues')}
-                            class:text-[#968A5C]={tab === 'leagues'}
+                            onclick={() => (tab = 'beta')}
+                            class:text-[#968A5C]={tab === 'beta'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                         >
                             Beta
@@ -276,6 +276,10 @@
                                     bind:setting={settings[SETTINGS.CHAOS_ROAR]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/chaos_roar.png"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.BLOODLUST]}
+                                    onchange={() => updateDamages()}
                                 />
                                 <Select
                                     bind:setting={settings[SETTINGS.VULN]}
@@ -701,12 +705,8 @@
                                     max="20"
                                 />
                             </div>
-                            {:else if tab === 'leagues'}
+                            {:else if tab === 'beta'}
                             <div class="md:col-span-1">
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.BLOODLUST]}
-                                    onchange={() => updateDamages()}
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.EQ_PERK]}
                                     onchange={() => updateDamages()}

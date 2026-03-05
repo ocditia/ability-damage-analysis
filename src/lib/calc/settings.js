@@ -591,7 +591,6 @@ const SETTINGS = {
         SUPERIOR_ELEMENTS: 'superior scrimshaw of elements',
         CRUELTY: 'scrimshaw of cruelty',
         SUPERIOR_CRUELTY: 'superior scrimshaw of elements',
-        LEAGUES_POCKET: 'leagues pocket',
     },
     WEAPON: 'weapon type',
     WEAPON_VALUES: {
@@ -855,13 +854,6 @@ const SETTINGS = {
     TELOS_RED_BEAM: 'telos red beam',
     TELOS_BLACK_BEAM: 'telos black beam',
     ENERGISING: 'energising',
-    MELEE_LEAGUES_AD_RELIC: 'melee league ad relic',
-    NECRO_LEAGUES_RELIC: 'necro league relic',
-    MAGIC_LEAGUES_RELIC: 'magic league relic',
-    LEAGUES_POCKET_JAS: 'leagues pocket jas',
-    LEAGUES_POCKET_FUL: 'leagues pocket ful',
-    LEAGUES_POCKET_AMASCUT: 'leagues pocket amascut',
-    LEAGUES_EOF_RELIC: 'leagues eof relic',
     HIT_COUNTER_START: 'hit counter start',
     HIT_COUNTER_END: 'hit counter end',
     IMBUE_GALES: 'imbue: gales',
@@ -1779,7 +1771,6 @@ const settingsConfig = {
             { text: 'Superior elements', value: SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS },
             { text: 'Cruelty', value: SETTINGS.POCKET_VALUES.CRUELTY },
             { text: 'Superior cruelty', value: SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY },
-            { text: 'Leagues pocket book', value: SETTINGS.POCKET_VALUES.LEAGUES_POCKET },
         ]
     },
     [SETTINGS.WEAPON]: {
@@ -2355,34 +2346,6 @@ const settingsConfig = {
         label: 'Tumekens asphyx',
         default: false
     },
-    [SETTINGS.MELEE_LEAGUES_AD_RELIC]: {
-        label: 'League relic',
-        default: false
-    },
-    [SETTINGS.NECRO_LEAGUES_RELIC]: {
-        label: 'League relic',
-        default: false
-    },
-    [SETTINGS.MAGIC_LEAGUES_RELIC]: {
-        label: 'League relic',
-        default: false
-    },
-    [SETTINGS.LEAGUES_POCKET_AMASCUT]: {
-        label: 'League pocket amascut',
-        default: false
-    },
-    [SETTINGS.LEAGUES_POCKET_FUL]: {
-        label: 'League pocket ful',
-        default: false
-    },
-    [SETTINGS.LEAGUES_POCKET_JAS]: {
-        label: 'League pocket jas',
-        default: false
-    },
-    [SETTINGS.LEAGUES_EOF_RELIC]: {
-        label: 'League eof relic',
-        default: false
-    },
     [SETTINGS.MELEE_AMMO_SLOT]: {
         label: 'Ammo slot',
         default: SETTINGS.MELEE_AMMO_SLOT_VALUES.NODON_SPIKE_HARNESS,
@@ -2464,7 +2427,7 @@ const settingsConfig = {
     [SETTINGS.EQ_PERK_B]: {
         label: 'Eq perk scale',
         default: 2
-    },
+222222222222222222    },
 };
 
 export { SETTINGS, settingsConfig };

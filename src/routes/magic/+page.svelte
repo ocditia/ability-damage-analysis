@@ -172,8 +172,8 @@
                     </li>
                     <li class="flex-grow me-2">
                         <button
-                            onclick={() => (tab = 'leagues')}
-                            class:text-[#968A5C]={tab === 'leagues'}
+                            onclick={() => (tab = 'beta')}
+                            class:text-[#968A5C]={tab === 'beta'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                         >
                             Beta
@@ -454,6 +454,18 @@
                                     img="/ability_icons/magic/30x30/asphyxiate.png"
                                 />
                                 <Checkbox
+                                    bind:setting={settings[SETTINGS.RUNIC_CHARGE]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.BLAST_INFUSED]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.COMBUSTED]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
                                     bind:setting={settings[SETTINGS.KALG_SPEC]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/crit_i_kal.png"
@@ -693,20 +705,8 @@
                                     max="20"
                                 />
                             </div>
-                            {:else if tab === 'leagues'}
+                            {:else if tab === 'beta'}
                             <div class="md:col-span-1">
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.RUNIC_CHARGE]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.BLAST_INFUSED]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.COMBUSTED]}
-                                    onchange={() => updateDamages()}
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.EQ_PERK]}
                                     onchange={() => updateDamages()}

@@ -156,11 +156,11 @@
                     </li>
                     <li class="flex-grow me-2">
                         <button
-                            onclick={() => (tab = 'leagues')}
-                            class:text-[#968A5C]={tab === 'leagues'}
+                            onclick={() => (tab = 'beta')}
+                            class:text-[#968A5C]={tab === 'beta'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                         >
-                            Bosses
+                            Beta
                         </button>
                     </li>
                 </ul>
@@ -602,28 +602,8 @@
                                     max="20"
                                 />
                         </div>
-                        {:else if tab === 'leagues'}
+                        {:else if tab === 'beta'}
                             <div class="md:col-span-1">
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.NECRO_LEAGUES_RELIC]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_EOF_RELIC]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_AMASCUT]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_FUL]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LEAGUES_POCKET_JAS]}
-                                    onchange={() => updateDamages()}
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.EQ_PERK]}
                                     onchange={() => updateDamages()}

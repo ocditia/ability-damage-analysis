@@ -172,8 +172,8 @@
                     </li>
                     <li class="flex-grow me-2">
                         <button
-                            onclick={() => (tab = 'leagues')}
-                            class:text-[#968A5C]={tab === 'leagues'}
+                            onclick={() => (tab = 'beta')}
+                            class:text-[#968A5C]={tab === 'beta'}
                             class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
                         >
                             Beta
@@ -329,6 +329,11 @@
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Applies to regular abilities only</h5>
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.IMBUE_GALES]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/balance_by_force.png"
+                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.STONE_OF_JAS]}
                                     onchange={() => updateDamages()}
@@ -679,13 +684,8 @@
                                     max="20"
                                 />
                         </div>
-                        {:else if tab === 'leagues'}
+                        {:else if tab === 'beta'}
                         <div class="md:col-span-1">
-                            <Checkbox
-                                    bind:setting={settings[SETTINGS.IMBUE_GALES]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/balance_by_force.png"
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.EQ_PERK]}
                                     onchange={() => updateDamages()}
