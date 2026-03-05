@@ -734,15 +734,15 @@
                                     bind:setting={settings[SETTINGS.BLOODLUST]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Checkbox
+                                <Number
                                     bind:setting={settings[SETTINGS.EQ_PERK]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Checkbox
+                                <Number
                                     bind:setting={settings[SETTINGS.EQ_PERK_A]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Checkbox
+                                <Number
                                     bind:setting={settings[SETTINGS.EQ_PERK_B]}
                                     onchange={() => updateDamages()}
                                 />
