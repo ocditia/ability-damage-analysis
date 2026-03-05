@@ -300,16 +300,6 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
         }
 
-        // combust walk
-        if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            if (settings[SETTINGS.LUNGING]>0) {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
-            }
-            else {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
-            }
-        }
-
         // wrack energising
         if (settings['ability'] === ABILITIES.WRACK && settings[SETTINGS.ENERGISING] > 0) {
             dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
@@ -345,16 +335,6 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
         }
 
-        // slaughter walk
-        if (settings['ability'] === ABILITIES.SLAUGHTER_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 3);
-        }
-
-        // dismember 2 walk
-        if (settings['ability'] === ABILITIES.DISMEMBER_2_HIT_BETA && settings[SETTINGS.WALKED_TARGET] === true) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 3);
-        }
-
         // punish low
         if (settings['ability'] === ABILITIES.PUNISH && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2.5);
@@ -375,16 +355,6 @@ function ability_specific_effects(settings, dmgObject) {
         // frag lunging
         if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
-        }
-
-        // frag walk
-        if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            if (settings[SETTINGS.LUNGING]>0) {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
-            }
-            else {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
-            }
         }
     }
 

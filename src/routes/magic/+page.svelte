@@ -351,10 +351,6 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/kerapac_wristwraps.png"
                                 />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.WALKED_TARGET]}
-                                    onchange={() => updateDamages()}
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.CONCENTRATED_BLAST_STACKS]}
                                     onchange={() => updateDamages()}

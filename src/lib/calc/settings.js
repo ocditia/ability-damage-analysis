@@ -749,7 +749,6 @@ const SETTINGS = {
     LIVING_DEATH: 'living death',
     SWIFTNESS_OF_THE_AVIANSIE: 'swiftness of the avianse',
     ESSENCE_CORRUPTION: 'essence corruption',
-    WALKED_TARGET: 'walked target',
     CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
     GCONC_BETA_STACKS: 'gconc beta stacks',
     CHAOS_ROAR: 'chaos roar',
@@ -2088,10 +2087,6 @@ const settingsConfig = {
     [SETTINGS.CONFLAGRATE]: {
         label: 'Conflagrate',
         default: false
-    },
-    [SETTINGS.WALKED_TARGET]: {
-        label: 'Walked',
-        default: true
     },
     [SETTINGS.CONCENTRATED_BLAST_STACKS]: {
         label: 'Conc stacks',

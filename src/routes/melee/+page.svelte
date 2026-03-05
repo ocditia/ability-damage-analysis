@@ -351,10 +351,6 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/enduring_ruin.png"
                                 />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.WALKED_TARGET]}
-                                    onchange={() => updateDamages()}
-                                />
                                 <Select
                                     bind:setting={settings[SETTINGS.FURY_BUFF]}
                                     onchange={() => updateDamages()}

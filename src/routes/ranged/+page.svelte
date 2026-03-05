@@ -336,10 +336,6 @@
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Applies to regular abilities only</h5>
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.WALKED_TARGET]}
-                                    onchange={() => updateDamages()}
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.PUNCTURE_STACKS]}
                                     onchange={() => updateDamages()}
