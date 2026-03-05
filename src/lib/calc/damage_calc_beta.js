@@ -1930,29 +1930,28 @@ function ability_damage_calculation(settings) {
     let hit_counter = 0;
     for (let key in rotation) {
         settings['rotation key'] = key;
-        if (key <= settings[SETTINGS.MAX_CHANNEL_DURATION]) {
-            const abil_cast = rotation[key].length;
-            for (let iter = 0; iter < rotation[key].length; iter++) {
-                if (rotation[key][iter] === 'next cast') {
-                    settings = next_cast(settings);
-                } else if (rotation[key][iter] === 'next hit') {
-                    settings = next_hit(settings);
+        const abil_cast = rotation[key].length;
+        for (let iter = 0; iter < rotation[key].length; iter++) {
+            if (rotation[key][iter] === 'next cast') {
+                settings = next_cast(settings);
+            } else if (rotation[key][iter] === 'next hit') {
+                settings = next_hit(settings);
+            } else {
+                hit_counter += 1;
+                let abil = settings['ability'];
+                settings['ability'] = rotation[key][iter];
+                let hit_damage = hit_damage_calculation(settings);
+                // if we want to include this hit add the damage
+                if (settings[SETTINGS.HIT_COUNTER_START] <= hit_counter && hit_counter <= settings[SETTINGS.HIT_COUNTER_END]) {
+                    damage += hit_damage;    
                 } else {
-                    hit_counter += 1;
-                    let abil = settings['ability'];
-                    settings['ability'] = rotation[key][iter];
-                    let hit_damage = hit_damage_calculation(settings);
-                    if (settings[SETTINGS.HIT_COUNTER_START] <= hit_counter && hit_counter <= settings[SETTINGS.HIT_COUNTER_END]) {
-                        damage += hit_damage;    
-                    } else {
-                        damage += 0
-                    }
-                    settings['ability'] = abil;
+                    damage += 0
                 }
+                settings['ability'] = abil;
             }
-            if (abil_cast >= 1) {
-                settings = next_tick(settings);
-            }      
+        if (abil_cast >= 1) {
+            settings = next_tick(settings);
+        }      
         } 
     }
     return damage;

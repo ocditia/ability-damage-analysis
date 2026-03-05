@@ -246,13 +246,6 @@
                                     onchange={() => updateDamages()}
                                 />
                                 <Number
-                                    bind:setting={settings[SETTINGS.MAX_CHANNEL_DURATION]}
-                                    onchange={() => updateDamages()}
-                                    step="1"
-                                    max="1000"
-                                    min="0"
-                                />
-                                <Number
                                     bind:setting={settings[SETTINGS.HIT_COUNTER_START]}
                                     onchange={() => updateDamages()}
                                     step="1"
