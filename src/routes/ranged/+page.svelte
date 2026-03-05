@@ -226,11 +226,6 @@
                                     max="100"
                                     min="0"
                                 />
-                                <Select
-                                    bind:setting={settings[SETTINGS.TARGET_DISABILITY]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/stunned.png"
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.ABILITY_DAMAGE]}
                                     onchange={() => updateDamages()}

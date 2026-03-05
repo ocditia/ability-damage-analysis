@@ -310,26 +310,6 @@ function ability_specific_effects(settings, dmgObject) {
             }
         }
 
-        // wrack bound
-        if (
-            settings['ability'] === 'wrack' &&
-            (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
-        ) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
-        }
-
-        // wrack and ruin bound
-        if (
-            settings['ability'] === 'wrack and ruin' &&
-            (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
-        ) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.6);
-        }
-
         // wrack energising
         if (settings['ability'] === ABILITIES.WRACK && settings[SETTINGS.ENERGISING] > 0) {
             dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
@@ -350,16 +330,6 @@ function ability_specific_effects(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
-        // slice bound
-        if (
-            settings['ability'] === 'slice' &&
-            (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
-        ) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
-        }
-
         // slice energising
         if (settings['ability'] === ABILITIES.SLICE && settings[SETTINGS.ENERGISING] > 0) {
             dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD'])
@@ -397,16 +367,6 @@ function ability_specific_effects(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
-        // piercing shot bound
-        if (
-            settings['ability'] === 'piercing shot' &&
-            (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
-        ) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
-        }
-
         // piercing energising
         if (settings['ability'] === ABILITIES.PIERCING_SHOT_HIT && settings[SETTINGS.ENERGISING] > 0) {
             dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);

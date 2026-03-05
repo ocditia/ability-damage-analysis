@@ -730,13 +730,6 @@ const SETTINGS = {
         REGULAR: 'regular',
         ENCHANTED: 'enchanted'
     },
-    TARGET_DISABILITY: 'target disability',
-    TARGET_DISABILITY_VALUES: {
-        NONE: 'none',
-        BOUND: 'bound',
-        STUNNED: 'stunned',
-        BOUND_STUNNED: 'bound and stunned'
-    },
     DRACONIC_FRUIT: 'draconic fruit',
     ENDURING_RUIN_HIT: 'enduring ruin hit',
     ENDURING_RUIN_HIT_VALUES: {
@@ -2041,16 +2034,6 @@ const settingsConfig = {
             { text: 'None', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.NONE },
             { text: 'Regular', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR },
             { text: 'Enchanted', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED }
-        ]
-    },
-    [SETTINGS.TARGET_DISABILITY]: {
-        label: 'Stun/bound state',
-        default: SETTINGS.TARGET_DISABILITY_VALUES.NONE,
-        options: [
-            { text: 'None', value: SETTINGS.TARGET_DISABILITY_VALUES.NONE },
-            { text: 'Bound', value: SETTINGS.TARGET_DISABILITY_VALUES.BOUND },
-            { text: 'Stunned', value: SETTINGS.TARGET_DISABILITY_VALUES.STUNNED },
-            { text: 'Bound and stunned', value: SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED }
         ]
     },
     [SETTINGS.DRACONIC_FRUIT]: {

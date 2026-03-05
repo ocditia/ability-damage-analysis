@@ -216,11 +216,6 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/strength_cape.png"
                                 />
-                                <Select
-                                    bind:setting={settings[SETTINGS.TARGET_DISABILITY]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/stunned.png"
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.ABILITY_DAMAGE]}
                                     onchange={() => updateDamages()}
