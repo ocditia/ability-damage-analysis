@@ -520,12 +520,6 @@ function set_min_var(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
-        // salt the wound stack bonus
-        if (settings['ability'] === 'salt the wound') {
-            min_percent = min_percent + 0.1 * settings[SETTINGS.PUNCTURE_STACKS];
-            var_percent = var_percent + 0.05 * settings[SETTINGS.PUNCTURE_STACKS];
-        }
-
         // deadshot
         if (settings['ability'] === ABILITIES.DEADSHOT_HIT_BETA && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
             min_percent = 0.55;

@@ -721,7 +721,6 @@ const SETTINGS = {
     INFERNAL_PUZZLE_BOX: 'Infernal puzzle box',
     ICY_PRECISION: 'icy precision',
     ICY_CHILL_STACKS: 'icy chill stacks',
-    PUNCTURE_STACKS: 'puncture stacks',
     FLOW_STACKS: 'flow stacks',
     CONFLAGRATE: 'conflagrate',
     KERAPACS_WRIST_WRAPS: 'kerapacs wrist wraps',
@@ -2011,10 +2010,6 @@ const settingsConfig = {
     },
     [SETTINGS.ICY_CHILL_STACKS]: {
         label: 'Icy Chill',
-        default: 0
-    },
-    [SETTINGS.PUNCTURE_STACKS]: {
-        label: 'Puncture Stacks',
         default: 0
     },
     [SETTINGS.FLOW_STACKS]: {

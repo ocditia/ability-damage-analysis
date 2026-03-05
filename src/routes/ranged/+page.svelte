@@ -337,13 +337,6 @@
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Applies to regular abilities only</h5>
                                 <Number
-                                    bind:setting={settings[SETTINGS.PUNCTURE_STACKS]}
-                                    onchange={() => updateDamages()}
-                                    step="1"
-                                    max="13"
-                                    min="0"
-                                />
-                                <Number
                                     bind:setting={settings[SETTINGS.STONE_OF_JAS]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/stone_of_jas.png"
