@@ -2427,7 +2427,7 @@ const settingsConfig = {
     [SETTINGS.EQ_PERK_B]: {
         label: 'Eq perk scale',
         default: 2
-222222222222222222    },
+    },
 };
 
 export { SETTINGS, settingsConfig };
