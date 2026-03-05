@@ -12,7 +12,6 @@ const SETTINGS = {
         MAX_NO_CRIT: 'max no crit',
         MAX_CRIT: 'max crit'
     },
-    ABILITY_DAMAGE: 'ability damage',
     NECROMANCY_LEVEL: 'necromancy level',
     MAGIC_LEVEL: 'magic level',
     STRENGTH_LEVEL: 'strength level',
@@ -892,10 +891,6 @@ const settingsConfig = {
             { text: 'Max no crit', value: SETTINGS.MODE_VALUES.MAX_NO_CRIT },
             { text: 'Max crit', value: SETTINGS.MODE_VALUES.MAX_CRIT }
         ]
-    },
-    [SETTINGS.ABILITY_DAMAGE]: {
-        label: 'Override base damage',
-        default: 0
     },
     [SETTINGS.NECROMANCY_LEVEL]: {
         label: 'Necromancy Level',

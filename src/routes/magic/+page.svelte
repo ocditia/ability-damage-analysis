@@ -228,13 +228,6 @@
                                     img="/effect_icons/death.png"
                                 />
                                 <Number
-                                    bind:setting={settings[SETTINGS.ABILITY_DAMAGE]}
-                                    onchange={() => updateDamages()}
-                                    step="1"
-                                    max="9999"
-                                    min="0"
-                                />
-                                <Number
                                     bind:setting={settings[SETTINGS.HIT_CHANCE]}
                                     onchange={() => updateDamages()}
                                     step="1"
