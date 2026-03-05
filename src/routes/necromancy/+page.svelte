@@ -643,6 +643,18 @@
                                     bind:setting={settings[SETTINGS.LEAGUES_POCKET_JAS]}
                                     onchange={() => updateDamages()}
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.EQ_PERK]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.EQ_PERK_A]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.EQ_PERK_B]}
+                                    onchange={() => updateDamages()}
+                                />
                         </div>
                         {/if}
                     </div>
