@@ -720,6 +720,18 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/balance_by_force.png"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.EQ_PERK]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.EQ_PERK_A]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.EQ_PERK_B]}
+                                    onchange={() => updateDamages()}
+                                />
                         </div>
                         {/if}
                     </div>
