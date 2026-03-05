@@ -2507,7 +2507,7 @@ const settingsConfig = {
     },
     [SETTINGS.EQ_PERK]: {
         label: 'Eq perk',
-        default: 4
+        default: 0
     },
     [SETTINGS.EQ_PERK_A]: {
         label: 'Eq perk base',
