@@ -1304,7 +1304,7 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
             dmgObject['damage list'][i] = dmgObject['damage list'][i] + haunted;
         }
 
-        // essence corruption 25 stack bonus
+        // essence corruption 10 stack bonus
         if (
             abils[settings['ability']]['damage type'] === 'magic' &&
             settings[SETTINGS.ESSENCE_CORRUPTION] >= 10 &&
@@ -1314,8 +1314,8 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
         ) {
             dmgObject['damage list'][i] =
                 dmgObject['damage list'][i] +
-                3* (settings[SETTINGS.MAGIC_LEVEL] +
-                settings[SETTINGS.ESSENCE_CORRUPTION]);
+                3 * settings[SETTINGS.MAGIC_LEVEL] +
+                settings[SETTINGS.ESSENCE_CORRUPTION];
         }
 
         // tokkul-zo
