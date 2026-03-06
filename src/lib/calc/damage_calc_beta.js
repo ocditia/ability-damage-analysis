@@ -1314,8 +1314,8 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
         ) {
             dmgObject['damage list'][i] =
                 dmgObject['damage list'][i] +
-                3 * settings[SETTINGS.MAGIC_LEVEL] +
-                settings[SETTINGS.ESSENCE_CORRUPTION];
+                settings[SETTINGS.MAGIC_LEVEL] +
+                3 * settings[SETTINGS.ESSENCE_CORRUPTION];
         }
 
         // tokkul-zo
