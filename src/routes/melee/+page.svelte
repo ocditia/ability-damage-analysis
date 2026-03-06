@@ -526,11 +526,6 @@
                                     img="/armour_icons/Pocket_slot.webp"
                                 />
                                 <Select
-                                    bind:setting={settings[SETTINGS.AURA]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/aura.png"
-                                />
-                                <Select
                                     bind:setting={settings[SETTINGS.FAMILIAR]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/familiar.png"

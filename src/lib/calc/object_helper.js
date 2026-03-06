@@ -322,11 +322,6 @@ function calc_crit_chance(settings) {
         crit_chance = 0;
     }
 
-    // equilibrium aura
-    if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.EQUILIBRIUM) {
-        crit_chance = 0;
-    }
-
     if (settings[SETTINGS.EQ_PERK] > 0) {
         crit_chance = 0;
     }

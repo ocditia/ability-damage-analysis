@@ -1235,38 +1235,6 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
             dmgObject['damage list'][i] = Math.floor(1.66 * dmgObject['damage list'][i])
         }
 
-        // zerk auras
-        if(settings[SETTINGS.SUNSHINE] === false &&
-        settings[SETTINGS.META] === false &&
-        settings[SETTINGS.DEATH_SWIFTNESS] === false &&
-        settings[SETTINGS.BERSERK] === false
-        ) {
-            if (
-                settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.MANIACAL &&
-                abils[settings['ability']]['damage type'] === 'magic'
-            ) {
-                dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
-            } else if (
-                settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.BERSERKER &&
-                abils[settings['ability']]['damage type'] === 'melee'
-            ) {
-                dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
-            } else if (
-                settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.RECKLESS &&
-                abils[settings['ability']]['damage type'] === 'ranged'
-            ) {
-                dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
-            }
-        }
-
-        // mahjarrat aura
-        if (
-            settings[SETTINGS.AURA] === 'mahjarrat' &&
-            abils[settings['ability']]['damage type'] !== 'spirit'
-        ) {
-            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.05);
-        }
-
         // scrimshaw of elements
         if (
             settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.ELEMENTS &&

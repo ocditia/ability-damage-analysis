@@ -120,16 +120,6 @@ const SETTINGS = {
         RIPPER_DEMON: 'ripper demon',
         KALGERION_DEMON: 'kalgerion demon'
     },
-    AURA: 'aura',
-    AURA_VALUES: {
-        NONE: 'none',
-        MAHJARRAT: 'mahjarrat',
-        INSPIRATION: 'inspiration',
-        EQUILIBRIUM: 'equilibrium',
-        RECKLESS: 'reckless',
-        BERSERKER: 'berserker',
-        MANIACAL: 'maniacal',
-    },
     VULN: 'vulnerability',
     VULN_VALUES: {
         NONE: 'none',
@@ -1109,19 +1099,6 @@ const settingsConfig = {
             { text: 'None', value: SETTINGS.FAMILIAR_VALUES.NONE },
             { text: 'Ripper demon', value: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON },
             { text: 'Kalgerion demon', value: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON }
-        ]
-    },
-    [SETTINGS.AURA]: {
-        label: 'Aura',
-        default: SETTINGS.AURA_VALUES.MAHJARRAT,
-        options: [
-            { text: 'None', value: SETTINGS.AURA_VALUES.NONE },
-            { text: 'Inspiration', value: SETTINGS.AURA_VALUES.INSPIRATION},
-            { text: 'Mahjarrat', value: SETTINGS.AURA_VALUES.MAHJARRAT },
-            { text: 'Equilibrium', value: SETTINGS.AURA_VALUES.EQUILIBRIUM },
-            { text: 'Reckless', value: SETTINGS.AURA_VALUES.RECKLESS },
-            { text: 'Berserker', value: SETTINGS.AURA_VALUES.BERSERKER },
-            { text: 'Maniacal', value: SETTINGS.AURA_VALUES.MANIACAL },
         ]
     },
     [SETTINGS.VULN]: {
