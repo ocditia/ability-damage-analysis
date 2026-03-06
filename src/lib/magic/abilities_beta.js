@@ -7,7 +7,7 @@ const abilities = {
         calc: hit_damage_calculation,
     },
     [ABILITIES.SONIC_WAVE]: {
-        title: 'Gsonic',
+        title: 'Sonic',
         calc: hit_damage_calculation,
     },
     [ABILITIES.GSONIC_BETA]: {
