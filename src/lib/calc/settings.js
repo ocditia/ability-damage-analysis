@@ -785,7 +785,6 @@ const SETTINGS = {
     ZGS: 'zgs',
     BERSERK: 'berserk',
     BERSERK_BETA: 'berserk_beta',
-    DETONATE: 'detonate charge percent',
     DIVINE_RAGE: 'divine rage',
     ECLIPSED_SOUL: 'eclipsed soul',
 
@@ -2205,10 +2204,6 @@ const settingsConfig = {
     [SETTINGS.BERSERK_BETA]: {
         label: 'Berserk',
         default: false
-    },
-    [SETTINGS.DETONATE]: {
-        label: 'Deto Charge percent',
-        default: 100
     },
     [SETTINGS.DIVINE_RAGE]: {
         label: 'Divine rage',

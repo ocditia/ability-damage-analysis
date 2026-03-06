@@ -353,14 +353,6 @@
                                     min="0"
                                 />
                                 <Number
-                                    bind:setting={settings[SETTINGS.DETONATE]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/detonate.png"
-                                    step="20"
-                                    max="100"
-                                    min="0"
-                                />
-                                <Number
                                     bind:setting={settings[SETTINGS.STONE_OF_JAS]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/stone_of_jas.png"

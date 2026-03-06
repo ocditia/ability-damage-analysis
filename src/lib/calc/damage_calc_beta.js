@@ -402,12 +402,6 @@ function set_min_var(settings, dmgObject) {
     let var_percent = abils[settings['ability']]['var hit'];
 
     if (abils[settings['ability']]['main style'] === 'magic') {
-        // detonate
-        if (settings['ability'] === ABILITIES.DETONATE) {
-            min_percent = min_percent + 0.45 * (settings[SETTINGS.DETONATE]/20); // TODO: fix missing reference for SETTINGS.DETONATE
-            var_percent = var_percent + 0.1 * (settings[SETTINGS.DETONATE]/20);
-        }
-
         // omnipower
         if (settings['ability'] === ABILITIES.OMNIPOWER_HIT_BETA && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
             min_percent = 1.2;
