@@ -1096,7 +1096,7 @@ function calc_crit_damage(settings) {
     ) {
         crit_buff += 0.5;
     }
-
+    
     if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_1) {
         crit_buff += 0.25;
     }
@@ -1822,6 +1822,7 @@ function ability_damage_calculation(settings) {
         const abil_cast = rotation[key].length;
         for (let iter = 0; iter < rotation[key].length; iter++) {
             if (rotation[key][iter] === 'next cast') {
+                const a=1;
                 settings = next_cast(settings);
             } else if (rotation[key][iter] === 'next hit') {
                 settings = next_hit(settings);
@@ -1838,10 +1839,10 @@ function ability_damage_calculation(settings) {
                 }
                 settings['ability'] = abil;
             }
+        } 
         if (abil_cast >= 1) {
             settings = next_tick(settings);
-        }      
-        } 
+        }     
     }
     return damage;
 }
@@ -1853,7 +1854,6 @@ function ability_damage_calculation(settings) {
  * @returns 
  */
 function get_hit_sequence(settings) {
-    console.log(settings['ability'])
     let rotation = JSON.parse(JSON.stringify(abils[settings['ability']]['hits'])); //Deep copy
 
     if (settings['ability'] === ABILITIES.GREATER_RICOCHET) {

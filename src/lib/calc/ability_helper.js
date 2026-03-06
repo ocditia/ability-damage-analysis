@@ -2,18 +2,6 @@ import { SETTINGS } from './settings';
 import { abils, ABILITIES } from './const';
 
 function next_tick(settings) {
-    // enduring ruin / gloves of passage logic
-    if (settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED || settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR) {
-        let single_tick_gear = [SETTINGS.NECKLACE_VALUES.AOS, SETTINGS.NECKLACE_VALUES.AOSOR, SETTINGS.NECKLACE_VALUES.EOF, SETTINGS.NECKLACE_VALUES.EOFOR];
-        if (single_tick_gear.includes(settings['necklace'])) {
-            settings[SETTINGS.ENDURING_RUIN_HIT] = false;
-        } else {
-            settings[SETTINGS.ENDURING_RUIN_HIT] = 'fleeting';
-        }
-    } else if (settings[SETTINGS.ENDURING_RUIN_HIT] === 'fleeting') {
-        settings[SETTINGS.ENDURING_RUIN_HIT] = false;
-    }
-
     settings = next_cast(settings);
 
     return settings;
@@ -23,6 +11,10 @@ function next_cast(settings) {
     // turn off chaos roar
     if (settings[SETTINGS.CHAOS_ROAR] === true) {
         settings[SETTINGS.CHAOS_ROAR] = false;
+    }
+
+    if (settings[SETTINGS.ENDURING_RUIN_HIT] != SETTINGS.ENDURING_RUIN_HIT_VALUES.NONE) {
+        settings[SETTINGS.ENDURING_RUIN_HIT] = SETTINGS.ENDURING_RUIN_HIT_VALUES.NONE;
     }
 
     // channeller's ring
