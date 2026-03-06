@@ -765,13 +765,6 @@ function calc_additive_boosts(settings, dmgObject) {
         boost += 0.2;
     }
 
-    // leagues pocket ful
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET &&
-        settings[SETTINGS.LEAGUES_POCKET_FUL] === true
-    ) {
-        boost += 0.2;
-    }
-
     // desperado (ring of kinship ranged boost)
     /*if (settings['desperado'] > 0 && abils[settings['ability']]['main style'] === 'ranged') {
         boost += 0.1;
@@ -1110,12 +1103,6 @@ function calc_crit_damage(settings) {
         crit_buff += 0.5;
     }
 
-    // magic leagues relic
-    if (abils[settings['ability']]['main style'] === 'magic' && 
-        settings[SETTINGS.MAGIC_LEAGUES_RELIC] === true) {
-        crit_buff += 0.5;
-        }
-
     if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_1) {
         crit_buff += 0.25;
     }
@@ -1149,12 +1136,6 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
             haunted = Math.min(
                 Math.floor(dmgObject['damage list'][i] * 0.1),
                 Math.floor(0.2 * settings['haunted AD']));
-        }
-
-        // necro leagues relic
-        if (abils[settings['ability']]['damage type'] === 'spirit' && 
-            settings[SETTINGS.NECRO_LEAGUES_RELIC] === true) {
-            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.25);
         }
 
         // vulnerability / curse
@@ -1844,24 +1825,6 @@ function apply_additional(settings, total_damage) {
 
     // scripture of jas
     if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.JAS) {
-        let hitcap = 30000;
-        if (settings[SETTINGS.HITCAP] === false) {
-            hitcap = 1000000000
-        }
-        if (!('jas damage' in settings)) {
-            settings['jas damage'] = 0;
-        }
-        let jas_damage = {'damage list': [Math.floor(Math.min(hitcap, 0.15*total_damage))]};
-        jas_damage = calc_on_npc(settings,jas_damage);
-        jas_damage = Math.min(jas_damage['damage list'][0], 30000 - settings['jas damage'])
-        settings['jas damage'] += jas_damage;
-        total_damage += jas_damage;
-    }
-
-    // leagues pocket jas
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET &&
-        settings[SETTINGS.LEAGUES_POCKET_JAS] === true
-    ) {
         let hitcap = 30000;
         if (settings[SETTINGS.HITCAP] === false) {
             hitcap = 1000000000
