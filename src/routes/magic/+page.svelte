@@ -23,8 +23,6 @@
         },
         regular: 0,
         sunshine: 0,
-        meta: 0,
-        smeta: 0
     })));
 
     let storedSettings = {};
@@ -66,10 +64,8 @@
         damages = damages.map(ability => {
             adaptedSettings['ability'] = ability.key;
 
-            ability.regular = ability.calc({ ...adaptedSettings, sunshine: false, meta: false });
-            ability.sunshine = ability.calc({ ...adaptedSettings, sunshine: true, meta: false });
-            ability.meta = ability.calc({ ...adaptedSettings, sunshine: false, meta: true });
-            ability.smeta = ability.calc({ ...adaptedSettings, sunshine: true, meta: true });
+            ability.regular = ability.calc({ ...adaptedSettings, sunshine: false});
+            ability.sunshine = ability.calc({ ...adaptedSettings, sunshine: true});
 
             return ability;
         })
@@ -107,22 +103,6 @@
                 class: "text-center"
             }
         },
-        {
-            accessorKey: 'meta',
-            header: 'Meta',
-            sortDescFirst: true,
-            meta: {
-                class: "text-center"
-            }
-        },
-        {
-            accessorKey: 'smeta',
-            header: 'Sun + Meta',
-            sortDescFirst: true,
-            meta: {
-                class: "text-center"
-            }
-        }
     ];
 </script>
 

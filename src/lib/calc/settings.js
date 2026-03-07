@@ -766,7 +766,6 @@ const SETTINGS = {
     STRENGTH_CAPE: 'strength cape',
     STRENGTH_MASTER_CAPE: 'strength master cape',
     SUNSHINE: 'sunshine',
-    META: 'meta',
     DEATH_SWIFTNESS: 'death swiftness',
     SWIFTNESS_ACTIVE: 'swiftness',
     SPLIT_SOUL: 'split soul',
@@ -2155,10 +2154,6 @@ const settingsConfig = {
     },
     [SETTINGS.SUNSHINE]: {
         label: 'Sunshine',
-        default: false
-    },
-    [SETTINGS.META]: {
-        label: 'Meta',
         default: false
     },
     [SETTINGS.DEATH_SWIFTNESS]: {
