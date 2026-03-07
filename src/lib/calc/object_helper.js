@@ -247,7 +247,7 @@ function calc_crit_chance(settings) {
         }
 
         // no fear (pof meteor strike)
-        if (settings['ability'] === 'meteor strike') {
+        if (settings['ability'] === ABILITIES.METEOR_STRIKE_BETA) {
             if (settings[SETTINGS.POF_DINOS] === SETTINGS.POF_DINOS_VALUES.CORBICULA_1) {
                 crit_chance += 0.2;
             }
