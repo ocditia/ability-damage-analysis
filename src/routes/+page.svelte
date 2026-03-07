@@ -46,7 +46,7 @@
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
                             >
                                 <img class="card-icon" src="style_icons/melee.svg" alt="" />
-                                <div class="card-title">Melee Damage Calculator (partly updated)</div>
+                                <div class="card-title">Melee Damage Calculator (up-to-date post beta)</div>
                             </div>
                         </div>
                     </a>
@@ -56,7 +56,7 @@
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
                             >
                                 <img class="card-icon" src="style_icons/ranged.svg" alt="" />
-                                <div class="card-title">Ranged Damage Calculator (partly updated)</div>
+                                <div class="card-title">Ranged Damage Calculator (up-to-date post beta)</div>
                             </div>
                         </div>
                     </a>
@@ -66,7 +66,7 @@
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
                             >
                                 <img class="card-icon" src="style_icons/necro.svg" alt="" />
-                                <div class="card-title">Necromancy Damage Calculator (partly updated)</div>
+                                <div class="card-title">Necromancy Damage Calculator (up-to-date post beta)</div>
                             </div>
                         </div>
                     </a>
