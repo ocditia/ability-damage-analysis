@@ -1911,7 +1911,10 @@ const ABILITIES = {
     ONSLAUGHT_MOLD: 'onslaught mold',
 
     // perks damage
-    AFTERSHOCK: 'aftershock',
+    AFTERSHOCK_RANGED: 'aftershock ranged',
+    AFTERSHOCK_MELEE: 'aftershock melee',
+    AFTERSHOCK_MAGIC: 'aftershock magic',
+    AFTERSHOCK_NECRO: 'aftershock necro',
 
     // Defensives
     FREEDOM: 'freedom',
@@ -5166,7 +5169,43 @@ const abils = {
         'duration': 0
     },
 
-    [ABILITIES.AFTERSHOCK]: {
+    [ABILITIES.AFTERSHOCK_RANGED]: {
+        // ability name
+        'min hit': 0.24, // min % of abil expressed as a decimal
+        'var hit': 0.156,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': false, // is the ability affected by damage potential
+        'ability classification': 'perk', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'perk', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged'
+    },
+    [ABILITIES.AFTERSHOCK_MAGIC]: {
+        // ability name
+        'min hit': 0.24, // min % of abil expressed as a decimal
+        'var hit': 0.156,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': false, // is the ability affected by damage potential
+        'ability classification': 'perk', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'perk', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged'
+    },
+    [ABILITIES.AFTERSHOCK_MELEE]: {
+        // ability name
+        'min hit': 0.24, // min % of abil expressed as a decimal
+        'var hit': 0.156,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': false, // is the ability affected by damage potential
+        'ability classification': 'perk', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'perk', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged'
+    },
+    [ABILITIES.AFTERSHOCK_NECRO]: {
         // ability name
         'min hit': 0.24, // min % of abil expressed as a decimal
         'var hit': 0.156,

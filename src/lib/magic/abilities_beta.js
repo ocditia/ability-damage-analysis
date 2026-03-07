@@ -131,10 +131,9 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/zuriels_staff.png'
     },
-    [ABILITIES.AFTERSHOCK]: {
+    [ABILITIES.AFTERSHOCK_MAGIC]: {
         title: 'Aftershock',
         calc: calc_aftershock,
-        icon: '/ability_icons/magic/30x30/zuriels_staff.png'
     }
 };
 

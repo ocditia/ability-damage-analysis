@@ -1,5 +1,5 @@
 import { ABILITIES } from '../calc/const.js';
-import { ability_damage_calculation, hit_damage_calculation, calc_base_damage_ability_page } from '../calc/damage_calc_beta.js';
+import { ability_damage_calculation, hit_damage_calculation, calc_base_damage_ability_page, calc_aftershock } from '../calc/damage_calc_beta.js';
 
 const abilities = {
     [ABILITIES.NECRO_AD]: {
@@ -139,7 +139,11 @@ const abilities = {
     [ABILITIES.SOUL_CRUSH]: {
         title: 'Soul crush',
         calc: hit_damage_calculation,
-    }
+    },
+    [ABILITIES.AFTERSHOCK_NECRO]: {
+        title: 'Aftershock',
+        calc: calc_aftershock,
+    },
 };
 
 export { abilities };

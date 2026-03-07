@@ -250,6 +250,10 @@ const abilities = {
     [ABILITIES.PURIFYING_LIGHT]: {
         title: 'purifying light',
         calc: hit_damage_calculation,
+    },
+    [ABILITIES.AFTERSHOCK_MELEE]: {
+        title: 'Aftershock',
+        calc: calc_aftershock,
     }
 };
 

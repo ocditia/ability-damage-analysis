@@ -139,7 +139,7 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/zaniks_crossbow.png'
     },
-    [ABILITIES.AFTERSHOCK]: {
+    [ABILITIES.AFTERSHOCK_RANGED]: {
         title: 'Aftershock',
         calc: calc_aftershock,
     }
