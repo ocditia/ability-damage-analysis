@@ -1955,13 +1955,6 @@ function get_hit_sequence(settings) {
         rotation[1].push(ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA, ABILITIES.DISMEMBER_1_HIT_BETA);
     }
 
-    // Ruin stacks
-    if (settings['ability'] === ABILITIES.COMBUST) {
-        for (let i=0; i<2*settings[SETTINGS.RUIN]; i++) {
-            rotation[1].push(ABILITIES.COMBUST_HIT);
-        }
-    }
-
     return rotation;
 }
 

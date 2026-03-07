@@ -794,7 +794,6 @@ const SETTINGS = {
         CORBICULA_2: '2 corbicula',
     },
     LUNGING: 'lunging',
-    RUIN: 'ruin',
     VALOUR_STACKS: 'valour stacks',
     HITCAP: 'hit cap',
     QUIVER: 'quiver',
@@ -2237,10 +2236,6 @@ const settingsConfig = {
     },
     [SETTINGS.LUNGING]: {
         label: 'Lunging',
-        default: 0
-    },
-    [SETTINGS.RUIN]: {
-        label: 'Ruin stacks',
         default: 0
     },
     [SETTINGS.VALOUR_STACKS]: {
