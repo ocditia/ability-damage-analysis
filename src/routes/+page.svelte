@@ -36,7 +36,7 @@
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
                             >
                                 <img class="card-icon" src="/style_icons/magic.svg" alt="" />
-                                <div class="card-title">Magic Damage Calculator (partly updated)</div>
+                                <div class="card-title">Magic Damage Calculator (up-to-date post beta)</div>
                             </div>
                         </div>
                     </a>
