@@ -9,26 +9,26 @@ function calc_base_ad(settings) {
     let base_AD = 0;
 
     if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
-        let AD_mh = Math.floor(2.5 * calc_level_damage(settings)
+        let AD_mh = Math.floor(calc_level_damage(settings)
                                 + 9.6 * calc_weapon_tier(settings, 'main-hand weapon')
                                 + calc_bonus(settings));
 
         let AD_oh = 0;
         if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
-            AD_oh = Math.floor(0.5 * Math.floor(2.5 * calc_level_damage(settings)
+            AD_oh = Math.floor(0.5 * Math.floor(calc_level_damage(settings)
                                     + 9.6 * calc_weapon_tier(settings, 'off-hand weapon')
                                     + calc_bonus(settings)));
         }
         base_AD = AD_mh + AD_oh;
     }
-
+    
     else if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
         base_AD = Math.floor(Math.floor(2.5 * calc_level_damage(settings)
-                                + 9.6 * calc_weapon_tier(settings, 'main-hand weapon')
+                                + 9.6 * calc_weapon_tier(settings, 'two-hand weapon')
                                 + calc_bonus(settings)) 
                     +
                     Math.floor(0.5 * Math.floor(2.5 * calc_level_damage(settings)
-                                    + 9.6 * calc_weapon_tier(settings, 'off-hand weapon')
+                                    + 9.6 * calc_weapon_tier(settings, 'two-hand weapon')
                                     + calc_bonus(settings))));
     }
 
@@ -103,7 +103,7 @@ function calc_level_damage(settings) {
     if (abils[settings['ability']]['main style'] === 'melee') {
         style = 'strength'
     }
-    return 145 * Math.log(1 + 0.6 * (settings[style + ' level'])/145) / Math.log(1.6);
+    return 2.5 * 145 * Math.log(1 + 0.6 * (settings[style + ' level'])/145) / Math.log(1.6);
 }
 
 // modify boosted AD by damage potential (hit chance)
