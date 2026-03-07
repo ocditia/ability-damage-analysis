@@ -3,7 +3,7 @@ import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } f
 
 const abilities = {
     [ABILITIES.ATTACK_BETA]: {
-        title: '2h auto',
+        title: 'Melee auto',
         calc: hit_damage_calculation,
     },
     [ABILITIES.BACKHAND_BETA]: {

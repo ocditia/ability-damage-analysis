@@ -3,7 +3,7 @@ import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } f
 
 const abilities = {
     [ABILITIES.MAGIC_BETA]: {
-        title: 'Auto',
+        title: 'Magic auto',
         calc: hit_damage_calculation,
     },
     [ABILITIES.SONIC_WAVE]: {

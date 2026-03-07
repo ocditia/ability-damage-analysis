@@ -3,7 +3,7 @@ import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } f
 
 const abilities = {
     [ABILITIES.RANGED_BETA]: {
-        title: 'DW auto',
+        title: 'Ranged auto',
         calc: hit_damage_calculation,
     },
     [ABILITIES.GALESHOT]: {
