@@ -47,15 +47,15 @@ const abilities = {
         calc: ability_damage_calculation,
     },
     [ABILITIES.DISMEMBER_1_BETA]: {
-        title: 'Dismember 1',
+        title: 'Dismember',
         calc: ability_damage_calculation,
     },
     [ABILITIES.DISMEMBER_2_BETA]: {
-        title: 'Dismember 2',
+        title: 'Slaughter',
         calc: ability_damage_calculation,
     },
     [ABILITIES.DISMEMBER_3_BETA]: {
-        title: 'Dismember 3',
+        title: 'Massacre',
         calc: ability_damage_calculation,
     },
     [ABILITIES.PUNISH_BETA]: {
