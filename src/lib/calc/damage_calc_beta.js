@@ -296,9 +296,6 @@ function ability_specific_effects(settings, dmgObject) {
         if (settings['ability'] === ABILITIES.COMBUST_HIT_BETA && settings[SETTINGS.LUNGING] > 0) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1.1+0.03*settings[SETTINGS.LUNGING]));
         }
-        if (settings['ability'] === ABILITIES.COMBUST_HIT_BETA) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
-        }
 
         // wrack energising
         if (settings['ability'] === ABILITIES.WRACK && settings[SETTINGS.ENERGISING] > 0) {
@@ -326,13 +323,8 @@ function ability_specific_effects(settings, dmgObject) {
         }
 
         // dismember lunging
-        if (settings['ability'] === ABILITIES.DISMEMBER_HIT) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + 0.06 * settings[SETTINGS.LUNGING]));
-        }
-
-        // dismember lunging
-        if (settings['ability'] === ABILITIES.DISMEMBER_1_HIT_BETA) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
+        if (settings['ability'] === ABILITIES.DISMEMBER_1_HIT_BETA && settings[SETTINGS.LUNGING] > 0) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1.1 + 0.03 * settings[SETTINGS.LUNGING]));
         }
 
         // punish low
@@ -350,11 +342,6 @@ function ability_specific_effects(settings, dmgObject) {
         // piercing energising
         if (settings['ability'] === ABILITIES.PIERCING_SHOT_HIT && settings[SETTINGS.ENERGISING] > 0) {
             dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
-        }
-
-        // frag lunging
-        if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
         }
     }
 
