@@ -23,11 +23,11 @@ function calc_base_ad(settings) {
     }
     
     else if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
-        base_AD = Math.floor(Math.floor(2.5 * calc_level_damage(settings)
+        base_AD = Math.floor(Math.floor(calc_level_damage(settings)
                                 + 9.6 * calc_weapon_tier(settings, 'two-hand weapon')
                                 + calc_bonus(settings)) 
                     +
-                    Math.floor(0.5 * Math.floor(2.5 * calc_level_damage(settings)
+                    Math.floor(0.5 * Math.floor(calc_level_damage(settings)
                                     + 9.6 * calc_weapon_tier(settings, 'two-hand weapon')
                                     + calc_bonus(settings))));
     }
@@ -71,7 +71,6 @@ function calc_weapon_tier(settings, hand) {
     if (weapon_tier === 95 && settings[SETTINGS.INNATE_MASTERY] === true) {
         tier += 5;
     }
-
     return tier;
 }
 
@@ -1958,10 +1957,6 @@ function calc_aftershock(settings) {
         let var_aftershock = 0.156 * settings[SETTINGS.AFTERSHOCK];
         for (let i=0; i<var_aftershock/0.004; i++) {
             dmgObject[key]['damage list'].push(Math.floor(dmgObject[key]['boosted AD'] * (min_aftershock + 0.04*i)));
-        }
-        // calc core
-        if (abils[settings['ability']]['on-hit effects']) {
-            dmgObject[key] = calc_core(settings, dmgObject, key, newBolg);
         }
         // calc on npc
         dmgObject[key] = calc_on_npc(settings, dmgObject[key]);
