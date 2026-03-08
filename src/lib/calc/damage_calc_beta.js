@@ -210,12 +210,13 @@ function calc_boosted_ad(settings, dmgObject) {
 
     // blast infused
     if (abils[settings['ability']]['main style'] === 'magic' && 
-        abils[settings['ability']]['ability type'] === 'basic ability' &&
+        abils[settings['ability']]['ability type'] === 'basic' &&
         settings[SETTINGS.BLAST_INFUSED] === true
     ) {
         base_damage += Math.floor(ability_damage/1000*80);
     }
 
+    // blood tithe (exsanguinate)
     if (abils[settings['ability']]['main style'] === 'magic' && 
         abils[settings['ability']]['ability type'] === 'basic'
     ) {
