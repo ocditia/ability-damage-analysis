@@ -1963,7 +1963,7 @@ const settingsConfig = {
     },
     [SETTINGS.ICY_PRECISION]: {
         label: 'Icy Precision',
-        default: true
+        default: false
     },
     [SETTINGS.ICY_CHILL_STACKS]: {
         label: 'Icy Chill',
