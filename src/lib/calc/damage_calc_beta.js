@@ -108,7 +108,6 @@ function calc_strength_bonus(settings) {
     bonus += Math.floor(0.3125 * 10 * armour[settings[SETTINGS.LEGS]]['strength_tier'][abils[settings['ability']]['main style']]);
     bonus += Math.floor(0.15625 * 10 * armour[settings[SETTINGS.GLOVES]]['strength_tier'][abils[settings['ability']]['main style']]);
     bonus += Math.floor(0.15625 * 10 * armour[settings[SETTINGS.BOOTS]]['strength_tier'][abils[settings['ability']]['main style']]);
-    console.log(bonus)
     return 0.1 * bonus;
 }
 

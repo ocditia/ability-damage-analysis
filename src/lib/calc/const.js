@@ -5219,8 +5219,8 @@ const abils = {
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'perk', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'perk', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'necro',
-        'damage type': 'necro'
+        'main style': 'necromancy',
+        'damage type': 'necromancy'
     }
 };
 
