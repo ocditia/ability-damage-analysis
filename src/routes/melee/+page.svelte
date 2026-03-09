@@ -619,6 +619,12 @@
                                     step="1"
                                     min="0"
                                 />
+                                <div class="md:col-span-1">
+                                    <Number
+                                        bind:setting={settings[SETTINGS.EQ_PERK]}
+                                        onchange={() => updateDamages()}
+                                    />
+                                </div>
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>
@@ -697,21 +703,6 @@
                                     step="1"
                                     min="0"
                                     max="20"
-                                />
-                            </div>
-                            {:else if tab === 'beta'}
-                            <div class="md:col-span-1">
-                                <Number
-                                    bind:setting={settings[SETTINGS.EQ_PERK]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.EQ_PERK_A]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.EQ_PERK_B]}
-                                    onchange={() => updateDamages()}
                                 />
                             </div>
                         {/if}
