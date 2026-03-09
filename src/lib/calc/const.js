@@ -795,7 +795,7 @@ const armour = {
     'vestments of havoc hood': {
         'necromancy strength': 0,
         'magic strength': 0,
-        'melee strength': 28,
+        'melee strength': 27,
         'ranged strength': 0,
         slot: 'helmet',
         style: 'melee'
@@ -803,7 +803,7 @@ const armour = {
     'vestments of havoc robe top': {
         'necromancy strength': 0,
         'magic strength': 0,
-        'melee strength': 42,
+        'melee strength': 41,
         'ranged strength': 0,
         slot: 'body',
         style: 'melee'
@@ -811,7 +811,7 @@ const armour = {
     'vestments of havoc robe bottom': {
         'necromancy strength': 0,
         'magic strength': 0,
-        'melee strength': 37,
+        'melee strength': 34,
         'ranged strength': 0,
         slot: 'legs',
         style: 'melee'
@@ -819,7 +819,7 @@ const armour = {
     'vestments of havoc boots': {
         'necromancy strength': 0,
         'magic strength': 0,
-        'melee strength': 19,
+        'melee strength': 17,
         'ranged strength': 0,
         slot: 'boots',
         style: 'melee'
@@ -2722,8 +2722,8 @@ const abils = {
     },
     [ABILITIES.ASSAULT_HIT_BETA]: {
         // ability name
-        'min hit': 1.45, // min % of abil expressed as a decimal
-        'var hit': 0.3,
+        'min hit': 1.3, // min % of abil expressed as a decimal
+        'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2806,7 +2806,7 @@ const abils = {
     },
     [ABILITIES.OVERPOWER_HIT_BETA]: {
         // ability name
-        'min hit': 5.5, // min % of abil expressed as a decimal
+        'min hit': 5.2, // min % of abil expressed as a decimal
         'var hit': 0.5,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2978,7 +2978,7 @@ const abils = {
     },
     [ABILITIES.DISMEMBER_2_HIT_BETA]: {
         // ability name
-        'min hit': 0.9, // min % of abil expressed as a decimal
+        'min hit': 0.8, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
@@ -3023,7 +3023,7 @@ const abils = {
         'adren cost': 0,
     },
     [ABILITIES.DISMEMBER_3_INITIAL_BETA]: {
-        'min hit': 1.2,
+        'min hit': 1,
         'var hit': 0.0,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit

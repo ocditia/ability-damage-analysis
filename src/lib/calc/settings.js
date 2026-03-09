@@ -1830,7 +1830,7 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_TH]: {
         label: '2h',
-        default: SETTINGS.MAGIC_TH_VALUES.CUSTOM,
+        default: SETTINGS.MAGIC_TH_VALUES.FSOA,
         options: [
             { text: 'Custom', value: SETTINGS.MAGIC_TH_VALUES.CUSTOM },
             { text: 'Inq', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF },
@@ -1964,8 +1964,8 @@ const settingsConfig = {
         default: 0
     },
     [SETTINGS.ICY_PRECISION]: {
-        label: 'Icy Precision stacks',
-        default: 15
+        label: 'Icy Precision',
+        default: true
     },
     [SETTINGS.ICY_CHILL_STACKS]: {
         label: 'Icy Chill',

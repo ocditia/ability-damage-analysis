@@ -182,9 +182,10 @@ function calc_boosted_ad(settings, dmgObject) {
     const wen_arrow_abil_types_buffed = ['threshold', 'ultimate', 'special attack', 'ability'];
     if (abils[settings['ability']]['main style'] === 'ranged' &&
         wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type']) &&
-        settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS
+        settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
+        settings[SETTINGS.ICY_PRECISION] == true
     ) {
-        base_damage += Math.floor(base_damage/100 * settings[SETTINGS.ICY_PRECISION] * 2);
+        base_damage += Math.floor(base_damage/100 * 130);
     }
 
     // chaos roar
@@ -435,8 +436,8 @@ function set_min_var(settings, dmgObject) {
             if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
                 tumekens_resplendence += 1;
             }
-            if (tumekens_resplendence >= 3) {
-                min_percent = 0.825;
+            if (tumekens_resplendence >= 4) {
+                min_percent = 0.71;
                 var_percent = 0.15;
             }
         }
@@ -451,14 +452,14 @@ function set_min_var(settings, dmgObject) {
 
         // overpower
         if (settings['ability'] === ABILITIES.OVERPOWER_HIT_BETA && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-            min_percent = 3.1;
-            var_percent = 0.6;
+            min_percent = 2.85;
+            var_percent = 0.5;
         }
 
         // bloodlust assault
         if (settings['ability'] === ABILITIES.ASSAULT_HIT_BETA && settings[SETTINGS.BLOODLUST] === true) {
-            min_percent = 1.85;
-            var_percent = 0.3;
+            min_percent = 1.7;
+            var_percent = 0.2;
         }
 
         // icy tempest
@@ -966,7 +967,7 @@ function calc_bonus_damage(settings, dmgObject) {
         if ((settings['ability'] === ABILITIES.GRICO_1_BETA || settings['ability'] === ABILITIES.GRICO_2_BETA || 
             settings['ability'] === ABILITIES.GRICO_3_BETA)) {
                 if (settings[SETTINGS.CAROMING] > 0) {
-                    min_hit += Math.floor((0.025 * settings[SETTINGS.CAROMING]) * dmgObject['base AD']);
+                    min_hit += Math.floor((0.04 * settings[SETTINGS.CAROMING]) * dmgObject['base AD']);
                 }
         }
     }
@@ -1067,13 +1068,13 @@ function calc_crit_damage(settings) {
     // fsoa 22.5%
     if (settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
         if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
-            crit_buff += 0.3;
+            crit_buff += 0.25;
         }
         else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_CRIT) {
             crit_buff += 0.15;
         }
         else {
-            crit_buff += 0.225;
+            crit_buff += 0.2;
         }
     }
 
@@ -1081,7 +1082,7 @@ function calc_crit_damage(settings) {
     if (abils[settings['ability']]['main style'] === 'magic' && 
         settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] === true
     ) {
-        crit_buff += 0.5;
+        crit_buff += 0.35;
     }
     
     if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_1) {
