@@ -852,6 +852,7 @@ const SETTINGS = {
         GREATER: 'greater',
     },
     AFTERSHOCK: 'aftershock',
+    GCONC_UNLOCK: 'gconc unlock',
 };
 
 const settingsConfig = {
@@ -2374,6 +2375,10 @@ const settingsConfig = {
     [SETTINGS.EQ_PERK]: {
         label: 'Equilibrium',
         default: 0
+    },
+    [SETTINGS.GCONC_UNLOCK]: {
+        label: 'Gconc unlocked',
+        default: true
     },
 };
 

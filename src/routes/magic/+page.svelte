@@ -316,13 +316,10 @@
                                     max="3"
                                     min="0"
                                 />
-                                <Number
-                                    bind:setting={settings[SETTINGS.GCONC_STACKS]}
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.GCONC_UNLOCK]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/gconc.png"
-                                    step="1"
-                                    max="3"
-                                    min="0"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.STONE_OF_JAS]}

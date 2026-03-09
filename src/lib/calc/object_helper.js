@@ -167,14 +167,6 @@ function calc_crit_chance(settings) {
             crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
         }
 
-        
-        // conc
-        if (abils[settings['ability']]['ability classification'] != 'proc' &&
-            abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
-        ) {
-            crit_chance += 0.05 * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
-        } 
-
         // conc self boost
         if (
             settings['ability'] === ABILITIES.CONCENTRATED_BLAST_2
@@ -203,19 +195,18 @@ function calc_crit_chance(settings) {
             }
         }
 
-        // gconc
-        if (settings[SETTINGS.RUNIC_CHARGE] === false) {
-            if (abils[settings['ability']]['ability classification'] != 'proc' &&
-                abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
-            ) {
-                crit_chance += 0.07 * settings[SETTINGS.GCONC_STACKS];
-            } 
-        } else {
-            if (abils[settings['ability']]['ability classification'] != 'proc' &&
-                abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
-            ) {
-                crit_chance += 0.17 * settings[SETTINGS.GCONC_STACKS];
-            } 
+        // conc
+        if (abils[settings['ability']]['ability classification'] != 'proc' &&
+            abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
+        ) {
+            let conc_boost = 0.05;
+            if (settings[SETTINGS.GCONC_UNLOCK] === true) {
+                conc_boost += 0.02;
+            }
+            if (settings[SETTINGS.RUNIC_CHARGE] === true) {
+                conc_boost += 0.1
+            }
+            crit_chance += conc_boost * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
         }
 
         // smoke tendrils
