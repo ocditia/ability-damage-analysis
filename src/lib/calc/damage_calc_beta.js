@@ -97,6 +97,16 @@ function calc_bonus(settings) {
     return bonus;
 }
 
+function calc_strength_bonus(settings) {
+    let bonus = 0;
+    const style_str = abils[settings['ability']]['main style'] + ' strength';
+    if (settings[SETTINGS.REAPER_CREW] === true) {
+        bonus += 12;
+    }
+    bonus += armour[settings[SETTINGS.HELMET]][strength_tier][abils[settings['ability']]['main style']];
+    bonus 
+}
+
 function calc_level_damage(settings) {
     let style = abils[settings['ability']]['main style'];
     if (abils[settings['ability']]['main style'] === 'melee') {

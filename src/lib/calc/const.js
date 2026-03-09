@@ -829,6 +829,7 @@ const armour = {
         'magic strength': 25,
         'melee strength': 0,
         'ranged strength': 0,
+        strength_tier: {magic: 95},
         slot: 'helmet',
         style: 'necromancy'
     },
