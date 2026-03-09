@@ -1,7 +1,5 @@
 const SETTINGS = {
     EQ_PERK: 'eq perk',
-    EQ_PERK_A: 'eq perk a',
-    EQ_PERK_B: 'eq perk b',
     MODE: 'user value',
     MODE_VALUES: {
         MEAN: 'mean',
@@ -2376,14 +2374,6 @@ const settingsConfig = {
     [SETTINGS.EQ_PERK]: {
         label: 'Eq perk',
         default: 0
-    },
-    [SETTINGS.EQ_PERK_A]: {
-        label: 'Eq perk base',
-        default: 8
-    },
-    [SETTINGS.EQ_PERK_B]: {
-        label: 'Eq perk scale',
-        default: 2
     },
 };
 

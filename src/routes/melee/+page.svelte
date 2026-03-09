@@ -705,14 +705,6 @@
                                     bind:setting={settings[SETTINGS.EQ_PERK]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Number
-                                    bind:setting={settings[SETTINGS.EQ_PERK_A]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.EQ_PERK_B]}
-                                    onchange={() => updateDamages()}
-                                />
                             </div>
                         {/if}
                     </div>
