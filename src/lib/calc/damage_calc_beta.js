@@ -1074,7 +1074,7 @@ function calc_crit_damage(settings) {
             crit_buff += 0.1;
         }
         else {
-            crit_buff += 0.2;
+            crit_buff += 0.175;
         }
     }
 
