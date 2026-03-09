@@ -103,8 +103,13 @@ function calc_strength_bonus(settings) {
     if (settings[SETTINGS.REAPER_CREW] === true) {
         bonus += 12;
     }
-    bonus += armour[settings[SETTINGS.HELMET]][strength_tier][abils[settings['ability']]['main style']];
-    bonus 
+    bonus += Math.floor(0.25 * (10 * armour[settings[SETTINGS.HELMET]]['strength_tier'][abils[settings['ability']]['main style']]));
+    bonus += Math.floor(0.375 * 10 * armour[settings[SETTINGS.BODY]]['strength_tier'][abils[settings['ability']]['main style']]);
+    bonus += Math.floor(0.3125 * 10 * armour[settings[SETTINGS.LEGS]]['strength_tier'][abils[settings['ability']]['main style']]);
+    bonus += Math.floor(0.15625 * 10 * armour[settings[SETTINGS.GLOVES]]['strength_tier'][abils[settings['ability']]['main style']]);
+    bonus += Math.floor(0.15625 * 10 * armour[settings[SETTINGS.BOOTS]]['strength_tier'][abils[settings['ability']]['main style']]);
+    console.log(bonus)
+    return 0.1 * bonus;
 }
 
 function calc_level_damage(settings) {
