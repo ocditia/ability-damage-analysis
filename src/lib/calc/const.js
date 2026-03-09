@@ -829,6 +829,7 @@ const armour = {
         'magic strength': 25,
         'melee strength': 0,
         'ranged strength': 0,
+        strength_tier: {magic: 95},
         slot: 'helmet',
         style: 'necromancy'
     },
@@ -837,6 +838,7 @@ const armour = {
         'magic strength': 37,
         'melee strength': 0,
         'ranged strength': 0,
+        strength_tier: {magic: 95},
         slot: 'helmet',
         style: 'necromancy'
     },
@@ -845,6 +847,7 @@ const armour = {
         'magic strength': 32,
         'melee strength': 0,
         'ranged strength': 0,
+        strength_tier: {magic: 95},
         slot: 'helmet',
         style: 'necromancy'
     },
@@ -853,6 +856,7 @@ const armour = {
         'magic strength': 16,
         'melee strength': 0,
         'ranged strength': 0,
+        strength_tier: {magic: 95},
         slot: 'helmet',
         style: 'necromancy'
     },
@@ -861,6 +865,7 @@ const armour = {
         'magic strength': 16,
         'melee strength': 0,
         'ranged strength': 0,
+        strength_tier: {magic: 95},
         slot: 'helmet',
         style: 'necromancy'
     },
@@ -5190,8 +5195,8 @@ const abils = {
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'perk', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'perk', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'ranged',
-        'damage type': 'ranged'
+        'main style': 'magic',
+        'damage type': 'magic'
     },
     [ABILITIES.AFTERSHOCK_MELEE]: {
         // ability name
@@ -5202,8 +5207,8 @@ const abils = {
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'perk', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'perk', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'ranged',
-        'damage type': 'ranged'
+        'main style': 'melee',
+        'damage type': 'melee'
     },
     [ABILITIES.AFTERSHOCK_NECRO]: {
         // ability name
@@ -5214,8 +5219,8 @@ const abils = {
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'perk', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'perk', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'ranged',
-        'damage type': 'ranged'
+        'main style': 'necromancy',
+        'damage type': 'necromancy'
     }
 };
 

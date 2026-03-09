@@ -734,7 +734,6 @@ const SETTINGS = {
     SWIFTNESS_OF_THE_AVIANSIE: 'swiftness of the avianse',
     ESSENCE_CORRUPTION: 'essence corruption',
     CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
-    GCONC_STACKS: 'gconc stacks',
     CHAOS_ROAR: 'chaos roar',
     FURY_BUFF: 'fury buff',
     FURY_BUFF_VALUES: {
@@ -852,6 +851,7 @@ const SETTINGS = {
         GREATER: 'greater',
     },
     AFTERSHOCK: 'aftershock',
+    GCONC_UNLOCK: 'gconc unlock',
 };
 
 const settingsConfig = {
@@ -2040,10 +2040,6 @@ const settingsConfig = {
         label: 'Conc stacks',
         default: 0
     },
-    [SETTINGS.GCONC_STACKS]: {
-        label: 'Gconc stacks',
-        default: 0
-    },
     [SETTINGS.CHAOS_ROAR]: {
         label: 'Chaos roar',
         default: false
@@ -2374,6 +2370,10 @@ const settingsConfig = {
     [SETTINGS.EQ_PERK]: {
         label: 'Equilibrium',
         default: 0
+    },
+    [SETTINGS.GCONC_UNLOCK]: {
+        label: 'Gconc unlocked',
+        default: true
     },
 };
 

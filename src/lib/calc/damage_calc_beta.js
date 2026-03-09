@@ -97,6 +97,20 @@ function calc_bonus(settings) {
     return bonus;
 }
 
+function calc_strength_bonus(settings) {
+    let bonus = 0;
+    const style_str = abils[settings['ability']]['main style'] + ' strength';
+    if (settings[SETTINGS.REAPER_CREW] === true) {
+        bonus += 12;
+    }
+    bonus += Math.floor(0.25 * (10 * armour[settings[SETTINGS.HELMET]]['strength_tier'][abils[settings['ability']]['main style']]));
+    bonus += Math.floor(0.375 * 10 * armour[settings[SETTINGS.BODY]]['strength_tier'][abils[settings['ability']]['main style']]);
+    bonus += Math.floor(0.3125 * 10 * armour[settings[SETTINGS.LEGS]]['strength_tier'][abils[settings['ability']]['main style']]);
+    bonus += Math.floor(0.15625 * 10 * armour[settings[SETTINGS.GLOVES]]['strength_tier'][abils[settings['ability']]['main style']]);
+    bonus += Math.floor(0.15625 * 10 * armour[settings[SETTINGS.BOOTS]]['strength_tier'][abils[settings['ability']]['main style']]);
+    return 0.1 * bonus;
+}
+
 function calc_level_damage(settings) {
     let style = abils[settings['ability']]['main style'];
     if (abils[settings['ability']]['main style'] === 'melee') {
