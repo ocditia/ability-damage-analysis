@@ -1835,7 +1835,7 @@ const settingsConfig = {
             { text: 'Custom', value: SETTINGS.MAGIC_TH_VALUES.CUSTOM },
             { text: 'Inq', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF },
             { text: 'Inq+', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF_E },
-            { text: 'FSOA (+22.5% crit dmg)', value: SETTINGS.MAGIC_TH_VALUES.FSOA },
+            { text: 'FSOA', value: SETTINGS.MAGIC_TH_VALUES.FSOA },
         ]
     },
     [SETTINGS.RANGED_TH]: {
