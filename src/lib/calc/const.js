@@ -2722,8 +2722,8 @@ const abils = {
     },
     [ABILITIES.ASSAULT_HIT_BETA]: {
         // ability name
-        'min hit': 1.45, // min % of abil expressed as a decimal
-        'var hit': 0.3,
+        'min hit': 1.3, // min % of abil expressed as a decimal
+        'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2806,7 +2806,7 @@ const abils = {
     },
     [ABILITIES.OVERPOWER_HIT_BETA]: {
         // ability name
-        'min hit': 5.5, // min % of abil expressed as a decimal
+        'min hit': 5.2, // min % of abil expressed as a decimal
         'var hit': 0.5,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
