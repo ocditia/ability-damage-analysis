@@ -2978,7 +2978,7 @@ const abils = {
     },
     [ABILITIES.DISMEMBER_2_HIT_BETA]: {
         // ability name
-        'min hit': 0.9, // min % of abil expressed as a decimal
+        'min hit': 0.8, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
@@ -3023,7 +3023,7 @@ const abils = {
         'adren cost': 0,
     },
     [ABILITIES.DISMEMBER_3_INITIAL_BETA]: {
-        'min hit': 1.2,
+        'min hit': 1,
         'var hit': 0.0,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
