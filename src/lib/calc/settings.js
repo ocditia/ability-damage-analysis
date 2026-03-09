@@ -2372,7 +2372,7 @@ const settingsConfig = {
         default: 4
     },
     [SETTINGS.EQ_PERK]: {
-        label: 'Eq perk',
+        label: 'Equilibrium',
         default: 0
     },
 };
