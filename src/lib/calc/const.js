@@ -5087,7 +5087,7 @@ const abils = {
 
 
     [ABILITIES.TIME_STRIKE]: {
-        // ability name
+        // ability namea
         'min hit': 0.7, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
