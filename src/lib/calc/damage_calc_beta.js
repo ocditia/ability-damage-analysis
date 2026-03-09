@@ -452,7 +452,7 @@ function set_min_var(settings, dmgObject) {
             }
             if (tumekens_resplendence >= 4) {
                 min_percent = 0.71;
-                var_percent = 0.15;
+                var_percent = 0.13;
             }
         }
     }
