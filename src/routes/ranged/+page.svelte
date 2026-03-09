@@ -642,13 +642,10 @@
                                     max="100"
                                     min="0"
                                 />
-                                <Number
+                                <Checkbox
                                     bind:setting={settings[SETTINGS.ICY_PRECISION]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/icy_precision.png"
-                                    step="1"
-                                    max="15"
-                                    min="0"
                                 />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.QUIVER]}

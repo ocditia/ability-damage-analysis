@@ -452,8 +452,8 @@ function set_min_var(settings, dmgObject) {
 
         // overpower
         if (settings['ability'] === ABILITIES.OVERPOWER_HIT_BETA && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-            min_percent = 2.85;
-            var_percent = 0.5;
+            min_percent = 2.8;
+            var_percent = 0.6;
         }
 
         // bloodlust assault
@@ -1065,7 +1065,7 @@ function calc_crit_damage(settings) {
             crit_buff += 0.03;
         }
 
-    // fsoa 22.5%
+    // fsoa 20%
     if (settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
         if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
             crit_buff += 0.25;

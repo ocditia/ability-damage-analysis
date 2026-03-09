@@ -2654,7 +2654,7 @@ const abils = {
     },
     [ABILITIES.FLURRY_HIT]: {
         // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
+        'min hit': 0.6, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -5083,7 +5083,7 @@ const abils = {
 
     [ABILITIES.TIME_STRIKE]: {
         // ability name
-        'min hit': 0.9, // min % of abil expressed as a decimal
+        'min hit': 0.7, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
