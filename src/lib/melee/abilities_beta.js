@@ -267,6 +267,7 @@ const abilities = {
     [ABILITIES.AFTERSHOCK_MELEE]: {
         title: 'Aftershock',
         calc: calc_aftershock,
+        icon: '/effect_icons/Aftershock.webp'
     }
 };
 
