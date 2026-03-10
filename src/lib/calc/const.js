@@ -3546,13 +3546,13 @@ const abils = {
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
-            1: [ABILITIES.WILD_MAGIC_HIT_BETA],
+            1: [ABILITIES.ASPHYXIATE_HIT],
             2: [],
-            3: [ABILITIES.WILD_MAGIC_HIT_BETA],
+            3: [ABILITIES.ASPHYXIATE_HIT],
             4: [],
-            5: [ABILITIES.WILD_MAGIC_HIT_BETA],
+            5: [ABILITIES.ASPHYXIATE_HIT],
             6: [],
-            7: [ABILITIES.WILD_MAGIC_HIT_BETA],
+            7: [ABILITIES.ASPHYXIATE_HIT],
         }
     },
     [ABILITIES.TSUNAMI]: {
