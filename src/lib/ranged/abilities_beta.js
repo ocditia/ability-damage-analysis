@@ -148,7 +148,7 @@ const abilities = {
     [ABILITIES.AFTERSHOCK_RANGED]: {
         title: 'Aftershock',
         calc: calc_aftershock,
-        icon: 'static/effect_icons/Aftershock.webp'
+        icon: '/effect_icons/Aftershock.webp'
     }
 };
 
