@@ -146,6 +146,7 @@ const abilities = {
     [ABILITIES.AFTERSHOCK_MAGIC]: {
         title: 'Aftershock',
         calc: calc_aftershock,
+        icon: '/effect_icons/Aftershock.webp'
     }
 };
 
