@@ -199,7 +199,7 @@ function calc_boosted_ad(settings, dmgObject) {
         settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
         settings[SETTINGS.ICY_PRECISION] == true
     ) {
-        base_damage += Math.floor(base_damage/100 * 130);
+        base_damage += Math.floor(base_damage/100 * 30);
     }
 
     // chaos roar
