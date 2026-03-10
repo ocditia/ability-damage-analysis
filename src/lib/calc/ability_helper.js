@@ -29,8 +29,6 @@ function next_cast(settings) {
     settings[SETTINGS.GCONC_STACKS] = 0;
     settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 0;
 
-    
-
     settings = next_hit(settings);
 
     return settings;
@@ -45,9 +43,6 @@ function next_hit(settings) {
 
     // turn off (g)fury beta
     settings[SETTINGS.GFURY_BETA] = false
-
-    // turn off (g)conc
-    settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 0; // this does not properly handle conc buffing itself
     
     // bolg stack tracker
     if (
