@@ -2176,8 +2176,8 @@ const abils = {
     },
     [ABILITIES.SLICE_N_DICE_1]: {
         // ability name
-        'min hit': 2.0, // min % of abil expressed as a decimal
-        'var hit': 0.2,
+        'min hit': 1.8, // min % of abil expressed as a decimal
+        'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2188,8 +2188,8 @@ const abils = {
     },
     [ABILITIES.SLICE_N_DICE_2]: {
         // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
-        'var hit': 0.1,
+        'min hit': 0.9, // min % of abil expressed as a decimal
+        'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
