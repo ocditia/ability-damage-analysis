@@ -13,6 +13,13 @@ const weapons = {
         type: 'none',
         classification: 'none'
     },
+    'custom shield': {
+        style: 'hybrid',
+        'weapon type': 'shield',
+        tier: 0,
+        type: 'none',
+        classification: 'none'
+    },
     'custom two-hand weapon': {
         style: 'hybrid',
         'weapon type': 'two-hand',
