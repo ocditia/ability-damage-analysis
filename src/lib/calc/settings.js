@@ -830,6 +830,11 @@ const SETTINGS = {
         ABIL: 'abil',
         TICK: 'tick',
     },
+    DAMAGE_UNITS: 'damage units',
+    DAMAGE_UNITS_VALUES: {
+        RAW: 'raw',
+        PERCENT: 'percent',
+    },
     DAMAGE_PER_UNIT_DIVIDER: 'damage per time unit divider',
     RESIDUAL_SOULS: 'residual souls',
     TUMEKENS_RESPLENDENCE_ASPHYX: 'tumekens resplendence asphyx',
@@ -2279,6 +2284,14 @@ const settingsConfig = {
         options: [
             { text: 'abil', value: SETTINGS.DAMAGE_PER_UNIT_VALUES.ABIL },
             { text: 'tick', value: SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK },
+        ]
+    },
+    [SETTINGS.DAMAGE_UNITS]: {
+        label: 'Damage result',
+        default: SETTINGS.DAMAGE_UNITS_VALUES.RAW,
+        options: [
+            { text: 'Raw', value: SETTINGS.DAMAGE_UNITS_VALUES.RAW },
+            { text: 'AD%', value: SETTINGS.DAMAGE_UNITS_VALUES.PERCENT },
         ]
     },
     [SETTINGS.DAMAGE_PER_UNIT_DIVIDER]: {

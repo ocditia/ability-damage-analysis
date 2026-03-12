@@ -173,6 +173,10 @@
                                     bind:setting={settings[SETTINGS.DAMAGE_PER_UNIT]}
                                     onchange={() => updateDamages()}
                                 />
+                                <Select
+                                    bind:setting={settings[SETTINGS.DAMAGE_UNITS]}
+                                    onchange={() => updateDamages()}
+                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.ESSENCE_CORRUPTION]}
                                     onchange={() => updateDamages()}

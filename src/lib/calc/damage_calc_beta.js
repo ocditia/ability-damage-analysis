@@ -1749,6 +1749,10 @@ function hit_damage_calculation(settings, rotationCalc = false) {
     let total_damage = calc_damage_object(settings); // calculate the ability
     total_damage = apply_additional(settings, total_damage, rotationCalc);
     //TODO add next cast next hit next tick etc
+    if (settings[SETTINGS.DAMAGE_UNITS] === SETTINGS.DAMAGE_UNITS_VALUES.PERCENT) {
+        total_damage = total_damage/calc_base_ad(settings) * 100;
+        total_damage = parseFloat(total_damage.toFixed(2))
+    }
     return total_damage;
 }
 
@@ -1846,7 +1850,8 @@ function ability_damage_calculation(settings) {
             settings = next_tick(settings);
         }     
     }
-    return damage;
+
+    return parseFloat(damage.toFixed(2));
 }
 
 /**
