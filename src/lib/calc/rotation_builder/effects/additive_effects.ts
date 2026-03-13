@@ -29,8 +29,11 @@ export function calculateAdditiveBoost(ctx: EffectContext): number {
     // Ruby aurora stacks (1% per stack)
     boost += settings[SETTINGS.RUBY_AURORA] * 0.01;
 
-    // Scripture of Ful (20%)
-    boost += settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.FUL ? 0.2 : 0;
+    // Scripture of Ful (20% * probability buff is active)
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.FUL) {
+        const fulProb = settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] || 0;
+        boost += 0.2 * fulProb;
+    }
 
     // Enduring ruin (melee only)
     if (abils[abilityKey]?.['main style'] === 'melee') {

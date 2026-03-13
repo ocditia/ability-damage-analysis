@@ -243,10 +243,6 @@ function calc_crit_chance(settings) {
         crit_chance = 0;
     }
 
-    // equilibrium aura
-    if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.EQUILIBRIUM) {
-        crit_chance = 0;
-    }
 
     return Math.min(1, crit_chance);
 }

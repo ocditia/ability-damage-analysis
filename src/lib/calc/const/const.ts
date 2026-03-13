@@ -1,4 +1,5 @@
 import { AbilityInfo } from "$lib/types/AbilityTypes";
+import type { ArmourPiece } from "../types";
 
 const weapons = {
     'custom main-hand weapon': {
@@ -260,12 +261,13 @@ const gear = {
     }
 };
 
-const armour = {
+const armour: Record<string, ArmourPiece> = {
     'tokkul-zo': {
         'necromancy strength': 2.4,
         'magic strength': 2.4,
         'melee strength': 2.4,
         'ranged strength': 2.4,
+        tier: { melee: 10, ranged: 10, magic: 10, necro: 10 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -274,6 +276,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'hybrid'
     },
@@ -282,6 +285,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'hybrid'
     },
@@ -290,6 +294,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'hybrid'
     },
@@ -298,6 +303,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 23.2,
+        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged'
     },
@@ -306,6 +312,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 34.8,
+        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged'
     },
@@ -314,6 +321,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 29,
+        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'hybrid'
     },
@@ -322,6 +330,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 24,
+        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged'
     },
@@ -330,6 +339,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 36,
+        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged'
     },
@@ -338,6 +348,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 31,
+        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'ranged'
     },
@@ -346,6 +357,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 23.2,
+        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged'
     },
@@ -354,6 +366,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 34.8,
+        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged'
     },
@@ -362,6 +375,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 29,
+        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'ranged'
     },
@@ -370,6 +384,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 14.5,
+        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'ranged'
     },
@@ -378,6 +393,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 14.5,
+        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'ranged'
     },
@@ -386,6 +402,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 24,
+        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged'
     },
@@ -394,6 +411,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 36,
+        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged'
     },
@@ -402,6 +420,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 31,
+        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'ranged'
     },
@@ -410,6 +429,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 15,
+        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'ranged'
     },
@@ -418,6 +438,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 15,
+        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'ranged'
     },
@@ -426,6 +447,7 @@ const armour = {
         'magic strength': 20.3,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'helmet',
         style: 'magic'
     },
@@ -434,6 +456,7 @@ const armour = {
         'magic strength': 30.5,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -442,6 +465,7 @@ const armour = {
         'magic strength': 25.4,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -450,6 +474,7 @@ const armour = {
         'magic strength': 23.2,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'helmet',
         style: 'magic'
     },
@@ -458,6 +483,7 @@ const armour = {
         'magic strength': 34.8,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -466,6 +492,7 @@ const armour = {
         'magic strength': 29,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -474,6 +501,7 @@ const armour = {
         'magic strength': 24,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'helmet',
         style: 'magic'
     },
@@ -482,6 +510,7 @@ const armour = {
         'magic strength': 36,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -490,6 +519,7 @@ const armour = {
         'magic strength': 31,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -498,6 +528,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'hybrid'
     },
@@ -506,6 +537,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'hybrid'
     },
@@ -514,6 +546,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'hybrid'
     },
@@ -522,6 +555,7 @@ const armour = {
         'magic strength': 14.5,
         'melee strength': 14.5,
         'ranged strength': 14.5,
+        tier: { melee: 90, ranged: 90, magic: 90, necro: 90 },
         slot: 'helmet',
         style: 'hybrid'
     },
@@ -538,6 +572,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'not used',
         style: 'hybrid'
     },
@@ -546,6 +581,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'helmet',
         style: 'necromancy'
     },
@@ -554,6 +590,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'body',
         style: 'necromancy'
     },
@@ -562,6 +599,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'legs',
         style: 'necromancy'
     },
@@ -570,6 +608,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'gloves',
         style: 'necromancy'
     },
@@ -578,6 +617,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'boots',
         style: 'necromancy'
     },
@@ -586,6 +626,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'helmet',
         style: 'necromancy'
     },
@@ -594,6 +635,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'body',
         style: 'necromancy'
     },
@@ -602,6 +644,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'legs',
         style: 'necromancy'
     },
@@ -610,6 +653,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'gloves',
         style: 'necromancy'
     },
@@ -618,6 +662,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'boots',
         style: 'necromancy'
     },
@@ -626,6 +671,7 @@ const armour = {
         'magic strength': 11,
         'melee strength': 11,
         'ranged strength': 11,
+        tier: { melee: 85, ranged: 85, magic: 85, necro: 85 },
         slot: 'gloves',
         style: 'hybrid'
     },
@@ -634,6 +680,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 12.7,
         'ranged strength': 0,
+        tier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -642,6 +689,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 14.5,
         'ranged strength': 0,
+        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -650,6 +698,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 12.7,
+        tier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'ranged'
     },
@@ -658,6 +707,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 14.5,
+        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'ranged'
     },
@@ -666,6 +716,7 @@ const armour = {
         'magic strength': 12.7,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'boots',
         style: 'magic'
     },
@@ -674,6 +725,7 @@ const armour = {
         'magic strength': 14.5,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'boots',
         style: 'magic'
     },
@@ -682,86 +734,97 @@ const armour = {
         'magic strength': 6.9,
         'melee strength': 6.9,
         'ranged strength': 6.9,
+        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'boots',
         style: 'hybrid'
     },
-    'masterwork helm': {
+    'masterwork melee helm': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 23.2,
         'ranged strength': 0,
+        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee'
     },
-    'masterwork platebody': {
+    'masterwork melee platebody': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 34.8,
         'ranged strength': 0,
+        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee'
     },
-    'masterwork platelegs': {
+    'masterwork melee platelegs': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 29,
         'ranged strength': 0,
+        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee'
     },
-    'masterwork gloves': {
+    'masterwork melee gloves': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 14.5,
         'ranged strength': 0,
+        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
-    'masterwork boots': {
+    'masterwork melee boots': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 14.5,
         'ranged strength': 0,
+        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
-    'trimmed masterwork helm': {
+    'trimmed masterwork melee helm': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 24,
         'ranged strength': 0,
+        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee'
     },
-    'trimmed masterwork platebody': {
+    'trimmed masterwork melee platebody': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 36,
         'ranged strength': 0,
+        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee'
     },
-    'trimmed masterwork platelegs': {
+    'trimmed masterwork melee platelegs': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 31,
         'ranged strength': 0,
+        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee'
     },
-    'trimmed masterwork boots': {
+    'trimmed masterwork melee boots': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 15,
         'ranged strength': 0,
+        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
-    'trimmed masterwork gloves': {
+    'trimmed masterwork melee gloves': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 15,
         'ranged strength': 0,
+        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
@@ -770,6 +833,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 13.5,
         'ranged strength': 0,
+        tier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
@@ -778,6 +842,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 14.5,
         'ranged strength': 0,
+        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
@@ -786,6 +851,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 28,
         'ranged strength': 0,
+        tier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee'
     },
@@ -794,6 +860,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 42,
         'ranged strength': 0,
+        tier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee'
     },
@@ -802,6 +869,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 37,
         'ranged strength': 0,
+        tier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee'
     },
@@ -810,6 +878,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 19,
         'ranged strength': 0,
+        tier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -818,6 +887,7 @@ const armour = {
         'magic strength': 43,
         'melee strength': 43,
         'ranged strength': 43,
+        tier: { melee: 99, ranged: 99, magic: 99, necro: 99 },
         slot: 'cape',
         style: 'hybrid'
     },
@@ -826,6 +896,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 99 },
         slot: 'cape',
         style: 'necromancy'
     },
@@ -834,6 +905,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 43,
+        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'ranged'
     },
@@ -842,6 +914,7 @@ const armour = {
         'magic strength': 43,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 99, necro: 0 },
         slot: 'cape',
         style: 'magic'
     },
@@ -850,6 +923,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 43,
         'ranged strength': 0,
+        tier: { melee: 99, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'melee'
     },
@@ -858,6 +932,7 @@ const armour = {
         'magic strength': 56,
         'melee strength': 56,
         'ranged strength': 56,
+        tier: { melee: 97, ranged: 97, magic: 97, necro: 97 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -866,6 +941,7 @@ const armour = {
         'magic strength': 59,
         'melee strength': 59,
         'ranged strength': 59,
+        tier: { melee: 102, ranged: 102, magic: 102, necro: 102 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -874,6 +950,7 @@ const armour = {
         'magic strength': 46.3,
         'melee strength': 46.3,
         'ranged strength': 46.3,
+        tier: { melee: 84, ranged: 84, magic: 84, necro: 84 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -882,6 +959,7 @@ const armour = {
         'magic strength': 48,
         'melee strength': 48,
         'ranged strength': 48,
+        tier: { melee: 87, ranged: 87, magic: 87, necro: 87 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -890,6 +968,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 30.2,
         'ranged strength': 0,
+        tier: { melee: 60, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'melee'
     },
@@ -898,6 +977,7 @@ const armour = {
         'magic strength': 30.2,
         'melee strength': 30.2,
         'ranged strength': 30.2,
+        tier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -906,6 +986,7 @@ const armour = {
         'magic strength': 7,
         'melee strength': 7,
         'ranged strength': 7,
+        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -914,6 +995,7 @@ const armour = {
         'magic strength': 8,
         'melee strength': 8,
         'ranged strength': 8,
+        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -922,6 +1004,7 @@ const armour = {
         'magic strength': 8,
         'melee strength': 8,
         'ranged strength': 8,
+        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -930,6 +1013,7 @@ const armour = {
         'magic strength': 8,
         'melee strength': 8,
         'ranged strength': 8,
+        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -938,6 +1022,7 @@ const armour = {
         'magic strength': 8,
         'melee strength': 8,
         'ranged strength': 8,
+        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -946,6 +1031,7 @@ const armour = {
         'magic strength': 7,
         'melee strength': 7,
         'ranged strength': 7,
+        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -954,6 +1040,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -962,6 +1049,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -970,6 +1058,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -978,6 +1067,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -986,6 +1076,7 @@ const armour = {
         'magic strength': 13.5,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'gloves',
         style: 'magic'
     },
@@ -994,6 +1085,7 @@ const armour = {
         'magic strength': 14.5,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'gloves',
         style: 'magic'
     },
@@ -1002,6 +1094,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'ranged'
     },
@@ -1010,6 +1103,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'ranged'
     },
@@ -1018,6 +1112,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 21.6,
         'ranged strength': 0,
+        tier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee'
     },
@@ -1026,6 +1121,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1034,6 +1130,7 @@ const armour = {
         'magic strength': 4.2,
         'melee strength': 4.2,
         'ranged strength': 4.2,
+        tier: { melee: 10, ranged: 10, magic: 10, necro: 10 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1042,6 +1139,7 @@ const armour = {
         'magic strength': 27.7,
         'melee strength': 27.7,
         'ranged strength': 27.7,
+        tier: { melee: 88, ranged: 88, magic: 88, necro: 88 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1050,6 +1148,7 @@ const armour = {
         'magic strength': 30.4,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'ring',
         style: 'magic'
     },
@@ -1058,6 +1157,7 @@ const armour = {
         'magic strength': 30.4,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'magic'
     },
@@ -1066,6 +1166,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 30.4,
+        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'ranged'
     },
@@ -1074,6 +1175,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 30.4,
+        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'ranged'
     },
@@ -1082,6 +1184,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 30.4,
         'ranged strength': 0,
+        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'melee'
     },
@@ -1090,6 +1193,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 30.4,
         'ranged strength': 0,
+        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'melee'
     },
@@ -1098,6 +1202,7 @@ const armour = {
         'magic strength': 21,
         'melee strength': 21,
         'ranged strength': 21,
+        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1106,6 +1211,7 @@ const armour = {
         'magic strength': 25.2,
         'melee strength': 25.2,
         'ranged strength': 25.2,
+        tier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1114,6 +1220,7 @@ const armour = {
         'magic strength': 27.7,
         'melee strength': 27.7,
         'ranged strength': 27.7,
+        tier: { melee: 88, ranged: 88, magic: 88, necro: 88 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1122,6 +1229,7 @@ const armour = {
         'magic strength': 23.4,
         'melee strength': 23.4,
         'ranged strength': 23.4,
+        tier: { melee: 78, ranged: 78, magic: 78, necro: 78 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1130,6 +1238,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 92 },
         slot: 'ring',
         style: 'necromancy'
     },
@@ -1138,6 +1247,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 92 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1146,6 +1256,7 @@ const armour = {
         'magic strength': 17.3,
         'melee strength': 17.3,
         'ranged strength': 17.3,
+        tier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1154,6 +1265,7 @@ const armour = {
         'magic strength': 19.8,
         'melee strength': 19.8,
         'ranged strength': 19.8,
+        tier: { melee: 69, ranged: 69, magic: 69, necro: 69 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1162,6 +1274,7 @@ const armour = {
         'magic strength': 21.0,
         'melee strength': 21.0,
         'ranged strength': 21.0,
+        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1170,6 +1283,7 @@ const armour = {
         'magic strength': 23.7,
         'melee strength': 23.7,
         'ranged strength': 23.7,
+        tier: { melee: 79, ranged: 79, magic: 79, necro: 79 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1178,6 +1292,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1186,6 +1301,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 33.5,
         'ranged strength': 0,
+        tier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'melee'
     },
@@ -1194,6 +1310,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 33.5,
+        tier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'ranged'
     },
@@ -1202,6 +1319,7 @@ const armour = {
         'magic strength': 33.5,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'cape',
         style: 'magic'
     },
@@ -1210,6 +1328,7 @@ const armour = {
         'magic strength': 33.5,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 85 },
         slot: 'cape',
         style: 'necromancy'
     },
@@ -1218,6 +1337,7 @@ const armour = {
         'magic strength': 31.5,
         'melee strength': 31.5,
         'ranged strength': 31.5,
+        tier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
         slot: 'cape',
         style: 'hybrid'
     },
@@ -1226,6 +1346,7 @@ const armour = {
         'magic strength': 31.5,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'cape',
         style: 'magic'
     },
@@ -1234,6 +1355,7 @@ const armour = {
         'magic strength': 21.6,
         'melee strength': 21.6,
         'ranged strength': 21.6,
+        tier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'cape',
         style: 'hybrid'
     },
@@ -1242,6 +1364,7 @@ const armour = {
         'magic strength': 15,
         'melee strength': 15,
         'ranged strength': 15,
+        tier: { melee: 95, ranged: 95, magic: 95, necro: 95 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -1250,6 +1373,7 @@ const armour = {
         'magic strength': 10,
         'melee strength': 10,
         'ranged strength': 10,
+        tier: { melee: 65, ranged: 65, magic: 65, necro: 65 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -1258,6 +1382,7 @@ const armour = {
         'magic strength': 36.8,
         'melee strength': 36.8,
         'ranged strength': 36.8,
+        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1266,6 +1391,7 @@ const armour = {
         'magic strength': 38.4,
         'melee strength': 38.4,
         'ranged strength': 38.4,
+        tier: { melee: 73, ranged: 73, magic: 73, necro: 73 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1274,6 +1400,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 80 },
         slot: 'necklace',
         style: 'necromancy'
     },
@@ -1282,7 +1409,8 @@ const armour = {
         'magic strength': 20.3,
         'melee strength': 0,
         'ranged strength': 0,
-        slot: 'helm',
+        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        slot: 'helmet',
         style: 'magic'
     },
     'anima core body of seren': {
@@ -1290,6 +1418,7 @@ const armour = {
         'magic strength': 30.5,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -1298,6 +1427,7 @@ const armour = {
         'magic strength': 25.4,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -1306,7 +1436,8 @@ const armour = {
         'magic strength': 21.6,
         'melee strength': 0,
         'ranged strength': 0,
-        slot: 'helm',
+        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
+        slot: 'helmet',
         style: 'magic'
     },
     'refined anima core body of seren': {
@@ -1314,6 +1445,7 @@ const armour = {
         'magic strength': 32.5,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -1322,6 +1454,7 @@ const armour = {
         'magic strength': 27.1,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -1330,6 +1463,7 @@ const armour = {
         'magic strength': 25.4,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -1338,6 +1472,7 @@ const armour = {
         'magic strength': 12.7,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'gloves',
         style: 'magic'
     },
@@ -1346,6 +1481,7 @@ const armour = {
         'magic strength': 12.7,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'boots',
         style: 'magic'
     },
@@ -1354,7 +1490,8 @@ const armour = {
         'magic strength': 0,
         'melee strength': 17.7,
         'ranged strength': 0,
-        slot: 'helm',
+        tier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
+        slot: 'helmet',
         style: 'melee'
     },
     'bandos chestplate': {
@@ -1362,6 +1499,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 26.5,
         'ranged strength': 0,
+        tier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee'
     },
@@ -1370,6 +1508,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 22.1,
         'ranged strength': 0,
+        tier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee'
     },
@@ -1378,6 +1517,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 11,
         'ranged strength': 0,
+        tier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
@@ -1386,6 +1526,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 11,
         'ranged strength': 0,
+        tier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -1394,7 +1535,8 @@ const armour = {
         'magic strength': 0,
         'melee strength': 20.3,
         'ranged strength': 0,
-        slot: 'body',
+        tier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
+        slot: 'helmet',
         style: 'melee'
     },
     'torva platebody': {
@@ -1402,7 +1544,8 @@ const armour = {
         'magic strength': 0,
         'melee strength': 30.5,
         'ranged strength': 0,
-        slot: 'helm',
+        tier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
+        slot: 'body',
         style: 'melee'
     },
     'torva platelegs': {
@@ -1410,6 +1553,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 25.4,
         'ranged strength': 0,
+        tier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee'
     },
@@ -1418,6 +1562,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 12.7,
         'ranged strength': 0,
+        tier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
@@ -1426,6 +1571,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 12.7,
         'ranged strength': 0,
+        tier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -1434,6 +1580,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'hybrid'
     },
@@ -1442,6 +1589,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'hybrid'
     },
@@ -1450,6 +1598,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'hybrid'
     },
@@ -1458,6 +1607,7 @@ const armour = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'hybrid'
     },
@@ -1466,7 +1616,8 @@ const armour = {
         'magic strength': 28,
         'melee strength': 0,
         'ranged strength': 0,
-        slot: 'helm',
+        tier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
+        slot: 'helmet',
         style: 'magic'
     },
     'masterwork magic robe top': {
@@ -1474,6 +1625,7 @@ const armour = {
         'magic strength': 42,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -1482,6 +1634,7 @@ const armour = {
         'magic strength': 37,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -1490,6 +1643,7 @@ const armour = {
         'magic strength': 19,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'gloves',
         style: 'magic'
     },
@@ -1498,6 +1652,7 @@ const armour = {
         'magic strength': 19,
         'melee strength': 0,
         'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'boots',
         style: 'magic'
     },
@@ -1536,6 +1691,8 @@ export enum ABILITIES {
     RANGED_AUTO = 'ranged auto',
     PIERCING_SHOT_HIT = 'piercing shot hit',
     PIERCING_SHOT = 'piercing shot',
+    GALESHOT = 'galeshot',
+    IMBUE_SHADOWS = 'imbue shadows',
     BINDING_SHOT = 'binding shot',
     SNIPE_HIT = 'snipe hit',
     SNIPE = 'snipe',
@@ -1556,8 +1713,7 @@ export enum ABILITIES {
     CORRUPTION_SHOT_HIT_3 = 'corruption shot hit 3',
     CORRUPTION_SHOT_HIT_4 = 'corruption shot hit 4',
     CORRUPTION_SHOT_HIT_5 = 'corruption shot hit 5',
-    SNAP_SHOT_1 = 'snap shot 1',
-    SNAP_SHOT_2 = 'snap shot 2',
+    SNAP_SHOT_HIT = 'snap shot 1',
     SNAP_SHOT = 'snap shot',
     TIGHT_BINDINGS = 'tight bindings',
     ROUT = 'rout',
@@ -1568,8 +1724,9 @@ export enum ABILITIES {
     SALT_THE_WOUND = 'salt the wound',
     SHADOW_TENDRILS = 'shadow tendrils',
     DEADSHOT_INITIAL = 'deadshot initial',
-    DEADSHOT_BLEED = 'deadshot bleed',
     DEADSHOT = 'deadshot',
+    IGNEOUS_DEADSHOT_HIT = 'igneous_deadshot_hit',
+    IGNEOUS_DEADSHOT = 'igneous_deadshot',
     INCENDIARY_SHOT = 'incendiary shot',
     UNLOAD_HIT = 'unload hit',
     UNLOAD = 'unload',
@@ -1602,6 +1759,10 @@ export enum ABILITIES {
     DESTRUCTIVE_SHOT_HIT = 'destructive shot hit',
     DESTRUCTIVE_SHOT = 'destructive shot',
     DEFIANCE = 'defiance',
+    SHADOWFALL_1 = 'shadowfall 1',
+    SHADOWFALL_2 = 'shadowfall 2',
+    SHADOWFALL = 'shadowfall',
+
 
     MAGIC_AUTO = 'magic auto',
     WRACK = 'wrack',
@@ -1638,6 +1799,7 @@ export enum ABILITIES {
     DETONATE = 'detonate',
     WILD_MAGIC_HIT = 'wild magic hit',
     WILD_MAGIC = 'wild magic',
+    SMOKE_CLOUD = 'smoke cloud',
     SMOKE_TENDRILS_1 = 'smoke tendrils 1',
     SMOKE_TENDRILS_2 = 'smoke tendrils 2',
     SMOKE_TENDRILS_3 = 'smoke tendrils 3',
@@ -1693,6 +1855,7 @@ export enum ABILITIES {
     HURRICANE_1 = 'hurricane 1',
     HURRICANE_2 = 'hurricane 2',
     HURRICANE = 'hurricane',
+    BLOODLUST_HURRICANE_HIT = 'bloodlust hurricane hit',
     BLOOD_TENDRILS_1 = 'blood tendrils 1',
     BLOOD_TENDRILS_2 = 'blood tendrils 2',
     BLOOD_TENDRILS = 'blood tendrils',
@@ -1711,6 +1874,9 @@ export enum ABILITIES {
     GREATER_FURY = 'greater fury',
     CLEAVE = 'cleave',
     DECIMATE = 'decimate',
+    ADAPTIVE_STRIKE_HIT = 'adaptive strike hit',
+    ADAPTIVE_STRIKE = 'adaptive strike',
+    REND = 'rend',
     CHAOS_ROAR = 'chaos roar',
     STOMP = 'stomp',
     DESTROY_HIT = 'destroy hit',
@@ -1793,9 +1959,22 @@ export enum ABILITIES {
     DRAGON_SLAYER_ABILITY = 'dragon slayer ability',
     DEMON_SLAYER_ABILITY = 'demon slayer ability',
     UNDEAD_SLAYER_ABILITY = 'undead slayer ability',
+    RUNIC_CHARGE = 'runic charge',
+    EXSANGUINATE = 'exsanguinate',
+    INCITE_FEAR = 'incite fear',
+    GLACIAL_EMBRACE_HIT = 'glacial embrace hit',
     SURGE = 'surge',
     ESCAPE = 'escape',
     DIVE = 'dive',
+    VENGEANCE = 'vengeance',
+    SPELLBOOK_SWAP = 'spellbook swap',
+    DISRUPTION_SHIELD = 'disruption shield',
+    PRISM_OF_RESTORATION = 'prism of restoration',
+    DREADNIP = 'dreadnip',
+    DEFLECT_MAGIC = 'deflect magic',
+    DEFLECT_MELEE = 'deflect melee',
+    DEFLECT_RANGED = 'deflect ranged',
+    SOUL_SPLIT = 'soul split',
 
     // Misc
     POISON_DAMAGE = 'poison damage'
@@ -1810,7 +1989,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'auto', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'auto', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         cooldown: 0
@@ -1829,7 +2008,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 3},
     [ABILITIES.BACKHAND]: {
         // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
+        'min hit': 0.5, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -1933,8 +2112,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 30},
     [ABILITIES.SLAUGHTER]: {
         // ability name
-        'min hit': 0.3, // min % of abil expressed as a decimal
-        'var hit': 0.1,
+        'min hit': 0.9, // min % of abil expressed as a decimal
+        'var hit': 0.2,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -1948,9 +2127,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
                 ABILITIES.SLAUGHTER_HIT,
                 ABILITIES.SLAUGHTER_HIT,
                 ABILITIES.SLAUGHTER_HIT,
+                ABILITIES.SLAUGHTER_HIT,
                 ABILITIES.SLAUGHTER_HIT
             ]}
         ,
+        adrenaline: 25,
         cooldown: 30,
         hitTimings: [1, 1, 3, 5, 7, 9]
     },
@@ -1969,7 +2150,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 15},
     [ABILITIES.FLURRY_HIT]: {
         // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
+        'min hit': 0.65, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -1982,7 +2163,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 20.4},
     [ABILITIES.FLURRY]: {
         // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
+        'min hit': 0.65, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2001,6 +2182,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             6: [],
             7: [ABILITIES.FLURRY_HIT]
         },
+        adrenaline: 25,
         cooldown: 20.4},
     [ABILITIES.GREATER_FLURRY_HIT]: {
         // ability name
@@ -2040,7 +2222,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.HURRICANE_1]: {
         // ability name
-        'min hit': 1.2, // min % of abil expressed as a decimal
+        'min hit': 1.35, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2052,7 +2234,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 20.4},
     [ABILITIES.HURRICANE_2]: {
         // ability name
-        'min hit': 1.35, // min % of abil expressed as a decimal
+        'min hit': 1.55, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2073,12 +2255,24 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        adrenaline: 25,
         hitTimings: [0, 0],
         hits: {
             1: [ABILITIES.HURRICANE_1, ABILITIES.HURRICANE_2]
         },
         cooldown: 20.4
     },
+    [ABILITIES.BLOODLUST_HURRICANE_HIT]: {
+        'min hit': 0.75,
+        'var hit': 0.2,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'proc',
+        'ability type': 'threshold',
+        'main style': 'melee',
+        'damage type': 'melee',
+        cooldown: 0},
     [ABILITIES.BLOOD_TENDRILS_1]: {
         // ability name
         'min hit': 1.0, // min % of abil expressed as a decimal
@@ -2128,31 +2322,33 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hitTimings: [1, 3, 5, 7, 9]
     },
     [ABILITIES.OVERPOWER_HIT]: {
-        // ability name
-        'min hit': 2.7, // min % of abil expressed as a decimal
+        // Igneous Overpower hit: 310-370% per hit (2 hits total)
+        'min hit': 3.1,
         'var hit': 0.6,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'ultimate',
         'main style': 'melee',
-        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'damage type': 'melee',
         cooldown: 30},
     [ABILITIES.OVERPOWER]: {
-        // ability name
-        'min hit': 2.7, // min % of abil expressed as a decimal
-        'var hit': 0.6,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        // Non-igneous: 550-600% single hit. Igneous: 2x 310-370% hits.
+        // Default hit sequence is igneous (swapped at calc time if no cape)
+        'min hit': 5.5,
+        'var hit': 0.5,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'multihit',
+        'ability type': 'ultimate',
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
-            1: [ABILITIES.OVERPOWER_HIT]
+            1: [ABILITIES.OVERPOWER_HIT, 'next hit', ABILITIES.OVERPOWER_HIT]
         },
+        adrenaline: 60,
         hitTimings: [1, 1],
         cooldown: 30
     },
@@ -2247,7 +2443,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 15},
     [ABILITIES.PUNISH]: {
         // ability name
-        'min hit': 0.75, // min % of abil expressed as a decimal
+        'min hit': 1.1, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2274,7 +2470,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     [ABILITIES.DISMEMBER]: {
         // ability name
         'min hit': 0.25, // min % of abil expressed as a decimal
-        'var hit': 0.06,
+        'var hit': 0.1,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2282,17 +2478,20 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
-        hitTimings: [1, 3, 5, 7, 9],
+        hitTimings: [1, 3, 5, 7, 9, 11, 13, 15],
         hits: {
             1: [
                 ABILITIES.DISMEMBER_HIT,
                 ABILITIES.DISMEMBER_HIT,
                 ABILITIES.DISMEMBER_HIT,
                 ABILITIES.DISMEMBER_HIT,
-                ABILITIES.DISMEMBER_HIT
+                ABILITIES.DISMEMBER_HIT,
+                ABILITIES.DISMEMBER_HIT,
+                ABILITIES.DISMEMBER_HIT,
+                ABILITIES.DISMEMBER_HIT,
             ]
         },
-        cooldown: 15
+        cooldown: 24
     },
     [ABILITIES.FURY]: {
         // ability name
@@ -2345,6 +2544,43 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'main style': 'melee',
         'damage type': 'melee',
         cooldown: 7.2},
+    [ABILITIES.ADAPTIVE_STRIKE_HIT]: {
+        'min hit': 0.6,
+        'var hit': 0.15,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'basic',
+        'main style': 'melee',
+        'damage type': 'melee',
+        cooldown: 5.4},
+    [ABILITIES.ADAPTIVE_STRIKE]: {
+        'min hit': 0.6,
+        'var hit': 0.15,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'multihit',
+        'ability type': 'basic',
+        'main style': 'melee',
+        'damage type': 'melee',
+        hitTimings: [0, 0],
+        hits: {
+            1: [ABILITIES.ADAPTIVE_STRIKE_HIT, 'next hit', ABILITIES.ADAPTIVE_STRIKE_HIT]
+        },
+        cooldown: 5.4},
+    [ABILITIES.REND]: {
+        'min hit': 1.35,
+        'var hit': 0.3,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'basic',
+        'main style': 'melee',
+        'damage type': 'melee',
+        cooldown: 5.4},
     [ABILITIES.CHAOS_ROAR]: {
         // ability name
         'min hit': 0.85, // min % of abil expressed as a decimal
@@ -2420,7 +2656,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 20.4},
     [ABILITIES.ASSAULT_HIT]: {
         // ability name
-        'min hit': 1.25, // min % of abil expressed as a decimal
+        'min hit': 1.45, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -2433,8 +2669,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.ASSAULT]: {
         // ability name
-        'min hit': 1.2, // min % of abil expressed as a decimal
-        'var hit': 0.2,
+        'min hit': 1.45, // min % of abil expressed as a decimal
+        'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2452,20 +2688,20 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             6: [],
             7: [ABILITIES.ASSAULT_HIT]
         },
-        cooldown: 30
+        cooldown: 10
     },
     [ABILITIES.PULVERISE]: {
         // ability name
-        'min hit': 2.7, // min % of abil expressed as a decimal
-        'var hit': 0.6,
+        'min hit': 3.0, // min % of abil expressed as a decimal
+        'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee'
-    ,
+        'damage type': 'melee',
+        adrenaline: 60,
         cooldown: 60},
     [ABILITIES.FRENZY_HIT]: {
         // ability name
@@ -3182,7 +3418,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         adrenaline: 100
@@ -3209,8 +3445,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'auto', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'auto', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic'
     ,
@@ -3251,8 +3487,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        'damage type': 'magic',
         cooldown: 15},
     [ABILITIES.DRAGON_BREATH]: {
         // ability name
@@ -3264,12 +3499,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 10.2},
+        'damage type': 'magic',
+        cooldown: 7.2},
     [ABILITIES.SONIC_WAVE]: {
         // ability name
-        'min hit': 0.95, // min % of abil expressed as a decimal
+        'min hit': 0.90, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3277,9 +3511,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 5.4},
+        'damage type': 'magic',
+        cooldown: 15},
     [ABILITIES.SHOCK]: {
         // ability name
         'min hit': 0.65, // min % of abil expressed as a decimal
@@ -3295,7 +3528,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 15},
     [ABILITIES.CONCENTRATED_BLAST_1]: {
         // ability name
-        'min hit': 0.45, // min % of abil expressed as a decimal
+        'min hit': 0.30, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3308,7 +3541,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 5.4},
     [ABILITIES.CONCENTRATED_BLAST_2]: {
         // ability name
-        'min hit': 0.5, // min % of abil expressed as a decimal
+        'min hit': 0.30, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3321,7 +3554,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 5.4},
     [ABILITIES.CONCENTRATED_BLAST_3]: {
         // ability name
-        'min hit': 0.55, // min % of abil expressed as a decimal
+        'min hit': 0.30, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3334,7 +3567,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 5.4},
     [ABILITIES.CONCENTRATED_BLAST]: {
         // ability name
-        'min hit': 0.55, // min % of abil expressed as a decimal
+        'min hit': 0.30, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3352,7 +3585,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.GREATER_CONCENTRATED_BLAST_1]: {
         // ability name
-        'min hit': 0.45, // min % of abil expressed as a decimal
+        'min hit': 0.40, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3365,7 +3598,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 5.4},
     [ABILITIES.GREATER_CONCENTRATED_BLAST_2]: {
         // ability name
-        'min hit': 0.51, // min % of abil expressed as a decimal
+        'min hit': 0.40, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3378,7 +3611,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 5.4},
     [ABILITIES.GREATER_CONCENTRATED_BLAST_3]: {
         // ability name
-        'min hit': 0.57, // min % of abil expressed as a decimal
+        'min hit': 0.40, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3391,7 +3624,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 5.4},
     [ABILITIES.GREATER_CONCENTRATED_BLAST]: {
         // ability name
-        'min hit': 0.55, // min % of abil expressed as a decimal
+        'min hit': 0.40, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3409,20 +3642,19 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.COMBUST_HIT]: {
         // ability name
-        'min hit': 0.25, // min % of abil expressed as a decimal
+        'min hit': 0.27, // min % of abil expressed as a decimal
         'var hit': 0.06,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'burn', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'basic',
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 15},
+        'damage type': 'magic',
+        cooldown: 18},
     [ABILITIES.COMBUST]: {
         // ability name
-        'min hit': 0.25, // min % of abil expressed as a decimal
+        'min hit': 0.27, // min % of abil expressed as a decimal
         'var hit': 0.06,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
@@ -3437,16 +3669,21 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
                 ABILITIES.COMBUST_HIT,
                 ABILITIES.COMBUST_HIT,
                 ABILITIES.COMBUST_HIT,
+                ABILITIES.COMBUST_HIT,
+                ABILITIES.COMBUST_HIT,
+                ABILITIES.COMBUST_HIT,
+                ABILITIES.COMBUST_HIT,
+                ABILITIES.COMBUST_HIT,
                 ABILITIES.COMBUST_HIT
             ]
         },
-        cooldown: 15,
-        hitTimings: [0, 2, 4, 6, 8]
+        cooldown: 18,
+        hitTimings: [0, 3, 6, 9, 12, 15, 18, 21, 24, 27]
     },
     [ABILITIES.CHAIN]: {
         // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
-        'var hit': 0.1,
+        'min hit': 0.70, // min % of abil expressed as a decimal
+        'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -3458,8 +3695,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 10.2},
     [ABILITIES.GREATER_CHAIN]: {
         // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
-        'var hit': 0.1,
+        'min hit': 0.80, // min % of abil expressed as a decimal
+        'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -3471,28 +3708,28 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 10.2},
     [ABILITIES.MAGMA_TEMPEST_HIT]: {
         // ability name
-        'min hit': 0.25, // min % of abil expressed as a decimal
-        'var hit': 0.05,
+        'min hit': 0.35, // min % of abil expressed as a decimal
+        'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 15},
+        'damage type': 'magic',
+        cooldown: 21},
     [ABILITIES.MAGMA_TEMPEST]: {
         // ability name
-        'min hit': 0.25, // min % of abil expressed as a decimal
-        'var hit': 0.05,
+        'min hit': 0.35, // min % of abil expressed as a decimal
+        'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
         'damage type': 'magic',
+        adrenaline: 20,
         hits: {
             1: [ABILITIES.MAGMA_TEMPEST_HIT],
             2: [ABILITIES.MAGMA_TEMPEST_HIT],
@@ -3503,20 +3740,21 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             7: [ABILITIES.MAGMA_TEMPEST_HIT],
             8: [ABILITIES.MAGMA_TEMPEST_HIT]
         },
-        cooldown: 15,
+        cooldown: 21,
         hitTimings: [3, 5, 7, 9, 11, 13, 15, 17]
     },
     [ABILITIES.CORRUPTION_BLAST]: {
         // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
+        'min hit': 0.9, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'dot', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
-        'damage type': 'magic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'damage type': 'magic',
+        adrenaline: 20,
         hits: {
             1: [
                 ABILITIES.CORRUPTION_BLAST_HIT_1,
@@ -3531,68 +3769,63 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.CORRUPTION_BLAST_HIT_1]: {
         // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
+        'min hit': 0.9, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'dot', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
         'damage type': 'magic',
-    
         cooldown: 15,},
     [ABILITIES.CORRUPTION_BLAST_HIT_2]: {
         // ability name
-        'min hit': 0.48, // min % of abil expressed as a decimal
+        'min hit': 0.72, // min % of abil expressed as a decimal
         'var hit': 0.16,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'dot', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
         'damage type': 'magic',
-    
         cooldown: 15,},
     [ABILITIES.CORRUPTION_BLAST_HIT_3]: {
         // ability name
-        'min hit': 0.384, // min % of abil expressed as a decimal
+        'min hit': 0.576, // min % of abil expressed as a decimal
         'var hit': 0.128,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'dot', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
         'damage type': 'magic',
-    
         cooldown: 15,},
     [ABILITIES.CORRUPTION_BLAST_HIT_4]: {
         // ability name
-        'min hit': 0.3072, // min % of abil expressed as a decimal
+        'min hit': 0.4608, // min % of abil expressed as a decimal
         'var hit': 0.1024,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'dot', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
         'damage type': 'magic',
-    
         cooldown: 15,},
     [ABILITIES.CORRUPTION_BLAST_HIT_5]: {
         // ability name
-        'min hit': 0.24576, // min % of abil expressed as a decimal
-        'var hit': 0.8192,
+        'min hit': 0.36864, // min % of abil expressed as a decimal
+        'var hit': 0.08192,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'dot', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
         'damage type': 'magic',
-    
         cooldown: 15,},
     [ABILITIES.GREATER_SONIC_WAVE]: {
         // ability name
@@ -3604,9 +3837,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 5.4},
+        'damage type': 'magic',
+        cooldown: 15},
     [ABILITIES.ASPHYXIATE_HIT]: {
         // ability name
         'min hit': 1.1, // min % of abil expressed as a decimal
@@ -3615,11 +3847,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 20.4},
+        'damage type': 'magic',
+        cooldown: 5.4},
     [ABILITIES.ASPHYXIATE]: {
         // ability name
         'min hit': 1.1, // min % of abil expressed as a decimal
@@ -3628,9 +3859,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
-        'damage type': 'magic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'damage type': 'magic',
+        adrenaline: 25,
         'duration': 7,
         hits: {
             1: [ABILITIES.ASPHYXIATE_HIT],
@@ -3641,7 +3873,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             6: [],
             7: [ABILITIES.ASPHYXIATE_HIT]
         },
-        cooldown: 20.4
+        cooldown: 5.4
     },
     [ABILITIES.DEEP_IMPACT]: {
         // ability name
@@ -3677,11 +3909,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 20.4},
+        'damage type': 'magic',
+        cooldown: 5.4},
     [ABILITIES.WILD_MAGIC]: {
         // ability name
         'min hit': 1.25, // min % of abil expressed as a decimal
@@ -3690,13 +3921,14 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold',
         'main style': 'magic',
         'damage type': 'magic',
+        adrenaline: 25,
         hits: {
             1: [ABILITIES.WILD_MAGIC_HIT, 'next hit', ABILITIES.WILD_MAGIC_HIT]
         },
-        cooldown: 20.4,
+        cooldown: 5.4,
         hitTimings: [2, 2]
     },
     [ABILITIES.DETONATE]: {
@@ -3712,6 +3944,19 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'damage type': 'magic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         cooldown: 30
     },
+    [ABILITIES.SMOKE_CLOUD]: {
+        // ability name
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': false, // is the ability affected by damage potential
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'magic',
+        'damage type': 'magic',
+        adrenaline: 0,
+        cooldown: 0},
     [ABILITIES.SMOKE_TENDRILS_1]: {
         // ability name
         'min hit': 0.6, // min % of abil expressed as a decimal
@@ -3788,8 +4033,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.OMNIPOWER_REGULAR]: {
         // ability name
-        'min hit': 2.7, // min % of abil expressed as a decimal
-        'var hit': 0.6,
+        'min hit': 4.2, // min % of abil expressed as a decimal
+        'var hit': 0.8,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -3814,15 +4059,16 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 30},
     [ABILITIES.OMNIPOWER]: {
         // ability name
-        'min hit': 2.7, // min % of abil expressed as a decimal
-        'var hit': 0.6,
+        'min hit': 4.2, // min % of abil expressed as a decimal
+        'var hit': 0.8,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'ultimate',
         'main style': 'magic',
         'damage type': 'magic',
+        adrenaline: 60,
         hits: {
             1: [ABILITIES.OMNIPOWER_IGNEOUS_HIT, "next hit", ABILITIES.OMNIPOWER_IGNEOUS_HIT, "next hit", ABILITIES.OMNIPOWER_IGNEOUS_HIT, "next hit", ABILITIES.OMNIPOWER_IGNEOUS_HIT]
         },
@@ -4231,8 +4477,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        'damage type': 'necrotic',
+        adrenaline: 60,
         cooldown: 0},
     [ABILITIES.SOUL_SAP]: {
         // ability name
@@ -4364,14 +4610,15 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     ,
         cooldown: 0},
     [ABILITIES.DEATHSKULLS_4]: {
-        // ability name
-        'min hit': 2.25, // min % of abil expressed as a decimal
+        // Death Skulls - single target, igneous (4 damaging hits: M→P→M→P→M→P→M)
+        // Non-igneous swapped at calc time to 3 hits (M→P→M→P→M)
+        'min hit': 2.25,
         'var hit': 0.5,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'multihit',
+        'ability type': 'ultimate',
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {
@@ -4382,7 +4629,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
                 ABILITIES.DEATHSKULLS
             ]
         },
-        cooldown: 0
+        adrenaline: 100,
+        hitTimings: [0, 2, 4, 6],
+        cooldown: 30
     },
     [ABILITIES.DEATHSKULLS_7]: {
         // ability name
@@ -4635,13 +4884,13 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
 
     [ABILITIES.RANGED_AUTO]: {
         // ability name
-        'min hit': 0.2, // min % of abil expressed as a decimal
-        'var hit': 0.8,
+        'min hit': 0.9, // min % of abil expressed as a decimal
+        'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'auto', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'auto', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged'
     ,
@@ -4676,6 +4925,29 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         },
         cooldown: 3
     },
+    [ABILITIES.GALESHOT]: {
+        'min hit': 0.9,
+        'var hit': 0.2,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'basic',
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        cooldown: 20.4},
+    [ABILITIES.IMBUE_SHADOWS]: {
+        'min hit': 0,
+        'var hit': 0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'threshold',
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        adrenaline: 40,
+        cooldown: 60},
     [ABILITIES.BINDING_SHOT]: {
         // ability name
         'min hit': 0.65, // min % of abil expressed as a decimal
@@ -4691,8 +4963,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 15},
     [ABILITIES.SNIPE_HIT]: {
         // ability name
-        'min hit': 1.6, // min % of abil expressed as a decimal
-        'var hit': 0.5,
+        'min hit': 3.0, // min % of abil expressed as a decimal
+        'var hit': 0.6,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -4713,15 +4985,15 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
-        'duration': 4,
+        'duration': 3,
         hits: {
             1: [],
             2: [],
-            3: [],
-            4: [ABILITIES.SNIPE_HIT]   
+            3: [ABILITIES.SNIPE_HIT]   
         },
-        hitTimings: [4], // TODO fix
-        cooldown: 10.2
+        adrenaline: 0,
+        hitTimings: [3],
+        cooldown: 60.0
     },
     [ABILITIES.DAZING_SHOT]: {
         // ability name
@@ -4812,69 +5084,16 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 15
     },
     [ABILITIES.RICOCHET]: {
-        // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
+        'min hit': 0.75, // 75-85% initial hit
         'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'ranged',
-        'damage type': 'ranged'
-    ,
-        cooldown: 10.2},
-    [ABILITIES.GREATER_RICOCHET_1]: {
-        // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'ranged',
-        'damage type': 'ranged'
-    ,
-        cooldown: 10.2},
-    [ABILITIES.GREATER_RICOCHET_2]: {
-        // ability name
-        'min hit': 0.3, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'ranged',
-        'damage type': 'ranged'
-    ,
-        cooldown: 10.2},
-    [ABILITIES.GREATER_RICOCHET_3]: {
-        // ability name
-        'min hit': 0.1, // min % of abil expressed as a decimal
-        'var hit': 0.05,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'ranged',
-        'damage type': 'ranged'
-    ,
-        cooldown: 10.2},
-    [ABILITIES.GREATER_RICOCHET]: {
-        // ability name
-        'min hit': 0.45, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'multihit',
+        'ability type': 'basic',
         'main style': 'ranged',
         'damage type': 'ranged',
-        hitTimings: [0, 1, 1, 1, 1, 1, 1],
+        hitTimings: [0, 0, 0],
         hits: {
             1: [
                 ABILITIES.GREATER_RICOCHET_1,
@@ -4884,11 +5103,73 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
                 ABILITIES.GREATER_RICOCHET_2
             ]
         },
+        cooldown: 10.2},
+    [ABILITIES.GREATER_RICOCHET_1]: {
+        'min hit': 0.75, // 75-85% initial hit
+        'var hit': 0.1,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'basic',
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        cooldown: 10.2},
+    [ABILITIES.GREATER_RICOCHET_2]: {
+        'min hit': 0.15, // 15-20% additional hit
+        'var hit': 0.05,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'basic',
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        cooldown: 10.2},
+    [ABILITIES.GREATER_RICOCHET_3]: {
+        'min hit': 0.04, // 4-6% greater ricochet additional hit
+        'var hit': 0.02,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'basic',
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        cooldown: 10.2},
+    [ABILITIES.GREATER_RICOCHET]: {
+        'min hit': 0.75, // 75-85% initial hit
+        'var hit': 0.1,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'multihit',
+        'ability type': 'basic',
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        hitTimings: [0, 0, 0, 0, 0, 0, 0],
+        hits: {
+            1: [
+                ABILITIES.GREATER_RICOCHET_1,
+                'next hit',
+                ABILITIES.GREATER_RICOCHET_2,
+                'next hit',
+                ABILITIES.GREATER_RICOCHET_2,
+                'next hit',
+                ABILITIES.GREATER_RICOCHET_3,
+                'next hit',
+                ABILITIES.GREATER_RICOCHET_3,
+                'next hit',
+                ABILITIES.GREATER_RICOCHET_3,
+                'next hit',
+                ABILITIES.GREATER_RICOCHET_3
+            ]
+        },
         cooldown: 10.2
     },
     [ABILITIES.CORRUPTION_SHOT]: {
         // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
+        'min hit': 0.9, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
@@ -4911,7 +5192,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.CORRUPTION_SHOT_HIT_1]: {
         // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
+        'min hit': 0.9, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
@@ -4920,11 +5201,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
-    
         cooldown: 15,},
     [ABILITIES.CORRUPTION_SHOT_HIT_2]: {
         // ability name
-        'min hit': 0.48, // min % of abil expressed as a decimal
+        'min hit': 0.72, // min % of abil expressed as a decimal
         'var hit': 0.16,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
@@ -4933,11 +5213,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
-    
         cooldown: 15,},
     [ABILITIES.CORRUPTION_SHOT_HIT_3]: {
         // ability name
-        'min hit': 0.36, // min % of abil expressed as a decimal
+        'min hit': 0.576, // min % of abil expressed as a decimal
         'var hit': 0.12,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
@@ -4946,11 +5225,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
-    
         cooldown: 15,},
     [ABILITIES.CORRUPTION_SHOT_HIT_4]: {
         // ability name
-        'min hit': 0.24, // min % of abil expressed as a decimal
+        'min hit': 0.4608, // min % of abil expressed as a decimal
         'var hit': 0.08,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
@@ -4959,11 +5237,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
-    
         cooldown: 15,},
     [ABILITIES.CORRUPTION_SHOT_HIT_5]: {
         // ability name
-        'min hit': 0.12, // min % of abil expressed as a decimal
+        'min hit': 0.36864, // min % of abil expressed as a decimal
         'var hit': 0.04,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
@@ -4972,25 +5249,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
-    
         cooldown: 15,},
-    [ABILITIES.SNAP_SHOT_1]: {
+    [ABILITIES.SNAP_SHOT_HIT]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.35, // min % of abil expressed as a decimal
         'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'ranged',
-        'damage type': 'ranged'
-    ,
-        cooldown: 20.4},
-    [ABILITIES.SNAP_SHOT_2]: {
-        // ability name
-        'min hit': 1.5, // min % of abil expressed as a decimal
-        'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -5001,22 +5264,23 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     ,
         cooldown: 20.4},
     [ABILITIES.SNAP_SHOT]: {
-        // ability name
-        'min hit': 0.45, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'ranged',
-        'damage type': 'ranged',
-        hitTimings: [0, 0], 
-        hits: {
-            1: [ABILITIES.SNAP_SHOT_1, 'next hit', ABILITIES.SNAP_SHOT_2]
+            // ability name
+            'min hit': 0.45, // min % of abil expressed as a decimal
+            'var hit': 0.1,
+            'on-hit effects': true, // does the ability get on-hit effects
+            'crit effects': true, // can the ability crit
+            'damage potential effects': true, // is the ability affected by damage potential
+            'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
+            'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
+            'main style': 'ranged',
+            'damage type': 'ranged',
+            hitTimings: [0, 0], 
+            hits: {
+                1: [ABILITIES.SNAP_SHOT_HIT, 'next hit', ABILITIES.SNAP_SHOT_HIT]
+            },
+            adrenaline: 25,
+            cooldown: 0
         },
-        cooldown: 20.4
-    },
     [ABILITIES.TIGHT_BINDINGS]: {
         // ability name
         'min hit': 1.2, // min % of abil expressed as a decimal
@@ -5044,35 +5308,30 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     ,
         cooldown: 15},
     [ABILITIES.RAPID_FIRE_HIT]: {
-        // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'min hit': 0.15, // 17.5% avg additional hit
+        'var hit': 0.05,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'threshold',
         'main style': 'ranged',
-        'damage type': 'ranged'
-    ,
+        'damage type': 'ranged',
         cooldown: 20.4},
     [ABILITIES.RAPID_FIRE_LAST_HIT]: {
-        // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
-        'var hit': 0.1,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'min hit': 0.15, // 17.5% avg additional hit
+        'var hit': 0.05,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'threshold',
         'main style': 'ranged',
-        'damage type': 'ranged'
-    ,
+        'damage type': 'ranged',
         cooldown: 20.4},
     [ABILITIES.RAPID_FIRE]: {
-        // ability name
-        'min hit': 0.45, // min % of abil expressed as a decimal
-        'var hit': 0.1,
+        'min hit': 0.72, // 80% avg initial hit
+        'var hit': 0.16,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -5091,21 +5350,22 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             7: [ABILITIES.RAPID_FIRE_HIT],
             8: [ABILITIES.RAPID_FIRE_LAST_HIT]
         },
+        adrenaline: 25,
         cooldown: 20.4,
         hitTimings: [0, 1, 2, 3, 4, 5, 6, 7]
     },
     [ABILITIES.BOMBARDMENT]: {
         // ability name
-        'min hit': 1.3, // min % of abil expressed as a decimal
-        'var hit': 0.2,
+        'min hit': 2.2, // min % of abil expressed as a decimal
+        'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
-    ,
+        'damage type': 'ranged',
+        adrenaline: 25,
         cooldown: 30},
     [ABILITIES.SALT_THE_WOUND]: {
         // ability name
@@ -5123,19 +5383,19 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     [ABILITIES.SHADOW_TENDRILS]: {
         // ability name
         'min hit': 2.0, // min % of abil expressed as a decimal
-        'var hit': 0.7,
+        'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
-    ,
+        'damage type': 'ranged',
+        adrenaline: 0,
         cooldown: 45},
     [ABILITIES.DEADSHOT_INITIAL]: {
         // ability name
-        'min hit': 1.15, // min % of abil expressed as a decimal
+        'min hit': 1.05, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -5147,6 +5407,39 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     ,
         cooldown: 30},
     [ABILITIES.DEADSHOT]: {
+        // Non-igneous: 4x 105-125%. Igneous: 8x 55-75%.
+        // Default hit sequence is igneous (swapped at calc time if no cape)
+        'min hit': 1.15,
+        'var hit': 0.2,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'multihit',
+        'ability type': 'ultimate',
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        hits: {
+            1: [ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT,
+                ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT]
+        },
+        cooldown: 30,
+        hitTimings: [1, 1, 1, 1, 1, 1, 1, 1],
+        adrenaline: 60,
+    },
+    [ABILITIES.IGNEOUS_DEADSHOT_HIT]: {
+        // ability name
+        'min hit': 0.55, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged'
+    ,
+        cooldown: 30},
+    [ABILITIES.IGNEOUS_DEADSHOT]: {
         // ability name
         'min hit': 1.15, // min % of abil expressed as a decimal
         'var hit': 0.2,
@@ -5158,24 +5451,14 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
-            1: [ABILITIES.DEADSHOT_INITIAL, ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED]
+            1: [ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT,
+                ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT, ABILITIES.IGNEOUS_DEADSHOT_HIT
+            ]
         },
         cooldown: 30,
-        hitTimings: [1, 1, 3, 5, 7, 9]
+        hitTimings: [1, 1, 1, 1, 1, 1, 1, 1],
+        adrenaline: 60
     },
-    [ABILITIES.DEADSHOT_BLEED]: {
-        // ability name
-        'min hit': 0.7, // min % of abil expressed as a decimal
-        'var hit': 0.0,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'ranged',
-        'damage type': 'ranged'
-    ,
-        cooldown: 30},
     [ABILITIES.DEATHS_SWIFTNESS_DOT]: {
         // ability name
         'min hit': 0.0,// 0.1, // min % of abil expressed as a decimal
@@ -5204,7 +5487,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hits: {
             1: new Array(17).fill(ABILITIES.DEATHS_SWIFTNESS_DOT)
         },
-        cooldown: 0,
+        cooldown: 60,
         hitTimings: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49]//TODO Find out what these actually are
     },
     [ABILITIES.GREATER_DEATHS_SWIFTNESS]: {
@@ -5222,7 +5505,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hits: { //TODO properly
             1: new Array(21).fill(ABILITIES.DEATHS_SWIFTNESS_DOT)
         },
-        cooldown: 0,
+        cooldown: 60,
         hitTimings: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61]//TODO Find out what these actually are
     },
     [ABILITIES.INCENDIARY_SHOT]: {
@@ -5560,12 +5843,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability classification': 'self cast',
+        'ability type': 'special attack',
         'main style': 'ranged',
         'damage type': 'ranged',
-        adrenaline: 25
-    ,
+        adrenaline: 25,
         cooldown: 0},
     [ABILITIES.CRYSTAL_RAIN]: {
         // ability name
@@ -5579,9 +5861,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'main style': 'ranged',
         'damage type': 'ranged',
         hitTimings: [3, 4, 4, 4, 4], //TODO check these are correct
-        adrenaline: 30
-    ,
-        cooldown: 0},
+        adrenaline: 30,
+        cooldown: 30},
     [ABILITIES.DEEP_BURN]: {
         // ability name
         'min hit': 1.8, // min % of abil expressed as a decimal
@@ -5593,8 +5874,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
-        adrenaline: 25
-    ,
+        adrenaline: 25,
         cooldown: 0},
     [ABILITIES.DESTRUCTIVE_SHOT_HIT]: {
         // ability name
@@ -5606,8 +5886,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
-        'damage type': 'ranged'
-    ,
+        'damage type': 'ranged',
         cooldown: 0},
     [ABILITIES.DESTRUCTIVE_SHOT]: {
         // ability name
@@ -5638,13 +5917,53 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
-        adrenaline: 40
-    ,
-        cooldown: 0},
-
+        adrenaline: 40,
+        cooldown: 0
+    },
+    [ABILITIES.SHADOWFALL_1]: {
+        // ability name
+        'min hit': 0.85, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+    },
+    [ABILITIES.SHADOWFALL_2]: {
+        // ability name
+        'min hit': 2.55, // min % of abil expressed as a decimal
+        'var hit': 0.4,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+    },
+    [ABILITIES.SHADOWFALL]: {
+        // ability name
+        'min hit': 0.85, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        adrenaline: 65,
+        hits: {
+            1: [ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_2]
+        },
+        hitTimings: [0, 0, 2] // TODO check
+    },
     [ABILITIES.TIME_STRIKE]: {
         // ability name
-        'min hit': 0.9, // min % of abil expressed as a decimal
+        'min hit': 0.8, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -5689,7 +6008,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
@@ -5701,7 +6020,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
@@ -5713,7 +6032,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
@@ -5725,7 +6044,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
@@ -5737,7 +6056,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
@@ -5749,7 +6068,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
@@ -5761,10 +6080,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
+        adrenaline: 15,
         cooldown: 30},
     [ABILITIES.DEVOTION]: {
         // ability name
@@ -5773,10 +6093,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
+        adrenaline: 15,
         cooldown: 60},
     [ABILITIES.REVENGE]: {
         // ability name
@@ -5785,10 +6106,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
+        adrenaline: 15,
         cooldown: 45},
     [ABILITIES.IMMORTALITY]: {
         // ability name
@@ -5797,8 +6119,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
         cooldown: 120},
@@ -5809,8 +6131,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
         cooldown: 60},
@@ -5924,6 +6246,77 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
         cooldown: 0},
+    [ABILITIES.VENGEANCE]: {
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'magic',
+        'damage type': 'magic',
+        cooldown: 30},
+    [ABILITIES.SPELLBOOK_SWAP]: {
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'magic',
+        'damage type': 'magic',
+        cooldown: 0},
+    [ABILITIES.DISRUPTION_SHIELD]: {
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'magic',
+        'damage type': 'magic',
+        cooldown: 60},
+    [ABILITIES.PRISM_OF_RESTORATION]: {
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'magic',
+        'damage type': 'magic',
+        cooldown: 36},
+    [ABILITIES.DREADNIP]: {
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'ranged',
+        'damage type': 'ranged',
+        cooldown: 0},
+    [ABILITIES.DEFLECT_MAGIC]: {
+        'min hit': 0, 'var hit': 0, 'on-hit effects': false, 'crit effects': false,
+        'damage potential effects': false, 'ability classification': 'self cast',
+        'ability type': 'spell', 'main style': 'magic', 'damage type': 'magic', cooldown: 0},
+    [ABILITIES.DEFLECT_MELEE]: {
+        'min hit': 0, 'var hit': 0, 'on-hit effects': false, 'crit effects': false,
+        'damage potential effects': false, 'ability classification': 'self cast',
+        'ability type': 'spell', 'main style': 'magic', 'damage type': 'magic', cooldown: 0},
+    [ABILITIES.DEFLECT_RANGED]: {
+        'min hit': 0, 'var hit': 0, 'on-hit effects': false, 'crit effects': false,
+        'damage potential effects': false, 'ability classification': 'self cast',
+        'ability type': 'spell', 'main style': 'magic', 'damage type': 'magic', cooldown: 0},
+    [ABILITIES.SOUL_SPLIT]: {
+        'min hit': 0, 'var hit': 0, 'on-hit effects': false, 'crit effects': false,
+        'damage potential effects': false, 'ability classification': 'self cast',
+        'ability type': 'spell', 'main style': 'magic', 'damage type': 'magic', cooldown: 0},
     [ABILITIES.AFTERSHOCK]: {
         // ability name
         'min hit': 0.24, // min % of abil expressed as a decimal
@@ -5936,6 +6329,58 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'main style': 'magic',
         'damage type': 'magic',
         cooldown: 15
+    },
+    [ABILITIES.RUNIC_CHARGE]: {
+        'min hit': 0,
+        'var hit': 0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'magic',
+        'damage type': 'magic',
+        adrenaline: 0,
+        cooldown: 30
+    },
+    [ABILITIES.EXSANGUINATE]: {
+        'min hit': 0,
+        'var hit': 0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'magic',
+        'damage type': 'magic',
+        adrenaline: 0,
+        cooldown: 0
+    },
+    [ABILITIES.INCITE_FEAR]: {
+        'min hit': 0,
+        'var hit': 0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'magic',
+        'damage type': 'magic',
+        adrenaline: 0,
+        cooldown: 0
+    },
+    [ABILITIES.GLACIAL_EMBRACE_HIT]: {
+        'min hit': 0.10,
+        'var hit': 0.40,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'proc',
+        'ability type': 'proc',
+        'main style': 'magic',
+        'damage type': 'magic',
+        adrenaline: 0,
+        cooldown: 20
     },
     [ABILITIES.POISON_DAMAGE]: {
         // ability name

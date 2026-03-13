@@ -28,9 +28,11 @@ function applyAbilitySpecificEffects(
 ): void {
     const { settings, abilityKey } = ctx;
 
-    // Death spark (omni guard passive)
-    if (settings[SETTINGS.DEATH_SPARK] === true && abilityKey === ABILITIES.NECRO_AUTO) {
-        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.5);
+    // Death Spark empowered auto (Omni Guard) - at 5 stacks the auto does 2x damage
+    if (abilityKey === ABILITIES.NECRO_AUTO &&
+        settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD &&
+        (settings[SETTINGS.DEATH_SPARK_STACKS] || 0) >= 5) {
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2);
     }
 
     // Living Death - Finger of Death doubled damage
@@ -117,12 +119,40 @@ function applyStackEffects(ctx: EffectContext): void {
         );
     }
 
-    // Necro Auto generates 2 stacks ONLY during Living Death
+    // Necro Auto generates 2 necrosis stacks ONLY during Living Death
     if (abilityKey === ABILITIES.NECRO_AUTO && settings[SETTINGS.LIVING_DEATH] === true) {
         settings[SETTINGS.NECROSIS_STACKS] = Math.min(
             (settings[SETTINGS.NECROSIS_STACKS] || 0) + 2,
             12
         );
+    }
+
+    // Omni Guard - Death Spark: each auto generates 1 stack (max 5).
+    // Empowered auto at 5 stacks resets to 0 (damage applied in applyAbilitySpecificEffects).
+    if (abilityKey === ABILITIES.NECRO_AUTO &&
+        settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD) {
+        const currentStacks = settings[SETTINGS.DEATH_SPARK_STACKS] || 0;
+        if (currentStacks >= 5) {
+            // Empowered auto was fired — reset stacks
+            settings[SETTINGS.DEATH_SPARK_STACKS] = 0;
+        } else {
+            settings[SETTINGS.DEATH_SPARK_STACKS] = currentStacks + 1;
+        }
+    }
+
+    // Devourer's Guard - Soul Reave: each auto generates 1 stack, at 4 generates 1 Residual Soul (resets)
+    if (abilityKey === ABILITIES.NECRO_AUTO &&
+        settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD) {
+        const stacks = (settings[SETTINGS.SOUL_REAVE_STACKS] || 0) + 1;
+        if (stacks >= 4) {
+            settings[SETTINGS.SOUL_REAVE_STACKS] = 0;
+            settings[SETTINGS.RESIDUAL_SOULS] = Math.min(
+                (settings[SETTINGS.RESIDUAL_SOULS] || 0) + 1,
+                7
+            );
+        } else {
+            settings[SETTINGS.SOUL_REAVE_STACKS] = stacks;
+        }
     }
 
     // Essence Corruption

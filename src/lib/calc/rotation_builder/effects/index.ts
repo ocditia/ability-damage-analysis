@@ -45,8 +45,6 @@ export {
     applyAllDamageModifiers,
     applyVulnerabilityEffect,
     applyAllSlayerEffects,
-    applyZerkAuraEffect,
-    applyMahjarratAuraEffect,
     applyElementsScrimshawEffect,
     applyCrueltyScrimshawEffect,
     applyGhostHunterEffect,

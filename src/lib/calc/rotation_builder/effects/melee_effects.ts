@@ -35,13 +35,13 @@ function applyBoostedADEffects(
         applied = true;
     }
 
-    // Chaos roar (doubles boosted AD for next ability)
+    // Chaos roar (+755 boosted AD for next ability)
     if (
         settings[SETTINGS.CHAOS_ROAR] === true &&
         abilityKey !== ABILITIES.CHAOS_ROAR &&
         abils[abilityKey]?.['damage potential effects'] === true
     ) {
-        distribution['boosted AD'] = 2 * distribution['boosted AD'];
+        distribution['boosted AD'] = distribution['boosted AD'] + 755;
         applied = true;
         cleanup = () => {
             settings[SETTINGS.CHAOS_ROAR] = false;
@@ -79,6 +79,11 @@ function applyAbilitySpecificEffects(
     if (abilityKey === ABILITIES.PUNISH && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2.5);
     }
+
+    // Dismember lunging - (10 + 3 per rank)% more damage
+    if (abilityKey === ABILITIES.DISMEMBER_HIT && settings[SETTINGS.LUNGING] > 0) {
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
+    }
 }
 
 /**
@@ -103,6 +108,25 @@ function applyAbilityPercentModifiers(
     ) {
         distribution['min hit'] += 0.18 * settings[SETTINGS.PRIMORDIAL_ICE];
         distribution['var hit'] += 0.04 * settings[SETTINGS.PRIMORDIAL_ICE];
+    }
+
+    // Bloodlust: Assault damage from 130-150% to 170-190% (add 0.40 to min)
+    if (
+        abilityKey === ABILITIES.ASSAULT_HIT &&
+        settings['_bloodlust_consumed'] === ABILITIES.ASSAULT
+    ) {
+        distribution['min hit'] += 0.40;
+    }
+
+    // Bloodlust: Flurry/Greater Flurry +1% per 1% HP missing, max 65%
+    if (
+        (abilityKey === ABILITIES.FLURRY_HIT || abilityKey === ABILITIES.GREATER_FLURRY_HIT) &&
+        (settings['_bloodlust_consumed'] === ABILITIES.FLURRY || settings['_bloodlust_consumed'] === ABILITIES.GREATER_FLURRY)
+    ) {
+        const hpMissing = 100 - (settings[SETTINGS.TARGET_HP_PERCENT] || 100);
+        const bonusMult = Math.min(hpMissing, 65) / 100;
+        distribution['min hit'] *= (1 + bonusMult);
+        distribution['var hit'] *= (1 + bonusMult);
     }
 
     // Flanking - Backhand (basic stun)
@@ -166,10 +190,41 @@ function applyMultiplicativeEffects(
 }
 
 /**
- * Handle melee stack effects
+ * Handle melee stack effects (bloodlust stacks)
+ *
+ * Stack gaining:
+ * - Melee basic ability: +1 stack (+2 during Berserk)
+ * - Rend: +2 stacks (+4 during Berserk)
+ * - Berserk activation: +4 stacks (handled in on_stall)
+ * Cap: 4 normally, 8 during Berserk
  */
 function applyStackEffects(ctx: EffectContext): void {
-    // Melee doesn't have stack mechanics like necromancy
+    const { settings, abilityKey } = ctx;
+
+    if (abils[abilityKey]?.['main style'] !== 'melee') return;
+    if (abils[abilityKey]?.['on-hit effects'] !== true) return;
+
+    // Deduplicate: multihit sub-hits share the same key
+    const castId = settings['ability'] + ':' + abilityKey;
+    if (settings['_last_stack_ability_melee'] === castId) return;
+    settings['_last_stack_ability_melee'] = castId;
+
+    const isBerserk = settings[SETTINGS.BERSERK] === true;
+    const cap = isBerserk ? 8 : 4;
+    let stacks = settings[SETTINGS.BLOODLUST_STACKS] || 0;
+
+    // Rend grants 2 stacks (4 during Berserk)
+    if (abilityKey === ABILITIES.REND) {
+        const gain = isBerserk ? 4 : 2;
+        stacks = Math.min(stacks + gain, cap);
+    }
+    // Basic melee abilities grant 1 stack (2 during Berserk)
+    else if (abils[abilityKey]?.['ability type'] === 'basic') {
+        const gain = isBerserk ? 2 : 1;
+        stacks = Math.min(stacks + gain, cap);
+    }
+
+    settings[SETTINGS.BLOODLUST_STACKS] = stacks;
 }
 
 /**

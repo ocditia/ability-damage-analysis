@@ -3,6 +3,26 @@ import { ABILITIES } from "./const/const";
 type DamageKind = 'non_crit' | 'crit';
 export type CombatStyle = 'melee' | 'ranged' | 'magic' | 'necro' | 'poison';
 
+export type ArmourSlot = 'helmet' | 'body' | 'legs' | 'gloves' | 'boots' | 'necklace' | 'ring' | 'cape' | 'pocket' | 'not used';
+export type ArmourStyle = 'melee' | 'ranged' | 'magic' | 'necromancy' | 'hybrid';
+
+export interface ArmourTier {
+    melee: number;
+    ranged: number;
+    magic: number;
+    necro: number;
+}
+
+export interface ArmourPiece {
+    'necromancy strength': number;
+    'magic strength': number;
+    'melee strength': number;
+    'ranged strength': number;
+    tier: ArmourTier;
+    slot: ArmourSlot;
+    style: ArmourStyle;
+}
+
 /**
  * Input for rotation damage calculation - decoupled from stores
  */

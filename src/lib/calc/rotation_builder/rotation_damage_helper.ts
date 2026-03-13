@@ -5,8 +5,8 @@ import { on_cast, on_hit } from './damage_calc_new';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
 
 // Import and re-export from calculation_utils
-import { add_adrenaline } from './calculation_utils';
-export { add_adrenaline };
+import { addAdrenaline } from './calculation_utils';
+export { addAdrenaline as add_adrenaline };
 
 // Helper functions
 function getDamageDistribution(dmgObject: DamageObject, kind: DamageKind): DamageDistribution | undefined {
@@ -83,6 +83,20 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             settings[SETTINGS.BLACKHOLE] = true;
             timers[SETTINGS.BLACKHOLE] = 35;
             break;
+        case ABILITIES.GALESHOT:
+            settings[SETTINGS.SEARING_WINDS] = true;
+            timers[SETTINGS.SEARING_WINDS] = 10; // 6 seconds
+            break;
+        case ABILITIES.IMBUE_SHADOWS:
+            settings[SETTINGS.SHADOW_IMBUED] = true;
+            timers[SETTINGS.SHADOW_IMBUED] = 50; // 30 seconds
+            break;
+        case ABILITIES.SHADOW_TENDRILS:
+            // Shadow Tendrils extends Imbue Shadows buff by 3.6s (6 ticks) if active
+            if (settings[SETTINGS.SHADOW_IMBUED] === true && timers[SETTINGS.SHADOW_IMBUED] > 0) {
+                timers[SETTINGS.SHADOW_IMBUED] += 6;
+            }
+            break;
         case ABILITIES.SPLIT_SOUL_ECB: //TODO remove split soul on changing weapon
             settings['split soul'] = true; 
             timers['split soul'] = 25;
@@ -100,7 +114,7 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
         case ABILITIES.METEOR_STRIKE:
         case ABILITIES.TSUNAMI:
             settings[SETTINGS.CRIT_BUFF] = true; 
-            timers[SETTINGS.CRIT_BUFF] = 50;
+            timers[SETTINGS.CRIT_BUFF] = 51;
             break;
         case ABILITIES.NATURAL_INSTINCT:
             settings[SETTINGS.NATURAL_INSTINCT] = true; 
@@ -120,9 +134,9 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
 }
 
 export function handle_wen_buff(settings: Record<string, any>, timers: Record<string, number>) {
-    settings[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_CHILL_STACKS];
+    settings[SETTINGS.ICY_PRECISION] = 1; // flat buff, no longer per-stack
     settings[SETTINGS.ICY_CHILL_STACKS] = 0;
-    timers[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_PRECISION]; // time in ticks is same as n stacks
+    timers[SETTINGS.ICY_PRECISION] = 15; // fixed 15 tick duration
 }
 
 /**
@@ -140,7 +154,7 @@ export function handle_edraco(settings: Record<string, any>, timers: Record<stri
         let nDracoPieces = items.filter(item => item && item.startsWith(startString)).length;
         if (abilityKey == ABILITIES.RAPID_FIRE_HIT || abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
 
-            add_adrenaline(settings, nDracoPieces * adrenGain);
+            addAdrenaline(settings, nDracoPieces * adrenGain);
         }
         //Handle crit chance buff
         if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {

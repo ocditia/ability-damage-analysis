@@ -138,29 +138,6 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
     const abilityKey = settings['ability'];
     let rotation = JSON.parse(JSON.stringify(abils[abilityKey]['hits'])); // Deep copy
 
-    // Greater Ricochet + Caroming
-    if (abilityKey === ABILITIES.GREATER_RICOCHET) {
-        for (let i = 1; i <= settings[SETTINGS.CAROMING]; i++) {
-            rotation[1].push('next hit');
-            rotation[1].push(ABILITIES.GREATER_RICOCHET_3);
-        }
-    }
-
-    // Deadshot with Zuk cape
-    if (abilityKey === ABILITIES.DEADSHOT && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-        rotation[1].push(ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED);
-    }
-
-    // Overpower with Zuk cape
-    if (abilityKey === ABILITIES.OVERPOWER && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-        rotation[1].push('next hit');
-        rotation[1].push(ABILITIES.OVERPOWER_HIT);
-    }
-
-    // Omnipower without Zuk cape (single hit version)
-    if (abilityKey === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] !== SETTINGS.CAPE_VALUES.ZUK) {
-        rotation = { 1: [ABILITIES.OMNIPOWER_REGULAR] };
-    }
 
     // Igneous Showdown with EZK and Flamebound Rival
     if (
@@ -207,6 +184,28 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         }
     }
 
+    // Igneous cape auto-swap: default hit sequences are igneous.
+    // When not wearing an igneous cape, swap to non-igneous hit sequences.
+    const hasIgneousCape = settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK;
+    if (!hasIgneousCape) {
+        if (abilityKey === ABILITIES.OVERPOWER) {
+            // Non-igneous: single 550-600% hit (uses OVERPOWER's own min/var)
+            rotation = { 1: [ABILITIES.OVERPOWER] };
+        }
+        else if (abilityKey === ABILITIES.OMNIPOWER) {
+            // Non-igneous: single 420-500% hit
+            rotation = { 1: [ABILITIES.OMNIPOWER_REGULAR] };
+        }
+        else if (abilityKey === ABILITIES.DEADSHOT) {
+            // Non-igneous: 4x 105-125% hits
+            rotation = { 1: [ABILITIES.DEADSHOT_INITIAL, ABILITIES.DEADSHOT_INITIAL, ABILITIES.DEADSHOT_INITIAL, ABILITIES.DEADSHOT_INITIAL] };
+        }
+        else if (abilityKey === ABILITIES.DEATHSKULLS_4) {
+            // Non-igneous single target: 3 damaging hits (M→P→M→P→M, player bounces deal no damage)
+            rotation = { 1: [ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS, ABILITIES.DEATHSKULLS] };
+        }
+    }
+
     // Volley of Souls - hits based on residual souls count
     if (abilityKey === ABILITIES.VOLLEY_OF_SOULS_DYNAMIC) {
         const residualSouls = settings[SETTINGS.RESIDUAL_SOULS] || 0;
@@ -225,7 +224,7 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
 // Adrenaline
 // =============================================================================
 
-export function add_adrenaline(settings: Record<string, any>, amount: number) {
+export function addAdrenaline(settings: Record<string, any>, amount: number) {
     if (settings[SETTINGS.NATURAL_INSTINCT] && amount > 0) {
         amount *= 2;
     }

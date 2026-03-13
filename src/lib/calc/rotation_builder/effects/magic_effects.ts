@@ -78,6 +78,11 @@ function applyAbilitySpecificEffects(
         }
     }
 
+    // Combust lunging - (10 + 3 per rank)% more damage
+    if (abilityKey === ABILITIES.COMBUST_HIT && settings[SETTINGS.LUNGING] > 0) {
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
+    }
+
     // Combust walk bonus
     if (abilityKey === ABILITIES.COMBUST && settings[SETTINGS.WALKED_TARGET] === true) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2);
@@ -113,6 +118,12 @@ function applyAbilityPercentModifiers(
     distribution: DamageDistribution
 ): void {
     const { settings, abilityKey } = ctx;
+
+    // Anima Charged Dragon Breath: 260-310% instead of 110-130%
+    if (abilityKey === ABILITIES.DRAGON_BREATH && settings['anima charged cast'] === true) {
+        distribution['min hit'] = 2.6;
+        distribution['var hit'] = 0.5;
+    }
 
     // Detonate (variable charge time)
     if (abilityKey === ABILITIES.DETONATE) {
@@ -181,10 +192,44 @@ function applyMultiplicativeEffects(
 
 /**
  * Handle magic stack effects
+ * Increments blood tithe (exsanguinate) and glacial embrace (incite fear) stacks.
+ *
+ * Stacks are gained once per ability activation (not per hit), so multihit abilities
+ * like Wild Magic only grant 1 stack. Channeled abilities grant 1 per channel tick
+ * since each tick enters on_hit separately with its own sub-ability key.
+ *
+ * We use a flag ('_last_stack_ability') to deduplicate: if the same parent ability
+ * key already incremented stacks, skip subsequent hits from the same cast.
  */
 function applyStackEffects(ctx: EffectContext): void {
-    // Magic doesn't have stack mechanics like necromancy
-    // Flow stacks are handled elsewhere (on ability use)
+    const { settings, abilityKey } = ctx;
+
+    // Only increment on magic damage abilities with on-hit effects
+    if (abils[abilityKey]?.['main style'] !== 'magic') return;
+    if (abils[abilityKey]?.['on-hit effects'] !== true) return;
+
+    // Deduplicate: multihit sub-hits share the same key (e.g. 'wild magic hit')
+    // and fire multiple on_hit calls in the same cast. Use settings['ability']
+    // (set to parent key in on_cast) plus this hit key to detect repeats.
+    const castId = settings['ability'] + ':' + abilityKey;
+    if (settings['_last_stack_ability'] === castId) return;
+    settings['_last_stack_ability'] = castId;
+
+    // Blood tithe stacks (exsanguinate) - 1 per cast, cap 12
+    if (settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.EXSANGUINATE) {
+        settings[SETTINGS.BLOOD_TITHE] = Math.min(
+            (settings[SETTINGS.BLOOD_TITHE] || 0) + 1,
+            12
+        );
+    }
+
+    // Glacial embrace stacks (incite fear) - 1 per cast, cap 5
+    if (settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR) {
+        settings[SETTINGS.GLACIAL_EMBRACE] = Math.min(
+            (settings[SETTINGS.GLACIAL_EMBRACE] || 0) + 1,
+            5
+        );
+    }
 }
 
 /**

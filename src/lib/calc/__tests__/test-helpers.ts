@@ -49,6 +49,7 @@ export function createBaseSettings(overrides: Record<string, any> = {}): Record<
         [SETTINGS.BITING]: 0,
         [SETTINGS.FLANKING]: 0,
         [SETTINGS.LUNGING]: 0,
+        [SETTINGS.ULTIMATUMS]: 0,
 
         // Buffs - all off by default
         [SETTINGS.BERSERK]: false,
@@ -131,6 +132,7 @@ export function createBaseSettings(overrides: Record<string, any> = {}): Record<
         [SETTINGS.NOPE]: 0,
         [SETTINGS.TARGET_HP_PERCENT]: 100,
         [SETTINGS.BLOOD_TITHE]: 0,
+        [SETTINGS.GLACIAL_EMBRACE]: 0,
         [SETTINGS.HAUNTED]: false,
         [SETTINGS.ADRENALINE]: 0,
         [SETTINGS.SPLIT_SOUL]: false,
@@ -160,10 +162,13 @@ export function createBaseSettings(overrides: Record<string, any> = {}): Record<
         [SETTINGS.GREATER_DRACOLICH_INFUSION]: false, // Line 221-222
 
         // Necromancy settings
-        [SETTINGS.RESIDUAL_SOULS]: 2,                 // Volley of Souls total hits (min 2 required)
+        [SETTINGS.RESIDUAL_SOULS]: 0,                 // Volley of Souls total hits (min 2 required)
 
         // Magic multihit settings
         [SETTINGS.RUIN]: 0,                           // Combust extra hits
+
+        // Melee bloodlust stacks
+        [SETTINGS.BLOODLUST_STACKS]: 0,
 
         // Apply any overrides
         ...overrides
@@ -452,6 +457,7 @@ export function createBlankSettings(
         [SETTINGS.BITING]: 0,
         [SETTINGS.FLANKING]: 0,
         [SETTINGS.LUNGING]: 0,
+        [SETTINGS.ULTIMATUMS]: 0,
         [SETTINGS.CAROMING]: 0,
         [SETTINGS.AFTERSHOCK]: 0,
         [SETTINGS.ERUPTIVE]: 0,
@@ -506,6 +512,7 @@ export function createBlankSettings(
         [SETTINGS.NOPE]: 0,
         [SETTINGS.TARGET_HP_PERCENT]: 100,
         [SETTINGS.BLOOD_TITHE]: 0,
+        [SETTINGS.GLACIAL_EMBRACE]: 0,
         [SETTINGS.HAUNTED]: false,
         [SETTINGS.ADRENALINE]: 0,
         [SETTINGS.SPLIT_SOUL]: false,

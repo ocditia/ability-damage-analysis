@@ -17,7 +17,11 @@ export const buffs = [
     SETTINGS.BALANCE_BY_FORCE,
     SETTINGS.INSTABILITY,
     SETTINGS.CHAOS_ROAR,
-    SETTINGS.BLACKHOLE
+    SETTINGS.BLACKHOLE,
+    SETTINGS.SEARING_WINDS,
+    SETTINGS.SHADOW_IMBUED,
+    SETTINGS.DEATHSPORE_BUFF,
+    SETTINGS.ESS_CORRUPTION_ADREN
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -104,8 +108,36 @@ export function createBuffTimings(barSize: number) {
                 title: 'Blackhole',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
+                activeRows: [],
                 colour: '#efbdf7'
+            },
+            [SETTINGS.SEARING_WINDS]: {
+                title: 'Searing Winds',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#ff8c00'
+            },
+            [SETTINGS.SHADOW_IMBUED]: {
+                title: 'Shadow Imbued',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#6a0dad'
+            },
+            [SETTINGS.DEATHSPORE_BUFF]: {
+                title: 'Feasting Spores',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#4a7c59'
+            },
+            [SETTINGS.ESS_CORRUPTION_ADREN]: {
+                title: 'Essence Corruption Adrenaline',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#9932CC'
             }
         }
     )
@@ -123,6 +155,15 @@ export function createStackTimings(barSize: number) {
                 colour: '#f5e942',
                 number: 'true',
                 combatStyle: SettingsCombatStyles.ALL
+            },
+            [SETTINGS.BLOODLUST_STACKS]: {
+                title: 'Bloodlust stacks',
+                displaySetting: SETTINGS.SHOW_BLOODLUST_STACKS,
+                idx: -1,
+                image: '/effect_icons/Bloodlust.png',
+                stackTicks: Array(barSize).fill(0),
+                colour: '#cc0000',
+                combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
                 title: 'Perfect Equilibrium stacks',
@@ -151,6 +192,15 @@ export function createStackTimings(barSize: number) {
                 colour: '#8CFA3A',
                 combatStyle: SettingsCombatStyles.RANGED
             },
+            [SETTINGS.DEATHSPORE_STACKS]: {
+                title: 'Feasting Spores stacks',
+                displaySetting: SETTINGS.SHOW_DEATHSPORE_STACKS,
+                idx: -1,
+                image: '/gear_icons/deathspore arrows.png',
+                stackTicks: Array(barSize).fill(0),
+                colour: '#4a7c59',
+                combatStyle: SettingsCombatStyles.RANGED
+            },
             [SETTINGS.NECROSIS_STACKS]: {
                 title: 'Necrosis stacks',
                 displaySetting: SETTINGS.SHOW_NECROSIS_STACKS,
@@ -177,6 +227,52 @@ export function createStackTimings(barSize: number) {
                 stackTicks: Array(barSize).fill(0),
                 colour: '#9932CC',
                 combatStyle: SettingsCombatStyles.NECROMANCY
+            },
+            [SETTINGS.DEATH_SPARK_STACKS]: {
+                title: 'Death Spark',
+                displaySetting: SETTINGS.SHOW_DEATH_SPARK_STACKS,
+                idx: -1,
+                image: '/effect_icons/necrosis.png',
+                stackTicks: Array(barSize).fill(0),
+                colour: '#FFD700',
+                combatStyle: SettingsCombatStyles.NECROMANCY
+            },
+            [SETTINGS.SOUL_REAVE_STACKS]: {
+                title: 'Soul Reave',
+                displaySetting: SETTINGS.SHOW_SOUL_REAVE_STACKS,
+                idx: -1,
+                image: '/effect_icons/residual_soul.png',
+                stackTicks: Array(barSize).fill(0),
+                colour: '#7B68EE',
+                combatStyle: SettingsCombatStyles.NECROMANCY
+            },
+            [SETTINGS.BLOOD_TITHE]: {
+                title: 'Blood Tithe stacks',
+                displaySetting: SETTINGS.SHOW_BLOOD_TITHE,
+                idx: -1,
+                image: '/effect_icons/Exsanguinate_icon.webp',
+                stackTicks: Array(barSize).fill(0),
+                colour: '#cc0000',
+                combatStyle: SettingsCombatStyles.MAGIC
+            },
+            [SETTINGS.GLACIAL_EMBRACE]: {
+                title: 'Glacial Embrace stacks',
+                displaySetting: SETTINGS.SHOW_GLACIAL_EMBRACE,
+                idx: -1,
+                image: '/effect_icons/Glacial_Embrace.png',
+                stackTicks: Array(barSize).fill(0),
+                colour: '#5AC8E1',
+                combatStyle: SettingsCombatStyles.MAGIC
+            },
+            [SETTINGS.FAMILIAR_SPEC_POINTS]: {
+                title: 'Special Move Points',
+                displaySetting: SETTINGS.SHOW_FAMILIAR_SPEC_POINTS,
+                idx: -1,
+                image: '/effect_icons/familiar.png',
+                stackTicks: Array(barSize).fill(0),
+                colour: '#ff9900',
+                number: 'true',
+                combatStyle: SettingsCombatStyles.ALL
             },
         }
     )

@@ -1,7 +1,7 @@
 import { ABILITIES, abils } from '../const/const';
 import { create_damage_object } from './rota_object_helper';
 import { SETTINGS } from '../settings';
-import { calc_crit_damage, get_hit_sequence, calc_split_soul_hit, add_adrenaline } from './calculation_utils';
+import { calc_crit_damage, get_hit_sequence, calc_split_soul_hit, addAdrenaline } from './calculation_utils';
 import { handle_sgb } from './rotation_damage_helper';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
 import { Logger, LogCategory } from '../../utils/Logger';
@@ -25,59 +25,82 @@ import {
 // Initialize logger
 const logger = Logger.getInstance();
 
-// Helper functions for accessing the new DamageObject structure
-function getDamageDistribution(dmgObject: DamageObject, kind: DamageKind): DamageDistribution | undefined {
-    return dmgObject.distributions[kind];
+// ============================================================
+// DAMAGE PIPELINE - Main functions called in sequence per ability
+// on_stall → on_cast → on_hit → on_damage
+// ============================================================
+
+/**
+ * Handles pre-cast adrenaline costs for an ability. Checks if the Deathspore
+ * buff can be consumed (making the ability free), otherwise processes normal
+ * adrenaline gain/cost: basics gain adrenaline (with impatient), while
+ * thresholds, ultimates, and special attacks spend it.
+ *
+ * Called before on_cast at the same time as the cast, except when the ability
+ * is stalled (in which case on_stall fires at stall time, and on_cast fires
+ * later at release time).
+ */
+function on_stall(settings: Record<string, any>, abilityKey: string, timers?: Record<string, number>) {
+    if (consumeDeathsporeBuff(settings, abilityKey, timers)) return;
+    handleAdrenalineCost(settings, abilityKey);
+    // Essence corruption adrenaline: magic basic with >= 25 stacks starts/resets 6-tick buff
+    if (
+        timers &&
+        abils[abilityKey]?.['ability type'] === 'basic' &&
+        abils[abilityKey]?.['main style'] === 'magic' &&
+        settings[SETTINGS.ESSENCE_CORRUPTION] >= 25
+    ) {
+        timers[SETTINGS.ESS_CORRUPTION_ADREN] = 6;
+        settings[SETTINGS.ESS_CORRUPTION_ADREN] = true;
+    }
+    // Bloodlust stacks: Berserk grants 4 stacks on activation
+    if (abilityKey === ABILITIES.BERSERK) {
+        const cap = 8; // Berserk raises cap to 8
+        settings[SETTINGS.BLOODLUST_STACKS] = Math.min(
+            (settings[SETTINGS.BLOODLUST_STACKS] || 0) + 4, cap
+        );
+    }
+
+    // Bloodlust consumption: Assault, Hurricane, Flurry/Greater Flurry consume 4 stacks
+    if (
+        (settings[SETTINGS.BLOODLUST_STACKS] || 0) >= 4 &&
+        (abilityKey === ABILITIES.ASSAULT || abilityKey === ABILITIES.HURRICANE ||
+         abilityKey === ABILITIES.FLURRY || abilityKey === ABILITIES.GREATER_FLURRY)
+    ) {
+        settings[SETTINGS.BLOODLUST_STACKS] -= 4;
+        settings['_bloodlust_consumed'] = abilityKey;
+    } else {
+        settings['_bloodlust_consumed'] = null;
+    }
+
+    if (timers) {
+        startCooldown(timers, abilityKey);
+    }
 }
 
-
-function iterateDistributions(dmgObject: DamageObject, callback: (distribution: DamageDistribution, kind: DamageKind) => void): void {
-    for (const kind of ['non_crit', 'crit'] as DamageKind[]) {
-        const distribution = dmgObject.distributions[kind];
-        if (distribution) {
-            callback(distribution, kind);
-        }
-    }
-}
-
-// These are the things that happen before an ability is released - 
-// adrenaline and cooldowns before on_cast is called.
-// This is at the same time, except when an ability is stalled.
-function on_stall(settings: Record<string, any>, abilityKey: string) {
-    const type = abils[abilityKey]['ability type'];
-    if (type == 'basic') {
-        add_adrenaline(settings, settings[SETTINGS.FURY_OF_THE_SMALL] ? 9 : 8); // Normal 8/9%
-        if (settings[SETTINGS.EXPECTED_ADRENALINE]) {
-            add_adrenaline(settings, settings[SETTINGS.IMPATIENT] * 0.09 * 3); // Impatient
-        }
-    }
-    else if (type == 'threshold') {
-        add_adrenaline(settings, -15);
-    }
-    else if (type == 'ultimate') { 
-        let cost = 100;
-        cost -= settings[SETTINGS.VIGOUR] ? 10 : 0;
-        cost -= settings[SETTINGS.CONSERVATION_OF_ENERGY] ? 10 : 0;
-        let igneous = [ABILITIES.OMNIPOWER, ABILITIES.OVERPOWER, ABILITIES.DEADSHOT, ABILITIES.DEATHSKULLS].includes(abilityKey as ABILITIES);
-        cost -= igneous && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK ? 40 : 0;
-        add_adrenaline(settings, -cost);
-    }
-    else if (type == 'special attack') {
-        let cost = abils[abilityKey].adrenaline;
-        const multi = settings[SETTINGS.VIGOUR] ? 0.9 : 1;
-        cost *= multi;
-        add_adrenaline(settings, -cost)
-    }
-}
-
-// TODO some changes might have to be made.
-// TODO e.g. currently conflagrate is true/false, but this should be a timer so it should check conflagrate >=1.
-// Detonate, Flanking GBarge, Icy Tempest, Salt the Wound, deathguard spec
-// 
+/**
+ * Initializes boosted ability damage (AD) based on hit chance, applies
+ * weapon/style-specific AD effects (e.g. Scripture of Amascut, chaos roar,
+ * flow stacks), handles ability-specific overrides (e.g. conflagrate,
+ * flanking), then splits the ability into its component hits (multihit
+ * expansion, bleed/burn/dot cloning, or single-hit passthrough) and sets
+ * min/var damage percentages on each resulting hit object.
+ *
+ * Channels are not expanded here — they are handled tick-by-tick by the
+ * rotation builder.
+ */
 function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers: Record<string, number>, abilityKey: ABILITIES): DamageObject[] {
     // This function happens as an ability is cast
     // Ensure settings['ability'] is set for functions that depend on it (like get_hit_sequence)
     settings['ability'] = abilityKey;
+
+    // Self-cast abilities (e.g. Imbue Shadows, Split Soul) only apply buffs — no hits
+    if (abils[abilityKey]['ability classification'] === 'self cast') {
+        return [];
+    }
+
+    // Consume Anima Charged buff for empowered magic abilities
+    consumeAnimaCharged(settings, timers, abilityKey);
 
     // scale to hit chance / damage potential
     logger.log(LogCategory.ABILITY_DAMAGE, `on_cast called for ${abilityKey}`, {
@@ -85,18 +108,16 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
         hitChance: settings[SETTINGS.HIT_CHANCE]
     });
     logger.log(LogCategory.ABILITY_DAMAGE, 'BASE AD', settings[SETTINGS.ABILITY_DAMAGE]);
-    const dmgObjects = [];
+    const dmgObjects: DamageObject[] = [];
     iterateDistributions(dmgObject, (distribution) => {
-        distribution['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 
+        distribution['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] *
             Math.min(settings[SETTINGS.HIT_CHANCE] / 100, 1));
         logger.log(LogCategory.ABILITY_DAMAGE, `Set boosted AD for ${abilityKey}`, distribution['boosted AD']);
     });
-    
+
     // Handle Wen buff consumption for ranged abilities
     handleWenBuffConsumption(settings, timers, abilityKey);
-    // Marco - turn off hit chance stuff here (idt anything exists)
-    // TODO - ingenuity of the humans, and check if accuracy penalty from wrong style gear is implemented
-    // calculate boosted AD / invisible AD
+    // TODO - accuracy (including offstyle gear penalty and ingen)
     const effectCtx: EffectContext = { settings, abilityKey };
     const cleanupFunctions: Array<() => void> = [];
 
@@ -118,232 +139,276 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
         applyStyleAbilitySpecificEffects(effectCtx, distribution);
     });
 
-    // Marco - turn off ability specific stuff here
-    // e.g. turn off conflagrate after it's been used
-    
-
     // Split single cast up into the different effects
-    if (abils[abilityKey]['ability classification'] == 'multihit') {
-        let hits = get_hit_sequence(settings);      
-
-        for (let tick in hits) {
-            for (let hit in hits[tick]) {
-                if (abils[hits[tick][hit]]) { //filter 'next tick'/'next hit' entries 
-                    let clone = create_damage_object(settings, hits[tick][hit]);
-                    iterateDistributions(clone, (cloneDist, kind) => {
-                        const sourceDist = getDamageDistribution(dmgObject, kind);
-                        if (sourceDist && cloneDist) {
-                            cloneDist['probability'] = sourceDist['probability'];
-                            cloneDist['boosted AD'] = sourceDist['boosted AD'];
-                        }
-                    });
-                    clone.ability = hits[tick][hit];
-                    dmgObjects.push(clone);
-                }
-            }
-        }
-
-        // Consume residual souls after Volley of Souls cast (hit sequence already calced)
-        if (abilityKey === ABILITIES.VOLLEY_OF_SOULS_DYNAMIC && settings[SETTINGS.RESIDUAL_SOULS] >= 2) {
-            settings[SETTINGS.RESIDUAL_SOULS] = 0;
-        }
-    }
-    else if (['bleed', 'burn', 'dot'].includes(abils[abilityKey]['ability classification'])) {
-        let n_hits = abils[abilityKey]['hits'][1].length;
-        for (let i = 0; i < n_hits; i++) {
-            const clone = structuredClone(dmgObject);
-            const hitAbility = abils[abilityKey]['hits'][1][i];
-            clone.ability = hitAbility as ABILITIES;
-            if (clone.ability === ABILITIES.SOULFIRE_INITIAL) {
-                iterateDistributions(clone, (distribution) => {
-                    distribution['boosted AD'] = preability_AD;
-                });
-            }
-
-            dmgObjects.push(clone);
-        }
-    }
-    else if (abils[abilityKey]['ability classification'] == 'channel') {
-    }
-    else {
-        dmgObjects.push(dmgObject);
-    }
+    splitAbilityIntoHits(settings, abilityKey, dmgObject, dmgObjects, preability_AD);
     dmgObjects.forEach(dmgObject => {
         set_min_var(settings, dmgObject);
     });
+
+    // Bloodlust Hurricane: consuming 4 stacks spawns an extra 75-95% hit
+    if (
+        abilityKey === ABILITIES.HURRICANE &&
+        settings['_bloodlust_consumed'] === ABILITIES.HURRICANE
+    ) {
+        const bonusObj = create_damage_object(settings, ABILITIES.BLOODLUST_HURRICANE_HIT);
+        const bonusHits = on_cast(settings, bonusObj, timers, ABILITIES.BLOODLUST_HURRICANE_HIT);
+        dmgObjects.push(...bonusHits);
+    }
+
     return dmgObjects;
 }
 
+/**
+ * Applies all on-hit damage modifiers to the ability's damage object. This
+ * includes min/var scaling from ammo/style effects, additive damage boosts,
+ * prayer multipliers, PvE-specific boosts, and bonus damage effects. After
+ * modifiers are applied, generates the full damage roll list, then applies
+ * per-roll scaling (berserker's fury, crit damage).
+ *
+ * Also tracks Perfect Equilibrium stacks for BoLG, applies style-specific
+ * stack effects (wen, bik, residual souls, necrosis), and handles procs/
+ * non-standard abilities (BoLG perfect equilibrium, FSOA time strike, 
+ * Crystal Rain from SGB).
+ */
 function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: Record<string, number>, abilityKey: ABILITIES): DamageObject[] {
-    // this function runs for all hits (note: not hitsplats)
     const dmgObjects = [dmgObject];
-    const effectCtx: EffectContext = { settings, abilityKey };
-    Logger.getInstance().log(LogCategory.ABILITY_DAMAGE, 'on_hit', abilityKey, dmgObject);
-    // compute on-hit effects
+    const effectCtx: EffectContext = { settings, abilityKey, timers };
+    logger.log(LogCategory.ABILITY_DAMAGE, 'on_hit', abilityKey, dmgObject);
+
+    // Apply on-hit damage modifiers (min/var scaling, boosts, prayer, PvE, bonus)
     if (abils[abilityKey]['on-hit effects'] === true) {
-        // TODO: add needle strike back - turn on additive boosts if inside timer window
-
         iterateDistributions(dmgObject, (distribution) => {
-            // 1. Style-specific min/var effects (ammo effects, precise perk, etc.)
             applyStyleMinVarEffects(effectCtx, distribution);
-
-            // 2. Additive boosts (stone of jas, void, etc.)
             applyAdditiveBoosts(effectCtx, distribution);
 
-            // 3. Multiplicative shared buffs (prayer, ultimates, revenge, ruthless)
             let boost = 10000;
             boost = Math.floor(boost * calculatePrayerBoost(settings, abilityKey));
             boost = applyStyleMultiplicativeEffects(effectCtx, distribution, boost);
             distribution['min hit'] = Math.floor((distribution['min hit'] * boost) / 10000);
             distribution['var hit'] = Math.floor((distribution['var hit'] * boost) / 10000);
 
-            // 4. PvE multiplicative buffs (slayer helm, guardhouse, etc.)
             applyPvEBoosts(effectCtx, distribution);
-
-            // 5. Bonus damage (flat additions like frostblades)
             applyStyleBonusDamageEffects(effectCtx, distribution);
         });
     }
-    // roll damage
-    logger.log(LogCategory.ABILITY_DAMAGE, 'roll_damage start', {
-        ability: abilityKey,
-        hasOnHitEffects: abils[abilityKey]['on-hit effects']
-    });
-    iterateDistributions(dmgObject, (distribution) => {
-        logger.log(LogCategory.ABILITY_DAMAGE, 'roll_damage iteration', {
-            minHit: distribution['min hit'],
-            varHit: distribution['var hit'],
-            damageListLengthBefore: distribution['damage list'].length
-        });
-        for (let i = 0; i <= distribution['var hit']; i++) {
-            distribution['damage list'].push(distribution['min hit'] + i);
-        }
-        logger.log(LogCategory.ABILITY_DAMAGE, 'roll_damage after', {
-            damageListLength: distribution['damage list'].length
-        });
-    });
-    
-    // store igneous cleave damage
+
+    // Generate damage rolls
+    rollDamageList(dmgObject);
+
+    // Store igneous cleave damage for later reference
     if (abilityKey === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
         settings['igneous cleave bleed damage']['damage list'] = structuredClone(dmgObject);
     }
 
-    // Add stacks (bolg, wen, bik, residual souls, necrosis)
+    // Track BoLG perfect equilibrium stacks (on-hit, non-proc only)
     if (abils[abilityKey]['on-hit effects'] === true &&
         abils[abilityKey]['ability type'] != 'proc') {
-        // BOLG perfect equilibrium stacks (special condition - needs on-hit and not proc)
         if (settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
-                settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] += 1;
+            settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] += 1;
         }
     }
 
     // Apply style-specific stack effects (wen, bik, residual souls, necrosis)
     applyStyleStackEffects(effectCtx);
 
-    // calc core
+    // Piercing Shot: each hit reduces Snipe cooldown by 4 ticks
+    if ((abilityKey === ABILITIES.PIERCING_SHOT || abilityKey === ABILITIES.PIERCING_SHOT_HIT) && timers[COOLDOWN_PREFIX + ABILITIES.SNIPE] > 0) {
+        timers[COOLDOWN_PREFIX + ABILITIES.SNIPE] = Math.max(0, timers[COOLDOWN_PREFIX + ABILITIES.SNIPE] - 4);
+    }
+
+    // Glacial embrace proc: at 5 stacks, fire a magic hit (with its own cooldown)
+    if (
+        settings[SETTINGS.GLACIAL_EMBRACE] >= 5 &&
+        settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR &&
+        (!timers[COOLDOWN_PREFIX + ABILITIES.GLACIAL_EMBRACE_HIT] || timers[COOLDOWN_PREFIX + ABILITIES.GLACIAL_EMBRACE_HIT] <= 0)
+    ) {
+        startCooldown(timers, ABILITIES.GLACIAL_EMBRACE_HIT);
+        let glacialObj = create_damage_object(settings, ABILITIES.GLACIAL_EMBRACE_HIT);
+        glacialObj = on_cast(settings, glacialObj, timers, ABILITIES.GLACIAL_EMBRACE_HIT)[0];
+        if (glacialObj) {
+            const glacialHits = on_hit(settings, glacialObj, timers, ABILITIES.GLACIAL_EMBRACE_HIT);
+            dmgObjects.push(...glacialHits);
+        }
+    }
+
+    // Apply per-roll modifiers and handle procs
     if (abils[abilityKey]['on-hit effects'] === true) {
-        iterateDistributions(dmgObject, (distribution) => {
-            for (let i=0; i<distribution['damage list'].length; i++) {
-                // berserker's fury
-                distribution['damage list'][i] = Math.floor(
-                    distribution['damage list'][i] * (1 + settings[SETTINGS.BERSERKERS_FURY] / 100)
-                );
-        
-                // dharock's gear (proc based, so added later)
-                //crits
-                if (distribution['crit'] === true && abils[abilityKey]['crit effects'] === true) {
-                    distribution['damage list'][i] = Math.floor(
-                        distribution['damage list'][i] * (1 + calc_crit_damage(settings))
-                    );
-                }
-            }
-        });
-
-    
+        applyDamageListModifiers(settings, dmgObject, abilityKey);
         handleBolgProc(settings, dmgObject, timers, dmgObjects);
-        handleFsoa(abilityKey, settings, dmgObject, timers, dmgObjects); // store fsoa damage
+        handleFsoa(abilityKey, settings, dmgObject, timers, dmgObjects);
 
-        // store bloat damages
         if (abilityKey === ABILITIES.BLOAT) {
             settings[SETTINGS.BLOAT] = structuredClone(dmgObject);
         }
-
         if (abilityKey == ABILITIES.CRYSTAL_RAIN) {
-            dmgObjects.push(...handle_sgb(settings, dmgObject));            
+            dmgObjects.push(...handle_sgb(settings, dmgObject));
         }
-    }    
+    }
+
     return dmgObjects;
 }
 
+/**
+ * Applies final damage modifiers that occur when damage is actually dealt
+ * (e.g. vulnerability, slayer sigil, Zerk essence). After modifiers, handles
+ * split soul (ECB spec) by creating additional damage objects from the soul
+ * split portion, and grants adrenaline from critical hits when a crit buff
+ * (Tsunami, Incendiary Shot, Meteor Strike) is active.
+ */
 function on_damage(settings: Record<string, any>, dmgObject: DamageObject): DamageObject[] {
     const abilityKey = dmgObject.ability;
     const modifierCtx: DamageModifierContext = { settings, abilityKey };
 
+    // Apply final damage modifiers (vulnerability, slayer sigil, etc.)
     iterateDistributions(dmgObject, (distribution) => {
         for (let i = 0; i < distribution['damage list'].length; i++) {
-            // Apply all damage modifiers using the extracted effects
             distribution['damage list'][i] = applyAllDamageModifiers(
                 modifierCtx,
                 distribution['damage list'][i]
             );
         }
-        // store damage into soul split for reference
         settings['soul split'] = distribution;
     });
 
-    // Prepare result array starting with original damage object
     const results: DamageObject[] = [dmgObject];
-
-    // Create split soul damage object if applicable
-    if (settings['split soul'] === true && ['magic', 'melee', 'ranged', 'necrotic'].includes(
-            abils[abilityKey]['damage type']) && settings['soul split']['damage list'])
-    {
-        // Create a new damage object for split soul
-        const splitSoulObject = create_damage_object(settings, ABILITIES.SPLIT_SOUL_ECB);
-        splitSoulObject.likelihood = dmgObject.likelihood;
-
-        // Calculate only the split soul damage for each distribution
-        iterateDistributions(dmgObject, (distribution, kind) => {
-            const splitSoulDist = getDamageDistribution(splitSoulObject, kind);
-            if (splitSoulDist && distribution['damage list']) {
-                // Copy basic properties
-                splitSoulDist['probability'] = distribution['probability'];
-                splitSoulDist['crit'] = distribution['crit'];
-                
-                // Calculate only the split soul damage (not adding to original)
-                splitSoulDist['damage list'] = distribution['damage list'].map(damage => 
-                    calc_split_soul_hit(damage, settings)
-                );
-            }
-        });
-
-        results.push(splitSoulObject);
-    }
-
-    // Adrenaline from crit buff/inspiration
-    // TODO check when this actually applies
-    if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.INSPIRATION) {
-        add_adrenaline(settings, 0.5);
-    }
-    if (
-        (abils[abilityKey]['crit effects'] === true) &&
-        settings[SETTINGS.CRIT_BUFF] && settings[SETTINGS.EXPECTED_ADRENALINE]
-    ) {
-        const critDist = getDamageDistribution(dmgObject, 'crit');
-        let prob = critDist ? critDist['probability'] : 0;
-        prob = prob * dmgObject.likelihood; 
-        add_adrenaline(settings, (prob * 8));
-    }
-
+    handleSplitSoul(settings, dmgObject, results);
+    handleCritBuffAdrenaline(settings, dmgObject);
 
     return results;
+}
 
-    // TODO
-    // Marco - apply any effects that happen on-damage here
-    // I think currently that is only rng stuff like applying poison
-    // also if the hit is a crit it should proc fsoa and give crit adren here for example
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
 
+// Helper functions for accessing the new DamageObject structure
+function getDamageDistribution(dmgObject: DamageObject, kind: DamageKind): DamageDistribution | undefined {
+    return dmgObject.distributions[kind];
+}
+
+
+function iterateDistributions(dmgObject: DamageObject, callback: (distribution: DamageDistribution, kind: DamageKind) => void): void {
+    for (const kind of ['non_crit', 'crit'] as DamageKind[]) {
+        const distribution = dmgObject.distributions[kind];
+        if (distribution) {
+            callback(distribution, kind);
+        }
+    }
+}
+
+/**
+ * Abilities that consume the Anima Charged buff from Runic Charge.
+ * Dragon Breath: empowered to 260-310% damage.
+ * Sonic Wave / Greater Sonic Wave: improved Flow buff (+25%).
+ * Concentrated Blast / Greater Concentrated Blast: +20% crit per hit.
+ */
+const ANIMA_CHARGED_ABILITIES: Set<string> = new Set([
+    ABILITIES.DRAGON_BREATH,
+    ABILITIES.SONIC_WAVE,
+    ABILITIES.GREATER_SONIC_WAVE,
+    ABILITIES.CONCENTRATED_BLAST,
+    ABILITIES.GREATER_CONCENTRATED_BLAST,
+]);
+
+/**
+ * Consumes the Anima Charged buff (from Runic Charge) when an empowerable magic ability is cast.
+ * Sets a per-cast flag so downstream effects can check if this cast was Anima Charged.
+ */
+function consumeAnimaCharged(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string): void {
+    settings['anima charged cast'] = false;
+    if (!settings[SETTINGS.ANIMA_CHARGED]) return;
+    if (!ANIMA_CHARGED_ABILITIES.has(abilityKey)) return;
+
+    settings['anima charged cast'] = true;
+    settings[SETTINGS.ANIMA_CHARGED] = false;
+    if (timers) {
+        delete timers[SETTINGS.ANIMA_CHARGED];
+    }
+}
+
+/**
+ * Consumes the Deathspore buff if applicable (next ranged ability that costs adrenaline is free).
+ * @returns true if the buff was consumed (skip normal adrenaline cost), false otherwise
+ */
+function consumeDeathsporeBuff(settings: Record<string, any>, abilityKey: string, timers?: Record<string, number>): boolean {
+    const type = abils[abilityKey]['ability type'];
+    const isRanged = abils[abilityKey]?.['main style'] === 'ranged';
+    const costsAdrenaline = ['threshold', 'ultimate', 'special attack'].includes(type);
+
+    if (settings[SETTINGS.DEATHSPORE_BUFF] && isRanged && costsAdrenaline) {
+        settings[SETTINGS.DEATHSPORE_BUFF] = false;
+        if (timers) {
+            delete timers[SETTINGS.DEATHSPORE_BUFF];
+        }
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Handles adrenaline gain/cost for an ability based on its type.
+ * Basics gain adrenaline (with impatient), thresholds/ultimates/specs spend it.
+ */
+function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string): void {
+    const type = abils[abilityKey]['ability type'];
+
+    if (type == 'basic') {
+        addAdrenaline(settings, settings[SETTINGS.FURY_OF_THE_SMALL] ? 10 : 9);
+        if (settings[SETTINGS.EXPECTED_ADRENALINE]) {
+            addAdrenaline(settings, settings[SETTINGS.IMPATIENT] * 0.09 * 3);
+        }
+        // Deathmark (hydrix bolts): +1% adrenaline from basic abilities
+        if (settings[SETTINGS.DEATHMARK]) {
+            addAdrenaline(settings, 1);
+        }
+    }
+    else if (type == 'ultimate') {
+        let cost = abils[abilityKey]['adrenaline'];
+        cost = cost ? cost : 100;
+        // Glacial embrace: each stack reduces Tsunami cost by 12%
+        if (abilityKey === ABILITIES.TSUNAMI && settings[SETTINGS.GLACIAL_EMBRACE] > 0) {
+            cost = Math.floor(cost * (1 - 0.12 * settings[SETTINGS.GLACIAL_EMBRACE]));
+        }
+        cost -= settings[SETTINGS.VIGOUR] ? 10 : 0;
+        cost -= settings[SETTINGS.CONSERVATION_OF_ENERGY] ? 10 : 0;
+        addAdrenaline(settings, -cost);
+    }
+    else if (type == 'threshold') {
+        let cost = abils[abilityKey].adrenaline;
+        addAdrenaline(settings, -cost);
+    }
+    else if (type == 'special attack') {
+        let cost = abils[abilityKey].adrenaline;
+        const multi = settings[SETTINGS.VIGOUR] ? 0.9 : 1;
+        cost *= multi;
+        addAdrenaline(settings, -cost);
+    }
+    else if (type == 'ability') {
+        // Necromancy 'ability' type — Finger of Death consumes necrosis to reduce cost
+        let cost = abils[abilityKey].adrenaline || 0;
+        if (abilityKey === ABILITIES.FINGER_OF_DEATH) {
+            const necrosis = settings[SETTINGS.NECROSIS_STACKS] || 0;
+            const consumed = Math.min(necrosis, 6);
+            cost = Math.max(0, cost - consumed * 10);
+            settings[SETTINGS.NECROSIS_STACKS] = necrosis - consumed;
+        }
+        addAdrenaline(settings, -cost);
+    }
+}
+
+/** Prefix for cooldown timer keys to avoid collision with buff timers */
+const COOLDOWN_PREFIX = 'cd_';
+
+/**
+ * Starts the cooldown timer for an ability. Uses the existing timer system
+ * (counts down each tick via handleTimers). The timer key is prefixed with 'cd_'.
+ */
+function startCooldown(timers: Record<string, number>, abilityKey: string): void {
+    const cdSeconds = abils[abilityKey]?.['cooldown'];
+    if (cdSeconds && cdSeconds > 0) {
+        timers[COOLDOWN_PREFIX + abilityKey] = 1 + Math.ceil(cdSeconds / 0.6);
+    }
 }
 
 /**
@@ -372,6 +437,13 @@ function set_min_var(settings: Record<string, any>, dmgObject: DamageObject) {
         applyStyleAbilityPercentModifiers(ctx, distribution);
 
         // 3. Shared effects (not style-specific)
+        // Ultimatums: all ultimates gain (3 + 1 per rank)% base damage
+        if (settings[SETTINGS.ULTIMATUMS] > 0 && abils[abilityKey]?.['ability type'] === 'ultimate') {
+            const mult = 1 + (0.03 + 0.01 * settings[SETTINGS.ULTIMATUMS]);
+            distribution['min hit'] *= mult;
+            distribution['var hit'] *= mult;
+        }
+
         if (abilityKey === ABILITIES.AFTERSHOCK) {
             distribution['min hit'] = distribution['min hit'] * settings[SETTINGS.AFTERSHOCK];
             distribution['var hit'] = distribution['var hit'] * settings[SETTINGS.AFTERSHOCK];
@@ -384,7 +456,7 @@ function set_min_var(settings: Record<string, any>, dmgObject: DamageObject) {
                     poison_tier = Math.min(5, Math.max(2, poison_tier + 1));
                 }
                 let multi = 1 + 0.25 * (poison_tier - 1);
-                multi *= 1 + 0.02 * settings[SETTINGS.BIK_STACKS];
+                multi *= 1 + 0.03 * settings[SETTINGS.BIK_STACKS];
                 distribution['min hit'] = distribution['min hit'] * multi;
                 distribution['var hit'] = distribution['var hit'] * multi;
             }
@@ -396,6 +468,156 @@ function set_min_var(settings: Record<string, any>, dmgObject: DamageObject) {
     });
 
     return dmgObject;
+}
+
+/**
+ * Splits a single ability cast into its component hit objects based on classification.
+ * Multihits get expanded via hit sequence, bleeds/burns/dots get cloned per hit,
+ * channels are handled elsewhere, and single hits pass through directly.
+ */
+function splitAbilityIntoHits(
+    settings: Record<string, any>,
+    abilityKey: ABILITIES,
+    dmgObject: DamageObject,
+    dmgObjects: DamageObject[],
+    preability_AD: number
+): void {
+    const classification = abils[abilityKey]['ability classification'];
+
+    if (classification == 'multihit') {
+        let hits = get_hit_sequence(settings);
+
+        for (let tick in hits) {
+            for (let hit in hits[tick]) {
+                if (abils[hits[tick][hit]]) {
+                    let clone = create_damage_object(settings, hits[tick][hit] as ABILITIES);
+                    iterateDistributions(clone, (cloneDist, kind) => {
+                        const sourceDist = getDamageDistribution(dmgObject, kind);
+                        if (sourceDist && cloneDist) {
+                            cloneDist['probability'] = sourceDist['probability'];
+                            cloneDist['boosted AD'] = sourceDist['boosted AD'];
+                        }
+                    });
+                    clone.ability = hits[tick][hit] as ABILITIES;
+                    dmgObjects.push(clone);
+                }
+            }
+        }
+
+        // Consume residual souls after Volley of Souls cast
+        if (abilityKey === ABILITIES.VOLLEY_OF_SOULS_DYNAMIC && settings[SETTINGS.RESIDUAL_SOULS] >= 2) {
+            settings[SETTINGS.RESIDUAL_SOULS] = 0;
+        }
+    }
+    else if (['bleed', 'burn', 'dot'].includes(classification)) {
+        let n_hits = abils[abilityKey]['hits'][1].length;
+        for (let i = 0; i < n_hits; i++) {
+            const clone = structuredClone(dmgObject);
+            const hitAbility = abils[abilityKey]['hits'][1][i];
+            clone.ability = hitAbility as ABILITIES;
+            if (clone.ability === ABILITIES.SOULFIRE_INITIAL) {
+                iterateDistributions(clone, (distribution) => {
+                    distribution['boosted AD'] = preability_AD;
+                });
+            }
+            dmgObjects.push(clone);
+        }
+    }
+    else if (classification == 'channel') {
+        // Channels are handled by the rotation builder tick-by-tick
+    }
+    else {
+        dmgObjects.push(dmgObject);
+    }
+}
+
+/**
+ * Generates the damage list (all possible damage rolls) from min/var hit values.
+ */
+function rollDamageList(dmgObject: DamageObject): void {
+    iterateDistributions(dmgObject, (distribution) => {
+        for (let i = 0; i <= distribution['var hit']; i++) {
+            distribution['damage list'].push(distribution['min hit'] + i);
+        }
+    });
+}
+
+/**
+ * Applies per-roll damage modifiers: berserker's fury and crit damage scaling.
+ */
+function applyDamageListModifiers(
+    settings: Record<string, any>,
+    dmgObject: DamageObject,
+    abilityKey: ABILITIES
+): void {
+    iterateDistributions(dmgObject, (distribution) => {
+        for (let i = 0; i < distribution['damage list'].length; i++) {
+            // Berserker's fury
+            distribution['damage list'][i] = Math.floor(
+                distribution['damage list'][i] * (1 + settings[SETTINGS.BERSERKERS_FURY] / 100)
+            );
+
+            // Crit damage scaling
+            if (distribution['crit'] === true && abils[abilityKey]['crit effects'] === true) {
+                distribution['damage list'][i] = Math.floor(
+                    distribution['damage list'][i] * (1 + calc_crit_damage(settings))
+                );
+            }
+        }
+    });
+}
+
+/**
+ * Creates split soul (ECB) damage objects from the original hit's damage.
+ */
+function handleSplitSoul(
+    settings: Record<string, any>,
+    dmgObject: DamageObject,
+    results: DamageObject[]
+): void {
+    const abilityKey = dmgObject.ability;
+    if (
+        settings['split soul'] !== true ||
+        !['magic', 'melee', 'ranged', 'necrotic'].includes(abils[abilityKey]['damage type']) ||
+        !settings['soul split']['damage list']
+    ) {
+        return;
+    }
+
+    const splitSoulObject = create_damage_object(settings, ABILITIES.SPLIT_SOUL_ECB);
+    splitSoulObject.likelihood = dmgObject.likelihood;
+
+    iterateDistributions(dmgObject, (distribution, kind) => {
+        const splitSoulDist = getDamageDistribution(splitSoulObject, kind);
+        if (splitSoulDist && distribution['damage list']) {
+            splitSoulDist['probability'] = distribution['probability'];
+            splitSoulDist['crit'] = distribution['crit'];
+            splitSoulDist['damage list'] = distribution['damage list'].map(damage =>
+                calc_split_soul_hit(damage, settings)
+            );
+        }
+    });
+
+    results.push(splitSoulObject);
+}
+
+/**
+ * Grants adrenaline from critical hits when crit buff (Tsunami/Incendiary/Meteor) is active.
+ * Does not apply to necromancy abilities.
+ */
+function handleCritBuffAdrenaline(settings: Record<string, any>, dmgObject: DamageObject): void {
+    const abilityKey = dmgObject.ability;
+    if (
+        abils[abilityKey]['crit effects'] === true &&
+        abils[abilityKey]['main style'] === 'magic' &&
+        settings[SETTINGS.CRIT_BUFF] &&
+        settings[SETTINGS.EXPECTED_ADRENALINE]
+    ) {
+        const critDist = getDamageDistribution(dmgObject, 'crit');
+        let prob = critDist ? critDist['probability'] : 0;
+        prob = prob * dmgObject.likelihood;
+        addAdrenaline(settings, prob * 8);
+    }
 }
 
 /**
@@ -480,4 +702,4 @@ function handleFsoa(
     }
 }
 
-export {on_stall, on_cast, on_hit, on_damage}
+export {on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX}

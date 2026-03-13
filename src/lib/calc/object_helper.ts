@@ -205,11 +205,6 @@ function calc_crit_chance(settings: Record<string, any>): number {
         crit_chance = 1;
     }
 
-    // equilibrium aura
-    if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.EQUILIBRIUM) {
-        crit_chance = 0;
-    }
-
     return Math.min(1, crit_chance);
 }
 

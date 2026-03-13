@@ -112,71 +112,6 @@ export function applyAllSlayerEffects(
 }
 
 // =============================================================================
-// Aura Effects
-// =============================================================================
-
-/**
- * Apply berserker-type aura effects (maniacal, berserker, reckless)
- * Note: These only apply when NOT under an ultimate buff
- */
-export function applyZerkAuraEffect(
-    ctx: DamageModifierContext,
-    damage: number
-): number {
-    const { settings, abilityKey } = ctx;
-    const damageType = abils[abilityKey]?.['damage type'];
-
-    // Zerk auras don't stack with ultimate buffs
-    if (
-        settings[SETTINGS.SUNSHINE] === true ||
-        settings[SETTINGS.META] === true ||
-        settings[SETTINGS.DEATH_SWIFTNESS] === true ||
-        settings[SETTINGS.BERSERK] === true
-    ) {
-        return damage;
-    }
-
-    if (
-        settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.MANIACAL &&
-        damageType === 'magic'
-    ) {
-        return Math.floor(damage * 1.1);
-    } else if (
-        settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.BERSERKER &&
-        damageType === 'melee'
-    ) {
-        return Math.floor(damage * 1.1);
-    } else if (
-        settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.RECKLESS &&
-        damageType === 'ranged'
-    ) {
-        return Math.floor(damage * 1.1);
-    }
-
-    return damage;
-}
-
-/**
- * Apply mahjarrat aura effect
- */
-export function applyMahjarratAuraEffect(
-    ctx: DamageModifierContext,
-    damage: number
-): number {
-    const { settings, abilityKey } = ctx;
-    const damageType = abils[abilityKey]?.['damage type'];
-
-    if (
-        settings[SETTINGS.AURA] === 'mahjarrat' &&
-        damageType !== 'spirit'
-    ) {
-        return Math.floor(damage * 1.05);
-    }
-
-    return damage;
-}
-
-// =============================================================================
 // Pocket Slot Effects (Scrimshaws)
 // =============================================================================
 
@@ -472,11 +407,6 @@ export function applyAllDamageModifiers(
     // Metamorphosis
     damage = applyMetamorphosisEffect(ctx, damage);
 
-    // Zerk auras
-    damage = applyZerkAuraEffect(ctx, damage);
-
-    // Mahjarrat aura
-    damage = applyMahjarratAuraEffect(ctx, damage);
 
     // Scrimshaws
     damage = applyElementsScrimshawEffect(ctx, damage);

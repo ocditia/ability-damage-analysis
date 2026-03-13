@@ -122,15 +122,23 @@ const SETTINGS = {
     },
     FAMILIAR_ACCURACY: 'familiar accuracy',
     USE_FAMILIAR_SCROLLS: 'use familiar scrolls',
+    FAMILIAR_SPEC_POINTS: 'familiar spec points',
+    FAMILIAR_SPEC_REGEN_ACCUMULATOR: 'familiar spec regen accumulator',
+    SHOW_FAMILIAR_SPEC_POINTS: 'show familiar spec points',
+    SPIRIT_CAPE: 'spirit cape',
+    SUMMONING_RENEWAL: 'summoning renewal',
+    SPIRIT_WEED_INCENSE: 'spirit weed incense',
+    SPIRIT_WEED_INCENSE_VALUES: {
+        NONE: 0,
+        LVL1: 1,
+        LVL2: 2,
+        LVL3: 3,
+        LVL4: 4
+    },
+    PRISM_OF_RESTORATION: 'prism of restoration',
     AURA: 'aura',
     AURA_VALUES: {
         NONE: 'none',
-        MAHJARRAT: 'mahjarrat',
-        INSPIRATION: 'inspiration',
-        EQUILIBRIUM: 'equilibrium',
-        RECKLESS: 'reckless',
-        BERSERKER: 'berserker',
-        MANIACAL: 'maniacal',
     },
     VULN: 'vulnerability',
     VULN_VALUES: {
@@ -200,8 +208,8 @@ const SETTINGS = {
     MELEE_HELMET: 'melee helmet',
     MELEE_HELMET_VALUES: {
         NONE: 'none',
-        MASTERWORK: 'masterwork helm',
-        TMW: 'trimmed masterwork helm',
+        MASTERWORK: 'masterwork melee helm',
+        TMW: 'trimmed masterwork melee helm',
         VESTMENTS: 'vestments of havoc hood',
         JAWS: 'jaws of the abyss',
         GHOST_HUNTER: 'ghost hunter goggles',
@@ -238,8 +246,8 @@ const SETTINGS = {
         NONE: 'none',
         BANDOS: 'bandos chestplate',
         TORVA: 'torva platebody',
-        MASTERWORK: 'masterwork platebody',
-        TMW: 'trimmed masterwork platebody',
+        MASTERWORK: 'masterwork melee platebody',
+        TMW: 'trimmed masterwork melee platebody',
         VESTMENTS: 'vestments of havoc robe top',
         GHOST_HUNTER: 'ghost hunter body',
     },
@@ -275,8 +283,8 @@ const SETTINGS = {
         NONE: 'none',
         BANDOS: 'bandos tassets',
         TORVA: 'torva platelegs',
-        MASTERWORK: 'masterwork platelegs',
-        TMW: 'trimmed masterwork platelegs',
+        MASTERWORK: 'masterwork melee platelegs',
+        TMW: 'trimmed masterwork melee platelegs',
         VESTMENTS: 'vestments of havoc robe bottom',
         GHOST_HUNTER: 'ghost hunter legs',
     },
@@ -313,8 +321,8 @@ const SETTINGS = {
         NONE: 'none',
         DTB: 'deathtouch bracelet',
         CINDERS: 'cinderbane gloves',
-        MASTERWORK: 'masterwork gloves',
-        TMW: 'trimmed masterwork gloves',
+        MASTERWORK: 'masterwork melee gloves',
+        TMW: 'trimmed masterwork melee gloves',
         GOP: 'gloves of passage',
         GOP_E: 'enhanced gloves of passage'
     },
@@ -351,8 +359,8 @@ const SETTINGS = {
         LACERATION: 'laceration boots',
         ENHANCED_LACERATION: 'enhanced laceration boots',
         SH: 'silverhawk boots',
-        MASTERWORK: 'masterwork boots',
-        TMW: 'trimmed masterwork boots',
+        MASTERWORK: 'masterwork melee boots',
+        TMW: 'trimmed masterwork melee boots',
         VESTMENTS: 'vestments of havoc boots'
     },
     NECRO_BOOTS: 'necro boots',
@@ -633,7 +641,9 @@ const SETTINGS = {
     },
     NECRO_MH: 'necro main-hand weapon',
     NECRO_MH_VALUES: {
-        CUSTOM: 'custom'
+        CUSTOM: 'custom',
+        OMNI_GUARD: 'omni guard',
+        DEVOURERS_GUARD: 'devourers guard'
     },
     OH: 'off-hand weapon',
     OH_TIER_CUSTOM: 'off-hand weapon custom tier',
@@ -701,13 +711,16 @@ const SETTINGS = {
         WEN_ARROWS: 'wen arrows',
         DEATHSPORE_ARROWS: 'deathspore arrows',
         JAS_ARROWS: 'jas arrows',
-        BIK_ARROWS: 'bik arrows'
+        BIK_ARROWS: 'bik arrows',
+        HYDRIX_BOLTS: 'hydrix bakriminel bolts (e)'
     },
     AMMO_TIER: 'ammo tier',
     AUTO_CAST: 'auto cast',
     AUTO_CAST_VALUES: {
         NONE: 'none',
         CRUMBLE_UNDEAD: 'crumble undead',
+        INCITE_FEAR: 'incite fear',
+        EXSANGUINATE: 'exsanguinate'
     },
     // Perks
     LVL20ARMOUR: 'level 20 armour',
@@ -724,6 +737,8 @@ const SETTINGS = {
     KBD_ARTEFACT: 'King black dragon wilderness portal',
     INNER_CHAOS: 'Zamorak inner chaos',
     SWORD_OF_EDICTS: 'Zamorak sword of edicts',
+    BOSS_PRESET: 'boss preset',
+    BOSS_ENRAGE: 'boss enrage',
     GUARDIANS_TRIUMPH: 'Zamorak guardians triumph',
     BALANCE_OF_POWER: 'Zamorak balance of power',
     ZAMORAK_CHOKE_STACKS: 'zamorak choke stacks',
@@ -733,6 +748,8 @@ const SETTINGS = {
     // Stacks and Buffs
     RESIDUAL_SOULS: 'residual souls',
     NECROSIS_STACKS: 'necrosis stacks',
+    DEATH_SPARK_STACKS: 'death spark stacks',
+    SOUL_REAVE_STACKS: 'soul reave stacks',
     ICY_PRECISION: 'icy precision',
     ICY_CHILL_STACKS: 'icy chill stacks',
     PUNCTURE_STACKS: 'puncture stacks',
@@ -767,10 +784,12 @@ const SETTINGS = {
     NEEDLE_STRIKE: 'needle strike',
     GRAVITATE: 'gravitate',
     BLOOD_TITHE: 'blood tithe',
+    GLACIAL_EMBRACE: 'glacial embrace',
     DEATH_SPARK: 'death spark',
     LIVING_DEATH: 'living death',
     SWIFTNESS_OF_THE_AVIANSIE: 'swiftness of the avianse',
     ESSENCE_CORRUPTION: 'essence corruption',
+    ESS_CORRUPTION_ADREN: 'essence corruption adrenaline',
     WALKED_TARGET: 'walked target',
     CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
     CHAOS_ROAR: 'chaos roar',
@@ -782,7 +801,11 @@ const SETTINGS = {
     },
     RAMPAGE: 'rampage',
     BIK_STACKS: 'bik stacks',
+    DEATHSPORE_STACKS: 'deathspore stacks',
+    DEATHSPORE_BUFF: 'deathspore buff',
+    DEATHSPORE_COOLDOWN: 'deathspore cooldown',
     PERFECT_EQUILIBRIUM_STACKS: 'perfect equilibrium stacks',
+    BLOODLUST_STACKS: 'bloodlust stacks',
     BALANCE_BY_FORCE: 'balance by force',
     TARGET_SIZE: 'target size',
     PRIMORDIAL_ICE: 'primordial ice',
@@ -805,6 +828,12 @@ const SETTINGS = {
     NATURAL_INSTINCT: 'natural instinct',
     //SPLIT_SOUL_ECB: 'split soul ecb',
     BLACKHOLE: 'blackhole',
+    SEARING_WINDS: 'searing winds',
+    SHADOW_IMBUED: 'shadow imbued',
+    DEATHMARK: 'deathmark',
+    ANIMA_CHARGED: 'anima charged',
+    SCRIPTURE_OF_FUL_PROB: 'scripture of ful probability',
+    SCRIPTURE_OF_FUL_COOLDOWN_PROB: 'scripture of ful cooldown probability',
     BERSERK: 'berserk',
     DETONATE: 'detonate charge percent',
     DIVINE_RAGE: 'divine rage',
@@ -813,12 +842,18 @@ const SETTINGS = {
     // Dungeoneering
     DESPERADO: 'desperado',    
 
+    SHOW_BLOODLUST_STACKS: 'show bloodlust stacks',
     SHOW_BOLG_STACKS: 'show bolg stacks',
     SHOW_ICY_CHILL_STACKS: 'show icy chill stacks',
     SHOW_BIK_STACKS: 'show bik stacks',
+    SHOW_DEATHSPORE_STACKS: 'show deathspore stacks',
     SHOW_NECROSIS_STACKS: 'show necrosis stacks',
     SHOW_RESIDUAL_SOULS: 'show residual souls',
+    SHOW_DEATH_SPARK_STACKS: 'show death spark stacks',
+    SHOW_SOUL_REAVE_STACKS: 'show soul reave stacks',
     SHOW_ESSENCE_CORRUPTION: 'show essence corruption',
+    SHOW_BLOOD_TITHE: 'show blood tithe',
+    SHOW_GLACIAL_EMBRACE: 'show glacial embrace',
     ADRENALINE: 'adrenaline',
     EXPECTED_ADRENALINE: 'expected adrenaline',
     CAP_ADRENALINE: 'cap adrenaline',
@@ -862,6 +897,7 @@ const SETTINGS = {
     TELOS_RED_BEAM: 'telos red beam',
     TELOS_BLACK_BEAM: 'telos black beam',
     ENERGISING: 'energising',
+    ULTIMATUMS: 'ultimatums',
 
     // Testing/utility flags
     USE_RAW_ABILITY_DAMAGE: 'use raw ability damage', // Skip recalculating AD from equipment
@@ -892,16 +928,16 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_LEVEL]: {
         label: 'Magic Level',
-        default: 120,
+        default: 145,
         style: 'magic'
     },
     [SETTINGS.STRENGTH_LEVEL]: {
         label: 'Strength Level',
-        default: 120
+        default: 145
     },
     [SETTINGS.RANGED_LEVEL]: {
         label: 'Ranged Level',
-        default: 120
+        default: 136
     },
     [SETTINGS.POTION]: {
         label: 'Potion',
@@ -922,6 +958,14 @@ const settingsConfig = {
     },
     [SETTINGS.NECROSIS_STACKS]: {
         label: 'Necrosis stacks',
+        default: 0
+    },
+    [SETTINGS.DEATH_SPARK_STACKS]: {
+        label: 'Death Spark stacks',
+        default: 0
+    },
+    [SETTINGS.SOUL_REAVE_STACKS]: {
+        label: 'Soul Reave stacks',
         default: 0
     },
     [SETTINGS.REAPER_CREW]: {
@@ -1087,7 +1131,7 @@ const settingsConfig = {
     },
     [SETTINGS.TARGET_HP_PERCENT]: {
         label: 'Target hp %',
-        default: 100
+        default: 50
     },
     [SETTINGS.GENOCIDAL]: {
         label: 'Genocidal %',
@@ -1119,17 +1163,34 @@ const settingsConfig = {
         label: 'Use Scrolls',
         default: false,
     },
+    [SETTINGS.SPIRIT_CAPE]: {
+        label: 'Spirit Cape',
+        default: true,
+    },
+    [SETTINGS.SUMMONING_RENEWAL]: {
+        label: 'Summoning Renewal Potion',
+        default: false,
+    },
+    [SETTINGS.SPIRIT_WEED_INCENSE]: {
+        label: 'Spirit Weed Incense',
+        default: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.NONE },
+            { text: 'Potency 1 (10%)', value: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL1 },
+            { text: 'Potency 2 (20%)', value: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL2 },
+            { text: 'Potency 3 (30%)', value: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL3 },
+            { text: 'Potency 4 (40%)', value: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL4 },
+        ]
+    },
+    [SETTINGS.PRISM_OF_RESTORATION]: {
+        label: 'Prism of Restoration',
+        default: false,
+    },
     [SETTINGS.AURA]: {
         label: 'Aura',
-        default: SETTINGS.AURA_VALUES.MAHJARRAT,
+        default: SETTINGS.AURA_VALUES.NONE,
         options: [
             { text: 'None', value: SETTINGS.AURA_VALUES.NONE },
-            { text: 'Inspiration', value: SETTINGS.AURA_VALUES.INSPIRATION},
-            { text: 'Mahjarrat', value: SETTINGS.AURA_VALUES.MAHJARRAT },
-            { text: 'Equilibrium', value: SETTINGS.AURA_VALUES.EQUILIBRIUM },
-            { text: 'Reckless', value: SETTINGS.AURA_VALUES.RECKLESS },
-            { text: 'Berserker', value: SETTINGS.AURA_VALUES.BERSERKER },
-            { text: 'Maniacal', value: SETTINGS.AURA_VALUES.MANIACAL },
         ]
     },
     [SETTINGS.POISON]: {
@@ -1862,7 +1923,11 @@ const settingsConfig = {
     [SETTINGS.NECRO_MH]: {
         label: 'Mh',
         default: SETTINGS.NECRO_MH_VALUES.CUSTOM,
-        options: [{ text: 'Custom', value: SETTINGS.NECRO_MH_VALUES.CUSTOM }]
+        options: [
+            { text: 'Custom', value: SETTINGS.NECRO_MH_VALUES.CUSTOM },
+            { text: 'Omni Guard', value: SETTINGS.NECRO_MH_VALUES.OMNI_GUARD },
+            { text: "Devourer's Guard", value: SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD }
+        ]
     },
     [SETTINGS.MAGIC_OH]: {
         label: 'Oh',
@@ -1945,7 +2010,8 @@ const settingsConfig = {
             { text: 'Wen', value: SETTINGS.AMMO_VALUES.WEN_ARROWS },
             { text: 'Jas', value: SETTINGS.AMMO_VALUES.JAS_ARROWS },
             { text: 'Deathspore arrows', value: SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS },
-            { text: 'Bik arrows', value: SETTINGS.AMMO_VALUES.BIK_ARROWS }
+            { text: 'Bik arrows', value: SETTINGS.AMMO_VALUES.BIK_ARROWS },
+            { text: 'Hydrix bolts (e)', value: SETTINGS.AMMO_VALUES.HYDRIX_BOLTS }
         ]
     },
     [SETTINGS.AMMO_TIER]: {
@@ -1954,10 +2020,12 @@ const settingsConfig = {
     },
     [SETTINGS.AUTO_CAST]: {
         label: 'Auto cast',
-        default: SETTINGS.AUTO_CAST_VALUES.NONE,
+        default: SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR,
         options: [
             { text: 'Vanilla', value: SETTINGS.AUTO_CAST_VALUES.NONE },
             { text: 'Crumble Undead', value: SETTINGS.AUTO_CAST_VALUES.CRUMBLE_UNDEAD },
+            { text: 'Exsanguinate', value: SETTINGS.AUTO_CAST_VALUES.EXSANGUINATE },
+            { text: 'Incite Fear', value: SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR },
         ]
     },
     [SETTINGS.LVL20ARMOUR]: {
@@ -2008,6 +2076,15 @@ const settingsConfig = {
         label: 'Sword of Edicts',
         default: false
     },
+    [SETTINGS.BOSS_PRESET]: {
+        label: 'Boss Preset',
+        default: 'none',
+        options: [{value: 'none', text: 'None'}],
+    },
+    [SETTINGS.BOSS_ENRAGE]: {
+        label: 'Boss Enrage',
+        default: 0
+    },
     [SETTINGS.GUARDIANS_TRIUMPH]: {
         label: 'Guardians Triumph',
         default: 0
@@ -2034,7 +2111,7 @@ const settingsConfig = {
     },
     [SETTINGS.RESIDUAL_SOULS]: {
         label: 'Residual Souls',
-        default: 2
+        default: 0
     },
     [SETTINGS.ICY_PRECISION]: {
         label: 'Icy Precision stacks',
@@ -2109,6 +2186,10 @@ const settingsConfig = {
         label: 'Blood tithe',
         default: 0
     },
+    [SETTINGS.GLACIAL_EMBRACE]: {
+        label: 'Glacial embrace',
+        default: 0
+    },
     [SETTINGS.DEATH_SPARK]: {
         label: 'Death spark',
         default: false
@@ -2124,6 +2205,10 @@ const settingsConfig = {
     [SETTINGS.ESSENCE_CORRUPTION]: {
         label: 'Essence corruption',
         default: 0
+    },
+    [SETTINGS.ESS_CORRUPTION_ADREN]: {
+        label: 'Essence Corruption Adrenaline',
+        default: false
     },
     [SETTINGS.CONFLAGRATE]: {
         label: 'Conflagrate',
@@ -2162,8 +2247,24 @@ const settingsConfig = {
         label: 'Bolg stacks',
         default: 0
     },
+    [SETTINGS.BLOODLUST_STACKS]: {
+        label: 'Bloodlust stacks',
+        default: 0
+    },
     [SETTINGS.BIK_STACKS]: {
         label: 'Bik stacks',
+        default: 0
+    },
+    [SETTINGS.DEATHSPORE_STACKS]: {
+        label: 'Deathspore stacks',
+        default: 0
+    },
+    [SETTINGS.DEATHSPORE_BUFF]: {
+        label: 'Deathspore buff',
+        default: false
+    },
+    [SETTINGS.DEATHSPORE_COOLDOWN]: {
+        label: 'Deathspore cooldown',
         default: 0
     },
     [SETTINGS.CAROMING]: {
@@ -2258,6 +2359,22 @@ const settingsConfig = {
         label: 'ZGS',
         default: false
     },
+    [SETTINGS.SEARING_WINDS]: {
+        label: 'Searing Winds',
+        default: false
+    },
+    [SETTINGS.SHADOW_IMBUED]: {
+        label: 'Shadow Imbued',
+        default: false
+    },
+    [SETTINGS.DEATHMARK]: {
+        label: 'Deathmark',
+        default: false
+    },
+    [SETTINGS.ANIMA_CHARGED]: {
+        label: 'Anima Charged',
+        default: false
+    },
     [SETTINGS.BERSERK]: {
         label: 'Berserk',
         default: false
@@ -2274,6 +2391,10 @@ const settingsConfig = {
         label: 'Eclipsed soul',
         default: false
     },
+    [SETTINGS.SHOW_BLOODLUST_STACKS]: {
+        label: 'Show Bloodlust Stacks',
+        default: true
+    },
     [SETTINGS.SHOW_BOLG_STACKS]: {
         label: 'Show Bolg Stacks',
         default: true
@@ -2283,7 +2404,11 @@ const settingsConfig = {
         default: true
     },
     [SETTINGS.SHOW_BIK_STACKS]: {
-        label: 'Show Evolving Toxin Stacks',
+        label: 'Show Bik Stacks',
+        default: true
+    },
+    [SETTINGS.SHOW_DEATHSPORE_STACKS]: {
+        label: 'Show Deathspore Stacks',
         default: true
     },
     [SETTINGS.SHOW_NECROSIS_STACKS]: {
@@ -2294,8 +2419,28 @@ const settingsConfig = {
         label: 'Show Residual Souls',
         default: true
     },
+    [SETTINGS.SHOW_DEATH_SPARK_STACKS]: {
+        label: 'Show Death Spark Stacks',
+        default: true
+    },
+    [SETTINGS.SHOW_SOUL_REAVE_STACKS]: {
+        label: 'Show Soul Reave Stacks',
+        default: true
+    },
     [SETTINGS.SHOW_ESSENCE_CORRUPTION]: {
         label: 'Show Essence Corruption',
+        default: true
+    },
+    [SETTINGS.SHOW_BLOOD_TITHE]: {
+        label: 'Show Blood Tithe',
+        default: true
+    },
+    [SETTINGS.SHOW_GLACIAL_EMBRACE]: {
+        label: 'Show Glacial Embrace',
+        default: true
+    },
+    [SETTINGS.SHOW_FAMILIAR_SPEC_POINTS]: {
+        label: 'Show Familiar Spec',
         default: true
     },
     [SETTINGS.SHOW_ADRENALINE]: {
@@ -2412,6 +2557,10 @@ const settingsConfig = {
     },
     [SETTINGS.ENERGISING]: {
         label: 'Energising',
+        default: 0
+    },
+    [SETTINGS.ULTIMATUMS]: {
+        label: 'Ultimatums',
         default: 0
     },
 };

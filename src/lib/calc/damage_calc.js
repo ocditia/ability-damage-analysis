@@ -4,6 +4,10 @@ import { prayers } from './const/prayers';
 import { create_object } from './object_helper.js';
 import { SETTINGS } from './settings';
 
+function calc_level_damage(level) {
+    return Math.floor(145 * 2.5 * (Math.log(1 + 0.6 * (level / 145)) / Math.log(1.6)));
+}
+
 function calc_base_ad(settings) {
     // see wiki page /ability_damage for more info
     let base_AD = 0;
@@ -11,7 +15,7 @@ function calc_base_ad(settings) {
     if (abils[settings['ability']]['main style'] === 'magic') {
         if (settings[SETTINGS.WEAPON] === 'main-hand') {
             let AD_mh =
-                Math.floor(2.5 * settings[SETTINGS.MAGIC_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.MAGIC_LEVEL]) +
                 Math.floor(
                     9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
                 );
@@ -19,7 +23,7 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * (Math.floor(2.5 * settings[SETTINGS.MAGIC_LEVEL]) +
+                    0.5 * (calc_level_damage(settings[SETTINGS.MAGIC_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
@@ -30,8 +34,8 @@ function calc_base_ad(settings) {
             base_AD = AD_mh + AD_oh;
         } else if (settings[SETTINGS.WEAPON] === 'two-hand') {
             base_AD =
-                Math.floor(2.5 * settings[SETTINGS.MAGIC_LEVEL]) +
-                Math.floor(1.25 * settings[SETTINGS.MAGIC_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.MAGIC_LEVEL]) +
+                Math.floor(0.5 * calc_level_damage(settings[SETTINGS.MAGIC_LEVEL])) +
                 Math.floor(
                     14.4 * calc_weapon_tier(settings, 'two-hand weapon') +
                         1.5 * calc_bonus(settings)
@@ -40,7 +44,7 @@ function calc_base_ad(settings) {
     } else if (abils[settings['ability']]['main style'] === 'melee') {
         if (settings[SETTINGS.WEAPON] === 'main-hand') {
             let AD_mh =
-                Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.STRENGTH_LEVEL]) +
                 Math.floor(
                     9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
                 );
@@ -48,7 +52,7 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * (Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
+                    0.5 * (calc_level_damage(settings[SETTINGS.STRENGTH_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
@@ -59,8 +63,8 @@ function calc_base_ad(settings) {
             base_AD = AD_mh + AD_oh;
         } else if (settings[SETTINGS.WEAPON] === 'two-hand') {
             base_AD =
-                Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
-                Math.floor(1.25 * settings[SETTINGS.STRENGTH_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.STRENGTH_LEVEL]) +
+                Math.floor(0.5 * calc_level_damage(settings[SETTINGS.STRENGTH_LEVEL])) +
                 Math.floor(9.6 * calc_weapon_tier(settings, 'two-hand weapon')) +
                 calc_bonus(settings) +
                 Math.floor(
@@ -70,7 +74,7 @@ function calc_base_ad(settings) {
     } else if (abils[settings['ability']]['main style'] === 'ranged') {
         if (settings[SETTINGS.WEAPON] === 'main-hand') {
             let AD_mh =
-                Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.RANGED_LEVEL]) +
                 Math.floor(
                     9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
                 );
@@ -78,7 +82,7 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * (Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
+                    0.5 * (calc_level_damage(settings[SETTINGS.RANGED_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
@@ -89,8 +93,8 @@ function calc_base_ad(settings) {
             base_AD = AD_mh + AD_oh;
         } else if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
             base_AD =
-                Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
-                Math.floor(1.25 * settings[SETTINGS.RANGED_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.RANGED_LEVEL]) +
+                Math.floor(0.5 * calc_level_damage(settings[SETTINGS.RANGED_LEVEL])) +
                 Math.floor(
                     9.6 * calc_weapon_tier(settings, 'two-hand weapon') + calc_bonus(settings)
                 ) +
@@ -101,7 +105,7 @@ function calc_base_ad(settings) {
     } else if (abils[settings['ability']]['main style'] === 'necromancy') {
         if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
             let AD_mh =
-                Math.floor(2.5 * settings[SETTINGS.NECROMANCY_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.NECROMANCY_LEVEL]) +
                 Math.floor(
                     9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
                 );
@@ -109,7 +113,7 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * (Math.floor(2.5 * settings[SETTINGS.NECROMANCY_LEVEL]) +
+                    0.5 * (calc_level_damage(settings[SETTINGS.NECROMANCY_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
@@ -123,11 +127,6 @@ function calc_base_ad(settings) {
 
     // eruptive perk
     base_AD = Math.floor(base_AD * (1 + settings[SETTINGS.ERUPTIVE] * 0.005));
-
-    // equilibrium aura
-    if (settings[SETTINGS.AURA] === 'equilibrium') {
-        base_AD = Math.floor(base_AD * 1.12);
-    }
 
     return base_AD;
 
@@ -167,23 +166,49 @@ function calc_weapon_tier(settings, hand) {
     return tier;
 }
 
+// Slot multipliers for calculating strength bonus from tier
+const SLOT_MULTIPLIERS = {
+    'helmet': 0.25,
+    'necklace': 0.575,
+    'body': 0.375,
+    'boots': 0.15625,
+    'cape': 0.375,
+    'gloves': 0.15625,
+    'legs': 0.3125,
+    'pocket': 0.15625,
+    'ring': 0.375,
+    'not used': 0,
+};
+
+// Calculate strength bonus from tier and slot: floor(tier * 10 * multiplier) / 10
+function calcSlotBonus(tier, slot) {
+    const multiplier = SLOT_MULTIPLIERS[slot] ?? 0;
+    return Math.floor(tier * 10 * multiplier) / 10;
+}
+
 // bonus from gear and reaper crew
 function calc_bonus(settings) {
     let bonus = 0;
-    const style_str = abils[settings['ability']]['main style'] + ' strength';
+    const style = abils[settings['ability']]['main style'];
+    const tierKey = style === 'necromancy' ? 'necro' : style;
+
     if (settings[SETTINGS.REAPER_CREW] === true) {
         bonus += 12;
     }
 
-    bonus += armour[settings[SETTINGS.HELMET]][style_str];
-    bonus += armour[settings[SETTINGS.BODY]][style_str];
-    bonus += armour[settings[SETTINGS.LEGS]][style_str];
-    bonus += armour[settings[SETTINGS.GLOVES]][style_str];
-    bonus += armour[settings[SETTINGS.BOOTS]][style_str];
-    bonus += armour[settings[SETTINGS.NECKLACE]][style_str];
-    bonus += armour[settings[SETTINGS.RING]][style_str];
-    bonus += armour[settings[SETTINGS.CAPE]][style_str];
-    bonus += armour[settings[SETTINGS.POCKET]][style_str];
+    const slots = [
+        SETTINGS.HELMET, SETTINGS.BODY, SETTINGS.LEGS,
+        SETTINGS.GLOVES, SETTINGS.BOOTS, SETTINGS.NECKLACE,
+        SETTINGS.RING, SETTINGS.CAPE, SETTINGS.POCKET
+    ];
+
+    for (const slotSetting of slots) {
+        const piece = armour[settings[slotSetting]];
+        if (piece) {
+            bonus += calcSlotBonus(piece.tier[tierKey], piece.slot);
+        }
+    }
+
     return bonus;
 }
 
@@ -258,10 +283,6 @@ function calc_boosted_ad(settings, dmgObject) {
             }
         }
 
-        // chaos roar
-        if (settings['chaos roar'] === true) {
-            base_ad_boost += 1;
-        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
@@ -281,13 +302,14 @@ function calc_boosted_ad(settings, dmgObject) {
             base_ad_boost += 0.175;
         }
 
-        // icy precision (wen arrows)
+        // icy precision (wen arrows) - flat +30% base damage
         const wen_arrow_abil_types_buffed = ['threshold', 'ultimate', 'special attack'];
         if (
             wen_arrow_abil_types_buffed.includes(abils[settings['ability']]['ability type']) &&
-            settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS
+            settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
+            settings[SETTINGS.ICY_PRECISION] > 0
         ) {
-            base_ad_boost += 0.02 * settings[SETTINGS.ICY_PRECISION];
+            base_ad_boost += 0.30;
         }
     }
 
@@ -301,25 +323,17 @@ function calc_boosted_ad(settings, dmgObject) {
 
     boosted_AD = Math.floor(boosted_AD * base_ad_boost);
 
+    // chaos roar (flat +755, applied after multiplier)
+    if (abils[settings['ability']]['main style'] === 'melee' && settings['chaos roar'] === true) {
+        boosted_AD += 755;
+    }
+
     return boosted_AD;
 }
 
 function ability_specific_effects(settings, dmgObject) {
     // order of these effects in unknown and should be researched properly still.
     if (abils[settings['ability']]['main style'] === 'magic') {
-        // auto attack
-        if (settings['ability'] === ABILITIES.MAGIC_AUTO) {
-            let hand_modifier = 1;
-            if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.MH) {
-                hand_modifier = 1;
-            } else if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.OH) {
-                hand_modifier = 0.5;
-            } else {
-                hand_modifier = 1.5;
-            }
-            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
-        }
-
         // conflagrate
         if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.CONFLAGRATE] === true) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
@@ -349,19 +363,14 @@ function ability_specific_effects(settings, dmgObject) {
             }
         }
 
-        // combust lunging
-        if (settings['ability'] === ABILITIES.COMBUST_HIT) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
+        // combust lunging - (10 + 3 per rank)% more damage
+        if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.LUNGING] > 0) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
         }
 
         // combust walk
         if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            if (settings[SETTINGS.LUNGING]>0) {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
-            }
-            else {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
-            }
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
         }
 
         // wrack bound
@@ -384,15 +393,7 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.6);
         }
 
-        // wrack energising
-        if (settings['ability'] === ABILITIES.WRACK && settings[SETTINGS.ENERGISING] > 0) {
-            dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
-        }
-
-        // wrack and ruin energising
-        if (settings['ability'] === ABILITIES.WRACK_AND_RUIN && settings[SETTINGS.ENERGISING] > 0) {
-            dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
-        }
+        // energising - no longer affects damage (now gives accuracy bonus)
 
         // greater chain half damage
         const gchain_not_halved = ['bleed', 'burn', 'dot'];
@@ -404,19 +405,6 @@ function ability_specific_effects(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
-        // auto attack
-        if (settings['ability'] === ABILITIES.MELEE_AUTO) {
-            let hand_modifier = 1;
-            if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.MH) {
-                hand_modifier = 1;
-            } else if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.OH) {
-                hand_modifier = 0.5;
-            } else {
-                hand_modifier = 1.5;
-            }
-            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
-        }
-
         // slice bound
         if (
             settings['ability'] === 'slice' &&
@@ -427,14 +415,9 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
         }
 
-        // slice energising
-        if (settings['ability'] === ABILITIES.SLICE && settings[SETTINGS.ENERGISING] > 0) {
-            dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD'])
-        }
-
-        // dismember lunging
-        if (settings['ability'] === ABILITIES.DISMEMBER_HIT) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + 0.06 * settings[SETTINGS.LUNGING]));
+        // dismember lunging - (10 + 3 per rank)% more damage
+        if (settings['ability'] === ABILITIES.DISMEMBER_HIT && settings[SETTINGS.LUNGING] > 0) {
+            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
         }
 
         // slaughter walk
@@ -449,19 +432,6 @@ function ability_specific_effects(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
-        // auto attack
-        if (settings['ability'] === ABILITIES.RANGED_AUTO) {
-            let hand_modifier = 1;
-            if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.MH) {
-                hand_modifier = 1;
-            } else if (settings[SETTINGS.AUTO_HAND] === SETTINGS.AUTO_HAND_VALUES.OH) {
-                hand_modifier = 0.5;
-            } else {
-                hand_modifier = 1.5;
-            }
-            dmgObject['boosted AD'] = Math.floor(Math.floor(dmgObject['boosted AD'] * hand_modifier));
-        }
-
         // piercing shot bound
         if (
             settings['ability'] === 'piercing shot' &&
@@ -472,25 +442,8 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
         }
 
-        // piercing energising
-        if (settings['ability'] === ABILITIES.PIERCING_SHOT_HIT && settings[SETTINGS.ENERGISING] > 0) {
-            dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
-        }
+        // energising - no longer affects piercing shot damage (now gives accuracy bonus)
 
-        // frag lunging
-        if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
-        }
-
-        // frag walk
-        if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            if (settings[SETTINGS.LUNGING]>0) {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
-            }
-            else {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
-            }
-        }
     }
 
     if (abils[settings['ability']]['main style'] === 'necromancy') {
@@ -824,9 +777,10 @@ function calc_additive_boosts(settings, dmgObject) {
         boost += settings[SETTINGS.GRAVITATE] / 100;
     }
 
-    // scripture of ful
+    // scripture of ful (probability-weighted in rotation builder, flat 20% for single-ability calc)
     if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.FUL) {
-        boost += 0.2;
+        const fulProb = settings[SETTINGS.SCRIPTURE_OF_FUL_PROB];
+        boost += 0.2 * (fulProb !== undefined ? fulProb : 1);
     }
 
     // desperado (ring of kinship ranged boost)
@@ -1129,13 +1083,13 @@ function calc_crit_damage(settings) {
     // fsoa 22.5%
     if (settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
         if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
-            crit_buff += 0.3;
+            crit_buff += 0.25;
         }
         else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_CRIT) {
-            crit_buff += 0.15;
+            crit_buff += 0.10;
         }
         else {
-            crit_buff += 0.225;
+            crit_buff += 0.175;
         }
     }
     return crit_buff;
@@ -1260,37 +1214,6 @@ function calc_on_npc(settings, dmgObject) {
             dmgObject['damage list'][i] = Math.floor(1.66 * dmgObject['damage list'][i])
         }
 
-        // zerk auras
-        if(settings[SETTINGS.SUNSHINE] === false &&
-        settings[SETTINGS.META] === false &&
-        settings[SETTINGS.DEATH_SWIFTNESS] === false &&
-        settings[SETTINGS.BERSERK] === false
-        ) {
-            if (
-                settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.MANIACAL &&
-                abils[settings['ability']]['damage type'] === 'magic'
-            ) {
-                dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
-            } else if (
-                settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.BERSERKER &&
-                abils[settings['ability']]['damage type'] === 'melee'
-            ) {
-                dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
-            } else if (
-                settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.RECKLESS &&
-                abils[settings['ability']]['damage type'] === 'ranged'
-            ) {
-                dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.1);
-            }
-        }
-
-        // mahjarrat aura
-        if (
-            settings[SETTINGS.AURA] === 'mahjarrat' &&
-            abils[settings['ability']]['damage type'] !== 'spirit'
-        ) {
-            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.05);
-        }
 
         // scrimshaw of elements
         if (
@@ -1323,10 +1246,10 @@ function calc_on_npc(settings, dmgObject) {
             dmgObject['damage list'][i] = dmgObject['damage list'][i] + haunted;
         }
 
-        // essence corruption 25 stack bonus
+        // essence corruption 10 stack bonus
         if (
             abils[settings['ability']]['damage type'] === 'magic' &&
-            settings[SETTINGS.ESSENCE_CORRUPTION] >= 25 &&
+            settings[SETTINGS.ESSENCE_CORRUPTION] >= 10 &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
             (settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING ||
                 settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT)
@@ -1334,7 +1257,7 @@ function calc_on_npc(settings, dmgObject) {
             dmgObject['damage list'][i] =
                 dmgObject['damage list'][i] +
                 settings[SETTINGS.MAGIC_LEVEL] +
-                settings[SETTINGS.ESSENCE_CORRUPTION];
+                settings[SETTINGS.ESSENCE_CORRUPTION] * 3;
         }
 
         // tokkul-zo
@@ -1719,7 +1642,8 @@ function get_max_crit(settings, dmgObject) {
  * @returns 
  */
 function style_specific_unification(settings, style = null) {
-    if (style == 'magic' || abils[settings['ability']]['main style'] === 'magic') {
+    const effectiveStyle = style || (abils[settings['ability']] && abils[settings['ability']]['main style']);
+    if (effectiveStyle == 'magic') {
         settings[SETTINGS.MH] = settings[SETTINGS.MAGIC_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.MAGIC_OH];
         settings[SETTINGS.TH] = settings[SETTINGS.MAGIC_TH];
@@ -1730,7 +1654,7 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.BOOTS] = settings[SETTINGS.MAGIC_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.MAGIC_PRAYER];
         settings[SETTINGS.WEAPON] = settings[SETTINGS.WEAPON_TYPE_MAGE];
-    } else if (style == 'ranged' || abils[settings['ability']]['main style'] === 'ranged') {
+    } else if (effectiveStyle == 'ranged') {
         settings[SETTINGS.MH] = settings[SETTINGS.RANGED_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.RANGED_OH];
         settings[SETTINGS.TH] = settings[SETTINGS.RANGED_TH];
@@ -1741,7 +1665,7 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.BOOTS] = settings[SETTINGS.RANGED_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.RANGED_PRAYER];
         settings[SETTINGS.WEAPON] = settings[SETTINGS.WEAPON_TYPE_RANGED];
-    } else if (style == 'melee' || abils[settings['ability']]['main style'] === 'melee') {
+    } else if (effectiveStyle == 'melee') {
         settings[SETTINGS.MH] = settings[SETTINGS.MELEE_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.MELEE_OH];
         settings[SETTINGS.TH] = settings[SETTINGS.MELEE_TH];
@@ -1752,7 +1676,7 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.BOOTS] = settings[SETTINGS.MELEE_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.MELEE_PRAYER];
         settings[SETTINGS.WEAPON] = settings[SETTINGS.WEAPON_TYPE_MELEE];
-    } else if (style == 'necromancy' || abils[settings['ability']]['main style'] === 'necromancy') {
+    } else if (effectiveStyle == 'necromancy') {
         settings[SETTINGS.MH] = settings[SETTINGS.NECRO_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.NECRO_OH];
         settings[SETTINGS.TH] = settings[SETTINGS.NECRO_TH];
@@ -1953,5 +1877,6 @@ export { ability_damage_calculation, hit_damage_calculation,
     calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
     get_user_value, get_hit_sequence, add_split_soul, apply_additional,
-    calc_crit_damage, calc_split_soul_hit, calc_aftershock
+    calc_crit_damage, calc_split_soul_hit, calc_aftershock,
+    calcSlotBonus, SLOT_MULTIPLIERS
 };

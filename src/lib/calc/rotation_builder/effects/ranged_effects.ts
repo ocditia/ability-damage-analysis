@@ -2,11 +2,12 @@
  * Ranged-specific damage calculation effects
  */
 
-import { ABILITIES, abils } from '../../const/const';
+import { ABILITIES, abils, weapons } from '../../const/const';
 import { SETTINGS } from '../../settings';
 import { DamageDistribution } from '../../types';
 import { EffectContext, BoostedADResult, StyleEffects } from './types';
 import { handle_wen_buff } from '../rotation_damage_helper';
+import { addAdrenaline } from '../calculation_utils';
 
 /**
  * Check if Icy Precision should be Activated and handle it
@@ -28,13 +29,15 @@ export function handleWenBuffActivation(
     const hasWenArrows = settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS;
     const isTwoHand = settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH;
     const notOnIcyPrecision = !timers[SETTINGS.ICY_PRECISION] || timers[SETTINGS.ICY_PRECISION] < 0;
+    const hasMaxStacks = settings[SETTINGS.ICY_CHILL_STACKS] >= 10;
 
     // Abilities that don't consume Wen buff
     const excludedAbilities: ABILITIES[] = [
         ABILITIES.GREATER_DEATHS_SWIFTNESS,
         ABILITIES.SPLIT_SOUL_ECB,
         ABILITIES.DEATHS_SWIFTNESS_DOT,
-        ABILITIES.DEATHS_SWIFTNESS
+        ABILITIES.DEATHS_SWIFTNESS,
+        ABILITIES.IMBUE_SHADOWS
     ];
 
     if (
@@ -42,6 +45,7 @@ export function handleWenBuffActivation(
         isEligibleAbilityType &&
         isTwoHand &&
         notOnIcyPrecision &&
+        hasMaxStacks &&
         !excludedAbilities.includes(abilityKey)
     ) {
         handle_wen_buff(settings, timers);
@@ -75,14 +79,14 @@ function applyBoostedADEffects(
         applied = true;
     }
 
-    // Icy precision (Wen arrows)
+    // Icy precision (Wen arrows) - flat +25% base damage
     if (
         ['threshold', 'ultimate', 'special attack'].includes(abils[abilityKey]?.['ability type']) &&
         settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
         settings[SETTINGS.ICY_PRECISION] > 0
     ) {
         distribution['boosted AD'] = Math.floor(
-            distribution['boosted AD'] * (1 + 0.02 * settings[SETTINGS.ICY_PRECISION])
+            distribution['boosted AD'] * 1.25
         );
         applied = true;
     }
@@ -113,14 +117,6 @@ function applyAbilitySpecificEffects(
     ) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.3);
     }
-
-    // Frag shot walk bonus
-    if (
-        (abilityKey === ABILITIES.FRAGMENTATION_SHOT_HIT || abilityKey === ABILITIES.FRAGMENTATION_SHOT) &&
-        settings[SETTINGS.WALKED_TARGET] === true
-    ) {
-        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2);
-    }
 }
 
 /**
@@ -132,10 +128,15 @@ function applyAbilityPercentModifiers(
 ): void {
     const { settings, abilityKey } = ctx;
 
-    // Salt the Wound stack bonus
-    if (abilityKey === ABILITIES.SALT_THE_WOUND) {
-        distribution['min hit'] = distribution['min hit'] + 0.1 * settings[SETTINGS.PUNCTURE_STACKS];
-        distribution['var hit'] = distribution['var hit'] + 0.05 * settings[SETTINGS.PUNCTURE_STACKS];
+    // Caroming - +4% ability damage per rank to all Ricochet/Greater Ricochet hits
+    const ricochetAbilities: ABILITIES[] = [
+        ABILITIES.RICOCHET, ABILITIES.GREATER_RICOCHET,
+        ABILITIES.GREATER_RICOCHET_1, ABILITIES.GREATER_RICOCHET_2, ABILITIES.GREATER_RICOCHET_3
+    ];
+    if (settings[SETTINGS.CAROMING] > 0 && ricochetAbilities.includes(abilityKey)) {
+        const caromingBoost = 0.04 * settings[SETTINGS.CAROMING];
+        distribution['min hit'] += distribution['min hit'] * caromingBoost;
+        distribution['var hit'] += distribution['var hit'] * caromingBoost;
     }
 
     // Flanking - Binding Shot (basic stun)
@@ -143,11 +144,6 @@ function applyAbilityPercentModifiers(
         if (abilityKey === ABILITIES.BINDING_SHOT) {
             distribution['min hit'] += distribution['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
             distribution['var hit'] += distribution['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
-        }
-        // Flanking - Tight Bindings (threshold stun)
-        else if (abilityKey === ABILITIES.TIGHT_BINDINGS) {
-            distribution['min hit'] += distribution['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
-            distribution['var hit'] += distribution['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
         }
     }
 }
@@ -216,7 +212,7 @@ function applyMultiplicativeEffects(
     distribution: DamageDistribution,
     boost: number
 ): number {
-    const { settings, abilityKey } = ctx;
+    const { settings } = ctx;
 
     // Death's Swiftness
     if (settings[SETTINGS.DEATH_SWIFTNESS] === true) {
@@ -241,19 +237,87 @@ function applyStackEffects(ctx: EffectContext): void {
     ) {
         settings[SETTINGS.ICY_CHILL_STACKS] = Math.min(
             (settings[SETTINGS.ICY_CHILL_STACKS] || 0) + 1,
-            15
+            10
         );
     }
+    // Rapid Fire extends Searing Winds by 1 tick per hit
+    if (
+        (abilityKey === ABILITIES.RAPID_FIRE_HIT || abilityKey === ABILITIES.RAPID_FIRE_LAST_HIT) &&
+        settings[SETTINGS.SEARING_WINDS] === true &&
+        ctx.timers
+    ) {
+        ctx.timers[SETTINGS.SEARING_WINDS] += 1;
+    }
+
+    // Shadow Imbued (Imbue Shadows buff) - each ranged hit generates 5% adrenaline
+    if (settings[SETTINGS.SHADOW_IMBUED] === true && abils[abilityKey]?.['main style'] === 'ranged') {
+        addAdrenaline(settings, 5)
+    }
+
     // Bik stacks (Bik arrows)
-    else if (
+    if (
         settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.BIK_ARROWS &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         settings[SETTINGS.BIK_STACKS] = Math.min(
             (settings[SETTINGS.BIK_STACKS] || 0) + 1,
-            200
+            150
         );
     }
+
+    // Deathspore arrows - gain Feasting Spores stacks on ranged hits (not during cooldown)
+    if (
+        settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS &&
+        abils[abilityKey]?.['main style'] === 'ranged' &&
+        !(settings[SETTINGS.DEATHSPORE_COOLDOWN] > 0)
+    ) {
+        settings[SETTINGS.DEATHSPORE_STACKS] = Math.min(
+            (settings[SETTINGS.DEATHSPORE_STACKS] || 0) + 1,
+            12
+        );
+
+        // At 12 stacks, consume and activate buff
+        if (settings[SETTINGS.DEATHSPORE_STACKS] >= 12) {
+            settings[SETTINGS.DEATHSPORE_STACKS] = 0;
+            settings[SETTINGS.DEATHSPORE_BUFF] = true;
+            settings[SETTINGS.DEATHSPORE_COOLDOWN] = 50;
+            if (ctx.timers) {
+                ctx.timers[SETTINGS.DEATHSPORE_BUFF] = 15;
+                ctx.timers[SETTINGS.DEATHSPORE_COOLDOWN] = 50;
+            }
+        }
+    }
+
+    // Hydrix bakriminel bolts - Deathmark effect (10% proc chance per hit)
+    // Grants 10% adrenaline on proc + 1% extra adrenaline from basics for 25 ticks (15s)
+    // Cannot proc from Corruption Shot. Refreshes on subsequent procs.
+    if (
+        settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.HYDRIX_BOLTS &&
+        abils[abilityKey]?.['main style'] === 'ranged' &&
+        abilityKey !== ABILITIES.CORRUPTION_SHOT &&
+        !isCorruptionShotHit(abilityKey)
+    ) {
+        if (settings[SETTINGS.EXPECTED_ADRENALINE]) {
+            // Expected value: 10% chance × 10% adrenaline = 1% per hit
+            addAdrenaline(settings, 1);
+            // Deathmark is treated as always active in expected mode (high uptime with procs per hit)
+            if (ctx.timers) {
+                ctx.timers[SETTINGS.DEATHMARK] = 25;
+            }
+            settings[SETTINGS.DEATHMARK] = true;
+        } else {
+            // TODO: discrete proc simulation for non-expected mode
+        }
+    }
+}
+
+/** Check if an ability key is a Corruption Shot hit (the DoT ticks) */
+function isCorruptionShotHit(abilityKey: ABILITIES): boolean {
+    return abilityKey === ABILITIES.CORRUPTION_SHOT_HIT_1 ||
+        abilityKey === ABILITIES.CORRUPTION_SHOT_HIT_2 ||
+        abilityKey === ABILITIES.CORRUPTION_SHOT_HIT_3 ||
+        abilityKey === ABILITIES.CORRUPTION_SHOT_HIT_4 ||
+        abilityKey === ABILITIES.CORRUPTION_SHOT_HIT_5;
 }
 
 /**
@@ -263,8 +327,13 @@ function applyBonusDamageEffects(
     ctx: EffectContext,
     distribution: DamageDistribution
 ): void {
-    // Ranged currently has no flat bonus damage effects
-    // (enchanted bolts are proc-based)
+    const { settings } = ctx;
+
+    // Searing Winds (Galeshot buff) - adds 20% of ability damage as flat bonus to each hit
+    if (settings[SETTINGS.SEARING_WINDS] === true) {
+        const bonus = Math.floor(distribution['boosted AD'] * 0.2);
+        distribution['min hit'] += bonus;
+    }
 }
 
 export const rangedEffects: StyleEffects = {

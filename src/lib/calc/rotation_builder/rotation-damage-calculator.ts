@@ -2,16 +2,17 @@ import { abils, ABILITIES } from '../const/const';
 import { hit_damage_calculation, get_hit_sequence, style_specific_unification, calc_base_ad, apply_additional } from '../damage_calc';
 import { calc_channelled_hit, handleBuffs, get_user_value, handle_edraco } from './rotation_damage_helper';
 import { SETTINGS } from '../settings';
-import { on_stall, on_cast, on_hit, on_damage } from './damage_calc_new.js';
+import { on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
 import { create_damage_object } from './rota_object_helper';
 import { buffs } from './rotation_consts';
 import { abilities as rangedAbils } from '../../ranged/abilities';
 import { abilities as magicAbils } from '../../magic/abilities';
 import { abilities as meleeAbils } from '../../melee/abilities';
 import { abilities as necroAbils } from '../../necromancy/abilities';
-import { gearSwaps, offGcdAbilities as specialAbils } from '../../special/abilities';
+import { gearSwaps, allExtraActions as specialAbils, CONSUMABLES } from '../../special/abilities';
 import { CombatStyle, DamageObject, RotationInput } from '../types';
-import { familiars } from '$lib/familiars/familiars';
+import { familiars, dreadnipData, calculateFamiliarHitChance } from '$lib/familiars/familiars';
+import { getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
 import { Logger, LogCategory } from '$lib/utils/Logger';
 import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
 import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
@@ -26,9 +27,19 @@ interface RotationState {
     hit_delay: number;
     start_tick: number;
     cinderHitCount: number;
+    poisonDamage: number; // Accumulated poison damage (calculated per-hit for Bik stack scaling)
+    poisonPerTick: number[]; // Cumulative poison damage at each tick
     lastAftershockProc: number; // Track damage at last proc
     distributionStats: DamageDistributionStat[]; // Track distribution statistics for Gaussian modeling
     combatStyle: CombatStyle;
+    fulProcHistory: number[]; // fulProcHistory[t] = probability mass that procced at tick t
+    scrollDamage: number; // Accumulated familiar scroll damage
+    familiarPerTick: number[]; // Cumulative familiar damage at each tick
+    dreadnipDamage: number; // Accumulated dreadnip damage
+    dreadnipPerTick: number[]; // Cumulative dreadnip damage at each tick
+    dreadnipActiveTick: number; // Tick when dreadnip was deployed (-1 = inactive)
+    dreadnipAttacks: number; // Number of attacks made by current dreadnip
+    lastAbilityTick: number; // Last tick with an ability — familiar/dreadnip stop after this
 }
 
 interface DamageDistributionStat {
@@ -55,10 +66,97 @@ interface DamageResult {
     regularDamage: number;
     poisonDamage: number;
     familiarDamage: number;
+    dreadnipDamage: number;
     distributionStats: DamageDistributionStat[];
+    poisonPerTick: number[];
+    familiarPerTick: number[];
+    dreadnipPerTick: number[];
 }
 
 const allAbilities = { ...rangedAbils, ...magicAbils, ...meleeAbils, ...necroAbils };
+
+/**
+ * Forward-fill a cumulative per-tick array so that ticks without new damage
+ * carry forward the last non-zero cumulative value.
+ */
+function forwardFillCumulative(arr: number[]) {
+    let prev = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] !== 0) {
+            prev = arr[i];
+        } else {
+            arr[i] = prev;
+        }
+    }
+}
+
+const FUL_BUFF_DURATION = 25; // 15 seconds = 25 ticks
+// Cooldown runs concurrently with buff (both 15s from proc), so no additional cooldown-only period
+const FUL_TOTAL_LOCKOUT = 25; // Total ticks from proc where no new proc can happen
+const FUL_PROC_CHANCE = 0.066;
+
+/**
+ * Update Scripture of Ful probability on ability release.
+ * Tracks probability mass of procs at each tick using fulProcHistory.
+ * fulProcHistory[t] = probability that a NEW proc started at tick t.
+ */
+function updateFulProbability(state: RotationState, settings: Record<string, any>) {
+    if (settings[SETTINGS.POCKET] !== SETTINGS.POCKET_VALUES.FUL) {
+        settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = 0;
+        return;
+    }
+
+    const tick = state.tick;
+
+    // Calculate current probability of being in buff or lockout state
+    // by summing proc history over the relevant windows
+    let buffProb = 0; // probability buff is active (procced within last FUL_BUFF_DURATION ticks)
+    let lockoutProb = 0; // probability locked out but buff expired (shouldn't happen with concurrent timing)
+
+    for (let i = 0; i < state.fulProcHistory.length; i++) {
+        const mass = state.fulProcHistory[i] || 0; // Handle sparse array (undefined entries between ability ticks)
+        if (mass === 0) continue;
+        const ticksAgo = tick - i;
+        if (ticksAgo >= 0 && ticksAgo < FUL_BUFF_DURATION) {
+            buffProb += mass;
+        } else if (ticksAgo >= FUL_BUFF_DURATION && ticksAgo < FUL_TOTAL_LOCKOUT) {
+            lockoutProb += mass;
+        }
+    }
+
+    // Probability we're in the "can proc" state (not in buff or lockout)
+    const canProcProb = Math.max(0, 1 - buffProb - lockoutProb);
+
+    // New proc probability mass this tick
+    const newProcMass = canProcProb * FUL_PROC_CHANCE;
+    state.fulProcHistory[tick] = (state.fulProcHistory[tick] || 0) + newProcMass;
+
+    // The triggering hit doesn't benefit, so the buff probability for THIS tick's damage
+    // is the buffProb BEFORE adding the new proc (later hits on this tick will use updated value)
+    settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = buffProb;
+}
+
+/**
+ * Recalculate Ful buff probability for the current tick (for non-ability ticks).
+ */
+function recalcFulProbability(state: RotationState, settings: Record<string, any>) {
+    if (settings[SETTINGS.POCKET] !== SETTINGS.POCKET_VALUES.FUL) {
+        settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = 0;
+        return;
+    }
+
+    const tick = state.tick;
+    let buffProb = 0;
+    for (let i = 0; i < state.fulProcHistory.length; i++) {
+        const mass = state.fulProcHistory[i] || 0;
+        if (mass === 0) continue;
+        const ticksAgo = tick - i;
+        if (ticksAgo >= 0 && ticksAgo < FUL_BUFF_DURATION) {
+            buffProb += mass;
+        }
+    }
+    settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = buffProb;
+}
 /**
  * Calculates the total damage for a given rotation over a specified number of ticks.
  *
@@ -85,10 +183,28 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         hit_delay: 1, // TODO implement hit delay properly (define min delay for each ability)
         start_tick: 0,
         cinderHitCount: 0,
+        poisonDamage: 0,
+        poisonPerTick: new Array(BAR_SIZE).fill(0),
         lastAftershockProc: 0,
         distributionStats: [],
-        combatStyle: "melee"
+        combatStyle: "melee",
+        fulProcHistory: [],
+        scrollDamage: 0,
+        familiarPerTick: new Array(BAR_SIZE).fill(0),
+        dreadnipDamage: 0,
+        dreadnipPerTick: new Array(BAR_SIZE).fill(0),
+        dreadnipActiveTick: -1,
+        dreadnipAttacks: 0,
+        lastAbilityTick: -1
     };
+
+    // Find the last tick that has an ability (familiar/dreadnip stop after this)
+    for (let i = rotationStore.abilityBar.length - 1; i >= 0; i--) {
+        if (rotationStore.abilityBar[i] != null) {
+            state.lastAbilityTick = i;
+            break;
+        }
+    }
 
     // Get settings from the store
     const adaptedSettings = Object.fromEntries(
@@ -104,19 +220,31 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         strengthLevel: settingsCopy[SETTINGS.STRENGTH_LEVEL]
     });
 
+    // Initialize familiar spec points and regen accumulator
+    settingsCopy[SETTINGS.FAMILIAR_SPEC_POINTS] = 60;
+    settingsCopy[SETTINGS.FAMILIAR_SPEC_REGEN_ACCUMULATOR] = 0;
+
     // Process through each tick until we reach the end, +20 to finish handling bleeds
     const extraTicks = 20;
     while (state.tick < BAR_SIZE + extraTicks) {
         processCurrentTick(state, settingsCopy, BAR_SIZE);
     }
+
+    // Forward-fill cumulative per-tick arrays so ticks without new damage carry the previous cumulative value
+    forwardFillCumulative(state.poisonPerTick);
+    forwardFillCumulative(state.familiarPerTick);
+    forwardFillCumulative(state.dreadnipPerTick);
+
     const totalDamage = state.dmgs.reduce((acc, current) => acc + current, 0);
-    const poisonDamage = calcPoisonDamage(state.cinderHitCount, settingsCopy);
-    const familiarDamage = calcFamiliarDamage(rotationStore.abilityBar, settingsCopy);
     return {
         regularDamage: totalDamage,
-        poisonDamage: poisonDamage,
-        familiarDamage: familiarDamage,
-        distributionStats: state.distributionStats
+        poisonDamage: state.poisonDamage,
+        familiarDamage: state.scrollDamage,
+        dreadnipDamage: state.dreadnipDamage,
+        distributionStats: state.distributionStats,
+        poisonPerTick: state.poisonPerTick,
+        familiarPerTick: state.familiarPerTick,
+        dreadnipPerTick: state.dreadnipPerTick
     };
 }
 
@@ -142,12 +270,34 @@ export function calculateRotationDamageCore(
         hit_delay: 1,
         start_tick: 0,
         cinderHitCount: 0,
+        poisonDamage: 0,
+        poisonPerTick: new Array(barSize).fill(0),
         lastAftershockProc: 0,
         distributionStats: [],
-        combatStyle: "melee"
+        combatStyle: "melee",
+        fulProcHistory: [],
+        scrollDamage: 0,
+        familiarPerTick: new Array(barSize).fill(0),
+        dreadnipDamage: 0,
+        dreadnipPerTick: new Array(barSize).fill(0),
+        dreadnipActiveTick: -1,
+        dreadnipAttacks: 0,
+        lastAbilityTick: -1
     };
 
+    // Find the last tick that has an ability (familiar/dreadnip stop after this)
+    for (let i = rotation.abilityBar.length - 1; i >= 0; i--) {
+        if (rotation.abilityBar[i] != null) {
+            state.lastAbilityTick = i;
+            break;
+        }
+    }
+
     const settingsCopy = structuredClone(settings);
+
+    // Initialize familiar spec points and regen accumulator
+    settingsCopy[SETTINGS.FAMILIAR_SPEC_POINTS] = 60;
+    settingsCopy[SETTINGS.FAMILIAR_SPEC_REGEN_ACCUMULATOR] = 0;
 
     logger.log(LogCategory.SETTINGS, 'Core damage calculation settings', {
         abilityDamage: settingsCopy[SETTINGS.ABILITY_DAMAGE],
@@ -160,15 +310,22 @@ export function calculateRotationDamageCore(
         processCurrentTickCore(state, settingsCopy, barSize, rotation);
     }
 
+    // Forward-fill cumulative per-tick arrays so ticks without new damage carry the previous cumulative value
+    forwardFillCumulative(state.poisonPerTick);
+    forwardFillCumulative(state.familiarPerTick);
+    forwardFillCumulative(state.dreadnipPerTick);
+
     const totalDamage = state.dmgs.reduce((acc, current) => acc + current, 0);
-    const poisonDamage = calcPoisonDamage(state.cinderHitCount, settingsCopy);
-    const familiarDamage = calcFamiliarDamage(rotation.abilityBar, settingsCopy);
 
     return {
         regularDamage: totalDamage,
-        poisonDamage: poisonDamage,
-        familiarDamage: familiarDamage,
-        distributionStats: state.distributionStats
+        poisonDamage: state.poisonDamage,
+        familiarDamage: state.scrollDamage,
+        dreadnipDamage: state.dreadnipDamage,
+        distributionStats: state.distributionStats,
+        poisonPerTick: state.poisonPerTick,
+        familiarPerTick: state.familiarPerTick,
+        dreadnipPerTick: state.dreadnipPerTick
     };
 }
 
@@ -296,31 +453,207 @@ function processTickOperationsCore(
 ) {
     handleExtraActionsCore(settingsCopy, state.timers, state.tick, rotation);
     // Skip copyStacks - no UI updates needed for headless calculation
+    recalcFulProbability(state, settingsCopy);
     handleTimers(state.timers, settingsCopy);
     processQueuedDamage(tickToProcess, state, settingsCopy);
     handleAftershock(state, settingsCopy);
+    processFamiliarTick(state, settingsCopy);
+    processDreadnipTick(state, settingsCopy);
 
     state.tick += 1;
 }
 
+// ===================== Familiar Tick Processing =====================
+
+// Base regen: 15 points per 30 seconds = 15 points per 50 ticks = 0.3 per tick
+const FAMILIAR_BASE_REGEN_RATE = 15 / 50; // 0.3 points per tick
+// Summoning renewal: 60 points over 6 minutes (600 ticks) = 0.1 per tick
+const SUMMONING_RENEWAL_REGEN_RATE = 60 / 600; // 0.1 points per tick
+// Prism of Restoration: 1 point per 3 ticks
+const PRISM_REGEN_RATE = 1 / 3;
+// Prism scroll save chance
+const PRISM_SCROLL_SAVE_CHANCE = 0.1;
+
 /**
- * Core version - handles extra actions using rotation parameter
+ * Process familiar actions for a single tick:
+ * - Spec point regeneration (base + renewal + incense + prism)
+ * - Auto-attack or scroll use on attack ticks
  */
+function processFamiliarTick(state: RotationState, settings: any) {
+    const familiar = settings[SETTINGS.FAMILIAR];
+    if (!familiar || familiar === SETTINGS.FAMILIAR_VALUES.NONE) return;
+    // Familiar stops attacking after the last ability tick
+    if (state.lastAbilityTick < 0 || state.tick > state.lastAbilityTick) return;
+
+    const familiarData = familiars[familiar];
+    if (!familiarData) return;
+
+    // --- Spec point regeneration ---
+    const incensePotency = settings[SETTINGS.SPIRIT_WEED_INCENSE] || 0;
+    const incenseMultiplier = 1 + incensePotency * 0.1;
+
+    let regenRate = FAMILIAR_BASE_REGEN_RATE * incenseMultiplier;
+
+    if (settings[SETTINGS.SUMMONING_RENEWAL]) {
+        regenRate += SUMMONING_RENEWAL_REGEN_RATE;
+    }
+
+    if (settings[SETTINGS.PRISM_OF_RESTORATION]) {
+        regenRate += PRISM_REGEN_RATE;
+    }
+
+    // Accumulate fractional regen
+    const accumulator = (settings[SETTINGS.FAMILIAR_SPEC_REGEN_ACCUMULATOR] || 0) + regenRate;
+    const wholePoints = Math.floor(accumulator);
+    settings[SETTINGS.FAMILIAR_SPEC_REGEN_ACCUMULATOR] = accumulator - wholePoints;
+    settings[SETTINGS.FAMILIAR_SPEC_POINTS] = Math.min(60, (settings[SETTINGS.FAMILIAR_SPEC_POINTS] || 0) + wholePoints);
+
+    // --- Familiar attack on attack ticks ---
+    if (state.tick > 0 && state.tick % familiarData.attack_rate === 0) {
+        const accuracy = Math.min(settings[SETTINGS.FAMILIAR_ACCURACY] / 100, 1);
+        const useScrolls = settings[SETTINGS.USE_FAMILIAR_SCROLLS];
+
+        // Try scroll use if enabled and familiar has a DPS spec
+        if (useScrolls && familiarData.has_dps_spec && familiarData.spec_cost > 0) {
+            let effectiveCost = familiarData.spec_cost;
+            if (settings[SETTINGS.SPIRIT_CAPE]) {
+                effectiveCost = Math.floor(effectiveCost * 0.8);
+            }
+
+            const specPoints = settings[SETTINGS.FAMILIAR_SPEC_POINTS] || 0;
+            if (specPoints >= effectiveCost) {
+                // Prism of Restoration: 10% chance to save scroll (use expected cost for deterministic calc)
+                let expectedCost = effectiveCost;
+                if (settings[SETTINGS.PRISM_OF_RESTORATION]) {
+                    expectedCost = effectiveCost * (1 - PRISM_SCROLL_SAVE_CHANCE);
+                }
+                settings[SETTINGS.FAMILIAR_SPEC_POINTS] = specPoints - expectedCost;
+
+                const minRoll = familiarData.spec_min_roll ?? 0.2;
+                const avgRoll = (minRoll + 1.0) / 2;
+                const expectedDamage = familiarData.spec_damage * avgRoll * accuracy;
+                state.scrollDamage += Math.floor(expectedDamage);
+                if (state.tick < state.familiarPerTick.length) {
+                    state.familiarPerTick[state.tick] = state.scrollDamage;
+                }
+                return; // Used scroll instead of auto-attack
+            }
+        }
+
+        // Normal auto-attack (rolls 20-100% of max_hit)
+        const expAutoHit = accuracy * (familiarData.max_hit * 1.2) / 2;
+        state.scrollDamage += Math.floor(expAutoHit);
+        if (state.tick < state.familiarPerTick.length) {
+            state.familiarPerTick[state.tick] = state.scrollDamage;
+        }
+    }
+}
+
+// ===================== Dreadnip Tick Processing =====================
+
+/**
+ * Process dreadnip for a single tick.
+ * Dreadnip is activated via the extra action bar (off-GCD).
+ * Once active, it attacks every 4 ticks for up to 18 attacks over 75 ticks.
+ */
+function processDreadnipTick(state: RotationState, settings: any) {
+    // Check for deploy signal from handleExtraActions
+    if (state.timers['_dreadnip_deploy']) {
+        state.dreadnipActiveTick = state.tick;
+        state.dreadnipAttacks = 0;
+        delete state.timers['_dreadnip_deploy'];
+    }
+
+    if (state.dreadnipActiveTick < 0) return; // Not deployed
+    // Dreadnip stops attacking after the last ability tick
+    if (state.lastAbilityTick < 0 || state.tick > state.lastAbilityTick) return;
+
+    const ticksSinceDeployed = state.tick - state.dreadnipActiveTick;
+
+    // Check if dreadnip expired
+    if (ticksSinceDeployed > dreadnipData.duration || state.dreadnipAttacks >= dreadnipData.max_attacks) {
+        state.dreadnipActiveTick = -1; // Expired
+        return;
+    }
+
+    // Attack every attack_rate ticks after deployment
+    if (ticksSinceDeployed > 0 && ticksSinceDeployed % dreadnipData.attack_rate === 0) {
+        // Calculate hit chance from boss preset affinities
+        const bossKey = settings[SETTINGS.BOSS_PRESET];
+        const enrage = settings[SETTINGS.BOSS_ENRAGE] ?? 0;
+        let accuracy = 1; // Default 100% if no boss set
+        if (bossKey && bossKey !== 'none') {
+            const boss = getBossPresetWithEnrage(bossKey, enrage);
+            if (boss) {
+                const armourStat = boss.armour < 100
+                    ? Math.round(0.002 * boss.armour ** 3 + 10 * boss.armour + 100)
+                    : boss.armour;
+                // Use calculateFamiliarHitChance with dreadnip accuracy data
+                const dreadnipAsFamiliar = {
+                    melee_accuracy: dreadnipData.melee_accuracy,
+                    ranged_accuracy: dreadnipData.ranged_accuracy,
+                    magic_accuracy: dreadnipData.magic_accuracy,
+                } as any;
+                accuracy = calculateFamiliarHitChance(
+                    dreadnipAsFamiliar,
+                    armourStat,
+                    { melee: boss.affinities.melee, ranged: boss.affinities.ranged, magic: boss.affinities.magic }
+                );
+            }
+        }
+
+        const expectedDamage = Math.floor(dreadnipData.avg_hit * accuracy);
+        state.dreadnipDamage += expectedDamage;
+        state.dreadnipAttacks++;
+        if (state.tick < state.dreadnipPerTick.length) {
+            state.dreadnipPerTick[state.tick] = state.dreadnipDamage;
+        }
+    }
+}
+
 function handleExtraActionsCore(settings: any, timers: Record<string, number>, tick: number, rotation: RotationInput) {
     if (timers["Adrenaline renewal potion"] >= 0) {
         settings[SETTINGS.ADRENALINE] += 4;
+    }
+    // Essence corruption adrenaline buff: +1% per tick while active
+    if (timers[SETTINGS.ESS_CORRUPTION_ADREN] > 0) {
+        settings[SETTINGS.ADRENALINE] += 1;
     }
     if (!rotation.extraActionBar[tick]) return;
 
     rotation.extraActionBar[tick].forEach(element => {
         if (!element) return;
         if (specialAbils[element]) {
-            if (element === "Adrenaline renewal potion") {
+            if (element === CONSUMABLES.ADRENALINE_RENEWAL) {
                 timers[element] = 10;
+            }
+            else if (element === CONSUMABLES.SPIRITUAL_PRAYER) {
+                settings[SETTINGS.FAMILIAR_SPEC_POINTS] = Math.min(60, (settings[SETTINGS.FAMILIAR_SPEC_POINTS] || 0) + 15);
             }
             else if (element.includes("Adrenaline")) {
                 const amount = parseInt(element.split(" ")[1]);
                 settings[SETTINGS.ADRENALINE] += amount;
+            }
+            else if (element === ABILITIES.RUNIC_CHARGE) {
+                settings[SETTINGS.ANIMA_CHARGED] = true;
+                timers[SETTINGS.ANIMA_CHARGED] = 25;
+            }
+            else if (element === ABILITIES.EXSANGUINATE) {
+                settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.EXSANGUINATE;
+                settings[SETTINGS.GLACIAL_EMBRACE] = 0;
+            }
+            else if (element === ABILITIES.INCITE_FEAR) {
+                settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR;
+                settings[SETTINGS.BLOOD_TITHE] = 0;
+            }
+            else if (element === ABILITIES.DREADNIP) {
+                timers['_dreadnip_deploy'] = 1; // Signal to processDreadnipTick
+                timers[COOLDOWN_PREFIX + ABILITIES.DREADNIP] = dreadnipData.duration; // Show expiry
+            }
+            // Start cooldowns for off-GCD abilities that have them
+            const cd = abils[element as ABILITIES]?.['cooldown'];
+            if (cd && cd > 0) {
+                timers[COOLDOWN_PREFIX + element] = Math.ceil(cd / 0.6);
             }
         }
         else if (gearSwaps[element.title]) {
@@ -342,8 +675,9 @@ function processAbilityCore(
     onStall = true
 ) {
     style_specific_unification(settingsCopy, abils[abilityKey]['main style']);
+    updateFulProbability(rotationState, settingsCopy);
 
-    on_stall(settingsCopy, abilityKey);
+    on_stall(settingsCopy, abilityKey, rotationState.timers);
     if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) {
         settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
     }
@@ -354,12 +688,14 @@ function processAbilityCore(
 
     handleBuffs(settingsCopy, rotationState.timers, abilityKey);
 
+    // Cooldowns are now tracked via timers in on_stall (damage_calc_new.ts)
+
     if (abilityKey in allAbilities) {
         if (allAbilities[abilityKey].calc == hit_damage_calculation) {
             processSingleHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         } else if (isChannelled(settingsCopy, abilityKey)) {
             // Handled in processAbilityTicksCore
-        } else if (allAbilities[abilityKey]['ability classification'] === 'multihit') {
+        } else if (abils[abilityKey]['ability classification'] === 'multihit') {
             processMultiHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         } else {
             processBleedAbility(rotationState, settingsCopy, abilityKey, hit_tick);
@@ -454,11 +790,13 @@ function processTickOperations(
     settingsCopy: any
 ) {
     handleExtraActions(settingsCopy, state.timers, state.tick);
-    copyStacks(state.tick, settingsCopy);
+    copyStacks(state.tick, settingsCopy, state.timers);
+    recalcFulProbability(state, settingsCopy);
     handleTimers(state.timers, settingsCopy);
     processQueuedDamage(tickToProcess, state, settingsCopy);
     handleAftershock(state, settingsCopy);
-
+    processFamiliarTick(state, settingsCopy);
+    processDreadnipTick(state, settingsCopy);
 
     state.tick += 1;
 }
@@ -476,8 +814,9 @@ function processAbility(
 ) {
     //TODO release stalled abilities here
     style_specific_unification(settingsCopy, abils[abilityKey]['main style']); //Update gear/combat style
+    updateFulProbability(rotationState, settingsCopy);
 
-    on_stall(settingsCopy, abilityKey);
+    on_stall(settingsCopy, abilityKey, rotationState.timers);
     if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) {
         settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
     }
@@ -488,12 +827,14 @@ function processAbility(
 
     handleBuffs(settingsCopy, rotationState.timers, abilityKey);
 
+    // Cooldowns are now tracked via timers in on_stall (damage_calc_new.ts)
+
     if (abilityKey in allAbilities) {
         if (allAbilities[abilityKey].calc == hit_damage_calculation) {
             processSingleHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         } else if (isChannelled(settingsCopy, abilityKey)) {
             // Handled in processAbilityTicks
-        } else if (allAbilities[abilityKey]['ability classification'] === 'multihit') {
+        } else if (abils[abilityKey]['ability classification'] === 'multihit') {
             processMultiHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         } else {
             processBleedAbility(rotationState, settingsCopy, abilityKey, hit_tick);
@@ -687,6 +1028,12 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
                 state.dmgs.push(Math.floor(dmg * scale)); // Scale damage by likelihood of hit occuring
                 state.cinderHitCount += scale;
 
+                // Accumulate poison damage per-hit (scales with current Bik stacks)
+                state.poisonDamage += calcPoisonDamagePerHit(scale, settingsCopy);
+                if (tick < state.poisonPerTick.length) {
+                    state.poisonPerTick[tick] = state.poisonDamage;
+                }
+
                 // Collect distribution statistics for Gaussian modeling
                 // Treat crit and non-crit as a single combined distribution per ability
                 const critDist = dmgObj.distributions['crit'];
@@ -764,12 +1111,37 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
 }
 
 /**
- * Calculates the poison damage for the rotation. //TODO properly implement
+ * Calculates poison damage for a single hit, accounting for current Bik stack count.
+ * Bik arrows' Evolving Toxin increases poison damage by 3% per stack (up to 150 stacks).
  * 1/8 Chance to proc on hit
  * 15% + 5% per tier damage, then rolls 65-130% (avg 97.5%)
- * @param n_hits - The number of hits in the rotation.
- * @param settingsCopy - The settings copy used for rotation damage calculation.
- * @returns The total poison damage for the rotation.
+ * @param hitScale - The likelihood/scale of this hit (for probabilistic hits)
+ * @param settingsCopy - The settings copy with current Bik stack state
+ * @returns The expected poison damage for this hit
+ */
+function calcPoisonDamagePerHit(hitScale: number, settingsCopy: any): number {
+    let poison_tier = Object.values(SETTINGS.POISON_VALUES).indexOf(settingsCopy[SETTINGS.POISON]);
+    if (settingsCopy[SETTINGS.GLOVES] === SETTINGS.RANGED_GLOVES_VALUES.CINDERS) {
+        poison_tier = Math.max(2, poison_tier + 1);
+    }
+    if (poison_tier === 0) {
+        return 0;
+    }
+    const abilDmg = settingsCopy[SETTINGS.ABILITY_DAMAGE];
+    let basePoisonDmg = Math.floor(abilDmg * 0.125 * (0.15 + 0.05 * poison_tier) * 0.975);
+
+    // Bik arrows Evolving Toxin: +3% poison damage per stack
+    const bikStacks = settingsCopy[SETTINGS.BIK_STACKS] || 0;
+    if (bikStacks > 0 && settingsCopy[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.BIK_ARROWS) {
+        basePoisonDmg = Math.floor(basePoisonDmg * (1 + 0.03 * bikStacks));
+    }
+
+    return Math.floor(basePoisonDmg * hitScale);
+}
+
+/**
+ * Calculates the poison damage for the rotation (flat approximation, no Bik scaling).
+ * @deprecated Use per-hit accumulation via calcPoisonDamagePerHit instead
  */
 export function calcPoisonDamage(n_hits: number, settingsCopy: any) {
     let poison_dmg = 0;
@@ -809,7 +1181,19 @@ export function calcFamiliarDamage(abilityBar: string[], settingsCopy: any) {
  * @param tick - The current tick being processed
  * @param settings - The current settings used for rotation damage calculation.
 */
-function copyStacks(tick: number, settings: any) {
+function copyStacks(tick: number, settings: any, timers?: Record<string, number>) {
+    // Write cooldown-ready abilities for this tick (cooldowns stored as timers with 'cd_' prefix)
+    // Check for remaining === 1 because handleTimers runs after copyStacks and will decrement to 0 and delete
+    if (timers) {
+        const readyAbilities: string[] = [];
+        for (const [key, remaining] of Object.entries(timers)) {
+            if (key.startsWith(COOLDOWN_PREFIX) && remaining === 1) {
+                readyAbilities.push(key.slice(COOLDOWN_PREFIX.length));
+            }
+        }
+        rotationStore.cooldownReady[tick] = readyAbilities.length > 0 ? readyAbilities : null;
+    }
+
     for(let key in rotationStore.stacks) {
         // Convert to number before storing
         const value = typeof settings[key] === 'number' ? settings[key] : Number(settings[key]) || 0;
@@ -859,17 +1243,45 @@ function handleExtraActions(settings: any, timers: Record<string, number>, tick:
     if (timers["Adrenaline renewal potion"] >= 0) {
         settings[SETTINGS.ADRENALINE] += 4;
     }
+    // Essence corruption adrenaline buff: +1% per tick while active
+    if (timers[SETTINGS.ESS_CORRUPTION_ADREN] > 0) {
+        settings[SETTINGS.ADRENALINE] += 1;
+    }
     if (!rotationStore.extraActionBar[tick]) return;
 
     rotationStore.extraActionBar[tick].forEach(element => {
         if (!element) return;
         if (specialAbils[element]) {
-            if (element === "Adrenaline renewal potion") {
+            if (element === CONSUMABLES.ADRENALINE_RENEWAL) {
                 timers[element] = 10;
+            }
+            else if (element === CONSUMABLES.SPIRITUAL_PRAYER) {
+                settings[SETTINGS.FAMILIAR_SPEC_POINTS] = Math.min(60, (settings[SETTINGS.FAMILIAR_SPEC_POINTS] || 0) + 15);
             }
             else if (element.includes("Adrenaline")) {
                 const amount = parseInt(element.split(" ")[1]);
                 settings[SETTINGS.ADRENALINE] += amount;
+            }
+            else if (element === ABILITIES.RUNIC_CHARGE) {
+                settings[SETTINGS.ANIMA_CHARGED] = true;
+                timers[SETTINGS.ANIMA_CHARGED] = 25;
+            }
+            else if (element === ABILITIES.EXSANGUINATE) {
+                settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.EXSANGUINATE;
+                settings[SETTINGS.GLACIAL_EMBRACE] = 0;
+            }
+            else if (element === ABILITIES.INCITE_FEAR) {
+                settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR;
+                settings[SETTINGS.BLOOD_TITHE] = 0;
+            }
+            else if (element === ABILITIES.DREADNIP) {
+                timers['_dreadnip_deploy'] = 1;
+                timers[COOLDOWN_PREFIX + ABILITIES.DREADNIP] = dreadnipData.duration; // Show expiry
+            }
+            // Start cooldowns for off-GCD abilities that have them
+            const cd = abils[element as ABILITIES]?.['cooldown'];
+            if (cd && cd > 0) {
+                timers[COOLDOWN_PREFIX + element] = Math.ceil(cd / 0.6);
             }
         }
         // Handle gear swaps
@@ -886,7 +1298,10 @@ function handleTimers(timers: Record<string, number>, settings: any) {
         for (let key in timers) {
             timers[key] -= 1;
             if (timers[key] <= 0) {
-                if (key === SETTINGS.ICY_PRECISION) {
+                if (key.startsWith(COOLDOWN_PREFIX)) {
+                    // Cooldown expired - just remove the timer
+                    delete timers[key];
+                } else if (key === SETTINGS.ICY_PRECISION || key === SETTINGS.DEATHSPORE_COOLDOWN) {
                     settings[key] = 0;
                 } else {
                     settings[key] = false;
