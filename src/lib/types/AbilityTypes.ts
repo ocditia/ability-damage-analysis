@@ -4,12 +4,12 @@
 
 // Ability classification types
 export type AbilityClassification = 
-    'bleed' | 'dot' | 'burn' | 'channel' | 
+    'bleed' | 'dot' | 'burn' | 'channel' | 'self cast' |
     'regular' | 'multihit' | 'auto' | 'grounded' | 
     'conjure' | 'proc' | 'perk';
 
 // Ability type categories - 'ability' is used for necro abils
-export type AbilityType = 'basic' | 'threshold' | 'special attack' | 'ability' | 'ultimate' | 'auto'| 'conjure' | 'proc' | 'perk';
+export type AbilityType = 'basic' | 'threshold' | 'special attack' | 'ability' | 'spell' | 'ultimate' | 'auto'| 'conjure' | 'proc' | 'perk';
 
 // Combat styles
 export type CombatStyle = 'melee' | 'ranged' | 'magic' | 'necromancy' | 'defence' | 'poison';
@@ -40,9 +40,9 @@ export interface AbilityInfo {
     // Optional properties
     hits?: AbilityHits; // for channeled abilities, defines hits per tick
     hitTimings?: number[]; // for multihit/bleeds/dots/etc, defines hit timings
-    duration?: number; // ability duration in ticks (if not standard)
-    cooldown?: number; // ability cooldown in ticks
-    adrenaline?: number; // adrenaline cost/gain
+    duration?: number; // ability duration in ticks (if not standard 3t)
+    cooldown?: number; // ability cooldown in seconds
+    adrenaline?: number; // adrenaline cost/gain - +25 means the ability costs 25 adrenaline
     
     // UI properties (if applicable)
     title?: string; // display name

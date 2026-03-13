@@ -6,22 +6,109 @@
     import TabButton from '../UI/TabButton.svelte';
     import GradientSeparator from '../UI/GradientSeparator.svelte';
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
-    import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';  
+    import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
+    import { bossPresets, getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
+    import { familiars, calculateFamiliarHitChance } from '$lib/familiars/familiars';
     import '../../css/style.css';
-    export let tab = 'general'; // Options as props
-    export let styleTab = SettingsCombatStyles.RANGED;
-    export let stacks;
-    export let updateDamages;
-    export let refreshUI;
-    export let uiState;
+    let { tab = 'general', styleTab = SettingsCombatStyles.RANGED, stacks, updateDamages, refreshUI, uiState } = $props();
 
     // Local reference to settings store
-    $: settings = settingsStore.settings;
+    let settings = $derived(settingsStore.settings);
+
+    const BOLT_AMMO = [SETTINGS.AMMO_VALUES.HYDRIX_BOLTS];
+    const ARROW_AMMO = [
+        SETTINGS.AMMO_VALUES.FUL_ARROWS, SETTINGS.AMMO_VALUES.WEN_ARROWS,
+        SETTINGS.AMMO_VALUES.JAS_ARROWS, SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS,
+        SETTINGS.AMMO_VALUES.BIK_ARROWS
+    ];
+
+    // Sorted boss names for dropdown
+    const bossNames = Object.keys(bossPresets).sort((a, b) => a.localeCompare(b));
+
+    // Enrage tracking
+    let enrageValue = $state(0);
+
+    /** Get the effective boss preset, accounting for enrage if applicable */
+    function getEffectiveBoss(bossKey) {
+        if (!bossKey || bossKey === 'none') return null;
+        const base = bossPresets[bossKey];
+        if (!base) return null;
+        if (base.enrage) return getBossPresetWithEnrage(bossKey, enrageValue);
+        return base;
+    }
+
+    // Convert NPC armour tier to actual armour stat
+    // Formula from PVME Familiar Damage sheet: round(0.002 * tier^3 + 10 * tier + 100)
+    function armourFromTier(tier) {
+        if (tier === 0) return 0;
+        if (tier < 100) return Math.round(0.002 * tier * tier * tier + 10 * tier + 100);
+        return tier; // tier >= 100 means raw armour value
+    }
+
+    // Recalculate familiar accuracy from boss preset + familiar selection
+    function recalcFamiliarAccuracy() {
+        const bossKey = settings[SETTINGS.BOSS_PRESET]?.value;
+        const familiarKey = settings[SETTINGS.FAMILIAR]?.value;
+        if (!bossKey || bossKey === 'none' || !familiarKey || familiarKey === 'none') return;
+
+        const boss = getEffectiveBoss(bossKey);
+        const familiar = familiars[familiarKey];
+        if (!boss || !familiar) return;
+
+        const finalArmour = armourFromTier(boss.armour);
+
+        const hitChance = calculateFamiliarHitChance(
+            familiar,
+            finalArmour,
+            { melee: boss.affinities.melee, ranged: boss.affinities.ranged, magic: boss.affinities.magic }
+        );
+
+        settings[SETTINGS.FAMILIAR_ACCURACY].value = Math.round(hitChance * 100);
+        updateDamages();
+    }
+
+    // Handle boss selection change — reset enrage to default
+    function onBossChange() {
+        const bossKey = settings[SETTINGS.BOSS_PRESET]?.value;
+        const base = bossKey && bossKey !== 'none' ? bossPresets[bossKey] : null;
+        enrageValue = base?.enrage?.default ?? 0;
+        settings[SETTINGS.BOSS_ENRAGE].value = enrageValue;
+        recalcFamiliarAccuracy();
+    }
+
+    // Handle enrage slider change
+    function onEnrageChange() {
+        settings[SETTINGS.BOSS_ENRAGE].value = enrageValue;
+        recalcFamiliarAccuracy();
+    }
+
+    function getAmmoWarning(settings) {
+        if (!settings?.[SETTINGS.AMMO]) return null;
+        const ammo = settings[SETTINGS.AMMO].value;
+        const weaponType = settings[SETTINGS.WEAPON]?.value;
+        const thType = settings[SETTINGS.TH_TYPE_CUSTOM]?.value;
+        const isBow = thType === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW;
+
+        if (weaponType === SETTINGS.WEAPON_VALUES.TH) {
+            if (BOLT_AMMO.includes(ammo) && isBow) return 'Bolts require a crossbow, not a bow.';
+            if (ARROW_AMMO.includes(ammo) && !isBow) return 'Arrows require a bow, not a crossbow.';
+        }
+        if (weaponType === SETTINGS.WEAPON_VALUES.DW && ARROW_AMMO.includes(ammo)) {
+            return 'Arrows require a bow — dual wield cannot use arrows.';
+        }
+        return null;
+    }
 
     // Initialize settings on component mount
     onMount(async () => {
         await initializeSettings();
+
+        // Populate boss preset options from boss_presets data
+        settings[SETTINGS.BOSS_PRESET].options = [
+            { value: 'none', text: 'None' },
+            ...bossNames.map(key => ({ value: key, text: bossPresets[key].name }))
+        ];
 
         // debugPreset2();
         settings[SETTINGS.UNDEAD_SLAYER_ABILITY]['value'] = false;
@@ -154,7 +241,6 @@
         settings[SETTINGS.RANGED_GLOVES]['value'] = 'cinderbane gloves';
         settings[SETTINGS.NECKLACE]['value'] = 'essence of finality amulet';
         settings[SETTINGS.POCKET]['value'] = 'scripture of jas';
-        settings[SETTINGS.AURA]['value'] = 'reckless';
 
         settings[SETTINGS.LVL20ARMOUR]['value'] = false;
         settings[SETTINGS.BITING]['value'] = 3;
@@ -199,7 +285,7 @@
 <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-rotation">
     <button 
         class="collapse-button-settings"
-        on:click={() => uiState.settingsPanelCollapsed = true}
+        onclick={() => uiState.settingsPanelCollapsed = true}
     >
         → Hide
     </button>
@@ -461,7 +547,7 @@
                         bind:setting={settings[SETTINGS.ICY_CHILL_STACKS]}
                         onchange={() => updateDamages()}
                         step="1"
-                        max="15"
+                        max="10"
                         min="0"
                         img="/effect_icons/Icy_Chill.png"
                     />
@@ -840,6 +926,7 @@
                             bind:setting={settings[SETTINGS.AMMO]}
                             onchange={() => updateDamages()}
                             img="/effect_icons/ammo_type.png"
+                            warning={getAmmoWarning(settings)}
                         />
                         <Checkbox
                             bind:setting={settings[SETTINGS.INNATE_MASTERY]}
@@ -945,7 +1032,7 @@
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Familiars</h5>
                     <Select
                             bind:setting={settings[SETTINGS.FAMILIAR]}
-                            onchange={() => updateDamages()}
+                            onchange={() => { recalcFamiliarAccuracy(); updateDamages(); }}
                             img="/effect_icons/familiar.png"
                         />
                         <Number
@@ -963,9 +1050,79 @@
                             onchange={() => updateDamages()}
                             img="/effect_icons/familiar_icons/Steel_Titan_scroll_(Steel_of_Legends).png"
                         />
+                        <Checkbox
+                            bind:setting={settings[SETTINGS.SPIRIT_CAPE]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/Spirit_cape.png"
+                        />
+                        <Checkbox
+                            bind:setting={settings[SETTINGS.SUMMONING_RENEWAL]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/Summoning_renewal_(4).png"
+                        />
+                        <Select
+                            bind:setting={settings[SETTINGS.SPIRIT_WEED_INCENSE]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/Spirit_weed_incense_sticks.png"
+                        />
+                        <Checkbox
+                            bind:setting={settings[SETTINGS.PRISM_OF_RESTORATION]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/Prism_of_restoration_icon.png"
+                        />
                 </div>
                 
             {:else if tab === 'bosses'}
+                <div class="md:col-span-1 space-y-4">
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">Boss Preset</h5>
+                    <div class="space-y-4">
+                        <Select
+                            bind:setting={settings[SETTINGS.BOSS_PRESET]}
+                            onchange={() => onBossChange()}
+                        />
+                        {#if settings[SETTINGS.BOSS_PRESET]?.value && settings[SETTINGS.BOSS_PRESET].value !== 'none'}
+                            {@const baseBoss = bossPresets[settings[SETTINGS.BOSS_PRESET].value]}
+                            {@const boss = getEffectiveBoss(settings[SETTINGS.BOSS_PRESET].value)}
+                            {#if boss}
+                                {#if baseBoss?.enrage}
+                                    <div class="flex items-center gap-2 pl-2">
+                                        <label class="text-xs text-gray-400 whitespace-nowrap">{baseBoss.enrage.label}:</label>
+                                        <input type="range"
+                                            min={baseBoss.enrage.min}
+                                            max={baseBoss.enrage.max}
+                                            step={baseBoss.enrage.step ?? 1}
+                                            bind:value={enrageValue}
+                                            oninput={() => onEnrageChange()}
+                                            class="flex-1 h-1 accent-red-500"
+                                        />
+                                        <input type="number"
+                                            min={baseBoss.enrage.min}
+                                            max={baseBoss.enrage.max}
+                                            step={baseBoss.enrage.step ?? 1}
+                                            bind:value={enrageValue}
+                                            oninput={() => onEnrageChange()}
+                                            class="w-16 text-xs text-center bg-gray-800 border border-gray-600 rounded px-1 py-0.5 text-white"
+                                        />
+                                    </div>
+                                {/if}
+                                <div class="text-xs text-gray-400 space-y-1 pl-2">
+                                    <p>Defence: {boss.defenceLevel} | Armour tier: {boss.armour} ({armourFromTier(boss.armour)})</p>
+                                    <p>Affinities — Melee: {Math.round(boss.affinities.melee * 100)}% | Ranged: {Math.round(boss.affinities.ranged * 100)}% | Magic: {Math.round(boss.affinities.magic * 100)}%</p>
+                                    {#if boss.weakness !== 'None'}
+                                        <p>Weakness: {boss.weakness} ({Math.round(boss.affinities.weakness * 100)}%)</p>
+                                    {/if}
+                                    {#if boss.health}
+                                        {@const totalHeal = (boss.phases ?? []).reduce((sum, p) => sum + (p.heal || 0), 0)}
+                                        <p>Health: {boss.health.toLocaleString()}{#if totalHeal > 0} (+ {totalHeal.toLocaleString()} heal = {(boss.health + totalHeal).toLocaleString()} total dmg){/if}</p>
+                                    {/if}
+                                    {#if settings[SETTINGS.FAMILIAR]?.value && settings[SETTINGS.FAMILIAR].value !== 'none'}
+                                        <p class="text-amber-400">Familiar hit chance: {settings[SETTINGS.FAMILIAR_ACCURACY]?.value ?? '?'}%</p>
+                                    {/if}
+                                </div>
+                            {/if}
+                        {/if}
+                    </div>
+                </div>
                 <div class="md:col-span-1 space-y-4">
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Boss Settings</h5>
                     <div class="space-y-4">

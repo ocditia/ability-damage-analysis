@@ -22,12 +22,13 @@ export const uiStore = $state({
     // Panel states
     settingsPanelCollapsed: false,
     configSectionCollapsed: true,
+    showAllAbilities: false,
     
     // Extra actions panel
     extraActions: {
         show: false,
         tick: -1,
-        tab: 'abilities',
+        tab: 'info',
         infoAbility: null,
         barIndex: 0
     },
@@ -76,6 +77,10 @@ export const uiActions = {
 
     toggleConfigSection() {
         uiStore.configSectionCollapsed = !uiStore.configSectionCollapsed;
+    },
+
+    toggleShowAllAbilities() {
+        uiStore.showAllAbilities = !uiStore.showAllAbilities;
     },
 
     // Extra actions panel

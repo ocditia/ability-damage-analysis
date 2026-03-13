@@ -14,6 +14,7 @@
     import Select from '$components/Settings/Select.svelte';
 
     let tab = $state('general');
+    let showAll = $state(false);
 
     let damages = $state(Object.entries(abilities).map(([key, value]) => ({
         key,
@@ -134,9 +135,15 @@
         <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8">
             <div class="xl:col-span-6 xl:row-start-1 xl:row-span-4">
                 <div class="card card-melee">
-                    <h1 class="main-header mb-6 ml-3">Damage Values</h1>
+                    <div class="flex items-center justify-between mb-6 ml-3 mr-3">
+                        <h1 class="main-header">Damage Values</h1>
+                        <label class="flex items-center gap-1 text-xs text-gray-400 cursor-pointer select-none">
+                            <input type="checkbox" checked={showAll} onchange={() => showAll = !showAll} class="cursor-pointer" />
+                            Show all
+                        </label>
+                    </div>
                     <div class="table-container">
-                        <AbilityDamageTable data={damages} columns={columns} />
+                        <AbilityDamageTable data={showAll ? damages : damages.filter(d => d.common !== false)} columns={columns} />
                     </div>
                 </div>
             </div>

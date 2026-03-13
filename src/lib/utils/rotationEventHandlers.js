@@ -326,11 +326,16 @@ export function refreshUI(calcDmg = true, stores, calculateTotalDamageNew) {
 
     //Update extra action bar pointer
     uiStore.extraActions.barIndex = 0;
-    if (uiStore.extraActions.show) {
+    if (uiStore.extraActions.show && rotationStore.extraActionBar[uiStore.extraActions.tick]) {
+        const extraBar = rotationStore.extraActionBar[uiStore.extraActions.tick];
         for (let i = 0; i < EXTRA_BAR_SIZE; i++) {
-            if (rotationStore.extraActionBar[uiStore.extraActions.tick][i] === null) {
+            if (extraBar[i] == null) {
                 uiStore.extraActions.barIndex = i;
                 break;
+            }
+            // If all slots are filled, point past the end
+            if (i === EXTRA_BAR_SIZE - 1) {
+                uiStore.extraActions.barIndex = EXTRA_BAR_SIZE;
             }
         }
     }
@@ -341,7 +346,9 @@ export function refreshUI(calcDmg = true, stores, calculateTotalDamageNew) {
     for (let key in rotationStore.stacks) {
         let displaySetting = rotationStore.stacks[key]['displaySetting'];
         let disp = stores.settingsStore.settings[displaySetting];
-        if (disp['value']) {
+        // Only show stacks that are toggled on AND have at least one non-zero value
+        const hasNonZero = rotationStore.stacks[key].stackTicks?.some(v => v !== 0);
+        if (disp['value'] && hasNonZero) {
             rotationStore.stacks[key]['idx'] = i;
             uiActions.updateBarRowGap(uiStore.bar.rowGap + (stackFontSize + stackPadding));
             i++;
@@ -387,7 +394,11 @@ export function calculateTotalDamageNew() {
     rotationStore.totalDamage = dmgResult.regularDamage;
     rotationStore.poisonDamage = dmgResult.poisonDamage;
     rotationStore.familiarDamage = dmgResult.familiarDamage;
+    rotationStore.dreadnipDamage = dmgResult.dreadnipDamage || 0;
     rotationStore.distributionStats = dmgResult.distributionStats;
+    rotationStore.poisonPerTick = dmgResult.poisonPerTick || [];
+    rotationStore.familiarPerTick = dmgResult.familiarPerTick || [];
+    rotationStore.dreadnipPerTick = dmgResult.dreadnipPerTick || [];
     
     // Calculate Gaussian parameters for more accurate damage modeling
     const gaussianParams = calculateGaussianParameters(rotationStore.distributionStats);

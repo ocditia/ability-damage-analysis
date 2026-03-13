@@ -1,5 +1,4 @@
 <script>
-    import { rangedGear } from '$lib/special/abilities';
     import { SETTINGS } from '$lib/calc/settings';
     import { GearSlots } from '$lib/calc/rotation_builder/gear';
     import { Logger, LogCategory } from '$lib/utils/Logger';
@@ -15,8 +14,7 @@
     const iconPath = '/gear_icons/';
     const png = '.png';
 
-    let rangedBody = settings[SETTINGS.RANGED_BODY].value;
-    let rangedLegs = settings[SETTINGS.RANGED_LEGS].value;
+
 
     function getImage(slot) {
         const sharedSlots = [GearSlots.NECKLACE, GearSlots.POCKET, 
@@ -90,7 +88,7 @@
                 src={getImage(GearSlots.CAPE)}
                 alt='Cape slot'
                 class="overlay-image"
-                style="top: 6.8em; left: 3.1em;"
+                style="top: 7.7em; left: 4.0em;"
             />
             <img
                 src={getImage(GearSlots.AMMO)}
@@ -111,11 +109,12 @@
                 style="top: 15.0em; left: 10.1em;"
             />
             <!-- <img
-                src='/gear_icons/completionist%20cape.png'
+                src={getImage(GearSlots.MAINHAND)}
                 alt='Mainhand slot'
                 class="overlay-image"
                 style="top: 9.3em; left: 1.8em;"
-            />
+            /> -->
+            <!-- 
             <img
                 src='/gear_icons/completionist%20cape.png'
                 alt='Offhand slot'
@@ -133,8 +132,8 @@
     {/if}
     <!-- Gear Selection interface-->
     <div class="box">
-        <div class="grid grid-cols-5 md:grid-cols-5 lg:grid-cols-9 gap-x-0.5 gap-y-2 abilities">
-            {#each Object.entries(rangedGear) as [slot, items]}
+        <div class="grid grid-cols-5 md:grid-cols-7 lg:grid-cols-10 gap-x-0.5 gap-y-2 abilities">
+            {#each Object.entries(gearItems) as [slot, items]}
                 <div class="col-span-1">
                     {#each Object.entries(items) as [key, item]}
                         <div

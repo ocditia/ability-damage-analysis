@@ -2,7 +2,7 @@
     import SettingWrapper from '$components/Settings/SettingWrapper.svelte';
     import LabelWrapper from '$components/Settings/LabelWrapper.svelte';
 
-    let { setting = $bindable(), onchange, img, ...rest } = $props();
+    let { setting = $bindable(), onchange, img, warning = null, ...rest } = $props();
 </script>
 
 <SettingWrapper>
@@ -14,11 +14,13 @@
     <select
         class={`
             hover:border hover:border-white
-            border border-slate-600 rounded-md h-6 max-w-100
+            border rounded-md h-6 max-w-100
             bg-transparent text-center w-[100px] text-ellipsis
+            ${warning ? 'border-red-500' : 'border-slate-600'}
         `}
         id={setting.key}
         bind:value={setting.value}
+        title={warning || ''}
         {onchange}
         {...rest}
     >

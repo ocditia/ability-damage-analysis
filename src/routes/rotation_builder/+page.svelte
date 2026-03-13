@@ -19,11 +19,15 @@
     import GradientSeparator from '../../components/UI/GradientSeparator.svelte';
     import Popup from '../../components/UI/Popup.svelte';
     import RotationConfigManager from '../../components/RotationBuilder/RotationConfigManager.svelte';
+    import KeybindConfigModal from '../../components/RotationBuilder/KeybindConfigModal.svelte';
+    import KeypressOutputModal from '../../components/RotationBuilder/KeypressOutputModal.svelte';
+    import { rangedGear, meleeGear, magicGear, necroGear, sharedGear, allExtraActions } from '$lib/special/abilities';
     import * as eventHandlers from '$lib/utils/rotationEventHandlers';
     import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
     import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
     import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
+    import { getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
 
 
     let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abilities eventually
@@ -33,16 +37,33 @@
 	let defAbils = {...def_abilities};
     let allAbils = {...magicAbils, ...rangedAbils, ...necroAbils, ...meleeAbils, ...def_abilities};
 
+    // Keybind modal state
+    let showKeybindModal = $state(false);
+    let showKeypressModal = $state(false);
 
 	// UI Constants
 	const stackFontSize = 10;
-	const baseStackOffset = 32;
-	const stackPadding = 2;
-	const buffLineWidth = 32;
+	const baseStackOffset = 42;
+	const stackPadding = 5;
+	const buffLineWidth = 42;
 	const buffLineHeight = 6;
-	const CELL_SIZE = 30;
-	const BASE_ROW_HEIGHT = 30;
+	const CELL_SIZE = 40;
+	const BASE_ROW_HEIGHT = 40;
 	const ROW_GAP = 20; // Constant gap between all rows
+
+	// Phase/kill markers derived from damage data + boss preset
+	let phaseMarkers = $derived(getPhaseMarkers());
+	let phaseTickMap = $derived(new Map(phaseMarkers.map(m => [m.tick, m])));
+	// Set of ticks that fall within a phase pause (boss invulnerable)
+	let pauseTickSet = $derived.by(() => {
+		const s = new Set<number>();
+		for (const m of phaseMarkers) {
+			if (m.pauseEnd != null) {
+				for (let t = m.tick + 1; t <= m.pauseEnd; t++) s.add(t);
+			}
+		}
+		return s;
+	});
 
 	// Dynamic row layout state
 	let abilityBarElement: HTMLElement | null = null;
@@ -169,6 +190,96 @@
 		return baseStackOffset + buffSpace + 3 + (stackFontSize + stackPadding) * localStackIdx;
 	}
 
+	// Get the effective boss preset accounting for enrage
+	function getEffectiveBoss() {
+		if (!settingsStore.initialized) return null;
+		const bossKey = settingsStore.settings[SETTINGS.BOSS_PRESET]?.value;
+		if (!bossKey || bossKey === 'none') return null;
+		const enrage = settingsStore.settings[SETTINGS.BOSS_ENRAGE]?.value ?? 0;
+		return getBossPresetWithEnrage(bossKey, enrage);
+	}
+
+	// Get boss health from selected preset (if any)
+	function getBossHealth(): number | null {
+		return getEffectiveBoss()?.health ?? null;
+	}
+
+	// Build per-tick expected damage from distributionStats
+	function buildDamagePerTick(): Record<number, number> {
+		const stats = rotationStore.distributionStats;
+		const perTick: Record<number, number> = {};
+		if (!stats) return perTick;
+		for (const stat of stats) {
+			const mean = (stat.minDamage + stat.maxDamage) / 2 * stat.likelihood;
+			perTick[stat.tick] = (perTick[stat.tick] || 0) + mean;
+		}
+		return perTick;
+	}
+
+	// Get phase thresholds with pause offsets
+	function getPhaseMarkers(): Array<{tick: number, label: string, hp: number, pauseEnd?: number, statsChange?: string}> {
+		const bossHealth = getBossHealth();
+		if (!bossHealth) return [];
+
+		const boss = getEffectiveBoss();
+		if (!boss) return [];
+
+		const perTick = buildDamagePerTick();
+		const poisonPerTick = rotationStore.poisonPerTick;
+		const familiarPerTick = rotationStore.familiarPerTick;
+		const dreadnipPerTick = rotationStore.dreadnipPerTick;
+		const maxTick = Math.max(
+			...Object.keys(perTick).map(Number),
+			poisonPerTick.length - 1,
+			familiarPerTick.length - 1,
+			dreadnipPerTick.length - 1,
+			0
+		);
+
+		// Build phase list: use phases if defined, otherwise just the kill HP
+		const phaseList = boss.phases ?? [{ hp: bossHealth }];
+
+		const markers: Array<{tick: number, label: string, hp: number, pauseEnd?: number, statsChange?: string}> = [];
+		let cumulative = 0;
+		let phaseIdx = 0;
+		let pauseRemaining = 0;
+
+		for (let t = 0; t <= maxTick && phaseIdx < phaseList.length; t++) {
+			if (pauseRemaining > 0) {
+				pauseRemaining--;
+				continue;
+			}
+
+			cumulative += perTick[t] || 0;
+			const totalAtTick = cumulative
+				+ (poisonPerTick[t] || 0)
+				+ (familiarPerTick[t] || 0)
+				+ (dreadnipPerTick[t] || 0);
+
+			const phase = phaseList[phaseIdx];
+			if (totalAtTick >= phase.hp) {
+				const isLast = phaseIdx === phaseList.length - 1;
+				const label = phase.stats?.name
+					? phase.stats.name
+					: (isLast ? 'Kill' : `P${phaseIdx + 2}`);
+				const pause = phase.pause || 0;
+				markers.push({
+					tick: t,
+					label,
+					hp: phase.hp,
+					...(pause > 0 && !isLast ? { pauseEnd: t + pause } : {}),
+					...(phase.stats?.name ? { statsChange: phase.stats.name } : {})
+				});
+
+				if (!isLast && pause > 0) {
+					pauseRemaining = pause;
+				}
+				phaseIdx++;
+			}
+		}
+		return markers;
+	}
+
 	// Generate CSS for grid-template-rows based on calculated row heights
 	function getGridTemplateRows(): string {
 		if (rowLayoutData.length === 0) return '';
@@ -207,7 +318,7 @@
 		{ id: 'ranged', label: 'Ranged', abilities: rangedAbils },
 		{ id: 'magic', label: 'Magic', abilities: magicAbils },
 		{ id: 'melee', label: 'Melee', abilities: meleeAbils },
-		{ id: 'necro', label: 'Necro', abilities: necroAbils },
+		{ id: 'necro', label: 'Necro', abilities: necroAbils, badge: 'beta' },
 		{ id: 'defence', label: 'Defence', abilities: defAbils }
 	];
 
@@ -311,6 +422,67 @@
 </script>
 
 <style>
+	.rotation-title-row {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.rotation-header {
+		margin: 0;
+	}
+
+	.reset-btn {
+		padding: 2px 10px;
+		font-size: 0.7rem;
+		font-weight: 500;
+		color: #999;
+		background: none;
+		border: 1px solid #555;
+		border-radius: 4px;
+		cursor: pointer;
+		transition: all 0.15s;
+	}
+
+	.reset-btn:hover {
+		color: #ff6b6b;
+		border-color: #ff6b6b;
+		background: rgba(255, 0, 0, 0.08);
+	}
+
+
+	.damage-summary {
+		display: flex;
+		gap: 0.5rem;
+		align-items: baseline;
+	}
+
+	.dmg-total {
+		font-size: 0.95rem;
+		font-weight: 700;
+		color: #fff;
+	}
+
+	.dmg-breakdown {
+		font-size: 0.75rem;
+		color: #888;
+	}
+
+	.dmg-val {
+		font-weight: 600;
+		color: #ccc;
+	}
+
+	.dmg-val.poison {
+		color: var(--color-poison);
+	}
+
+	.dmg-val.familiar {
+		color: var(--color-familiar);
+	}
+
 	.responsive-container {
 		margin-left: 0% !important;
 		margin-right: 0% !important;
@@ -362,8 +534,8 @@
 
 	.ability-slot {
 		position: relative;
-		width: 30px;
-		height: 30px;
+		width: 40px;
+		height: 40px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -397,6 +569,12 @@
 		);
 		pointer-events: none;
 		z-index: 1;
+	}
+
+	.ability-slot.selected-tick {
+		border: 2px solid #ffd700;
+		box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+		z-index: 3;
 	}
 
 	.ability-slot.has-extra-actions::after {
@@ -436,6 +614,38 @@
 		transform: translateX(-70%) translateY(32px);
 	}
 
+	.phase-marker {
+		position: absolute;
+		top: -2px;
+		right: -2px;
+		bottom: -2px;
+		width: 3px;
+		background: #ef4444;
+		z-index: 4;
+		pointer-events: none;
+	}
+
+	.phase-label {
+		position: absolute;
+		top: -14px;
+		right: -2px;
+		font-size: 0.5rem;
+		color: #ef4444;
+		font-weight: bold;
+		white-space: nowrap;
+		pointer-events: none;
+	}
+
+	.phase-pause {
+		background: repeating-linear-gradient(
+			45deg,
+			transparent,
+			transparent 3px,
+			rgba(239, 68, 68, 0.15) 3px,
+			rgba(239, 68, 68, 0.15) 6px
+		) !important;
+	}
+
 	.highlight-red {
 		border: 1px solid rgba(255, 51, 0, 0.789);
 	}
@@ -456,6 +666,30 @@
 		z-index: 2;
 	}
 
+	.cooldown-ready-icon {
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		width: 55%;
+		height: 55%;
+		border: 1px solid #00e736;
+		opacity: 0.8;
+		z-index: 2;
+		pointer-events: none;
+	}
+
+	.cooldown-overflow {
+		position: absolute;
+		left: 0;
+		font-size: 0.5rem;
+		color: #00e736;
+		background: rgba(0, 0, 0, 0.6);
+		padding: 0 2px;
+		border-radius: 2px;
+		z-index: 3;
+		pointer-events: none;
+		line-height: 1;
+	}
 
 	.stall-cursor.stalling {
 		cursor: wait; /* Will be overridden if there's an ability being stalled */
@@ -503,7 +737,7 @@
 		onkeydown={handleKeypress}
 		style="--stack-font-size: {stackFontSize}px; {uiStore.stallingAbility ? `cursor: url('${allAbils[uiStore.stallingAbility].icon}') 15 15, wait;` : ''}">
 		<section class="grid grid-cols-12 gap-6 auto-rows-min">
-			<div class="col-span-{uiStore.settingsPanelCollapsed ? '12' : '6'} relative">
+			<div class="col-span-{uiStore.settingsPanelCollapsed ? '12' : '7'} relative">
 				<div class="card card-rotation">
 					{#if uiStore.settingsPanelCollapsed}
 						<button 
@@ -513,41 +747,66 @@
 							Settings ←
 						</button>
 					{/if}
-					<h1 class="rotation-header">Rotation</h1>
+					<div class="rotation-title-row">
+						<h1 class="rotation-header">Rotation</h1>
+						<button class="reset-btn" onclick={clearRotation} title="Reset rotation">Reset</button>
+						{#if rotationStore.totalDamage > 0 || rotationStore.poisonDamage > 0 || rotationStore.familiarDamage > 0 || rotationStore.dreadnipDamage > 0}
+							<div class="damage-summary">
+								<span class="dmg-total">{(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage).toLocaleString()}</span>
+								<span class="dmg-breakdown">(<span class="dmg-val">{rotationStore.totalDamage.toLocaleString()}</span>{#if rotationStore.poisonDamage > 0} + <span class="dmg-val poison">{rotationStore.poisonDamage.toLocaleString()}</span>{/if}{#if rotationStore.familiarDamage > 0} + <span class="dmg-val familiar">{rotationStore.familiarDamage.toLocaleString()}</span>{/if}{#if rotationStore.dreadnipDamage > 0} + <span class="dmg-val dreadnip">{rotationStore.dreadnipDamage.toLocaleString()}</span>{/if})</span>
+							</div>
+						{/if}
+					</div>
 					<GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
-					
+
 					<!-- Damage Distribution Chart -->
 					{#if rotationStore.distributionStats.length > 0}
-						<DamageDistributionChart 
+						<DamageDistributionChart
 							distributionStats={rotationStore.distributionStats}
 							totalDamage={rotationStore.totalDamage}
 							poisonDamage={rotationStore.poisonDamage}
 							familiarDamage={rotationStore.familiarDamage}
+							poisonPerTick={rotationStore.poisonPerTick}
+							familiarPerTick={rotationStore.familiarPerTick}
 						/>
 					{/if}
                     <RotationConfigManager
-                        {clearRotation}
                         {refreshUI}
+                        onOpenKeybinds={() => showKeybindModal = true}
+                        onShowKeypresses={() => showKeypressModal = true}
                     />
 					
-                    <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
+                    <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center items-center">
                         {#each tabs as tab}
-                            <TabButton 
+                            <TabButton
                                 id={tab.id}
                                 label={tab.label}
+                                badge={tab.badge || ''}
                                 isActive={uiStore.activeTab === tab.id}
                                 onClick={() => uiActions.setActiveTab(tab.id)}
                             />
                         {/each}
+                        <li class="ml-auto mr-2">
+                            <label class="flex items-center gap-1 text-xs text-gray-400 cursor-pointer select-none">
+                                <input
+                                    type="checkbox"
+                                    checked={uiStore.showAllAbilities}
+                                    onchange={() => uiActions.toggleShowAllAbilities()}
+                                    class="cursor-pointer"
+                                />
+                                Show all
+                            </label>
+                        </li>
                     </ul>
 					<br>
                     {#each tabs as tab}
                         {#if uiStore.activeTab === tab.id}
-                            <AbilityChoice 
+                            <AbilityChoice
                                 abilities={tab.abilities}
                                 handleAbilityClick={handleAbilityClick}
-									handleDragStart={handleDragStart} 
+									handleDragStart={handleDragStart}
                                 style={tab.id}
+                                showAll={uiStore.showAllAbilities}
 											/>
 										{/if}
 								{/each}
@@ -563,6 +822,9 @@
 							extraActions={uiStore.extraActions}
 							closeExtraActions={() => uiActions.hideExtraActions()}
 							setExtraActionsTab={(tab) => uiActions.setExtraActionsTab(tab)}
+							onRemoveAbility={() => refreshUI()}
+							onToggleNull={() => refreshUI()}
+							onRefreshUI={() => refreshUI()}
 						/>
 					{/if}
                     <div
@@ -576,7 +838,9 @@
                                 class:highlight-red={uiStore.dragDrop.hoveredSlot === index && !uiStore.dragDrop.validSlot}
                                 class:highlight-green={uiStore.dragDrop.hoveredSlot === index && uiStore.dragDrop.validSlot}
                                 class:nulled={rotationStore.nulledTicks[index]}
+                                class:selected-tick={uiStore.extraActions.show && uiStore.extraActions.tick === index}
                                 class:has-extra-actions={rotationStore.extraActionBar[index]?.some(action => action !== null)}
+                                class:phase-pause={pauseTickSet.has(index)}
                                 tabindex="0"
                                 aria-label="Ability slot"
                                 onclick={(e) => handleBarLeftClick(e, ability, index)}
@@ -597,12 +861,34 @@
                                     />
                                 {/if}
                                 {#if rotationStore.stalledAbilities[index]}
-                                    <img 
+                                    <img
                                         class="stalled-ability"
                                         src={allAbils[rotationStore.stalledAbilities[index]].icon}
                                         alt="Stalled ability"
                                         title="Stalled: {allAbils[rotationStore.stalledAbilities[index]].title}"
                                     />
+                                {/if}
+                                {#if rotationStore.cooldownReady[index]}
+                                    {@const cdList = rotationStore.cooldownReady[index]}
+                                    {#each cdList.slice(0, 3) as readyAbilKey, cdIdx}
+                                        {@const abilInfo = allAbils[readyAbilKey] || allExtraActions[readyAbilKey]}
+                                        <img
+                                            class="cooldown-ready-icon"
+                                            src={abilInfo?.icon}
+                                            alt="Off cooldown"
+                                            title="{abilInfo?.title} ready"
+                                            style="bottom: {2 + cdIdx * 10}px;"
+                                        />
+                                    {/each}
+                                    {#if cdList.length > 3}
+                                        <span class="cooldown-overflow" style="bottom: {2 + 3 * 10}px;">+{cdList.length - 3}</span>
+                                    {/if}
+                                {/if}
+                                {#if phaseTickMap.has(index)}
+                                    {@const marker = phaseTickMap.get(index)}
+                                    <div class="phase-marker" title="{marker.label} @ tick {marker.tick} ({marker.hp.toLocaleString()} total dmg)">
+                                        <span class="phase-label">{marker.label}</span>
+                                    </div>
                                 {/if}
                                 {#each Object.keys(rotationStore.buffs) as key}
                                     {#if buffActive(key, index) && getBuffLocalIndex(key, index) >= 0}
@@ -652,7 +938,7 @@
                     </div>
                 </div>
             </div>
-            <div class="settings-panel col-span-{uiStore.settingsPanelCollapsed ? '0' : '6'} {uiStore.settingsPanelCollapsed ? 'collapsed' : ''}"
+            <div class="settings-panel col-span-{uiStore.settingsPanelCollapsed ? '0' : '5'} {uiStore.settingsPanelCollapsed ? 'collapsed' : ''}"
 				style={uiStore.settingsPanelCollapsed ? 'visibility: hidden; height: 0; margin: 0;' : ''}>
                 <div class="settings-content">
                     <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
@@ -662,31 +948,64 @@
                 <div class="grid grid-cols-2 gap-6">
 					<div class="card card-rotation col-span-2">
 					<h2 class="card-title pb-5">User Guide</h2>
-					<div class="pb-5">
-						<p>
-							This is a beta of the rotation builder. Currently, only ranged is fully supported; magic is in progress.
-							<br>
-							To add abilities, left clicking will add a new ability to the end of your 
-							bar. You can also drag abilities for more control. Right clicking an ability
-							on the bar will remove it. 
+
+					<!-- Getting Started -->
+					<div class="pb-4">
+						<h3 class="text-sm font-bold text-[#C2BA9E] uppercase tracking-wide mb-2">Getting Started</h3>
+						<p class="text-sm leading-relaxed">
+							Configure your gear, levels, and perks in the <strong>Settings</strong> panel on the right &mdash; these define your ability damage, hit chance, and weapon effects.
+							Select a combat style tab to see available abilities, then <strong>left click</strong> to add them to the bar, <strong>drag</strong> to place on specific ticks, or <strong>right click</strong> a slot to remove it.
 							<br><br>
-							There are 3 tools - regular, stall, and null.
-							<br>
-							<strong>Regular</strong> is the default mode (keyboard <strong>R</strong>) - left click to add abilities, right click to remove, drag to move.
-							<br>
-							<strong>Stall</strong> mode (keyboard <strong>S</strong>) will allows you to stall the ability you left click on, and release
-							it on any tick on the bar. Stalled abilities can be removed by clicking them in stall mode.
-							<br>
-							<strong>Null</strong> mode (keyboard <strong>N</strong>) will null the ability you left click on, which is equivalent to casting that ability
-							on a dummy - any buffs or self-stacks will be applied normally, but damage will be 0.
+							As you build your rotation, the calculator tracks <strong>buffs</strong> (coloured bars below the timeline), <strong>stacks</strong> (icons with values), <strong>cooldowns</strong> (greyed-out with a green border when ready), and <strong>adrenaline</strong>.
+							The <strong>damage plot</strong> below the bar shows cumulative damage over time, broken down by source.
 						</p>
 					</div>
-					<div class="pb-5">
-						<p>
-							Please report any bugs or errors you find in the RSA discord. For a more comprehensive guide, check out our 
+
+					<!-- Advanced Features -->
+					<div class="pb-4">
+						<h3 class="text-sm font-bold text-[#C2BA9E] uppercase tracking-wide mb-2">Advanced Features</h3>
+
+						<p class="text-sm leading-relaxed mt-2">
+							<strong>Tool Modes</strong> &mdash; switch between 3 modes via the toolbar or keyboard:
+							<strong>Regular</strong> (<strong>R</strong>) is the default for adding, removing, and dragging abilities.
+							<strong>Stall</strong> (<strong>S</strong>) lets you select an ability to stall, then click a tick to place it (click again to remove; channelled abilities cannot be stalled).
+							<strong>Null</strong> (<strong>N</strong>) marks ticks as nulled &mdash; 0 damage but buffs and stacks still apply (e.g. boss phase transitions).
+						</p>
+
+						<p class="text-sm leading-relaxed mt-2">
+							<strong>Extra Actions</strong> &mdash; click any tick on the bar to open the extra actions panel. Add off-GCD abilities (Ingenuity, Limitless, prayers, etc.), consumables (adrenaline potions, vulnerability bombs), and gear swaps (weapons, armour, EoFs) to any tick. Each tick has up to 12 extra action slots.
+						</p>
+
+						<p class="text-sm leading-relaxed mt-2">
+							<strong>Familiars</strong> &mdash; select a combat familiar in settings (Ripper Demon, Kal'gerion Demon, Steel Titan). The familiar attacks automatically based on its attack rate. If scrolls are enabled, it uses special attacks when it has enough spec points. Spec points regenerate over time and are boosted by Summoning Renewal, Prism of Restoration, Spirit Cape, and Spirit Weed Incense. Familiars stop attacking after your last ability.
+						</p>
+
+						<p class="text-sm leading-relaxed mt-2">
+							<strong>Dreadnips</strong> &mdash; deploy via the extra actions panel. Attacks every 4 ticks for up to 45 seconds (18 attacks max). Hit chance scales with the selected boss preset.
+						</p>
+
+						<p class="text-sm leading-relaxed mt-2">
+							<strong>Poison</strong> &mdash; enable weapon poison in settings. Poison damage scales with Bik arrow stacks and is tracked separately in the damage breakdown and plot.
+						</p>
+
+						<p class="text-sm leading-relaxed mt-2">
+							<strong>Boss Presets</strong> &mdash; select a boss to apply its defence, armour, and affinities. Some bosses support enrage scaling (Telos, Araxxor, Arch-Glacor) which adjusts stats and HP. Phase markers show boss HP thresholds on the damage plot.
+						</p>
+
+						<p class="text-sm leading-relaxed mt-2">
+							<strong>Keybinds</strong> &mdash; open the keybind config to assign keys to abilities, gear, and consumables. Use the keypress output modal to view your rotation as a key sequence or a visual keyboard layout.
+						</p>
+
+						<p class="text-sm leading-relaxed mt-2">
+							<strong>Save / Load</strong> &mdash; save your rotation and settings to a named slot. Rotations are stored in your browser's local storage.
+						</p>
+					</div>
+
+					<div class="pb-3">
+						<p class="text-sm">
+							Please report any bugs or errors in the RSA discord. For a more comprehensive guide, check out our
 							<a href="/rotation_builder_guide" class="text-blue-400 hover:underline hover:text-blue-300">
-							User Guide
-							</a>.
+							full guide</a>.
 						</p>
 					</div>
 					</div>
@@ -716,11 +1035,11 @@
     cancelText="Cancel"
     on:confirm={() => {
         if (notificationStore.confirmationDialog.onConfirm) notificationStore.confirmationDialog.onConfirm();
-        notifActions.hideConfirmationDialog();
+        notifActions.hideConfirmation();
     }}
     on:cancel={() => {
         if (notificationStore.confirmationDialog.onCancel) notificationStore.confirmationDialog.onCancel();
-        notifActions.hideConfirmationDialog();
+        notifActions.hideConfirmation();
     }}
 />
 
@@ -752,3 +1071,25 @@
         style="width: 100%; padding: 0.5rem; border: 1px solid #555; border-radius: 4px; background: #1a1a1a; color: #fff; font-size: 0.9rem;"
     />
 </Popup>
+
+<KeybindConfigModal
+    bind:show={showKeybindModal}
+    abilityTabs={tabs}
+    gearTabs={[
+        { id: 'ranged', label: 'Ranged', gear: { ...rangedGear, ...sharedGear } },
+        { id: 'melee', label: 'Melee', gear: { ...meleeGear, ...sharedGear } },
+        { id: 'magic', label: 'Magic', gear: { ...magicGear, ...sharedGear } },
+        { id: 'necro', label: 'Necro', gear: { ...necroGear, ...sharedGear } },
+    ]}
+/>
+
+<KeypressOutputModal
+    bind:show={showKeypressModal}
+    {allAbils}
+    gearTabs={[
+        { id: 'ranged', label: 'Ranged', gear: { ...rangedGear, ...sharedGear } },
+        { id: 'melee', label: 'Melee', gear: { ...meleeGear, ...sharedGear } },
+        { id: 'magic', label: 'Magic', gear: { ...magicGear, ...sharedGear } },
+        { id: 'necro', label: 'Necro', gear: { ...necroGear, ...sharedGear } },
+    ]}
+/>

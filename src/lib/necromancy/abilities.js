@@ -52,18 +52,8 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/FOD.png'
     },
-    [ABILITIES.DEATHSKULLS]: {
-        title: 'Deathskulls (1 hit)',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/necro/30x30/skulls.png'
-    },
     [ABILITIES.DEATHSKULLS_4]: {
-        title: 'Deathskulls (4 hits)',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/necro/30x30/skulls.png'
-    },
-    [ABILITIES.DEATHSKULLS_7]: {
-        title: 'Deathskulls (7 hits)',
+        title: 'Death Skulls',
         calc: ability_damage_calculation,
         icon: '/ability_icons/necro/30x30/skulls.png'
     },

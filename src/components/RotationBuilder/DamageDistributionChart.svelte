@@ -13,6 +13,8 @@
     export let totalDamage = 0;
     export let poisonDamage = 0;
     export let familiarDamage = 0;
+    export let poisonPerTick = [];
+    export let familiarPerTick = [];
     
     // Collapse state
     let isCollapsed = true;
@@ -30,7 +32,9 @@
     
     let chartCanvas;
     let chart;
-    
+    let timeSeriesCanvas;
+    let timeSeriesChart;
+
     // Toggle collapse state
     function toggleCollapse() {
         isCollapsed = !isCollapsed;
@@ -460,66 +464,283 @@
         });
     }
     
-    // Update chart when props change
+    /**
+     * Build cumulative mean/variance time series from per-hit distribution stats.
+     * Returns one data point per tick where damage lands.
+     */
+    function buildTimeSeries(stats) {
+        if (!stats || stats.length === 0) return [];
+
+        // Group hits by tick
+        const tickMap = new Map();
+        stats.forEach(stat => {
+            if (!tickMap.has(stat.tick)) tickMap.set(stat.tick, []);
+            tickMap.get(stat.tick).push(stat);
+        });
+
+        // Sort ticks and compute cumulative stats
+        const ticks = [...tickMap.keys()].sort((a, b) => a - b);
+        let cumMean = 0;
+        let cumVariance = 0;
+        const series = [];
+
+        for (const tick of ticks) {
+            for (const stat of tickMap.get(tick)) {
+                if (stat.distributionType === 'combined') {
+                    const p1 = stat.critProbability;
+                    const mu1 = stat.critMean;
+                    const s1sq = stat.critVariance;
+                    const p2 = stat.nonCritProbability;
+                    const mu2 = stat.nonCritMean;
+                    const s2sq = stat.nonCritVariance;
+                    const mixMean = p1 * mu1 + p2 * mu2;
+                    const mixVar = p1 * s1sq + p2 * s2sq + p1 * p2 * Math.pow(mu1 - mu2, 2);
+                    cumMean += mixMean * stat.likelihood;
+                    cumVariance += mixVar * stat.likelihood;
+                } else {
+                    const mean = (stat.minDamage + stat.maxDamage) / 2;
+                    const variance = Math.pow((stat.maxDamage - stat.minDamage) / 2, 2) / 3;
+                    cumMean += mean * stat.likelihood;
+                    cumVariance += variance * stat.likelihood;
+                }
+            }
+            const stdDev = Math.sqrt(cumVariance);
+            series.push({
+                tick,
+                mean: cumMean,
+                sigma1Upper: cumMean + stdDev,
+                sigma1Lower: cumMean - stdDev,
+                sigma2Upper: cumMean + 2 * stdDev,
+                sigma2Lower: Math.max(0, cumMean - 2 * stdDev)
+            });
+        }
+        return series;
+    }
+
+    function updateTimeSeriesChart() {
+        if (!timeSeriesCanvas) return;
+        if (timeSeriesChart) timeSeriesChart.destroy();
+
+        const series = buildTimeSeries(distributionStats);
+        if (series.length === 0) return;
+
+        const ctx = timeSeriesCanvas.getContext('2d');
+        const labels = series.map(s => s.tick);
+
+        const formatDmg = (num) => {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 100000) return (num / 1000).toFixed(0) + 'K';
+            return num.toLocaleString();
+        };
+
+        // Build poison cumulative data aligned to the ticks in the series
+        console.log('[TimeSeriesChart] poisonDamage:', poisonDamage, 'familiarDamage:', familiarDamage,
+            'poisonPerTick sample:', poisonPerTick.slice(0, 20),
+            'familiarPerTick sample:', familiarPerTick.slice(0, 20));
+        const hasPoisonData = poisonDamage > 0 && poisonPerTick.length > 0;
+        const poisonData = hasPoisonData
+            ? series.map(s => (s.tick < poisonPerTick.length ? poisonPerTick[s.tick] : poisonPerTick[poisonPerTick.length - 1]) || 0)
+            : [];
+
+        // Build familiar cumulative data aligned to the ticks in the series
+        const hasFamiliarData = familiarDamage > 0 && familiarPerTick.length > 0;
+        const familiarData = hasFamiliarData
+            ? series.map(s => (s.tick < familiarPerTick.length ? familiarPerTick[s.tick] : familiarPerTick[familiarPerTick.length - 1]) || 0)
+            : [];
+
+        const datasets = [
+            // 2σ upper bound (fill down to 2σ lower)
+            {
+                label: '95% CI Upper',
+                data: series.map(s => s.sigma2Upper),
+                borderColor: 'transparent',
+                backgroundColor: 'rgba(54, 162, 235, 0.08)',
+                fill: '+4', // fill to 2σ lower dataset
+                pointRadius: 0,
+                tension: 0.3
+            },
+            // 1σ upper bound (fill down to 1σ lower)
+            {
+                label: '68% CI Upper',
+                data: series.map(s => s.sigma1Upper),
+                borderColor: 'transparent',
+                backgroundColor: 'rgba(54, 162, 235, 0.15)',
+                fill: '+2', // fill to 1σ lower dataset
+                pointRadius: 0,
+                tension: 0.3
+            },
+            // Mean line
+            {
+                label: 'Expected Damage',
+                data: series.map(s => s.mean),
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                fill: false,
+                pointRadius: 0,
+                hitRadius: 10,
+                tension: 0.3
+            },
+            // 1σ lower bound
+            {
+                label: '68% CI Lower',
+                data: series.map(s => s.sigma1Lower),
+                borderColor: 'transparent',
+                backgroundColor: 'transparent',
+                fill: false,
+                pointRadius: 0,
+                tension: 0.3
+            },
+            // 2σ lower bound
+            {
+                label: '95% CI Lower',
+                data: series.map(s => s.sigma2Lower),
+                borderColor: 'transparent',
+                backgroundColor: 'transparent',
+                fill: false,
+                pointRadius: 0,
+                tension: 0.3
+            }
+        ];
+
+        // Add poison line if there is poison damage
+        if (hasPoisonData) {
+            datasets.push({
+                label: 'Poison Damage',
+                data: poisonData,
+                borderColor: '#4CAF50',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                fill: false,
+                pointRadius: 0,
+                hitRadius: 10,
+                tension: 0.3
+            });
+        }
+
+        // Add familiar line if there is familiar damage
+        if (hasFamiliarData) {
+            datasets.push({
+                label: 'Familiar Damage',
+                data: familiarData,
+                borderColor: '#00eeee',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                fill: false,
+                pointRadius: 0,
+                hitRadius: 10,
+                tension: 0.3
+            });
+        }
+
+        // Build legend filter list dynamically
+        const visibleLabels = ['Expected Damage', '68% CI Upper', '95% CI Upper'];
+        if (hasPoisonData) visibleLabels.push('Poison Damage');
+        if (hasFamiliarData) visibleLabels.push('Familiar Damage');
+
+        timeSeriesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels,
+                datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Cumulative Damage Over Time',
+                        color: '#fff',
+                        font: { size: 14 }
+                    },
+                    legend: {
+                        labels: {
+                            color: '#fff',
+                            filter: (item) => visibleLabels.includes(item.text)
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: (ctx) => `Tick ${ctx[0].label}`,
+                            label: (ctx) => {
+                                if (ctx.dataset.label === 'Expected Damage') {
+                                    return `Expected: ${formatDmg(ctx.parsed.y)}`;
+                                }
+                                if (ctx.dataset.label === 'Poison Damage') {
+                                    return `Poison: ${formatDmg(ctx.parsed.y)}`;
+                                }
+                                if (ctx.dataset.label === 'Familiar Damage') {
+                                    return `Familiar: ${formatDmg(ctx.parsed.y)}`;
+                                }
+                                // For CI bounds, show the range
+                                const tick = ctx.dataIndex;
+                                const s = series[tick];
+                                if (ctx.dataset.label === '68% CI Upper') {
+                                    return `68% CI: ${formatDmg(s.sigma1Lower)} – ${formatDmg(s.sigma1Upper)}`;
+                                }
+                                if (ctx.dataset.label === '95% CI Upper') {
+                                    return `95% CI: ${formatDmg(s.sigma2Lower)} – ${formatDmg(s.sigma2Upper)}`;
+                                }
+                                return null;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Tick', color: '#fff' },
+                        ticks: { color: '#fff' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Cumulative Damage', color: '#fff' },
+                        ticks: {
+                            color: '#fff',
+                            callback: (value) => formatDmg(value)
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                }
+            }
+        });
+    }
+
+    // Update charts when props change
     $: if (distributionStats && chartCanvas) {
         logger.log(LogCategory.ROTATION, 'DamageDistributionChart received distributionStats', distributionStats);
         updateChart();
     }
-    
+    $: if (distributionStats && timeSeriesCanvas) {
+        // Also depend on poisonPerTick and familiarPerTick to re-render when they change
+        poisonPerTick;
+        familiarPerTick;
+        updateTimeSeriesChart();
+    }
+
     onMount(() => {
         updateChart();
+        updateTimeSeriesChart();
     });
-    
+
     onDestroy(() => {
-        if (chart) {
-            chart.destroy();
-        }
+        if (chart) chart.destroy();
+        if (timeSeriesChart) timeSeriesChart.destroy();
     });
 </script>
 
 <div class="damage-chart-container">
-    <div class="chart-header">
-        
-        <div class="header-left">
-            <h3>Results</h3>
-            
-        </div>
-        <div class="stats-summary">
-            <div class="stat-item">
-                <span class="stat-label">Ability:</span>
-                <span class="stat-value">{totalDamage.toLocaleString()}</span>
-            </div>
-            {#if poisonDamage > 0}
-                <div class="stat-item">
-                    <span class="stat-label">Poison:</span>
-                    <span class="stat-value poison">{poisonDamage.toLocaleString()}</span>
-                </div>
-            {/if}
-            {#if familiarDamage > 0}
-                <div class="stat-item">
-                    <span class="stat-label">Familiar:</span>
-                    <span class="stat-value familiar">{familiarDamage.toLocaleString()}</span>
-                </div>
-            {/if}
-        </div>
-    </div>
-    
-    <button 
-        class="collapse-button-chart" 
-        on:click={toggleCollapse} 
-        title={isCollapsed ? 'Show Detailed Results' : 'Show Summary'}
-        aria-label={isCollapsed ? 'Expand damage distribution chart' : 'Collapse damage distribution chart'}
-    >
-        <svg 
-            class="collapse-icon-chart" 
-            class:rotated={!isCollapsed} 
-            width="16" 
-            height="16" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            stroke-width="2" 
-            style="display: block;"
+    <button class="chart-header-btn" on:click={toggleCollapse}>
+        <span class="chart-title">Damage Distribution</span>
+        <svg
+            class="collapse-icon-chart"
+            class:rotated={!isCollapsed}
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
             aria-hidden="true"
         >
             <polyline points="6,9 12,15 18,9"></polyline>
@@ -527,6 +748,9 @@
     </button>
     
     {#if !isCollapsed}
+        <div class="chart-wrapper">
+            <canvas bind:this={timeSeriesCanvas}></canvas>
+        </div>
         <div class="chart-wrapper">
             <canvas bind:this={chartCanvas}></canvas>
         </div>
@@ -575,113 +799,53 @@
 
 <style>
     .damage-chart-container {
-        background: rgba(0, 0, 0, 0.3);
+        background: rgba(0, 0, 0, 0.2);
         border: 1px solid #444;
-        border-radius: 8px;
-        padding-top: 1.3rem;
-        padding-bottom: 0.5rem;
-        padding-left: 1.3rem;
-        padding-right: 1.3rem;
-        margin: 1rem 0;
-        position: relative;
+        border-radius: 6px;
+        overflow: hidden;
+        margin: 0.5rem 0;
     }
-    
-    .chart-header {
+
+    .chart-header-btn {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 1rem;
-    }
-    
-    .header-left {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex-shrink: 0;
-    }
-    
-    .header-right {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        justify-content: flex-end;
-    }
-    
-    .chart-header h3 {
-        margin: 0;
-        color: #fff;
-        font-size: 1.5rem;
-        white-space: nowrap;
-    }
-    
-    .collapse-button-chart {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid #ccc;
-        color: #ccc;
+        width: 100%;
+        padding: 0.4rem 0.75rem;
+        background: none;
+        border: none;
         cursor: pointer;
-        padding: 0;
-        border-radius: 0 8px 0 4px;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        width: 24px;
-        height: 24px;
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 10;
-    }
-    
-    .collapse-button-chart:hover {
-        background: rgba(255, 255, 255, 0.1);
         color: #fff;
-    }
-    
-    
-    .stats-summary {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        flex-shrink: 0;
-    }
-    
-    .stat-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.25rem;
-    }
-    
-    .stat-label {
-        font-size: 0.8rem;
-        color: #ccc;
-    }
-    
-    .stat-value {
-        font-size: 1.1rem;
-        font-weight: bold;
-        color: #fff;
-    }
-    
-    .stat-value.poison {
-        color: var(--color-poison);
     }
 
-    .stat-value.familiar {
-        color: var(--color-familiar);
+    .chart-header-btn:hover {
+        background: rgba(255, 255, 255, 0.03);
     }
-    
+
+    .chart-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    .collapse-icon-chart {
+        color: #888;
+        transition: transform 0.2s ease;
+    }
+
+    .collapse-icon-chart.rotated {
+        transform: rotate(180deg);
+    }
+
     .chart-wrapper {
         position: relative;
         height: 400px;
-        margin: 1rem 0;
+        padding: 0 0.75rem;
+        margin: 0 0 0.5rem;
     }
     
     .distribution-info {
-        margin-top: 1rem;
-        padding-top: 1rem;
+        margin-top: 0.5rem;
+        padding: 0.5rem 0.75rem;
         border-top: 1px solid #444;
     }
     
@@ -750,24 +914,10 @@
     }
     
     @media (max-width: 768px) {
-        .chart-header {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        
-        .header-left {
-            width: 100%;
-        }
-        
-        .stats-summary {
-            width: 100%;
-            justify-content: space-between;
-        }
-        
         .chart-wrapper {
             height: 300px;
         }
-        
+
         .info-grid {
             grid-template-columns: 1fr;
         }
