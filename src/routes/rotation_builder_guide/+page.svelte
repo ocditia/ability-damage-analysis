@@ -7,63 +7,36 @@
     
     // Define sections for the guide with subheadings
     const sections = [
-        { 
-            id: 'overview', 
-            title: 'Overview',
-            subheadings: [
-                { id: 'features', title: 'Features' }
-            ]
-        },
-        { 
-            id: 'getting-started', 
+        {
+            id: 'getting-started',
             title: 'Getting Started',
             subheadings: [
-                { id: 'ability-selection', title: 'Ability Selection' },
-                { id: 'damage_results', title: 'Damage Results' },
-                { id: 'settings', title: 'Settings' }
-            ]
-        },
-        { 
-            id: 'building-rotation', 
-            title: 'Building Your Rotation',
-            subheadings: [
+                { id: 'settings', title: 'Settings' },
                 { id: 'adding-abilities', title: 'Adding Abilities' },
-                { id: 'managing-rotation', title: 'Managing Your Rotation' }
+                { id: 'reading-results', title: 'Reading the Results' }
             ]
         },
-        { 
-            id: 'gear-buffs', 
-            title: 'Gear & Buffs',
-            subheadings: [
-                { id: 'equipment', title: 'Equipment Selection' },
-                { id: 'buffs', title: 'Buffs & Boosts' }
-            ]
-        },
-        { 
-            id: 'analysis', 
-            title: 'Damage Analysis',
-            subheadings: [
-                { id: 'understanding-results', title: 'Understanding Results' },
-                { id: 'optimization', title: 'Optimization Tips' }
-            ]
-        },
-        { 
-            id: 'advanced', 
+        {
+            id: 'advanced',
             title: 'Advanced Features',
             subheadings: [
-                { id: 'saving-loading', title: 'Saving & Loading' },
-                { id: 'custom-settings', title: 'Custom Settings' }
+                { id: 'tool-modes', title: 'Tool Modes' },
+                { id: 'extra-actions', title: 'Extra Actions' },
+                { id: 'familiars', title: 'Familiars' },
+                { id: 'dreadnips', title: 'Dreadnips' },
+                { id: 'poison', title: 'Poison' },
+                { id: 'boss-presets', title: 'Boss Presets' },
+                { id: 'keybinds', title: 'Keybinds' },
+                { id: 'saving-loading', title: 'Save & Load' }
             ]
         },
-        { 
-            id: 'tips', 
-            title: 'Tips & Tricks',
-            subheadings: [
-                { id: 'shortcuts', title: 'Shortcuts' }
-            ]
+        {
+            id: 'shortcuts',
+            title: 'Keyboard Shortcuts',
+            subheadings: []
         },
-        { 
-            id: 'faq', 
+        {
+            id: 'faq',
             title: 'FAQ',
             subheadings: []
         }
@@ -99,182 +72,169 @@
                     
                     <GradientSeparator />
                     
-                    <!-- Overview Section -->
-                    <div id="overview" class="card card-home mt-6">
-                        <div class="card-title pb-5 section-heading">Overview</div>
-                        <p class="mb-4">
-                            The Rotation Builder is a tool that allows you to build, analyse and optimise your combat rotations in RuneScape. 
-                            You can experiment with different abilities, gear setups, combat stylesand buffs to maximize your damage output.
-                        </p>
-                        <p>
-                            This guide will walk you through all the features and help you get the most out of the Rotation Builder.
-                        </p>
-                        <p>
-                            Currently, there is only support for the Ranged and Magic styles.
-                            Support for Melee and Necromancy will be added in the future, after refining the current features.
-                        </p>
-                    </div>
-                    
                     <!-- Getting Started Section -->
                     <div id="getting-started" class="card card-home mt-6">
                         <div class="card-title pb-5 section-heading">Getting Started</div>
-                        
-                        <h3 id="ability-selection" class="subsection-heading">Ability Selection</h3>
-                        <p class="mb-4">
-                            These are the main parts of the tool. At the top of the tool, you can select your combat style 
-                            (keybinds 
-                            <span class="keybind">1</span>
-                            <span class="keybind">2</span>
-                            <span class="keybind">3</span>
-                            <span class="keybind">4</span>
-                            <span class="keybind">5</span>
-                            )
-                        </p>
-                        
-                        <p class="mb-4">
-                            There are three tools to add abilities to your rotation:
-                            <br> - <span class="tool-name">Regular</span> - <span class="keybind">r</span>
-                            <br> - <span class="tool-name">Stall</span> - <span class="keybind">s</span>
-                            <br> - <span class="tool-name">Null</span> - <span class="keybind">n</span>
-                            <br>
-                        </p>
-                        <p class="mb-4">
-                            <span class="tool-name">Regular</span> is the default mode.
-                            To add an ability to your rotation, simply click on it in the ability selection panel. 
-                            To remove an ability, <b><em>right</em></b> click on it in the rotation timeline.
-                            You can also drag and drop abilities either from the ability selection panel or the rotation timeline.
-                        </p>
-                        
-                        <!-- Adding the GIF demonstration -->
-                        {#if false}
-                        <figure class="mb-6">
-                            <img 
-                                src="/guide_images/interface/regular_tool.gif" 
-                                alt="Demonstration of the Regular Tool Mode" 
-                                class="w-full rounded-lg shadow-lg border border-gray-700"
-                            />
-                            <figcaption class="text-center mt-2 text-sm text-gray-400">
-                                Regular tool (<span class="keybind">r</span>)
-                            </figcaption>
-                        </figure>
-                        {/if}
-                        <p class="mb-4">
-                            Next is the <span class="tool-name">Stall</span> tool. This tool is used to allow you to release
-                            a stalled ability. To activate the stall tool, press <span class="keybind">s</span>. 
-                            Click an ability, then click the tick you want to release it on. To remove a stalled ability,
-                            right click the ability in the rotation timeline with the stall tool active.
-                        </p>
-                        <p class="mb-4">
-                            Finally, the <span class="tool-name">Null</span> tool is used to null a tick in the rotation timeline.
-                            This can be used to simulate using abilities while the boss is invulnerable, or prebuilding on dummys.
-                            No damage is calculated for nulled ticks, but adrenaline, stacks and buffs to the player are calculated as normal.
-                            To null a tick, activate the null tool (<span class="keybind">n</span>) and left click the tick you want to null.
-                            To remove a nulled tick, click it again.
-                        </p>
-                        <h3 id="damage_results" class="subsection-heading">Damage Results</h3>
-                        <p class="mb-4">
-                            The damage results are displayed at the top of the page. If you are using <span style="color: var(--color-poison)">Cinderbane Gloves</span>,
-                            the predicted poison damage is displayed in <span style="color: var(--color-poison)">green</span>. If you are using the <span style="color: var(--color-familiar)">Ripper Demon</span> or 
-                            <span style="color: var(--color-familiar)">Kalgerion Demon</span> familiars, the predicted familiar damage is displayed in <span style="color: var(--color-familiar)">cyan</span>.
-                        </p>
-                        <p class="mb-4">
-                            As you add abilities to your rotation or change settings, the damage results will update automatically.
-                            Most buffs and boosts are calculated automatically, based on the actions you have added to your rotation.
-                        </p>
+
                         <h3 id="settings" class="subsection-heading">Settings</h3>
                         <p class="mb-4">
-                            You can configure how much information you are shown, as well as how much 
-                            adrenaline and how many stacks you start with in settings.
+                            The <strong>Settings</strong> panel on the right defines your starting state. Configure your weapon tiers and types,
+                            armour, perks (Precise, Equilibrium, Biting, etc.), prayers, aura, and combat levels. These determine your
+                            ability damage, hit chance, and which weapon-specific effects are active.
                         </p>
-                        <ul class="list-disc pl-5 space-y-2">
-                            <li>Regular Dracolich Armour</li>
-                            <li>Incite Fear proc not handled</li>
-                            <li>Exsanguinate/Incite Fear/Essence Corruption stacks not handled faithfully</li>
-                            <li>Several magic interactions not yet impleneted (kww, conflagrate, detonate,etc.)</li>
-                            <li>Familiars attack on nulled ticks</li>
-                        </ul>
-                
-                    </div>
-                    
-                    <!-- Building Your Rotation Section -->
-                    <div id="building-rotation" class="card card-home mt-6">
-                        <div class="card-title pb-5 section-heading">Building Your Rotation</div>
-                        
-                        <h3 id="adding-abilities" class="subsection-heading">Extra Actions</h3>
                         <p class="mb-4">
-                            There are, of course, many other actions you can take in the game other than casting standard abilities.
-                            In order to use adrenaline renewals, non-gcd abilities or change gear, you can use the extra actions panel.
-                            This is accessed by clicking a tick in the rotation timeline. Here you have a second bar for extra actions,
-                            to which you can add abilities or gear swaps from the interface. Pressing <span class="keybind keybind-wide">space</span>  will close the extra actions panel.
-                            As with the main rotation, add abilities by left clicking and remove them by right clicking.
+                            You can also set your starting adrenaline and stack values, choose a familiar, enable weapon poison,
+                            and select a boss preset to calculate against.
                         </p>
-                        
-                        <h3 id="managing-rotation" class="subsection-heading">Managing Your Rotation</h3>
-                        <p>
-                            Drag and drop abilities to reorder them, use the context menu to remove abilities, and use the clear button to start over.
-                        </p>
-                    </div>
-                    
-                    <!-- Gear & Buffs Section -->
-                    <div id="gear-buffs" class="card card-home mt-6">
-                        <div class="card-title pb-5 section-heading">Gear & Buffs</div>
-                        
-                        <h3 id="equipment" class="subsection-heading">Equipment Selection</h3>
+
+                        <h3 id="adding-abilities" class="subsection-heading">Adding Abilities</h3>
                         <p class="mb-4">
-                            Select your weapon tier and type, choose armor pieces that complement your style, and consider special effects from equipment.
+                            Select a combat style tab
+                            (<span class="keybind">1</span> <span class="text-style text-ranged">Ranged</span>,
+                            <span class="keybind">2</span> <span class="text-style text-magic">Magic</span>,
+                            <span class="keybind">3</span> <span class="text-style text-melee">Melee</span>,
+                            <span class="keybind">4</span> <span class="text-style text-necro">Necromancy</span>,
+                            <span class="keybind">5</span> <span class="text-style text-defence">Defence</span>)
+                            to see available abilities.
                         </p>
-                        
-                        <h3 id="buffs" class="subsection-heading">Buffs and Boosts</h3>
-                        <p>
-                            Add combat boosts like prayers and potions, include familiar effects, and apply aura bonuses to maximize your damage output.
-                        </p>
-                    </div>
-                    
-                    <!-- Damage Analysis Section -->
-                    <div id="analysis" class="card card-home mt-6">
-                        <div class="card-title pb-5 section-heading">Damage Analysis</div>
-                        
-                        <h3 id="understanding-results" class="subsection-heading">Understanding the Results</h3>
                         <p class="mb-4">
-                            Learn how to interpret the damage analysis, including total damage output, damage per minute (DPM), and adrenaline generation.
+                            <strong>Left click</strong> an ability to add it to the next free slot on the bar.
+                            You can also <strong>drag</strong> abilities from the panel onto a specific tick.
+                            To remove an ability, <strong>right click</strong> it on the bar.
                         </p>
-                        
-                        <h3 id="optimization" class="subsection-heading">Optimization Tips</h3>
-                        <p>
-                            Discover strategies for optimizing your rotation, such as looking for ability synergies, maintaining buff uptimes, and balancing adrenaline usage.
+
+                        <h3 id="reading-results" class="subsection-heading">Reading the Results</h3>
+                        <p class="mb-4">
+                            As you build your rotation, the calculator updates automatically.
+                            <strong>Buffs</strong> appear as coloured bars below the timeline.
+                            <strong>Stacks</strong> show as icons with numeric values.
+                            <strong>Cooldowns</strong> are shown as small icons on the tick an ability comes off cooldown.
+                            <strong>Adrenaline</strong> is tracked tick by tick.
+                        </p>
+                        <p class="mb-4">
+                            The total damage is displayed at the top of the page, broken down by source:
+                            ability damage,
+                            <span style="color: var(--color-poison)">poison</span> damage (if using Cinderbane Gloves or weapon poison),
+                            <span style="color: var(--color-familiar)">familiar</span> damage,
+                            and dreadnip damage.
+                            The <strong>damage plot</strong> below the bar shows cumulative damage over time with each source as a separate line.
+                        </p>
+                        <p class="mb-4">
+                            Click any tick on the bar to open the <strong>extra actions panel</strong>, which also shows a per-tick damage breakdown,
+                            active buffs, and stack values at that point in the rotation.
                         </p>
                     </div>
-                    
+
                     <!-- Advanced Features Section -->
                     <div id="advanced" class="card card-home mt-6">
                         <div class="card-title pb-5 section-heading">Advanced Features</div>
-                        
-                        <h3 id="saving-loading" class="subsection-heading">Saving and Loading</h3>
+
+                        <h3 id="tool-modes" class="subsection-heading">Tool Modes</h3>
                         <p class="mb-4">
-                            Save your rotations for later use, import existing rotations, and share rotations with others.
+                            There are three tool modes, switchable via the toolbar or keyboard shortcuts:
                         </p>
-                        
-                        <h3 id="custom-settings" class="subsection-heading">Custom Settings</h3>
-                        <p>
-                            Adjust target armor values, set specific combat levels, and configure additional modifiers to simulate different combat scenarios.
+                        <p class="mb-4">
+                            <span class="tool-name">Regular</span> (<span class="keybind">r</span>) is the default mode.
+                            Left click to add abilities, right click to remove, and drag to reorder.
+                        </p>
+                        <p class="mb-4">
+                            <span class="tool-name">Stall</span> (<span class="keybind">s</span>) lets you stall an ability.
+                            Click an ability in the panel to select it, then click the tick on the bar where you want to release it.
+                            Click an existing stall to remove it. Channelled abilities cannot be stalled.
+                        </p>
+                        <p class="mb-4">
+                            <span class="tool-name">Null</span> (<span class="keybind">n</span>) marks a tick as nulled.
+                            Nulled ticks deal 0 damage but still apply buffs, stacks, and adrenaline as normal &mdash;
+                            useful for simulating boss phase transitions or prebuilding on dummies.
+                            Click a nulled tick again to un-null it.
+                        </p>
+
+                        <h3 id="extra-actions" class="subsection-heading">Extra Actions</h3>
+                        <p class="mb-4">
+                            Click any tick on the bar to open the extra actions panel. This gives you access to off-GCD abilities
+                            (Ingenuity of the Humans, Limitless, prayers, Surge, Escape, etc.),
+                            consumables (adrenaline potions, Spiritual Prayer, Vulnerability Bomb),
+                            and gear swaps (weapons, armour, Essence of Finality amulets).
+                        </p>
+                        <p class="mb-4">
+                            Each tick has up to 12 extra action slots. Add items by left clicking and remove them by right clicking.
+                            Press <span class="keybind keybind-wide">space</span> to close the panel.
+                            The extra actions panel also shows the Info tab with per-tick damage breakdown, active buffs, and stack values.
+                        </p>
+
+                        <h3 id="familiars" class="subsection-heading">Familiars</h3>
+                        <p class="mb-4">
+                            Select a combat familiar in settings (Ripper Demon, Kal'gerion Demon, or Steel Titan).
+                            The familiar attacks automatically at fixed intervals based on its attack rate.
+                        </p>
+                        <p class="mb-4">
+                            If <strong>scrolls</strong> are enabled, the familiar uses its special attack whenever it has enough spec points,
+                            otherwise it falls back to a regular auto-attack.
+                            Spec points start at 60 and regenerate at ~0.3 points/tick.
+                            This is boosted by <strong>Summoning Renewal</strong>, <strong>Prism of Restoration</strong>,
+                            <strong>Spirit Cape</strong> (20% scroll cost reduction), and <strong>Spirit Weed Incense</strong>.
+                        </p>
+                        <p class="mb-4">
+                            Familiars stop attacking after the last ability in your rotation.
+                            Their damage is tracked separately in the damage breakdown and plot.
+                        </p>
+
+                        <h3 id="dreadnips" class="subsection-heading">Dreadnips</h3>
+                        <p class="mb-4">
+                            Deploy a dreadnip by adding it via the extra actions panel on any tick.
+                            Once deployed, it attacks every 4 ticks for up to 45 seconds (75 ticks, max 18 attacks),
+                            then expires. A cooldown timer shows when it will run out.
+                        </p>
+                        <p class="mb-4">
+                            Dreadnip hit chance is calculated against the selected boss preset (defence, armour, and affinities).
+                            If no boss is selected, it assumes 100% accuracy.
+                            Dreadnips also stop attacking after your last ability.
+                        </p>
+
+                        <h3 id="poison" class="subsection-heading">Poison</h3>
+                        <p class="mb-4">
+                            Enable weapon poison in settings to include poison damage in your rotation analysis.
+                            Poison damage scales with <strong>Bik arrow</strong> stacks when using ranged.
+                            It is tracked as a separate damage source in both the total breakdown and the damage plot.
+                        </p>
+
+                        <h3 id="boss-presets" class="subsection-heading">Boss Presets</h3>
+                        <p class="mb-4">
+                            Select a boss preset in settings to apply its defence level, armour rating, and style affinities.
+                            This affects your hit chance, familiar accuracy, and dreadnip accuracy.
+                        </p>
+                        <p class="mb-4">
+                            Some bosses support <strong>enrage scaling</strong> (Telos, Araxxor, Arch-Glacor) &mdash;
+                            use the enrage slider to adjust the boss's stats and HP accordingly.
+                            <strong>Phase markers</strong> appear on the damage plot showing boss HP thresholds,
+                            so you can see where phase transitions would occur.
+                        </p>
+
+                        <h3 id="keybinds" class="subsection-heading">Keybinds</h3>
+                        <p class="mb-4">
+                            Open the keybind configuration modal to assign keyboard keys to abilities, gear swaps, and consumables.
+                            Once configured, use the <strong>keypress output</strong> modal to view your rotation in two ways:
+                        </p>
+                        <ul class="list-disc pl-5 space-y-2 mb-4">
+                            <li><strong>Sequence</strong> &mdash; shows the key presses for each tick in order, useful for practising your rotation.</li>
+                            <li><strong>Keyboard</strong> &mdash; a visual keyboard layout highlighting which keys have abilities bound, showing the ability icons on each key.</li>
+                        </ul>
+
+                        <h3 id="saving-loading" class="subsection-heading">Save & Load</h3>
+                        <p class="mb-4">
+                            Save your rotation and settings to a named slot using the save/load panel.
+                            Rotations are stored in your browser's local storage and persist between sessions.
+                            You can maintain multiple saved rotations and switch between them.
                         </p>
                     </div>
-                    
-                    <!-- Tips & Tricks Section -->
-                    <div id="tips" class="card card-home mt-6">
-                        <div class="card-title pb-5 section-heading">Tips & Tricks</div>
+
+                    <!-- Keyboard Shortcuts Section -->
+                    <div id="shortcuts" class="card card-home mt-6">
+                        <div class="card-title pb-5 section-heading">Keyboard Shortcuts</div>
                         <ul class="list-disc pl-5 space-y-2">
-                            <li>Start with basic abilities to build adrenaline</li>
-                            <li>Use thresholds when you have sufficient adrenaline</li>
-                            <li>Time your ultimate abilities for maximum effect</li>
-                            <li>Consider ability bleeds and damage over time effects</li>
-                            <li>Pay attention to shared cooldowns</li>
-                        </ul>
-                        <h3 id="shortcuts" class="subsection-heading">Shortcuts</h3>
-                        <ul class="list-disc pl-5 space-y-2">
-                            <li><span class="keybind">r</span>: <span class="tool-name">Regular</span></li>
-                            <li><span class="keybind">s</span>: <span class="tool-name">Stall</span></li>
-                            <li><span class="keybind">n</span>: <span class="tool-name">Null</span></li>
+                            <li><span class="keybind">r</span>: <span class="tool-name">Regular</span> tool</li>
+                            <li><span class="keybind">s</span>: <span class="tool-name">Stall</span> tool</li>
+                            <li><span class="keybind">n</span>: <span class="tool-name">Null</span> tool</li>
                             <li><span class="keybind">1</span>: <span class="text-style text-ranged">Ranged</span></li>
                             <li><span class="keybind">2</span>: <span class="text-style text-magic">Magic</span></li>
                             <li><span class="keybind">3</span>: <span class="text-style text-melee">Melee</span></li>
@@ -284,20 +244,26 @@
                         </ul>
                     </div>
 
-                    
-                    
                     <!-- FAQ Section -->
                     <div id="faq" class="card card-home mt-6">
-                        <div class="card-title pb-5 section-heading">Frequently Asked Questions</div>
-                        
+                        <div class="card-title pb-5 section-heading">FAQ</div>
+
                         <div class="mb-4">
                             <h3 class="text-xl font-semibold mb-2">How accurate is the damage calculation?</h3>
                             <p>
-                                Pretty accurate! A few things are impossible to reasonably calculate exactly, but for the most part we 
+                                Pretty accurate! A few things are impossible to reasonably calculate exactly, but for the most part we
                                 aim to be more or less 100%. If you do find anything wrong, please let us know in the Discord.
                             </p>
                         </div>
-                        
+
+                        <div class="mb-4">
+                            <h3 class="text-xl font-semibold mb-2">Which combat styles are supported?</h3>
+                            <p>
+                                Ranged and Magic are the most complete. Melee is well supported.
+                                Necromancy is in beta &mdash; core abilities and stacks work, but some interactions are still being added.
+                            </p>
+                        </div>
+
                         <div>
                             <h3 class="text-xl font-semibold mb-2">How do I report bugs or suggest features?</h3>
                             <p>
@@ -369,7 +335,7 @@
     .section-heading {
         font-size: 3rem;
         font-weight: 600;
-        color: #ffb2f2;
+        color: #c1c1c1;
         margin-bottom: 0.5rem;
         padding-top: 1rem;
     }
