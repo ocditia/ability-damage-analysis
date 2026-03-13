@@ -1976,8 +1976,12 @@ function calc_aftershock(settings) {
         dmgObject[key]['damage list'] = [];
         let min_aftershock = 0.24 * settings[SETTINGS.AFTERSHOCK];
         let var_aftershock = 0.156 * settings[SETTINGS.AFTERSHOCK];
+
+        // This is calculating the list of all possible damage values for aftershock,
+        // which is in increments of 0.4% ability damage from minimum to maximum. 
+        // See https://runescape.wiki/w/Aftershock
         for (let i=0; i<var_aftershock/0.004; i++) {
-            dmgObject[key]['damage list'].push(Math.floor(dmgObject[key]['boosted AD'] * (min_aftershock + 0.04*i)));
+            dmgObject[key]['damage list'].push(Math.floor(dmgObject[key]['boosted AD'] * (min_aftershock + 0.004*i)));
         }
         // calc on npc
         dmgObject[key] = calc_on_npc(settings, dmgObject[key]);
