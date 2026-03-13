@@ -199,7 +199,7 @@ function calc_boosted_ad(settings, dmgObject) {
         settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.WEN_ARROWS &&
         settings[SETTINGS.ICY_PRECISION] == true
     ) {
-        base_damage += Math.floor(base_damage/100 * 130);
+        base_damage += Math.floor(base_damage/100 * 30);
     }
 
     // chaos roar
@@ -1749,6 +1749,10 @@ function hit_damage_calculation(settings, rotationCalc = false) {
     let total_damage = calc_damage_object(settings); // calculate the ability
     total_damage = apply_additional(settings, total_damage, rotationCalc);
     //TODO add next cast next hit next tick etc
+    if (settings[SETTINGS.DAMAGE_UNITS] === SETTINGS.DAMAGE_UNITS_VALUES.PERCENT) {
+        total_damage = total_damage/calc_base_ad(settings) * 100;
+        total_damage = parseFloat(total_damage.toFixed(2))
+    }
     return total_damage;
 }
 
@@ -1807,16 +1811,16 @@ function apply_additional(settings, total_damage) {
 }
 
 function ability_damage_calculation(settings) {
+    let rotation = get_hit_sequence(settings);
     settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 1;
     if (settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) {
         settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 3;
         if (abils[settings['ability']]['ability classification'] === 'channel') {
-            settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = Math.min(settings[SETTINGS.MAX_CHANNEL_DURATION], 
-                Object.keys(abils[settings['ability']]['hits']).map(item => parseInt(item, 10)).pop());
+            settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = Math.min(settings[SETTINGS.HIT_COUNTER_END], 
+                Object.keys(rotation).map(item => parseInt(item, 10)).pop());
         }
     }
-
-    let rotation = get_hit_sequence(settings);
+    
     let damage = 0;
     let hit_counter = 0;
     for (let key in rotation) {
@@ -1846,7 +1850,8 @@ function ability_damage_calculation(settings) {
             settings = next_tick(settings);
         }     
     }
-    return damage;
+
+    return parseFloat(damage.toFixed(2));
 }
 
 /**

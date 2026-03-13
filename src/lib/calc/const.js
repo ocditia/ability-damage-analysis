@@ -13,6 +13,13 @@ const weapons = {
         type: 'none',
         classification: 'none'
     },
+    'custom shield': {
+        style: 'hybrid',
+        'weapon type': 'shield',
+        tier: 0,
+        type: 'none',
+        classification: 'none'
+    },
     'custom two-hand weapon': {
         style: 'hybrid',
         'weapon type': 'two-hand',
@@ -2176,8 +2183,8 @@ const abils = {
     },
     [ABILITIES.SLICE_N_DICE_1]: {
         // ability name
-        'min hit': 2.0, // min % of abil expressed as a decimal
-        'var hit': 0.2,
+        'min hit': 1.8, // min % of abil expressed as a decimal
+        'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2188,8 +2195,8 @@ const abils = {
     },
     [ABILITIES.SLICE_N_DICE_2]: {
         // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
-        'var hit': 0.1,
+        'min hit': 0.9, // min % of abil expressed as a decimal
+        'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
@@ -2693,7 +2700,7 @@ const abils = {
     },
     [ABILITIES.GREATER_FLURRY_HIT]: {
         // ability name
-        'min hit': 0.65, // min % of abil expressed as a decimal
+        'min hit': 0.6, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3546,13 +3553,13 @@ const abils = {
         'main style': 'magic',
         'damage type': 'magic',
         hits: {
-            1: [ABILITIES.WILD_MAGIC_HIT_BETA],
+            1: [ABILITIES.ASPHYXIATE_HIT],
             2: [],
-            3: [ABILITIES.WILD_MAGIC_HIT_BETA],
+            3: [ABILITIES.ASPHYXIATE_HIT],
             4: [],
-            5: [ABILITIES.WILD_MAGIC_HIT_BETA],
+            5: [ABILITIES.ASPHYXIATE_HIT],
             6: [],
-            7: [ABILITIES.WILD_MAGIC_HIT_BETA],
+            7: [ABILITIES.ASPHYXIATE_HIT],
         }
     },
     [ABILITIES.TSUNAMI]: {
@@ -5094,7 +5101,7 @@ const abils = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic',
+        'ability type': 'combatv2_passive_ability',
         //'ability type': 'combatv2_passive_ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate

@@ -17,26 +17,32 @@ const abilities = {
     [ABILITIES.DRAGON_BREATH_BETA]: {
         title: 'Dragon breath',
         calc: hit_damage_calculation,
+        icon: '/ability_icons/magic/30x30/dragon_breath.png'
     },
     [ABILITIES.GCHAIN_BETA]: {
         title: 'Gchain',
         calc: hit_damage_calculation,
+        icon: '/ability_icons/magic/30x30/greater_chain.png'
     },
     [ABILITIES.IMPACT_BETA]: {
         title: 'Impact',
         calc: hit_damage_calculation,
+        icon: '/ability_icons/magic/30x30/impact.png'
     },
     [ABILITIES.CONCENTRATED_BLAST]: {
         title: 'Concentrated blast',
         calc: ability_damage_calculation,
+        icon: '/ability_icons/magic/30x30/concentrated_blast.png'
     },
     [ABILITIES.GCONC_BETA]: {
         title: 'Gconc',
         calc: ability_damage_calculation,
+        icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png'
     },
     [ABILITIES.MAGMA_BETA]: {
         title: 'Magma tempest',
         calc: ability_damage_calculation,
+        icon: '/ability_icons/magic/30x30/magma_tempest.png'
     },
     [ABILITIES.COMBUST_BETA]: {
         title: 'Combust',
@@ -45,26 +51,32 @@ const abilities = {
     [ABILITIES.CORRUPTION_BLAST_BETA]: {
         title: 'Corruption blast',
         calc: hit_damage_calculation,
+        icon: '/ability_icons/magic/30x30/corruption_blast.png'
     },
     [ABILITIES.WILD_MAGIC_BETA]: {
         title: 'Wild magic',
         calc: ability_damage_calculation,
+        icon: '/ability_icons/magic/30x30/wild_magic.png'
     },
     [ABILITIES.ASPHYXIATE]: {
         title: 'Asphyx',
         calc: ability_damage_calculation,
+        icon: '/ability_icons/magic/30x30/asphyxiate.png'
     },
     [ABILITIES.SMOKE_TENDRILS_BETA]: {
         title: 'Smoke tendrils',
         calc: ability_damage_calculation,
+        icon: '/ability_icons/magic/30x30/smoke_tendrils.png'
     },
     [ABILITIES.OMNIPOWER_BETA]: {
         title: 'Omnipower',
         calc: ability_damage_calculation,
+        icon: '/ability_icons/magic/30x30/omnipower.png'
     },
     [ABILITIES.TSUNAMI]: {
         title: 'Tsunami',
         calc: hit_damage_calculation,
+        icon: '/ability_icons/magic/30x30/tsunami.png'
     },
      [ABILITIES.CLAWS_OF_GUTHIX]: {
         title: 'Claws of Guthix',
@@ -134,6 +146,7 @@ const abilities = {
     [ABILITIES.AFTERSHOCK_MAGIC]: {
         title: 'Aftershock',
         calc: calc_aftershock,
+        icon: '/effect_icons/Aftershock.webp'
     }
 };
 
