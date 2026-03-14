@@ -9,6 +9,8 @@
     // Register all Chart.js components
     Chart.register(...registerables);
     
+    import { abils } from '../../lib/calc/const/const';
+
     export let distributionStats = [];
     export let totalDamage = 0;
     export let poisonDamage = 0;
@@ -19,10 +21,11 @@
     export let familiarPerTick = [];
     export let dreadnipPerTick = [];
     export let conjurePerTick = [];
-    
-    // Collapse state
-    let isCollapsed = true;
-    
+    export let allAbils = {};
+
+    // Which chart is expanded (null = all thumbnails, 'timeline' | 'breakdown' | 'distribution')
+    let expandedChart = null;
+
     // Calculate confidence intervals
     $: gaussianParams = calculateGaussianParameters(distributionStats);
     $: confidence68 = gaussianParams.stdDev > 0 ? {
@@ -38,10 +41,229 @@
     let chart;
     let timeSeriesCanvas;
     let timeSeriesChart;
+    let breakdownCanvas;
+    let breakdownChart;
 
-    // Toggle collapse state
-    function toggleCollapse() {
-        isCollapsed = !isCollapsed;
+    const formatDmg = (num) => {
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 100000) return (num / 1000).toFixed(0) + 'K';
+        return num.toLocaleString();
+    };
+
+    const STYLE_COLOURS = {
+        melee:   '#e74c3c',
+        ranged:  '#2ecc71',
+        magic:   '#3498db',
+        necromancy: '#9b59b6',
+        necrotic: '#9b59b6',
+        poison:  '#4CAF50',
+        familiar:'#00eeee',
+        dreadnip:'#ff8c00',
+        conjure: '#d694ff',
+        unknown: '#888'
+    };
+
+    /**
+     * Derive the parent ability key from a sub-hit key.
+     * e.g. 'assault hit' -> 'assault', 'rapid fire last hit' -> 'rapid fire'
+     */
+    function getParentKey(hitKey) {
+        for (const suffix of [' last hit', ' hit']) {
+            if (hitKey.endsWith(suffix)) return hitKey.slice(0, -suffix.length);
+        }
+        // Numeric suffixes like 'snap shot 1'
+        const numMatch = hitKey.match(/^(.+?)\s+\d+$/);
+        if (numMatch) return numMatch[1];
+        return hitKey;
+    }
+
+    function getDisplayName(parentKey) {
+        if (allAbils[parentKey]?.title) return allAbils[parentKey].title;
+        // Capitalise each word as fallback
+        return parentKey.replace(/\b\w/g, l => l.toUpperCase());
+    }
+
+    function getIconPath(key) {
+        if (allAbils[key]?.icon) return allAbils[key].icon;
+        // Secondary source icons
+        const secondaryIcons = {
+            '_poison': '/effect_icons/poison.png',
+            '_familiar': '/effect_icons/familiar.png',
+            '_dreadnip': '/effect_icons/Dreadnip_active_(self_status).png',
+            '_conjure': '/effect_icons/necrosis.png'
+        };
+        return secondaryIcons[key] || null;
+    }
+
+    // Cache loaded images for the breakdown chart icons
+    const iconCache = {};
+    function loadIcon(src) {
+        if (iconCache[src]) return iconCache[src];
+        const img = new Image();
+        img.src = src;
+        iconCache[src] = img;
+        return img;
+    }
+
+    function getAbilityStyle(hitKey) {
+        const style = abils[hitKey]?.['main style'];
+        if (style) return style;
+        // Try parent key
+        const parent = getParentKey(hitKey);
+        return abils[parent]?.['main style'] || 'unknown';
+    }
+
+    function buildBreakdownData() {
+        const groups = {};
+
+        // Group ability hits by parent key
+        for (const stat of distributionStats) {
+            const parent = getParentKey(stat.ability);
+            if (!groups[parent]) {
+                groups[parent] = { damage: 0, style: getAbilityStyle(stat.ability) };
+            }
+            let expected;
+            if (stat.distributionType === 'combined' && stat.critProbability !== undefined) {
+                expected = stat.critProbability * stat.critMean + (1 - stat.critProbability) * stat.nonCritMean;
+            } else {
+                expected = (stat.minDamage + stat.maxDamage) / 2;
+            }
+            groups[parent].damage += expected * stat.likelihood;
+        }
+
+        // Add secondary damage sources
+        if (poisonDamage > 0) groups['_poison'] = { damage: poisonDamage, style: 'poison' };
+        if (familiarDamage > 0) groups['_familiar'] = { damage: familiarDamage, style: 'familiar' };
+        if (dreadnipDamage > 0) groups['_dreadnip'] = { damage: dreadnipDamage, style: 'dreadnip' };
+        if (conjureDamage > 0) groups['_conjure'] = { damage: conjureDamage, style: 'conjure' };
+
+        // Sort by damage descending
+        const sorted = Object.entries(groups)
+            .map(([key, val]) => ({
+                key,
+                label: key.startsWith('_') ? key.slice(1).replace(/\b\w/g, l => l.toUpperCase()) : getDisplayName(key),
+                damage: Math.round(val.damage),
+                colour: STYLE_COLOURS[val.style] || STYLE_COLOURS.unknown,
+                icon: getIconPath(key)
+            }))
+            .sort((a, b) => b.damage - a.damage);
+
+        return sorted;
+    }
+
+    function updateBreakdownChart() {
+        if (!breakdownCanvas) return;
+        const data = buildBreakdownData();
+        if (data.length === 0) return;
+
+        const grandTotal = data.reduce((sum, d) => sum + d.damage, 0);
+        const iconSize = 20;
+
+        // Preload all icons
+        const icons = data.map(d => d.icon ? loadIcon(d.icon) : null);
+
+        if (breakdownChart) breakdownChart.destroy();
+
+        // Plugin to draw icons next to Y-axis labels
+        const iconPlugin = {
+            id: 'breakdownIcons',
+            afterDraw(chart) {
+                const { ctx, scales } = chart;
+                const yScale = scales.y;
+                if (!yScale) return;
+
+                data.forEach((d, i) => {
+                    const img = icons[i];
+                    if (!img || !img.complete || !img.naturalWidth) return;
+
+                    const y = yScale.getPixelForTick(i);
+                    // Draw icon to the left of the label area
+                    const x = yScale.left - iconSize - 4;
+                    ctx.drawImage(img, x, y - iconSize / 2, iconSize, iconSize);
+                });
+            }
+        };
+
+        // Wait for icons to load before first render
+        const pending = icons.filter(img => img && !img.complete);
+        if (pending.length > 0) {
+            let loaded = 0;
+            const onLoad = () => {
+                loaded++;
+                if (loaded >= pending.length && breakdownChart) {
+                    breakdownChart.draw();
+                }
+            };
+            pending.forEach(img => img.addEventListener('load', onLoad, { once: true }));
+        }
+
+        const ctx = breakdownCanvas.getContext('2d');
+        breakdownChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.label),
+                datasets: [{
+                    data: data.map(d => d.damage),
+                    backgroundColor: data.map(d => d.colour),
+                    borderColor: data.map(d => d.colour),
+                    borderWidth: 1,
+                    borderRadius: 3
+                }]
+            },
+            plugins: [iconPlugin],
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: { left: iconSize + 8 }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Damage Breakdown by Source',
+                        color: '#fff',
+                        font: { size: 14 }
+                    },
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => {
+                                const dmg = ctx.parsed.x;
+                                const pct = ((dmg / grandTotal) * 100).toFixed(1);
+                                return `${formatDmg(dmg)} (${pct}%)`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Expected Damage', color: '#fff' },
+                        ticks: {
+                            color: '#fff',
+                            callback: (value) => formatDmg(value)
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    y: {
+                        ticks: { color: '#fff', font: { size: 11 } },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    function toggleChart(name) {
+        expandedChart = expandedChart === name ? null : name;
+        // Rebuild chart after DOM updates when expanding
+        if (expandedChart) {
+            setTimeout(() => {
+                if (expandedChart === 'timeline') updateTimeSeriesChart();
+                else if (expandedChart === 'breakdown') updateBreakdownChart();
+                else if (expandedChart === 'distribution') updateChart();
+            }, 0);
+        }
     }
     
     // Calculate Gaussian parameters for TOTAL damage (sum of all hits)
@@ -531,11 +753,7 @@
         const ctx = timeSeriesCanvas.getContext('2d');
         const labels = series.map(s => s.tick);
 
-        const formatDmg = (num) => {
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num >= 100000) return (num / 1000).toFixed(0) + 'K';
-            return num.toLocaleString();
-        };
+
 
         // Build cumulative data aligned to the ticks in the series
         const hasPoisonData = poisonDamage > 0 && poisonPerTick.length > 0;
@@ -579,9 +797,9 @@
                 pointRadius: 0,
                 tension: 0.3
             },
-            // Mean line
+            // Mean line (ability damage only)
             {
-                label: 'Expected Damage',
+                label: 'Ability Damage',
                 data: series.map(s => s.mean),
                 borderColor: 'rgba(54, 162, 235, 1)',
                 backgroundColor: 'transparent',
@@ -673,12 +891,38 @@
             });
         }
 
+        // Add total damage line if there are any extra damage sources
+        const hasExtraSources = hasPoisonData || hasFamiliarData || hasDreadnipData || hasConjureData;
+        if (hasExtraSources) {
+            const totalData = series.map((s, i) => {
+                let total = s.mean;
+                if (hasPoisonData) total += (poisonData[i] || 0);
+                if (hasFamiliarData) total += (familiarData[i] || 0);
+                if (hasDreadnipData) total += (dreadnipData[i] || 0);
+                if (hasConjureData) total += (conjureData[i] || 0);
+                return total;
+            });
+            datasets.push({
+                label: 'Total Damage',
+                data: totalData,
+                borderColor: '#fff',
+                backgroundColor: 'transparent',
+                borderWidth: 2.5,
+                fill: false,
+                pointRadius: 0,
+                hitRadius: 10,
+                tension: 0.3,
+                borderDash: [6, 3]
+            });
+        }
+
         // Build legend filter list dynamically
-        const visibleLabels = ['Expected Damage', '68% CI Upper', '95% CI Upper'];
+        const visibleLabels = ['Ability Damage', '68% CI Upper', '95% CI Upper'];
         if (hasPoisonData) visibleLabels.push('Poison Damage');
         if (hasFamiliarData) visibleLabels.push('Familiar Damage');
         if (hasDreadnipData) visibleLabels.push('Dreadnip Damage');
         if (hasConjureData) visibleLabels.push('Conjure Damage');
+        if (hasExtraSources) visibleLabels.push('Total Damage');
 
         timeSeriesChart = new Chart(ctx, {
             type: 'line',
@@ -706,8 +950,11 @@
                         callbacks: {
                             title: (ctx) => `Tick ${ctx[0].label}`,
                             label: (ctx) => {
-                                if (ctx.dataset.label === 'Expected Damage') {
-                                    return `Expected: ${formatDmg(ctx.parsed.y)}`;
+                                if (ctx.dataset.label === 'Ability Damage') {
+                                    return `Ability: ${formatDmg(ctx.parsed.y)}`;
+                                }
+                                if (ctx.dataset.label === 'Total Damage') {
+                                    return `Total: ${formatDmg(ctx.parsed.y)}`;
                                 }
                                 if (ctx.dataset.label === 'Poison Damage') {
                                     return `Poison: ${formatDmg(ctx.parsed.y)}`;
@@ -767,82 +1014,107 @@
         conjurePerTick;
         updateTimeSeriesChart();
     }
+    $: if (distributionStats && breakdownCanvas) {
+        poisonDamage;
+        familiarDamage;
+        dreadnipDamage;
+        conjureDamage;
+        updateBreakdownChart();
+    }
 
     onMount(() => {
         updateChart();
         updateTimeSeriesChart();
+        updateBreakdownChart();
     });
 
     onDestroy(() => {
         if (chart) chart.destroy();
         if (timeSeriesChart) timeSeriesChart.destroy();
+        if (breakdownChart) breakdownChart.destroy();
     });
 </script>
 
 <div class="damage-chart-container">
-    <button class="chart-header-btn" on:click={toggleCollapse}>
-        <span class="chart-title">Damage Distribution</span>
-        <svg
-            class="collapse-icon-chart"
-            class:rotated={!isCollapsed}
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            aria-hidden="true"
-        >
-            <polyline points="6,9 12,15 18,9"></polyline>
-        </svg>
-    </button>
-    
-    {#if !isCollapsed}
-        <div class="chart-wrapper">
-            <canvas bind:this={timeSeriesCanvas}></canvas>
-        </div>
-        <div class="chart-wrapper">
-            <canvas bind:this={chartCanvas}></canvas>
-        </div>
-        
-        {#if distributionStats.length > 0}
-            <div class="distribution-info">
-                <h4>Distribution Statistics</h4>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="info-label">Total Hits:</span>
-                        <span class="info-value">{distributionStats.length}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Abilities Used:</span>
-                        <span class="info-value">{new Set(distributionStats.map(s => s.ability)).size}</span>
-                    </div>
-                </div>
-                
+    {#if expandedChart === null}
+        <!-- Thumbnail overview row -->
+        <div class="thumbnail-row">
+            <button class="thumbnail-card" on:click={() => toggleChart('timeline')}>
+                <svg class="thumbnail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <polyline points="4,18 8,12 12,14 16,8 20,10"></polyline>
+                    <line x1="4" y1="20" x2="20" y2="20"></line>
+                    <line x1="4" y1="4" x2="4" y2="20"></line>
+                </svg>
+                <span class="thumbnail-title">Cumulative Damage</span>
+                {#if totalDamage > 0}
+                    <span class="thumbnail-stat">{formatDmg(totalDamage)}</span>
+                {/if}
+            </button>
+            <button class="thumbnail-card" on:click={() => toggleChart('breakdown')}>
+                <svg class="thumbnail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="4" y="4" width="12" height="3" rx="1"></rect>
+                    <rect x="4" y="10" width="9" height="3" rx="1"></rect>
+                    <rect x="4" y="16" width="6" height="3" rx="1"></rect>
+                </svg>
+                <span class="thumbnail-title">Damage Breakdown</span>
+                {#if distributionStats.length > 0}
+                    <span class="thumbnail-stat">{new Set(distributionStats.map(s => getParentKey(s.ability))).size} sources</span>
+                {/if}
+            </button>
+            <button class="thumbnail-card" on:click={() => toggleChart('distribution')}>
+                <svg class="thumbnail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M4,20 Q8,20 10,16 Q12,4 14,16 Q16,20 20,20"></path>
+                    <line x1="4" y1="20" x2="20" y2="20"></line>
+                </svg>
+                <span class="thumbnail-title">Distribution</span>
                 {#if gaussianParams.stdDev > 0}
-                    <div class="confidence-intervals">
-                        <h4>Confidence Intervals</h4>
-                        <div class="confidence-grid">
-                            <div class="confidence-item">
-                                <span class="confidence-label">68% Confidence:</span>
-                                <span class="confidence-value">{confidence68.lower.toLocaleString()} - {confidence68.upper.toLocaleString()}</span>
-                            </div>
-                            <div class="confidence-item">
-                                <span class="confidence-label">95% Confidence:</span>
-                                <span class="confidence-value">{confidence95.lower.toLocaleString()} - {confidence95.upper.toLocaleString()}</span>
-                            </div>
-                            <div class="confidence-item">
-                                <span class="confidence-label">Mean:</span>
-                                <span class="confidence-value">{Math.round(gaussianParams.mean).toLocaleString()}</span>
-                            </div>
-                            <div class="confidence-item">
-                                <span class="confidence-label">Standard Deviation:</span>
-                                <span class="confidence-value">{Math.round(gaussianParams.stdDev).toLocaleString()}</span>
-                            </div>
+                    <span class="thumbnail-stat">{formatDmg(Math.round(gaussianParams.mean))} avg</span>
+                {/if}
+            </button>
+        </div>
+    {:else}
+        <!-- Expanded chart view -->
+        <button class="back-btn" on:click={() => toggleChart(expandedChart)}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+            Back to overview
+        </button>
+
+        {#if expandedChart === 'timeline'}
+            <div class="chart-wrapper">
+                <canvas bind:this={timeSeriesCanvas}></canvas>
+            </div>
+        {:else if expandedChart === 'breakdown'}
+            <div class="chart-wrapper" style="height: {Math.max(200, buildBreakdownData().length * 28 + 60)}px">
+                <canvas bind:this={breakdownCanvas}></canvas>
+            </div>
+        {:else if expandedChart === 'distribution'}
+            <div class="chart-wrapper">
+                <canvas bind:this={chartCanvas}></canvas>
+            </div>
+            {#if gaussianParams.stdDev > 0}
+                <div class="distribution-info">
+                    <div class="confidence-grid">
+                        <div class="confidence-item">
+                            <span class="confidence-label">Mean:</span>
+                            <span class="confidence-value">{Math.round(gaussianParams.mean).toLocaleString()}</span>
+                        </div>
+                        <div class="confidence-item">
+                            <span class="confidence-label">Std Dev:</span>
+                            <span class="confidence-value">{Math.round(gaussianParams.stdDev).toLocaleString()}</span>
+                        </div>
+                        <div class="confidence-item">
+                            <span class="confidence-label">68% CI:</span>
+                            <span class="confidence-value">{confidence68.lower.toLocaleString()} - {confidence68.upper.toLocaleString()}</span>
+                        </div>
+                        <div class="confidence-item">
+                            <span class="confidence-label">95% CI:</span>
+                            <span class="confidence-value">{confidence95.lower.toLocaleString()} - {confidence95.upper.toLocaleString()}</span>
                         </div>
                     </div>
-                {/if}
-            </div>
+                </div>
+            {/if}
         {/if}
     {/if}
 </div>
@@ -856,34 +1128,70 @@
         margin: 0.5rem 0;
     }
 
-    .chart-header-btn {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding: 0.4rem 0.75rem;
-        background: none;
-        border: none;
+    /* Thumbnail row */
+    .thumbnail-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    .thumbnail-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid #555;
+        border-radius: 6px;
+        padding: 0.75rem 0.5rem;
         cursor: pointer;
         color: #fff;
+        transition: border-color 0.15s, background 0.15s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
     }
 
-    .chart-header-btn:hover {
-        background: rgba(255, 255, 255, 0.03);
+    .thumbnail-card:hover {
+        border-color: #888;
+        background: rgba(255, 255, 255, 0.06);
     }
 
-    .chart-title {
-        font-size: 0.95rem;
+    .thumbnail-icon {
+        width: 28px;
+        height: 28px;
+        color: #888;
+    }
+
+    .thumbnail-card:hover .thumbnail-icon {
+        color: #bbb;
+    }
+
+    .thumbnail-title {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #ccc;
+    }
+
+    .thumbnail-stat {
+        font-size: 0.75rem;
+        color: #4ade80;
         font-weight: 600;
     }
 
-    .collapse-icon-chart {
-        color: #888;
-        transition: transform 0.2s ease;
+    /* Back button */
+    .back-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.4rem 0.75rem;
+        background: none;
+        border: none;
+        color: #aaa;
+        cursor: pointer;
+        font-size: 0.8rem;
     }
 
-    .collapse-icon-chart.rotated {
-        transform: rotate(180deg);
+    .back-btn:hover {
+        color: #fff;
     }
 
     .chart-wrapper {
@@ -892,84 +1200,50 @@
         padding: 0 0.75rem;
         margin: 0 0 0.5rem;
     }
-    
+
     .distribution-info {
-        margin-top: 0.5rem;
         padding: 0.5rem 0.75rem;
         border-top: 1px solid #444;
     }
-    
-    .distribution-info h4 {
-        margin: 0 0 0.5rem 0;
-        color: #fff;
-        font-size: 1rem;
-    }
-    
-    .info-grid {
+
+    .confidence-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 0.5rem;
     }
-    
-    .info-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.25rem 0;
-    }
-    
-    .info-label {
-        color: #ccc;
-        font-size: 0.9rem;
-    }
-    
-    .info-value {
-        color: #fff;
-        font-weight: bold;
-        font-size: 0.9rem;
-    }
-    
-    .confidence-intervals {
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid #444;
-    }
-    
-    .confidence-intervals h4 {
-        margin: 0 0 0.5rem 0;
-        color: #fff;
-        font-size: 1rem;
-    }
-    
-    .confidence-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 0.5rem;
-    }
-    
+
     .confidence-item {
         display: flex;
         justify-content: space-between;
         padding: 0.25rem 0;
     }
-    
+
     .confidence-label {
         color: #ccc;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
-    
+
     .confidence-value {
         color: #4ade80;
         font-weight: bold;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
-    
+
     @media (max-width: 768px) {
+        .thumbnail-row {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
         .chart-wrapper {
             height: 300px;
         }
 
-        .info-grid {
-            grid-template-columns: 1fr;
+        .thumbnail-card {
+            padding: 0.5rem 0.25rem;
+        }
+
+        .thumbnail-title {
+            font-size: 0.7rem;
         }
     }
 </style> 

@@ -777,7 +777,7 @@
 		onkeydown={handleKeypress}
 		style="--stack-font-size: {stackFontSize}px; {uiStore.stallingAbility ? `cursor: url('${allAbils[uiStore.stallingAbility].icon}') 15 15, wait;` : ''}">
 		<section class="grid grid-cols-12 gap-6 auto-rows-min">
-			<div class="col-span-{uiStore.settingsPanelCollapsed ? '12' : '7'} relative">
+			<div class="col-span-{uiStore.settingsPanelCollapsed ? '12' : '8'} relative">
 				<div class="card card-rotation">
 					{#if uiStore.settingsPanelCollapsed}
 						<button 
@@ -812,6 +812,7 @@
 							familiarPerTick={rotationStore.familiarPerTick}
 							dreadnipPerTick={rotationStore.dreadnipPerTick}
 							conjurePerTick={rotationStore.conjurePerTick}
+							{allAbils}
 						/>
 					{/if}
                     <RotationConfigManager
@@ -895,7 +896,7 @@
                                 ondragleave={(e) => handleDragLeave(e, index)}
                             >
                                 <span class="cell-number">{index}</span>
-                                {#if ability}
+                                {#if ability && allAbils[ability]}
                                     <img src={allAbils[ability].icon}
                                         alt={allAbils[ability].title}
                                         style="width: 100%; height: 100%;"
@@ -903,8 +904,10 @@
                                         draggable="true"
                                         ondragstart={(e) => handleDragStartBar(e, ability, index)}
                                     />
+                                {:else if ability}
+                                    <span class="cell-number" title="Unknown: {ability}" style="font-size: 0.5rem; color: #f66;">?</span>
                                 {/if}
-                                {#if rotationStore.stalledAbilities[index]}
+                                {#if rotationStore.stalledAbilities[index] && allAbils[rotationStore.stalledAbilities[index]]}
                                     <img
                                         class="stalled-ability"
                                         src={allAbils[rotationStore.stalledAbilities[index]].icon}
@@ -984,7 +987,7 @@
                     </div>
                 </div>
             </div>
-            <div class="settings-panel col-span-{uiStore.settingsPanelCollapsed ? '0' : '5'} {uiStore.settingsPanelCollapsed ? 'collapsed' : ''}"
+            <div class="settings-panel col-span-{uiStore.settingsPanelCollapsed ? '0' : '4'} {uiStore.settingsPanelCollapsed ? 'collapsed' : ''}"
 				style={uiStore.settingsPanelCollapsed ? 'visibility: hidden; height: 0; margin: 0;' : ''}>
                 <div class="settings-content">
                     <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />

@@ -123,10 +123,10 @@
 
         if (totalLikelihood > 0) {
             return {
-                total: Math.round(totalDamage / totalLikelihood),
-                mean: Math.round(totalDamage / totalLikelihood),
-                min: Math.round(minDamage / totalLikelihood),
-                max: Math.round(maxDamage / totalLikelihood)
+                total: Math.round(totalDamage),
+                mean: Math.round(totalDamage),
+                min: Math.round(minDamage),
+                max: Math.round(maxDamage)
             };
         }
 
