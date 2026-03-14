@@ -218,7 +218,8 @@ function calc_boosted_ad(settings, dmgObject) {
         if ([SETTINGS.MELEE_MH_VALUES.KERIS, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS].includes(settings[SETTINGS.MH])) {
             base_damage = Math.floor(base_damage/100*100*1.333);
         }
-        else if ([SETTINGS.MELEE_MH_VALUES.KERIS_PROC, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
+        else if ([SETTINGS.MELEE_MH_VALUES.KERIS_PROC, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC,
+                SETTINGS.MELEE_MH_VALUES.KERIS_AVG, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_AVG, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_AVG].includes(settings[SETTINGS.MH])) {
             base_damage = Math.floor(base_damage/100*100*3);
         }
     }
@@ -1748,11 +1749,55 @@ function hit_damage_calculation(settings, rotationCalc = false) {
     settings = style_specific_unification(settings); // initialise some settings
     let total_damage = calc_damage_object(settings); // calculate the ability
     total_damage = apply_additional(settings, total_damage, rotationCalc);
-    //TODO add next cast next hit next tick etc
+    
+    // set keris average non proc
+    if (settings[SETTINGS.MH] === SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_AVG) {
+        settings[SETTINGS.MELEE_MH] = SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS;
+        settings = style_specific_unification(settings);
+        let keris_damage = calc_damage_object(settings);
+        keris_damage += apply_additional(settings, keris_damage, rotationCalc);
+
+        let keris_proc_rate = 0.02;
+        if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.DESERT) {
+            keris_proc_rate = 0.033
+        }
+        total_damage = Math.floor((1-keris_proc_rate) * keris_damage + keris_proc_rate * total_damage);
+    }
+
+    // set keris average non proc
+    if (settings[SETTINGS.MH] === SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_AVG) {
+        settings[SETTINGS.MELEE_MH] = SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS;
+        settings = style_specific_unification(settings);
+        let keris_damage = calc_damage_object(settings);
+        keris_damage += apply_additional(settings, keris_damage, rotationCalc);
+
+        let keris_proc_rate = 0.02;
+        if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.DESERT) {
+            keris_proc_rate = 0.033
+        }
+        total_damage = Math.floor((1-keris_proc_rate) * keris_damage + keris_proc_rate * total_damage);
+    }
+
+    // set keris average non proc
+    if (settings[SETTINGS.MH] === SETTINGS.MELEE_MH_VALUES.KERIS_AVG) {
+        settings[SETTINGS.MELEE_MH] = SETTINGS.MELEE_MH_VALUES.KERIS;
+        settings = style_specific_unification(settings);
+        let keris_damage = calc_damage_object(settings);
+        keris_damage += apply_additional(settings, keris_damage, rotationCalc);
+
+        let keris_proc_rate = 0.02;
+        if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.DESERT) {
+            keris_proc_rate = 0.033
+        }
+        total_damage = Math.floor((1-keris_proc_rate) * keris_damage + keris_proc_rate * total_damage);
+    }
+
     if (settings[SETTINGS.DAMAGE_UNITS] === SETTINGS.DAMAGE_UNITS_VALUES.PERCENT) {
         total_damage = total_damage/calc_base_ad(settings) * 100;
         total_damage = parseFloat(total_damage.toFixed(2))
     }
+
+
     return total_damage;
 }
 

@@ -184,6 +184,13 @@ const weapons = {
         type: 'none',
         classification: 'none'
     },
+    'keris avg': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 50,
+        type: 'none',
+        classification: 'none'
+    },
     'primed keris': {
         style: 'melee',
         'weapon type': 'main-hand',
@@ -198,6 +205,13 @@ const weapons = {
         type: 'none',
         classification: 'none'
     },
+    'primed keris avg': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 70,
+        type: 'none',
+        classification: 'none'
+    },
     'consecrated keris': {
         style: 'melee',
         'weapon type': 'main-hand',
@@ -206,6 +220,13 @@ const weapons = {
         classification: 'none'
     },
     'consecrated keris proc': {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        tier: 80,
+        type: 'none',
+        classification: 'none'
+    },
+    'consecrated keris avg': {
         style: 'melee',
         'weapon type': 'main-hand',
         tier: 80,
