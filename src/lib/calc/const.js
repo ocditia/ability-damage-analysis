@@ -1715,7 +1715,6 @@ const ABILITIES = {
     WRACK: 'wrack',
     IMPACT: 'impact',
     WRACK_AND_RUIN: 'wrack and ruin',
-    DRAGON_BREATH: 'dragon breath',
     SONIC_WAVE: 'sonic wave',
     SHOCK: 'shock',
     CONCENTRATED_BLAST_1: 'concentrated blast 1',

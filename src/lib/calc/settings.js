@@ -357,6 +357,7 @@ const SETTINGS = {
         AM_ZI: 'am-zi',
         AM_HEJ: 'am-hej',
         DESERT: 'desert amulet 4',
+        DRAGON_RIDER_NECKLACE: 'dragon rider necklace',
     },
     CAPE: 'cape',
     CAPE_VALUES: {
@@ -1454,7 +1455,7 @@ const settingsConfig = {
             { text: 'Moonstone amulet', value: SETTINGS.NECKLACE_VALUES.MOONSTONE },
             { text: 'AOS(or)', value: SETTINGS.NECKLACE_VALUES.AOSOR },
             { text: 'AOS', value: SETTINGS.NECKLACE_VALUES.AOS },
-            { text: 'Reaper(or)', value: SETTINGS.NECKLACE_VALUES.REAPEROR }, // TODO: fix missing reference for SETTINGS.REAPEROR and SETTINGS.REAPER
+            { text: 'Reaper(or)', value: SETTINGS.NECKLACE_VALUES.REAPEROR },
             { text: 'Reaper', value: SETTINGS.NECKLACE_VALUES.REAPER },
             { text: 'Salve (e)', value: SETTINGS.NECKLACE_VALUES.SALVEE },
             { text: 'Salve', value: SETTINGS.NECKLACE_VALUES.SALVE },
@@ -1463,6 +1464,7 @@ const settingsConfig = {
             { text: 'Am-zi', value: SETTINGS.NECKLACE_VALUES.AM_ZI },
             { text: 'Am-hej', value: SETTINGS.NECKLACE_VALUES.AM_HEJ },
             { text: 'Desert ammy 4', value: SETTINGS.NECKLACE_VALUES.DESERT },
+            { text: 'Dragon rider necklace', value: SETTINGS.NECKLACE_VALUES.DRAGON_RIDER_NECKLACE },
         ]
     },
     [SETTINGS.CAPE]: {

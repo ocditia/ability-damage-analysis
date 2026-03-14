@@ -923,6 +923,11 @@ function calc_multiplicative_pve_buffs(settings, dmgObject) {
         boost = Math.floor(boost * 1.2);
     }
 
+    // dragon rider necklace
+    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.DRAGON_RIDER_NECKLACE && settings['ability'] === ABILITIES.DRAGON_BREATH_BETA) {
+        boost = Math.floor(boost * 1.1);
+    }
+
     // swiftness of the aviansie (egwd kree'arra buff)
     if (settings['swiftness of the aviansie'] === true) {
         boost = Math.floor(boost * 1.1);
