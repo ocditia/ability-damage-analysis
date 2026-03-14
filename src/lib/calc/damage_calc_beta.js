@@ -1760,12 +1760,9 @@ function hit_damage_calculation(settings, rotationCalc = false) {
         settings[SETTINGS.MELEE_MH] = SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS;
         settings = style_specific_unification(settings);
         let keris_damage = calc_damage_object(settings);
-        keris_damage += apply_additional(settings, keris_damage, rotationCalc);
+        keris_damage = apply_additional(settings, keris_damage, rotationCalc); 
 
         let keris_proc_rate = 0.02;
-        if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.DESERT) {
-            keris_proc_rate = 0.033
-        }
         total_damage = Math.floor((1-keris_proc_rate) * keris_damage + keris_proc_rate * total_damage);
     }
 
@@ -1814,6 +1811,7 @@ function apply_additional(settings, total_damage) {
         total_damage += calc_sgb(settings, total_damage);
     }
 
+    // bolg logic
     if (settings['bolg damage']) {
             total_damage += calc_bolg(settings)
             delete settings['bolg damage'];
@@ -1834,11 +1832,6 @@ function apply_additional(settings, total_damage) {
     if ('fsoa damage' in settings) {
         total_damage += calc_fsoa(settings);
         delete settings['fsoa damage'];
-    }
-
-    // handle igneous cleave bleed
-    if (settings['ability'] === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
-        total_damage += calc_igneous_bleed(settings);
     }
 
     // scripture of jas
