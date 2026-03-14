@@ -4,7 +4,7 @@
 
 import { ABILITIES, abils } from '../../const/const';
 import { prayers } from '../../const/prayers';
-import { SETTINGS } from '../../settings';
+import { SETTINGS } from '../../settings_rb';
 
 /**
  * Calculate the prayer boost for an ability based on settings

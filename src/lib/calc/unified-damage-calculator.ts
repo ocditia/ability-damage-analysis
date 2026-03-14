@@ -6,7 +6,7 @@
  */
 
 import { abils, ABILITIES } from './const/const';
-import { SETTINGS } from './settings';
+import { SETTINGS } from './settings_rb';
 import { calculateRotationDamageCore } from './rotation_builder/rotation-damage-calculator';
 import type { RotationInput, SingleAbilityInput } from './types';
 

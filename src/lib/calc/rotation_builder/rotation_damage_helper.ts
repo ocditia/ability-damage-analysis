@@ -1,5 +1,5 @@
 import { create_damage_object } from './rota_object_helper';
-import { SETTINGS } from '../settings';
+import { SETTINGS } from '../settings_rb';
 import { ABILITIES, abils } from '../const/const';
 import { on_cast, on_hit, COOLDOWN_PREFIX } from './damage_calc_new';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';

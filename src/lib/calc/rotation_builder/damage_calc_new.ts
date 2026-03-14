@@ -1,6 +1,6 @@
 import { ABILITIES, abils } from '../const/const';
 import { create_damage_object } from './rota_object_helper';
-import { SETTINGS } from '../settings';
+import { SETTINGS } from '../settings_rb';
 import { calc_crit_damage, get_hit_sequence, calc_split_soul_hit, addAdrenaline } from './calculation_utils';
 import { handle_sgb } from './rotation_damage_helper';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';

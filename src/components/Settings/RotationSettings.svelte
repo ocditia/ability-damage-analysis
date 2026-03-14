@@ -5,7 +5,7 @@
     import Select from '../../components/Settings/Select.svelte';
     import TabButton from '../UI/TabButton.svelte';
     import GradientSeparator from '../UI/GradientSeparator.svelte';
-    import { SETTINGS, settingsConfig } from '$lib/calc/settings';
+    import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { bossPresets, getBossPresetWithEnrage } from '$lib/familiars/boss_presets';

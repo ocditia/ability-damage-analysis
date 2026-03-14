@@ -4,7 +4,7 @@
  */
 
 import { ABILITIES, abils, gear } from '../../const/const';
-import { SETTINGS } from '../../settings';
+import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
 import { EffectContext } from './types';
 import { calculateVoidBoost } from './equipment_effects';

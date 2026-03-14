@@ -1,6 +1,6 @@
 import { ABILITIES, abils, weapons } from '../const/const';
 import { prayers } from '../const/prayers';
-import { SETTINGS } from '../settings';
+import { SETTINGS } from '../settings_rb';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
 import { Logger, LogCategory } from '../../utils/Logger';
 

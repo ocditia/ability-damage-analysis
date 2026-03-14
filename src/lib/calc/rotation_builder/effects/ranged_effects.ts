@@ -3,7 +3,7 @@
  */
 
 import { ABILITIES, abils, weapons } from '../../const/const';
-import { SETTINGS } from '../../settings';
+import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
 import { EffectContext, BoostedADResult, StyleEffects } from './types';
 import { handle_wen_buff } from '../rotation_damage_helper';

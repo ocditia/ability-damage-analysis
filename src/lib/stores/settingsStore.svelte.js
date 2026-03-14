@@ -1,5 +1,5 @@
-import { settingsConfig } from '$lib/calc/settings';
-import { SETTINGS } from '$lib/calc/settings';
+import { settingsConfig } from '$lib/calc/settings_rb';
+import { SETTINGS } from '$lib/calc/settings_rb';
 
 // Settings store
 export const settingsStore = $state({

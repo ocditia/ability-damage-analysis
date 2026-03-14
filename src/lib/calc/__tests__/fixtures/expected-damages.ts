@@ -19,7 +19,7 @@
  */
 
 import { ABILITIES } from '../../const/const';
-import { SETTINGS } from '../../settings';
+import { SETTINGS } from '../../settings_rb';
 
 export interface ExpectedDamage {
     min: number;

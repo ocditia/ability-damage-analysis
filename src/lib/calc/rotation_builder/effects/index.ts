@@ -6,7 +6,7 @@
  */
 
 import { ABILITIES, abils, weapons } from '../../const/const';
-import { SETTINGS } from '../../settings';
+import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution, DamageObject } from '../../types';
 import { EffectContext, BoostedADResult, StyleEffects } from './types';
 

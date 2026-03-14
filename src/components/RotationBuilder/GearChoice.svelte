@@ -1,5 +1,5 @@
 <script>
-    import { SETTINGS } from '$lib/calc/settings';
+    import { SETTINGS } from '$lib/calc/settings_rb';
     import { GearSlots } from '$lib/calc/rotation_builder/gear';
     import { Logger, LogCategory } from '$lib/utils/Logger';
 

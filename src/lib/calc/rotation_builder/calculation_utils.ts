@@ -3,7 +3,7 @@
  * These have no dependencies on on_cast/on_hit to avoid circular imports
  */
 
-import { SETTINGS } from '../settings';
+import { SETTINGS } from '../settings_rb';
 import { ABILITIES, abils, weapons } from '../const/const';
 
 // =============================================================================

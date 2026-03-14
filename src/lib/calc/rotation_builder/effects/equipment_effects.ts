@@ -3,7 +3,7 @@
  */
 
 import { ABILITIES, abils } from '../../const/const';
-import { SETTINGS } from '../../settings';
+import { SETTINGS } from '../../settings_rb';
 
 type CombatStyle = 'magic' | 'melee' | 'ranged' | 'necromancy';
 
