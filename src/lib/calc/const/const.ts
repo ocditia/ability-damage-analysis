@@ -1138,7 +1138,7 @@ const armour: Record<string, ArmourPiece> = {
         slot: 'ring',
         style: 'hybrid'
     },
-    'channelers ring': {
+    "channeller's ring": {
         'necromancy strength': 0,
         'magic strength': 30.4,
         'melee strength': 0,
@@ -1147,7 +1147,7 @@ const armour: Record<string, ArmourPiece> = {
         slot: 'ring',
         style: 'magic'
     },
-    'channelers ring+': {
+    "channeller's ring+": {
         'necromancy strength': 0,
         'magic strength': 30.4,
         'melee strength': 0,
@@ -1156,7 +1156,7 @@ const armour: Record<string, ArmourPiece> = {
         slot: 'ring',
         style: 'magic'
     },
-    'stalkers ring': {
+    "stalker's ring": {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -1165,7 +1165,7 @@ const armour: Record<string, ArmourPiece> = {
         slot: 'ring',
         style: 'ranged'
     },
-    'stalkers ring+': {
+    "stalker's ring+": {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -1174,7 +1174,7 @@ const armour: Record<string, ArmourPiece> = {
         slot: 'ring',
         style: 'ranged'
     },
-    'champions ring': {
+    "champion's ring": {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 30.4,
@@ -1183,7 +1183,7 @@ const armour: Record<string, ArmourPiece> = {
         slot: 'ring',
         style: 'melee'
     },
-    'champions ring+': {
+    "champion's ring+": {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 30.4,
@@ -5142,8 +5142,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
-    
-        cooldown: 10.2,},
+        },
     [ABILITIES.SNIPE]: {
         // ability name
         'min hit': 1.6, // min % of abil expressed as a decimal

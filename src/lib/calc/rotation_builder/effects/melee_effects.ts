@@ -70,11 +70,6 @@ function applyAbilitySpecificEffects(
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.4);
     }
 
-    // Slaughter walk bonus
-    if (abilityKey === ABILITIES.SLAUGHTER && settings[SETTINGS.WALKED_TARGET] === true) {
-        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 3);
-    }
-
     // Punish low HP bonus
     if (abilityKey === ABILITIES.PUNISH && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2.5);

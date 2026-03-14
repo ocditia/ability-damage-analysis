@@ -83,11 +83,6 @@ function applyAbilitySpecificEffects(
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
     }
 
-    // Combust walk bonus
-    if (abilityKey === ABILITIES.COMBUST && settings[SETTINGS.WALKED_TARGET] === true) {
-        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2);
-    }
-
     // Wrack bound/stunned bonus
     if (
         abilityKey === ABILITIES.WRACK &&
@@ -154,7 +149,7 @@ function applyMinVarEffects(
 
     // Channeler's ring
     if (
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELERS_RING &&
+        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLERS_RING &&
         abils[abilityKey]?.['ability classification'] === 'channel'
     ) {
         distribution['min hit'] = Math.floor(distribution['min hit'] * 1.04);

@@ -1,5 +1,5 @@
 import { abils, ABILITIES } from '../const/const';
-import { hit_damage_calculation, style_specific_unification, calc_base_ad, apply_additional } from '../damage_calc_rb';
+import { style_specific_unification, calc_base_ad, apply_additional } from '../damage_calc_rb';
 import { get_hit_sequence } from './calculation_utils';
 import { calc_channelled_hit, handleBuffs, get_user_value, handle_edraco, getConjureDamageMultiplier } from './rotation_damage_helper';
 import { SETTINGS } from '../settings_rb';
@@ -229,6 +229,11 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         strengthLevel: settingsCopy[SETTINGS.STRENGTH_LEVEL]
     });
 
+    // Check if rotation contains any melee abilities (for Vestments max adrenaline)
+    settingsCopy['_hasMeleeAbilities'] = rotationStore.abilityBar.some(
+        (abilKey: string | null) => abilKey && abils[abilKey as ABILITIES]?.['main style'] === 'melee'
+    );
+
     // Initialize familiar spec points and regen accumulator
     settingsCopy[SETTINGS.FAMILIAR_SPEC_POINTS] = 60;
     settingsCopy[SETTINGS.FAMILIAR_SPEC_REGEN_ACCUMULATOR] = 0;
@@ -311,6 +316,13 @@ export function calculateRotationDamageCore(
     }
 
     const settingsCopy = structuredClone(settings);
+
+    // Check if rotation contains any melee abilities (for Vestments max adrenaline)
+    if (settingsCopy['_hasMeleeAbilities'] === undefined) {
+        settingsCopy['_hasMeleeAbilities'] = rotation.abilityBar.some(
+            (abilKey: string | null) => abilKey && abils[abilKey as ABILITIES]?.['main style'] === 'melee'
+        );
+    }
 
     // Initialize familiar spec points and regen accumulator
     settingsCopy[SETTINGS.FAMILIAR_SPEC_POINTS] = 60;
@@ -811,14 +823,15 @@ function processAbilityCore(
     // Cooldowns are now tracked via timers in on_stall (damage_calc_new.ts)
 
     if (abilityKey in allAbilities) {
-        if (allAbilities[abilityKey].calc == hit_damage_calculation) {
-            processSingleHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
-        } else if (isChannelled(settingsCopy, abilityKey)) {
+        const classification = abils[abilityKey]?.['ability classification'];
+        if (isChannelled(settingsCopy, abilityKey)) {
             // Handled in processAbilityTicksCore
-        } else if (abils[abilityKey]['ability classification'] === 'multihit') {
+        } else if (classification === 'multihit') {
             processMultiHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
-        } else {
+        } else if (classification === 'bleed' || classification === 'burn' || classification === 'dot') {
             processBleedAbility(rotationState, settingsCopy, abilityKey, hit_tick);
+        } else {
+            processSingleHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         }
     }
 
@@ -951,14 +964,15 @@ function processAbility(
     // Cooldowns are now tracked via timers in on_stall (damage_calc_new.ts)
 
     if (abilityKey in allAbilities) {
-        if (allAbilities[abilityKey].calc == hit_damage_calculation) {
-            processSingleHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
-        } else if (isChannelled(settingsCopy, abilityKey)) {
+        const classification = abils[abilityKey]?.['ability classification'];
+        if (isChannelled(settingsCopy, abilityKey)) {
             // Handled in processAbilityTicks
-        } else if (abils[abilityKey]['ability classification'] === 'multihit') {
+        } else if (classification === 'multihit') {
             processMultiHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
-        } else {
+        } else if (classification === 'bleed' || classification === 'burn' || classification === 'dot') {
             processBleedAbility(rotationState, settingsCopy, abilityKey, hit_tick);
+        } else {
+            processSingleHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         }
     }
 
@@ -971,14 +985,15 @@ function processStalledAbility(
     abilityKey: string, 
     hit_tick: number
 ) {
-    if (allAbilities[abilityKey].calc == hit_damage_calculation) {
-        processSingleHitAbility(state, settingsCopy, abilityKey, hit_tick);
-    } else if (isChannelled(settingsCopy, abilityKey)) {
+    const classification = abils[abilityKey]?.['ability classification'];
+    if (isChannelled(settingsCopy, abilityKey)) {
         // Handled in processAbilityTicks
-    } else if (abils[abilityKey]['ability classification'] === 'multihit') {
+    } else if (classification === 'multihit') {
         processMultiHitAbility(state, settingsCopy, abilityKey, hit_tick);
-    } else {
+    } else if (classification === 'bleed' || classification === 'burn' || classification === 'dot') {
         processBleedAbility(state, settingsCopy, abilityKey, hit_tick);
+    } else {
+        processSingleHitAbility(state, settingsCopy, abilityKey, hit_tick);
     }
 }
 
@@ -1342,7 +1357,7 @@ function copyStacks(tick: number, settings: any, timers?: Record<string, number>
                 // Calculate which rows this buff is active on
                 for (let rowIndex = 0; rowIndex < rotationStore.buffs[key].buffTicks.length; rowIndex++) {
                     const tickValue = rotationStore.buffs[key].buffTicks[rowIndex];
-                    if (tickValue !== 0 && tickValue !== false && tickValue !== null && tickValue !== 'none') {
+                    if (tickValue && tickValue !== 'none') {
                         rotationStore.buffs[key].activeRows.push(rowIndex);
                     }
                 }

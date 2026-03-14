@@ -176,7 +176,7 @@ const abilities = {
     [ABILITIES.AFTERSHOCK]: {
         title: 'Aftershock',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/zuriels_staff.png',
+        icon: '/effect_icons/Aftershock.png',
         common: false
     }
 };

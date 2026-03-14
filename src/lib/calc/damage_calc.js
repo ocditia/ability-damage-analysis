@@ -388,16 +388,6 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
         }
 
-        // combust walk
-        if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            if (settings[SETTINGS.LUNGING]>0) {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
-            }
-            else {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
-            }
-        }
-
         // wrack bound
         if (
             settings['ability'] === 'wrack' &&
@@ -471,10 +461,6 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + 0.06 * settings[SETTINGS.LUNGING]));
         }
 
-        // slaughter walk
-        if (settings['ability'] === ABILITIES.SLAUGHTER_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 3);
-        }
 
         // punish low
         if (settings['ability'] === ABILITIES.PUNISH && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
@@ -516,20 +502,6 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
         }
 
-        // frag lunging
-        if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1+0.06*settings[SETTINGS.LUNGING]));
-        }
-
-        // frag walk
-        if (settings['ability'] === ABILITIES.FRAGMENTATION_SHOT_HIT && settings[SETTINGS.WALKED_TARGET] === true) {
-            if (settings[SETTINGS.LUNGING]>0) {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.5);
-            }
-            else {
-                dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 2);
-            }
-        }
     }
 
     if (abils[settings['ability']]['main style'] === 'necromancy') {
@@ -1209,13 +1181,13 @@ function calc_crit_damage(settings) {
         }
     }
 
-    // channelers ring
+    // channellers ring
     if (
-        (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
+        (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E) &&
         abils[settings['ability']]['ability classification'] === 'channel' &&
         abils[settings['ability']]['main style'] === 'magic'
     ) {
-        crit_buff += 0.025 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
+        crit_buff += 0.025 * (1 + settings[SETTINGS.CHANNELLER_RING_STACKS]);
     }
 
     // champions ring

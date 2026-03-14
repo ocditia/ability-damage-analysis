@@ -29,11 +29,11 @@ export function calc_crit_damage(settings: Record<string, any>): number {
 
     // Channeler's ring (magic channels only)
     if (
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E &&
+        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E &&
         abils[settings['ability']]?.['ability classification'] === 'channel' &&
         abils[settings['ability']]?.['main style'] === 'magic'
     ) {
-        crit_buff += 0.025 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
+        crit_buff += 0.025 * (1 + settings[SETTINGS.CHANNELLER_RING_STACKS]);
     }
 
     // Champion's ring (melee, based on bleeds)
@@ -229,6 +229,16 @@ export function addAdrenaline(settings: Record<string, any>, amount: number) {
         amount *= 2;
     }
     let new_adren = settings[SETTINGS.ADRENALINE] + amount;
-    const max_adren = settings[SETTINGS.HEIGHTENED_SENSES] ? 110 : 100;
+
+    // Vestments of Havoc: full set (4 pieces) + melee abilities in rotation = +20 max adrenaline
+    const hasFullVestments = settings['_hasMeleeAbilities'] &&
+        settings[SETTINGS.MELEE_HELMET] === SETTINGS.MELEE_HELMET_VALUES.VESTMENTS &&
+        settings[SETTINGS.MELEE_BODY] === SETTINGS.MELEE_BODY_VALUES.VESTMENTS &&
+        settings[SETTINGS.MELEE_LEGS] === SETTINGS.MELEE_LEGS_VALUES.VESTMENTS &&
+        settings[SETTINGS.MELEE_BOOTS] === SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS;
+
+    let max_adren = 100 + (hasFullVestments ? 20 : 0);
+    if (settings[SETTINGS.HEIGHTENED_SENSES]) max_adren += 10;
+
     settings[SETTINGS.ADRENALINE] = settings[SETTINGS.CAP_ADRENALINE] ? Math.min(max_adren, new_adren) : new_adren;
 }

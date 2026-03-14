@@ -1,4 +1,4 @@
-import { ABILITIES } from '../calc/const.js';
+import { ABILITIES } from '../calc/const';
 import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc_beta.js';
 
 const abilities = {

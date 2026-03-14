@@ -1,4 +1,4 @@
-import { settingsConfig, SETTINGS } from '../settings.js';
+import { settingsConfig, SETTINGS } from '../settings_rb.js';
 import { SettingsCombatStyles } from './types/SettingsCombatStyles';
 
 /*
@@ -266,7 +266,7 @@ export function createStackTimings(barSize: number) {
                 image: '/effect_icons/essence_corruption.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: '#9932CC',
-                combatStyle: SettingsCombatStyles.NECROMANCY
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.DEATH_SPARK_STACKS]: {
                 title: 'Death Spark',
@@ -281,7 +281,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Soul Reave',
                 displaySetting: SETTINGS.SHOW_SOUL_REAVE_STACKS,
                 idx: -1,
-                image: '/effect_icons/residual_soul.png',
+                image: '/effect_icons/necromancy/Soul_Reave.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: '#7B68EE',
                 combatStyle: SettingsCombatStyles.NECROMANCY

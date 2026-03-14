@@ -404,21 +404,21 @@ const SETTINGS = {
     RING_VALUES: {
         NONE: 'none',
         REAVERS: 'reavers ring',
-        ZORGOTH: 'zorgoths soul ring',
+        ZORGOTH: 'zorgoth\'s soul ring',
         RODI: 'ring of death (i)',
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        CHANNELER: 'channelers ring',
-        CHANNELER_E: 'channelers ring+',
-        STALKER: 'stalkers ring',
-        STALKER_E: 'stalkers ring+',
-        CHAMPION: 'champions ring',
-        CHAMPION_E: 'champions ring+',
+        CHANNELLER: "channeller's ring",
+        CHANNELLER_E: "channeller's ring+",
+        STALKER: 'stalker\'s ring',
+        STALKER_E: 'stalker\'s ring+',
+        CHAMPION: 'champion\'s ring',
+        CHAMPION_E: 'champion\'s ring+',
         LOTD: 'luck of the dwarves',
         LOTD_I: 'luck of the dwarves (i)',
-        HSR: 'hazelmeres signet ring',
-        HSR_I: 'hazelmeres signet ring (i)',
+        HSR: 'hazelmere\'s signet ring',
+        HSR_I: 'hazelmere\'s signet ring (i)',
         TOKKUL: 'tokkul-zo',
     },
     /*
@@ -430,8 +430,8 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        CHANNELER: 'channelers ring',
-        CHANNELER_E: 'channelers ring+'
+        CHANNELLER: "channeller's ring",
+        CHANNELLER_E: "channeller's ring+"
     },
     RANGED_RING: 'range ring',
     RANGED_RING_VALUES: {
@@ -511,8 +511,8 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        CHANNELER: 'channelers ring',
-        CHANNELER_E: 'channelers ring+'
+        CHANNELLER: "channeller's ring",
+        CHANNELLER_E: "channeller's ring+"
     },
     RANGED_RING: 'range ring',
     RANGED_RING_VALUES: {
@@ -794,7 +794,6 @@ const SETTINGS = {
     SWIFTNESS_OF_THE_AVIANSIE: 'swiftness of the avianse',
     ESSENCE_CORRUPTION: 'essence corruption',
     ESS_CORRUPTION_ADREN: 'essence corruption adrenaline',
-    WALKED_TARGET: 'walked target',
     CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
     CHAOS_ROAR: 'chaos roar',
     FURY_BUFF: 'fury buff',
@@ -820,7 +819,7 @@ const SETTINGS = {
     INSTABILITY: 'instability',
     TIME_SINCE_ATTACK: 'time since attack',
     INNATE_MASTERY: 'innate mastery',
-    CHANNELER_RING_STACKS: 'channelers ring stacks',
+    CHANNELLER_RING_STACKS: 'channellers ring stacks',
     NUMBER_OF_BLEEDS: 'number of bleeds',
     STRENGTH_CAPE: 'strength cape',
     GORAJAN_TRAILBLAZER: 'gorajan trailblazer',
@@ -1608,8 +1607,8 @@ const settingsConfig = {
             { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
             { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELER },
-            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELER_E },
+            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELLER },
+            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELLER_E },
             { text: 'Stalker', value: SETTINGS.RING_VALUES.STALKER },
             { text: 'Stalker+', value: SETTINGS.RING_VALUES.STALKER_E },
             { text: 'Champion', value: SETTINGS.RING_VALUES.CHAMPION },
@@ -1632,8 +1631,8 @@ const settingsConfig = {
             { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
             { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELER },
-            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELER_E }
+            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELLER },
+            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELLER_E }
         ]
     },
     [SETTINGS.RANGED_RING]: {
@@ -1749,8 +1748,8 @@ const settingsConfig = {
             { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
             { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELER },
-            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELER_E }
+            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELLER },
+            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELLER_E }
         ]
     },
     [SETTINGS.RANGED_RING]: {
@@ -2240,10 +2239,6 @@ const settingsConfig = {
         label: 'Conflagrate',
         default: false
     },
-    [SETTINGS.WALKED_TARGET]: {
-        label: 'Walked',
-        default: true
-    },
     [SETTINGS.CONCENTRATED_BLAST_STACKS]: {
         label: 'Conc stacks',
         default: 0
@@ -2353,7 +2348,7 @@ const settingsConfig = {
         label: 'Innate mastery (works on custom t95)',
         default: true
     },
-    [SETTINGS.CHANNELER_RING_STACKS]: {
+    [SETTINGS.CHANNELLER_RING_STACKS]: {
         label: 'Channelers ring stacks',
         default: 0
     },
