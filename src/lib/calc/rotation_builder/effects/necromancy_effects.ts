@@ -35,9 +35,9 @@ function applyAbilitySpecificEffects(
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2);
     }
 
-    // Living Death - Finger of Death doubled damage
+    // Living Death - Finger of Death 1.5x damage
     if (settings[SETTINGS.LIVING_DEATH] === true && abilityKey === ABILITIES.FINGER_OF_DEATH) {
-        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2);
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.5);
     }
 
     // Skeleton Warrior rage stacks

@@ -17,23 +17,28 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/soul-sap.png'
     },
-    [ABILITIES.SKELETON_WARRIOR_AUTO]: {
-        title: 'Skeleton Warrior auto',
+    [ABILITIES.CONJURE_UNDEAD_ARMY]: {
+        title: 'Conjure Undead Army',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/conj-skele.png'
     },
-    [ABILITIES.SKELETON_WARRIOR_AUTO_10]: {
+    [ABILITIES.CONJURE_SKELETON_WARRIOR]: {
+        title: 'Conjure Skeleton Warrior',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/necro/30x30/conj-skele.png'
+    },
+    [ABILITIES.COMMAND_SKELETON_WARRIOR]: {
         title: 'Command Skeleton Warrior',
         calc: ability_damage_calculation,
         icon: '/ability_icons/necro/30x30/comm-skele.png'
     },
-    [ABILITIES.VENGEFUL_GHOST_AUTO]: {
-        title: 'Vengeful Ghost auto',
+    [ABILITIES.CONJURE_VENGEFUL_GHOST]: {
+        title: 'Conjure Vengeful Ghost',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/ghost.png'
     },
-    [ABILITIES.PUTRID_ZOMBIE_AUTO]: {
-        title: 'Putrid Zombie auto',
+    [ABILITIES.CONJURE_PUTRID_ZOMBIE]: {
+        title: 'Conjure Putrid Zombie',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/conj-zom.png'
     },
@@ -41,6 +46,16 @@ const abilities = {
         title: 'Command Putrid Zombie',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/comm-zom.png'
+    },
+    [ABILITIES.CONJURE_PHANTOM_GUARDIAN]: {
+        title: 'Conjure Phantom Guardian',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/necro/30x30/command_phantom_guardian.png'
+    },
+    [ABILITIES.COMMAND_VENGEFUL_GHOST]: {
+        title: 'Command Vengeful Ghost',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/necro/30x30/ghost.png'
     },
     [ABILITIES.COMMAND_PHANTOM_GUARDIAN]: {
         title: 'Command Phantom Guardian',
@@ -107,6 +122,31 @@ const abilities = {
         title: 'Death essence',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/omniguard-bg.png'
+    },
+    [ABILITIES.LIFE_TRANSFER]: {
+        title: 'Life Transfer',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/necro/incantations/Life_Transfer.png'
+    },
+    [ABILITIES.THREADS_OF_FATE]: {
+        title: 'Threads of Fate',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/necro/incantations/Threads_of_Fate_icon.png'
+    },
+    [ABILITIES.INVOKE_DEATH]: {
+        title: 'Invoke Death',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/necro/incantations/Invoke_Death_icon.png'
+    },
+    [ABILITIES.SPLIT_SOUL_NECRO]: {
+        title: 'Split Soul',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/necro/incantations/Split_Soul_icon.png'
+    },
+    [ABILITIES.LIVING_DEATH]: {
+        title: 'Living Death',
+        calc: hit_damage_calculation,
+        icon: '/effect_icons/living_death.png'
     }
 };
 

@@ -38,6 +38,8 @@
     /* Damage type colors */
     --color-poison: #01df01;
     --color-familiar: #00eeee;
+    --color-conjure: #d694ff;
+    --color-dreadnip: #ff8c00;
     
     /* Functional colors */
     --color-success: #4fd1c5;

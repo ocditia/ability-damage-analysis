@@ -74,7 +74,7 @@ function on_stall(settings: Record<string, any>, abilityKey: string, timers?: Re
     }
 
     if (timers) {
-        startCooldown(timers, abilityKey);
+        startCooldown(timers, abilityKey, settings);
     }
 }
 
@@ -362,6 +362,10 @@ function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string)
         if (settings[SETTINGS.DEATHMARK]) {
             addAdrenaline(settings, 1);
         }
+        // Living Death: Touch of Death generates an additional 6% adrenaline
+        if (settings[SETTINGS.LIVING_DEATH] === true && abilityKey === ABILITIES.TOUCH_OF_DEATH) {
+            addAdrenaline(settings, 6);
+        }
     }
     else if (type == 'ultimate') {
         let cost = abils[abilityKey]['adrenaline'];
@@ -404,9 +408,13 @@ const COOLDOWN_PREFIX = 'cd_';
  * Starts the cooldown timer for an ability. Uses the existing timer system
  * (counts down each tick via handleTimers). The timer key is prefixed with 'cd_'.
  */
-function startCooldown(timers: Record<string, number>, abilityKey: string): void {
-    const cdSeconds = abils[abilityKey]?.['cooldown'];
+function startCooldown(timers: Record<string, number>, abilityKey: string, settings?: Record<string, any>): void {
+    let cdSeconds = abils[abilityKey]?.['cooldown'];
     if (cdSeconds && cdSeconds > 0) {
+        // Living Death: Death Skulls cooldown reduced to 10.2s (17 ticks)
+        if (abilityKey === ABILITIES.DEATHSKULLS_4 && settings?.[SETTINGS.LIVING_DEATH] === true) {
+            cdSeconds = 10.2;
+        }
         timers[COOLDOWN_PREFIX + abilityKey] = 1 + Math.ceil(cdSeconds / 0.6);
     }
 }
@@ -576,10 +584,18 @@ function handleSplitSoul(
     results: DamageObject[]
 ): void {
     const abilityKey = dmgObject.ability;
+    const damageType = abils[abilityKey]['damage type'];
+    const hasSoulSplitData = settings['soul split']?.['damage list'];
+
+    // ECB Split Soul: applies to all damage types while active
+    const ecbActive = settings['split soul'] === true;
+    // Necro Split Soul: only applies to necrotic damage
+    const necroActive = settings[SETTINGS.SPLIT_SOUL_NECRO] === true && damageType === 'necrotic';
+
     if (
-        settings['split soul'] !== true ||
-        !['magic', 'melee', 'ranged', 'necrotic'].includes(abils[abilityKey]['damage type']) ||
-        !settings['soul split']['damage list']
+        (!ecbActive && !necroActive) ||
+        !['magic', 'melee', 'ranged', 'necrotic'].includes(damageType) ||
+        !hasSoulSplitData
     ) {
         return;
     }

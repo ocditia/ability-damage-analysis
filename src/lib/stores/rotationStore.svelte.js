@@ -31,10 +31,12 @@ export const rotationStore = $state({
     poisonDamage: 0,
     familiarDamage: 0,
     dreadnipDamage: 0,
+    conjureDamage: 0,
     distributionStats: [],
     poisonPerTick: [],
     familiarPerTick: [],
-    dreadnipPerTick: []
+    dreadnipPerTick: [],
+    conjurePerTick: []
 });
 
 // Helper: snapshot current settings values as a plain object
@@ -345,10 +347,12 @@ export const rotationActions = {
         rotationStore.poisonDamage = dmgResult.poisonDamage;
         rotationStore.familiarDamage = dmgResult.familiarDamage;
         rotationStore.dreadnipDamage = dmgResult.dreadnipDamage || 0;
+        rotationStore.conjureDamage = dmgResult.conjureDamage || 0;
         rotationStore.distributionStats = dmgResult.distributionStats;
         rotationStore.poisonPerTick = dmgResult.poisonPerTick || [];
         rotationStore.familiarPerTick = dmgResult.familiarPerTick || [];
         rotationStore.dreadnipPerTick = dmgResult.dreadnipPerTick || [];
+        rotationStore.conjurePerTick = dmgResult.conjurePerTick || [];
 
         // Calculate Gaussian parameters for more accurate damage modeling
         const gaussianParams = calculateGaussianParameters(rotationStore.distributionStats);

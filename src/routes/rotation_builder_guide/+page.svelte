@@ -78,13 +78,8 @@
 
                         <h3 id="settings" class="subsection-heading">Settings</h3>
                         <p class="mb-4">
-                            The <strong>Settings</strong> panel on the right defines your starting state. Configure your weapon tiers and types,
-                            armour, perks (Precise, Equilibrium, Biting, etc.), prayers, aura, and combat levels. These determine your
-                            ability damage, hit chance, and which weapon-specific effects are active.
-                        </p>
-                        <p class="mb-4">
-                            You can also set your starting adrenaline and stack values, choose a familiar, enable weapon poison,
-                            and select a boss preset to calculate against.
+                            The <strong>Settings</strong> panel on the right defines your starting state. Select your gear,
+                             perks, prayers, stats, buffs, familiars, etc. 
                         </p>
 
                         <h3 id="adding-abilities" class="subsection-heading">Adding Abilities</h3>

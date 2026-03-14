@@ -172,10 +172,10 @@ body {
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale)
         var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia)
         var(--tw-drop-shadow);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.15rem;
     margin-top: 0;
     margin-left: 0.75rem;
-    padding-bottom: 0.25rem;
+    padding-bottom: 0.15rem;
     position: relative;
 }
 

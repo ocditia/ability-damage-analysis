@@ -223,6 +223,9 @@ const weapons = {
     'bik arrows':{
         tier: 99
     },
+    'hydrix bakriminel bolts':{
+        tier: 99
+    },
     'ezk':{
         style: 'melee',
         'weapon type': 'two-hand',
@@ -559,21 +562,13 @@ const armour: Record<string, ArmourPiece> = {
         slot: 'helmet',
         style: 'hybrid'
     },
-    none: {
-        'necromancy strength': 0,
-        'magic strength': 0,
-        'melee strength': 0,
-        'ranged strength': 0,
-        slot: 'helmet',
-        style: 'hybrid'
-    },
     'none/tank': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
-        slot: 'not used',
+        slot: 'helmet',
         style: 'hybrid'
     },
     'crown of the first necromancer': {
@@ -1662,11 +1657,23 @@ export enum ABILITIES {
     NECRO_AUTO = 'necromancy auto',
     TOUCH_OF_DEATH = 'touch of death',
     SOUL_SAP = 'soul sap',
+    CONJURE_UNDEAD_ARMY = 'conjure undead army',
+    CONJURE_SKELETON_WARRIOR = 'conjure skeleton warrior',
     SKELETON_WARRIOR_AUTO = 'skeleton warrior auto',
+    COMMAND_SKELETON_WARRIOR = 'command skeleton warrior',
     SKELETON_WARRIOR_AUTO_10 = 'skeleton warrior auto 10',
+    CONJURE_VENGEFUL_GHOST = 'conjure vengeful ghost',
     VENGEFUL_GHOST_AUTO = 'vengeful ghost auto',
+    CONJURE_PUTRID_ZOMBIE = 'conjure putrid zombie',
     PUTRID_ZOMBIE_AUTO = 'putrid zombie auto',
+    PUTRID_ZOMBIE_POISON = 'putrid zombie poison',
+    CONJURE_PHANTOM_GUARDIAN = 'conjure phantom guardian',
+    LIFE_TRANSFER = 'life transfer',
+    THREADS_OF_FATE = 'threads of fate',
+    INVOKE_DEATH = 'invoke death',
+    SPLIT_SOUL_NECRO = 'split soul necro',
     COMMAND_PUTRID_ZOMBIE = 'command putrid zombie',
+    COMMAND_VENGEFUL_GHOST = 'command vengeful ghost',
     COMMAND_PHANTOM_GUARDIAN = 'command phantom guardian',
     FINGER_OF_DEATH = 'finger of death',
     DEATHSKULLS = 'death skulls',
@@ -1687,6 +1694,7 @@ export enum ABILITIES {
     BLOAT = 'bloat',
     DEATH_GRASP = 'death grasp',
     DEATH_ESSENCE = 'death essence',
+    LIVING_DEATH = 'living death',
 
     RANGED_AUTO = 'ranged auto',
     PIERCING_SHOT_HIT = 'piercing shot hit',
@@ -2183,7 +2191,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             7: [ABILITIES.FLURRY_HIT]
         },
         adrenaline: 25,
-        cooldown: 20.4},
+        cooldown: 20.4,
+        hitTimings: [0, 2, 4, 6]
+    },
     [ABILITIES.GREATER_FLURRY_HIT]: {
         // ability name
         'min hit': 1.0, // min % of abil expressed as a decimal
@@ -2194,8 +2204,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
         cooldown: 20.4},
     [ABILITIES.GREATER_FLURRY]: {
         // ability name
@@ -2216,9 +2225,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             4: [],
             5: [ABILITIES.GREATER_FLURRY_HIT],
             6: [],
-            7: [ABILITIES.GREATER_FLURRY_HIT]}
-        ,
-        cooldown: 20.4
+            7: [ABILITIES.GREATER_FLURRY_HIT]},
+        adrenaline: 25,
+        cooldown: 20.4,
+        hitTimings: [0, 2, 4, 6]
     },
     [ABILITIES.HURRICANE_1]: {
         // ability name
@@ -2688,7 +2698,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             6: [],
             7: [ABILITIES.ASSAULT_HIT]
         },
-        cooldown: 10
+        adrenaline: 25,
+        cooldown: 6,
+        hitTimings: [0, 2, 4, 6]
     },
     [ABILITIES.PULVERISE]: {
         // ability name
@@ -3594,8 +3606,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 5.4},
+    },
     [ABILITIES.GREATER_CONCENTRATED_BLAST_2]: {
         // ability name
         'min hit': 0.40, // min % of abil expressed as a decimal
@@ -3606,9 +3617,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 5.4},
+        'damage type': 'magic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+    },
     [ABILITIES.GREATER_CONCENTRATED_BLAST_3]: {
         // ability name
         'min hit': 0.40, // min % of abil expressed as a decimal
@@ -3620,8 +3630,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 5.4},
+        },
     [ABILITIES.GREATER_CONCENTRATED_BLAST]: {
         // ability name
         'min hit': 0.40, // min % of abil expressed as a decimal
@@ -4475,7 +4484,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
         adrenaline: 60,
@@ -4490,9 +4499,34 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        'damage type': 'necrotic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         cooldown: 5.4},
+    [ABILITIES.CONJURE_UNDEAD_ARMY]: {
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'conjure',
+        'ability type': 'threshold',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        adrenaline: 0,
+        cooldown: 60
+    },
+    [ABILITIES.CONJURE_SKELETON_WARRIOR]: {
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'conjure',
+        'ability type': 'threshold',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        adrenaline: 0,
+        cooldown: 60
+    },
     [ABILITIES.SKELETON_WARRIOR_AUTO]: {
         // ability name
         'min hit': 0.22, // min % of abil expressed as a decimal
@@ -4503,9 +4537,21 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'conjure', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        'damage type': 'spirit', // basic, threshold, special attack, ability (necromancy classification), ultimate
         cooldown: 0},
+    [ABILITIES.COMMAND_SKELETON_WARRIOR]: {
+        // Command Skeleton Warrior: 10x 22-28% hits over 6s (2 hits every 1.2s)
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'conjure',
+        'ability type': 'basic',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 15
+    },
     [ABILITIES.SKELETON_WARRIOR_AUTO_10]: {
         // ability name
         'min hit': 0.22, // min % of abil expressed as a decimal
@@ -4531,6 +4577,18 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         },
         cooldown: 0
     },
+    [ABILITIES.CONJURE_VENGEFUL_GHOST]: {
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'threshold',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 60
+    },
     [ABILITIES.VENGEFUL_GHOST_AUTO]: {
         // ability name
         'min hit': 0.18, // min % of abil expressed as a decimal
@@ -4544,6 +4602,18 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
     ,
         cooldown: 0},
+    [ABILITIES.CONJURE_PUTRID_ZOMBIE]: {
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'threshold',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 60
+    },
     [ABILITIES.PUTRID_ZOMBIE_AUTO]: {
         // ability name
         'min hit': 0.18, // min % of abil expressed as a decimal
@@ -4557,19 +4627,109 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
     ,
         cooldown: 0},
-    [ABILITIES.COMMAND_PUTRID_ZOMBIE]: {
-        // ability name
-        'min hit': 3.6, // min % of abil expressed as a decimal
-        'var hit': 0.8,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'conjure', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
+    [ABILITIES.PUTRID_ZOMBIE_POISON]: {
+        // Putrid Zombie fetid stench: 8-12% poison damage every 1.8s
+        'min hit': 0.08,
+        'var hit': 0.04,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'conjure',
+        'ability type': 'conjure',
         'main style': 'necromancy',
-        'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 0},
+        'damage type': 'poison',
+        cooldown: 0
+    },
+    [ABILITIES.CONJURE_PHANTOM_GUARDIAN]: {
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'threshold',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 60
+    },
+    [ABILITIES.COMMAND_PUTRID_ZOMBIE]: {
+        // Command Putrid Zombie: single 360-440% spirit damage explosion
+        'min hit': 3.6,
+        'var hit': 0.8,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'basic',
+        'main style': 'necromancy',
+        'damage type': 'spirit',
+        cooldown: 15
+    },
+    [ABILITIES.LIFE_TRANSFER]: {
+        // Life Transfer: extends active conjure durations by 21s, costs 50% base LP
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 0
+    },
+    [ABILITIES.THREADS_OF_FATE]: {
+        // Threads of Fate: single-target necro attacks also hit up to 4 additional enemies, 6.6s
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 0
+    },
+    [ABILITIES.INVOKE_DEATH]: {
+        // Invoke Death: applies Death Mark on next necro attack, 12s duration
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 0
+    },
+    [ABILITIES.SPLIT_SOUL_NECRO]: {
+        // Split Soul (Necromancy incantation): 20.4s duration, 60s cooldown
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 60
+    },
+    [ABILITIES.COMMAND_VENGEFUL_GHOST]: {
+        // Command Vengeful Ghost: applies Haunted debuff (10% bonus damage, capped at 20% necro AD)
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'conjure',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 15
+    },
     [ABILITIES.COMMAND_PHANTOM_GUARDIAN]: {
         // ability name
         'min hit': 0.45, // min % of abil expressed as a decimal
@@ -4577,7 +4737,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'conjure', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
@@ -4591,10 +4751,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        'damage type': 'necrotic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        adrenaline: 20,
         cooldown: 0},
     [ABILITIES.DEATHSKULLS]: {
         // ability name
@@ -4665,10 +4825,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        'damage type': 'necrotic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        adrenaline: 0,
         cooldown: 0},
     [ABILITIES.SOUL_STRIKE_AOE]: {
         // ability name
@@ -4693,8 +4853,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic'
-    ,
+        'damage type': 'necrotic',
         cooldown: 0},
     [ABILITIES.VOLLEY_OF_SOULS_DYNAMIC]: {
         // Volley of Souls with dynamic hits based on residual souls
@@ -4705,7 +4864,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true,
         'damage potential effects': true,
         'ability classification': 'multihit',
-        'ability type': 'ability',
+        'ability type': 'threshold',
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {
@@ -4809,10 +4968,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic'
-    ,
+        'damage type': 'necrotic',
+        adrenaline: 0,
         cooldown: 45},
     [ABILITIES.SPECTRAL_SCYTHE_1]: {
         // ability name
@@ -4822,10 +4981,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic'
-    ,
+        'damage type': 'necrotic',
+        adrenaline: 10,
         cooldown: 0},
     [ABILITIES.SPECTRAL_SCYTHE_2]: {
         // ability name
@@ -4835,10 +4994,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic'
-    ,
+        'damage type': 'necrotic',
+        adrenaline: 20,
         cooldown: 0},
     [ABILITIES.SPECTRAL_SCYTHE_3]: {
         // ability name
@@ -4848,10 +5007,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic'
-    ,
+        'damage type': 'necrotic',
+        adrenaline: 30,
         cooldown: 0},
     [ABILITIES.DEATH_GRASP]: {
         // ability name
@@ -4864,8 +5023,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
-        adrenaline: 25
-    ,
+        adrenaline: 25,
         cooldown: 0},
     [ABILITIES.DEATH_ESSENCE]: {
         // ability name
@@ -4878,9 +5036,21 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
-        adrenaline: 30
-    ,
+        adrenaline: 30,
         cooldown: 0},
+    [ABILITIES.LIVING_DEATH]: {
+        // ability name
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': true, // does the ability get on-hit effects
+        'crit effects': true, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        adrenaline: 100,
+        cooldown: 90},
 
     [ABILITIES.RANGED_AUTO]: {
         // ability name

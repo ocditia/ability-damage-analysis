@@ -204,7 +204,7 @@ function calc_bonus(settings) {
 
     for (const slotSetting of slots) {
         const piece = armour[settings[slotSetting]];
-        if (piece) {
+        if (piece?.tier) {
             bonus += calcSlotBonus(piece.tier[tierKey], piece.slot);
         }
     }

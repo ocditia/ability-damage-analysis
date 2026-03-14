@@ -1,12 +1,65 @@
 import { create_damage_object } from './rota_object_helper';
 import { SETTINGS } from '../settings';
 import { ABILITIES, abils } from '../const/const';
-import { on_cast, on_hit } from './damage_calc_new';
+import { on_cast, on_hit, COOLDOWN_PREFIX } from './damage_calc_new';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
 
 // Import and re-export from calculation_utils
 import { addAdrenaline } from './calculation_utils';
 export { addAdrenaline as add_adrenaline };
+
+/**
+ * Calculate conjure spirit duration in ticks based on Spirit Pact level
+ * and First Necromancer robe pieces.
+ * Base: 60s. Spirit Pact I/II/III: +6/12/18s. TFN 4+pc: +5% per piece (after Spirit Pact).
+ */
+export function getConjureDuration(settings: Record<string, any>): number {
+    const spiritPact = settings[SETTINGS.SPIRIT_PACT] || 0;
+    let durationSeconds = 60 + spiritPact * 6;
+
+    // Count First Necromancer pieces
+    const tfnPieces = countTFNPieces(settings);
+    if (tfnPieces >= 4) {
+        durationSeconds = Math.floor(durationSeconds * (1 + 0.05 * tfnPieces));
+    }
+
+    // Convert to ticks (1 tick = 0.6s)
+    return Math.ceil(durationSeconds / 0.6);
+}
+
+/**
+ * Count equipped Robes of the First Necromancer pieces
+ */
+export function countTFNPieces(settings: Record<string, any>): number {
+    let count = 0;
+    if (settings[SETTINGS.NECRO_HELMET] === SETTINGS.NECRO_HELMET_VALUES.TFN) count++;
+    if (settings[SETTINGS.NECRO_BODY] === SETTINGS.NECRO_BODY_VALUES.TFN) count++;
+    if (settings[SETTINGS.NECRO_LEGS] === SETTINGS.NECRO_LEGS_VALUES.TFN) count++;
+    if (settings[SETTINGS.NECRO_GLOVES] === SETTINGS.NECRO_GLOVES_VALUES.TFN) count++;
+    if (settings[SETTINGS.NECRO_BOOTS] === SETTINGS.NECRO_BOOTS_VALUES.TFN) count++;
+    return count;
+}
+
+/**
+ * Calculate conjure spirit damage multiplier from gear
+ * Conjurer's Raising Amulet: 1.05x. TFN 2+pc: 7% per piece.
+ */
+export function getConjureDamageMultiplier(settings: Record<string, any>): number {
+    let mult = 1.0;
+
+    // Conjurer's Raising Amulet
+    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.MOONSTONE) {
+        mult *= 1.05;
+    }
+
+    // First Necromancer: 7% per piece when 2+ equipped
+    const tfnPieces = countTFNPieces(settings);
+    if (tfnPieces >= 2) {
+        mult *= 1 + 0.07 * tfnPieces;
+    }
+
+    return mult;
+}
 
 // Helper functions
 function getDamageDistribution(dmgObject: DamageObject, kind: DamageKind): DamageDistribution | undefined {
@@ -98,8 +151,12 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             }
             break;
         case ABILITIES.SPLIT_SOUL_ECB: //TODO remove split soul on changing weapon
-            settings['split soul'] = true; 
+            settings['split soul'] = true;
             timers['split soul'] = 25;
+            break;
+        case ABILITIES.SPLIT_SOUL_NECRO:
+            settings[SETTINGS.SPLIT_SOUL_NECRO] = true;
+            timers[SETTINGS.SPLIT_SOUL_NECRO] = 34; // 20.4s = 34 ticks
             break;
         case ABILITIES.BALANCE_BY_FORCE:
             settings[ABILITIES.BALANCE_BY_FORCE] = true; 
@@ -115,6 +172,62 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
         case ABILITIES.TSUNAMI:
             settings[SETTINGS.CRIT_BUFF] = true; 
             timers[SETTINGS.CRIT_BUFF] = 51;
+            break;
+        // Conjure abilities — tracked via timers, processed by processConjureTick
+        case ABILITIES.CONJURE_UNDEAD_ARMY:
+            timers['conjure_skeleton_warrior'] = getConjureDuration(settings);
+            timers['conjure_vengeful_ghost'] = getConjureDuration(settings);
+            timers['conjure_putrid_zombie'] = getConjureDuration(settings);
+            timers['conjure_phantom_guardian'] = getConjureDuration(settings);
+            break;
+        case ABILITIES.CONJURE_SKELETON_WARRIOR:
+            timers['conjure_skeleton_warrior'] = getConjureDuration(settings);
+            break;
+        case ABILITIES.CONJURE_VENGEFUL_GHOST:
+            timers['conjure_vengeful_ghost'] = getConjureDuration(settings);
+            break;
+        case ABILITIES.CONJURE_PUTRID_ZOMBIE:
+            timers['conjure_putrid_zombie'] = getConjureDuration(settings);
+            break;
+        case ABILITIES.CONJURE_PHANTOM_GUARDIAN:
+            timers['conjure_phantom_guardian'] = getConjureDuration(settings);
+            break;
+        // Command abilities — trigger burst damage from conjures
+        case ABILITIES.COMMAND_SKELETON_WARRIOR:
+            timers['command_skeleton_warrior'] = 10; // 6s = 10 ticks, 10 hits
+            break;
+        case ABILITIES.COMMAND_PUTRID_ZOMBIE:
+            timers['command_putrid_zombie'] = 1; // single instant explosion
+            break;
+        case ABILITIES.COMMAND_VENGEFUL_GHOST:
+            settings[SETTINGS.HAUNTED] = true;
+            settings[SETTINGS.HAUNTED_AD] = settings[SETTINGS.ABILITY_DAMAGE];
+            timers[SETTINGS.HAUNTED] = 8; // 4.8s = 8 ticks
+            break;
+        case ABILITIES.LIFE_TRANSFER: {
+            // Extend all active conjure durations by 21s (35 ticks)
+            const conjureKeys = ['conjure_skeleton_warrior', 'conjure_vengeful_ghost', 'conjure_putrid_zombie', 'conjure_phantom_guardian'];
+            for (const key of conjureKeys) {
+                if (timers[key] && timers[key] > 0) {
+                    timers[key] += 35;
+                }
+            }
+            break;
+        }
+        case ABILITIES.THREADS_OF_FATE:
+            settings[SETTINGS.THREADS_OF_FATE] = true;
+            timers[SETTINGS.THREADS_OF_FATE] = 11; // 6.6s = 11 ticks
+            break;
+        case ABILITIES.INVOKE_DEATH:
+            settings[SETTINGS.INVOKE_DEATH] = true;
+            timers[SETTINGS.INVOKE_DEATH] = 20; // 12s = 20 ticks
+            break;
+        case ABILITIES.LIVING_DEATH:
+            settings[SETTINGS.LIVING_DEATH] = true;
+            timers[SETTINGS.LIVING_DEATH] = 50; // 30 seconds
+            // On-cast: reset cooldowns of Touch of Death and Death Skulls
+            delete timers[COOLDOWN_PREFIX + ABILITIES.TOUCH_OF_DEATH];
+            delete timers[COOLDOWN_PREFIX + ABILITIES.DEATHSKULLS_4];
             break;
         case ABILITIES.NATURAL_INSTINCT:
             settings[SETTINGS.NATURAL_INSTINCT] = true; 

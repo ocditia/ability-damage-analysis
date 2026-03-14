@@ -106,7 +106,7 @@ export const offGcdAbilities: Record<string, { title: string; icon: string }> = 
     },
     [ABILITIES.PRISM_OF_RESTORATION]: {
         title: 'Prism of Restoration',
-        icon: '/ability_icons/special/Prism_of_Restoration.png'
+        icon: '/effect_icons/Prism_of_Restoration_icon.png'
     },
     [ABILITIES.DREADNIP]: {
         title: 'Dreadnip',

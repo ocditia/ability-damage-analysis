@@ -395,10 +395,12 @@ export function calculateTotalDamageNew() {
     rotationStore.poisonDamage = dmgResult.poisonDamage;
     rotationStore.familiarDamage = dmgResult.familiarDamage;
     rotationStore.dreadnipDamage = dmgResult.dreadnipDamage || 0;
+    rotationStore.conjureDamage = dmgResult.conjureDamage || 0;
     rotationStore.distributionStats = dmgResult.distributionStats;
     rotationStore.poisonPerTick = dmgResult.poisonPerTick || [];
     rotationStore.familiarPerTick = dmgResult.familiarPerTick || [];
     rotationStore.dreadnipPerTick = dmgResult.dreadnipPerTick || [];
+    rotationStore.conjurePerTick = dmgResult.conjurePerTick || [];
     
     // Calculate Gaussian parameters for more accurate damage modeling
     const gaussianParams = calculateGaussianParameters(rotationStore.distributionStats);

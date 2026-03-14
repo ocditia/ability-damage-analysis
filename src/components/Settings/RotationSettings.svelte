@@ -156,17 +156,17 @@
         settings[SETTINGS.CAROMING]['value'] = 0;
         
         
-        settings[SETTINGS.VULN]['value'] = 'none';
+        settings[SETTINGS.VULN]['value'] = SETTINGS.VULN_VALUES.NONE;
 
         settings[SETTINGS.MAGIC_LEVEL]['value'] = 99;
         settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
         settings[SETTINGS.STRENGTH_LEVEL]['value'] = 99;
         settings[SETTINGS.REAPER_CREW]['value'] = false;
-        settings[SETTINGS.RANGED_PRAYER]['value'] = 'none ranged';
-        settings[SETTINGS.MELEE_PRAYER]['value'] = 'none melee';
+        settings[SETTINGS.RANGED_PRAYER]['value'] = SETTINGS.RANGED_PRAYER_VALUES.NONE;
+        settings[SETTINGS.MELEE_PRAYER]['value'] = SETTINGS.MELEE_PRAYER_VALUES.NONE;
         settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
-        
+        settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+
         settings[SETTINGS.INNATE_MASTERY]['value'] = true;
         settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MIN_NO_CRIT;
         settings[SETTINGS.KALG_SPEC]['value'] = false;
@@ -217,15 +217,15 @@
         settings[SETTINGS.CAROMING]['value'] = 0;
         
         
-        settings[SETTINGS.VULN]['value'] = 'none';
+        settings[SETTINGS.VULN]['value'] = SETTINGS.VULN_VALUES.NONE;
 
         settings[SETTINGS.MAGIC_LEVEL]['value'] = 99;
         settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
         settings[SETTINGS.STRENGTH_LEVEL]['value'] = 99;
         settings[SETTINGS.REAPER_CREW]['value'] = false;
         settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
-        
+        settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+
         settings[SETTINGS.INNATE_MASTERY]['value'] = false;
         settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MEAN;
         settings[SETTINGS.KALG_SPEC]['value'] = false;
@@ -238,9 +238,9 @@
     }
 
     function testPreset() {
-        settings[SETTINGS.RANGED_GLOVES]['value'] = 'cinderbane gloves';
-        settings[SETTINGS.NECKLACE]['value'] = 'essence of finality amulet';
-        settings[SETTINGS.POCKET]['value'] = 'scripture of jas';
+        settings[SETTINGS.RANGED_GLOVES]['value'] = SETTINGS.RANGED_GLOVES_VALUES.CINDERS;
+        settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
+        settings[SETTINGS.POCKET]['value'] = SETTINGS.POCKET_VALUES.JAS;
 
         settings[SETTINGS.LVL20ARMOUR]['value'] = false;
         settings[SETTINGS.BITING]['value'] = 3;
@@ -248,18 +248,18 @@
 
         //settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
         settings[SETTINGS.REAPER_CREW]['value'] = false;
-        settings[SETTINGS.RANGED_PRAYER]['value'] = 'anguish';
+        settings[SETTINGS.RANGED_PRAYER]['value'] = SETTINGS.RANGED_PRAYER_VALUES.ANGUISH;
         settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
+        settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
     }
 
     function testPresetR() {
-        settings[SETTINGS.NECKLACE]['value'] = 'essence of finality amulet';
+        settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
 
         //settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
         settings[SETTINGS.REAPER_CREW]['value'] = false;
         settings[SETTINGS.RING]['value'] = SETTINGS.RING_VALUES.STALKER_E;
-        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
+        settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
     }
     function testPreset2() {
         settings[SETTINGS.MAGIC_HELMET]['value'] = SETTINGS.MAGIC_HELMET_VALUES.TECTONIC;
@@ -268,18 +268,158 @@
         settings[SETTINGS.MAGIC_GLOVES]['value'] = SETTINGS.MAGIC_GLOVES_VALUES.KWW;
         settings[SETTINGS.MAGIC_BOOTS]['value'] = SETTINGS.MAGIC_BOOTS_VALUES.BLAST;
 
-        settings[SETTINGS.NECKLACE]['value'] = 'essence of finality amulet';
+        settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
         settings[SETTINGS.REAPER_CREW]['value'] = false;
-        settings[SETTINGS.AMMO]['value'] = 'wen arrows';//'none';
-        
-        
+        settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
     }
+    // Armour presets per combat style
+    const ARMOUR_PRESETS = {
+        [SettingsCombatStyles.RANGED]: {
+            'BIS': {
+                [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.ELITE_DRACOLICH,
+                [SETTINGS.RANGED_BODY]: SETTINGS.RANGED_BODY_VALUES.ELITE_DRACOLICH,
+                [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.ELITE_DRACOLICH,
+                [SETTINGS.RANGED_GLOVES]: SETTINGS.RANGED_GLOVES_VALUES.ELITE_DRACOLICH,
+                [SETTINGS.RANGED_BOOTS]: SETTINGS.RANGED_BOOTS_VALUES.ELITE_DRACOLICH,
+                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.EOF,
+                [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.ZUK,
+                [SETTINGS.RING]: SETTINGS.RING_VALUES.REAVERS,
+                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
+            },
+            'Elite Dracolich': {
+                [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.ELITE_DRACOLICH,
+                [SETTINGS.RANGED_BODY]: SETTINGS.RANGED_BODY_VALUES.ELITE_DRACOLICH,
+                [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.ELITE_DRACOLICH,
+                [SETTINGS.RANGED_GLOVES]: SETTINGS.RANGED_GLOVES_VALUES.ELITE_DRACOLICH,
+                [SETTINGS.RANGED_BOOTS]: SETTINGS.RANGED_BOOTS_VALUES.ELITE_DRACOLICH,
+            },
+            'Dracolich': {
+                [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.DRACOLICH,
+                [SETTINGS.RANGED_BODY]: SETTINGS.RANGED_BODY_VALUES.DRACOLICH,
+                [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.DRACOLICH,
+                [SETTINGS.RANGED_GLOVES]: SETTINGS.RANGED_GLOVES_VALUES.DRACOLICH,
+                [SETTINGS.RANGED_BOOTS]: SETTINGS.RANGED_BOOTS_VALUES.DRACOLICH,
+            },
+            'Elite Sirenic': {
+                [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.ELITE_SIRENIC,
+                [SETTINGS.RANGED_BODY]: SETTINGS.RANGED_BODY_VALUES.ELITE_SIRENIC,
+                [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.ELITE_SIRENIC,
+            },
+            'Sirenic': {
+                [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.SIRENIC,
+                [SETTINGS.RANGED_BODY]: SETTINGS.RANGED_BODY_VALUES.SIRENIC,
+                [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.SIRENIC,
+            },
+        },
+        [SettingsCombatStyles.MAGIC]: {
+            'BIS': {
+                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC,
+                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC,
+                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC,
+                [SETTINGS.MAGIC_GLOVES]: SETTINGS.MAGIC_GLOVES_VALUES.KWW_E,
+                [SETTINGS.MAGIC_BOOTS]: SETTINGS.MAGIC_BOOTS_VALUES.BLAST_E,
+                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.EOF,
+                [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.ZUK,
+                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHANNELER_E,
+                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
+            },
+            'Elite Tectonic': {
+                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC,
+                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC,
+                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC,
+            },
+            'Tectonic': {
+                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.TECTONIC,
+                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.TECTONIC,
+                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.TECTONIC,
+            },
+            'Virtus': {
+                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.VIRTUS,
+                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.VIRTUS,
+                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.VIRTUS,
+            },
+        },
+        [SettingsCombatStyles.MELEE]: {
+            'BIS': {
+                [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.TMW,
+                [SETTINGS.MELEE_BODY]: SETTINGS.MELEE_BODY_VALUES.TMW,
+                [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.TMW,
+                [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.TMW,
+                [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.TMW,
+                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.EOF,
+                [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.ZUK,
+                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHAMPION_E,
+                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
+            },
+            'Trimmed Masterwork': {
+                [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.TMW,
+                [SETTINGS.MELEE_BODY]: SETTINGS.MELEE_BODY_VALUES.TMW,
+                [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.TMW,
+                [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.TMW,
+                [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.TMW,
+            },
+            'Masterwork': {
+                [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.MASTERWORK,
+                [SETTINGS.MELEE_BODY]: SETTINGS.MELEE_BODY_VALUES.MASTERWORK,
+                [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.MASTERWORK,
+                [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.MASTERWORK,
+                [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.MASTERWORK,
+            },
+            'Vestments of Havoc': {
+                [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
+                [SETTINGS.MELEE_BODY]: SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
+                [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
+                [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
+            },
+        },
+        [SettingsCombatStyles.NECROMANCY]: {
+            'BIS': {
+                [SETTINGS.NECRO_HELMET]: SETTINGS.NECRO_HELMET_VALUES.TFN,
+                [SETTINGS.NECRO_BODY]: SETTINGS.NECRO_BODY_VALUES.TFN,
+                [SETTINGS.NECRO_LEGS]: SETTINGS.NECRO_LEGS_VALUES.TFN,
+                [SETTINGS.NECRO_GLOVES]: SETTINGS.NECRO_GLOVES_VALUES.TFN,
+                [SETTINGS.NECRO_BOOTS]: SETTINGS.NECRO_BOOTS_VALUES.TFN,
+                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.EOF,
+                [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.ZUK,
+                [SETTINGS.RING]: SETTINGS.RING_VALUES.REAVERS,
+                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
+            },
+            'First Necromancer (t110)': {
+                [SETTINGS.NECRO_HELMET]: SETTINGS.NECRO_HELMET_VALUES.TFN,
+                [SETTINGS.NECRO_BODY]: SETTINGS.NECRO_BODY_VALUES.TFN,
+                [SETTINGS.NECRO_LEGS]: SETTINGS.NECRO_LEGS_VALUES.TFN,
+                [SETTINGS.NECRO_GLOVES]: SETTINGS.NECRO_GLOVES_VALUES.TFN,
+                [SETTINGS.NECRO_BOOTS]: SETTINGS.NECRO_BOOTS_VALUES.TFN,
+            },
+            'Deathdealer (t90)': {
+                [SETTINGS.NECRO_HELMET]: SETTINGS.NECRO_HELMET_VALUES.T90DD,
+                [SETTINGS.NECRO_BODY]: SETTINGS.NECRO_BODY_VALUES.T90DD,
+                [SETTINGS.NECRO_LEGS]: SETTINGS.NECRO_LEGS_VALUES.T90DD,
+                [SETTINGS.NECRO_GLOVES]: SETTINGS.NECRO_GLOVES_VALUES.T90DD,
+                [SETTINGS.NECRO_BOOTS]: SETTINGS.NECRO_BOOTS_VALUES.T90DD,
+            },
+        },
+    };
+
+    let selectedPreset = $state('');
+
+    function applyArmourPreset(presetName) {
+        const presets = ARMOUR_PRESETS[styleTab];
+        if (!presets || !presets[presetName]) return;
+        const preset = presets[presetName];
+        for (const [settingKey, value] of Object.entries(preset)) {
+            settings[settingKey]['value'] = value;
+        }
+        selectedPreset = '';
+        updateDamages();
+    }
+
     //makeNaked();
     //testPresetR();
     //settings[SETTINGS.ICY_CHILL_STACKS].value = 10;
     updateDamages();
 
-    
+
 </script>
 
 <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-rotation">
@@ -290,7 +430,7 @@
         → Hide
     </button>
     <h1 class="rotation-header">Settings</h1>
-    <GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
+    <GradientSeparator marginTop="0.0rem" marginBottom="1.0rem" />
     <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
         <TabButton 
             id="ranged"
@@ -623,11 +763,27 @@
                     <Checkbox
                         bind:setting={settings[SETTINGS.EXPECTED_ADRENALINE]}
                         onchange={() => updateDamages()}
+                        img='settings_icons/Animal_trait_re-roller.png'
                     />
                 </div>
             {:else if tab === 'equipment'}
                 <div class="md:col-span-1">
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Armour</h5>
+                        {#if ARMOUR_PRESETS[styleTab]}
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; padding: 0.4rem 0.5rem; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
+                                <span style="font-size: 0.75rem; color: #aaa; white-space: nowrap;">Preset</span>
+                                <select
+                                    style="flex: 1; background: rgba(0,0,0,0.3); color: #ddd; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 0.25rem 0.4rem; font-size: 0.8rem; cursor: pointer;"
+                                    bind:value={selectedPreset}
+                                    onchange={() => { if (selectedPreset) applyArmourPreset(selectedPreset); }}
+                                >
+                                    <option value="">-- Select preset --</option>
+                                    {#each Object.keys(ARMOUR_PRESETS[styleTab]) as name}
+                                        <option value={name}>{name}</option>
+                                    {/each}
+                                </select>
+                            </div>
+                        {/if}
                         {#if styleTab === SettingsCombatStyles.RANGED}
                             <Select
                                 bind:setting={settings[SETTINGS.RANGED_HELMET]}
@@ -756,10 +912,51 @@
                                 onchange={() => updateDamages()}
                                 img="/armour_icons/Ring_slot.png"
                             />
-                            
+
                             <Select
                                 bind:setting={settings[SETTINGS.AUTO_CAST]}
                                 onchange={() => updateDamages()}
+                            />
+                        {:else if styleTab === SettingsCombatStyles.NECROMANCY}
+                            <Select
+                                bind:setting={settings[SETTINGS.NECRO_HELMET]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Head_slot.webp"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.NECRO_BODY]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Torso_slot.png"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.NECRO_LEGS]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Legs_slot.png"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.NECRO_GLOVES]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Hands_slot.webp"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.NECRO_BOOTS]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Feet_slot.png"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.NECKLACE]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Neck_slot.png"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.CAPE]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Back_slot.png"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.RING]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Ring_slot.png"
                             />
                         {/if}
                         <Select
@@ -1025,7 +1222,30 @@
                                 min="0"
                             />
                     {:else if styleTab === SettingsCombatStyles.NECROMANCY}
-                    <p>TODO =D</p>
+                            <Select
+                                bind:setting={settings[SETTINGS.NECRO_MH]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Main_hand_slot.webp"
+                            />
+                            <Number
+                                bind:setting={settings[SETTINGS.MH_TIER_CUSTOM]}
+                                onchange={() => updateDamages()}
+                                max="100"
+                                step="1"
+                                min="0"
+                            />
+                            <Select
+                                bind:setting={settings[SETTINGS.NECRO_OH]}
+                                onchange={() => updateDamages()}
+                                img="/armour_icons/Off-hand_slot.webp"
+                            />
+                            <Number
+                                bind:setting={settings[SETTINGS.OH_TIER_CUSTOM]}
+                                onchange={() => updateDamages()}
+                                max="100"
+                                step="1"
+                                min="0"
+                            />
                     {/if}
                 </div>
                 <div class="md:col-span-1">
@@ -1068,7 +1288,7 @@
                         <Checkbox
                             bind:setting={settings[SETTINGS.PRISM_OF_RESTORATION]}
                             onchange={() => updateDamages()}
-                            img="/effect_icons/Prism_of_restoration_icon.png"
+                            img="/effect_icons/Prism_of_Restoration_icon.png"
                         />
                 </div>
                 

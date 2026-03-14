@@ -21,7 +21,12 @@ export const buffs = [
     SETTINGS.SEARING_WINDS,
     SETTINGS.SHADOW_IMBUED,
     SETTINGS.DEATHSPORE_BUFF,
-    SETTINGS.ESS_CORRUPTION_ADREN
+    SETTINGS.ESS_CORRUPTION_ADREN,
+    SETTINGS.LIVING_DEATH,
+    SETTINGS.HAUNTED,
+    SETTINGS.THREADS_OF_FATE,
+    SETTINGS.INVOKE_DEATH,
+    SETTINGS.SPLIT_SOUL_NECRO
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -138,6 +143,41 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#9932CC'
+            },
+            [SETTINGS.LIVING_DEATH]: {
+                title: 'Living Death',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#4B0082'
+            },
+            [SETTINGS.HAUNTED]: {
+                title: 'Haunted',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#6B21A8'
+            },
+            [SETTINGS.THREADS_OF_FATE]: {
+                title: 'Threads of Fate',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#9333EA'
+            },
+            [SETTINGS.INVOKE_DEATH]: {
+                title: 'Invoke Death',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#DC2626'
+            },
+            [SETTINGS.SPLIT_SOUL_NECRO]: {
+                title: 'Split Soul (Necro)',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#7C3AED'
             }
         }
     )

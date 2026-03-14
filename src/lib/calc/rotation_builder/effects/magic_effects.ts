@@ -215,20 +215,27 @@ function applyStackEffects(ctx: EffectContext): void {
     if (settings['_last_stack_ability'] === castId) return;
     settings['_last_stack_ability'] = castId;
 
-    // Blood tithe stacks (exsanguinate) - 1 per cast, cap 12
+    // Blood tithe stacks (exsanguinate) - 1 per cast, cap 12, decay after 20.4s (34 ticks)
     if (settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.EXSANGUINATE) {
         settings[SETTINGS.BLOOD_TITHE] = Math.min(
             (settings[SETTINGS.BLOOD_TITHE] || 0) + 1,
             12
         );
+        if (ctx.timers) {
+            ctx.timers['_blood_tithe_decay'] = 34;
+        }
     }
 
-    // Glacial embrace stacks (incite fear) - 1 per cast, cap 5
+    // Glacial embrace stacks (incite fear) - 1 per cast, cap 5, decay after 20.4s (34 ticks)
     if (settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR) {
         settings[SETTINGS.GLACIAL_EMBRACE] = Math.min(
             (settings[SETTINGS.GLACIAL_EMBRACE] || 0) + 1,
             5
         );
+        // Refresh decay timer - stacks fall off 34 ticks after last magic ability with incite fear
+        if (ctx.timers) {
+            ctx.timers['_glacial_embrace_decay'] = 34;
+        }
     }
 }
 

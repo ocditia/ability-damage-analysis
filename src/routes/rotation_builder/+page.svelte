@@ -316,8 +316,8 @@
 
 	const tabs = [
 		{ id: 'ranged', label: 'Ranged', abilities: rangedAbils },
-		{ id: 'magic', label: 'Magic', abilities: magicAbils },
-		{ id: 'melee', label: 'Melee', abilities: meleeAbils },
+		{ id: 'magic', label: 'Magic', abilities: magicAbils, badge: 'beta' },
+		{ id: 'melee', label: 'Melee', abilities: meleeAbils, badge: 'beta' },
 		{ id: 'necro', label: 'Necro', abilities: necroAbils, badge: 'beta' },
 		{ id: 'defence', label: 'Defence', abilities: defAbils }
 	];
@@ -481,6 +481,14 @@
 
 	.dmg-val.familiar {
 		color: var(--color-familiar);
+	}
+
+	.dmg-val.dreadnip {
+		color: var(--color-dreadnip);
+	}
+
+	.dmg-val.conjure {
+		color: var(--color-conjure);
 	}
 
 	.responsive-container {
@@ -724,7 +732,39 @@
 		height: fit-content;
 	}
 
-	
+	:global(.credits) {
+		margin-top: 3rem;
+		padding: 1.5rem 2rem;
+		border-top: 1px solid #333;
+		color: var(--color-text-secondary);
+		font-size: 0.8rem;
+	}
+
+	:global(.credits h4) {
+		margin: 0 0 0.5rem 0;
+		color: var(--color-text-secondary);
+		font-size: 0.85rem;
+		font-weight: 600;
+	}
+
+	:global(.credits ul) {
+		margin: 0;
+		padding-left: 1.2rem;
+		list-style: disc;
+	}
+
+	:global(.credits li) {
+		margin-bottom: 0.25rem;
+	}
+
+	:global(.credits a) {
+		color: var(--color-info);
+		text-decoration: none;
+	}
+
+	:global(.credits a:hover) {
+		text-decoration: underline;
+	}
 </style>
 
 <Navbar />
@@ -750,10 +790,10 @@
 					<div class="rotation-title-row">
 						<h1 class="rotation-header">Rotation</h1>
 						<button class="reset-btn" onclick={clearRotation} title="Reset rotation">Reset</button>
-						{#if rotationStore.totalDamage > 0 || rotationStore.poisonDamage > 0 || rotationStore.familiarDamage > 0 || rotationStore.dreadnipDamage > 0}
+						{#if rotationStore.totalDamage > 0 || rotationStore.poisonDamage > 0 || rotationStore.familiarDamage > 0 || rotationStore.dreadnipDamage > 0 || rotationStore.conjureDamage > 0}
 							<div class="damage-summary">
-								<span class="dmg-total">{(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage).toLocaleString()}</span>
-								<span class="dmg-breakdown">(<span class="dmg-val">{rotationStore.totalDamage.toLocaleString()}</span>{#if rotationStore.poisonDamage > 0} + <span class="dmg-val poison">{rotationStore.poisonDamage.toLocaleString()}</span>{/if}{#if rotationStore.familiarDamage > 0} + <span class="dmg-val familiar">{rotationStore.familiarDamage.toLocaleString()}</span>{/if}{#if rotationStore.dreadnipDamage > 0} + <span class="dmg-val dreadnip">{rotationStore.dreadnipDamage.toLocaleString()}</span>{/if})</span>
+								<span class="dmg-total">{(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage + rotationStore.conjureDamage).toLocaleString()}</span>
+								<span class="dmg-breakdown">(<span class="dmg-val">{rotationStore.totalDamage.toLocaleString()}</span>{#if rotationStore.poisonDamage > 0} + <span class="dmg-val poison">{rotationStore.poisonDamage.toLocaleString()}</span>{/if}{#if rotationStore.familiarDamage > 0} + <span class="dmg-val familiar">{rotationStore.familiarDamage.toLocaleString()}</span>{/if}{#if rotationStore.dreadnipDamage > 0} + <span class="dmg-val dreadnip">{rotationStore.dreadnipDamage.toLocaleString()}</span>{/if}{#if rotationStore.conjureDamage > 0} + <span class="dmg-val conjure">{rotationStore.conjureDamage.toLocaleString()}</span>{/if})</span>
 							</div>
 						{/if}
 					</div>
@@ -766,8 +806,12 @@
 							totalDamage={rotationStore.totalDamage}
 							poisonDamage={rotationStore.poisonDamage}
 							familiarDamage={rotationStore.familiarDamage}
+							dreadnipDamage={rotationStore.dreadnipDamage}
+							conjureDamage={rotationStore.conjureDamage}
 							poisonPerTick={rotationStore.poisonPerTick}
 							familiarPerTick={rotationStore.familiarPerTick}
+							dreadnipPerTick={rotationStore.dreadnipPerTick}
+							conjurePerTick={rotationStore.conjurePerTick}
 						/>
 					{/if}
                     <RotationConfigManager
@@ -872,13 +916,15 @@
                                     {@const cdList = rotationStore.cooldownReady[index]}
                                     {#each cdList.slice(0, 3) as readyAbilKey, cdIdx}
                                         {@const abilInfo = allAbils[readyAbilKey] || allExtraActions[readyAbilKey]}
-                                        <img
-                                            class="cooldown-ready-icon"
-                                            src={abilInfo?.icon}
-                                            alt="Off cooldown"
-                                            title="{abilInfo?.title} ready"
-                                            style="bottom: {2 + cdIdx * 10}px;"
-                                        />
+                                        {#if abilInfo?.icon}
+                                            <img
+                                                class="cooldown-ready-icon"
+                                                src={abilInfo.icon}
+                                                alt="Off cooldown"
+                                                title="{abilInfo.title} ready"
+                                                style="bottom: {2 + cdIdx * 10}px;"
+                                            />
+                                        {/if}
                                     {/each}
                                     {#if cdList.length > 3}
                                         <span class="cooldown-overflow" style="bottom: {2 + 3 * 10}px;">+{cdList.length - 3}</span>
@@ -1014,6 +1060,17 @@
 		</section>
 	</div>
 </div>
+
+<!-- Credits -->
+<footer class="credits">
+	<div class="credits-content">
+		<h4>Credits & Resources</h4>
+		<ul>
+			<li>Game data and ability icons from <a href="https://runescape.wiki" target="_blank" rel="noopener">The RuneScape Wiki</a>, licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank" rel="noopener">CC BY-NC-SA 3.0</a></li>
+			<li>RuneScape is a registered trademark of <a href="https://www.jagex.com" target="_blank" rel="noopener">Jagex Ltd</a></li>
+		</ul>
+	</div>
+</footer>
 
 <!-- Save and Load dialogs are now handled by Popup components -->
 

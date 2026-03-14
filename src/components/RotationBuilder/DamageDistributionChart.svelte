@@ -13,8 +13,12 @@
     export let totalDamage = 0;
     export let poisonDamage = 0;
     export let familiarDamage = 0;
+    export let dreadnipDamage = 0;
+    export let conjureDamage = 0;
     export let poisonPerTick = [];
     export let familiarPerTick = [];
+    export let dreadnipPerTick = [];
+    export let conjurePerTick = [];
     
     // Collapse state
     let isCollapsed = true;
@@ -533,19 +537,25 @@
             return num.toLocaleString();
         };
 
-        // Build poison cumulative data aligned to the ticks in the series
-        console.log('[TimeSeriesChart] poisonDamage:', poisonDamage, 'familiarDamage:', familiarDamage,
-            'poisonPerTick sample:', poisonPerTick.slice(0, 20),
-            'familiarPerTick sample:', familiarPerTick.slice(0, 20));
+        // Build cumulative data aligned to the ticks in the series
         const hasPoisonData = poisonDamage > 0 && poisonPerTick.length > 0;
         const poisonData = hasPoisonData
             ? series.map(s => (s.tick < poisonPerTick.length ? poisonPerTick[s.tick] : poisonPerTick[poisonPerTick.length - 1]) || 0)
             : [];
 
-        // Build familiar cumulative data aligned to the ticks in the series
         const hasFamiliarData = familiarDamage > 0 && familiarPerTick.length > 0;
         const familiarData = hasFamiliarData
             ? series.map(s => (s.tick < familiarPerTick.length ? familiarPerTick[s.tick] : familiarPerTick[familiarPerTick.length - 1]) || 0)
+            : [];
+
+        const hasDreadnipData = dreadnipDamage > 0 && dreadnipPerTick.length > 0;
+        const dreadnipData = hasDreadnipData
+            ? series.map(s => (s.tick < dreadnipPerTick.length ? dreadnipPerTick[s.tick] : dreadnipPerTick[dreadnipPerTick.length - 1]) || 0)
+            : [];
+
+        const hasConjureData = conjureDamage > 0 && conjurePerTick.length > 0;
+        const conjureData = hasConjureData
+            ? series.map(s => (s.tick < conjurePerTick.length ? conjurePerTick[s.tick] : conjurePerTick[conjurePerTick.length - 1]) || 0)
             : [];
 
         const datasets = [
@@ -633,10 +643,42 @@
             });
         }
 
+        // Add dreadnip line if there is dreadnip damage
+        if (hasDreadnipData) {
+            datasets.push({
+                label: 'Dreadnip Damage',
+                data: dreadnipData,
+                borderColor: '#ff8c00',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                fill: false,
+                pointRadius: 0,
+                hitRadius: 10,
+                tension: 0.3
+            });
+        }
+
+        // Add conjure line if there is conjure damage
+        if (hasConjureData) {
+            datasets.push({
+                label: 'Conjure Damage',
+                data: conjureData,
+                borderColor: '#d694ff',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                fill: false,
+                pointRadius: 0,
+                hitRadius: 10,
+                tension: 0.3
+            });
+        }
+
         // Build legend filter list dynamically
         const visibleLabels = ['Expected Damage', '68% CI Upper', '95% CI Upper'];
         if (hasPoisonData) visibleLabels.push('Poison Damage');
         if (hasFamiliarData) visibleLabels.push('Familiar Damage');
+        if (hasDreadnipData) visibleLabels.push('Dreadnip Damage');
+        if (hasConjureData) visibleLabels.push('Conjure Damage');
 
         timeSeriesChart = new Chart(ctx, {
             type: 'line',
@@ -672,6 +714,12 @@
                                 }
                                 if (ctx.dataset.label === 'Familiar Damage') {
                                     return `Familiar: ${formatDmg(ctx.parsed.y)}`;
+                                }
+                                if (ctx.dataset.label === 'Dreadnip Damage') {
+                                    return `Dreadnip: ${formatDmg(ctx.parsed.y)}`;
+                                }
+                                if (ctx.dataset.label === 'Conjure Damage') {
+                                    return `Conjure: ${formatDmg(ctx.parsed.y)}`;
                                 }
                                 // For CI bounds, show the range
                                 const tick = ctx.dataIndex;
@@ -712,9 +760,11 @@
         updateChart();
     }
     $: if (distributionStats && timeSeriesCanvas) {
-        // Also depend on poisonPerTick and familiarPerTick to re-render when they change
+        // Depend on all per-tick arrays to re-render when they change
         poisonPerTick;
         familiarPerTick;
+        dreadnipPerTick;
+        conjurePerTick;
         updateTimeSeriesChart();
     }
 

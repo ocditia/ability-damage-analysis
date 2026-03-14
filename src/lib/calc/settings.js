@@ -178,6 +178,10 @@ const SETTINGS = {
     },
     HAUNTED: 'haunted',
     HAUNTED_AD: 'haunted AD',
+    THREADS_OF_FATE: 'threads of fate',
+    INVOKE_DEATH: 'invoke death',
+    SPLIT_SOUL_NECRO: 'split soul necro',
+    SPIRIT_PACT: 'spirit pact',
     SKELETON_WARRIOR_RAGE_STACKS: 'skeleton rage stacks',
     NOPE: 'nopenopenope',
     KALG_SPEC: 'kalg spec',
@@ -1168,11 +1172,11 @@ const settingsConfig = {
         default: true,
     },
     [SETTINGS.SUMMONING_RENEWAL]: {
-        label: 'Summoning Renewal Potion',
+        label: 'Summoning Renewal',
         default: false,
     },
     [SETTINGS.SPIRIT_WEED_INCENSE]: {
-        label: 'Spirit Weed Incense',
+        label: 'Spirit Incense',
         default: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.NONE,
         options: [
             { text: 'None', value: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.NONE },
@@ -1269,9 +1273,31 @@ const settingsConfig = {
         label: 'Haunted',
         default: false
     },
+    [SETTINGS.THREADS_OF_FATE]: {
+        label: 'Threads of Fate',
+        default: false
+    },
+    [SETTINGS.INVOKE_DEATH]: {
+        label: 'Invoke Death',
+        default: false
+    },
+    [SETTINGS.SPLIT_SOUL_NECRO]: {
+        label: 'Split Soul (Necro)',
+        default: false
+    },
     [SETTINGS.HAUNTED_AD]: {
         label: 'Haunted AD',
         default: 2345
+    },
+    [SETTINGS.SPIRIT_PACT]: {
+        label: 'Spirit Pact',
+        default: 3,
+        options: [
+            { text: 'None', value: 0 },
+            { text: 'I (+6s)', value: 1 },
+            { text: 'II (+12s)', value: 2 },
+            { text: 'III (+18s)', value: 3 },
+        ]
     },
     [SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]: {
         label: 'Skeleton rage stacks',

@@ -1,6 +1,7 @@
 import { abils, ABILITIES } from '../const/const';
-import { hit_damage_calculation, get_hit_sequence, style_specific_unification, calc_base_ad, apply_additional } from '../damage_calc';
-import { calc_channelled_hit, handleBuffs, get_user_value, handle_edraco } from './rotation_damage_helper';
+import { hit_damage_calculation, style_specific_unification, calc_base_ad, apply_additional } from '../damage_calc';
+import { get_hit_sequence } from './calculation_utils';
+import { calc_channelled_hit, handleBuffs, get_user_value, handle_edraco, getConjureDamageMultiplier } from './rotation_damage_helper';
 import { SETTINGS } from '../settings';
 import { on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
 import { create_damage_object } from './rota_object_helper';
@@ -40,6 +41,9 @@ interface RotationState {
     dreadnipActiveTick: number; // Tick when dreadnip was deployed (-1 = inactive)
     dreadnipAttacks: number; // Number of attacks made by current dreadnip
     lastAbilityTick: number; // Last tick with an ability — familiar/dreadnip stop after this
+    activeConjures: Record<string, { tickSummoned: number; duration: number }>; // Active conjure spirits
+    conjureDamage: number; // Accumulated conjure damage
+    conjurePerTick: number[]; // Cumulative conjure damage at each tick
 }
 
 interface DamageDistributionStat {
@@ -67,10 +71,12 @@ interface DamageResult {
     poisonDamage: number;
     familiarDamage: number;
     dreadnipDamage: number;
+    conjureDamage: number;
     distributionStats: DamageDistributionStat[];
     poisonPerTick: number[];
     familiarPerTick: number[];
     dreadnipPerTick: number[];
+    conjurePerTick: number[];
 }
 
 const allAbilities = { ...rangedAbils, ...magicAbils, ...meleeAbils, ...necroAbils };
@@ -195,7 +201,10 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         dreadnipPerTick: new Array(BAR_SIZE).fill(0),
         dreadnipActiveTick: -1,
         dreadnipAttacks: 0,
-        lastAbilityTick: -1
+        lastAbilityTick: -1,
+        activeConjures: {},
+        conjureDamage: 0,
+        conjurePerTick: new Array(BAR_SIZE).fill(0)
     };
 
     // Find the last tick that has an ability (familiar/dreadnip stop after this)
@@ -223,6 +232,8 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     // Initialize familiar spec points and regen accumulator
     settingsCopy[SETTINGS.FAMILIAR_SPEC_POINTS] = 60;
     settingsCopy[SETTINGS.FAMILIAR_SPEC_REGEN_ACCUMULATOR] = 0;
+    // Initialize conjure-related stacks (start fresh in rotation)
+    settingsCopy[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS] = 0;
 
     // Process through each tick until we reach the end, +20 to finish handling bleeds
     const extraTicks = 20;
@@ -234,6 +245,7 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     forwardFillCumulative(state.poisonPerTick);
     forwardFillCumulative(state.familiarPerTick);
     forwardFillCumulative(state.dreadnipPerTick);
+    forwardFillCumulative(state.conjurePerTick);
 
     const totalDamage = state.dmgs.reduce((acc, current) => acc + current, 0);
     return {
@@ -241,10 +253,12 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         poisonDamage: state.poisonDamage,
         familiarDamage: state.scrollDamage,
         dreadnipDamage: state.dreadnipDamage,
+        conjureDamage: state.conjureDamage,
         distributionStats: state.distributionStats,
         poisonPerTick: state.poisonPerTick,
         familiarPerTick: state.familiarPerTick,
-        dreadnipPerTick: state.dreadnipPerTick
+        dreadnipPerTick: state.dreadnipPerTick,
+        conjurePerTick: state.conjurePerTick
     };
 }
 
@@ -282,7 +296,10 @@ export function calculateRotationDamageCore(
         dreadnipPerTick: new Array(barSize).fill(0),
         dreadnipActiveTick: -1,
         dreadnipAttacks: 0,
-        lastAbilityTick: -1
+        lastAbilityTick: -1,
+        activeConjures: {},
+        conjureDamage: 0,
+        conjurePerTick: new Array(barSize).fill(0)
     };
 
     // Find the last tick that has an ability (familiar/dreadnip stop after this)
@@ -298,6 +315,7 @@ export function calculateRotationDamageCore(
     // Initialize familiar spec points and regen accumulator
     settingsCopy[SETTINGS.FAMILIAR_SPEC_POINTS] = 60;
     settingsCopy[SETTINGS.FAMILIAR_SPEC_REGEN_ACCUMULATOR] = 0;
+    settingsCopy[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS] = 0;
 
     logger.log(LogCategory.SETTINGS, 'Core damage calculation settings', {
         abilityDamage: settingsCopy[SETTINGS.ABILITY_DAMAGE],
@@ -314,6 +332,7 @@ export function calculateRotationDamageCore(
     forwardFillCumulative(state.poisonPerTick);
     forwardFillCumulative(state.familiarPerTick);
     forwardFillCumulative(state.dreadnipPerTick);
+    forwardFillCumulative(state.conjurePerTick);
 
     const totalDamage = state.dmgs.reduce((acc, current) => acc + current, 0);
 
@@ -322,10 +341,12 @@ export function calculateRotationDamageCore(
         poisonDamage: state.poisonDamage,
         familiarDamage: state.scrollDamage,
         dreadnipDamage: state.dreadnipDamage,
+        conjureDamage: state.conjureDamage,
         distributionStats: state.distributionStats,
         poisonPerTick: state.poisonPerTick,
         familiarPerTick: state.familiarPerTick,
-        dreadnipPerTick: state.dreadnipPerTick
+        dreadnipPerTick: state.dreadnipPerTick,
+        conjurePerTick: state.conjurePerTick
     };
 }
 
@@ -459,6 +480,7 @@ function processTickOperationsCore(
     handleAftershock(state, settingsCopy);
     processFamiliarTick(state, settingsCopy);
     processDreadnipTick(state, settingsCopy);
+    processConjureTick(state, settingsCopy);
 
     state.tick += 1;
 }
@@ -611,6 +633,106 @@ function processDreadnipTick(state: RotationState, settings: any) {
     }
 }
 
+// Conjure spirit definitions: which auto-attack ability each conjure uses and its attack rate
+const CONJURE_DEFINITIONS: Record<string, {
+    autoAbility: ABILITIES;
+    attackRate: number;
+    poisonAbility?: ABILITIES;
+    poisonRate?: number;
+}> = {
+    'conjure_skeleton_warrior': { autoAbility: ABILITIES.SKELETON_WARRIOR_AUTO, attackRate: 5 }, // 3s = 5 ticks
+    'conjure_vengeful_ghost': { autoAbility: ABILITIES.VENGEFUL_GHOST_AUTO, attackRate: 7 },     // 4.2s = 7 ticks
+    'conjure_putrid_zombie': {
+        autoAbility: ABILITIES.PUTRID_ZOMBIE_AUTO, attackRate: 6,       // 3.6s = 6 ticks
+        poisonAbility: ABILITIES.PUTRID_ZOMBIE_POISON, poisonRate: 3    // 1.8s = 3 ticks
+    },
+    // Phantom Guardian: purely defensive (damage reduction), no auto-attacks to process
+};
+
+function processConjureTick(state: RotationState, settings: any) {
+    // Conjures stop attacking after the last ability tick
+    if (state.lastAbilityTick < 0 || state.tick > state.lastAbilityTick) return;
+
+    const damageMultiplier = getConjureDamageMultiplier(settings);
+
+    for (const [conjureKey, def] of Object.entries(CONJURE_DEFINITIONS)) {
+        const remaining = state.timers[conjureKey];
+        if (!remaining || remaining <= 0) continue;
+
+        // Attack on every attackRate tick (offset by 1 so first attack isn't instant)
+        if (state.tick > 0 && state.tick % def.attackRate === 0) {
+            const abilData = abils[def.autoAbility];
+            if (!abilData) continue;
+
+            const minHit = abilData['min hit'];
+            const varHit = abilData['var hit'];
+            const avgPercent = minHit + varHit / 2;
+            const baseDamage = avgPercent * settings[SETTINGS.ABILITY_DAMAGE];
+
+            // Apply rage stacks for skeleton warrior
+            let rageMult = 1;
+            if (conjureKey === 'conjure_skeleton_warrior') {
+                const rageStacks = settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS] || 0;
+                rageMult = 1 + 0.03 * rageStacks;
+                settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS] = rageStacks + 1;
+            }
+
+            const expectedDamage = Math.floor(baseDamage * rageMult * damageMultiplier);
+            state.conjureDamage += expectedDamage;
+            if (state.tick < state.conjurePerTick.length) {
+                state.conjurePerTick[state.tick] = state.conjureDamage;
+            }
+        }
+
+        // Command burst hits
+        const commandKey = 'command_' + conjureKey.replace('conjure_', '');
+        if (state.timers[commandKey] && state.timers[commandKey] > 0) {
+            if (conjureKey === 'conjure_putrid_zombie') {
+                // Command Putrid Zombie: single 360-440% explosion using its own ability data
+                const cmdAbilData = abils[ABILITIES.COMMAND_PUTRID_ZOMBIE];
+                if (cmdAbilData) {
+                    const cmdAvg = cmdAbilData['min hit'] + cmdAbilData['var hit'] / 2;
+                    const cmdDamage = Math.floor(cmdAvg * settings[SETTINGS.ABILITY_DAMAGE] * damageMultiplier);
+                    state.conjureDamage += cmdDamage;
+                    if (state.tick < state.conjurePerTick.length) {
+                        state.conjurePerTick[state.tick] = state.conjureDamage;
+                    }
+                }
+            } else {
+                // Command Skeleton Warrior: 1 hit per tick during command (10 hits over 10 ticks)
+                const cmdAbilData = abils[def.autoAbility];
+                if (cmdAbilData) {
+                    const cmdAvg = cmdAbilData['min hit'] + cmdAbilData['var hit'] / 2;
+                    let cmdRageMult = 1;
+                    if (conjureKey === 'conjure_skeleton_warrior') {
+                        const rageStacks = settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS] || 0;
+                        cmdRageMult = 1 + 0.03 * rageStacks;
+                        settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS] = rageStacks + 1;
+                    }
+                    const cmdDamage = Math.floor(cmdAvg * settings[SETTINGS.ABILITY_DAMAGE] * cmdRageMult * damageMultiplier);
+                    state.conjureDamage += cmdDamage;
+                    if (state.tick < state.conjurePerTick.length) {
+                        state.conjurePerTick[state.tick] = state.conjureDamage;
+                    }
+                }
+            }
+        }
+
+        // Poison aura (Putrid Zombie fetid stench)
+        if (def.poisonAbility && def.poisonRate && state.tick > 0 && state.tick % def.poisonRate === 0) {
+            const poisonData = abils[def.poisonAbility];
+            if (poisonData) {
+                const poisonAvg = poisonData['min hit'] + poisonData['var hit'] / 2;
+                const poisonDamage = Math.floor(poisonAvg * settings[SETTINGS.ABILITY_DAMAGE] * damageMultiplier);
+                state.conjureDamage += poisonDamage;
+                if (state.tick < state.conjurePerTick.length) {
+                    state.conjurePerTick[state.tick] = state.conjureDamage;
+                }
+            }
+        }
+    }
+}
+
 function handleExtraActionsCore(settings: any, timers: Record<string, number>, tick: number, rotation: RotationInput) {
     if (timers["Adrenaline renewal potion"] >= 0) {
         settings[SETTINGS.ADRENALINE] += 4;
@@ -640,11 +762,9 @@ function handleExtraActionsCore(settings: any, timers: Record<string, number>, t
             }
             else if (element === ABILITIES.EXSANGUINATE) {
                 settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.EXSANGUINATE;
-                settings[SETTINGS.GLACIAL_EMBRACE] = 0;
             }
             else if (element === ABILITIES.INCITE_FEAR) {
                 settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR;
-                settings[SETTINGS.BLOOD_TITHE] = 0;
             }
             else if (element === ABILITIES.DREADNIP) {
                 timers['_dreadnip_deploy'] = 1; // Signal to processDreadnipTick
@@ -797,6 +917,7 @@ function processTickOperations(
     handleAftershock(state, settingsCopy);
     processFamiliarTick(state, settingsCopy);
     processDreadnipTick(state, settingsCopy);
+    processConjureTick(state, settingsCopy);
 
     state.tick += 1;
 }
@@ -1268,11 +1389,9 @@ function handleExtraActions(settings: any, timers: Record<string, number>, tick:
             }
             else if (element === ABILITIES.EXSANGUINATE) {
                 settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.EXSANGUINATE;
-                settings[SETTINGS.GLACIAL_EMBRACE] = 0;
             }
             else if (element === ABILITIES.INCITE_FEAR) {
                 settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR;
-                settings[SETTINGS.BLOOD_TITHE] = 0;
             }
             else if (element === ABILITIES.DREADNIP) {
                 timers['_dreadnip_deploy'] = 1;
@@ -1298,8 +1417,14 @@ function handleTimers(timers: Record<string, number>, settings: any) {
         for (let key in timers) {
             timers[key] -= 1;
             if (timers[key] <= 0) {
-                if (key.startsWith(COOLDOWN_PREFIX)) {
-                    // Cooldown expired - just remove the timer
+                if (key === '_glacial_embrace_decay') {
+                    settings[SETTINGS.GLACIAL_EMBRACE] = 0;
+                    delete timers[key];
+                } else if (key === '_blood_tithe_decay') {
+                    settings[SETTINGS.BLOOD_TITHE] = 0;
+                    delete timers[key];
+                } else if (key.startsWith(COOLDOWN_PREFIX) || key.startsWith('conjure_') || key.startsWith('command_')) {
+                    // Cooldown, conjure, or command expired - just remove the timer
                     delete timers[key];
                 } else if (key === SETTINGS.ICY_PRECISION || key === SETTINGS.DEATHSPORE_COOLDOWN) {
                     settings[key] = 0;

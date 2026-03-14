@@ -4,9 +4,7 @@
     import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
     import { exportToPvme } from '$lib/utils/pvmeExport.js';
 
-    export let refreshUI;
-    export let onOpenKeybinds = () => {};
-    export let onShowKeypresses = () => {};
+    let { refreshUI, onOpenKeybinds = () => {}, onShowKeypresses = () => {} } = $props();
 
     function handleSaveRotation() {
         notifActions.showInputPrompt(
@@ -123,6 +121,9 @@
             notifActions.showNotification('Failed', 'Could not copy to clipboard.', 'error');
         }
     }
+
+    const VISIBLE_LIMIT = 10;
+    let showAllRotations = $state(false);
 </script>
 
 <div class="space-y-4 mt-4">
@@ -146,40 +147,46 @@
             </svg>
         </button>
 
-        {#if !uiStore.configSectionCollapsed}
-            <div class="config-content">
-                <!-- Action buttons row -->
-                <div class="action-row">
-                    <button class="action-btn primary" onclick={handleSaveRotation} title="Save current rotation">
-                        Save
-                    </button>
-                    <button class="action-btn" onclick={exportToFile} title="Export to file">
-                        Export
-                    </button>
-                    <button class="action-btn" onclick={importFromFile} title="Import from file">
-                        Import
-                    </button>
-                    <button class="action-btn" onclick={importFromString} title="Import rotation string">
-                        Paste
-                    </button>
-                    <button class="action-btn" onclick={exportToString} title="Copy rotation to clipboard">
-                        Copy
-                    </button>
-                    <button class="action-btn" onclick={copyDiscordFormat} title="Copy rotation as Discord text (pvme format)">
-                        Discord
-                    </button>
-                    <button class="action-btn" onclick={onOpenKeybinds} title="Configure ability keybinds">
-                        Keybinds
-                    </button>
-                    <button class="action-btn" onclick={onShowKeypresses} title="Show keypress sequence for rotation">
-                        Keys
-                    </button>
-                </div>
+        <!-- Action buttons always visible -->
+        <div class="config-content">
+            <div class="action-row">
+                <button class="action-btn primary" onclick={handleSaveRotation} title="Save current rotation">
+                    Save
+                </button>
+                <button class="action-btn" onclick={exportToFile} title="Export to file">
+                    Export
+                </button>
+                <button class="action-btn" onclick={importFromFile} title="Import from file">
+                    Import
+                </button>
+                <button class="action-btn" onclick={importFromString} title="Import rotation string">
+                    Paste
+                </button>
+                <button class="action-btn" onclick={exportToString} title="Copy rotation to clipboard">
+                    Copy
+                </button>
+                <button class="action-btn" onclick={copyDiscordFormat} title="Copy rotation as Discord text (pvme format)">
+                    Discord
+                </button>
+                <button class="action-btn" onclick={onOpenKeybinds} title="Configure ability keybinds">
+                    Keybinds
+                </button>
+                <button class="action-btn" onclick={onShowKeypresses} title="Show keypress sequence for rotation">
+                    Keys
+                </button>
+            </div>
+        </div>
 
-                <!-- Saved rotations list -->
-                {#if rotationStore.savedRotations.length > 0}
-                    <div class="saved-list">
-                        {#each rotationStore.savedRotations.slice(0, 5) as config}
+        {#if !uiStore.configSectionCollapsed}
+            <!-- Saved rotations list -->
+            {#if rotationStore.savedRotations.length > 0}
+                {@const visibleRotations = showAllRotations
+                    ? rotationStore.savedRotations
+                    : rotationStore.savedRotations.slice(0, VISIBLE_LIMIT)}
+                {@const hiddenCount = rotationStore.savedRotations.length - VISIBLE_LIMIT}
+                <div class="saved-list">
+                    <div class="saved-grid">
+                        {#each visibleRotations as config}
                             <div class="saved-item"
                                 class:active={rotationStore.activeRotationId === config.id}
                             >
@@ -206,14 +213,18 @@
                                 </div>
                             </div>
                         {/each}
-                        {#if rotationStore.savedRotations.length > 5}
-                            <button class="show-more" onclick={() => {}}>
-                                +{rotationStore.savedRotations.length - 5} more
-                            </button>
-                        {/if}
                     </div>
-                {/if}
-            </div>
+                    {#if hiddenCount > 0 && !showAllRotations}
+                        <button class="show-more" onclick={() => showAllRotations = true}>
+                            +{hiddenCount} more
+                        </button>
+                    {:else if showAllRotations && hiddenCount > 0}
+                        <button class="show-more" onclick={() => showAllRotations = false}>
+                            Show less
+                        </button>
+                    {/if}
+                </div>
+            {/if}
         {/if}
     </div>
 </div>
@@ -257,13 +268,12 @@
     }
 
     .config-content {
-        padding: 0 0.75rem 0.75rem;
+        padding: 0 0.75rem 0.5rem;
     }
 
     .action-row {
         display: flex;
         gap: 4px;
-        margin-bottom: 0.5rem;
     }
 
     .action-btn {
@@ -296,8 +306,12 @@
     }
 
     .saved-list {
-        display: flex;
-        flex-direction: column;
+        padding: 0 0.75rem 0.75rem;
+    }
+
+    .saved-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 2px;
     }
 
@@ -378,6 +392,7 @@
 
     .show-more {
         padding: 3px 8px;
+        margin-top: 2px;
         font-size: 0.7rem;
         color: #777;
         background: none;
