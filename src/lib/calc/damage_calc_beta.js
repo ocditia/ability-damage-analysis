@@ -1771,7 +1771,7 @@ function hit_damage_calculation(settings, rotationCalc = false) {
         settings[SETTINGS.MELEE_MH] = SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS;
         settings = style_specific_unification(settings);
         let keris_damage = calc_damage_object(settings);
-        keris_damage += apply_additional(settings, keris_damage, rotationCalc);
+        keris_damage = apply_additional(settings, keris_damage, rotationCalc);
 
         let keris_proc_rate = 0.02;
         if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.DESERT) {
@@ -1785,7 +1785,7 @@ function hit_damage_calculation(settings, rotationCalc = false) {
         settings[SETTINGS.MELEE_MH] = SETTINGS.MELEE_MH_VALUES.KERIS;
         settings = style_specific_unification(settings);
         let keris_damage = calc_damage_object(settings);
-        keris_damage += apply_additional(settings, keris_damage, rotationCalc);
+        keris_damage = apply_additional(settings, keris_damage, rotationCalc);
 
         let keris_proc_rate = 0.02;
         if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.DESERT) {
