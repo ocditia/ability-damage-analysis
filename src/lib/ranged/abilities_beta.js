@@ -1,158 +1,112 @@
 import { ABILITIES } from '../calc/const.js';
-import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
+import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc_beta.js';
 
 const abilities = {
-    [ABILITIES.RANGED_AUTO]: {
-        title: 'Auto',
+    [ABILITIES.RANGED_BETA]: {
+        title: 'Ranged Auto',
         calc: hit_damage_calculation,
     },
-    [ABILITIES.GREATER_RICOCHET]: {
-        title: 'Greater ricochet',
+    [ABILITIES.GALESHOT]: {
+        title: 'Galeshot',
+        calc: hit_damage_calculation,
+    },
+    [ABILITIES.GALESHOT_BONUS]: {
+        title: 'Galeshot Per-Hit Damage',
+        calc: hit_damage_calculation,
+    },
+    [ABILITIES.GRICO_BETA]: {
+        title: 'Greater Ricochet',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/grico.png'
     },
-    [ABILITIES.DAZING_SHOT]: {
-        title: 'Dazing shot',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/dazing.png'
-    },
-    [ABILITIES.PIERCING_SHOT]: {
-        title: 'Piercing shot',
+    [ABILITIES.PIERCING_SHOT_BETA]: {
+        title: 'Piercing Shot',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/piercing.png'
     },
-    [ABILITIES.FRAGMENTATION_SHOT]: {
-        title: 'Fragmentation shot',
+    [ABILITIES.SNIPE_BETA]: {
+        title: 'Snipe',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/frag-shot.png'
     },
-    [ABILITIES.CORRUPTION_SHOT]: {
+    [ABILITIES.CORRUPTION_SHOT_BETA]: {
         title: 'Corruption shot',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/corrupt-shot.png'
     },
-    [ABILITIES.BINDING_SHOT]: {
-        title: 'Binding shot',
+    [ABILITIES.BINDING_SHOT_BETA]: {
+        title: 'Binding Shot',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/binding.png'
     },
-    [ABILITIES.SNIPE]: {
-        title: 'Snipe',
+    [ABILITIES.SNAP_SHOT_BETA]: {
+        title: 'Snap Shot',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/snipe.png'
     },
-    [ABILITIES.DEMORALISE]: {
-        title: 'Demoralise',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/demoralise.png'
-    },
-    [ABILITIES.NEEDLE_STRIKE]: {
-        title: 'Needle strike',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/needle.png'
-    },
-    [ABILITIES.RICOCHET]: {
-        title: 'Ricochet',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/rico.png'
-    },
-    [ABILITIES.RAPID_FIRE]: {
-        title: 'Rapid fire',
+    [ABILITIES.RAPID_FIRE_BETA]: {
+        title: 'Rapid Fire',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/rapid.png'
     },
-    [ABILITIES.SNAP_SHOT]: {
-        title: 'Snap shot',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/snapshot.png'
-    },
-    [ABILITIES.SHADOW_TENDRILS]: {
+    [ABILITIES.SHADOW_TENDRILS_BETA]: {
         title: 'Shadow tendrils',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/tendril.png'
     },
-    [ABILITIES.TIGHT_BINDINGS]: {
-        title: 'Tight bindings',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/tbind.png'
-    },
-    [ABILITIES.ROUT]: {
-        title: 'Rout',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/rout.png'
-    },
-    [ABILITIES.BOMBARDMENT]: {
+    [ABILITIES.BOMBARDMENT_BETA]: {
         title: 'Bombardment',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/bombard.png'
     },
-    [ABILITIES.SALT_THE_WOUND]: {
-        title: 'Salt the wound',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/salt.png'
-    },
-    [ABILITIES.INCENDIARY_SHOT]: {
-        title: 'Incendiary shot',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/incend.png'
-    },
-    [ABILITIES.DEADSHOT]: {
+    [ABILITIES.DEADSHOT_BETA]: {
         title: 'Deadshot',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/deadshot.png'
-    },
-    [ABILITIES.UNLOAD]: {
-        title: 'Unload',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/unload.png'
     },
     [ABILITIES.CRYSTAL_RAIN]: {
-        title: 'Crystal rain',
+        title: 'Crystal Rain',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/sgb.png'
     },
     [ABILITIES.BALANCE_BY_FORCE]: {
-        title: 'Balance by force',
+        title: 'Balance by Force',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/bolg.png'
     },
     [ABILITIES.DESTRUCTIVE_SHOT]: {
-        title: 'Destructive shot',
+        title: 'Destructive Shot',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/zamorak_bow.png'
-    },
-    [ABILITIES.SHADOWFALL]: {
-        title: 'Shadowfall',
-        calc: ability_damage_calculation,
-        icon: '/gear_icons/gloomfire_bow.png'
     },
     [ABILITIES.DESCENT_OF_DARKNESS]: {
         title: 'Descent of Darkness',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/dbow.png'
     },
+    [ABILITIES.SHADOWFALL]: {
+        title: 'Shadowfall',
+        calc: ability_damage_calculation,
+        icon: '/gear_icons/gloomfire_bow.png'
+    },
     [ABILITIES.BALANCED_SHOT]: {
-        title: 'Balanced shot',
+        title: 'Balanced Shot',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/guthix_bow.png'
     },
     [ABILITIES.AIMED_SHOT]: {
-        title: 'Aimed shot',
+        title: 'Aimed Shot',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/hand_cannon.png'
     },
     [ABILITIES.POWER_SHOT]: {
-        title: 'Power shot',
+        title: 'Power Shot',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/magic_shieldbow.png'
     },
     [ABILITIES.TWIN_FANG]: {
-        title: 'Twin fang',
+        title: 'Twin Fang',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/msb.png'
     },
     [ABILITIES.PHANTOM_STRIKE]: {
-        title: 'Phantom strike',
+        title: 'Phantom Strike',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/morrigans_javelin.png'
     },
@@ -162,27 +116,27 @@ const abilities = {
         icon: '/ability_icons/ranged/30x30/morrigans_throwing_axe.png'
     },
     [ABILITIES.TWIN_SHOT]: {
-        title: 'Twin shot',
+        title: 'Twin Shot',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/quickbow.png'
     },
     [ABILITIES.CHAIN_HIT]: {
-        title: 'Chain hit',
+        title: 'Chain Hit',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/rune_throwing_axe.png'
     },
     [ABILITIES.RESTORATIVE_SHOT]: {
-        title: 'Restorative shot',
+        title: 'Restorative Shot',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/saradomin_bow.png'
     },
     [ABILITIES.SOUL_SHOT]: {
-        title: 'Soul shot',
+        title: 'Soul Shot',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/seercull.png'
     },
     [ABILITIES.DEEP_BURN]: {
-        title: 'Deep burn',
+        title: 'Deep Burn',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/strykebow.png'
     },
@@ -190,6 +144,11 @@ const abilities = {
         title: 'Defiance',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/zaniks_crossbow.png'
+    },
+    [ABILITIES.AFTERSHOCK_RANGED]: {
+        title: 'Aftershock',
+        calc: calc_aftershock,
+        icon: '/effect_icons/Aftershock.webp'
     }
 };
 

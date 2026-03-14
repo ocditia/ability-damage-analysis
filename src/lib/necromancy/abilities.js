@@ -1,7 +1,11 @@
-import { ABILITIES } from '../calc/const/const';
-import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
+import { ABILITIES } from '../calc/const.js';
+import { ability_damage_calculation, hit_damage_calculation, calc_base_damage_ability_page, calc_aftershock } from '../calc/damage_calc_beta.js';
 
 const abilities = {
+    [ABILITIES.NECRO_AD]: {
+        title: 'Base damage',
+        calc: calc_base_damage_ability_page,
+    },
     [ABILITIES.NECRO_AUTO]: {
         title: 'Necro auto',
         calc: hit_damage_calculation,
@@ -17,28 +21,23 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/soul-sap.png'
     },
-    [ABILITIES.CONJURE_UNDEAD_ARMY]: {
-        title: 'Conjure Undead Army',
+    [ABILITIES.SKELETON_WARRIOR_AUTO]: {
+        title: 'Skeleton Warrior auto',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/conj-skele.png'
     },
-    [ABILITIES.CONJURE_SKELETON_WARRIOR]: {
-        title: 'Conjure Skeleton Warrior',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/necro/30x30/conj-skele.png'
-    },
-    [ABILITIES.COMMAND_SKELETON_WARRIOR]: {
+    [ABILITIES.SKELETON_WARRIOR_AUTO_10]: {
         title: 'Command Skeleton Warrior',
         calc: ability_damage_calculation,
         icon: '/ability_icons/necro/30x30/comm-skele.png'
     },
-    [ABILITIES.CONJURE_VENGEFUL_GHOST]: {
-        title: 'Conjure Vengeful Ghost',
+    [ABILITIES.VENGEFUL_GHOST_AUTO]: {
+        title: 'Vengeful Ghost auto',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/ghost.png'
     },
-    [ABILITIES.CONJURE_PUTRID_ZOMBIE]: {
-        title: 'Conjure Putrid Zombie',
+    [ABILITIES.PUTRID_ZOMBIE_AUTO]: {
+        title: 'Putrid Zombie auto',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/conj-zom.png'
     },
@@ -46,16 +45,6 @@ const abilities = {
         title: 'Command Putrid Zombie',
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/comm-zom.png'
-    },
-    [ABILITIES.CONJURE_PHANTOM_GUARDIAN]: {
-        title: 'Conjure Phantom Guardian',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/necro/30x30/command_phantom_guardian.png'
-    },
-    [ABILITIES.COMMAND_VENGEFUL_GHOST]: {
-        title: 'Command Vengeful Ghost',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/necro/30x30/ghost.png'
     },
     [ABILITIES.COMMAND_PHANTOM_GUARDIAN]: {
         title: 'Command Phantom Guardian',
@@ -67,8 +56,18 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/FOD.png'
     },
+    [ABILITIES.DEATHSKULLS]: {
+        title: 'Deathskulls (1 hit)',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/necro/30x30/skulls.png'
+    },
     [ABILITIES.DEATHSKULLS_4]: {
-        title: 'Death Skulls',
+        title: 'Deathskulls (4 hits)',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/necro/30x30/skulls.png'
+    },
+    [ABILITIES.DEATHSKULLS_7]: {
+        title: 'Deathskulls (7 hits)',
         calc: ability_damage_calculation,
         icon: '/ability_icons/necro/30x30/skulls.png'
     },
@@ -82,11 +81,25 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/soul_strike.png'
     },
-    [ABILITIES.VOLLEY_OF_SOULS_DYNAMIC]: {
-        title: 'Volley of souls',
+    [ABILITIES.VOLLEY_OF_SOULS_2]: {
+        title: 'Volley of souls (2)',
         calc: ability_damage_calculation,
-        'ability classification': 'multihit',
         icon: '/ability_icons/necro/30x30/volley-2.png'
+    },
+    [ABILITIES.VOLLEY_OF_SOULS_3]: {
+        title: 'Volley of souls (3)',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/necro/30x30/volley-3.png'
+    },
+    [ABILITIES.VOLLEY_OF_SOULS_4]: {
+        title: 'Volley of souls (4)',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/necro/30x30/volley-4.png'
+    },
+    [ABILITIES.VOLLEY_OF_SOULS_5]: {
+        title: 'Volley of souls (5)',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/necro/30x30/volley-5.png'
     },
     [ABILITIES.SPECTRAL_SCYTHE_1]: {
         title: 'Spectral scythe 1',
@@ -123,31 +136,14 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/necro/30x30/omniguard-bg.png'
     },
-    [ABILITIES.LIFE_TRANSFER]: {
-        title: 'Life Transfer',
+    [ABILITIES.SOUL_CRUSH]: {
+        title: 'Soul crush',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/necro/incantations/Life_Transfer.png'
     },
-    [ABILITIES.THREADS_OF_FATE]: {
-        title: 'Threads of Fate',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/necro/incantations/Threads_of_Fate_icon.png'
+    [ABILITIES.AFTERSHOCK_NECRO]: {
+        title: 'Aftershock',
+        calc: calc_aftershock,
     },
-    [ABILITIES.INVOKE_DEATH]: {
-        title: 'Invoke Death',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/necro/incantations/Invoke_Death_icon.png'
-    },
-    [ABILITIES.SPLIT_SOUL_NECRO]: {
-        title: 'Split Soul',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/necro/incantations/Split_Soul_icon.png'
-    },
-    [ABILITIES.LIVING_DEATH]: {
-        title: 'Living Death',
-        calc: hit_damage_calculation,
-        icon: '/effect_icons/living_death.png'
-    }
 };
 
 export { abilities };

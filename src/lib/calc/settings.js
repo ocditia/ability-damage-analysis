@@ -1,5 +1,5 @@
 const SETTINGS = {
-    // General
+    EQ_PERK: 'eq perk',
     MODE: 'user value',
     MODE_VALUES: {
         MEAN: 'mean',
@@ -10,10 +10,10 @@ const SETTINGS = {
         MAX_NO_CRIT: 'max no crit',
         MAX_CRIT: 'max crit'
     },
-    ABILITY_DAMAGE: 'ability damage',
     NECROMANCY_LEVEL: 'necromancy level',
     MAGIC_LEVEL: 'magic level',
     STRENGTH_LEVEL: 'strength level',
+    ATTACK_LEVEL: 'attack level',
     RANGED_LEVEL: 'ranged level',
     POTION: 'potion',
     POTION_VALUES: {
@@ -26,8 +26,8 @@ const SETTINGS = {
         REGULAR: 'necromancy potion'
     },
     HIT_CHANCE: 'hit chance',
+    NECROSIS_STACKS: 'necrosis stacks',
     REAPER_CREW: 'reaper crew',
-    //Prayers
     PRAYER: 'prayer',
     MAGIC_PRAYER: 'magic prayer',
     MAGIC_PRAYER_VALUES: {
@@ -86,7 +86,6 @@ const SETTINGS = {
         HASTENED_DECAY: 'hastened decay',
         DECAY: 'decay'
     },
-    // Misc
     RUBY_AURORA: 'ruby aurora',
     REVENGE: 'revenge',
     BERSERKERS_FURY: 'berserkers fury',
@@ -110,35 +109,14 @@ const SETTINGS = {
         LVL3_UNDEAD: 'tier 3 undead'
     },
     TARGET_HP_PERCENT: 'target hp percent',
+    PLAYER_HP_PERCENT: 'player hp percent',
     GENOCIDAL: 'genocidal',
     IMPATIENT: 'impatient',
-    AFTERSHOCK: 'aftershock',
     FAMILIAR: 'familiar',
     FAMILIAR_VALUES: {
         NONE: 'none',
         RIPPER_DEMON: 'ripper demon',
-        KALGERION_DEMON: 'kalgerion demon',
-        STEEL_TITAN: 'steel titan'
-    },
-    FAMILIAR_ACCURACY: 'familiar accuracy',
-    USE_FAMILIAR_SCROLLS: 'use familiar scrolls',
-    FAMILIAR_SPEC_POINTS: 'familiar spec points',
-    FAMILIAR_SPEC_REGEN_ACCUMULATOR: 'familiar spec regen accumulator',
-    SHOW_FAMILIAR_SPEC_POINTS: 'show familiar spec points',
-    SPIRIT_CAPE: 'spirit cape',
-    SUMMONING_RENEWAL: 'summoning renewal',
-    SPIRIT_WEED_INCENSE: 'spirit weed incense',
-    SPIRIT_WEED_INCENSE_VALUES: {
-        NONE: 0,
-        LVL1: 1,
-        LVL2: 2,
-        LVL3: 3,
-        LVL4: 4
-    },
-    PRISM_OF_RESTORATION: 'prism of restoration',
-    AURA: 'aura',
-    AURA_VALUES: {
-        NONE: 'none',
+        KALGERION_DEMON: 'kalgerion demon'
     },
     VULN: 'vulnerability',
     VULN_VALUES: {
@@ -146,22 +124,14 @@ const SETTINGS = {
         CURSE: 'curse',
         VULNERABILITY: 'vuln'
     },
-    POISON: 'poison',
-    POISON_VALUES: {
-        NONE: 'none',
-        WEAPON_POISON0: 'weapon poison',
-        WEAPON_POISON1: 'weapon poison+',
-        WEAPON_POISON2: 'weapon poison++',
-        WEAPON_POISON3: 'weapon poison+++',
-    },
     SMOKE_CLOUD: 'smoke cloud',
     CRYPTBLOOM: 'cryptbloom',
     SLAYER_PERK_UNDEAD: 'undead slayer perk',
     SLAYER_PERK_DRAGON: 'dragon slayer perk',
     SLAYER_PERK_DEMON: 'demon slayer perk',
-    UNDEAD_SLAYER_ABILITY: 'undead slayer ability',
-    DRAGON_SLAYER_ABILITY: 'dragon slayer ability',
-    DEMON_SLAYER_ABILITY: 'demon slayer ability',
+    SLAYER_SIGIL_UNDEAD: 'undead slayer sigil',
+    SLAYER_SIGIL_DRAGON: 'dragon slayer sigil',
+    SLAYER_SIGIL_DEMON: 'demon slayer sigil',
     SLAYER_PERK: 'slayer perk',
     SLAYER_PERK_VALUES: {
         NONE: 'none',
@@ -178,10 +148,6 @@ const SETTINGS = {
     },
     HAUNTED: 'haunted',
     HAUNTED_AD: 'haunted AD',
-    THREADS_OF_FATE: 'threads of fate',
-    INVOKE_DEATH: 'invoke death',
-    SPLIT_SOUL_NECRO: 'split soul necro',
-    SPIRIT_PACT: 'spirit pact',
     SKELETON_WARRIOR_RAGE_STACKS: 'skeleton rage stacks',
     NOPE: 'nopenopenope',
     KALG_SPEC: 'kalg spec',
@@ -198,7 +164,8 @@ const SETTINGS = {
         ELITE_TECTONIC: 'elite tectonic mask',
         SLISKE: 'anima core helm of sliske',
         GHOST_HUNTER: 'ghost hunter goggles',
-        MASTERWORK: 'masterwork magic hat'
+        MASTERWORK: 'masterwork magic hat',
+        TUMEKENS_RESPLENDENCE: 'tumekens resplendence helmet'
     },
     RANGED_HELMET: 'ranged helmet',
     RANGED_HELMET_VALUES: {
@@ -212,8 +179,8 @@ const SETTINGS = {
     MELEE_HELMET: 'melee helmet',
     MELEE_HELMET_VALUES: {
         NONE: 'none',
-        MASTERWORK: 'masterwork melee helm',
-        TMW: 'trimmed masterwork melee helm',
+        MASTERWORK: 'masterwork helm',
+        TMW: 'trimmed masterwork helm',
         VESTMENTS: 'vestments of havoc hood',
         JAWS: 'jaws of the abyss',
         GHOST_HUNTER: 'ghost hunter goggles',
@@ -222,6 +189,7 @@ const SETTINGS = {
     NECRO_HELMET_VALUES: {
         NONE: 'none',
         TFN: 'crown of the first necromancer',
+        TFN_ADDON: 'crown of the first necromancer with addon',
         T90DD: 'deathdealer hood (tier 90)',
         GHOST_HUNTER: 'ghost hunter goggles',
     },
@@ -235,6 +203,7 @@ const SETTINGS = {
         TECTONIC: 'tectonic robe top',
         GHOST_HUNTER: 'ghost hunter body',
         MASTERWORK: 'masterwork magic robe top',
+        TUMEKENS_RESPLENDENCE: 'tumekens resplendence body'
     },
     RANGED_BODY: 'ranged body',
     RANGED_BODY_VALUES: {
@@ -248,10 +217,8 @@ const SETTINGS = {
     MELEE_BODY: 'melee body',
     MELEE_BODY_VALUES: {
         NONE: 'none',
-        BANDOS: 'bandos chestplate',
-        TORVA: 'torva platebody',
-        MASTERWORK: 'masterwork melee platebody',
-        TMW: 'trimmed masterwork melee platebody',
+        MASTERWORK: 'masterwork platebody',
+        TMW: 'trimmed masterwork platebody',
         VESTMENTS: 'vestments of havoc robe top',
         GHOST_HUNTER: 'ghost hunter body',
     },
@@ -272,6 +239,7 @@ const SETTINGS = {
         SLISKE: 'anima core legs of sliske',
         GHOST_HUNTER: 'ghost hunter legs',
         MASTERWORK: 'masterwork magic robe bottom',
+        TUMEKENS_RESPLENDENCE: 'tumekens resplendence legs'
     },
     RANGED_LEGS: 'ranged legs',
     RANGED_LEGS_VALUES: {
@@ -285,10 +253,8 @@ const SETTINGS = {
     MELEE_LEGS: 'melee legs',
     MELEE_LEGS_VALUES: {
         NONE: 'none',
-        BANDOS: 'bandos tassets',
-        TORVA: 'torva platelegs',
-        MASTERWORK: 'masterwork melee platelegs',
-        TMW: 'trimmed masterwork melee platelegs',
+        MASTERWORK: 'masterwork platelegs',
+        TMW: 'trimmed masterwork platelegs',
         VESTMENTS: 'vestments of havoc robe bottom',
         GHOST_HUNTER: 'ghost hunter legs',
     },
@@ -309,6 +275,7 @@ const SETTINGS = {
         KWW_E: 'enhanced kerapacs wristwraps',
         MASTERWORK: 'masterwork magic gloves',
         TUSKA: 'warpriest of tuska gauntlets',
+        TUMEKENS_RESPLENDENCE: 'tumekens resplendence gloves'
     },
     RANGED_GLOVES: 'ranged gloves',
     RANGED_GLOVES_VALUES: {
@@ -325,8 +292,8 @@ const SETTINGS = {
         NONE: 'none',
         DTB: 'deathtouch bracelet',
         CINDERS: 'cinderbane gloves',
-        MASTERWORK: 'masterwork melee gloves',
-        TMW: 'trimmed masterwork melee gloves',
+        MASTERWORK: 'masterwork gloves',
+        TMW: 'trimmed masterwork gloves',
         GOP: 'gloves of passage',
         GOP_E: 'enhanced gloves of passage'
     },
@@ -346,7 +313,8 @@ const SETTINGS = {
         BLAST_E: 'enhanced blast diffusion boots',
         SH: 'silverhawk boots',
         MASTERWORK: 'masterwork magic boots',
-        TUSKA: 'warpriest of tuska boots'
+        TUSKA: 'warpriest of tuska boots',
+        TUMEKENS_RESPLENDENCE: 'tumekens resplendence boots'
     },
     RANGED_BOOTS: 'ranged boots',
     RANGED_BOOTS_VALUES: {
@@ -363,8 +331,8 @@ const SETTINGS = {
         LACERATION: 'laceration boots',
         ENHANCED_LACERATION: 'enhanced laceration boots',
         SH: 'silverhawk boots',
-        MASTERWORK: 'masterwork melee boots',
-        TMW: 'trimmed masterwork melee boots',
+        MASTERWORK: 'masterwork boots',
+        TMW: 'trimmed masterwork boots',
         VESTMENTS: 'vestments of havoc boots'
     },
     NECRO_BOOTS: 'necro boots',
@@ -386,7 +354,10 @@ const SETTINGS = {
         SALVE: 'salve amulet',
         ZEALOTS: 'amulet of zealots',
         BERSERKER: 'berserker necklace',
+        AM_ZI: 'am-zi',
+        AM_HEJ: 'am-hej',
         DESERT: 'desert amulet 4',
+        DRAGON_RIDER_NECKLACE: 'dragon rider necklace',
     },
     CAPE: 'cape',
     CAPE_VALUES: {
@@ -611,11 +582,6 @@ const SETTINGS = {
         SUPERIOR_CRUELTY: 'superior scrimshaw of elements',
     },
     WEAPON: 'weapon type',
-    WEAPON_TYPE_MAGE: 'weapon type mage',
-    WEAPON_TYPE_MELEE: 'weapon type melee',
-    WEAPON_TYPE_RANGED: 'weapon type ranged',
-    WEAPON_TYPE_NECRO: 'weapon type necro',
-
     WEAPON_VALUES: {
         DW: 'main-hand',
         TH: 'two-hand'
@@ -638,16 +604,17 @@ const SETTINGS = {
         LENG: 'dark shard of leng',
         KERIS: 'keris',
         KERIS_PROC: 'keris proc',
+        KERIS_AVG: 'keris avg',
         PRIMED_KERIS: 'primed keris',
         PRIMED_KERIS_PROC: 'primed keris proc',
+        PRIMED_KERIS_AVG: 'primed keris avg',
         CONSECRATED_KERIS: 'consecrated keris',
-        CONSECRATED_KERIS_PROC: 'consecrated keris proc'
+        CONSECRATED_KERIS_PROC: 'consecrated keris proc',
+        CONSECRATED_KERIS_AVG: 'consecrated keris avg',
     },
     NECRO_MH: 'necro main-hand weapon',
     NECRO_MH_VALUES: {
-        CUSTOM: 'custom',
-        OMNI_GUARD: 'omni guard',
-        DEVOURERS_GUARD: 'devourers guard'
+        CUSTOM: 'custom'
     },
     OH: 'off-hand weapon',
     OH_TIER_CUSTOM: 'off-hand weapon custom tier',
@@ -715,62 +682,41 @@ const SETTINGS = {
         WEN_ARROWS: 'wen arrows',
         DEATHSPORE_ARROWS: 'deathspore arrows',
         JAS_ARROWS: 'jas arrows',
-        BIK_ARROWS: 'bik arrows',
-        HYDRIX_BOLTS: 'hydrix bakriminel bolts (e)'
     },
     AMMO_TIER: 'ammo tier',
     AUTO_CAST: 'auto cast',
     AUTO_CAST_VALUES: {
         NONE: 'none',
         CRUMBLE_UNDEAD: 'crumble undead',
-        INCITE_FEAR: 'incite fear',
-        EXSANGUINATE: 'exsanguinate'
     },
-    // Perks
     LVL20ARMOUR: 'level 20 armour',
     BITING: 'biting',
     PRECISE: 'precise',
     ERUPTIVE: 'eruptive',
     FLANKING: 'flanking',
     CAROMING: 'caroming',
+    ULTIMATUS: 'ultimatus',
     RUTHLESS_RANK: 'ruthless rank',
-    // Boss Specific Buffs
     TELOS_RED_BEAM: 'Telos red beam',
     TELOS_BLACK_BEAM: 'Telos black beam',
     TOKKUL_ZO: 'Tokkul-zo',
     KBD_ARTEFACT: 'King black dragon wilderness portal',
     INNER_CHAOS: 'Zamorak inner chaos',
     SWORD_OF_EDICTS: 'Zamorak sword of edicts',
-    BOSS_PRESET: 'boss preset',
-    BOSS_ENRAGE: 'boss enrage',
     GUARDIANS_TRIUMPH: 'Zamorak guardians triumph',
     BALANCE_OF_POWER: 'Zamorak balance of power',
     ZAMORAK_CHOKE_STACKS: 'zamorak choke stacks',
     RAKSHA_INNER_POWER: 'Raksha inner power',
     STONE_OF_JAS: 'stone of jas',
     INFERNAL_PUZZLE_BOX: 'Infernal puzzle box',
-    // Stacks and Buffs
-    RESIDUAL_SOULS: 'residual souls',
-    NECROSIS_STACKS: 'necrosis stacks',
-    DEATH_SPARK_STACKS: 'death spark stacks',
-    SOUL_REAVE_STACKS: 'soul reave stacks',
     ICY_PRECISION: 'icy precision',
     ICY_CHILL_STACKS: 'icy chill stacks',
-    PUNCTURE_STACKS: 'puncture stacks',
-    FLOW_STACKS: 'flow stacks',
     CONFLAGRATE: 'conflagrate',
     KERAPACS_WRIST_WRAPS: 'kerapacs wrist wraps',
     KERAPACS_WRIST_WRAPS_VALUES: {
         NONE: 'none',
         REGULAR: 'regular',
         ENCHANTED: 'enchanted'
-    },
-    TARGET_DISABILITY: 'target disability',
-    TARGET_DISABILITY_VALUES: {
-        NONE: 'none',
-        BOUND: 'bound',
-        STUNNED: 'stunned',
-        BOUND_STUNNED: 'bound and stunned'
     },
     DRACONIC_FRUIT: 'draconic fruit',
     ENDURING_RUIN_HIT: 'enduring ruin hit',
@@ -785,16 +731,12 @@ const SETTINGS = {
         REGULAR: 'regular',
         ENCHANTED: 'enchanted'
     },
-    NEEDLE_STRIKE: 'needle strike',
     GRAVITATE: 'gravitate',
     BLOOD_TITHE: 'blood tithe',
-    GLACIAL_EMBRACE: 'glacial embrace',
     DEATH_SPARK: 'death spark',
     LIVING_DEATH: 'living death',
     SWIFTNESS_OF_THE_AVIANSIE: 'swiftness of the avianse',
     ESSENCE_CORRUPTION: 'essence corruption',
-    ESS_CORRUPTION_ADREN: 'essence corruption adrenaline',
-    WALKED_TARGET: 'walked target',
     CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
     CHAOS_ROAR: 'chaos roar',
     FURY_BUFF: 'fury buff',
@@ -805,62 +747,41 @@ const SETTINGS = {
     },
     RAMPAGE: 'rampage',
     BIK_STACKS: 'bik stacks',
-    DEATHSPORE_STACKS: 'deathspore stacks',
-    DEATHSPORE_BUFF: 'deathspore buff',
-    DEATHSPORE_COOLDOWN: 'deathspore cooldown',
     PERFECT_EQUILIBRIUM_STACKS: 'perfect equilibrium stacks',
-    BLOODLUST_STACKS: 'bloodlust stacks',
     BALANCE_BY_FORCE: 'balance by force',
     TARGET_SIZE: 'target size',
     PRIMORDIAL_ICE: 'primordial ice',
     FROSTBLADES: 'frostblades',
     IGNEOUS_EXTENSIOS: 'igneous extensions',
     DRACOLICH_INFUSION: 'dracolich infusion',
-    GREATER_DRACOLICH_INFUSION: 'greater dracolich infusion',
+    DRACOLICH_INFUSION_VALUES: {
+        NONE: 'none',
+        REGULAR: 'regular',
+        GREATER: 'greater',
+    },
     INSTABILITY: 'instability',
     TIME_SINCE_ATTACK: 'time since attack',
     INNATE_MASTERY: 'innate mastery',
     CHANNELER_RING_STACKS: 'channelers ring stacks',
     NUMBER_OF_BLEEDS: 'number of bleeds',
     STRENGTH_CAPE: 'strength cape',
-    GORAJAN_TRAILBLAZER: 'gorajan trailblazer',
+    STRENGTH_MASTER_CAPE: 'strength master cape',
     SUNSHINE: 'sunshine',
-    META: 'meta',
     DEATH_SWIFTNESS: 'death swiftness',
     SWIFTNESS_ACTIVE: 'swiftness',
     SPLIT_SOUL: 'split soul',
     NATURAL_INSTINCT: 'natural instinct',
     //SPLIT_SOUL_ECB: 'split soul ecb',
-    BLACKHOLE: 'blackhole',
-    SEARING_WINDS: 'searing winds',
-    SHADOW_IMBUED: 'shadow imbued',
-    DEATHMARK: 'deathmark',
-    ANIMA_CHARGED: 'anima charged',
-    SCRIPTURE_OF_FUL_PROB: 'scripture of ful probability',
-    SCRIPTURE_OF_FUL_COOLDOWN_PROB: 'scripture of ful cooldown probability',
+    ZGS: 'zgs',
     BERSERK: 'berserk',
-    DETONATE: 'detonate charge percent',
+    BERSERK_BETA: 'berserk_beta',
     DIVINE_RAGE: 'divine rage',
     ECLIPSED_SOUL: 'eclipsed soul',
 
-    // Dungeoneering
-    DESPERADO: 'desperado',    
-
-    SHOW_BLOODLUST_STACKS: 'show bloodlust stacks',
     SHOW_BOLG_STACKS: 'show bolg stacks',
     SHOW_ICY_CHILL_STACKS: 'show icy chill stacks',
-    SHOW_BIK_STACKS: 'show bik stacks',
-    SHOW_DEATHSPORE_STACKS: 'show deathspore stacks',
-    SHOW_NECROSIS_STACKS: 'show necrosis stacks',
-    SHOW_RESIDUAL_SOULS: 'show residual souls',
-    SHOW_DEATH_SPARK_STACKS: 'show death spark stacks',
-    SHOW_SOUL_REAVE_STACKS: 'show soul reave stacks',
-    SHOW_ESSENCE_CORRUPTION: 'show essence corruption',
-    SHOW_BLOOD_TITHE: 'show blood tithe',
-    SHOW_GLACIAL_EMBRACE: 'show glacial embrace',
     ADRENALINE: 'adrenaline',
     EXPECTED_ADRENALINE: 'expected adrenaline',
-    CAP_ADRENALINE: 'cap adrenaline',
     CRIT_BUFF: 'crit buff',
     VIGOUR: 'vigour',
     FURY_OF_THE_SMALL: 'fots',
@@ -873,17 +794,34 @@ const SETTINGS = {
         CORBICULA_2: '2 corbicula',
     },
     LUNGING: 'lunging',
-    RUIN: 'ruin',
     VALOUR_STACKS: 'valour stacks',
     HITCAP: 'hit cap',
     QUIVER: 'quiver',
+    AMMO_SLOT: 'ammo slot',
+    MELEE_AMMO_SLOT: 'melee ammo slot',
+    MELEE_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+        NODON_SPIKE_HARNESS: 'nodon spike harness',
+    },
+    RANGED_AMMO_SLOT: 'ranged ammo slot',
+    RANGED_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+    },
+    MAGIC_AMMO_SLOT: 'magic ammo slot',
+    MAGIC_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+    },
+    NECRO_AMMO_SLOT: 'necro ammo slot',
+    NECRO_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+    },
+    DEVOURER_NEXUS: 'devourer nexus',
     DAMAGE_QUALIFIER: 'damage qualifier',
     DAMAGE_QUALIFIER_VALUES: {
         TOTAL: 'total',
         PER_TICK: 'per tick',
         PER_ADREN: 'per adren',
     },
-    MAX_CHANNEL_DURATION: 'max channel duration',
     FLAMEBOUND_RIVAL: 'flamebound rival',
     AUTO_SPEED: 'auto speed',
     AUTO_SPEED_VALUES: {
@@ -891,20 +829,38 @@ const SETTINGS = {
         FAST: 'fast',
         AVERAGE: 'average',
     },
-    AUTO_HAND: 'auto hand',
-    AUTO_HAND_VALUES: {
-        MH: 'main hand',
-        OH: 'off hand',
-        TH: 'two hand',
+    DAMAGE_PER_UNIT: 'damage per unit',
+    DAMAGE_PER_UNIT_VALUES: {
+        ABIL: 'abil',
+        TICK: 'tick',
     },
+    DAMAGE_UNITS: 'damage units',
+    DAMAGE_UNITS_VALUES: {
+        RAW: 'raw',
+        PERCENT: 'percent',
+    },
+    DAMAGE_PER_UNIT_DIVIDER: 'damage per time unit divider',
+    RESIDUAL_SOULS: 'residual souls',
+    TUMEKENS_RESPLENDENCE_ASPHYX: 'tumekens resplendence asphyx',
 
     TELOS_RED_BEAM: 'telos red beam',
     TELOS_BLACK_BEAM: 'telos black beam',
     ENERGISING: 'energising',
-    ULTIMATUMS: 'ultimatums',
-
-    // Testing/utility flags
-    USE_RAW_ABILITY_DAMAGE: 'use raw ability damage', // Skip recalculating AD from equipment
+    HIT_COUNTER_START: 'hit counter start',
+    HIT_COUNTER_END: 'hit counter end',
+    IMBUE_GALES: 'imbue: gales',
+    RUNIC_CHARGE: 'runic charge',
+    BLOODLUST: 'bloodlust',
+    BLAST_INFUSED: 'blast infused',
+    COMBUSTED: 'combusted',
+    CHAIN_MODIFIER: 'chain modifier',
+    CHAIN_MODIFIER_VALUES: {
+        NONE: 'none',
+        REGULAR: 'regular',
+        GREATER: 'greater',
+    },
+    AFTERSHOCK: 'aftershock',
+    GCONC_UNLOCK: 'gconc unlock',
 };
 
 const settingsConfig = {
@@ -921,10 +877,6 @@ const settingsConfig = {
             { text: 'Max crit', value: SETTINGS.MODE_VALUES.MAX_CRIT }
         ]
     },
-    [SETTINGS.ABILITY_DAMAGE]: {
-        label: 'Override base damage',
-        default: 0
-    },
     [SETTINGS.NECROMANCY_LEVEL]: {
         label: 'Necromancy Level',
         default: 145,
@@ -939,9 +891,13 @@ const settingsConfig = {
         label: 'Strength Level',
         default: 145
     },
+    [SETTINGS.ATTACK_LEVEL]: {
+        label: 'Attack Level',
+        default: 145
+    },
     [SETTINGS.RANGED_LEVEL]: {
         label: 'Ranged Level',
-        default: 136
+        default: 145
     },
     [SETTINGS.POTION]: {
         label: 'Potion',
@@ -962,14 +918,6 @@ const settingsConfig = {
     },
     [SETTINGS.NECROSIS_STACKS]: {
         label: 'Necrosis stacks',
-        default: 0
-    },
-    [SETTINGS.DEATH_SPARK_STACKS]: {
-        label: 'Death Spark stacks',
-        default: 0
-    },
-    [SETTINGS.SOUL_REAVE_STACKS]: {
-        label: 'Soul Reave stacks',
         default: 0
     },
     [SETTINGS.REAPER_CREW]: {
@@ -1135,7 +1083,11 @@ const settingsConfig = {
     },
     [SETTINGS.TARGET_HP_PERCENT]: {
         label: 'Target hp %',
-        default: 50
+        default: 100
+    },
+    [SETTINGS.PLAYER_HP_PERCENT]: {
+        label: 'Player hp %',
+        default: 100
     },
     [SETTINGS.GENOCIDAL]: {
         label: 'Genocidal %',
@@ -1145,67 +1097,13 @@ const settingsConfig = {
         label: 'Impatient',
         default: 4
     },
-    [SETTINGS.AFTERSHOCK]: {
-        label: 'Aftershock',
-        default: 4
-    },
     [SETTINGS.FAMILIAR]: {
         label: 'Familiar',
         default: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON,
         options: [
             { text: 'None', value: SETTINGS.FAMILIAR_VALUES.NONE },
             { text: 'Ripper demon', value: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON },
-            { text: 'Kalgerion demon', value: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON },
-            { text: 'Steel titan', value: SETTINGS.FAMILIAR_VALUES.STEEL_TITAN }
-        ]
-    },
-    [SETTINGS.FAMILIAR_ACCURACY]: {
-        label: 'Familiar Accuracy',
-        default: 100,
-    },
-    [SETTINGS.USE_FAMILIAR_SCROLLS]: {
-        label: 'Use Scrolls',
-        default: false,
-    },
-    [SETTINGS.SPIRIT_CAPE]: {
-        label: 'Spirit Cape',
-        default: true,
-    },
-    [SETTINGS.SUMMONING_RENEWAL]: {
-        label: 'Summoning Renewal',
-        default: false,
-    },
-    [SETTINGS.SPIRIT_WEED_INCENSE]: {
-        label: 'Spirit Incense',
-        default: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.NONE,
-        options: [
-            { text: 'None', value: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.NONE },
-            { text: 'Potency 1 (10%)', value: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL1 },
-            { text: 'Potency 2 (20%)', value: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL2 },
-            { text: 'Potency 3 (30%)', value: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL3 },
-            { text: 'Potency 4 (40%)', value: SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL4 },
-        ]
-    },
-    [SETTINGS.PRISM_OF_RESTORATION]: {
-        label: 'Prism of Restoration',
-        default: false,
-    },
-    [SETTINGS.AURA]: {
-        label: 'Aura',
-        default: SETTINGS.AURA_VALUES.NONE,
-        options: [
-            { text: 'None', value: SETTINGS.AURA_VALUES.NONE },
-        ]
-    },
-    [SETTINGS.POISON]: {
-        label: 'Poison',
-        default: SETTINGS.POISON_VALUES.NONE,
-        options: [
-            { text: 'None', value: SETTINGS.POISON_VALUES.NONE },
-            { text: 'Weapon poison', value: SETTINGS.POISON_VALUES.WEAPON_POISON0 },
-            { text: 'Weapon poison+', value: SETTINGS.POISON_VALUES.WEAPON_POISON1 },
-            { text: 'Weapon poison++', value: SETTINGS.POISON_VALUES.WEAPON_POISON2 },
-            { text: 'Weapon poison+++', value: SETTINGS.POISON_VALUES.WEAPON_POISON3 },
+            { text: 'Kalgerion demon', value: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON }
         ]
     },
     [SETTINGS.VULN]: {
@@ -1247,15 +1145,15 @@ const settingsConfig = {
             { text: 'Demon', value: SETTINGS.SLAYER_PERK_VALUES.DEMON},
         ]
     },
-    [SETTINGS.UNDEAD_SLAYER_ABILITY]: {
-        label: 'Undead slayer ability',
+    [SETTINGS.SLAYER_SIGIL_UNDEAD]: {
+        label: 'Undead slayer Sigil',
         default: false
     },
-    [SETTINGS.DRAGON_SLAYER_ABILITY]: {
+    [SETTINGS.SLAYER_SIGIL_DRAGON]: {
         label: 'Dragon slayer Sigil',
         default: false
     },
-    [SETTINGS.DEMON_SLAYER_ABILITY]: {
+    [SETTINGS.SLAYER_SIGIL_DEMON]: {
         label: 'Demon slayer Sigil',
         default: false
     },
@@ -1273,31 +1171,9 @@ const settingsConfig = {
         label: 'Haunted',
         default: false
     },
-    [SETTINGS.THREADS_OF_FATE]: {
-        label: 'Threads of Fate',
-        default: false
-    },
-    [SETTINGS.INVOKE_DEATH]: {
-        label: 'Invoke Death',
-        default: false
-    },
-    [SETTINGS.SPLIT_SOUL_NECRO]: {
-        label: 'Split Soul (Necro)',
-        default: false
-    },
     [SETTINGS.HAUNTED_AD]: {
         label: 'Haunted AD',
-        default: 2345
-    },
-    [SETTINGS.SPIRIT_PACT]: {
-        label: 'Spirit Pact',
-        default: 3,
-        options: [
-            { text: 'None', value: 0 },
-            { text: 'I (+6s)', value: 1 },
-            { text: 'II (+12s)', value: 2 },
-            { text: 'III (+18s)', value: 3 },
-        ]
+        default: 2712
     },
     [SETTINGS.SKELETON_WARRIOR_RAGE_STACKS]: {
         label: 'Skeleton rage stacks',
@@ -1329,9 +1205,10 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_HELMET]: {
         label: 'Helmet',
-        default: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC,
+        default: SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_HELMET_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC },
             { text: 'Masterwork', value: SETTINGS.MAGIC_HELMET_VALUES.MASTERWORK },
@@ -1370,15 +1247,17 @@ const settingsConfig = {
         options: [
             { text: 'None/Tank', value: SETTINGS.NECRO_HELMET_VALUES.NONE },
             { text: 'TFN', value: SETTINGS.NECRO_HELMET_VALUES.TFN },
+            { text: 'TFN + addon', value: SETTINGS.NECRO_HELMET_VALUES.TFN_ADDON },
             { text: 't90 deathdealer', value: SETTINGS.NECRO_HELMET_VALUES.T90DD },
             { text: 'Ghost hunter', value: SETTINGS.NECRO_HELMET_VALUES.GHOST_HUNTER},
         ]
     },
     [SETTINGS.MAGIC_BODY]: {
         label: 'Body',
-        default: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC,
+        default: SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_BODY_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC },
             { text: 'Masterwork', value: SETTINGS.MAGIC_BODY_VALUES.MASTERWORK },
@@ -1404,8 +1283,6 @@ const settingsConfig = {
         default: SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
         options: [
             { text: 'None/Tank', value: SETTINGS.MELEE_BODY_VALUES.NONE },
-            { text: 'Bandos', value: SETTINGS.MELEE_LEGS_VALUES.BANDOS },
-            { text: 'Torva', value: SETTINGS.MELEE_LEGS_VALUES.TORVA },
             { text: 'Masterwork', value: SETTINGS.MELEE_BODY_VALUES.MASTERWORK },
             { text: 'TMW', value: SETTINGS.MELEE_BODY_VALUES.TMW },
             { text: 'Vestments', value: SETTINGS.MELEE_BODY_VALUES.VESTMENTS },
@@ -1424,9 +1301,10 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_LEGS]: {
         label: 'Legs',
-        default: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC,
+        default: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC },
             { text: 'Masterwork', value: SETTINGS.MAGIC_LEGS_VALUES.MASTERWORK },
@@ -1452,8 +1330,6 @@ const settingsConfig = {
         default: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
         options: [
             { text: 'None/Tank', value: SETTINGS.MELEE_LEGS_VALUES.NONE },
-            { text: 'Bandos', value: SETTINGS.MELEE_LEGS_VALUES.BANDOS },
-            { text: 'Torva', value: SETTINGS.MELEE_LEGS_VALUES.TORVA },
             { text: 'Masterwork', value: SETTINGS.MELEE_LEGS_VALUES.MASTERWORK },
             { text: 'TMW', value: SETTINGS.MELEE_LEGS_VALUES.TMW },
             { text: 'Vestments', value: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS },
@@ -1472,9 +1348,10 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_GLOVES]: {
         label: 'Gloves',
-        default: SETTINGS.MAGIC_GLOVES_VALUES.MASTERWORK,
+        default: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_GLOVES_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'DTB', value: SETTINGS.MAGIC_GLOVES_VALUES.DTB },
             { text: 'Cinderbanes', value: SETTINGS.MAGIC_GLOVES_VALUES.CINDERS },
             { text: 'Kerrywaps', value: SETTINGS.MAGIC_GLOVES_VALUES.KWW },
@@ -1522,9 +1399,10 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_BOOTS]: {
         label: 'Boots',
-        default: SETTINGS.MAGIC_BOOTS_VALUES.MASTERWORK,
+        default: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_BOOTS_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Blast diff', value: SETTINGS.MAGIC_BOOTS_VALUES.BLAST },
             { text: 'Blast diff+', value: SETTINGS.MAGIC_BOOTS_VALUES.BLAST_E },
             { text: 'Masterwork', value: SETTINGS.MAGIC_BOOTS_VALUES.MASTERWORK },
@@ -1577,13 +1455,16 @@ const settingsConfig = {
             { text: 'Moonstone amulet', value: SETTINGS.NECKLACE_VALUES.MOONSTONE },
             { text: 'AOS(or)', value: SETTINGS.NECKLACE_VALUES.AOSOR },
             { text: 'AOS', value: SETTINGS.NECKLACE_VALUES.AOS },
-            { text: 'Reaper(or)', value: SETTINGS.NECKLACE_VALUES.REAPEROR }, // TODO: fix missing reference for SETTINGS.REAPEROR and SETTINGS.REAPER
+            { text: 'Reaper(or)', value: SETTINGS.NECKLACE_VALUES.REAPEROR },
             { text: 'Reaper', value: SETTINGS.NECKLACE_VALUES.REAPER },
             { text: 'Salve (e)', value: SETTINGS.NECKLACE_VALUES.SALVEE },
             { text: 'Salve', value: SETTINGS.NECKLACE_VALUES.SALVE },
             { text: 'Zealots', value: SETTINGS.NECKLACE_VALUES.ZEALOTS },
             { text: 'Berserker', value: SETTINGS.NECKLACE_VALUES.BERSERKER },
+            { text: 'Am-zi', value: SETTINGS.NECKLACE_VALUES.AM_ZI },
+            { text: 'Am-hej', value: SETTINGS.NECKLACE_VALUES.AM_HEJ },
             { text: 'Desert ammy 4', value: SETTINGS.NECKLACE_VALUES.DESERT },
+            { text: 'Dragon rider necklace', value: SETTINGS.NECKLACE_VALUES.DRAGON_RIDER_NECKLACE },
         ]
     },
     [SETTINGS.CAPE]: {
@@ -1879,43 +1760,11 @@ const settingsConfig = {
             melee: SETTINGS.WEAPON_VALUES.TH,
             ranged: SETTINGS.WEAPON_VALUES.TH,
             magic: SETTINGS.WEAPON_VALUES.TH,
-            necromancy: SETTINGS.WEAPON_VALUES.DW,
-            rotation: SETTINGS.WEAPON_VALUES.TH
+            necromancy: SETTINGS.WEAPON_VALUES.DW
         },
         options: [
             { text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW },
             { text: 'Two handed', value: SETTINGS.WEAPON_VALUES.TH }
-        ]
-    },
-    [SETTINGS.WEAPON_TYPE_MAGE]: {
-        label: 'Weapon type',
-        default: SETTINGS.WEAPON_VALUES.TH,
-        options: [
-            { text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW },
-            { text: 'Two handed', value: SETTINGS.WEAPON_VALUES.TH }
-        ]
-    },
-    [SETTINGS.WEAPON_TYPE_MELEE]: {
-        label: 'Weapon type',
-        default: SETTINGS.WEAPON_VALUES.DW,
-        options: [
-            { text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW },
-            { text: 'Two handed', value: SETTINGS.WEAPON_VALUES.TH }
-        ]
-    },
-    [SETTINGS.WEAPON_TYPE_RANGED]: {
-        label: 'Weapon type',
-        default: SETTINGS.WEAPON_VALUES.TH,
-        options: [
-            { text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW },
-            { text: 'Two handed', value: SETTINGS.WEAPON_VALUES.TH }
-        ]
-    },
-    [SETTINGS.WEAPON_TYPE_NECRO]: {
-        label: 'Weapon type',
-        default: SETTINGS.WEAPON_VALUES.DW,
-        options: [
-            { text: 'Dual wield', value: SETTINGS.WEAPON_VALUES.DW }
         ]
     },
     [SETTINGS.MAGIC_MH]: {
@@ -1938,22 +1787,21 @@ const settingsConfig = {
             { text: 'Custom', value: SETTINGS.MELEE_MH_VALUES.CUSTOM },
             { text: 'Leng', value: SETTINGS.MELEE_MH_VALUES.LENG },
             { text: 'Leng t85', value: SETTINGS.MELEE_MH_VALUES.DARK_ICE_SHARD },
-            { text: 'Consecrated Keris', value: SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS },
-            { text: 'Consecrated Keris proc', value: SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC },
-            { text: 'Primed Keris', value: SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS },
-            { text: 'Primed Keris proc', value: SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC },
-            { text: 'Keris', value: SETTINGS.MELEE_MH_VALUES.KERIS },
-            { text: 'Keris proc', value: SETTINGS.MELEE_MH_VALUES.KERIS_PROC },
+            { text: 'Consecrated Keris', value: SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_AVG },
+            { text: 'Consecrated Keris (no proc)', value: SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS },
+            { text: 'Consecrated Keris (proc)', value: SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC },
+            { text: 'Primed Keris', value: SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_AVG },
+            { text: 'Primed Keris (no proc)', value: SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS },
+            { text: 'Primed Keris (proc)', value: SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC },
+            { text: 'Keris', value: SETTINGS.MELEE_MH_VALUES.KERIS_AVG },
+            { text: 'Keris (no proc)', value: SETTINGS.MELEE_MH_VALUES.KERIS },
+            { text: 'Keris (proc)', value: SETTINGS.MELEE_MH_VALUES.KERIS_PROC },
         ]
     },
     [SETTINGS.NECRO_MH]: {
         label: 'Mh',
         default: SETTINGS.NECRO_MH_VALUES.CUSTOM,
-        options: [
-            { text: 'Custom', value: SETTINGS.NECRO_MH_VALUES.CUSTOM },
-            { text: 'Omni Guard', value: SETTINGS.NECRO_MH_VALUES.OMNI_GUARD },
-            { text: "Devourer's Guard", value: SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD }
-        ]
+        options: [{ text: 'Custom', value: SETTINGS.NECRO_MH_VALUES.CUSTOM }]
     },
     [SETTINGS.MAGIC_OH]: {
         label: 'Oh',
@@ -1993,12 +1841,12 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_TH]: {
         label: '2h',
-        default: SETTINGS.MAGIC_TH_VALUES.CUSTOM,
+        default: SETTINGS.MAGIC_TH_VALUES.FSOA,
         options: [
             { text: 'Custom', value: SETTINGS.MAGIC_TH_VALUES.CUSTOM },
             { text: 'Inq', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF },
             { text: 'Inq+', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF_E },
-            { text: 'FSOA (+22.5% crit dmg)', value: SETTINGS.MAGIC_TH_VALUES.FSOA },
+            { text: 'FSOA', value: SETTINGS.MAGIC_TH_VALUES.FSOA },
         ]
     },
     [SETTINGS.RANGED_TH]: {
@@ -2035,9 +1883,7 @@ const settingsConfig = {
             { text: 'Ful', value: SETTINGS.AMMO_VALUES.FUL_ARROWS },
             { text: 'Wen', value: SETTINGS.AMMO_VALUES.WEN_ARROWS },
             { text: 'Jas', value: SETTINGS.AMMO_VALUES.JAS_ARROWS },
-            { text: 'Deathspore arrows', value: SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS },
-            { text: 'Bik arrows', value: SETTINGS.AMMO_VALUES.BIK_ARROWS },
-            { text: 'Hydrix bolts (e)', value: SETTINGS.AMMO_VALUES.HYDRIX_BOLTS }
+            { text: 'Deathspore arrows', value: SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS }
         ]
     },
     [SETTINGS.AMMO_TIER]: {
@@ -2046,12 +1892,10 @@ const settingsConfig = {
     },
     [SETTINGS.AUTO_CAST]: {
         label: 'Auto cast',
-        default: SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR,
+        default: SETTINGS.AUTO_CAST_VALUES.NONE,
         options: [
             { text: 'Vanilla', value: SETTINGS.AUTO_CAST_VALUES.NONE },
             { text: 'Crumble Undead', value: SETTINGS.AUTO_CAST_VALUES.CRUMBLE_UNDEAD },
-            { text: 'Exsanguinate', value: SETTINGS.AUTO_CAST_VALUES.EXSANGUINATE },
-            { text: 'Incite Fear', value: SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR },
         ]
     },
     [SETTINGS.LVL20ARMOUR]: {
@@ -2072,6 +1916,10 @@ const settingsConfig = {
     },
     [SETTINGS.FLANKING]: {
         label: 'Flanking',
+        default: 0
+    },
+    [SETTINGS.ULTIMATUS]: {
+        label: 'Ultimatus',
         default: 0
     },
     [SETTINGS.RUTHLESS_RANK]: {
@@ -2102,18 +1950,9 @@ const settingsConfig = {
         label: 'Sword of Edicts',
         default: false
     },
-    [SETTINGS.BOSS_PRESET]: {
-        label: 'Boss Preset',
-        default: 'none',
-        options: [{value: 'none', text: 'None'}],
-    },
-    [SETTINGS.BOSS_ENRAGE]: {
-        label: 'Boss Enrage',
-        default: 0
-    },
     [SETTINGS.GUARDIANS_TRIUMPH]: {
         label: 'Guardians Triumph',
-        default: 0
+        default: false
     },
     [SETTINGS.BALANCE_OF_POWER]: {
         label: 'Balance of power',
@@ -2135,24 +1974,12 @@ const settingsConfig = {
         label: 'Infernal Puzzle Box %',
         default: 0
     },
-    [SETTINGS.RESIDUAL_SOULS]: {
-        label: 'Residual Souls',
-        default: 0
-    },
     [SETTINGS.ICY_PRECISION]: {
-        label: 'Icy Precision stacks',
-        default: 15
+        label: 'Icy Precision',
+        default: false
     },
     [SETTINGS.ICY_CHILL_STACKS]: {
         label: 'Icy Chill',
-        default: 0
-    },
-    [SETTINGS.PUNCTURE_STACKS]: {
-        label: 'Puncture Stacks',
-        default: 0
-    },
-    [SETTINGS.FLOW_STACKS]: {
-        label: 'Flow stacks',
         default: 0
     },
     [SETTINGS.CONFLAGRATE]: {
@@ -2166,16 +1993,6 @@ const settingsConfig = {
             { text: 'None', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.NONE },
             { text: 'Regular', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR },
             { text: 'Enchanted', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED }
-        ]
-    },
-    [SETTINGS.TARGET_DISABILITY]: {
-        label: 'Stun/bound state',
-        default: SETTINGS.TARGET_DISABILITY_VALUES.NONE,
-        options: [
-            { text: 'None', value: SETTINGS.TARGET_DISABILITY_VALUES.NONE },
-            { text: 'Bound', value: SETTINGS.TARGET_DISABILITY_VALUES.BOUND },
-            { text: 'Stunned', value: SETTINGS.TARGET_DISABILITY_VALUES.STUNNED },
-            { text: 'Bound and stunned', value: SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED }
         ]
     },
     [SETTINGS.DRACONIC_FRUIT]: {
@@ -2212,10 +2029,6 @@ const settingsConfig = {
         label: 'Blood tithe',
         default: 0
     },
-    [SETTINGS.GLACIAL_EMBRACE]: {
-        label: 'Glacial embrace',
-        default: 0
-    },
     [SETTINGS.DEATH_SPARK]: {
         label: 'Death spark',
         default: false
@@ -2232,17 +2045,9 @@ const settingsConfig = {
         label: 'Essence corruption',
         default: 0
     },
-    [SETTINGS.ESS_CORRUPTION_ADREN]: {
-        label: 'Essence Corruption Adrenaline',
-        default: false
-    },
     [SETTINGS.CONFLAGRATE]: {
         label: 'Conflagrate',
         default: false
-    },
-    [SETTINGS.WALKED_TARGET]: {
-        label: 'Walked',
-        default: true
     },
     [SETTINGS.CONCENTRATED_BLAST_STACKS]: {
         label: 'Conc stacks',
@@ -2273,24 +2078,8 @@ const settingsConfig = {
         label: 'Bolg stacks',
         default: 0
     },
-    [SETTINGS.BLOODLUST_STACKS]: {
-        label: 'Bloodlust stacks',
-        default: 0
-    },
     [SETTINGS.BIK_STACKS]: {
         label: 'Bik stacks',
-        default: 0
-    },
-    [SETTINGS.DEATHSPORE_STACKS]: {
-        label: 'Deathspore stacks',
-        default: 0
-    },
-    [SETTINGS.DEATHSPORE_BUFF]: {
-        label: 'Deathspore buff',
-        default: false
-    },
-    [SETTINGS.DEATHSPORE_COOLDOWN]: {
-        label: 'Deathspore cooldown',
         default: 0
     },
     [SETTINGS.CAROMING]: {
@@ -2335,11 +2124,12 @@ const settingsConfig = {
     },
     [SETTINGS.DRACOLICH_INFUSION]: {
         label: 'Dracolich infusion',
-        default: false
-    },
-    [SETTINGS.GREATER_DRACOLICH_INFUSION]: {
-        label: 'Greater dracolich infusion',
-        default: true
+        default: SETTINGS.DRACOLICH_INFUSION_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.DRACOLICH_INFUSION_VALUES.NONE },
+            { text: 'Regular', value: SETTINGS.DRACOLICH_INFUSION_VALUES.REGULAR },
+            { text: 'Greater', value: SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER }
+        ]
     },
     [SETTINGS.INSTABILITY]: {
         label: 'Instability',
@@ -2362,15 +2152,15 @@ const settingsConfig = {
         default: 1
     },
     [SETTINGS.STRENGTH_CAPE]: {
-        label: 'Str cape',
+        label: '99 str cape',
+        default: true
+    },
+    [SETTINGS.STRENGTH_MASTER_CAPE]: {
+        label: '120 str cape',
         default: true
     },
     [SETTINGS.SUNSHINE]: {
         label: 'Sunshine',
-        default: false
-    },
-    [SETTINGS.META]: {
-        label: 'Meta',
         default: false
     },
     [SETTINGS.DEATH_SWIFTNESS]: {
@@ -2381,44 +2171,24 @@ const settingsConfig = {
         label: 'Split soul',
         default: false
     },
-    [SETTINGS.BLACKHOLE]: {
+    [SETTINGS.ZGS]: {
         label: 'ZGS',
-        default: false
-    },
-    [SETTINGS.SEARING_WINDS]: {
-        label: 'Searing Winds',
-        default: false
-    },
-    [SETTINGS.SHADOW_IMBUED]: {
-        label: 'Shadow Imbued',
-        default: false
-    },
-    [SETTINGS.DEATHMARK]: {
-        label: 'Deathmark',
-        default: false
-    },
-    [SETTINGS.ANIMA_CHARGED]: {
-        label: 'Anima Charged',
         default: false
     },
     [SETTINGS.BERSERK]: {
         label: 'Berserk',
         default: false
     },
-    [SETTINGS.DETONATE]: {
-        label: 'Deto Charge percent',
-        default: 100
+    [SETTINGS.BERSERK_BETA]: {
+        label: 'Berserk',
+        default: false
     },
     [SETTINGS.DIVINE_RAGE]: {
         label: 'Divine rage',
-        default: false
+        default: true
     },
     [SETTINGS.ECLIPSED_SOUL]: {
         label: 'Eclipsed soul',
-        default: false
-    },
-    [SETTINGS.SHOW_BLOODLUST_STACKS]: {
-        label: 'Show Bloodlust Stacks',
         default: true
     },
     [SETTINGS.SHOW_BOLG_STACKS]: {
@@ -2427,46 +2197,6 @@ const settingsConfig = {
     },
     [SETTINGS.SHOW_ICY_CHILL_STACKS]: {
         label: 'Show Icy Chill Stacks',
-        default: true
-    },
-    [SETTINGS.SHOW_BIK_STACKS]: {
-        label: 'Show Bik Stacks',
-        default: true
-    },
-    [SETTINGS.SHOW_DEATHSPORE_STACKS]: {
-        label: 'Show Deathspore Stacks',
-        default: true
-    },
-    [SETTINGS.SHOW_NECROSIS_STACKS]: {
-        label: 'Show Necrosis Stacks',
-        default: true
-    },
-    [SETTINGS.SHOW_RESIDUAL_SOULS]: {
-        label: 'Show Residual Souls',
-        default: true
-    },
-    [SETTINGS.SHOW_DEATH_SPARK_STACKS]: {
-        label: 'Show Death Spark Stacks',
-        default: true
-    },
-    [SETTINGS.SHOW_SOUL_REAVE_STACKS]: {
-        label: 'Show Soul Reave Stacks',
-        default: true
-    },
-    [SETTINGS.SHOW_ESSENCE_CORRUPTION]: {
-        label: 'Show Essence Corruption',
-        default: true
-    },
-    [SETTINGS.SHOW_BLOOD_TITHE]: {
-        label: 'Show Blood Tithe',
-        default: true
-    },
-    [SETTINGS.SHOW_GLACIAL_EMBRACE]: {
-        label: 'Show Glacial Embrace',
-        default: true
-    },
-    [SETTINGS.SHOW_FAMILIAR_SPEC_POINTS]: {
-        label: 'Show Familiar Spec',
         default: true
     },
     [SETTINGS.SHOW_ADRENALINE]: {
@@ -2479,18 +2209,6 @@ const settingsConfig = {
     },
     [SETTINGS.EXPECTED_ADRENALINE]: {
         label: 'Expected Adrenaline RNG',
-        default: true
-    },
-    [SETTINGS.CRIT_BUFF]: {
-        label: 'Crit Buff',
-        default: false
-    },
-    [SETTINGS.NATURAL_INSTINCT]: {
-        label: 'Natural Instinct',
-        default: false
-    },
-    [SETTINGS.CAP_ADRENALINE]: {
-        label: 'Cap Adrenaline',
         default: true
     },
     [SETTINGS.VIGOUR]: {
@@ -2522,10 +2240,6 @@ const settingsConfig = {
         label: 'Lunging',
         default: 0
     },
-    [SETTINGS.RUIN]: {
-        label: 'Ruin stacks',
-        default: 0
-    },
     [SETTINGS.VALOUR_STACKS]: {
         label: 'Valour (Phantom stacks)',
         default: 25
@@ -2547,10 +2261,6 @@ const settingsConfig = {
             { text: 'Dmg per adren', value: SETTINGS.DAMAGE_QUALIFIER_VALUES.PER_ADREN }
         ]
     },
-    [SETTINGS.MAX_CHANNEL_DURATION]: {
-        label: 'Max channel length',
-        default: 1000
-    },
     [SETTINGS.FLAMEBOUND_RIVAL]: {
         label: 'Flamebound',
         default: false
@@ -2562,15 +2272,6 @@ const settingsConfig = {
             { text: 'Average (6t)', value: SETTINGS.AUTO_SPEED_VALUES.AVERAGE },
             { text: 'Fast (5t)', value: SETTINGS.AUTO_SPEED_VALUES.FAST },
             { text: 'Fastest (4t)', value: SETTINGS.AUTO_SPEED_VALUES.FASTEST }
-        ]
-    },
-    [SETTINGS.AUTO_HAND]: {
-        label: 'Auto type',
-        default: SETTINGS.AUTO_HAND_VALUES.TH,
-        options: [
-            { text: '2h auto', value: SETTINGS.AUTO_HAND_VALUES.TH },
-            { text: 'mh auto', value: SETTINGS.AUTO_HAND_VALUES.MH },
-            { text: 'oh auto', value: SETTINGS.AUTO_HAND_VALUES.OH }
         ]
     },
     [SETTINGS.TELOS_RED_BEAM]: {
@@ -2585,9 +2286,115 @@ const settingsConfig = {
         label: 'Energising',
         default: 0
     },
-    [SETTINGS.ULTIMATUMS]: {
-        label: 'Ultimatums',
+    [SETTINGS.DAMAGE_PER_UNIT]: {
+        label: 'Damage per',
+        default: SETTINGS.DAMAGE_PER_UNIT_VALUES.ABIL,
+        options: [
+            { text: 'abil', value: SETTINGS.DAMAGE_PER_UNIT_VALUES.ABIL },
+            { text: 'tick', value: SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK },
+        ]
+    },
+    [SETTINGS.DAMAGE_UNITS]: {
+        label: 'Damage result',
+        default: SETTINGS.DAMAGE_UNITS_VALUES.RAW,
+        options: [
+            { text: 'Raw', value: SETTINGS.DAMAGE_UNITS_VALUES.RAW },
+            { text: 'AD%', value: SETTINGS.DAMAGE_UNITS_VALUES.PERCENT },
+        ]
+    },
+    [SETTINGS.DAMAGE_PER_UNIT_DIVIDER]: {
+        label: 'Damager per unit divider',
+        default: 1
+    },
+    [SETTINGS.RESIDUAL_SOULS]: {
+        label: 'Residual souls',
         default: 0
+    },
+    [SETTINGS.DEVOURER_NEXUS]: {
+        label: 'Devourer nexus',
+        default: false
+    },
+    [SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX]: {
+        label: 'Tumekens asphyx',
+        default: false
+    },
+    [SETTINGS.MELEE_AMMO_SLOT]: {
+        label: 'Ammo slot',
+        default: SETTINGS.MELEE_AMMO_SLOT_VALUES.NODON_SPIKE_HARNESS,
+        options: [
+            { text: 'None', value: SETTINGS.MELEE_AMMO_SLOT_VALUES.NONE },
+            { text: 'Nodon harness', value: SETTINGS.MELEE_AMMO_SLOT_VALUES.NODON_SPIKE_HARNESS },
+        ]
+    },
+    [SETTINGS.RANGED_AMMO_SLOT]: {
+        label: 'Ammo slot',
+        default: SETTINGS.RANGED_AMMO_SLOT_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.RANGED_AMMO_SLOT_VALUES.NONE },
+        ]
+    },
+    [SETTINGS.MAGIC_AMMO_SLOT]: {
+        label: 'Ammo slot',
+        default: SETTINGS.MAGIC_AMMO_SLOT_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.MAGIC_AMMO_SLOT_VALUES.NONE },
+        ]
+    },
+    [SETTINGS.NECRO_AMMO_SLOT]: {
+        label: 'Ammo slot',
+        default: SETTINGS.NECRO_AMMO_SLOT_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.NECRO_AMMO_SLOT_VALUES.NONE },
+        ]
+    },
+    [SETTINGS.HIT_COUNTER_START]: {
+        label: 'Start tracking hit',
+        default: 1
+    },
+    [SETTINGS.HIT_COUNTER_END]: {
+        label: 'End tracking hit',
+        default: 10000
+    },
+    [SETTINGS.IMBUE_GALES]: {
+        label: 'Imbue: Gales',
+        default: false
+    },
+    [SETTINGS.RUNIC_CHARGE]: {
+        label: 'Runic charge',
+        default: false
+    },
+    [SETTINGS.BLOODLUST]: {
+        label: 'Bloodlust',
+        default: false
+    },
+    [SETTINGS.BLAST_INFUSED]: {
+        label: 'Blast infused',
+        default: false
+    },
+    [SETTINGS.COMBUSTED]: {
+        label: 'Combust on target',
+        default: false
+    },
+    [SETTINGS.CHAIN_MODIFIER]: {
+        label: 'Chain modifier',
+        default: SETTINGS.CHAIN_MODIFIER_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.CHAIN_MODIFIER_VALUES.NONE },
+            { text: 'Regular', value: SETTINGS.CHAIN_MODIFIER_VALUES.REGULAR },
+            { text: 'Greater', value: SETTINGS.CHAIN_MODIFIER_VALUES.GREATER },
+        ]
+    },
+    [SETTINGS.AFTERSHOCK]: {
+        label: 'Aftershock',
+        default: 4
+    },
+    [SETTINGS.EQ_PERK]: {
+        label: 'Equilibrium',
+        default: 0
+    },
+    [SETTINGS.GCONC_UNLOCK]: {
+        label: 'Gconc unlocked',
+        default: true
     },
 };
 

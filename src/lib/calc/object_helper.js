@@ -1,5 +1,4 @@
-import { ABILITIES, abils, weapons } from './const/const';
-import { prayers } from './const/prayers';
+import { ABILITIES, abils, weapons, prayers } from './const';
 import { SETTINGS } from './settings';
 
 function create_object(settings) {
@@ -43,12 +42,13 @@ function calc_crit_chance(settings) {
 
     // eclipsed soul
     if (settings[SETTINGS.ECLIPSED_SOUL] === true && 
-        (prayers[settings[SETTINGS.PRAYER]]['book'] === "normal" || prayers[settings[SETTINGS.PRAYER]]['style'] === "none")) {
+        (prayers[settings[SETTINGS.PRAYER]]['book'] === "normal" || prayers[settings[SETTINGS.PRAYER]]['style'] === "none"
+            || prayers[settings[SETTINGS.PRAYER]]['book'] === "none")) {
         crit_chance += 0.04;
     }
 
     // biting
-    crit_chance += 0.02 * settings[SETTINGS.BITING];
+    crit_chance += 0.02 * settings[SETTINGS.BITING];    
 
     // level 20 armour
     if (settings[SETTINGS.LVL20ARMOUR] === true) {
@@ -89,6 +89,11 @@ function calc_crit_chance(settings) {
         crit_chance += 0.12;
     }
 
+    // leagues pocket
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET) {
+        crit_chance += 0.12;
+    }
+
     // reaver's ring
     if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.REAVERS) {
         crit_chance += 0.05;
@@ -126,6 +131,26 @@ function calc_crit_chance(settings) {
         crit_chance += 0.02;
     }
 
+    let tumekens_resplendence = 0;
+        if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.SUNSHINE] === true && tumekens_resplendence >= 3) {
+            crit_chance += 0.015 * tumekens_resplendence;
+        }
+
     if (settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.TUSKA &&
         settings[SETTINGS.GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUSKA &&
         settings[SETTINGS.BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUSKA
@@ -139,28 +164,58 @@ function calc_crit_chance(settings) {
             (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
             abils[settings['ability']]['ability classification'] === 'channel'
         ) {
-            crit_chance += 0.04;
             crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
         }
 
-        // (g)conc
-        crit_chance += 0.05 * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
-
-        // (g)conc self boost
+        // conc self boost
         if (
-            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_2 ||
-            settings['ability'] === ABILITIES.GREATER_CONCENTRATED_BLAST_2
+            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_2
         ) {
             crit_chance += 0.05;
         } else if (
-            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_3 ||
-            settings['ability'] === ABILITIES.GREATER_CONCENTRATED_BLAST_3
+            settings['ability'] === ABILITIES.CONCENTRATED_BLAST_3
         ) {
             crit_chance += 0.1;
         }
 
+        // (g)conc self boost
+        if (
+            settings['ability'] === ABILITIES.GCONC_HIT_2_BETA
+        ) {
+            crit_chance += 0.07;
+            if (settings[SETTINGS.RUNIC_CHARGE] === true) {
+                crit_chance += 0.1;
+            }
+        } else if (
+            settings['ability'] === ABILITIES.GCONC_HIT_3_BETA
+        ) {
+            crit_chance += 0.14;
+            if (settings[SETTINGS.RUNIC_CHARGE] === true) {
+                crit_chance += 0.2;
+            }
+        }
+
+        // conc
+        if (abils[settings['ability']]['ability classification'] != 'proc' &&
+            abils[settings['ability']]['ability classification'] != 'combatv2_passive_ability'
+        ) {
+            let conc_boost = 0.05;
+            if (settings[SETTINGS.GCONC_UNLOCK] === true) {
+                conc_boost += 0.02;
+            }
+            if (settings[SETTINGS.RUNIC_CHARGE] === true) {
+                conc_boost += 0.1
+            }
+            crit_chance += conc_boost * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
+        }
+
         // smoke tendrils
         if ([ABILITIES.SMOKE_TENDRILS_1, ABILITIES.SMOKE_TENDRILS_2, ABILITIES.SMOKE_TENDRILS_3, ABILITIES.SMOKE_TENDRILS_4].includes(settings['ability'])) {
+            crit_chance = 1;
+        }
+
+        // smoke tendrils
+        if ([ABILITIES.SMOKE_TENDRILS_1_BETA, ABILITIES.SMOKE_TENDRILS_2_BETA, ABILITIES.SMOKE_TENDRILS_3_BETA, ABILITIES.SMOKE_TENDRILS_4_BETA].includes(settings['ability'])) {
             crit_chance = 1;
         }
     }
@@ -177,18 +232,33 @@ function calc_crit_chance(settings) {
         // (g)fury
         if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.REGULAR) {
             crit_chance += 0.25;
-        } else if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.GREATER) {
+        } 
+        else if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.GREATER) {
             crit_chance = 1;
         }
 
         // no fear (pof meteor strike)
-        if (settings['ability'] === 'meteor strike') {
+        if (settings['ability'] === ABILITIES.METEOR_STRIKE_BETA) {
             if (settings[SETTINGS.POF_DINOS] === SETTINGS.POF_DINOS_VALUES.CORBICULA_1) {
                 crit_chance += 0.2;
             }
             else if (settings[SETTINGS.POF_DINOS] === SETTINGS.POF_DINOS_VALUES.CORBICULA_2) {
                 crit_chance += 0.4;
             }   
+        }
+
+        if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_1) {
+            crit_chance += 0.25;
+        }
+        if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_2) {
+            crit_chance += 0.5;
+        }
+
+        if (settings['ability'] === ABILITIES.FINAL_FLURRY_1_HIT_BETA) {
+            crit_chance += 0.25;
+        }
+        if (settings['ability'] === ABILITIES.FINAL_FLURRY_2_HIT_BETA) {
+            crit_chance += 0.5;
         }
     }
 
@@ -212,10 +282,10 @@ function calc_crit_chance(settings) {
         }
 
         // dracolich
-        if (settings[SETTINGS.GREATER_DRACOLICH_INFUSION] === true) {
-            crit_chance += 0.4;
-        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === true) { //regular dracolich infusion
+        if (settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES.REGULAR) {
             crit_chance += 0.2;
+        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER) {
+            crit_chance += 0.4;
         }
 
         // deathspore arrows
@@ -243,7 +313,9 @@ function calc_crit_chance(settings) {
         crit_chance = 0;
     }
 
-
+    if (settings[SETTINGS.EQ_PERK] > 0) {
+        crit_chance = 0;
+    }
     return Math.min(1, crit_chance);
 }
 

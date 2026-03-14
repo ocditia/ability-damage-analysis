@@ -2,8 +2,7 @@
     import { renderComponent } from '@tanstack/svelte-table';
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
-    import { abilities } from '$lib/ranged/abilities';
-    import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
+    import { abilities } from '$lib/ranged/abilities_beta';
 
     import AbilityDamageTable from '$components/AbilityDamageTable/AbilityDamageTable.svelte';
     import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
@@ -14,7 +13,6 @@
     import Select from '$components/Settings/Select.svelte';
 
     let tab = $state('general');
-    let showAll = $state(false);
 
     let damages = $state(Object.entries(abilities).map(([key, value]) => ({
         key,
@@ -66,25 +64,12 @@
         );
 
         damages = damages.map(ability => {
-            ability.regular = calculateSingleAbilityDamage(
-                { ...adaptedSettings, 'split soul': false },
-                { ability: ability.key, buffs: {} }
-            ).expected;
+            adaptedSettings['ability'] = ability.key;
 
-            ability.ss = calculateSingleAbilityDamage(
-                { ...adaptedSettings, 'split soul': true },
-                { ability: ability.key, buffs: {} }
-            ).expected;
-
-            ability.swift = calculateSingleAbilityDamage(
-                { ...adaptedSettings, 'split soul': false },
-                { ability: ability.key, buffs: { deathSwiftness: true } }
-            ).expected;
-
-            ability.ssSwift = calculateSingleAbilityDamage(
-                { ...adaptedSettings, 'split soul': true },
-                { ability: ability.key, buffs: { deathSwiftness: true } }
-            ).expected;
+            ability.regular = ability.calc({ ...adaptedSettings, 'split soul': false, 'death swiftness': false });
+            ability.ss = ability.calc({ ...adaptedSettings, 'split soul': true, 'death swiftness': false });
+            ability.swift = ability.calc({ ...adaptedSettings, 'split soul': false, 'death swiftness': true });
+            ability.ssSwift = ability.calc({ ...adaptedSettings, 'split soul': true, 'death swiftness': true });
 
             return ability;
         })
@@ -142,22 +127,16 @@
 </script>
 
 <Navbar />
-<Header img="/range_background.png" text="Ranged Calculator" icon="/style_icons/ranged-white.svg" />
+<Header img="/range_background.png" text="Ranged Calculator Beta" icon="/style_icons/ranged-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
     <div class="responsive-container">
         <section class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8">
             <div class="xl:col-span-6 xl:row-start-1 xl:row-span-4">
                 <div class="card card-ranged">
-                    <div class="flex items-center justify-between mb-6 ml-3 mr-3">
-                        <h1 class="main-header">Damage Values</h1>
-                        <label class="flex items-center gap-1 text-xs text-gray-400 cursor-pointer select-none">
-                            <input type="checkbox" checked={showAll} onchange={() => showAll = !showAll} class="cursor-pointer" />
-                            Show all
-                        </label>
-                    </div>
+                    <h1 class="main-header mb-6 ml-3">Damage Values</h1>
                     <div class="table-container">
-                        <AbilityDamageTable data={showAll ? damages : damages.filter(d => d.common !== false)} columns={columns} />
+                        <AbilityDamageTable data={damages} columns={columns} />
                     </div>
                 </div>
             </div>
@@ -191,6 +170,15 @@
                             Bosses
                         </button>
                     </li>
+                    <li class="flex-grow me-2">
+                        <button
+                            onclick={() => (tab = 'beta')}
+                            class:text-[#968A5C]={tab === 'beta'}
+                            class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
+                        >
+                            Beta
+                        </button>
+                    </li>
                 </ul>
                 <form class="w-full">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
@@ -198,11 +186,15 @@
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">General</h5>
                                 <Select
-                                    bind:setting={settings[SETTINGS.AUTO_HAND]}
+                                    bind:setting={settings[SETTINGS.MODE]}
                                     onchange={() => updateDamages()}
                                 />
                                 <Select
-                                    bind:setting={settings[SETTINGS.MODE]}
+                                    bind:setting={settings[SETTINGS.DAMAGE_PER_UNIT]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Select
+                                    bind:setting={settings[SETTINGS.DAMAGE_UNITS]}
                                     onchange={() => updateDamages()}
                                 />
                                 <Checkbox
@@ -225,13 +217,8 @@
                                     max="5"
                                     min="0"
                                 />
-                                <Checkbox
+                                <Select
                                     bind:setting={settings[SETTINGS.DRACOLICH_INFUSION]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/dracolich_infusion.png"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.GREATER_DRACOLICH_INFUSION]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/dracolich_infusion.png"
                                 />
@@ -241,18 +228,6 @@
                                     img="/effect_icons/target_hp.png"
                                     step="1"
                                     max="100"
-                                    min="0"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.TARGET_DISABILITY]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/stunned.png"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.ABILITY_DAMAGE]}
-                                    onchange={() => updateDamages()}
-                                    step="1"
-                                    max="9999"
                                     min="0"
                                 />
                                 <Number
@@ -280,7 +255,14 @@
                                     onchange={() => updateDamages()}
                                 />
                                 <Number
-                                    bind:setting={settings[SETTINGS.MAX_CHANNEL_DURATION]}
+                                    bind:setting={settings[SETTINGS.HIT_COUNTER_START]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="1000"
+                                    min="0"
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.HIT_COUNTER_END]}
                                     onchange={() => updateDamages()}
                                     step="1"
                                     max="1000"
@@ -340,25 +322,21 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.HAUNTED_AD]}
                                     onchange={() => updateDamages()}
+                                    step="1"
+                                    max="9999"
+                                    min="0"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.DEVOURER_NEXUS]}
+                                    onchange={() => updateDamages()}
                                 />
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Applies to regular abilities only</h5>
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.WALKED_TARGET]}
+                                    bind:setting={settings[SETTINGS.IMBUE_GALES]}
                                     onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.NEEDLE_STRIKE]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/needle_strike.png"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.PUNCTURE_STACKS]}
-                                    onchange={() => updateDamages()}
-                                    step="1"
-                                    max="13"
-                                    min="0"
+                                    img="/effect_icons/balance_by_force.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.STONE_OF_JAS]}
@@ -494,11 +472,6 @@
                                     img="/armour_icons/Pocket_slot.webp"
                                 />
                                 <Select
-                                    bind:setting={settings[SETTINGS.AURA]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/aura.png"
-                                />
-                                <Select
                                     bind:setting={settings[SETTINGS.FAMILIAR]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/familiar.png"
@@ -549,6 +522,13 @@
                                     min="0"
                                 />
                                 <Number
+                                    bind:setting={settings[SETTINGS.ULTIMATUS]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    min="0"
+                                    max="4"
+                                />
+                                <Number
                                     bind:setting={settings[SETTINGS.LUNGING]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/Lunging.webp"
@@ -587,11 +567,24 @@
                                     step="1"
                                     min="0"
                                 />
+                                <Number
+                                    bind:setting={settings[SETTINGS.AFTERSHOCK]}
+                                    onchange={() => updateDamages()}
+                                    max="4"
+                                    step="1"
+                                    min="0"
+                                />
+                                <div class="md:col-span-1">
+                                    <Number
+                                        bind:setting={settings[SETTINGS.EQ_PERK]}
+                                        onchange={() => updateDamages()}
+                                    />
+                                </div>
                             </div>
                             <div class="md:col-span-1">
                                 <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>
                                 <Select
-                                    bind:setting={settings[SETTINGS.WEAPON_TYPE_RANGED]}
+                                    bind:setting={settings[SETTINGS.WEAPON]}
                                     onchange={() => updateDamages()}
                                     img="/armour_icons/Main_hand_slot.webp"
                                 />
@@ -653,13 +646,10 @@
                                     max="100"
                                     min="0"
                                 />
-                                <Number
+                                <Checkbox
                                     bind:setting={settings[SETTINGS.ICY_PRECISION]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/icy_precision.png"
-                                    step="1"
-                                    max="15"
-                                    min="0"
                                 />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.QUIVER]}
@@ -668,20 +658,32 @@
                             </div>
                         {:else if tab === 'bosses'}
                         <div class="md:col-span-1">
-                            <Number
-                                bind:setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
-                                onchange={() => updateDamages()}
-                                img="/effect_icons/Guardian's_Triumph_Edict_(self_status).png"
-                                step="1"
-                                min="0"
-                            />
-                            <Number
+                            <Checkbox
+                                    bind:setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Number
                                     bind:setting={settings[SETTINGS.BALANCE_OF_POWER]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/Balance_of_Power_Edict_(self_status).png"
                                     step="1"
                                     min="0"
                                     max="6"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.SWORD_OF_EDICTS]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.INNER_CHAOS]}
+                                    onchange={() => updateDamages()}
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.ZAMORAK_CHOKE_STACKS]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    min="0"
+                                    max="20"
                                 />
                         </div>
                         {/if}

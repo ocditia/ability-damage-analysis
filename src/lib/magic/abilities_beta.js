@@ -1,97 +1,74 @@
-import { ABILITIES } from '../calc/const/const';
-import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc.js';
+import { ABILITIES } from '../calc/const.js';
+import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc_beta.js';
 
 const abilities = {
-    [ABILITIES.MAGIC_AUTO]: {
-        title: 'Auto',
+    [ABILITIES.MAGIC_BETA]: {
+        title: 'Magic auto',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/Magic_ability.png'
     },
-    [ABILITIES.GREATER_CONCENTRATED_BLAST]: {
-        title: 'Gconc',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png'
+    [ABILITIES.SONIC_WAVE]: {
+        title: 'Sonic',
+        calc: hit_damage_calculation,
     },
-    [ABILITIES.DRAGON_BREATH]: {
+    [ABILITIES.GSONIC_BETA]: {
+        title: 'Gsonic',
+        calc: hit_damage_calculation,
+    },
+    [ABILITIES.DRAGON_BREATH_BETA]: {
         title: 'Dragon breath',
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/dragon_breath.png'
     },
-    [ABILITIES.MAGMA_TEMPEST]: {
-        title: 'Magma tempest',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/magma_tempest.png'
-    },
-    [ABILITIES.CORRUPTION_BLAST]: {
-        title: 'Corruption blast',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/corruption_blast.png'
-    },
-    [ABILITIES.COMBUST]: {
-        title: 'Combust',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/combust.png'
-    },
-    [ABILITIES.TIME_STRIKE]: {
-        title: 'Lightning strike',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/time_strike-bg.png'
-    },
-    [ABILITIES.GREATER_SONIC_WAVE]: {
-        title: 'Greater sonic wave',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/greater_sonic_wave.png'
-    },
-    [ABILITIES.GREATER_CHAIN]: {
-        title: 'Greater chain',
+    [ABILITIES.GCHAIN_BETA]: {
+        title: 'Gchain',
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/greater_chain.png'
     },
-    [ABILITIES.IMPACT]: {
+    [ABILITIES.IMPACT_BETA]: {
         title: 'Impact',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/impact.png',
-        common: false
-    },
-    [ABILITIES.SONIC_WAVE]: {
-        title: 'Sonic wave',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/sonic_wave.png',
-        common: false
+        icon: '/ability_icons/magic/30x30/impact.png'
     },
     [ABILITIES.CONCENTRATED_BLAST]: {
         title: 'Concentrated blast',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/concentrated_blast.png',
-        common: false
+        icon: '/ability_icons/magic/30x30/concentrated_blast.png'
     },
-    [ABILITIES.CHAIN]: {
-        title: 'Chain',
+    [ABILITIES.GCONC_BETA]: {
+        title: 'Gconc',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png'
+    },
+    [ABILITIES.MAGMA_BETA]: {
+        title: 'Magma tempest',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/magic/30x30/magma_tempest.png'
+    },
+    [ABILITIES.COMBUST_BETA]: {
+        title: 'Combust',
+        calc: ability_damage_calculation,
+    },
+    [ABILITIES.CORRUPTION_BLAST_BETA]: {
+        title: 'Corruption blast',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/chain.png',
-        common: false
+        icon: '/ability_icons/magic/30x30/corruption_blast.png'
     },
-    [ABILITIES.WILD_MAGIC]: {
+    [ABILITIES.WILD_MAGIC_BETA]: {
         title: 'Wild magic',
         calc: ability_damage_calculation,
         icon: '/ability_icons/magic/30x30/wild_magic.png'
     },
     [ABILITIES.ASPHYXIATE]: {
-        title: 'Asphyxiate',
+        title: 'Asphyx',
         calc: ability_damage_calculation,
         icon: '/ability_icons/magic/30x30/asphyxiate.png'
     },
-    [ABILITIES.SMOKE_CLOUD]: {
-        title: 'Smoke cloud',
-        calc: ability_damage_calculation,
-        icon: '/effect_icons/smoke_cloud.png'
-    },
-    [ABILITIES.SMOKE_TENDRILS]: {
+    [ABILITIES.SMOKE_TENDRILS_BETA]: {
         title: 'Smoke tendrils',
         calc: ability_damage_calculation,
         icon: '/ability_icons/magic/30x30/smoke_tendrils.png'
     },
-    [ABILITIES.OMNIPOWER]: {
+    [ABILITIES.OMNIPOWER_BETA]: {
         title: 'Omnipower',
         calc: ability_damage_calculation,
         icon: '/ability_icons/magic/30x30/omnipower.png'
@@ -101,7 +78,7 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/tsunami.png'
     },
-    [ABILITIES.CLAWS_OF_GUTHIX]: {
+     [ABILITIES.CLAWS_OF_GUTHIX]: {
         title: 'Claws of Guthix',
         calc: hit_damage_calculation,
         icon: '/ability_icons/magic/30x30/guthix_staff-bg.png'
@@ -114,8 +91,7 @@ const abilities = {
     [ABILITIES.IBAN_BLAST]: {
         title: 'Iban blast',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/iban_staff.png',
-        common: false
+        icon: '/ability_icons/magic/30x30/iban_staff.png'
     },
     [ABILITIES.INSTABILITY]: {
         title: 'Instability',
@@ -130,20 +106,17 @@ const abilities = {
     [ABILITIES.RUNE_FLAME]: {
         title: 'Rune flame',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/mindspike.png',
-        common: false
+        icon: '/ability_icons/magic/30x30/mindspike.png'
     },
     [ABILITIES.DEVOUR]: {
         title: 'Devour',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/obliteration.png',
-        common: false
+        icon: '/ability_icons/magic/30x30/obliteration.png'
     },
     [ABILITIES.REAP]: {
         title: 'Reap',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/penance_trident.png',
-        common: false
+        icon: '/ability_icons/magic/30x30/penance_trident.png'
     },
     [ABILITIES.SOULFIRE]: {
         title: 'Soulfire',
@@ -153,8 +126,7 @@ const abilities = {
     [ABILITIES.SARADOMIN_STRIKE]: {
         title: 'Saradomin strike',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/saradomin_staff.png',
-        common: false
+        icon: '/ability_icons/magic/30x30/saradomin_staff.png'
     },
     [ABILITIES.FROM_THE_SHADOWS]: {
         title: 'From the shadows',
@@ -164,20 +136,17 @@ const abilities = {
     [ABILITIES.FLAMES_OF_ZAMORAK]: {
         title: 'Flames of Zamorak',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/zamorak_staff.png',
-        common: false
+        icon: '/ability_icons/magic/30x30/zamorak_staff.png'
     },
     [ABILITIES.MIASMIC_BARRAGE]: {
         title: 'Miasmic barrage',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/zuriels_staff.png',
-        common: false
+        icon: '/ability_icons/magic/30x30/zuriels_staff.png'
     },
-    [ABILITIES.AFTERSHOCK]: {
+    [ABILITIES.AFTERSHOCK_MAGIC]: {
         title: 'Aftershock',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/zuriels_staff.png',
-        common: false
+        calc: calc_aftershock,
+        icon: '/effect_icons/Aftershock.webp'
     }
 };
 

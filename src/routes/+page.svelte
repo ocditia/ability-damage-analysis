@@ -36,7 +36,7 @@
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
                             >
                                 <img class="card-icon" src="/style_icons/magic.svg" alt="" />
-                                <div class="card-title">Magic Damage Calculator</div>
+                                <div class="card-title">Magic Damage Calculator (up-to-date post beta)</div>
                             </div>
                         </div>
                     </a>
@@ -46,7 +46,7 @@
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
                             >
                                 <img class="card-icon" src="style_icons/melee.svg" alt="" />
-                                <div class="card-title">Melee Damage Calculator</div>
+                                <div class="card-title">Melee Damage Calculator (up-to-date post beta)</div>
                             </div>
                         </div>
                     </a>
@@ -56,7 +56,7 @@
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
                             >
                                 <img class="card-icon" src="style_icons/ranged.svg" alt="" />
-                                <div class="card-title">Ranged Damage Calculator</div>
+                                <div class="card-title">Ranged Damage Calculator (up-to-date post beta)</div>
                             </div>
                         </div>
                     </a>
@@ -66,7 +66,7 @@
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
                             >
                                 <img class="card-icon" src="style_icons/necro.svg" alt="" />
-                                <div class="card-title">Necromancy Damage Calculator</div>
+                                <div class="card-title">Necromancy Damage Calculator (up-to-date post beta)</div>
                             </div>
                         </div>
                     </a>
@@ -291,11 +291,11 @@
                                 <h1 class="sm:text-2xl pb-2 uppercase font-bold mb-0">
                                     Join us on discord
                                 </h1>
-                                <a href="https://discord.gg/rsanalysis">
+                                <a href="https://discord.gg/RBWwPy4NkJ">
                                     <img class="w-7/8 sm:w-1/3 pb-2" src="/logo.png" alt="" />
                                 </a>
                                 <div class="flex flex-row items-center">
-                                    <a href="https://discord.gg/rsanalysis">
+                                    <a href="https://discord.gg/RBWwPy4NkJ">
                                         <img
                                             class="w-auto mr-4"
                                             src="/google_icons/discord-blue.svg"
@@ -303,12 +303,12 @@
                                         />
                                     </a>
                                     <a
-                                        href="https://discord.gg/rsanalysis"
+                                        href="https://discord.gg/RBWwPy4NkJ"
                                         class="py-2 font-normal text-xl hover:text-link"
                                         title=""
                                     >
                                         <h2 class="text-md sm:text-2xl font-bold mb-0">
-                                            discord.gg/rsanalysis
+                                            discord.gg/RBWwPy4NkJ
                                         </h2>
                                     </a>
                                 </div>

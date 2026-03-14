@@ -1,77 +1,12 @@
 import { ABILITIES } from '../calc/const.js';
-import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
+import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc_beta.js';
 
 const abilities = {
-    [ABILITIES.MELEE_AUTO]: {
-        title: 'Auto',
+    [ABILITIES.ATTACK_BETA]: {
+        title: 'Melee auto',
         calc: hit_damage_calculation,
     },
-    [ABILITIES.SEVER]: {
-        title: 'Sever',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/sever.png'
-    },
-    [ABILITIES.CLEAVE]: {
-        title: 'Cleave',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/cleave.png'
-    },
-    [ABILITIES.DECIMATE]: {
-        title: 'Decimate',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/deci.png'
-    },
-    [ABILITIES.GREATER_BARGE]: {
-        title: 'Greater barge',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/gbarge.png'
-    },
-    [ABILITIES.PUNISH]: {
-        title: 'Punish',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/punish.png'
-    },
-    [ABILITIES.GREATER_FURY]: {
-        title: 'Greater fury',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/gfury.png'
-    },
-    [ABILITIES.CHAOS_ROAR]: {
-        title: 'Chaos roar',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/roar.png'
-    },
-    [ABILITIES.DISMEMBER]: {
-        title: 'Dismember',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/dismember.png'
-    },
-    [ABILITIES.HAVOC]: {
-        title: 'Havoc',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/havoc.png'
-    },
-    [ABILITIES.SMASH]: {
-        title: 'Smash',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/smash.png'
-    },
-    [ABILITIES.SLICE]: {
-        title: 'Slice',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/slice.png'
-    },
-    [ABILITIES.FURY]: {
-        title: 'Fury',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/fury.png'
-    },
-    [ABILITIES.KICK]: {
-        title: 'Kick',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/kick.png'
-    },
-    [ABILITIES.BACKHAND]: {
+    [ABILITIES.BACKHAND_BETA]: {
         title: 'Backhand',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/backhand.png'
@@ -81,85 +16,83 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/barge.png'
     },
-    [ABILITIES.BLADED_DIVE]: {
-        title: 'Bladed dive',
+    [ABILITIES.GREATER_BARGE]: {
+        title: 'Greater barge',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/bd.png'
+        icon: '/ability_icons/melee/30x30/gbarge.png'
     },
-    [ABILITIES.DESTROY]: {
-        title: 'Destroy',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/destroy.png'
-    },
-    [ABILITIES.ASSAULT]: {
+    [ABILITIES.ASSAULT_BETA]: {
         title: 'Assault',
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/assault.png'
     },
-    [ABILITIES.GREATER_FLURRY]: {
-        title: 'Greater flurry',
+    [ABILITIES.ADAPTIVE_STRIKE_DW_BETA]: {
+        title: 'Adaptive strike dw',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/gflurry.png'
     },
-    [ABILITIES.HURRICANE]: {
+    [ABILITIES.ADAPTIVE_STRIKE_TH_BETA]: {
+        title: 'Adaptive strike 2h',
+        calc: hit_damage_calculation,
+    },
+    [ABILITIES.REND]: {
+        title: 'Rend',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/smash.png'
+    },
+    [ABILITIES.GFURY_BETA]: {
+        title: 'Gfury',
+        calc: hit_damage_calculation,
+        icon: '/ability_icons/melee/30x30/gfury.png'
+    },
+    [ABILITIES.HURRICANE_BETA]: {
         title: 'Hurricane',
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/cane.png'
     },
-    [ABILITIES.QUAKE]: {
-        title: 'Quake',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/quake.png'
+    [ABILITIES.GREATER_FLURRY]: {
+        title: 'Gflurry',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/melee/30x30/gflurry.png'
     },
-    [ABILITIES.SLAUGHTER]: {
+    [ABILITIES.DISMEMBER_1_BETA]: {
+        title: 'Dismember',
+        calc: ability_damage_calculation,
+    },
+    [ABILITIES.DISMEMBER_2_BETA]: {
         title: 'Slaughter',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/slaughter.png'
     },
-    [ABILITIES.FORCEFUL_BACKHAND]: {
-        title: 'Forceful backhand',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/forceful.png'
-    },
-    [ABILITIES.FLURRY]: {
-        title: 'Flurry',
+    [ABILITIES.DISMEMBER_3_BETA]: {
+        title: 'Massacre',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/flurry.png'
     },
-    [ABILITIES.BLOOD_TENDRILS]: {
-        title: 'Blood tendrils',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/blood-tend.png'
-    },
-    [ABILITIES.STOMP]: {
-        title: 'Stomp',
+    [ABILITIES.PUNISH_BETA]: {
+        title: 'Punish',
         calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/stomp.png'
+        icon: '/ability_icons/melee/30x30/punish.png'
     },
     [ABILITIES.OVERPOWER]: {
         title: 'Overpower',
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/overpower.png'
     },
-    [ABILITIES.METEOR_STRIKE]: {
-        title: 'Meteor strike',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/meteor.png'
-    },
-    [ABILITIES.MASSACRE]: {
-        title: 'Massacre',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/massacre.png'
-    },
-    [ABILITIES.PULVERISE]: {
+    [ABILITIES.PULVERISE_BETA]: {
         title: 'Pulverise',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/pulverise.png'
     },
-    [ABILITIES.FRENZY]: {
-        title: 'Frenzy',
+    [ABILITIES.METEOR_STRIKE_BETA]: {
+        title: 'Meteor strike',
+        calc: hit_damage_calculation,
+    },
+    [ABILITIES.CHAOS_ROAR_BETA]: {
+        title: 'Chaos roar',
+        calc: hit_damage_calculation,
+    },
+    [ABILITIES.FINAL_FLURRY_BETA]: {
+        title: 'The final flurry',
         calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/frenzy.png'
+        icon: '/gear_icons/varanuss_mercy.png'
     },
     [ABILITIES.SLICE_N_DICE]: {
         title: 'Slice & dice',
@@ -181,11 +114,12 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/ezk-bg.png'
     },
-    [ABILITIES.THE_FINAL_FLURRY]: {
+    //already have final flurry
+    /*[ABILITIES.THE_FINAL_FLURRY]: {
         title: 'The final flurry',
         calc: ability_damage_calculation,
         icon: '/gear_icons/varanuss_mercy.png'
-    },
+    },*/
     [ABILITIES.ARMADYLS_JUDGEMENT]: {
         title: "Armadyl's judgement",
         calc: hit_damage_calculation,
@@ -329,6 +263,11 @@ const abilities = {
     [ABILITIES.PURIFYING_LIGHT]: {
         title: 'purifying light',
         calc: hit_damage_calculation,
+    },
+    [ABILITIES.AFTERSHOCK_MELEE]: {
+        title: 'Aftershock',
+        calc: calc_aftershock,
+        icon: '/effect_icons/Aftershock.webp'
     }
 };
 
