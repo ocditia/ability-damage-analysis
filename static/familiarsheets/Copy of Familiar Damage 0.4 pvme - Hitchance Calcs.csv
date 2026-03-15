@@ -1,0 +1,42 @@
+,,,,,,,,,,,,,,,,,,
+,Berserk aura,yes,,Base defence level bonus,0,,Familiar,Boss,Base level,Melee level,Ranged level,Magic level,Melee acc,Ranged acc,Magic acc,Image,Max hit,Attack speed
+,Attack type,magic,,Opposite type,range,,Ripper demon,0,99,99,1,1,"3,724",0,0,,special,special
+,Base stat bonus,1212,,Armour bonus,2178,,Kal'gerion demon,0,95,95,1,95,"3,399",0,3399,,"1,368",4
+,Weapon bonus,2765,,Base armour,2178,,Blood reaver,0,70,70,1,70,"1,816",0,1816,,special,special
+,Base accuracy,3977,,Style,,,Steel titan,0,90,90,90,90,"3,023","3,023",3023,,special,special
+,,,,,,,Dreadnip,0,80,90,90,90,"2,489","2,489",2489,,special,special
+,Bonuses,,,Debuffs,,,Wolpertinger,0,83,83,83,83,"2,542","2,542",2542,,"1,195",4
+,Prayer,12,,Defence modifier,12,,Blood nihil,1,80,80,1,1,"2,795",0,0,,768,2
+,Potion,21.83,,Dominion gloves,0,,Shadow nihil,1,80,75,80,75,"2,693","2,795",2693,,768,2
+,Berserk blood essence,,,Base weakness constant,55%,,Smoke nihil,1,80,75,1,80,"2,693",0,2795,,768,2
+,Berserk aura initial boost,9.9,,Quake,,,Ice nihil,1,75,70,70,75,"2,354","2,354",2463,,720,2
+,Accuracy aura,0.1,,Statius warhammer,,,Talon beast,0,70,70,70,70,"1,816","1,816",1816,,"3,024",8
+,Premier artefact,0,,Bandos book,,,Hellhound,0,70,70,1,1,"1,816","1,508",1508,,576,4
+,Nihil,,,Guthix staff,,,Smoke devil,0,55,55,55,55,"1,197","1,197",1197,,792,4
+,Accuracy scrimshaw,,,Dragon hatchet spec,,,,,,,,,,,,,,
+,Void,,,Barrelchest anchor spec,,,,,,,,,,,,,,
+,Reaper neck,0,,Bone dagger spec,,,,,,,,,,,,,,
+,Defender,,,Final weakness constant,55%,,,,,,,,,,,,,
+,Extreme dom medallion,,,,,,,,,,,,,,,,,
+,Ultimate ability,,,defence level bonus after drain,-60,,,,,,,,,,,,,
+,Spec attack,1,,,,,,,,,,,,,,,,
+,Bonus accuracy,1.00,,base armour stat after drain,2118,,,,,,,,,,,,,
+,Dragon battleaxe,1,,,,,,,,,,,,,,,,
+,Reaver ring,1,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,Slayer helm/mask,1,,,,,,,,,,,,,,,,
+,Dragon slayer gloves ,,,,,,,,,,,,,,,,,
+,Salve amulet,,,,,,,,,,,,,,,,,
+,Balmung,,,,,,,,,,,,,,,,,
+,Bane ammunition,,,,,,,,,,,,,,,,,
+,Keris,,,,,,,,,,,,,,,,,
+,Anti-demon weapons,,,,,,,,,,,,,,,,,
+,Hex/Terra/Inquisitor,,,,,,,,,,,,,,,,,
+,Nightmare gauntlets,,,,,,,,,,,,,,,,,
+,Fleeting boots,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,True stat level,130,,,,,,,,,,,,,,,,
+,Stat bonus incl prayer and boosts,2898,,,,,,,,,,,,,,,,
+,Stat bonus incl boosts,2317,,,,,,,,,,,,,,,,
+,Accuracy gained from prayer bonus,581,,,,,,,,,,,,,,,,
+,Base accuracy after stat bonuses,5663,,,,,,,,,,,,,,,,

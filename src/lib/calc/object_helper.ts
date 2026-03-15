@@ -1,4 +1,6 @@
-import { ABILITIES, abils, weapons, prayers } from './const';
+import { ABILITIES, abils, weapons } from './const/const';
+
+import { prayers } from './const/prayers';
 import { SETTINGS } from './settings';
 import { DamageObject } from './types';
 
@@ -104,11 +106,11 @@ function calc_crit_chance(settings: Record<string, any>): number {
     if (abils[settings['ability']]['main style'] === 'magic') {
         // channeller's ring
         if (
-            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
+            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E) &&
             abils[settings['ability']]['ability classification'] === 'channel'
         ) {
             crit_chance += 0.04;
-            crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
+            crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELLER_RING_STACKS]);
         }
 
         // (g)conc
@@ -180,10 +182,10 @@ function calc_crit_chance(settings: Record<string, any>): number {
         }
 
         // dracolich
-        if (settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES.REGULAR) {
-            crit_chance += 0.2;
-        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER) {
+        if (settings[SETTINGS.GREATER_DRACOLICH_INFUSION] === true) {
             crit_chance += 0.4;
+        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === true) {
+            crit_chance += 0.2;
         }
 
         // deathspore arrows
@@ -203,12 +205,7 @@ function calc_crit_chance(settings: Record<string, any>): number {
         crit_chance = 1;
     }
 
-    // equilibrium aura
-    if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.EQUILIBRIUM) {
-        crit_chance = 0;
-    }
-
     return Math.min(1, crit_chance);
 }
 
-export { calc_crit_chance, create_object }; 
+export { create_object }; 

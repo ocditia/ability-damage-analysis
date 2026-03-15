@@ -1,5 +1,5 @@
-import { hit_damage_calculation, ability_damage_calculation } from '../calc/damage_calc.js';
-import { ABILITIES } from '../calc/const.js';
+import { hit_damage_calculation, ability_damage_calculation } from '../calc/damage_calc_rb.js';
+import { ABILITIES } from '../calc/const/const.js';
 
 const magic_buff_abilities = {
     [ABILITIES.SUNSHINE]: {

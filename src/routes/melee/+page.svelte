@@ -280,7 +280,7 @@
                                 <Select
                                     bind:setting={settings[SETTINGS.VULN]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Vulnerability_icon.webp"
+                                    img="/effect_icons/magic/Vulnerability_icon.webp"
                                 />
                                 <Select
                                     bind:setting={settings[SETTINGS.ENDURING_RUIN_BLEED]}

@@ -1,8 +1,18 @@
-import { ABILITIES, abils, weapons, prayers } from './const';
+import { ABILITIES, abils, weapons } from './const';
+import { prayers } from './const/prayers';
 import { SETTINGS } from './settings';
 
 function create_object(settings) {
-    if (abils[settings['ability']]['crit effects'] === true) {
+    const abil = abils[settings['ability']];
+    if (!abil) {
+        return {
+            'non_crit': {
+                'min hit': 0, 'var hit': 0, 'crit': false,
+                'probability': 1, 'damage list': []
+            }
+        };
+    }
+    if (abil['crit effects'] === true) {
         const crit_chance = calc_crit_chance(settings);
         return {
             'non_crit': {
@@ -161,10 +171,10 @@ function calc_crit_chance(settings) {
     if (abils[settings['ability']]['main style'] === 'magic') {
         // channeller's ring
         if (
-            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
+            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E) &&
             abils[settings['ability']]['ability classification'] === 'channel'
         ) {
-            crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
+            crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELLER_RING_STACKS]);
         }
 
         // conc self boost
@@ -180,14 +190,16 @@ function calc_crit_chance(settings) {
 
         // (g)conc self boost
         if (
-            settings['ability'] === ABILITIES.GCONC_HIT_2_BETA
+            settings['ability'] === ABILITIES.GCONC_HIT_2_BETA ||
+            settings['ability'] === ABILITIES.GREATER_CONCENTRATED_BLAST_2
         ) {
             crit_chance += 0.07;
             if (settings[SETTINGS.RUNIC_CHARGE] === true) {
                 crit_chance += 0.1;
             }
         } else if (
-            settings['ability'] === ABILITIES.GCONC_HIT_3_BETA
+            settings['ability'] === ABILITIES.GCONC_HIT_3_BETA ||
+            settings['ability'] === ABILITIES.GREATER_CONCENTRATED_BLAST_3
         ) {
             crit_chance += 0.14;
             if (settings[SETTINGS.RUNIC_CHARGE] === true) {
@@ -238,7 +250,7 @@ function calc_crit_chance(settings) {
         }
 
         // no fear (pof meteor strike)
-        if (settings['ability'] === ABILITIES.METEOR_STRIKE_BETA) {
+        if (settings['ability'] === ABILITIES.METEOR_STRIKE) {
             if (settings[SETTINGS.POF_DINOS] === SETTINGS.POF_DINOS_VALUES.CORBICULA_1) {
                 crit_chance += 0.2;
             }

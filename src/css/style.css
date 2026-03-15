@@ -1,3 +1,6 @@
+/* Import color variables */
+@import './colors.css';
+
 body {
     font-family: Roboto, sans-serif;
     --tw-text-opacity: 1;
@@ -85,27 +88,27 @@ body {
 .card {
     background: #171d21;
     padding: 1rem 1rem;
-    border-left: 8px solid var(--tw-border-color, #c2ba9e);
+    border-left: 8px solid var(--tw-border-color, var(--card-border-default));
 }
 
 .card-magic {
-    --tw-border-color: #5271ff;
+    --tw-border-color: var(--card-border-magic);
 }
 
 .card-ranged {
-    --tw-border-color: #00bf63;
+    --tw-border-color: var(--card-border-ranged);
 }
 
 .card-melee {
-    --tw-border-color: #ff5757;
+    --tw-border-color: var(--card-border-melee);
 }
 
 .card-necro {
-    --tw-border-color: #8c52ff;
+    --tw-border-color: var(--card-border-necro);
 }
 
 .card-rotation {
-    --tw-border-color: #cccb74;
+    --tw-border-color: var(--card-border-rotation);
 }
 
 .card-title {
@@ -169,10 +172,10 @@ body {
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale)
         var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia)
         var(--tw-drop-shadow);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.15rem;
     margin-top: 0;
     margin-left: 0.75rem;
-    padding-bottom: 0.25rem;
+    padding-bottom: 0.15rem;
     position: relative;
 }
 
@@ -192,7 +195,7 @@ body {
     margin-top: 0;
 }
 
-.collapse-button {
+.collapse-button-settings {
     position: absolute;
     top: 0;
     right: 0;
@@ -207,29 +210,32 @@ body {
     transition: background-color 0.2s ease;
 }
 
-.collapse-button:hover {
+.collapse-button-settings:hover {
     background: rgba(23, 29, 33, 1);
     color: #b2dbee;
 }
 
 .expand-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 10;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
     background: rgba(23, 29, 33, 0.9);
     border: 1px solid #c2ba9e;
     color: #c2ba9e;
     padding: 0.5rem 1rem;
-    border-radius: 0 0 0 0.5rem;
-    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    font-size: 1.0rem;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
 }
 
 .expand-button:hover {
     background: rgba(23, 29, 33, 1);
     color: #b2dbee;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -260,4 +266,54 @@ table {
 
 .relative {
     position: relative;
+}
+
+/* Config section collapsible styles */
+.config-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.0 rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+    
+}
+
+.config-header:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.config-title {
+    margin: 0 !important;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #b2dbee;
+}
+
+.config-toggle {
+    background: none;
+    border: none;
+    color: #c2ba9e;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.config-content {
+    padding-top: 1rem;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

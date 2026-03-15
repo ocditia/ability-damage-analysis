@@ -1,0 +1,38 @@
+/**
+ * Prayer-related damage calculation effects
+ */
+
+import { ABILITIES, abils } from '../../const/const';
+import { prayers } from '../../const/prayers';
+import { SETTINGS } from '../../settings_rb';
+
+/**
+ * Calculate the prayer boost for an ability based on settings
+ * Returns a multiplier to apply to the boost value
+ */
+export function calculatePrayerBoost(
+    settings: Record<string, any>,
+    abilityKey: ABILITIES
+): number {
+    const abilityStyle = abils[abilityKey]?.['main style'];
+    const prayerStyle = prayers[settings[SETTINGS.PRAYER]]?.['style'];
+
+    // Prayer only applies if ability style matches prayer style
+    if (abilityStyle !== prayerStyle) {
+        return 1;
+    }
+
+    let prayerBoost = prayers[settings[SETTINGS.PRAYER]]?.['boost'] || 0;
+
+    // Amulet of zealots bonus for single-stat boosting or leech curses
+    if (
+        settings[SETTINGS.NECKLACE] === 'amulet of zealots' &&
+        ['single-stat boosting', 'leech curse'].includes(
+            prayers[settings[SETTINGS.PRAYER]]?.['category']
+        )
+    ) {
+        prayerBoost += 0.1;
+    }
+
+    return 1 + prayerBoost;
+}

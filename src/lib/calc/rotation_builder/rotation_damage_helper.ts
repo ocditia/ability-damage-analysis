@@ -1,10 +1,67 @@
 import { create_damage_object } from './rota_object_helper';
-import { SETTINGS } from '../settings';
-import { ABILITIES, abils } from '../const';
-import { on_cast, on_hit } from './damage_calc_new';
+import { SETTINGS } from '../settings_rb';
+import { ABILITIES, abils } from '../const/const';
+import { on_cast, on_hit, COOLDOWN_PREFIX } from './damage_calc_new';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
 
-// Helper functions for accessing the new DamageObject structure
+// Import and re-export from calculation_utils
+import { addAdrenaline } from './calculation_utils';
+export { addAdrenaline as add_adrenaline };
+
+/**
+ * Calculate conjure spirit duration in ticks based on Spirit Pact level
+ * and First Necromancer robe pieces.
+ * Base: 60s. Spirit Pact I/II/III: +6/12/18s. TFN 4+pc: +5% per piece (after Spirit Pact).
+ */
+export function getConjureDuration(settings: Record<string, any>): number {
+    const spiritPact = settings[SETTINGS.SPIRIT_PACT] || 0;
+    let durationSeconds = 60 + spiritPact * 6;
+
+    // Count First Necromancer pieces
+    const tfnPieces = countTFNPieces(settings);
+    if (tfnPieces >= 4) {
+        durationSeconds = Math.floor(durationSeconds * (1 + 0.05 * tfnPieces));
+    }
+
+    // Convert to ticks (1 tick = 0.6s)
+    return Math.ceil(durationSeconds / 0.6);
+}
+
+/**
+ * Count equipped Robes of the First Necromancer pieces
+ */
+export function countTFNPieces(settings: Record<string, any>): number {
+    let count = 0;
+    if (settings[SETTINGS.NECRO_HELMET] === SETTINGS.NECRO_HELMET_VALUES.TFN) count++;
+    if (settings[SETTINGS.NECRO_BODY] === SETTINGS.NECRO_BODY_VALUES.TFN) count++;
+    if (settings[SETTINGS.NECRO_LEGS] === SETTINGS.NECRO_LEGS_VALUES.TFN) count++;
+    if (settings[SETTINGS.NECRO_GLOVES] === SETTINGS.NECRO_GLOVES_VALUES.TFN) count++;
+    if (settings[SETTINGS.NECRO_BOOTS] === SETTINGS.NECRO_BOOTS_VALUES.TFN) count++;
+    return count;
+}
+
+/**
+ * Calculate conjure spirit damage multiplier from gear
+ * Conjurer's Raising Amulet: 1.05x. TFN 2+pc: 7% per piece.
+ */
+export function getConjureDamageMultiplier(settings: Record<string, any>): number {
+    let mult = 1.0;
+
+    // Conjurer's Raising Amulet
+    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.MOONSTONE) {
+        mult *= 1.05;
+    }
+
+    // First Necromancer: 7% per piece when 2+ equipped
+    const tfnPieces = countTFNPieces(settings);
+    if (tfnPieces >= 2) {
+        mult *= 1 + 0.07 * tfnPieces;
+    }
+
+    return mult;
+}
+
+// Helper functions
 function getDamageDistribution(dmgObject: DamageObject, kind: DamageKind): DamageDistribution | undefined {
     return dmgObject.distributions[kind];
 }
@@ -26,7 +83,7 @@ function iterateDistributions(dmgObject: DamageObject, callback: (distribution: 
  * @param timers - timers object containing buff timer information
  * @returns
  */
-function calc_channelled_hit(settings: Record<string, any>, hit_index: number, rotation: Record<number, string[]>, timers: Record<string, number>, abilityKey: string) {
+function calc_channelled_hit(settings: Record<string, any>, hit_index: number, rotation: Record<number, string[]>, timers: Record<string, number>, abilityKey: ABILITIES) {
     let hits: DamageObject[] = [];
     let dmgObject = create_damage_object(settings, abilityKey);
     for (let iter = 0; iter < rotation[hit_index].length; iter++) {
@@ -45,57 +102,160 @@ function calc_channelled_hit(settings: Record<string, any>, hit_index: number, r
 
 /**
  * Handles the toggling and timer initialisation of most ranged buffs, exlcuding (e)dracolich
+ * The buffs handled are those which are activated upon casting the ability
  * @param settings 
  * @param timers - map of (buff_name -> buff_duration)
  * @param abilityKey 
  */
-function handle_buffs(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
+export function handleBuffs(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
     //TODO handle swiftness' weird damage calc + cleanup format
-    if (abilityKey == ABILITIES.SUNSHINE) {
-        settings[SETTINGS.SUNSHINE] = true;
-        timers[SETTINGS.SUNSHINE] = 50;
-    }
-    else if (abilityKey == ABILITIES.GREATER_SUNSHINE) {
-        settings[SETTINGS.SUNSHINE] = true;
-        timers[SETTINGS.SUNSHINE] = 63;
-    }
-    if (abilityKey == ABILITIES.DEATHS_SWIFTNESS) {
-        settings['death swiftness'] = true;
-        timers['death swiftness'] = 50;
-    }
-    else if (abilityKey == ABILITIES.GREATER_DEATHS_SWIFTNESS) {
-        settings['death swiftness'] = true;
-        timers['death swiftness'] = 63;
-    }
-    //TODO remove split soul on changing weapon
-    else if (abilityKey == ABILITIES.SPLIT_SOUL_ECB) {
-        settings['split soul'] = true; 
-        timers['split soul'] = 25;
-    }
-    else if (abilityKey == ABILITIES.BALANCE_BY_FORCE) {
-        settings[ABILITIES.BALANCE_BY_FORCE] = true; 
-        timers[ABILITIES.BALANCE_BY_FORCE] = 50;
-    }
-    else if ([ABILITIES.INCENDIARY_SHOT, ABILITIES.METEOR_STRIKE, ABILITIES.TSUNAMI].includes(abilityKey)) {
-        settings[SETTINGS.CRIT_BUFF] = true; 
-        timers[SETTINGS.CRIT_BUFF] = 50;
-    }
-    else if (abilityKey == ABILITIES.NATURAL_INSTINCT) {
-        settings[SETTINGS.NATURAL_INSTINCT] = true; 
-        timers[ABILITIES.NATURAL_INSTINCT] = 34;
+    switch (abilityKey) {
+        // Damage Buff Ults
+        case ABILITIES.SUNSHINE:
+            settings[SETTINGS.SUNSHINE] = true;
+            timers[SETTINGS.SUNSHINE] = 50;
+            break;
+        case ABILITIES.GREATER_SUNSHINE:
+            settings[SETTINGS.SUNSHINE] = true;
+            timers[SETTINGS.SUNSHINE] = 63;
+            break;
+        case ABILITIES.DEATHS_SWIFTNESS:
+            settings['death swiftness'] = true;
+            timers['death swiftness'] = 50;
+            break;
+        case ABILITIES.GREATER_DEATHS_SWIFTNESS:
+            settings['death swiftness'] = true;
+            timers['death swiftness'] = 63;
+            break;
+        case ABILITIES.BERSERK:
+            settings[SETTINGS.BERSERK] = true;
+            timers[SETTINGS.BERSERK] = 33;
+            break;
+        // Buff Special Attacks
+        case ABILITIES.BLACKHOLE:
+            settings[SETTINGS.BLACKHOLE] = true;
+            timers[SETTINGS.BLACKHOLE] = 35;
+            break;
+        case ABILITIES.GALESHOT:
+            settings[SETTINGS.SEARING_WINDS] = true;
+            timers[SETTINGS.SEARING_WINDS] = 10; // 6 seconds
+            break;
+        case ABILITIES.IMBUE_SHADOWS:
+            settings[SETTINGS.SHADOW_IMBUED] = true;
+            timers[SETTINGS.SHADOW_IMBUED] = 50; // 30 seconds
+            break;
+        case ABILITIES.SHADOW_TENDRILS:
+            // Shadow Tendrils extends Imbue Shadows buff by 3.6s (6 ticks) if active
+            if (settings[SETTINGS.SHADOW_IMBUED] === true && timers[SETTINGS.SHADOW_IMBUED] > 0) {
+                timers[SETTINGS.SHADOW_IMBUED] += 6;
+            }
+            break;
+        case ABILITIES.SPLIT_SOUL_ECB: //TODO remove split soul on changing weapon
+            settings['split soul'] = true;
+            timers['split soul'] = 25;
+            break;
+        case ABILITIES.SPLIT_SOUL_NECRO:
+            settings[SETTINGS.SPLIT_SOUL_NECRO] = true;
+            timers[SETTINGS.SPLIT_SOUL_NECRO] = 34; // 20.4s = 34 ticks
+            break;
+        case ABILITIES.BALANCE_BY_FORCE:
+            settings[ABILITIES.BALANCE_BY_FORCE] = true; 
+            timers[ABILITIES.BALANCE_BY_FORCE] = 50;
+            break;
+            case ABILITIES.INSTABILITY:
+                settings[SETTINGS.INSTABILITY] = true; 
+                timers[SETTINGS.INSTABILITY] = 50;
+                break;
+        // Crit Buff
+        case ABILITIES.INCENDIARY_SHOT:
+        case ABILITIES.METEOR_STRIKE:
+        case ABILITIES.TSUNAMI:
+            settings[SETTINGS.CRIT_BUFF] = true; 
+            timers[SETTINGS.CRIT_BUFF] = 51;
+            break;
+        // Conjure abilities — tracked via timers, processed by processConjureTick
+        case ABILITIES.CONJURE_UNDEAD_ARMY:
+            timers['conjure_skeleton_warrior'] = getConjureDuration(settings);
+            timers['conjure_vengeful_ghost'] = getConjureDuration(settings);
+            timers['conjure_putrid_zombie'] = getConjureDuration(settings);
+            timers['conjure_phantom_guardian'] = getConjureDuration(settings);
+            break;
+        case ABILITIES.CONJURE_SKELETON_WARRIOR:
+            timers['conjure_skeleton_warrior'] = getConjureDuration(settings);
+            break;
+        case ABILITIES.CONJURE_VENGEFUL_GHOST:
+            timers['conjure_vengeful_ghost'] = getConjureDuration(settings);
+            break;
+        case ABILITIES.CONJURE_PUTRID_ZOMBIE:
+            timers['conjure_putrid_zombie'] = getConjureDuration(settings);
+            break;
+        case ABILITIES.CONJURE_PHANTOM_GUARDIAN:
+            timers['conjure_phantom_guardian'] = getConjureDuration(settings);
+            break;
+        // Command abilities — trigger burst damage from conjures
+        case ABILITIES.COMMAND_SKELETON_WARRIOR:
+            timers['command_skeleton_warrior'] = 10; // 6s = 10 ticks, 10 hits
+            break;
+        case ABILITIES.COMMAND_PUTRID_ZOMBIE:
+            timers['command_putrid_zombie'] = 1; // single instant explosion
+            break;
+        case ABILITIES.COMMAND_VENGEFUL_GHOST:
+            settings[SETTINGS.HAUNTED] = true;
+            settings[SETTINGS.HAUNTED_AD] = settings[SETTINGS.ABILITY_DAMAGE];
+            timers[SETTINGS.HAUNTED] = 8; // 4.8s = 8 ticks
+            break;
+        case ABILITIES.LIFE_TRANSFER: {
+            // Extend all active conjure durations by 21s (35 ticks)
+            const conjureKeys = ['conjure_skeleton_warrior', 'conjure_vengeful_ghost', 'conjure_putrid_zombie', 'conjure_phantom_guardian'];
+            for (const key of conjureKeys) {
+                if (timers[key] && timers[key] > 0) {
+                    timers[key] += 35;
+                }
+            }
+            break;
+        }
+        case ABILITIES.THREADS_OF_FATE:
+            settings[SETTINGS.THREADS_OF_FATE] = true;
+            timers[SETTINGS.THREADS_OF_FATE] = 11; // 6.6s = 11 ticks
+            break;
+        case ABILITIES.INVOKE_DEATH:
+            settings[SETTINGS.INVOKE_DEATH] = true;
+            timers[SETTINGS.INVOKE_DEATH] = 20; // 12s = 20 ticks
+            break;
+        case ABILITIES.LIVING_DEATH:
+            settings[SETTINGS.LIVING_DEATH] = true;
+            timers[SETTINGS.LIVING_DEATH] = 50; // 30 seconds
+            // On-cast: reset cooldowns of Touch of Death and Death Skulls
+            delete timers[COOLDOWN_PREFIX + ABILITIES.TOUCH_OF_DEATH];
+            delete timers[COOLDOWN_PREFIX + ABILITIES.DEATHSKULLS_4];
+            break;
+        case ABILITIES.NATURAL_INSTINCT:
+            settings[SETTINGS.NATURAL_INSTINCT] = true; 
+            timers[ABILITIES.NATURAL_INSTINCT] = 34;
+            break;
+        // Melee Basic Buffs
+        case ABILITIES.FURY:
+            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.REGULAR; 
+            break;
+        case ABILITIES.GREATER_FURY:
+            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.GREATER; 
+            break;
+        case ABILITIES.CHAOS_ROAR:
+            settings[SETTINGS.CHAOS_ROAR] = true; 
+            break;
     }
 }
 
 export function handle_wen_buff(settings: Record<string, any>, timers: Record<string, number>) {
-    settings[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_CHILL_STACKS];
+    settings[SETTINGS.ICY_PRECISION] = 1; // flat buff, no longer per-stack
     settings[SETTINGS.ICY_CHILL_STACKS] = 0;
-    timers[SETTINGS.ICY_PRECISION] = settings[SETTINGS.ICY_PRECISION]; // time in ticks is same as n stacks
+    timers[SETTINGS.ICY_PRECISION] = 15; // fixed 15 tick duration
 }
 
 /**
  * Sets (greater) dracolich infusion buff to active if applicable
  */
-function handle_edraco(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
+export function handle_edraco(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
     let body = settings['body'];
     let helmet = settings['helmet'];
     let gloves = settings['gloves'];
@@ -103,21 +263,22 @@ function handle_edraco(settings: Record<string, any>, timers: Record<string, num
     let boots = settings['boots'];
 
     let items = [body, helmet, gloves, legs, boots];
-    function dracoBuff(startString: string, adrenGain: number, infusionTier: string) {
-        let count = items.filter(item => item && item.startsWith(startString)).length;
-        if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT || abilityKey == ABILITIES.RAPID_FIRE_HIT) {
-            settings[SETTINGS.ADRENALINE] += count * adrenGain;
+    function dracoBuff(startString: string, adrenGain: number) {
+        let nDracoPieces = items.filter(item => item && item.startsWith(startString)).length;
+        if (abilityKey == ABILITIES.RAPID_FIRE_HIT || abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
+
+            addAdrenaline(settings, nDracoPieces * adrenGain);
         }
         //Handle crit chance buff
         if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
-            if (count >= 3) {
-                let buff_duration = 5 + (3 * Math.max(count - 3, 0)); // 5 tick base duration
-                settings['dracolich infusion'] = infusionTier;
-                timers['dracolich infusion'] = buff_duration; 
+            if (nDracoPieces >= 3) {
+                let buff_duration = 5 + (3 * Math.max(nDracoPieces - 3, 0)); // 5 tick base duration
+                settings[SETTINGS.GREATER_DRACOLICH_INFUSION] = true;
+                timers[SETTINGS.GREATER_DRACOLICH_INFUSION] = buff_duration; 
             }
         }
     }
-    dracoBuff('elite dracolich', 0.5, 'greater');
+    dracoBuff('elite dracolich', 0.5);
     //dracoBuff('dracolich', 0.2, 'regular'); 
     //TOOD solve the floating point error for regular draco
 }
@@ -133,7 +294,7 @@ function handle_edraco(settings: Record<string, any>, timers: Record<string, num
  * @param hitTick - tick when hit occurs (unused currently)
  * @returns Array of damage objects representing all hits
  */
-function handle_sgb(settings: Record<string, any>, dmgObject: DamageObject): DamageObject[] {
+export function handle_sgb(settings: Record<string, any>, dmgObject: DamageObject): DamageObject[] {
     const hitMultipliers = [0, 1.16, 1.64, 2.44, 3.56, 5.0];
     const size = Math.min(settings[SETTINGS.TARGET_SIZE], 5);
     const hitMultiplier = hitMultipliers[size] - 1; // don't include guaranteed hit
@@ -163,7 +324,7 @@ function handle_sgb(settings: Record<string, any>, dmgObject: DamageObject): Dam
     return results;
 }
 
-function get_user_value(settings: Record<string, any>, dmgObject: DamageObject) {
+export function get_user_value(settings: Record<string, any>, dmgObject: DamageObject) {
     switch (settings[SETTINGS.MODE]) {
         case SETTINGS.MODE_VALUES.MEAN:
             return get_mean_damage(settings, dmgObject);
@@ -287,12 +448,4 @@ function get_max_crit(settings: Record<string, any>, dmgObject: DamageObject) {
     }
     return max_hit;
 }
-
-
-export { 
-    handle_buffs,
-    calc_channelled_hit,
-    get_user_value,
-    handle_sgb,
-    handle_edraco
-}; 
+ 

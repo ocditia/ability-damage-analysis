@@ -1,4 +1,4 @@
-import { ABILITIES } from '../calc/const.js';
+import { ABILITIES } from '../calc/const';
 import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
 
 const abilities = {
@@ -45,11 +45,6 @@ const abilities = {
         title: 'Demoralise',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/demoralise.png'
-    },
-    [ABILITIES.NEEDLE_STRIKE]: {
-        title: 'Needle strike',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/needle.png'
     },
     [ABILITIES.RICOCHET]: {
         title: 'Ricochet',
@@ -101,11 +96,6 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/deadshot.png'
     },
-    [ABILITIES.UNLOAD]: {
-        title: 'Unload',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/unload.png'
-    },
     [ABILITIES.CRYSTAL_RAIN]: {
         title: 'Crystal rain',
         calc: hit_damage_calculation,
@@ -124,7 +114,7 @@ const abilities = {
     [ABILITIES.SHADOWFALL]: {
         title: 'Shadowfall',
         calc: ability_damage_calculation,
-        icon: '/gear_icons/gloomfire_bow.png'
+        icon: '/gear_icons/ranged/gloomfire bow.png'
     },
     [ABILITIES.DESCENT_OF_DARKNESS]: {
         title: 'Descent of Darkness',
@@ -190,6 +180,12 @@ const abilities = {
         title: 'Defiance',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/zaniks_crossbow.png'
+    },
+    [ABILITIES.AFTERSHOCK_RANGED]: {
+        title: 'Aftershock',
+        calc: hit_damage_calculation,
+        icon: '/effect_icons/perks/Aftershock.png',
+        common: false
     }
 };
 

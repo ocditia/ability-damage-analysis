@@ -1,6 +1,6 @@
 <script>
-    export let marginTop = '1.5rem';
-    export let marginBottom = '1.5rem';
+    export let marginTop = '1.0rem';
+    export let marginBottom = '1.0rem';
     export let color = '156, 163, 175'; // RGB values for gray-400
     export let opacity = '0.4';
     export let height = '1px';

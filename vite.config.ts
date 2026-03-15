@@ -7,7 +7,9 @@ export default defineConfig({
         sveltekit()
     ],
     test: {
-        include: ['src/**/*.{test,spec}.{js,ts}']
+        include: ['src/**/*.{test,spec}.{js,ts}'],
+        setupFiles: ['src/lib/calc/__tests__/setup.ts'],
+        globals: true,
     },
     base: './',
     resolve: {

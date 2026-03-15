@@ -41,7 +41,7 @@
         justify-center
         min-w-fit
         whitespace-nowrap
-        mb-5
+        mb-0
     `.trim().replace(/\s+/g, ' ');
 </script>
 

@@ -19,10 +19,10 @@ function next_cast(settings) {
 
     // channeller's ring
     if (
-        (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
+        (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E) &&
         abils[settings['ability']]['ability classification'] === 'channel'
     ) {
-        settings[SETTINGS.CHANNELER_RING_STACKS] += 1
+        settings[SETTINGS.CHANNELLER_RING_STACKS] += 1
     }
 
     // gconc bbeta
@@ -46,7 +46,8 @@ function next_hit(settings) {
     
     // bolg stack tracker
     if (
-        settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
+        (settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG ||
+        settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG_IM) &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] += 1;

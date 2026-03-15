@@ -1,8 +1,8 @@
-import { ABILITIES } from '../calc/const.js';
+import { ABILITIES } from '../calc/const';
 import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc_beta.js';
 
 const abilities = {
-    [ABILITIES.RANGED_BETA]: {
+    [ABILITIES.RANGED_AUTO]: {
         title: 'Ranged Auto',
         calc: hit_damage_calculation,
     },
@@ -14,49 +14,49 @@ const abilities = {
         title: 'Galeshot Per-Hit Damage',
         calc: hit_damage_calculation,
     },
-    [ABILITIES.GRICO_BETA]: {
+    [ABILITIES.GREATER_RICOCHET]: {
         title: 'Greater Ricochet',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/grico.png'
     },
-    [ABILITIES.PIERCING_SHOT_BETA]: {
+    [ABILITIES.PIERCING_SHOT]: {
         title: 'Piercing Shot',
         calc: ability_damage_calculation,
     },
-    [ABILITIES.SNIPE_BETA]: {
+    [ABILITIES.SNIPE]: {
         title: 'Snipe',
         calc: ability_damage_calculation,
     },
-    [ABILITIES.CORRUPTION_SHOT_BETA]: {
+    [ABILITIES.CORRUPTION_SHOT]: {
         title: 'Corruption shot',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/corrupt-shot.png'
     },
-    [ABILITIES.BINDING_SHOT_BETA]: {
+    [ABILITIES.BINDING_SHOT]: {
         title: 'Binding Shot',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/binding.png'
     },
-    [ABILITIES.SNAP_SHOT_BETA]: {
+    [ABILITIES.SNAP_SHOT]: {
         title: 'Snap Shot',
         calc: ability_damage_calculation,
     },
-    [ABILITIES.RAPID_FIRE_BETA]: {
+    [ABILITIES.RAPID_FIRE]: {
         title: 'Rapid Fire',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/rapid.png'
     },
-    [ABILITIES.SHADOW_TENDRILS_BETA]: {
+    [ABILITIES.SHADOW_TENDRILS]: {
         title: 'Shadow tendrils',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/tendril.png'
     },
-    [ABILITIES.BOMBARDMENT_BETA]: {
+    [ABILITIES.BOMBARDMENT]: {
         title: 'Bombardment',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/bombard.png'
     },
-    [ABILITIES.DEADSHOT_BETA]: {
+    [ABILITIES.DEADSHOT]: {
         title: 'Deadshot',
         calc: ability_damage_calculation,
     },
@@ -83,7 +83,7 @@ const abilities = {
     [ABILITIES.SHADOWFALL]: {
         title: 'Shadowfall',
         calc: ability_damage_calculation,
-        icon: '/gear_icons/gloomfire_bow.png'
+        icon: '/gear_icons/ranged/gloomfire bow.png'
     },
     [ABILITIES.BALANCED_SHOT]: {
         title: 'Balanced Shot',
@@ -148,7 +148,7 @@ const abilities = {
     [ABILITIES.AFTERSHOCK_RANGED]: {
         title: 'Aftershock',
         calc: calc_aftershock,
-        icon: '/effect_icons/Aftershock.webp'
+        icon: '/effect_icons/perks/Aftershock.webp'
     }
 };
 

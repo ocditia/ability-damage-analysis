@@ -1,194 +1,145 @@
 <script>
-    import { rangedGear } from '$lib/special/abilities';
-    import { SETTINGS } from '$lib/calc/settings';
-    import { GearSlots } from '$lib/calc/rotation_builder/gear';
+    import { SETTINGS } from '$lib/calc/settings_rb';
+    import { getStyleColor } from '$lib/utils/colors';
 
-    export let gearItems = {}; // Default to an empty object if no data is provided
+    export let gearItems = {};
     export let handleAbilityClick;
     export let handleDragStart;
     export let style = 'ranged';
     export let settings;
 
-    const iconPath = '/gear_icons/';
-    const png = '.png';
+    let showAll = false;
 
-    let rangedBody = settings[SETTINGS.RANGED_BODY].value;
-    let rangedLegs = settings[SETTINGS.RANGED_LEGS].value;
+    $: styleColor = getStyleColor(style);
 
-    function getImage(slot) {
-        const sharedSlots = [GearSlots.NECKLACE, GearSlots.POCKET, 
-            GearSlots.RING, GearSlots.CAPE, GearSlots.AMMO];
-        let baseString = '';
-        if (!sharedSlots.includes(slot)) {
-            baseString = style + ' ';
+    // Define row categories: label, slot set
+    const rowDefs = [
+        { label: 'W', slots: new Set([
+            SETTINGS.RANGED_MH, SETTINGS.MAGIC_MH, SETTINGS.MELEE_MH, SETTINGS.NECRO_MH,
+            SETTINGS.RANGED_OH, SETTINGS.MAGIC_OH, SETTINGS.MELEE_OH, SETTINGS.NECRO_OH,
+            SETTINGS.RANGED_TH, SETTINGS.MAGIC_TH, SETTINGS.MELEE_TH, SETTINGS.NECRO_TH,
+        ])},
+        { label: 'A', slots: new Set([SETTINGS.AMMO, SETTINGS.POCKET]) },
+        { label: 'J', slots: new Set([SETTINGS.RING, SETTINGS.NECKLACE, SETTINGS.CAPE, 'Essence of Finality']) },
+        { label: 'E', slots: new Set([
+            SETTINGS.RANGED_HELMET, SETTINGS.MAGIC_HELMET, SETTINGS.MELEE_HELMET, SETTINGS.NECRO_HELMET,
+            SETTINGS.RANGED_BODY, SETTINGS.MAGIC_BODY, SETTINGS.MELEE_BODY, SETTINGS.NECRO_BODY,
+            SETTINGS.RANGED_LEGS, SETTINGS.MAGIC_LEGS, SETTINGS.MELEE_LEGS, SETTINGS.NECRO_LEGS,
+            SETTINGS.RANGED_GLOVES, SETTINGS.MAGIC_GLOVES, SETTINGS.MELEE_GLOVES, SETTINGS.NECRO_GLOVES,
+            SETTINGS.RANGED_BOOTS, SETTINGS.MAGIC_BOOTS, SETTINGS.MELEE_BOOTS, SETTINGS.NECRO_BOOTS,
+        ])},
+    ];
+
+    const commonKeys = new Set([
+        'BOLG', 'BOLG_IM', 'HEX_E', 'FSOA', 'FSOA_IM', 'INQ_STAFF', 'INQ_STAFF_E',
+        'LENG', 'LENG_IM', 'EZK', 'EZK_IM', 'MW_SPEAR',
+        'OMNI_GUARD', 'OMNI_GUARD_IM', 'DEVOURERS_GUARD', 'DEVOURERS_GUARD_IM',
+        'ROAR_OF_AWAKENING', 'ROAR_OF_AWAKENING_IM', 'ODE_TO_DECEIT', 'ODE_TO_DECEIT_IM',
+        'CUSTOM_SHIELD',
+        'ELITE_DRACOLICH', 'ELITE_SIRENIC', 'ELITE_TECTONIC', 'TUMEKENS_RESPLENDENCE',
+        'TMW', 'VESTMENTS', 'TFN',
+        'CINDERS', 'DTB', 'KWW_E', 'NIGHTMARES_E',
+        'EOF', 'EOF_BLACK', 'EOF_BLUE', 'EOF_GREEN', 'EOF_PINK', 'EOF_PURPLE', 'EOF_RED', 'EOF_YELLOW',
+        'FUL_ARROWS', 'WEN_ARROWS', 'DEATHSPORE_ARROWS', 'JAS_ARROWS', 'BIK_ARROWS', 'HYDRIX_BOLTS',
+        'EOFOR', 'AOSOR', 'AOS', 'REAPEROR', 'REAPER',
+        'REAVERS', 'STALKER_E', 'CHAMPION_E', 'CHANNELER_E', 'RODI',
+        'ZUK',
+        'GRIM', 'FUL', 'JAS',
+    ]);
+
+    function getRowItems(slotSet) {
+        const result = [];
+        for (const [slot, items] of Object.entries(gearItems)) {
+            if (!slotSet.has(slot)) continue;
+            const entries = showAll ? Object.entries(items) : Object.entries(items).filter(([key]) => commonKeys.has(key));
+            for (const [key, item] of entries) {
+                result.push(item);
+            }
         }
-        const slotKey =  baseString + slot;
-        console.log('Slot key!!!! = ' + slotKey);
-        const item = settings[slotKey].value;
-        return iconPath + item + png; 
+        return result;
     }
 
-    function getBorderColour() {
-        if (style === 'ranged') return '#00bf63';
-        else if (style === 'necro') return '#d694ff';
-        else if (style === 'magic') return '#94a3ff';
-        else if (style === 'melee') return '#fe5c5c';
-        else return '#fff';
-    }
+    $: rows = rowDefs.map(r => ({ label: r.label, items: getRowItems(r.slots) })).filter(r => r.items.length > 0);
 </script>
 
-<div class="flex-container">
-    <!-- Equipped gear interface -->
-     {#if false} 
-        <div class="box img-box">
-            <img
-                src='/armour_icons/Worn%20equipment%20interface.png'
-                alt='Equipment display'
-                title='Equipment display'
-                class="main-image"
-            />
-            <!-- <img
-                src='/gear_icons/completionist%20cape.png'
-                alt='Aura slot'
-                class="overlay-image"
-                style="top: 4.25em; left: 3.05em;"
-            /> -->
-            <img
-                src={getImage(GearSlots.HELMET)}
-                alt='Helmet slot'
-                class="overlay-image"
-                style="top: 5.2em; left: 6.45em;"
-            />
-            <img
-                src={getImage(GearSlots.NECKLACE)}
-                alt='Amulet slot'
-                class="overlay-image"
-                style="top: 7.7em; left: 6.45em;"
-            />
-            <img
-                src={getImage(GearSlots.BODY)}
-                alt='Body slot'
-                class="overlay-image"
-                style="top: 10.1em; left: 6.45em;"
-            />
-            <img
-                src={getImage(GearSlots.LEGS)}
-                alt='Legs slot'
-                class="overlay-image"
-                style="top: 12.5em; left: 6.45em;"
-            />
-            <img
-                src={getImage(GearSlots.BOOTS)}
-                alt='Boots slot'
-                class="overlay-image"
-                style="top: 15.0em; left: 6.45em;"
-            />
-            <img
-                src={getImage(GearSlots.CAPE)}
-                alt='Cape slot'
-                class="overlay-image"
-                style="top: 6.8em; left: 3.1em;"
-            />
-            <img
-                src={getImage(GearSlots.AMMO)}
-                alt='Ammo slot'
-                class="overlay-image"
-                style="top: 7.7em; left: 9.0em;"
-            />
-            <img
-                src={getImage(GearSlots.GLOVES)}
-                alt='Gloves slot'
-                class="overlay-image"
-                style="top: 15.25em; left: 2.8em;"
-            />
-            <img
-                src={getImage(GearSlots.RING)}
-                alt='Ring slot'
-                class="overlay-image"
-                style="top: 15.0em; left: 10.1em;"
-            />
-            <!-- <img
-                src='/gear_icons/completionist%20cape.png'
-                alt='Mainhand slot'
-                class="overlay-image"
-                style="top: 9.3em; left: 1.8em;"
-            />
-            <img
-                src='/gear_icons/completionist%20cape.png'
-                alt='Offhand slot'
-                class="overlay-image"
-                style="top: 9.3em; left: 9.3em;"
-            /> -->
-
-            <img
-                src={getImage(GearSlots.POCKET)}
-                alt='Pocket slot'
-                class="overlay-image"
-                style="top: 5.25em; left: 8.9em;"
-            />
-        </div> 
-    {/if}
-    <!-- Gear Selection interface-->
-    <div class="box">
-        <div class="grid grid-cols-5 md:grid-cols-5 lg:grid-cols-9 gap-x-0.5 gap-y-2 abilities">
-            {#each Object.entries(rangedGear) as [slot, items]}
-                <div class="col-span-1">
-                    {#each Object.entries(items) as [key, item]}
-                        <div
-                            role="button"
-                            tabindex="0"
-                            aria-label={item.title}
-                            on:click={(e) => handleAbilityClick(e, item)}
-                            on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleAbilityClick(e, item); }}
-                            style="display: inline-block; overflow: hidden; width: 30px; height: 30px; "
-                        >
+<div class="ability-groups">
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 2px;">
+        <button class="filter-btn" class:active={!showAll} onclick={() => showAll = !showAll}>
+            {showAll ? 'All' : 'Common'}
+        </button>
+    </div>
+    {#each rows as row}
+        <div class="ability-group" style="border-left: 2px solid {styleColor};">
+            <span class="group-label">{row.label}</span>
+            <div class="grid grid-cols-7 md:grid-cols-12 lg:grid-cols-14 gap-x-0 gap-y-1 abilities">
+                {#each row.items as item}
+                    <div
+                        role="button"
+                        tabindex="0"
+                        aria-label={item.title}
+                        onclick={(e) => handleAbilityClick(e, item)}
+                        onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleAbilityClick(e, item); }}
+                        style="display: inline-block; overflow: hidden; width: 30px; height: 30px;"
+                    >
+                        {#if item.icon}
                             <img
                                 src={item.icon}
                                 alt={item.title}
                                 draggable="true"
-                                on:dragstart={(e) => handleDragStart(e, item)}
+                                ondragstart={(e) => handleDragStart(e, item)}
                                 title={item.title}
-                                style="width: 30px; height: 30px; object-fit: contain; border: 1px solid {getBorderColour()};"
+                                style="width: 30px; height: 30px; object-fit: contain; background-color: #333; border: 1px solid {styleColor};"
+                                onerror={(e) => { if (item.iconFallback && !e.target.dataset.tried) { e.target.dataset.tried = '1'; e.target.src = item.iconFallback; } }}
                             />
-                        </div>
-                    {/each}
-                </div>
-            {/each}
+                        {:else}
+                            <div
+                                style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; background-color: #444; color: white; font-size: 10px; border: 1px solid {styleColor};"
+                                draggable="true"
+                                ondragstart={(e) => handleDragStart(e, item)}
+                                title={item.title}
+                            >
+                                {item.title?.substring(0, 3) ?? '?'}
+                            </div>
+                        {/if}
+                    </div>
+                {/each}
+            </div>
         </div>
-    </div>
+    {/each}
 </div>
+
 <style>
-    .flex-container {
+    .ability-groups {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        gap: 4px;
     }
-
-    .box {
-        margin: 5px;
-        text-align: center;  /* Center text */
+    .ability-group {
+        padding-left: 5px;
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
     }
-
-    .img-box {
-        width:auto;
-        min-width: 207px;
-        border: solid 1px #878787;
-        position: relative; 
-        display: inline-block;
+    .group-label {
+        font-size: 0.6rem;
+        color: rgba(255, 255, 255, 0.35);
+        line-height: 30px;
+        user-select: none;
+        flex-shrink: 0;
+        width: 8px;
+        text-align: center;
     }
-
-    .main-image {
-        width: 100%; 
-        object-fit: contain; /* Keep aspect ratio */
-        border: 1px solid #0f1316;
+    .filter-btn {
+        font-size: 0.6rem;
+        padding: 1px 6px;
+        border: 1px solid #555;
+        border-radius: 3px;
+        background: rgba(255,255,255,0.05);
+        color: #aaa;
+        cursor: pointer;
     }
-
-    .overlay-image {
-        position: absolute;
-        width: auto;
-        height: auto;
-        z-index: 100;
-        pointer-events: none;
-        transform: translate(-50%, -50%);
+    .filter-btn.active {
+        border-color: #4ade80;
+        color: #4ade80;
     }
 </style>

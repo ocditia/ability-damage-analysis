@@ -1,12 +1,16 @@
-import { ABILITIES, abils, weapons, prayers } from '../const';
-import { on_cast, on_hit } from './damage_calc_new';
-import { SETTINGS } from '../settings';
+import { ABILITIES, abils, weapons } from '../const/const';
+import { prayers } from '../const/prayers';
+import { SETTINGS } from '../settings_rb';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
+import { Logger, LogCategory } from '../../utils/Logger';
 
-function create_damage_object(settings: Record<string, any>, ability: string): DamageObject {
+const logger = Logger.getInstance();
+
+function create_damage_object(settings: Record<string, any>, ability: ABILITIES): DamageObject {
     let crit_chance = 0
     if (abils[ability]['crit effects'] === true) {
         crit_chance = calc_crit_chance(settings, ability);
+        logger.log(LogCategory.ABILITY_DAMAGE, `Crit chance for ${ability}`, crit_chance);
     }
     
     const nonCritDistribution: DamageDistribution = {
@@ -30,20 +34,23 @@ function create_damage_object(settings: Record<string, any>, ability: string): D
         'crit': critDistribution
     };
     
-    return {
+    const result = {
         distributions,
         ability: ability,
         likelihood: 1.0
-    };   
+    };
+    
+    logger.log(LogCategory.ABILITY_DAMAGE, `create_damage_object result for ${ability}`, result);
+    return result;   
 }
 
-function calc_crit_chance(settings: Record<string, any>, abilityKey: string): number {
+function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES): number {
     // base crit chance
     let crit_chance = 0.1;
 
     // eclipsed soul
     if (settings[SETTINGS.ECLIPSED_SOUL] === true && 
-        (prayers[settings[SETTINGS.PRAYER]]['book'] === "normal" || prayers[settings[SETTINGS.PRAYER]]['style'] === "none")) {
+        (prayers[settings[SETTINGS.PRAYER]].book === "normal")) {
         crit_chance += 0.04;
     }
 
@@ -105,13 +112,34 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: string): nu
     }
 
     if (abils[abilityKey]['main style'] === 'magic') {
+        // tectonic armour
+        if (settings[SETTINGS.HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TECTONIC) {
+            crit_chance += 0.01;
+        }
+        if (settings[SETTINGS.BODY] === SETTINGS.MAGIC_BODY_VALUES.TECTONIC) {
+            crit_chance += 0.01;
+        }
+        if (settings[SETTINGS.LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TECTONIC) {
+            crit_chance += 0.01
+        }
+
+        // elite tectonic armour'
+        if (settings[SETTINGS.HELMET] === SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC) {
+            crit_chance += 0.02;
+        }
+        if (settings[SETTINGS.BODY] === SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC) {
+            crit_chance += 0.02;
+        }
+        if (settings[SETTINGS.LEGS] === SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC) {
+            crit_chance += 0.02;
+        }
         // channeller's ring
         if (
-            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
+            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E) &&
             abils[abilityKey]['ability classification'] === 'channel'
         ) {
             crit_chance += 0.04;
-            crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
+            crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELLER_RING_STACKS]);
         }
 
         // (g)conc
@@ -134,6 +162,11 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: string): nu
         if ([ABILITIES.SMOKE_TENDRILS_1, ABILITIES.SMOKE_TENDRILS_2, ABILITIES.SMOKE_TENDRILS_3, ABILITIES.SMOKE_TENDRILS_4].includes(abilityKey)) {
             crit_chance = 1;
         }
+
+        // Magma tempest
+        if (abilityKey === ABILITIES.MAGMA_TEMPEST) {
+            crit_chance = 0;
+        }
     }
 
     if (abils[abilityKey]['main style'] === 'melee') {
@@ -146,10 +179,12 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: string): nu
         }
 
         // (g)fury
-        if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.REGULAR) {
+        if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.REGULAR && abilityKey !== ABILITIES.FURY) {
             crit_chance += 0.25;
-        } else if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.GREATER) {
+            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.NONE; // TODO check this is the correct place - should only work on one hitsplat
+        } else if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.GREATER && abilityKey !== ABILITIES.GREATER_FURY) {
             crit_chance = 1;
+            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.NONE; // TODO check this is the correct place - should only work on one hitsplat
         }
 
         // no fear (pof meteor strike)
@@ -183,10 +218,10 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: string): nu
         }
 
         // dracolich
-        if (settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES.REGULAR) {
-            crit_chance += 0.2;
-        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER) {
+        if (settings[SETTINGS.GREATER_DRACOLICH_INFUSION] === true) {
             crit_chance += 0.4;
+        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === true) {
+            crit_chance += 0.2;
         }
 
         // deathspore arrows
@@ -204,11 +239,6 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: string): nu
         settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN_CRIT
     ) {
         crit_chance = 1;
-    }
-
-    // equilibrium aura
-    if (settings[SETTINGS.AURA] === SETTINGS.AURA_VALUES.EQUILIBRIUM) {
-        crit_chance = 0;
     }
 
     return Math.min(1, crit_chance);
