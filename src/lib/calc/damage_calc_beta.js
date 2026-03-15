@@ -157,7 +157,6 @@ function calc_strength_bonus(settings) {
 }
 
 function calc_level_damage(settings) {
-    console.log(settings['ability'].label)
     let style = abils[settings['ability']]['main style'];
     if (abils[settings['ability']]['main style'] === 'melee') {
         style = 'strength'

@@ -277,162 +277,162 @@
     });
         
 
-    function debugPreset() {
-        const armour = [
-            SETTINGS.RANGED_HELMET,
-            SETTINGS.RANGED_BODY,
-            SETTINGS.RANGED_LEGS,
-            SETTINGS.RANGED_GLOVES,
-            SETTINGS.RANGED_BOOTS,
-            SETTINGS.MAGIC_HELMET,
-            SETTINGS.MAGIC_BODY,
-            SETTINGS.MAGIC_LEGS,
-            SETTINGS.MAGIC_GLOVES,
-            SETTINGS.MAGIC_BOOTS,
-            SETTINGS.MELEE_HELMET,
-            SETTINGS.MELEE_BODY,
-            SETTINGS.MELEE_LEGS,
-            SETTINGS.MELEE_GLOVES,
-            SETTINGS.MELEE_BOOTS,
-            SETTINGS.NECKLACE,
-            SETTINGS.CAPE,
-            SETTINGS.RING,
-            SETTINGS.POCKET,
-            SETTINGS.AURA,
-            SETTINGS.FAMILIAR,
-        ]
-        armour.forEach(armour => {
-            settings[armour]['value'] = 'none';
-        });
-        settings[SETTINGS.MAGIC_TH]['value'] = SETTINGS.MAGIC_TH_VALUES.CUSTOM;
-        settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 90;
-        settings[SETTINGS.MAGIC_PRAYER]['value'] = SETTINGS.MAGIC_PRAYER_VALUES.NONE;
-        settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.DW;
+    // function debugPreset() {
+    //     const armour = [
+    //         SETTINGS.RANGED_HELMET,
+    //         SETTINGS.RANGED_BODY,
+    //         SETTINGS.RANGED_LEGS,
+    //         SETTINGS.RANGED_GLOVES,
+    //         SETTINGS.RANGED_BOOTS,
+    //         SETTINGS.MAGIC_HELMET,
+    //         SETTINGS.MAGIC_BODY,
+    //         SETTINGS.MAGIC_LEGS,
+    //         SETTINGS.MAGIC_GLOVES,
+    //         SETTINGS.MAGIC_BOOTS,
+    //         SETTINGS.MELEE_HELMET,
+    //         SETTINGS.MELEE_BODY,
+    //         SETTINGS.MELEE_LEGS,
+    //         SETTINGS.MELEE_GLOVES,
+    //         SETTINGS.MELEE_BOOTS,
+    //         SETTINGS.NECKLACE,
+    //         SETTINGS.CAPE,
+    //         SETTINGS.RING,
+    //         SETTINGS.POCKET,
+    //         SETTINGS.AURA,
+    //         SETTINGS.FAMILIAR,
+    //     ]
+    //     armour.forEach(armour => {
+    //         settings[armour]['value'] = 'none';
+    //     });
+    //     settings[SETTINGS.MAGIC_TH]['value'] = SETTINGS.MAGIC_TH_VALUES.CUSTOM;
+    //     settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 90;
+    //     settings[SETTINGS.MAGIC_PRAYER]['value'] = SETTINGS.MAGIC_PRAYER_VALUES.NONE;
+    //     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.DW;
 
-        settings[SETTINGS.LVL20ARMOUR]['value'] = false;
-        settings[SETTINGS.BITING]['value'] = 0;
-        settings[SETTINGS.ERUPTIVE]['value'] = 0;
-        settings[SETTINGS.PRECISE]['value'] = 0;
-        settings[SETTINGS.AFTERSHOCK]['value'] = 0;
-        settings[SETTINGS.CAROMING]['value'] = 0;
+    //     settings[SETTINGS.LVL20ARMOUR]['value'] = false;
+    //     settings[SETTINGS.BITING]['value'] = 0;
+    //     settings[SETTINGS.ERUPTIVE]['value'] = 0;
+    //     settings[SETTINGS.PRECISE]['value'] = 0;
+    //     settings[SETTINGS.AFTERSHOCK]['value'] = 0;
+    //     settings[SETTINGS.CAROMING]['value'] = 0;
         
         
-        settings[SETTINGS.VULN]['value'] = SETTINGS.VULN_VALUES.NONE;
+    //     settings[SETTINGS.VULN]['value'] = SETTINGS.VULN_VALUES.NONE;
 
-        settings[SETTINGS.MAGIC_LEVEL]['value'] = 99;
-        settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
-        settings[SETTINGS.STRENGTH_LEVEL]['value'] = 99;
-        settings[SETTINGS.REAPER_CREW]['value'] = false;
-        settings[SETTINGS.RANGED_PRAYER]['value'] = SETTINGS.RANGED_PRAYER_VALUES.NONE;
-        settings[SETTINGS.MELEE_PRAYER]['value'] = SETTINGS.MELEE_PRAYER_VALUES.NONE;
-        settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-        settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+    //     settings[SETTINGS.MAGIC_LEVEL]['value'] = 99;
+    //     settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
+    //     settings[SETTINGS.STRENGTH_LEVEL]['value'] = 99;
+    //     settings[SETTINGS.REAPER_CREW]['value'] = false;
+    //     settings[SETTINGS.RANGED_PRAYER]['value'] = SETTINGS.RANGED_PRAYER_VALUES.NONE;
+    //     settings[SETTINGS.MELEE_PRAYER]['value'] = SETTINGS.MELEE_PRAYER_VALUES.NONE;
+    //     settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
+    //     settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
 
-        settings[SETTINGS.INNATE_MASTERY]['value'] = true;
-        settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MIN_NO_CRIT;
-        settings[SETTINGS.KALG_SPEC]['value'] = false;
-        settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.CUSTOM;
+    //     settings[SETTINGS.INNATE_MASTERY]['value'] = true;
+    //     settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MIN_NO_CRIT;
+    //     settings[SETTINGS.KALG_SPEC]['value'] = false;
+    //     settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.CUSTOM;
 
-        settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
-        settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 80;
-        settings[SETTINGS.WEAPON_TYPE_MELEE]['value'] = SETTINGS.WEAPON_VALUES.TH;
-    }
+    //     settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
+    //     settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 80;
+    //     settings[SETTINGS.WEAPON_TYPE_MELEE]['value'] = SETTINGS.WEAPON_VALUES.TH;
+    // }
 
-    function debugPreset2() {
-        const armour = [
-            SETTINGS.RANGED_HELMET,
-            SETTINGS.RANGED_BODY,
-            SETTINGS.RANGED_LEGS,
-            SETTINGS.RANGED_GLOVES,
-            SETTINGS.RANGED_BOOTS,
-            SETTINGS.MAGIC_HELMET,
-            SETTINGS.MAGIC_BODY,
-            SETTINGS.MAGIC_LEGS,
-            SETTINGS.MAGIC_GLOVES,
-            SETTINGS.MAGIC_BOOTS,
-            SETTINGS.MELEE_HELMET,
-            SETTINGS.MELEE_BODY,
-            SETTINGS.MELEE_LEGS,
-            SETTINGS.MELEE_GLOVES,
-            SETTINGS.MELEE_BOOTS,
-            SETTINGS.NECKLACE,
-            SETTINGS.CAPE,
-            SETTINGS.RING,
-            SETTINGS.POCKET,
-            SETTINGS.AURA,
-            SETTINGS.FAMILIAR,
-        ]
-        armour.forEach(armour => {
-            settings[armour]['value'] = 'none';
-        });
-        settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
-        settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 85;
-        settings[SETTINGS.MELEE_PRAYER]['value'] = SETTINGS.MELEE_PRAYER_VALUES.NONE;
-        settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH;
+    // function debugPreset2() {
+    //     const armour = [
+    //         SETTINGS.RANGED_HELMET,
+    //         SETTINGS.RANGED_BODY,
+    //         SETTINGS.RANGED_LEGS,
+    //         SETTINGS.RANGED_GLOVES,
+    //         SETTINGS.RANGED_BOOTS,
+    //         SETTINGS.MAGIC_HELMET,
+    //         SETTINGS.MAGIC_BODY,
+    //         SETTINGS.MAGIC_LEGS,
+    //         SETTINGS.MAGIC_GLOVES,
+    //         SETTINGS.MAGIC_BOOTS,
+    //         SETTINGS.MELEE_HELMET,
+    //         SETTINGS.MELEE_BODY,
+    //         SETTINGS.MELEE_LEGS,
+    //         SETTINGS.MELEE_GLOVES,
+    //         SETTINGS.MELEE_BOOTS,
+    //         SETTINGS.NECKLACE,
+    //         SETTINGS.CAPE,
+    //         SETTINGS.RING,
+    //         SETTINGS.POCKET,
+    //         SETTINGS.AURA,
+    //         SETTINGS.FAMILIAR,
+    //     ]
+    //     armour.forEach(armour => {
+    //         settings[armour]['value'] = 'none';
+    //     });
+    //     settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
+    //     settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 85;
+    //     settings[SETTINGS.MELEE_PRAYER]['value'] = SETTINGS.MELEE_PRAYER_VALUES.NONE;
+    //     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH;
 
-        settings[SETTINGS.LVL20ARMOUR]['value'] = true;
-        settings[SETTINGS.BITING]['value'] = 4;
-        settings[SETTINGS.ERUPTIVE]['value'] = 0;
-        settings[SETTINGS.PRECISE]['value'] = 0;
-        settings[SETTINGS.AFTERSHOCK]['value'] = 0;
-        settings[SETTINGS.CAROMING]['value'] = 0;
+    //     settings[SETTINGS.LVL20ARMOUR]['value'] = true;
+    //     settings[SETTINGS.BITING]['value'] = 4;
+    //     settings[SETTINGS.ERUPTIVE]['value'] = 0;
+    //     settings[SETTINGS.PRECISE]['value'] = 0;
+    //     settings[SETTINGS.AFTERSHOCK]['value'] = 0;
+    //     settings[SETTINGS.CAROMING]['value'] = 0;
         
         
-        settings[SETTINGS.VULN]['value'] = SETTINGS.VULN_VALUES.NONE;
+    //     settings[SETTINGS.VULN]['value'] = SETTINGS.VULN_VALUES.NONE;
 
-        settings[SETTINGS.MAGIC_LEVEL]['value'] = 99;
-        settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
-        settings[SETTINGS.STRENGTH_LEVEL]['value'] = 99;
-        settings[SETTINGS.REAPER_CREW]['value'] = false;
-        settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-        settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+    //     settings[SETTINGS.MAGIC_LEVEL]['value'] = 99;
+    //     settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
+    //     settings[SETTINGS.STRENGTH_LEVEL]['value'] = 99;
+    //     settings[SETTINGS.REAPER_CREW]['value'] = false;
+    //     settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
+    //     settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
 
-        settings[SETTINGS.INNATE_MASTERY]['value'] = false;
-        settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MEAN;
-        settings[SETTINGS.KALG_SPEC]['value'] = false;
+    //     settings[SETTINGS.INNATE_MASTERY]['value'] = false;
+    //     settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MEAN;
+    //     settings[SETTINGS.KALG_SPEC]['value'] = false;
 
-        settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
-        settings[SETTINGS.WEAPON_TYPE_MELEE]['value'] = SETTINGS.WEAPON_VALUES.TH;
-        settings[SETTINGS.NATURAL_INSTINCT]['value'] = true;
+    //     settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
+    //     settings[SETTINGS.WEAPON_TYPE_MELEE]['value'] = SETTINGS.WEAPON_VALUES.TH;
+    //     settings[SETTINGS.NATURAL_INSTINCT]['value'] = true;
 
-        // settings[SETTINGS.CHAOS_ROAR]['value'] = true;
-    }
+    //     // settings[SETTINGS.CHAOS_ROAR]['value'] = true;
+    // }
 
-    function testPreset() {
-        settings[SETTINGS.RANGED_GLOVES]['value'] = SETTINGS.RANGED_GLOVES_VALUES.CINDERS;
-        settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
-        settings[SETTINGS.POCKET]['value'] = SETTINGS.POCKET_VALUES.JAS;
+    // function testPreset() {
+    //     settings[SETTINGS.RANGED_GLOVES]['value'] = SETTINGS.RANGED_GLOVES_VALUES.CINDERS;
+    //     settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
+    //     settings[SETTINGS.POCKET]['value'] = SETTINGS.POCKET_VALUES.JAS;
 
-        settings[SETTINGS.LVL20ARMOUR]['value'] = false;
-        settings[SETTINGS.BITING]['value'] = 3;
-        settings[SETTINGS.ERUPTIVE]['value'] = 0;
+    //     settings[SETTINGS.LVL20ARMOUR]['value'] = false;
+    //     settings[SETTINGS.BITING]['value'] = 3;
+    //     settings[SETTINGS.ERUPTIVE]['value'] = 0;
 
-        //settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
-        settings[SETTINGS.REAPER_CREW]['value'] = false;
-        settings[SETTINGS.RANGED_PRAYER]['value'] = SETTINGS.RANGED_PRAYER_VALUES.ANGUISH;
-        settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-        settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
-    }
+    //     //settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
+    //     settings[SETTINGS.REAPER_CREW]['value'] = false;
+    //     settings[SETTINGS.RANGED_PRAYER]['value'] = SETTINGS.RANGED_PRAYER_VALUES.ANGUISH;
+    //     settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
+    //     settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+    // }
 
-    function testPresetR() {
-        settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
+    // function testPresetR() {
+    //     settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
 
-        //settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
-        settings[SETTINGS.REAPER_CREW]['value'] = false;
-        settings[SETTINGS.RING]['value'] = SETTINGS.RING_VALUES.STALKER_E;
-        settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
-    }
-    function testPreset2() {
-        settings[SETTINGS.MAGIC_HELMET]['value'] = SETTINGS.MAGIC_HELMET_VALUES.TECTONIC;
-        settings[SETTINGS.MAGIC_BODY]['value'] = SETTINGS.MAGIC_BODY_VALUES.TECTONIC;
-        settings[SETTINGS.MAGIC_LEGS]['value'] = SETTINGS.MAGIC_LEGS_VALUES.TECTONIC;
-        settings[SETTINGS.MAGIC_GLOVES]['value'] = SETTINGS.MAGIC_GLOVES_VALUES.KWW;
-        settings[SETTINGS.MAGIC_BOOTS]['value'] = SETTINGS.MAGIC_BOOTS_VALUES.BLAST;
+    //     //settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
+    //     settings[SETTINGS.REAPER_CREW]['value'] = false;
+    //     settings[SETTINGS.RING]['value'] = SETTINGS.RING_VALUES.STALKER_E;
+    //     settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+    // }
+    // function testPreset2() {
+    //     settings[SETTINGS.MAGIC_HELMET]['value'] = SETTINGS.MAGIC_HELMET_VALUES.TECTONIC;
+    //     settings[SETTINGS.MAGIC_BODY]['value'] = SETTINGS.MAGIC_BODY_VALUES.TECTONIC;
+    //     settings[SETTINGS.MAGIC_LEGS]['value'] = SETTINGS.MAGIC_LEGS_VALUES.TECTONIC;
+    //     settings[SETTINGS.MAGIC_GLOVES]['value'] = SETTINGS.MAGIC_GLOVES_VALUES.KWW;
+    //     settings[SETTINGS.MAGIC_BOOTS]['value'] = SETTINGS.MAGIC_BOOTS_VALUES.BLAST;
 
-        settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
-        settings[SETTINGS.REAPER_CREW]['value'] = false;
-        settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
-    }
+    //     settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
+    //     settings[SETTINGS.REAPER_CREW]['value'] = false;
+    //     settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+    // }
     // Armour presets per combat style
     const ARMOUR_PRESETS = {
         [SettingsCombatStyles.RANGED]: {
@@ -1052,6 +1052,13 @@
                                     <img src={gearIcon(activeWeaponKey, '/armour_icons/Main_hand_slot.webp', styleFolder[styleTab])} alt="Weapon" class="w-7 h-7"
                                         onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Main_hand_slot.webp'; }}
                                     />
+                                    {#if gearBadge(activeWeaponKey)}
+                                        {#if gearBadge(activeWeaponKey).img}
+                                            <img src={gearBadge(activeWeaponKey).img} alt="" class="gear-badge-img" />
+                                        {:else}
+                                            <span class="stack-count">{gearBadge(activeWeaponKey).text}</span>
+                                        {/if}
+                                    {/if}
                                 </button>
                                 {#if openDropdown === 'weapon_combined'}
                                     <div class="icon-dropdown" style="min-width: 180px;">
@@ -1097,6 +1104,13 @@
                                         <img src={gearIcon(ws.oh, '/armour_icons/Off-hand_slot.webp', styleFolder[styleTab])} alt="Off-hand" class="w-7 h-7"
                                             onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Off-hand_slot.webp'; }}
                                         />
+                                        {#if gearBadge(ws.oh)}
+                                            {#if gearBadge(ws.oh).img}
+                                                <img src={gearBadge(ws.oh).img} alt="" class="gear-badge-img" />
+                                            {:else}
+                                                <span class="stack-count">{gearBadge(ws.oh).text}</span>
+                                            {/if}
+                                        {/if}
                                     </button>
                                     {#if openDropdown === ws.oh}
                                         <div class="icon-dropdown" style="min-width: 160px;">
@@ -1334,6 +1348,22 @@
                                     {/if}
                                     {#if settings[SETTINGS.FAMILIAR]?.value && settings[SETTINGS.FAMILIAR].value !== 'none'}
                                         <p class="text-amber-400">Familiar hit chance: {settings[SETTINGS.FAMILIAR_ACCURACY]?.value ?? '?'}%</p>
+                                    {/if}
+                                    {#if baseBoss?.phases?.some(p => p.attackPattern)}
+                                        <div class="flex items-center gap-2 mt-2">
+                                            <label class="text-xs text-gray-400 whitespace-nowrap">Pattern start tick:</label>
+                                            <input type="number"
+                                                min="0"
+                                                step="1"
+                                                bind:value={settings[SETTINGS.BOSS_PATTERN_START].value}
+                                                class="w-16 text-xs text-center bg-gray-800 border border-gray-600 rounded px-1 py-0.5 text-white"
+                                            />
+                                        </div>
+                                        {#each baseBoss.phases as phase, i}
+                                            {#if phase.attackPattern}
+                                                <p class="text-purple-400 text-xs">P{i + 1}: {phase.attackPattern.cycle.map(a => a.label ?? a.name).join(' → ')}</p>
+                                            {/if}
+                                        {/each}
                                     {/if}
                                 </div>
                             {/if}

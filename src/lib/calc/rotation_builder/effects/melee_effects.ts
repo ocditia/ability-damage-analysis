@@ -35,13 +35,13 @@ function applyBoostedADEffects(
         applied = true;
     }
 
-    // Chaos roar (+755 boosted AD for next ability)
+    // Chaos roar (1.75x boosted AD for next ability)
     if (
         settings[SETTINGS.CHAOS_ROAR] === true &&
         abilityKey !== ABILITIES.CHAOS_ROAR &&
         abils[abilityKey]?.['damage potential effects'] === true
     ) {
-        distribution['boosted AD'] = distribution['boosted AD'] + 755;
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] / 100 * 175);
         applied = true;
         cleanup = () => {
             settings[SETTINGS.CHAOS_ROAR] = false;

@@ -802,6 +802,8 @@ const SETTINGS = {
     //SPLIT_SOUL_ECB: 'split soul ecb',
     BLACKHOLE: 'blackhole',
     SEARING_WINDS: 'searing winds',
+    VESTMENTS_REGEN: 'vestments regen',
+    METEOR_STRIKE_BUFF: 'meteor strike buff',
     SHADOW_IMBUED: 'shadow imbued',
     DEATHMARK: 'deathmark',
     ANIMA_CHARGED: 'anima charged',

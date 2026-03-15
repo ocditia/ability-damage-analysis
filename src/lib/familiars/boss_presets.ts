@@ -24,6 +24,8 @@ export interface BossPhase {
 	heal?: number;
 	/** Stat overrides that apply from this phase onwards */
 	stats?: PhaseStats;
+	/** Attack pattern that plays during this phase (repeating cycle) */
+	attackPattern?: BossAttackPattern;
 }
 
 /** Configuration for bosses with enrage scaling */
@@ -33,6 +35,30 @@ export interface EnrageConfig {
 	max: number;
 	default: number;
 	step?: number;       // defaults to 1
+}
+
+/** A single boss attack in a repeating pattern */
+export interface BossAttack {
+	name: string;
+	type: 'auto' | 'special' | 'mechanic';
+	/** How many ticks this attack occupies */
+	ticks: number;
+	/** Number of consecutive attacks of this type (e.g. 4 autos) */
+	count?: number;
+	/** Combat style of the attack */
+	style?: string;
+	/** Alternative attacks that could happen in this slot */
+	variants?: string[];
+	/** Short label for display (defaults to first 3 chars of name) */
+	label?: string;
+	/** Color for display */
+	color?: string;
+}
+
+/** Attack pattern for a boss phase */
+export interface BossAttackPattern {
+	/** The repeating cycle of attacks */
+	cycle: BossAttack[];
 }
 
 export interface BossPreset {
@@ -62,19 +88,18 @@ const araxxi: BossPreset = {
 	affinities: { weakness: 0.55, melee: 0.6, ranged: 0.55, magic: 0.45 },
 	taggable: false,
 	curseImmune: true,
-	enrage: { label: 'Enrage %', min: 0, max: 300, default: 0, step: 5 },
 
-	health: 700000,
+	health: 300000,
 	phases: [
+		{ hp: 100000, pause: 15 },
 		{ hp: 200000, pause: 15 },
-		{ hp: 400000, pause: 15 },
-		{ hp: 600000, pause: 15, stats: {
+		{ hp: 300000, pause: 15, stats: {
 			name: 'Araxxi',
 			defenceLevel: 80,
 			armour: 80,
 			affinities: { weakness: 0.55, melee: 0.6, ranged: 0.55, magic: 0.45 }
 		}},
-		{ hp: 700000 } // Kill
+		{ hp: 400000 } // Kill
 	]
 };
 
@@ -87,17 +112,16 @@ const araxxorMagic: BossPreset = {
 	affinities: { weakness: 0.55, melee: 0.5, ranged: 0.55, magic: 0.45 },
 	taggable: false,
 	curseImmune: true,
-	enrage: { label: 'Enrage %', min: 0, max: 300, default: 0, step: 5 },
 
-	health: 700000,
+	health: 300000,
 	phases: [
+		{ hp: 100000, pause: 15 },
 		{ hp: 200000, pause: 15 },
-		{ hp: 400000, pause: 15 },
-		{ hp: 600000, pause: 15, stats: {
+		{ hp: 300000, pause: 15, stats: {
 			name: 'Araxxi', defenceLevel: 80, armour: 80,
 			affinities: { weakness: 0.55, melee: 0.6, ranged: 0.55, magic: 0.45 }
 		}},
-		{ hp: 700000 }
+		{ hp: 400000 }
 	]
 };
 
@@ -110,17 +134,16 @@ const araxxorMelee: BossPreset = {
 	affinities: { weakness: 0.55, melee: 0.5, ranged: 0.4, magic: 0.55 },
 	taggable: false,
 	curseImmune: true,
-	enrage: { label: 'Enrage %', min: 0, max: 300, default: 0, step: 5 },
 
-	health: 700000,
+	health: 300000,
 	phases: [
+		{ hp: 100000, pause: 15 },
 		{ hp: 200000, pause: 15 },
-		{ hp: 400000, pause: 15 },
-		{ hp: 600000, pause: 15, stats: {
+		{ hp: 300000, pause: 15, stats: {
 			name: 'Araxxi', defenceLevel: 80, armour: 80,
 			affinities: { weakness: 0.55, melee: 0.6, ranged: 0.55, magic: 0.45 }
 		}},
-		{ hp: 700000 }
+		{ hp: 400000 }
 	]
 };
 
@@ -133,17 +156,16 @@ const araxxorRanged: BossPreset = {
 	affinities: { weakness: 0.6, melee: 0.6, ranged: 0.45, magic: 0.4 },
 	taggable: false,
 	curseImmune: true,
-	enrage: { label: 'Enrage %', min: 0, max: 300, default: 0, step: 5 },
 
-	health: 700000,
+	health: 300000,
 	phases: [
+		{ hp: 100000, pause: 15 },
 		{ hp: 200000, pause: 15 },
-		{ hp: 400000, pause: 15 },
-		{ hp: 600000, pause: 15, stats: {
+		{ hp: 300000, pause: 15, stats: {
 			name: 'Araxxi', defenceLevel: 80, armour: 80,
 			affinities: { weakness: 0.55, melee: 0.6, ranged: 0.55, magic: 0.45 }
 		}},
-		{ hp: 700000 }
+		{ hp: 400000 }
 	]
 };
 
@@ -192,7 +214,8 @@ const beastmasterDurzag: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+	health: 1500000
 };
 
 const beastmasterCormes: BossPreset = {
@@ -203,7 +226,8 @@ const beastmasterCormes: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.9, melee: 0.45, ranged: 0.65, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+	health: 500000
 };
 
 const beastmasterKrar: BossPreset = {
@@ -214,7 +238,8 @@ const beastmasterKrar: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.9, melee: 0.55, ranged: 0.45, magic: 0.65 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+	health: 700000
 };
 
 const beastmasterTuz: BossPreset = {
@@ -225,7 +250,8 @@ const beastmasterTuz: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.9, melee: 0.45, ranged: 0.65, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+	health: 700000
 };
 
 // Misc Bosses
@@ -249,7 +275,9 @@ const commanderZilyana: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 60000
 };
 
 const commanderZilyanaHM: BossPreset = {
@@ -260,7 +288,9 @@ const commanderZilyanaHM: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.75, melee: 0.45, ranged: 0.4, magic: 0.5 },
 	taggable: true,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 100000
 };
 
 const corporealBeast: BossPreset = {
@@ -331,7 +361,9 @@ const ed1SanctumGuardian: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 450000
 };
 
 const ed1Masuta: BossPreset = {
@@ -342,7 +374,9 @@ const ed1Masuta: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 550000
 };
 
 const ed1MasutaAir: BossPreset = {
@@ -364,7 +398,9 @@ const ed1Seiryu: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 7500000
 };
 
 const ed1BlackCrystal: BossPreset = {
@@ -387,7 +423,9 @@ const ed2Astellarn: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 250000
 };
 
 const ed2VerakLith: BossPreset = {
@@ -398,7 +436,9 @@ const ed2VerakLith: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 600000
 };
 
 const ed2BlackStoneDragon: BossPreset = {
@@ -409,7 +449,9 @@ const ed2BlackStoneDragon: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 650000
 };
 
 const ed2BlackHand: BossPreset = {
@@ -432,7 +474,9 @@ const ed3CrassianLeviathan: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 380000
 };
 
 const ed3Taraket: BossPreset = {
@@ -443,7 +487,9 @@ const ed3Taraket: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 400000
 };
 
 const ed3Ambassador: BossPreset = {
@@ -454,7 +500,45 @@ const ed3Ambassador: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 1000000,
+	phases: [
+		// Phase 1: 1,000,000 → 550,000 HP (450k damage)
+		// Pattern: mage/melee auto, 5 ranged autos, special, repeat
+		// Auto speed: 4 ticks. Specials interrupt autos, pattern resumes after.
+		{ hp: 450000, attackPattern: { cycle: [
+			{ name: 'Mage/Melee', type: 'auto', ticks: 4, count: 1, style: 'magic', label: 'M/M', color: '#3498db' },
+			{ name: 'Ranged', type: 'auto', ticks: 4, count: 5, style: 'ranged' },
+			{ name: 'Black Stone Flames', type: 'special', ticks: 8, label: 'Flames', color: '#8e44ad' },
+			{ name: 'Mage/Melee', type: 'auto', ticks: 4, count: 1, style: 'magic', label: 'M/M', color: '#3498db' },
+			{ name: 'Ranged', type: 'auto', ticks: 4, count: 5, style: 'ranged' },
+			{ name: 'Unstable Black Hole', type: 'special', ticks: 6, label: 'Hole', color: '#2c3e50' },
+			{ name: 'Mage/Melee', type: 'auto', ticks: 4, count: 1, style: 'magic', label: 'M/M', color: '#3498db' },
+			{ name: 'Ranged', type: 'auto', ticks: 4, count: 5, style: 'ranged' },
+			{ name: 'Black Stone Flames', type: 'special', ticks: 8, label: 'Flames', color: '#8e44ad' },
+			{ name: 'Mage/Melee', type: 'auto', ticks: 4, count: 1, style: 'magic', label: 'M/M', color: '#3498db' },
+			{ name: 'Ranged', type: 'auto', ticks: 4, count: 5, style: 'ranged' },
+			{ name: 'Tri Beam', type: 'mechanic', ticks: 80, label: 'Beam', color: '#e74c3c' }, // ~48 seconds, boss invulnerable
+			{ name: 'Pulse of Erebus', type: 'mechanic', ticks: 15, label: 'Pulse', color: '#c0392b' }, // per fragment absorbed
+		]}},
+		// Phase 2: 550,000 → 400,000 HP (150k damage)
+		// Crassian ritual keepers summoned. Same auto pattern, no new specials.
+		{ hp: 600000, attackPattern: { cycle: [
+			{ name: 'Mage/Melee', type: 'auto', ticks: 4, count: 1, style: 'magic', label: 'M/M', color: '#3498db' },
+			{ name: 'Ranged', type: 'auto', ticks: 4, count: 5, style: 'ranged' },
+		]}},
+		// Phase 3: 400,000 → 0 HP
+		// Seiryu heals players, kills keepers. Black hands circle heals boss ~30k.
+		// Every 10 autos: Shadow Onslaught targets a player.
+		{ hp: 1030000, heal: 30000, pause: 20, attackPattern: { cycle: [
+			{ name: 'Mage/Melee', type: 'auto', ticks: 4, count: 1, style: 'magic', label: 'M/M', color: '#3498db' },
+			{ name: 'Ranged', type: 'auto', ticks: 4, count: 5, style: 'ranged' },
+			{ name: 'Mage/Melee', type: 'auto', ticks: 4, count: 1, style: 'magic', label: 'M/M', color: '#3498db' },
+			{ name: 'Ranged', type: 'auto', ticks: 4, count: 3, style: 'ranged' },
+			{ name: 'Shadow Onslaught', type: 'special', ticks: 12, label: 'Onsl', color: '#1a1a2e' }, // 5 hits of magic damage
+		]}}
+	]
 };
 
 // Kalphite
@@ -489,7 +573,9 @@ const generalGraardor: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.75, melee: 0.5, ranged: 0.1, magic: 0.5 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 40000
 };
 
 const generalGraardorHM: BossPreset = {
@@ -500,7 +586,9 @@ const generalGraardorHM: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.5, melee: 0.6, ranged: 0.7, magic: 0.5 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 100000
 };
 
 const giantMole: BossPreset = {
@@ -523,7 +611,9 @@ const gregorovic: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.9, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 200000
 };
 
 const gregorovicCM: BossPreset = {
@@ -534,7 +624,9 @@ const gregorovicCM: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.9, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 200000
 };
 
 // Fight Kiln / Cauldron
@@ -580,7 +672,9 @@ const helwyr: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 200000
 };
 
 const helwyrCM: BossPreset = {
@@ -591,7 +685,9 @@ const helwyrCM: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 300000
 };
 
 // GWD1
@@ -603,7 +699,9 @@ const krilTsutsaroth: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.75, melee: 0.45, ranged: 0.4, magic: 0.5 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 55000
 };
 
 const krilTsutsarothHM: BossPreset = {
@@ -614,7 +712,9 @@ const krilTsutsarothHM: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.5, melee: 0.6, ranged: 0.7, magic: 0.8 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 100000
 };
 
 // Kalphite King
@@ -626,7 +726,9 @@ const kalphiteKingMagic: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.6, melee: 0.5, ranged: 0.4, magic: 0.3 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 260000
 };
 
 const kalphiteKingMelee: BossPreset = {
@@ -637,7 +739,9 @@ const kalphiteKingMelee: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.65, melee: 0.4, ranged: 0.3, magic: 0.5 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 260000
 };
 
 const kalphiteKingRanged: BossPreset = {
@@ -648,7 +752,9 @@ const kalphiteKingRanged: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.6, melee: 0.3, ranged: 0.5, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 260000
 };
 
 const kalphiteQueen1: BossPreset = {
@@ -710,7 +816,9 @@ const kerapacEcho: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.9, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 100000
 };
 
 const kingBlackDragon: BossPreset = {
@@ -770,7 +878,9 @@ const magister: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.9, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 200000
 };
 
 // Nex
@@ -852,7 +962,9 @@ const queenBlackDragon: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.5, melee: 0.5, ranged: 0.5, magic: 0.5 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 100000
 };
 // Raksha
 const raksha: BossPreset = {
@@ -867,7 +979,20 @@ const raksha: BossPreset = {
 
 	health: 800000,
 	phases: [
-		{ hp: 200000 },
+		{ hp: 200000, attackPattern: { cycle: [
+			{ name: 'Auto', type: 'auto', ticks: 5, count: 4, style: 'melee' },
+			{ name: 'Tail sweep', type: 'special', ticks: 3, label: 'Tail', color: '#e74c3c', variants: ['Tail sweep', 'Trampling charge'] },
+			{ name: 'Shadow anima', type: 'mechanic', ticks: 5, label: 'Anima', color: '#8e44ad' },
+			{ name: 'Auto', type: 'auto', ticks: 5, count: 4, style: 'melee' },
+			{ name: 'Shadow bomb', type: 'special', ticks: 6, label: 'Bomb', color: '#e67e22' },
+			{ name: 'Auto', type: 'auto', ticks: 5, count: 4, style: 'melee' },
+			{ name: 'Tail sweep', type: 'special', ticks: 3, label: 'Tail', color: '#e74c3c', variants: ['Tail sweep', 'Trampling charge'] },
+			{ name: 'Shadow anima', type: 'mechanic', ticks: 5, label: 'Anima', color: '#8e44ad' },
+			{ name: 'Auto', type: 'auto', ticks: 5, count: 4, style: 'melee' },
+			{ name: 'Shadow bomb', type: 'special', ticks: 6, label: 'Bomb', color: '#e67e22' },
+			{ name: 'Auto', type: 'auto', ticks: 5, count: 4, style: 'melee' },
+			{ name: 'Energy waves', type: 'mechanic', ticks: 8, label: 'Waves', color: '#2ecc71' },
+		]}},
 		{ hp: 400000 },
 		{ hp: 600000, heal: 200000, pause: 12 }, // heals from 200k to 400k
 		{ hp: 1000000 } // kill (600k + 400k total damage)
@@ -883,7 +1008,9 @@ const rexOrikalka: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.82, melee: 0.1, ranged: 0.1, magic: 0.64 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 190000
 };
 
 const rexPhentraken: BossPreset = {
@@ -894,7 +1021,9 @@ const rexPhentraken: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.82, melee: 0.1, ranged: 0.64, magic: 0.1 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 190000
 };
 
 const rexRathis: BossPreset = {
@@ -905,7 +1034,9 @@ const rexRathis: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.82, melee: 0.64, ranged: 0.1, magic: 0.1 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 190000
 };
 
 // Rise of the Six
@@ -917,7 +1048,9 @@ const rot6Ahrim: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 50000
 };
 
 const rot6Dharok: BossPreset = {
@@ -928,7 +1061,9 @@ const rot6Dharok: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 50000
 };
 
 const rot6Guthan: BossPreset = {
@@ -939,7 +1074,9 @@ const rot6Guthan: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 50000
 };
 
 const rot6Karil: BossPreset = {
@@ -961,7 +1098,9 @@ const rot6Torag: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 50000
 };
 
 const rot6Verac: BossPreset = {
@@ -972,7 +1111,9 @@ const rot6Verac: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 50000
 };
 
 // Solak
@@ -984,7 +1125,9 @@ const solak: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 2000000
 };
 
 const solakArmsLegs: BossPreset = {
@@ -1006,7 +1149,9 @@ const solakErethdor: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 500000
 };
 
 const solakRoots: BossPreset = {
@@ -1030,7 +1175,18 @@ const telos: BossPreset = {
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
 	curseImmune: false,
-	enrage: { label: 'Enrage %', min: 0, max: 4000, default: 100, step: 5 }
+	enrage: { label: 'Enrage %', min: 0, max: 4000, default: 100, step: 5 },
+	phases: [
+		{ hp: 450000, pause: 10, attackPattern: { cycle: [
+			{ name: 'Auto', type: 'auto', ticks: 4, count: 7, style: 'melee' },
+			{ name: 'Tendrils', type: 'special', ticks: 5, label: 'Tend', color: '#27ae60' },
+			{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+			{ name: 'Uppercut', type: 'special', ticks: 3, label: 'Upper', color: '#e74c3c' },
+			{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+			{ name: 'Hold Still', type: 'special', ticks: 6, label: 'Hold', color: '#e67e22' },
+			{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		]}},
+	]
 };
 
 const telosAnimaGolemP3: BossPreset = {
@@ -1076,7 +1232,9 @@ const twinFuriesAvaryss: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 250000
 };
 
 const twinFuriesNymora: BossPreset = {
@@ -1087,7 +1245,9 @@ const twinFuriesNymora: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 250000
 };
 
 const twinFuriesCMAvaryss: BossPreset = {
@@ -1098,7 +1258,9 @@ const twinFuriesCMAvaryss: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 350000
 };
 
 const twinFuriesCMNymora: BossPreset = {
@@ -1109,7 +1271,9 @@ const twinFuriesCMNymora: BossPreset = {
 	style: 'Range',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 350000
 };
 
 // TzKal-Zuk / TzTok-Jad
@@ -1161,7 +1325,9 @@ const vindictaP1: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.5, melee: 0.5, ranged: 0.5, magic: 0.5 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 200000
 };
 
 const vindictaP2: BossPreset = {
@@ -1172,7 +1338,9 @@ const vindictaP2: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.5, melee: 0.5, ranged: 0.5, magic: 0.5 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 200000
 };
 
 const vindictaCMP1: BossPreset = {
@@ -1183,7 +1351,9 @@ const vindictaCMP1: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.5, melee: 0.5, ranged: 0.5, magic: 0.5 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 300000
 };
 
 const vindictaCMP2: BossPreset = {
@@ -1194,7 +1364,9 @@ const vindictaCMP2: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.5, melee: 0.5, ranged: 0.5, magic: 0.5 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 300000
 };
 
 // Vorago
@@ -1284,7 +1456,9 @@ const yakamaru: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.55, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 250000
 };
 
 const yakamaruJellyfish: BossPreset = {
@@ -1362,7 +1536,9 @@ const zamorak: BossPreset = {
 	style: 'Magic',
 	affinities: { weakness: 0.9, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
-	curseImmune: false
+	curseImmune: false,
+
+	health: 300000
 };
 
 // --- Slayer Mobs ---
@@ -1982,25 +2158,6 @@ const magicTrainingDummyStronger: BossPreset = {
 
 type EnrageGenerator = (base: BossPreset, enrage: number) => BossPreset;
 
-function generateAraxxorEnrage(base: BossPreset, enrage: number): BossPreset {
-	// Araxxor: enrage 0-300%
-	// HP scales: base 100k per phase, +1k per enrage% (p1-p3 each 100k+enrage*1k, p4 araxxi 100k+enrage*1k)
-	// Defence doesn't scale, but damage taken increases (not modeled here as it's player-side)
-	const hpPerPhase = 100000 + enrage * 1000;
-	const totalHp = hpPerPhase * 4; // Approximate; p4 araxxi has different scaling but close enough
-	const result = structuredClone(base);
-	result.health = totalHp;
-	if (result.phases) {
-		result.phases = [
-			{ hp: hpPerPhase, pause: 15 },
-			{ hp: hpPerPhase * 2, pause: 15 },
-			{ hp: hpPerPhase * 3, pause: 15, stats: result.phases[2]?.stats ? { ...result.phases[2].stats } : undefined },
-			{ hp: totalHp }
-		];
-	}
-	return result;
-}
-
 function generateTelosEnrage(base: BossPreset, enrage: number): BossPreset {
 	// Telos: enrage 0-4000%
 	// HP scales significantly with enrage
@@ -2027,8 +2184,9 @@ function generateArchGlacorEnrage(base: BossPreset, enrage: number): BossPreset 
 	// HP and defence scale with enrage
 	const result = structuredClone(base);
 
-	// HP scaling: base ~200k, increases with enrage
-	result.health = 200000 + enrage * 1500;
+	// HP scaling: 370k base, +3700 per 5% enrage (i.e. +740 per 1%). No cap.
+	// At 4000% enrage: 370,000 + (4000/5)*3700 = 3,330,000
+	result.health = 370000 + Math.floor(enrage / 5) * 3700;
 
 	// Defence scales similarly to Telos
 	result.defenceLevel = Math.min(99, 75 + Math.floor(enrage / 25));
@@ -2039,10 +2197,6 @@ function generateArchGlacorEnrage(base: BossPreset, enrage: number): BossPreset 
 
 /** Map of boss keys to their enrage generator functions */
 const enrageGenerators: Record<string, EnrageGenerator> = {
-	'Araxxi': generateAraxxorEnrage,
-	'Araxxor (Magic)': generateAraxxorEnrage,
-	'Araxxor (Melee)': generateAraxxorEnrage,
-	'Araxxor (Ranged)': generateAraxxorEnrage,
 	'Arch-Glacor': generateArchGlacorEnrage,
 	'Telos': generateTelosEnrage,
 };

@@ -133,11 +133,6 @@ const abilities = {
         icon: '/ability_icons/melee/30x30/gmaul-bg.png',
         common: false
     },
-    [ABILITIES.IGNEOUS_CLEAVE]: {
-        title: 'Igneous cleave',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/ezk-bg.png'
-    },
     [ABILITIES.IGNEOUS_SHOWDOWN]: {
         title: 'Igneous showdown',
         calc: ability_damage_calculation,

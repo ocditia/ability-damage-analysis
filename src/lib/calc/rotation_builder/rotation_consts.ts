@@ -26,7 +26,9 @@ export const buffs = [
     SETTINGS.HAUNTED,
     SETTINGS.THREADS_OF_FATE,
     SETTINGS.INVOKE_DEATH,
-    SETTINGS.SPLIT_SOUL_NECRO
+    SETTINGS.SPLIT_SOUL_NECRO,
+    SETTINGS.METEOR_STRIKE_BUFF,
+    SETTINGS.VESTMENTS_REGEN,
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -178,6 +180,20 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#7C3AED'
+            },
+            [SETTINGS.METEOR_STRIKE_BUFF]: {
+                title: 'Meteor Strike',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#FF4500'
+            },
+            [SETTINGS.VESTMENTS_REGEN]: {
+                title: 'Vestments Regen',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#521c18'
             }
         }
     )

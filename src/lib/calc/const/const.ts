@@ -1923,6 +1923,23 @@ const armour: Record<string, ArmourPiece> = {
         slot: 'boots',
         style: 'magic'
     },
+    'am-zi': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 52,
+        'ranged strength': 0,
+        slot: 'necklace',
+        style: 'melee'
+    },
+    'am-hej': {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 52,
+        'ranged strength': 0,
+        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        slot: 'necklace',
+        style: 'melee'
+    },
     [SETTINGS.MELEE_AMMO_SLOT_VALUES.NODON_SPIKE_HARNESS]: {
         'necromancy strength': 0,
         'magic strength': 0,
@@ -2207,9 +2224,6 @@ export enum ABILITIES {
     DRACONIC_BLOW = 'draconic blow',
     DRACONIC_SLASH = 'draconic slash',
     SHOVE = 'shove',
-    IGNEOUS_CLEAVE_INITIAL = 'igneous cleave initial',
-    IGNEOUS_CLEAVE_BLEED = 'igneous bleed bleed',
-    IGNEOUS_CLEAVE = 'igneous cleave',
     IGNEOUS_SHOWDOWN_HIT = 'igneous showdown hit',
     IGNEOUS_SHOWDOWN_BONUS = 'igneous showdown bonus',
     IGNEOUS_SHOWDOWN = 'igneous showdown',
@@ -2719,8 +2733,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        adrenaline: 60,
         cooldown: 60},
     [ABILITIES.BALANCED_STRIKE]: {
         // ability name
@@ -3481,52 +3495,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee'
-    ,
+        'damage type': 'melee',
         cooldown: 0},
-    [ABILITIES.IGNEOUS_CLEAVE_INITIAL]: {
-        // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee',
-        cooldown: 7.2
-    },
-    [ABILITIES.IGNEOUS_CLEAVE_BLEED]: {
-        // ability name
-        'min hit': 0.6, // min % of abil expressed as a decimal
-        'var hit': 0.15,
-        'on-hit effects': false, // does the ability get on-hit effects
-        'crit effects': false, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee',
-        cooldown: 7.2
-    },
-    [ABILITIES.IGNEOUS_CLEAVE]: {
-        // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee',
-        hits: {
-            1: [ABILITIES.IGNEOUS_CLEAVE_INITIAL, ABILITIES.IGNEOUS_CLEAVE_BLEED]
-        },
-        hitTimings: [1, 1], // TODO fix
-        cooldown: 7.2
-    },
     [ABILITIES.IGNEOUS_SHOWDOWN_HIT]: {
         // ability name
         'min hit': 2.3, // min % of abil expressed as a decimal
