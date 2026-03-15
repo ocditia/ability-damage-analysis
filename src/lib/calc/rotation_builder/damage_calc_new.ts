@@ -357,7 +357,12 @@ function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string)
     const type = abils[abilityKey]['ability type'];
 
     if (type == 'basic') {
-        addAdrenaline(settings, settings[SETTINGS.FURY_OF_THE_SMALL] ? 10 : 9);
+        let basicAdren = settings[SETTINGS.FURY_OF_THE_SMALL] ? 10 : 9;
+        // Meteor Strike buff: melee basics generate 1.5x adrenaline
+        if (settings[SETTINGS.METEOR_STRIKE_BUFF] === true && abils[abilityKey]?.['main style'] === 'melee') {
+            basicAdren = Math.floor(basicAdren * 1.5);
+        }
+        addAdrenaline(settings, basicAdren);
         if (settings[SETTINGS.EXPECTED_ADRENALINE]) {
             addAdrenaline(settings, settings[SETTINGS.IMPATIENT] * 0.09 * 3);
         }

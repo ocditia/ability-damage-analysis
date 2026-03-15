@@ -1,6 +1,6 @@
 import { abils, ABILITIES } from '../const/const';
 import { style_specific_unification, calc_base_ad, apply_additional } from '../damage_calc_rb';
-import { get_hit_sequence } from './calculation_utils';
+import { get_hit_sequence, addAdrenaline } from './calculation_utils';
 import { calc_channelled_hit, handleBuffs, get_user_value, handle_edraco, getConjureDamageMultiplier } from './rotation_damage_helper';
 import { SETTINGS } from '../settings_rb';
 import { on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
@@ -1456,6 +1456,16 @@ function handleExtraActions(settings: any, timers: Record<string, number>, tick:
 }
 
 function handleTimers(timers: Record<string, number>, settings: any) {
+    // Vestments of Havoc: 0.5% adrenaline per tick while regen is active
+    if (settings[SETTINGS.VESTMENTS_REGEN] === true && timers[SETTINGS.VESTMENTS_REGEN] > 0) {
+        addAdrenaline(settings, 0.5);
+    }
+
+    // Meteor Strike buff: 4.5% adrenaline per tick while active
+    if (settings[SETTINGS.METEOR_STRIKE_BUFF] === true && timers[SETTINGS.METEOR_STRIKE_BUFF] > 0) {
+        addAdrenaline(settings, 4.5);
+    }
+
     if (Object.keys(timers).length > 0) {
         for (let key in timers) {
             timers[key] -= 1;

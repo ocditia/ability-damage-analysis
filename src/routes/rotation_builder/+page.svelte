@@ -27,7 +27,7 @@
     import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
     import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
-    import { getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
+    import { getBossPresetWithEnrage, type BossAttack, type BossAttackPattern } from '$lib/familiars/boss_presets';
 
 
     let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abilities eventually
@@ -50,6 +50,11 @@
 	const CELL_SIZE = 40;
 	const BASE_ROW_HEIGHT = 40;
 	const ROW_GAP = 20; // Constant gap between all rows
+
+	let bossName = $derived.by(() => {
+		const val = settingsStore.settings[SETTINGS.BOSS_PRESET]?.value;
+		return val && val !== 'none' ? val : 'ROTATION';
+	});
 
 	// Phase/kill markers derived from damage data + boss preset
 	let phaseMarkers = $derived(getPhaseMarkers());
@@ -139,7 +144,9 @@
 			const stackSpace = activeStacks.length * (stackFontSize + stackPadding);
 			// Additional padding when there's content below the slot
 			const contentPadding = (activeBuffs.length > 0 || activeStacks.length > 0) ? 8 : 0;
-			const height = BASE_ROW_HEIGHT + buffSpace + stackSpace + contentPadding + ROW_GAP;
+			// Boss attack pattern row
+			const patternSpace = hasAttackPattern ? PATTERN_ROW_HEIGHT + PATTERN_ROW_GAP : 0;
+			const height = BASE_ROW_HEIGHT + buffSpace + stackSpace + contentPadding + patternSpace + ROW_GAP;
 
 			newRowData.push({
 				startIndex,
@@ -190,6 +197,28 @@
 		return baseStackOffset + buffSpace + 3 + (stackFontSize + stackPadding) * localStackIdx;
 	}
 
+	// Calculate the vertical offset for the boss attack pattern row
+	function getPatternTopOffset(tickIndex: number): number {
+		const localBuffCount = getLocalBuffCount(tickIndex);
+		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowData = rowLayoutData[rowIndex];
+		const localStackCount = rowData ? rowData.activeStacks.length : 0;
+		const buffSpace = localBuffCount > 0 ? (buffLineHeight * 1.5) + (localBuffCount * buffLineHeight) : 0;
+		const stackSpace = localStackCount * (stackFontSize + stackPadding);
+		return baseStackOffset + buffSpace + stackSpace + 5;
+	}
+
+	// Get default color for a boss attack type
+	function getAttackColor(attack: BossAttack): string {
+		if (attack.color) return attack.color;
+		switch (attack.type) {
+			case 'auto': return '#4a5568';
+			case 'special': return '#e74c3c';
+			case 'mechanic': return '#8e44ad';
+			default: return '#4a5568';
+		}
+	}
+
 	// Get the effective boss preset accounting for enrage
 	function getEffectiveBoss() {
 		if (!settingsStore.initialized) return null;
@@ -202,6 +231,79 @@
 	// Get boss health from selected preset (if any)
 	function getBossHealth(): number | null {
 		return getEffectiveBoss()?.health ?? null;
+	}
+
+	// Boss attack pattern constants
+	const PATTERN_ROW_HEIGHT = 18;
+	const PATTERN_ROW_GAP = 2;
+
+	/** Flatten a boss attack cycle into an array of per-tick entries */
+	function flattenAttackCycle(pattern: BossAttackPattern): Array<{ attack: BossAttack; tickInAttack: number; totalTicks: number }> {
+		const flat: Array<{ attack: BossAttack; tickInAttack: number; totalTicks: number }> = [];
+		for (const attack of pattern.cycle) {
+			const count = attack.count ?? 1;
+			const totalTicks = attack.ticks * count;
+			for (let t = 0; t < totalTicks; t++) {
+				flat.push({ attack, tickInAttack: t, totalTicks });
+			}
+		}
+		return flat;
+	}
+
+	// Derived: flattened patterns per phase for current boss
+	let flattenedPatterns = $derived.by(() => {
+		const boss = getEffectiveBoss();
+		if (!boss?.phases?.length) return [];
+		return boss.phases.map(phase =>
+			phase.attackPattern ? flattenAttackCycle(phase.attackPattern) : []
+		);
+	});
+
+	// Derived: whether boss has any attack pattern
+	let hasAttackPattern = $derived(flattenedPatterns.some(f => f.length > 0));
+
+	/** Determine which phase index a tick falls in and how many ticks into that phase */
+	function getPhaseAtTick(tick: number): { phaseIndex: number; ticksIntoPhaseCycle: number } {
+		// Phase markers mark the END of a phase (transition points)
+		// Before first marker = phase 0, after marker[0] = phase 1, etc.
+		let phaseIndex = 0;
+		let phaseStartTick = settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? 0;
+
+		for (const marker of phaseMarkers) {
+			const resumeTick = (marker.pauseEnd ?? marker.tick) + 1;
+			if (tick >= resumeTick) {
+				phaseIndex++;
+				phaseStartTick = resumeTick;
+			} else {
+				break;
+			}
+		}
+
+		return { phaseIndex, ticksIntoPhaseCycle: tick - phaseStartTick };
+	}
+
+	/** Get the boss attack at a given ability bar tick, accounting for phase and pattern start offset */
+	function getBossAttackAtTick(tick: number): { attack: BossAttack; tickInAttack: number; totalTicks: number; isStart: boolean } | null {
+		if (!flattenedPatterns.length) return null;
+
+		const startTick = settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? 0;
+		if (tick < startTick) return null;
+
+		// During a pause, no boss attacks
+		if (pauseTickSet.has(tick)) return null;
+
+		const { phaseIndex, ticksIntoPhaseCycle } = getPhaseAtTick(tick);
+
+		// Use the pattern for this phase, or fall back to the last defined pattern
+		const patternIdx = Math.min(phaseIndex, flattenedPatterns.length - 1);
+		const flat = flattenedPatterns[patternIdx];
+		if (!flat?.length) return null;
+
+		if (ticksIntoPhaseCycle < 0) return null;
+
+		const idx = ticksIntoPhaseCycle % flat.length;
+		const entry = flat[idx];
+		return { ...entry, isStart: entry.tickInAttack % entry.attack.ticks === 0 };
 	}
 
 	// Build per-tick expected damage from distributionStats
@@ -622,6 +724,30 @@
 		transform: translateX(-70%) translateY(32px);
 	}
 
+	.boss-attack-cell {
+		position: absolute;
+		left: 0;
+		width: 100%;
+		height: 18px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		pointer-events: auto;
+		z-index: 2;
+		box-sizing: border-box;
+	}
+
+	.boss-attack-label {
+		font-size: 0.55rem;
+		color: white;
+		font-weight: bold;
+		padding-left: 2px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: clip;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+	}
+
 	.phase-marker {
 		position: absolute;
 		top: -2px;
@@ -788,7 +914,7 @@
 						</button>
 					{/if}
 					<div class="rotation-title-row">
-						<h1 class="rotation-header">Rotation</h1>
+						<h1 class="rotation-header">{bossName}</h1>
 						<button class="reset-btn" onclick={clearRotation} title="Reset rotation">Reset</button>
 						{#if rotationStore.totalDamage > 0 || rotationStore.poisonDamage > 0 || rotationStore.familiarDamage > 0 || rotationStore.dreadnipDamage > 0 || rotationStore.conjureDamage > 0}
 							<div class="damage-summary">
@@ -982,6 +1108,24 @@
                                         />
                                     {/if}
                                 {/each}
+                                {#if hasAttackPattern}
+                                    {@const patternEntry = getBossAttackAtTick(index)}
+                                    {#if patternEntry?.isStart}
+                                        {@const patternTop = getPatternTopOffset(index)}
+                                        {@const color = getAttackColor(patternEntry.attack)}
+                                        <div
+                                            class="boss-attack-cell"
+                                            style="
+                                                top: {patternTop}px;
+                                                background-color: {color};
+                                                opacity: {patternEntry.attack.type === 'auto' ? 0.6 : 0.85};
+                                            "
+                                            title="{patternEntry.attack.name}{patternEntry.attack.variants ? ` (or ${patternEntry.attack.variants[1]})` : ''}"
+                                        >
+                                            <span class="boss-attack-label">{patternEntry.attack.label ?? patternEntry.attack.name.slice(0, 4)}</span>
+                                        </div>
+                                    {/if}
+                                {/if}
                             </button>
                         {/each}
                     </div>

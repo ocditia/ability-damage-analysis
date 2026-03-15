@@ -129,7 +129,14 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             break;
         case ABILITIES.BERSERK:
             settings[SETTINGS.BERSERK] = true;
-            timers[SETTINGS.BERSERK] = 33;
+            // Vestments of Havoc: 3+ pieces extends Berserk by 10 ticks
+            const vestPieces = [
+                settings[SETTINGS.MELEE_HELMET] === SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
+                settings[SETTINGS.MELEE_BODY] === SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
+                settings[SETTINGS.MELEE_LEGS] === SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
+                settings[SETTINGS.MELEE_BOOTS] === SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
+            ].filter(Boolean).length;
+            timers[SETTINGS.BERSERK] = vestPieces >= 3 ? 43 : 33;
             break;
         // Buff Special Attacks
         case ABILITIES.BLACKHOLE:
@@ -167,8 +174,6 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
                 timers[SETTINGS.INSTABILITY] = 50;
                 break;
         // Crit Buff
-        case ABILITIES.INCENDIARY_SHOT:
-        case ABILITIES.METEOR_STRIKE:
         case ABILITIES.TSUNAMI:
             settings[SETTINGS.CRIT_BUFF] = true; 
             timers[SETTINGS.CRIT_BUFF] = 51;
@@ -241,8 +246,38 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.GREATER; 
             break;
         case ABILITIES.CHAOS_ROAR:
-            settings[SETTINGS.CHAOS_ROAR] = true; 
+            settings[SETTINGS.CHAOS_ROAR] = true;
             break;
+        case ABILITIES.METEOR_STRIKE:
+            settings[SETTINGS.METEOR_STRIKE_BUFF] = true;
+            timers[SETTINGS.METEOR_STRIKE_BUFF] = 50; // 30 seconds
+            break;
+    }
+
+    // Vestments of Havoc 2-piece: melee ultimate triggers adrenaline regen
+    if (
+        abils[abilityKey]?.['main style'] === 'melee' &&
+        abils[abilityKey]?.['ability type'] === 'ultimate'
+    ) {
+        const vestCount = [
+            settings[SETTINGS.MELEE_HELMET] === SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
+            settings[SETTINGS.MELEE_BODY] === SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
+            settings[SETTINGS.MELEE_LEGS] === SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
+            settings[SETTINGS.MELEE_BOOTS] === SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
+        ].filter(Boolean).length;
+
+        if (vestCount >= 2) {
+            if (settings[SETTINGS.VESTMENTS_REGEN] === true) {
+                // Already active: cancel regen, add 20% adrenaline instantly
+                settings[SETTINGS.VESTMENTS_REGEN] = false;
+                delete timers[SETTINGS.VESTMENTS_REGEN];
+                addAdrenaline(settings, 20);
+            } else {
+                // Activate regen: 0.5% per tick for 30 ticks (18 seconds)
+                settings[SETTINGS.VESTMENTS_REGEN] = true;
+                timers[SETTINGS.VESTMENTS_REGEN] = 30;
+            }
+        }
     }
 }
 
