@@ -138,6 +138,18 @@ export function calculatePvEBoost(ctx: EffectContext): number {
         boost = Math.floor(boost * 1.2);
     }
 
+    // Am-hej necklace (melee only: +floor(5% of Strength level) as % boost)
+    if (abils[abilityKey]?.['main style'] === 'melee' &&
+        settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.AM_HEJ) {
+        boost += Math.floor(0.05 * settings[SETTINGS.STRENGTH_LEVEL]) / 100;
+    }
+
+    // Dragon rider necklace (10% boost to Dragon Breath)
+    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.DRAGON_RIDER_NECKLACE &&
+        abilityKey === ABILITIES.DRAGON_BREATH) {
+        boost = Math.floor(boost * 1.1);
+    }
+
     // Swiftness of the Aviansie (EGWD Kree'arra buff)
     if (settings[SETTINGS.SWIFTNESS_OF_THE_AVIANSIE] === true) {
         boost = Math.floor(boost * 1.1);

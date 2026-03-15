@@ -389,11 +389,20 @@ const SETTINGS = {
         MOONSTONE: 'conjurers raising amulet',
         AOSOR: 'amulet of souls (or)',
         AOS: 'amulet of souls',
+        REAPEROR: 'reaper necklace (or)',
+        REAPER: 'reaper necklace',
         SALVEE: 'salve amulet (e)',
         SALVE: 'salve amulet',
         ZEALOTS: 'amulet of zealots',
         BERSERKER: 'berserker necklace',
         DESERT: 'desert amulet 4',
+        BLOOD_FURY: 'blood amulet of fury',
+        ARCANE_BLOOD: 'arcane blood necklace',
+        BRAWLER_BLOOD: "brawler's blood necklace",
+        FARSIGHT_BLOOD: 'farsight blood necklace',
+        AM_ZI: 'am-zi',
+        AM_HEJ: 'am-hej',
+        DRAGON_RIDER_NECKLACE: 'dragon rider necklace',
     },
     CAPE: 'cape',
     CAPE_VALUES: {
@@ -448,8 +457,8 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        STALKER: 'stalkers ring',
-        STALKER_E: 'stalkers ring+'
+        STALKER: "stalker's ring",
+        STALKER_E: "stalker's ring+"
     },
     MELEE_RING: 'melee ring',
     MELEE_RING_VALUES: {
@@ -459,8 +468,8 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        CHAMPION: 'champions ring',
-        CHAMPION_E: 'champions ring+'
+        CHAMPION: "champion's ring",
+        CHAMPION_E: "champion's ring+"
     },
     NECRO_RING: 'necro ring',
     NECRO_RING_VALUES: {
@@ -704,6 +713,7 @@ const SETTINGS = {
     SWORD_OF_EDICTS: 'Zamorak sword of edicts',
     BOSS_PRESET: 'boss preset',
     BOSS_ENRAGE: 'boss enrage',
+    BOSS_PATTERN_START: 'boss pattern start tick',
     GUARDIANS_TRIUMPH: 'Zamorak guardians triumph',
     BALANCE_OF_POWER: 'Zamorak balance of power',
     ZAMORAK_CHOKE_STACKS: 'zamorak choke stacks',
@@ -748,7 +758,6 @@ const SETTINGS = {
         REGULAR: 'regular',
         ENCHANTED: 'enchanted'
     },
-    NEEDLE_STRIKE: 'needle strike',
     GRAVITATE: 'gravitate',
     BLOOD_TITHE: 'blood tithe',
     GLACIAL_EMBRACE: 'glacial embrace',
@@ -781,13 +790,11 @@ const SETTINGS = {
     GREATER_DRACOLICH_INFUSION: 'greater dracolich infusion',
     INSTABILITY: 'instability',
     TIME_SINCE_ATTACK: 'time since attack',
-    INNATE_MASTERY: 'innate mastery',
     CHANNELLER_RING_STACKS: 'channellers ring stacks',
     NUMBER_OF_BLEEDS: 'number of bleeds',
     STRENGTH_CAPE: 'strength cape',
     GORAJAN_TRAILBLAZER: 'gorajan trailblazer',
     SUNSHINE: 'sunshine',
-    META: 'meta',
     DEATH_SWIFTNESS: 'death swiftness',
     SWIFTNESS_ACTIVE: 'swiftness',
     SPLIT_SOUL: 'split soul',
@@ -1595,13 +1602,20 @@ const settingsConfig = {
             { text: 'Moonstone amulet', value: SETTINGS.NECKLACE_VALUES.MOONSTONE },
             { text: 'AOS(or)', value: SETTINGS.NECKLACE_VALUES.AOSOR },
             { text: 'AOS', value: SETTINGS.NECKLACE_VALUES.AOS },
-            { text: 'Reaper(or)', value: SETTINGS.NECKLACE_VALUES.REAPEROR }, // TODO: fix missing reference for SETTINGS.REAPEROR and SETTINGS.REAPER
+            { text: 'Reaper(or)', value: SETTINGS.NECKLACE_VALUES.REAPEROR },
             { text: 'Reaper', value: SETTINGS.NECKLACE_VALUES.REAPER },
             { text: 'Salve (e)', value: SETTINGS.NECKLACE_VALUES.SALVEE },
             { text: 'Salve', value: SETTINGS.NECKLACE_VALUES.SALVE },
             { text: 'Zealots', value: SETTINGS.NECKLACE_VALUES.ZEALOTS },
             { text: 'Berserker', value: SETTINGS.NECKLACE_VALUES.BERSERKER },
             { text: 'Desert ammy 4', value: SETTINGS.NECKLACE_VALUES.DESERT },
+            { text: 'Blood fury', value: SETTINGS.NECKLACE_VALUES.BLOOD_FURY },
+            { text: 'Arcane blood', value: SETTINGS.NECKLACE_VALUES.ARCANE_BLOOD },
+            { text: "Brawler's blood", value: SETTINGS.NECKLACE_VALUES.BRAWLER_BLOOD },
+            { text: 'Farsight blood', value: SETTINGS.NECKLACE_VALUES.FARSIGHT_BLOOD },
+            { text: 'Am-zi', value: SETTINGS.NECKLACE_VALUES.AM_ZI },
+            { text: 'Am-hej', value: SETTINGS.NECKLACE_VALUES.AM_HEJ },
+            { text: 'Dragon rider', value: SETTINGS.NECKLACE_VALUES.DRAGON_RIDER_NECKLACE },
         ]
     },
     [SETTINGS.CAPE]: {
@@ -1714,7 +1728,7 @@ const settingsConfig = {
     },
     [SETTINGS.RANGED_POCKET]: {
         label: 'Pocket',
-        default: SETTINGS.POCKET_VALUES.GRIM,
+        default: SETTINGS.POCKET_VALUES.FUL,
         options: [
             { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
             { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
@@ -1744,7 +1758,7 @@ const settingsConfig = {
     },
     [SETTINGS.NECRO_POCKET]: {
         label: 'Pocket',
-        default: SETTINGS.POCKET_VALUES.GRIM,
+        default: SETTINGS.POCKET_VALUES.FUL,
         options: [
             { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
             { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
@@ -1935,7 +1949,8 @@ const settingsConfig = {
         default: SETTINGS.RANGED_OH_VALUES.CUSTOM,
         options: [
             { text: 'Custom', value: SETTINGS.RANGED_OH_VALUES.CUSTOM },
-            { text: 'Custom shield', value: SETTINGS.RANGED_OH_VALUES.CUSTOM_SHIELD }
+            { text: 'Custom shield', value: SETTINGS.RANGED_OH_VALUES.CUSTOM_SHIELD },
+            { text: 'Blightbound OH', value: SETTINGS.RANGED_OH_VALUES.BLIGHTBOUND }
         ]
     },
     [SETTINGS.MELEE_OH]: {
@@ -1960,7 +1975,7 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_TH]: {
         label: '2h',
-        default: SETTINGS.MAGIC_TH_VALUES.CUSTOM,
+        default: SETTINGS.MAGIC_TH_VALUES.FSOA_IM,
         options: [
             { text: 'Custom', value: SETTINGS.MAGIC_TH_VALUES.CUSTOM },
             { text: 'Inq', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF },
@@ -1971,18 +1986,18 @@ const settingsConfig = {
     },
     [SETTINGS.RANGED_TH]: {
         label: '2h',
-        default: SETTINGS.RANGED_TH_VALUES.BOLG,
+        default: SETTINGS.RANGED_TH_VALUES.BOLG_IM,
         options: [
             { text: 'Custom', value: SETTINGS.RANGED_TH_VALUES.CUSTOM },
             { text: 'Bow of the Last Guardian', value: SETTINGS.RANGED_TH_VALUES.BOLG },
-            { text: 'BotLG [IM]', value: SETTINGS.RANGED_TH_VALUES.BOLG_IM },
+            { text: 'BOLG [IM]', value: SETTINGS.RANGED_TH_VALUES.BOLG_IM },
             { text: 'Hex', value: SETTINGS.RANGED_TH_VALUES.HEX },
             { text: 'Hex+', value: SETTINGS.RANGED_TH_VALUES.HEX_E }
         ]
     },
     [SETTINGS.MELEE_TH]: {
         label: '2h',
-        default: SETTINGS.MELEE_TH_VALUES.MW_SPEAR,
+        default: SETTINGS.MELEE_TH_VALUES.EZK_IM,
         options: [
             { text: 'Custom', value: SETTINGS.MELEE_TH_VALUES.CUSTOM },
             { text: 'Terrasaur maul', value: SETTINGS.MELEE_TH_VALUES.T_MAUL },
@@ -2081,6 +2096,10 @@ const settingsConfig = {
         label: 'Boss Enrage',
         default: 0
     },
+    [SETTINGS.BOSS_PATTERN_START]: {
+        label: 'Pattern Start Tick',
+        default: 0
+    },
     [SETTINGS.GUARDIANS_TRIUMPH]: {
         label: 'Guardians Triumph',
         default: 0
@@ -2169,10 +2188,6 @@ const settingsConfig = {
             { text: 'Regular', value: SETTINGS.ENDURING_RUIN_BLEED_VALUES.REGULAR },
             { text: 'Enchanted', value: SETTINGS.ENDURING_RUIN_BLEED_VALUES.ENCHANTED }
         ]
-    },
-    [SETTINGS.NEEDLE_STRIKE]: {
-        label: 'Needle Strike',
-        default: false
     },
     [SETTINGS.GRAVITATE]: {
         label: 'Gravitate',
@@ -2315,10 +2330,6 @@ const settingsConfig = {
         label: 'Time since last attack',
         default: 9
     },
-    [SETTINGS.INNATE_MASTERY]: {
-        label: 'Innate mastery (works on custom t95)',
-        default: true
-    },
     [SETTINGS.CHANNELLER_RING_STACKS]: {
         label: 'Channelers ring stacks',
         default: 0
@@ -2333,10 +2344,6 @@ const settingsConfig = {
     },
     [SETTINGS.SUNSHINE]: {
         label: 'Sunshine',
-        default: false
-    },
-    [SETTINGS.META]: {
-        label: 'Meta',
         default: false
     },
     [SETTINGS.DEATH_SWIFTNESS]: {

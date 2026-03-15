@@ -241,6 +241,11 @@ function applyBonusDamageEffects(
     ) {
         distribution['min hit'] += Math.floor(0.24 * distribution['boosted AD']);
     }
+
+    // Am-zi necklace (melee only: +floor(1.35 * Attack level) to min hit)
+    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.AM_ZI) {
+        distribution['min hit'] += Math.floor(1.35 * settings[SETTINGS.ATTACK_LEVEL]);
+    }
 }
 
 export const meleeEffects: StyleEffects = {
