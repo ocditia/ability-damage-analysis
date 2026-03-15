@@ -231,6 +231,18 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         adaptedSettings[SETTINGS.POCKET] = adaptedSettings[stylePocketKey];
     }
 
+    // Map per-style ammo slot to generic AMMO for calc engine
+    const ammoByStyle: Record<string, string> = {
+        'ranged': SETTINGS.RANGED_AMMO_SLOT,
+        'magic': SETTINGS.MAGIC_AMMO_SLOT,
+        'melee': SETTINGS.MELEE_AMMO_SLOT,
+        'necro': SETTINGS.NECRO_AMMO_SLOT,
+    };
+    const styleAmmoKey = ammoByStyle[uiStore.activeTab];
+    if (styleAmmoKey && adaptedSettings[styleAmmoKey] != null) {
+        adaptedSettings[SETTINGS.AMMO] = adaptedSettings[styleAmmoKey];
+    }
+
     const settingsCopy = structuredClone(adaptedSettings);
 
     logger.log(LogCategory.SETTINGS, 'Damage calculation settings', {
