@@ -1,5 +1,5 @@
 import { ABILITIES } from '../calc/const/const';
-import { SETTINGS } from '../calc/settings.js';
+import { SETTINGS } from '../calc/settings_rb.js';
 
 export enum CONSUMABLES {
     ADRENALINE_RENEWAL = 'Adrenaline renewal potion',
@@ -45,9 +45,18 @@ export const consumables: Record<string, { title: string; icon: string; group?: 
         title: 'Vulnerability bomb',
         icon: '/ability_icons/special/Vulnerability_bomb.png'
     },
+    [ABILITIES.DREADNIP]: {
+        title: 'Dreadnip',
+        icon: '/effect_icons/Dreadnip_active_(self_status).png'
+    },
 };
 
+// Off-GCD abilities (sigils, slayer, mobility, etc.)
 export const offGcdAbilities: Record<string, { title: string; icon: string }> = {
+    [ABILITIES.RUNIC_CHARGE]: {
+        title: 'Runic Charge',
+        icon: '/ability_icons/magic/Runic_Charge.png'
+    },
     [ABILITIES.INGENUITY_OF_THE_HUMANS]: {
         title: 'Ingenuity of the Humans',
         icon: '/ability_icons/special/Ingenuity_of_the_Humans.png'
@@ -68,18 +77,6 @@ export const offGcdAbilities: Record<string, { title: string; icon: string }> = 
         title: 'Undead Slayer',
         icon: '/ability_icons/special/Undead_Slayer_(ability).png'
     },
-    [ABILITIES.RUNIC_CHARGE]: {
-        title: 'Runic Charge',
-        icon: '/ability_icons/magic/30x30/runic_charge.png'
-    },
-    [ABILITIES.EXSANGUINATE]: {
-        title: 'Exsanguinate',
-        icon: '/effect_icons/Exsanguinate_icon.webp'
-    },
-    [ABILITIES.INCITE_FEAR]: {
-        title: 'Incite Fear',
-        icon: '/ability_icons/magic/Incite_Fear_icon.webp'
-    },
     [ABILITIES.SURGE]: {
         title: 'Surge',
         icon: '/ability_icons/special/Surge.png'
@@ -92,26 +89,10 @@ export const offGcdAbilities: Record<string, { title: string; icon: string }> = 
         title: 'Dive',
         icon: '/ability_icons/special/Dive.png'
     },
-    [ABILITIES.VENGEANCE]: {
-        title: 'Vengeance',
-        icon: '/ability_icons/special/Vengeance.png'
-    },
-    [ABILITIES.SPELLBOOK_SWAP]: {
-        title: 'Spellbook Swap',
-        icon: '/ability_icons/special/Spellbook_Swap.png'
-    },
-    [ABILITIES.DISRUPTION_SHIELD]: {
-        title: 'Disruption Shield',
-        icon: '/ability_icons/special/Disruption_Shield.png'
-    },
-    [ABILITIES.PRISM_OF_RESTORATION]: {
-        title: 'Prism of Restoration',
-        icon: '/effect_icons/Prism_of_Restoration_icon.png'
-    },
-    [ABILITIES.DREADNIP]: {
-        title: 'Dreadnip',
-        icon: '/effect_icons/Dreadnip_active_(self_status).png'
-    },
+};
+
+// Prayers
+export const prayers: Record<string, { title: string; icon: string }> = {
     [ABILITIES.DEFLECT_MAGIC]: {
         title: 'Deflect Magic',
         icon: '/ability_icons/special/Deflect_Magic.png'
@@ -130,6 +111,34 @@ export const offGcdAbilities: Record<string, { title: string; icon: string }> = 
     },
 };
 
+// Spells
+export const spells: Record<string, { title: string; icon: string }> = {
+    [ABILITIES.EXSANGUINATE]: {
+        title: 'Exsanguinate',
+        icon: '/effect_icons/Exsanguinate_icon.webp'
+    },
+    [ABILITIES.INCITE_FEAR]: {
+        title: 'Incite Fear',
+        icon: '/ability_icons/magic/Incite_Fear_icon.webp'
+    },
+    [ABILITIES.VENGEANCE]: {
+        title: 'Vengeance',
+        icon: '/ability_icons/special/Vengeance.png'
+    },
+    [ABILITIES.SPELLBOOK_SWAP]: {
+        title: 'Spellbook Swap',
+        icon: '/ability_icons/special/Spellbook_Swap.png'
+    },
+    [ABILITIES.DISRUPTION_SHIELD]: {
+        title: 'Disruption Shield',
+        icon: '/ability_icons/special/Disruption_Shield.png'
+    },
+    [ABILITIES.PRISM_OF_RESTORATION]: {
+        title: 'Prism of Restoration',
+        icon: '/effect_icons/Prism_of_Restoration_icon.png'
+    },
+};
+
 // Flat lookup of all EoF items by key (for extra action bar rendering)
 const eofItems: Record<string, { title: string; icon: string }> = {
     'EoF': { title: 'EoF', icon: '/gear_icons/essence of finality amulet.png' },
@@ -145,22 +154,10 @@ const eofItems: Record<string, { title: string; icon: string }> = {
 // Combined lookup for extra action bar rendering (needs to find both abilities, consumables, and gear)
 export const allExtraActions: Record<string, { title: string; icon: string }> = {
     ...offGcdAbilities,
+    ...prayers,
+    ...spells,
     ...consumables,
     ...eofItems,
-};
-
-// ---- Shared Gear (appears in all styles) ----
-export const sharedGear: Record<string, Record<string, { title: string; icon: string; group?: string }>> = {
-    'Essence of Finality': {
-        EOF: { title: 'EoF', icon: '/gear_icons/essence of finality amulet.png', group: 'eof' },
-        EOF_BLACK: { title: 'EoF (black)', icon: '/gear_icons/essence of finality amulet (black).png', group: 'eof' },
-        EOF_BLUE: { title: 'EoF (blue)', icon: '/gear_icons/essence of finality amulet (blue).png', group: 'eof' },
-        EOF_GREEN: { title: 'EoF (green)', icon: '/gear_icons/essence of finality amulet (green).png', group: 'eof' },
-        EOF_PINK: { title: 'EoF (pink)', icon: '/gear_icons/essence of finality amulet (pink).png', group: 'eof' },
-        EOF_PURPLE: { title: 'EoF (purple)', icon: '/gear_icons/essence of finality amulet (purple).png', group: 'eof' },
-        EOF_RED: { title: 'EoF (red)', icon: '/gear_icons/essence of finality amulet (red).png', group: 'eof' },
-        EOF_YELLOW: { title: 'EoF (yellow)', icon: '/gear_icons/essence of finality amulet (yellow).png', group: 'eof' },
-    },
 };
 
 // Shared gear swap lookup (item title -> slot key) built from all styles
@@ -170,7 +167,7 @@ const gearSwapsOrig: Record<string, string> = {};
  * Builds a processed gear object from raw slot definitions.
  * Removes NONE/CUSTOM entries, creates { title, icon } objects, and populates gearSwaps.
  */
-function buildGearData(slotDefinitions: Record<string, Record<string, string>>): Record<string, Record<string, { title: string; icon: string }>> {
+function buildGearData(slotDefinitions: Record<string, Record<string, string>>, style: string): Record<string, Record<string, { title: string; icon: string }>> {
     const toDelete = ['NONE', 'CUSTOM'];
     const raw = structuredClone(slotDefinitions);
     const result = structuredClone(slotDefinitions) as any;
@@ -183,9 +180,13 @@ function buildGearData(slotDefinitions: Record<string, Record<string, string>>):
             }
         });
         for (const item in raw[slot]) {
+            const val = raw[slot][item];
+            // Strip variant suffixes for icon lookup
+            const base = val.replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '').replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
             const obj = {
-                title: raw[slot][item],
-                icon: '/gear_icons/' + raw[slot][item] + '.png',
+                title: val,
+                icon: `/gear_icons/${style}/${base}.png`,
+                iconFallback: `/gear_icons/shared/${base}.png`,
             };
             result[slot][item] = obj;
             gearSwapsOrig[obj.title] = slot;
@@ -227,7 +228,7 @@ export const rangedGear = buildGearData({
     [SETTINGS.RANGED_GLOVES]: {...SETTINGS.RANGED_GLOVES_VALUES},
     [SETTINGS.RANGED_BOOTS]: {...SETTINGS.RANGED_BOOTS_VALUES},
     [SETTINGS.AMMO]: {...SETTINGS.AMMO_VALUES},
-});
+}, 'ranged');
 
 // ---- Melee Gear ----
 export const meleeGear = buildGearData({
@@ -239,7 +240,7 @@ export const meleeGear = buildGearData({
     [SETTINGS.MELEE_LEGS]: {...SETTINGS.MELEE_LEGS_VALUES},
     [SETTINGS.MELEE_GLOVES]: {...SETTINGS.MELEE_GLOVES_VALUES},
     [SETTINGS.MELEE_BOOTS]: {...SETTINGS.MELEE_BOOTS_VALUES},
-});
+}, 'melee');
 
 // ---- Magic Gear ----
 export const magicGear = buildGearData({
@@ -251,7 +252,7 @@ export const magicGear = buildGearData({
     [SETTINGS.MAGIC_LEGS]: {...SETTINGS.MAGIC_LEGS_VALUES},
     [SETTINGS.MAGIC_GLOVES]: {...SETTINGS.MAGIC_GLOVES_VALUES},
     [SETTINGS.MAGIC_BOOTS]: {...SETTINGS.MAGIC_BOOTS_VALUES},
-});
+}, 'magic');
 
 // ---- Necromancy Gear ----
 export const necroGear = buildGearData({
@@ -263,6 +264,26 @@ export const necroGear = buildGearData({
     [SETTINGS.NECRO_LEGS]: {...SETTINGS.NECRO_LEGS_VALUES},
     [SETTINGS.NECRO_GLOVES]: {...SETTINGS.NECRO_GLOVES_VALUES},
     [SETTINGS.NECRO_BOOTS]: {...SETTINGS.NECRO_BOOTS_VALUES},
-});
+}, 'necro');
+
+// ---- Shared Gear (appears in all styles) ----
+export const sharedGear: Record<string, Record<string, { title: string; icon: string; iconFallback?: string; group?: string }>> = {
+    ...buildGearData({
+        [SETTINGS.RING]: {...SETTINGS.RING_VALUES},
+        [SETTINGS.NECKLACE]: {...SETTINGS.NECKLACE_VALUES},
+        [SETTINGS.CAPE]: {...SETTINGS.CAPE_VALUES},
+        [SETTINGS.POCKET]: {...SETTINGS.POCKET_VALUES},
+    }, 'shared'),
+    'Essence of Finality': {
+        EOF: { title: 'EoF', icon: '/gear_icons/shared/essence of finality amulet.png', group: 'eof' },
+        EOF_BLACK: { title: 'EoF (black)', icon: '/gear_icons/shared/essence of finality amulet (black).png', group: 'eof' },
+        EOF_BLUE: { title: 'EoF (blue)', icon: '/gear_icons/shared/essence of finality amulet (blue).png', group: 'eof' },
+        EOF_GREEN: { title: 'EoF (green)', icon: '/gear_icons/shared/essence of finality amulet (green).png', group: 'eof' },
+        EOF_PINK: { title: 'EoF (pink)', icon: '/gear_icons/shared/essence of finality amulet (pink).png', group: 'eof' },
+        EOF_PURPLE: { title: 'EoF (purple)', icon: '/gear_icons/shared/essence of finality amulet (purple).png', group: 'eof' },
+        EOF_RED: { title: 'EoF (red)', icon: '/gear_icons/shared/essence of finality amulet (red).png', group: 'eof' },
+        EOF_YELLOW: { title: 'EoF (yellow)', icon: '/gear_icons/shared/essence of finality amulet (yellow).png', group: 'eof' },
+    },
+};
 
 export const gearSwaps = gearSwapsOrig;

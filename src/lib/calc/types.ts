@@ -1,9 +1,9 @@
 import { ABILITIES } from "./const/const";
 
 type DamageKind = 'non_crit' | 'crit';
-export type CombatStyle = 'melee' | 'ranged' | 'magic' | 'necro' | 'poison';
+export type CombatStyle = 'melee' | 'ranged' | 'magic' | 'necro' | 'necromancy' | 'poison';
 
-export type ArmourSlot = 'helmet' | 'body' | 'legs' | 'gloves' | 'boots' | 'necklace' | 'ring' | 'cape' | 'pocket' | 'not used';
+export type ArmourSlot = 'helmet' | 'body' | 'legs' | 'gloves' | 'boots' | 'necklace' | 'ring' | 'cape' | 'pocket' | 'ammo' | 'not used';
 export type ArmourStyle = 'melee' | 'ranged' | 'magic' | 'necromancy' | 'hybrid';
 
 export interface ArmourTier {

@@ -236,7 +236,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Feasting Spores stacks',
                 displaySetting: SETTINGS.SHOW_DEATHSPORE_STACKS,
                 idx: -1,
-                image: '/gear_icons/deathspore arrows.png',
+                image: '/gear_icons/ranged/deathspore arrows.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: '#4a7c59',
                 combatStyle: SettingsCombatStyles.RANGED

@@ -1,5 +1,5 @@
 import { ABILITIES } from '../calc/const/const';
-import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
+import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc_rb.js';
 
 const abilities = {
     // Basics

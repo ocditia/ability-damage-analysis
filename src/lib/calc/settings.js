@@ -165,7 +165,7 @@ const SETTINGS = {
         SLISKE: 'anima core helm of sliske',
         GHOST_HUNTER: 'ghost hunter goggles',
         MASTERWORK: 'masterwork magic hat',
-        TUMEKENS_RESPLENDENCE: 'tumekens resplendence helmet'
+        TUMEKENS_RESPLENDENCE: 'mask of tumeken\'s resplendence'
     },
     RANGED_HELMET: 'ranged helmet',
     RANGED_HELMET_VALUES: {
@@ -179,8 +179,8 @@ const SETTINGS = {
     MELEE_HELMET: 'melee helmet',
     MELEE_HELMET_VALUES: {
         NONE: 'none',
-        MASTERWORK: 'masterwork helm',
-        TMW: 'trimmed masterwork helm',
+        MASTERWORK: 'masterwork melee helm',
+        TMW: 'trimmed masterwork melee helm',
         VESTMENTS: 'vestments of havoc hood',
         JAWS: 'jaws of the abyss',
         GHOST_HUNTER: 'ghost hunter goggles',
@@ -203,7 +203,7 @@ const SETTINGS = {
         TECTONIC: 'tectonic robe top',
         GHOST_HUNTER: 'ghost hunter body',
         MASTERWORK: 'masterwork magic robe top',
-        TUMEKENS_RESPLENDENCE: 'tumekens resplendence body'
+        TUMEKENS_RESPLENDENCE: 'robe top of tumeken\'s resplendence'
     },
     RANGED_BODY: 'ranged body',
     RANGED_BODY_VALUES: {
@@ -217,8 +217,8 @@ const SETTINGS = {
     MELEE_BODY: 'melee body',
     MELEE_BODY_VALUES: {
         NONE: 'none',
-        MASTERWORK: 'masterwork platebody',
-        TMW: 'trimmed masterwork platebody',
+        MASTERWORK: 'masterwork melee platebody',
+        TMW: 'trimmed masterwork melee platebody',
         VESTMENTS: 'vestments of havoc robe top',
         GHOST_HUNTER: 'ghost hunter body',
     },
@@ -239,7 +239,7 @@ const SETTINGS = {
         SLISKE: 'anima core legs of sliske',
         GHOST_HUNTER: 'ghost hunter legs',
         MASTERWORK: 'masterwork magic robe bottom',
-        TUMEKENS_RESPLENDENCE: 'tumekens resplendence legs'
+        TUMEKENS_RESPLENDENCE: 'robe bottom of tumeken\'s resplendence'
     },
     RANGED_LEGS: 'ranged legs',
     RANGED_LEGS_VALUES: {
@@ -253,8 +253,8 @@ const SETTINGS = {
     MELEE_LEGS: 'melee legs',
     MELEE_LEGS_VALUES: {
         NONE: 'none',
-        MASTERWORK: 'masterwork platelegs',
-        TMW: 'trimmed masterwork platelegs',
+        MASTERWORK: 'masterwork melee platelegs',
+        TMW: 'trimmed masterwork melee platelegs',
         VESTMENTS: 'vestments of havoc robe bottom',
         GHOST_HUNTER: 'ghost hunter legs',
     },
@@ -275,7 +275,7 @@ const SETTINGS = {
         KWW_E: 'enhanced kerapacs wristwraps',
         MASTERWORK: 'masterwork magic gloves',
         TUSKA: 'warpriest of tuska gauntlets',
-        TUMEKENS_RESPLENDENCE: 'tumekens resplendence gloves'
+        TUMEKENS_RESPLENDENCE: 'gloves of tumeken\'s resplendence'
     },
     RANGED_GLOVES: 'ranged gloves',
     RANGED_GLOVES_VALUES: {
@@ -292,8 +292,8 @@ const SETTINGS = {
         NONE: 'none',
         DTB: 'deathtouch bracelet',
         CINDERS: 'cinderbane gloves',
-        MASTERWORK: 'masterwork gloves',
-        TMW: 'trimmed masterwork gloves',
+        MASTERWORK: 'masterwork melee gloves',
+        TMW: 'trimmed masterwork melee gloves',
         GOP: 'gloves of passage',
         GOP_E: 'enhanced gloves of passage'
     },
@@ -314,7 +314,7 @@ const SETTINGS = {
         SH: 'silverhawk boots',
         MASTERWORK: 'masterwork magic boots',
         TUSKA: 'warpriest of tuska boots',
-        TUMEKENS_RESPLENDENCE: 'tumekens resplendence boots'
+        TUMEKENS_RESPLENDENCE: 'boots of tumeken\'s resplendence'
     },
     RANGED_BOOTS: 'ranged boots',
     RANGED_BOOTS_VALUES: {
@@ -331,8 +331,8 @@ const SETTINGS = {
         LACERATION: 'laceration boots',
         ENHANCED_LACERATION: 'enhanced laceration boots',
         SH: 'silverhawk boots',
-        MASTERWORK: 'masterwork boots',
-        TMW: 'trimmed masterwork boots',
+        MASTERWORK: 'masterwork melee boots',
+        TMW: 'trimmed masterwork melee boots',
         VESTMENTS: 'vestments of havoc boots'
     },
     NECRO_BOOTS: 'necro boots',
@@ -380,12 +380,13 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        CHANNELER: 'channelers ring',
-        CHANNELER_E: 'channelers ring+',
-        STALKER: 'stalkers ring',
-        STALKER_E: 'stalkers ring+',
-        CHAMPION: 'champions ring',
-        CHAMPION_E: 'champions ring+',
+        CHANNELLER: "channeller's ring",
+        CHANNELLER_E: "channeller's ring+",
+        STALKER: "stalker's ring",
+        STALKER_E: "stalker's ring+",
+
+        CHAMPION: "champion's ring",
+        CHAMPION_E: "champion's ring+",
         LOTD: 'luck of the dwarves',
         LOTD_I: 'luck of the dwarves (i)',
         HSR: 'hazelmeres signet ring',
@@ -401,8 +402,8 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        CHANNELER: 'channelers ring',
-        CHANNELER_E: 'channelers ring+'
+        CHANNELLER: "channeller's ring",
+        CHANNELLER_E: "channeller's ring+"
     },
     RANGED_RING: 'range ring',
     RANGED_RING_VALUES: {
@@ -412,8 +413,8 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        STALKER: 'stalkers ring',
-        STALKER_E: 'stalkers ring+'
+        STALKER: "stalker's ring",
+        STALKER_E: "stalker's ring+"
     },
     MELEE_RING: 'melee ring',
     MELEE_RING_VALUES: {
@@ -423,8 +424,8 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        CHAMPION: 'champions ring',
-        CHAMPION_E: 'champions ring+'
+        CHAMPION: "champion's ring",
+        CHAMPION_E: "champion's ring+"
     },
     NECRO_RING: 'necro ring',
     NECRO_RING_VALUES: {
@@ -482,8 +483,8 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        CHANNELER: 'channelers ring',
-        CHANNELER_E: 'channelers ring+'
+        CHANNELLER: "channeller's ring",
+        CHANNELLER_E: "channeller's ring+"
     },
     RANGED_RING: 'range ring',
     RANGED_RING_VALUES: {
@@ -493,8 +494,8 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        STALKER: 'stalkers ring',
-        STALKER_E: 'stalkers ring+'
+        STALKER: "stalker's ring",
+        STALKER_E: "stalker's ring+"
     },
     MELEE_RING: 'melee ring',
     MELEE_RING_VALUES: {
@@ -504,8 +505,8 @@ const SETTINGS = {
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring',
-        CHAMPION: 'champions ring',
-        CHAMPION_E: 'champions ring+'
+        CHAMPION: "champion's ring",
+        CHAMPION_E: "champion's ring+"
     },
     NECRO_RING: 'necro ring',
     NECRO_RING_VALUES: {
@@ -660,6 +661,7 @@ const SETTINGS = {
     RANGED_TH_VALUES: {
         CUSTOM: 'custom th',
         BOLG: 'bow of the last guardian',
+        BOLG_IM: 'bow of the last guardian [IM]',
         HEX_E: 'hexhunter bow+',
         HEX: 'hexhunter bow',
     },
@@ -762,7 +764,7 @@ const SETTINGS = {
     INSTABILITY: 'instability',
     TIME_SINCE_ATTACK: 'time since attack',
     INNATE_MASTERY: 'innate mastery',
-    CHANNELER_RING_STACKS: 'channelers ring stacks',
+    CHANNELLER_RING_STACKS: 'channellers ring stacks',
     NUMBER_OF_BLEEDS: 'number of bleeds',
     STRENGTH_CAPE: 'strength cape',
     STRENGTH_MASTER_CAPE: 'strength master cape',
@@ -841,14 +843,14 @@ const SETTINGS = {
     },
     DAMAGE_PER_UNIT_DIVIDER: 'damage per time unit divider',
     RESIDUAL_SOULS: 'residual souls',
-    TUMEKENS_RESPLENDENCE_ASPHYX: 'tumekens resplendence asphyx',
+    TUMEKENS_RESPLENDENCE_ASPHYX: 'tumeken\'s resplendence asphyxiate',
 
     TELOS_RED_BEAM: 'telos red beam',
     TELOS_BLACK_BEAM: 'telos black beam',
     ENERGISING: 'energising',
     HIT_COUNTER_START: 'hit counter start',
     HIT_COUNTER_END: 'hit counter end',
-    IMBUE_GALES: 'imbue: gales',
+    SEARING_WINDS: 'imbue: gales',
     RUNIC_CHARGE: 'runic charge',
     BLOODLUST: 'bloodlust',
     BLAST_INFUSED: 'blast infused',
@@ -1489,8 +1491,8 @@ const settingsConfig = {
             { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
             { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELER },
-            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELER_E },
+            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELLER },
+            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELLER_E },
             { text: 'Stalker', value: SETTINGS.RING_VALUES.STALKER },
             { text: 'Stalker+', value: SETTINGS.RING_VALUES.STALKER_E },
             { text: 'Champion', value: SETTINGS.RING_VALUES.CHAMPION },
@@ -1513,8 +1515,8 @@ const settingsConfig = {
             { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
             { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELER },
-            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELER_E }
+            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELLER },
+            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELLER_E }
         ]
     },
     [SETTINGS.RANGED_RING]: {
@@ -1630,8 +1632,8 @@ const settingsConfig = {
             { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
             { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELER },
-            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELER_E }
+            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELLER },
+            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELLER_E }
         ]
     },
     [SETTINGS.RANGED_RING]: {
@@ -1851,10 +1853,11 @@ const settingsConfig = {
     },
     [SETTINGS.RANGED_TH]: {
         label: '2h',
-        default: SETTINGS.RANGED_TH_VALUES.BOLG,
+        default: SETTINGS.RANGED_TH_VALUES.BOLG_IM,
         options: [
             { text: 'Custom', value: SETTINGS.RANGED_TH_VALUES.CUSTOM },
             { text: 'Bow of the Last Guardian', value: SETTINGS.RANGED_TH_VALUES.BOLG },
+            { text: 'BOLG [IM]', value: SETTINGS.RANGED_TH_VALUES.BOLG_IM },
             { text: 'Hex', value: SETTINGS.RANGED_TH_VALUES.HEX },
             { text: 'Hex+', value: SETTINGS.RANGED_TH_VALUES.HEX_E }
         ]
@@ -2017,10 +2020,6 @@ const settingsConfig = {
             { text: 'Enchanted', value: SETTINGS.ENDURING_RUIN_BLEED_VALUES.ENCHANTED }
         ]
     },
-    [SETTINGS.NEEDLE_STRIKE]: {
-        label: 'Needle Strike',
-        default: false
-    },
     [SETTINGS.GRAVITATE]: {
         label: 'Gravitate',
         default: 0
@@ -2084,7 +2083,7 @@ const settingsConfig = {
     },
     [SETTINGS.CAROMING]: {
         label: 'Caroming',
-        default: 4
+        default: 1
     },
     [SETTINGS.MH_TIER_CUSTOM]: {
         label: 'MH custom tier',
@@ -2143,7 +2142,7 @@ const settingsConfig = {
         label: 'Innate mastery (works on custom t95)',
         default: true
     },
-    [SETTINGS.CHANNELER_RING_STACKS]: {
+    [SETTINGS.CHANNELLER_RING_STACKS]: {
         label: 'Channelers ring stacks',
         default: 0
     },
@@ -2355,7 +2354,7 @@ const settingsConfig = {
         label: 'End tracking hit',
         default: 10000
     },
-    [SETTINGS.IMBUE_GALES]: {
+    [SETTINGS.SEARING_WINDS]: {
         label: 'Imbue: Gales',
         default: false
     },

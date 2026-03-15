@@ -20,8 +20,8 @@
     <label for={setting.key}>
         <input
             class={`
-                border border-slate-600 rounded-md bg-transparent text-right
-                min-w-[100px] text-center hover:border hover:border-white
+                number-input border border-slate-600 rounded-md bg-transparent
+                w-[60px] hover:border hover:border-white
             `}
             type="number"
             id={setting.key}
@@ -33,3 +33,10 @@
         />
     </label>
 </SettingWrapper>
+
+<style>
+    .number-input {
+        text-indent: -8px;
+        text-align: center;
+    }
+</style>

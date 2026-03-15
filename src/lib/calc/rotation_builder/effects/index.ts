@@ -51,7 +51,6 @@ export {
     applyCryptbloomEffect,
     applySalamancyEffect,
     applyHauntedEffect,
-    applyMetamorphosisEffect,
     applyEssenceCorruptionEffect,
     applyHitCap,
     calculateHauntedBonus,

@@ -234,6 +234,7 @@ function applyBonusDamageEffects(
     // Frostblades (Leng off-hand effects)
     if (
         (settings[SETTINGS.OH] === SETTINGS.MELEE_OH_VALUES.LENG ||
+            settings[SETTINGS.OH] === SETTINGS.MELEE_OH_VALUES.LENG_IM ||
             settings[SETTINGS.OH] === SETTINGS.MELEE_OH_VALUES.DARK_ICE_SLIVER) &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
         settings[SETTINGS.FROSTBLADES] === true

@@ -724,7 +724,7 @@ const armour = {
         slot: 'boots',
         style: 'hybrid'
     },
-    'masterwork helm': {
+    'masterwork melee helm': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 23.2,
@@ -732,7 +732,7 @@ const armour = {
         slot: 'helmet',
         style: 'melee'
     },
-    'masterwork platebody': {
+    'masterwork melee platebody': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 34.8,
@@ -740,7 +740,7 @@ const armour = {
         slot: 'body',
         style: 'melee'
     },
-    'masterwork platelegs': {
+    'masterwork melee platelegs': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 29,
@@ -748,7 +748,7 @@ const armour = {
         slot: 'legs',
         style: 'melee'
     },
-    'masterwork gloves': {
+    'masterwork melee gloves': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 14.5,
@@ -756,7 +756,7 @@ const armour = {
         slot: 'gloves',
         style: 'melee'
     },
-    'masterwork boots': {
+    'masterwork melee boots': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 14.5,
@@ -764,7 +764,7 @@ const armour = {
         slot: 'boots',
         style: 'melee'
     },
-    'trimmed masterwork helm': {
+    'trimmed masterwork melee helm': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 24,
@@ -772,7 +772,7 @@ const armour = {
         slot: 'helmet',
         style: 'melee'
     },
-    'trimmed masterwork platebody': {
+    'trimmed masterwork melee platebody': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 36,
@@ -780,7 +780,7 @@ const armour = {
         slot: 'body',
         style: 'melee'
     },
-    'trimmed masterwork platelegs': {
+    'trimmed masterwork melee platelegs': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 31,
@@ -788,7 +788,7 @@ const armour = {
         slot: 'legs',
         style: 'melee'
     },
-    'trimmed masterwork boots': {
+    'trimmed masterwork melee boots': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 15,
@@ -796,7 +796,7 @@ const armour = {
         slot: 'boots',
         style: 'melee'
     },
-    'trimmed masterwork gloves': {
+    'trimmed masterwork melee gloves': {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 15,
@@ -852,7 +852,7 @@ const armour = {
         slot: 'boots',
         style: 'melee'
     },
-    'tumekens resplendence helmet': {
+    '.* of tumeken\'s resplendence': {
         'necromancy strength': 0,
         'magic strength': 25,
         'melee strength': 0,
@@ -861,7 +861,7 @@ const armour = {
         slot: 'helmet',
         style: 'necromancy'
     },
-    'tumekens resplendence body': {
+    '.* of tumeken\'s resplendence': {
         'necromancy strength': 0,
         'magic strength': 37,
         'melee strength': 0,
@@ -870,7 +870,7 @@ const armour = {
         slot: 'helmet',
         style: 'necromancy'
     },
-    'tumekens resplendence legs': {
+    '.* of tumeken\'s resplendence': {
         'necromancy strength': 0,
         'magic strength': 32,
         'melee strength': 0,
@@ -879,7 +879,7 @@ const armour = {
         slot: 'helmet',
         style: 'necromancy'
     },
-    'tumekens resplendence gloves': {
+    '.* of tumeken\'s resplendence': {
         'necromancy strength': 0,
         'magic strength': 16,
         'melee strength': 0,
@@ -888,7 +888,7 @@ const armour = {
         slot: 'helmet',
         style: 'necromancy'
     },
-    'tumekens resplendence boots': {
+    '.* of tumeken\'s resplendence': {
         'necromancy strength': 0,
         'magic strength': 16,
         'melee strength': 0,
@@ -1129,7 +1129,7 @@ const armour = {
         slot: 'ring',
         style: 'hybrid'
     },
-    'channelers ring': {
+    "channeller's ring": {
         'necromancy strength': 0,
         'magic strength': 30.4,
         'melee strength': 0,
@@ -1137,7 +1137,7 @@ const armour = {
         slot: 'ring',
         style: 'magic'
     },
-    'channelers ring+': {
+    "channeller's ring+": {
         'necromancy strength': 0,
         'magic strength': 30.4,
         'melee strength': 0,

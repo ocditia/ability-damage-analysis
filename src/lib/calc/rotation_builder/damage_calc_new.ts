@@ -203,8 +203,11 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
     // Track BoLG perfect equilibrium stacks (on-hit, non-proc only)
     if (abils[abilityKey]['on-hit effects'] === true &&
         abils[abilityKey]['ability type'] != 'proc') {
-        if (settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
-            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
+        if ((settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG ||
+            settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG_IM)
+            &&
+            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) 
+        {
             settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] += 1;
         }
     }
@@ -452,7 +455,8 @@ function set_min_var(settings: Record<string, any>, dmgObject: DamageObject) {
             distribution['var hit'] *= mult;
         }
 
-        if (abilityKey === ABILITIES.AFTERSHOCK) {
+        if (abilityKey === ABILITIES.AFTERSHOCK_MAGIC || abilityKey === ABILITIES.AFTERSHOCK_MELEE ||
+            abilityKey === ABILITIES.AFTERSHOCK_RANGED || abilityKey === ABILITIES.AFTERSHOCK_NECRO) {
             distribution['min hit'] = distribution['min hit'] * settings[SETTINGS.AFTERSHOCK];
             distribution['var hit'] = distribution['var hit'] * settings[SETTINGS.AFTERSHOCK];
         }
@@ -650,7 +654,9 @@ function handleBolgProc(
     timers: Record<string, number>,
     dmgObjects: DamageObject[]
 ): boolean {
-    const isBolg = settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
+    const isBolg = (settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG ||
+        settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG_IM)
+        &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH;
 
     const shouldProc = settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 8 ||

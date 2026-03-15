@@ -124,10 +124,13 @@ function calc_base_ad(settings) {
             base_AD = AD_mh + AD_oh;
         }
     }
-
-    // eruptive perk
-    base_AD = Math.floor(base_AD * (1 + settings[SETTINGS.ERUPTIVE] * 0.005));
-
+    
+    // base damage buffs (eruptive / equilibrium)
+    let buff = 1 + settings[SETTINGS.ERUPTIVE] * 0.005;
+    if (settings[SETTINGS.EQ_PERK] > 0) {
+        buff += 0.1 + settings[SETTINGS.EQ_PERK] * 0.01;
+    }
+    base_AD = Math.floor(base_AD * buff);
     return base_AD;
 
 }
@@ -157,11 +160,6 @@ function calc_weapon_tier(settings, hand) {
         weapon_tier = weapons[settings[hand]]['tier'];
     }
     let tier = Math.min(weapon_tier, ammo_tier);
-
-    // innate mastery (shard of genesis essence)
-    if (weapon_tier === 95 && settings[SETTINGS.INNATE_MASTERY] === true) {
-        tier += 5;
-    }
 
     return tier;
 }
@@ -342,8 +340,8 @@ function ability_specific_effects(settings, dmgObject) {
         // song of destruction 2 item set effect
         if (
             ['bleed', 'burn', 'dot'].includes(abils[settings['ability']]['ability classification']) && 
-                settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING && 
-                settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT && 
+                (settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING || settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING_IM) &&
+                (settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT || settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT_IM) &&
                 settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW
         ) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
@@ -527,7 +525,7 @@ function set_min_var(settings, dmgObject) {
 
         // bolstered smash
         if (settings['ability'] === ABILITIES.SMASH && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-            settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK) {
+            (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM)) {
             min_percent = 1.6;
             var_percent = 0.2;
         }
@@ -716,15 +714,15 @@ function calc_additive_boosts(settings, dmgObject) {
 
     // berserker necklace
     if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.BERSERKER &&
-        settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
+        (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM) && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         boost += 0.05;
     }
 
     // Flamebound rival
-    if ( (settings[SETTINGS.FLAMEBOUND_RIVAL] === true || settings['ability'] === ABILITIES.IGNEOUS_SHOWDOWN) && 
-        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && 
-        settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK && 
+    if ( (settings[SETTINGS.FLAMEBOUND_RIVAL] === true || settings['ability'] === ABILITIES.IGNEOUS_SHOWDOWN) &&
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+        (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM) &&
         abils[settings['ability']]['main style'] === 'melee'
     ) {
          boost += 0.12;
@@ -743,15 +741,6 @@ function calc_additive_boosts(settings, dmgObject) {
         abils[settings['ability']]['main style'] === 'melee'
     ) {
         boost += 0.16;
-    }
-
-    // needle strike next abil boost if style is ranged
-    if (
-        (settings[SETTINGS.NEEDLE_STRIKE] === true ||
-            settings[SETTINGS.NEEDLE_STRIKE] === 'fleeting') &&
-        abils[settings['ability']]['main style'] === 'ranged'
-    ) {
-        boost += 0.07;
     }
 
     // ruby aurora
@@ -969,6 +958,7 @@ function calc_bonus_damage(settings, dmgObject) {
         // frostblades (leng off-hand effects)
         if (
             (settings[SETTINGS.OH] === SETTINGS.MELEE_OH_VALUES.LENG ||
+                settings[SETTINGS.OH] === SETTINGS.MELEE_OH_VALUES.LENG_IM ||
                 settings[SETTINGS.OH] === SETTINGS.MELEE_OH_VALUES.DARK_ICE_SLIVER) &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
             settings[SETTINGS.FROSTBLADES] === true
@@ -994,11 +984,15 @@ function calc_core(settings, dmgObject, key) {
 
         // store damage into bolg
         if (
-            settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
-            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
+            (settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG || 
+            settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG_IM) 
+            &&
+            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH 
+            &&
             (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 7 ||
-                (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 3 &&
-                    settings[SETTINGS.BALANCE_BY_FORCE] === true))
+                (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 3 
+                &&
+                settings[SETTINGS.BALANCE_BY_FORCE] === true))
         ) {
             if (!('bolg damage' in settings)) {
                 settings['bolg damage'] = create_object(settings);
@@ -1071,7 +1065,7 @@ function calc_crit_damage(settings) {
         }
 
     // fsoa 22.5%
-    if (settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
+    if ((settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA || settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA_IM) && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
         if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
             crit_buff += 0.25;
         }
@@ -1200,10 +1194,6 @@ function calc_on_npc(settings, dmgObject) {
             );
         }
 
-        if (settings['meta'] === true && abils[settings['ability']]['damage type'] === 'magic') {
-            dmgObject['damage list'][i] = Math.floor(1.66 * dmgObject['damage list'][i])
-        }
-
 
         // scrimshaw of elements
         if (
@@ -1241,8 +1231,8 @@ function calc_on_npc(settings, dmgObject) {
             abils[settings['ability']]['damage type'] === 'magic' &&
             settings[SETTINGS.ESSENCE_CORRUPTION] >= 10 &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
-            (settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING ||
-                settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT)
+            (settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING || settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING_IM ||
+                settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT || settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT_IM)
         ) {
             dmgObject['damage list'][i] =
                 dmgObject['damage list'][i] +
@@ -1764,10 +1754,6 @@ function get_hit_sequence(settings) {
         }
     }
 
-    if (settings['ability'] === ABILITIES.DEADSHOT && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-        rotation[1].push(ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED);
-    }
-
     if (settings['ability'] === ABILITIES.OVERPOWER && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
         rotation[1].push("next hit");
         rotation[1].push(ABILITIES.OVERPOWER_HIT);
@@ -1778,7 +1764,7 @@ function get_hit_sequence(settings) {
     }
 
     if (settings['ability'] === ABILITIES.IGNEOUS_SHOWDOWN && settings[SETTINGS.FLAMEBOUND_RIVAL] === true
-        && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK
+        && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && (settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM)
     ) {
         rotation[1].push("next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS);
     }

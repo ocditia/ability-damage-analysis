@@ -57,7 +57,7 @@ export function calc_crit_damage(settings: Record<string, any>): number {
 
     // FSOA crit bonus (15-30%, avg 22.5%)
     if (
-        settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA &&
+        (settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA || settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA_IM) &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
@@ -144,7 +144,7 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         abilityKey === ABILITIES.IGNEOUS_SHOWDOWN &&
         settings[SETTINGS.FLAMEBOUND_RIVAL] === true &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-        settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK
+        (settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM)
     ) {
         rotation[1].push(
             'next hit', ABILITIES.IGNEOUS_SHOWDOWN_BONUS,

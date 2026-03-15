@@ -62,8 +62,8 @@ function applyAbilitySpecificEffects(
     // Song of Destruction 2-piece set effect (RoA + OtD)
     if (
         ['bleed', 'burn', 'dot'].includes(abils[abilityKey]?.['ability classification']) &&
-        settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING &&
-        settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT &&
+        (settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING || settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING_IM) &&
+        (settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT || settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT_IM) &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW
     ) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.3);

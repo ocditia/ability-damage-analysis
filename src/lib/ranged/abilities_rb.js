@@ -1,5 +1,5 @@
 import { ABILITIES } from '../calc/const/const';
-import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
+import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc_rb.js';
 
 const abilities = {
     [ABILITIES.RANGED_AUTO]: {
@@ -91,7 +91,7 @@ const abilities = {
     [ABILITIES.SHADOWFALL]: {
         title: 'Shadowfall',
         calc: ability_damage_calculation,
-        icon: '/gear_icons/gloomfire bow.png'
+        icon: '/gear_icons/ranged/gloomfire bow.png'
     },
     [ABILITIES.DESCENT_OF_DARKNESS]: {
         title: 'Descent of Darkness',

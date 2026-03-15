@@ -1,5 +1,5 @@
 import { ABILITIES } from '../calc/const/const';
-import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
+import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc_rb.js';
 
 const abilities = {
     [ABILITIES.MELEE_AUTO]: {
@@ -298,6 +298,19 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/zamorak_godsword.png',
         common: false
+    },
+    [ABILITIES.SUNFALL_SLAM]: {
+        title: 'Sunfall slam',
+        calc: hit_damage_calculation,
+        icon: '/gear_icons/melee/tumeken\'s light.png'
+    },
+    [ABILITIES.LESSER_PURIFYING_LIGHT]: {
+        title: 'Lesser purifying light',
+        calc: hit_damage_calculation,
+    },
+    [ABILITIES.PURIFYING_LIGHT]: {
+        title: 'purifying light',
+        calc: hit_damage_calculation,
     }
 };
 

@@ -861,14 +861,6 @@ function calc_additive_boosts(settings, dmgObject) {
             boost += Math.floor(0.05 * settings[SETTINGS.STRENGTH_LEVEL])/100;
         }
 
-    // needle strike next abil boost if style is ranged
-    if (
-        (settings[SETTINGS.NEEDLE_STRIKE] === true ||
-            settings[SETTINGS.NEEDLE_STRIKE] === 'fleeting') &&
-        abils[settings['ability']]['main style'] === 'ranged'
-    ) {
-        boost += 0.07;
-    }
 
     // ruby aurora
     boost += settings[SETTINGS.RUBY_AURORA] * 0.01;
@@ -1107,7 +1099,7 @@ function calc_bonus_damage(settings, dmgObject) {
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
         // Imbue: Gales
-        if (settings[SETTINGS.IMBUE_GALES] === true) {
+        if (settings[SETTINGS.SEARING_WINDS] === true) {
             min_hit += Math.floor(0.2 * dmgObject['base AD']);
         }
     }
@@ -1129,7 +1121,9 @@ function calc_core(settings, dmgObject, key) {
 
         // store bolg damage
         if (
-            settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
+            (settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG || 
+            settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG_IM)
+            &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
             (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 7 ||
                 (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 3 &&
@@ -1363,13 +1357,8 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
             );
         }
 
-        if (settings['meta'] === true && abils[settings['ability']]['damage type'] === 'magic') {
-            dmgObject['damage list'][i] = Math.floor(1.66 * dmgObject['damage list'][i])
-        }
-
         // zerk auras
         if(settings[SETTINGS.SUNSHINE] === false &&
-        settings[SETTINGS.META] === false &&
         settings[SETTINGS.DEATH_SWIFTNESS] === false &&
         settings[SETTINGS.BERSERK] === false
         ) {
@@ -1391,13 +1380,6 @@ function calc_on_npc(settings, dmgObject, split_soul_flag = true) {
             }
         }
 
-        // mahjarrat aura
-        if (
-            settings[SETTINGS.AURA] === 'mahjarrat' &&
-            abils[settings['ability']]['damage type'] !== 'spirit'
-        ) {
-            dmgObject['damage list'][i] = Math.floor(dmgObject['damage list'][i] * 1.05);
-        }
 
         // scrimshaw of elements
         if (
@@ -2071,10 +2053,6 @@ function get_hit_sequence(settings) {
         rotation[4].push(ABILITIES.ASPHYXIATE_HIT);
         rotation[6].push(ABILITIES.ASPHYXIATE_HIT);
         rotation[8] = [ABILITIES.ASPHYXIATE_HIT];
-    }
-
-    if (settings['ability'] === ABILITIES.DEADSHOT && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-        rotation[1].push(ABILITIES.DEADSHOT_BLEED, ABILITIES.DEADSHOT_BLEED);
     }
 
     if (settings['ability'] === ABILITIES.OVERPOWER && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {

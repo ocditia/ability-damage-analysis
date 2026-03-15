@@ -54,7 +54,8 @@ function next_hit(settings) {
 
     // bolg stack tracker
     if (
-        settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG &&
+        (settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG ||
+        settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG_IM) &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] += 1;

@@ -3,7 +3,6 @@
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings';
     import { abilities } from '$lib/necromancy/abilities';
-    import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
 
     import AbilityDamageTable from '$components/AbilityDamageTable/AbilityDamageTable.svelte';
     import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
@@ -63,15 +62,10 @@
         );
 
         damages = damages.map(ability => {
-            ability.regular = calculateSingleAbilityDamage(
-                { ...adaptedSettings, 'split soul': false },
-                { ability: ability.key, buffs: {} }
-            ).expected;
+            adaptedSettings['ability'] = ability.key;
 
-            ability.ss = calculateSingleAbilityDamage(
-                { ...adaptedSettings, 'split soul': true },
-                { ability: ability.key, buffs: {} }
-            ).expected;
+            ability.regular = ability.calc({ ...adaptedSettings, 'split soul': false });
+            ability.ss = ability.calc({ ...adaptedSettings, 'split soul': true });
 
             return ability;
         })
@@ -241,7 +235,7 @@
                                 <Select
                                     bind:setting={settings[SETTINGS.VULN]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Vulnerability_icon.webp"
+                                    img="/effect_icons/magic/Vulnerability_icon.webp"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
@@ -328,14 +322,6 @@
                                     img="/effect_icons/necrosis.png"
                                     step="1"
                                     max="12"
-                                    min="0"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.RESIDUAL_SOULS]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/residual_soul.png"
-                                    step="1"
-                                    max="7"
                                     min="0"
                                 />
                                 <Number
@@ -482,39 +468,40 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.LVL20ARMOUR]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/level-20.png"
+                                    img="/effect_icons/perks/level-20.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.BITING]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Biting.webp"
+                                    img="/effect_icons/perks/Biting.webp"
                                     step="1"
                                     min="0"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.PRECISE]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Precise.webp"
+                                    img="/effect_icons/perks/Precise.webp"
                                     step="1"
                                     min="0"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.ERUPTIVE]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Eruptive.webp"
+                                    img="/effect_icons/perks/Eruptive.webp"
                                     step="1"
                                     min="0"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.FLANKING]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Flanking.webp"
+                                    img="/effect_icons/perks/Flanking.webp"
                                     step="1"
                                     min="0"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.ULTIMATUS]}
                                     onchange={() => updateDamages()}
+                                    img="effect_icons/perks/ultimatums.png"
                                     step="1"
                                     min="0"
                                     max="4"
@@ -522,7 +509,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.GENOCIDAL]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/genocidal.png"
+                                    img="/effect_icons/perks/genocidal.png"
                                     max="4.9"
                                     step="0.1"
                                     min="0"
@@ -530,7 +517,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.RUTHLESS_RANK]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Ruthless.webp"
+                                    img="/effect_icons/perks/Ruthless.webp"
                                     max="3"
                                     step="1"
                                     min="0"
@@ -538,7 +525,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.RUTHLESS_STACKS]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Ruthless.webp"
+                                    img="/effect_icons/perks/Ruthless.webp"
                                     max="5"
                                     step="1"
                                     min="0"
@@ -561,13 +548,14 @@
                                     <Number
                                         bind:setting={settings[SETTINGS.EQ_PERK]}
                                         onchange={() => updateDamages()}
+                                        img="/effect_icons/perks/Equilibrium.png"
                                     />
                                 </div>
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>
                                 <Select
-                                    bind:setting={settings[SETTINGS.WEAPON_TYPE_NECRO]}
+                                    bind:setting={settings[SETTINGS.WEAPON]}
                                     onchange={() => updateDamages()}
                                     img="/armour_icons/Main_hand_slot.webp"
                                 />

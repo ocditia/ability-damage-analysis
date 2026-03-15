@@ -285,7 +285,7 @@
                                 <Select
                                     bind:setting={settings[SETTINGS.VULN]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Vulnerability_icon.webp"
+                                    img="/effect_icons/magic/Vulnerability_icon.webp"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
@@ -352,10 +352,6 @@
                                     bind:setting={settings[SETTINGS.KERAPACS_WRIST_WRAPS]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/kerapac_wristwraps.png"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.WALKED_TARGET]}
-                                    onchange={() => updateDamages()}
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.CONCENTRATED_BLAST_STACKS]}

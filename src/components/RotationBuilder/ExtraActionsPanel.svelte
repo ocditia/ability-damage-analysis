@@ -2,7 +2,8 @@
     import { onMount } from 'svelte';
     import AbilityChoice from './AbilityChoice.svelte';
     import GearChoice from './GearChoice.svelte';
-    import { offGcdAbilities, consumables, allExtraActions, rangedGear, meleeGear, magicGear, necroGear, sharedGear } from '$lib/special/abilities';
+    import { offGcdAbilities, prayers, spells, consumables, allExtraActions, rangedGear, meleeGear, magicGear, necroGear, sharedGear, gearSwaps } from '$lib/special/abilities';
+    import { SETTINGS } from '$lib/calc/settings_rb';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
 
@@ -39,6 +40,131 @@
     };
     $: activeGear = gearByStyle[uiState.activeTab] || rangedGear;
     $: tick = uiState.extraActions.tick;
+
+    // Build gear state at the selected tick by applying gear swaps from tick 0 to tick
+    function buildGearState(currentTick) {
+        const state = {};
+        const settings = settingsStore.settings;
+        for (const key of Object.keys(settings)) {
+            if (settings[key]?.value !== undefined) {
+                state[key] = settings[key].value;
+            }
+        }
+        if (currentTick >= 0 && rotationStore.extraActionBar) {
+            for (let t = 0; t <= currentTick; t++) {
+                const actions = rotationStore.extraActionBar[t];
+                if (!actions) continue;
+                for (const action of actions) {
+                    if (!action) continue;
+                    const key = typeof action === 'string' ? action : action.title;
+                    if (!key) continue;
+                    const slot = gearSwaps[key];
+                    if (slot) {
+                        state[slot] = key;
+                        // If swapping ammo via old 'ammo' key, also update per-style ammo slot
+                        if (slot === SETTINGS.AMMO) {
+                            const styleAmmo = ammoKeys[uiState.activeTab];
+                            if (styleAmmo) state[styleAmmo] = key;
+                        }
+                    }
+                }
+            }
+        }
+        return state;
+    }
+
+    function getGearState() {
+        return buildGearState(tick);
+    }
+
+    const slotFallbacks = {
+        helmet: '/armour_icons/Head_slot.webp',
+        body: '/armour_icons/Torso_slot.png',
+        legs: '/armour_icons/Legs_slot.png',
+        gloves: '/armour_icons/Hands_slot.webp',
+        boots: '/armour_icons/Feet_slot.png',
+        necklace: '/armour_icons/Neck_slot.png',
+        cape: '/armour_icons/Back_slot.png',
+        ring: '/armour_icons/Ring_slot.png',
+        pocket: '/armour_icons/Pocket_slot.webp',
+        ammo: '/armour_icons/Ammo_slot.png',
+    };
+
+    const stylePrefix = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necro' };
+    const sharedSlots = ['necklace', 'ring', 'cape', 'pocket'];
+
+    const ammoKeys = {
+        ranged: SETTINGS.RANGED_AMMO_SLOT,
+        magic: SETTINGS.MAGIC_AMMO_SLOT,
+        melee: SETTINGS.MELEE_AMMO_SLOT,
+        necro: SETTINGS.NECRO_AMMO_SLOT,
+    };
+
+    function getAmmoIcon() {
+        const gs = getGearState();
+        // Check per-style ammo slot first, then fall back to old shared 'ammo' key
+        const key = ammoKeys[uiState.activeTab];
+        const val = (key && gs[key]) || gs[SETTINGS.AMMO];
+        if (!val || val === 'none' || val === 'custom') return slotFallbacks.ammo;
+        const base = val.replace(/ \(e\)$/, '');
+        return `/gear_icons/ranged/${base}.png`;
+    }
+
+    function getEquipIcon(slot) {
+        const prefix = sharedSlots.includes(slot) ? '' : (stylePrefix[uiState.activeTab] ?? 'ranged') + ' ';
+        const key = prefix + slot;
+        const val = getGearState()[key];
+        if (!val || val === 'none' || val === 'custom' || val === 'custom oh' || val === 'custom th') return slotFallbacks[slot];
+        const base = val.replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '').replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
+        const folder = sharedSlots.includes(slot) ? 'shared' : (stylePrefix[uiState.activeTab] ?? 'shared');
+        return `/gear_icons/${folder}/${base}.png`;
+    }
+
+    const weaponTypeKeys = {
+        ranged: SETTINGS.WEAPON_TYPE_RANGED,
+        magic: SETTINGS.WEAPON_TYPE_MAGE,
+        melee: SETTINGS.WEAPON_TYPE_MELEE,
+    };
+    const weaponKeys = {
+        ranged: { mh: SETTINGS.RANGED_MH, oh: SETTINGS.RANGED_OH, th: SETTINGS.RANGED_TH },
+        magic: { mh: SETTINGS.MAGIC_MH, oh: SETTINGS.MAGIC_OH, th: SETTINGS.MAGIC_TH },
+        melee: { mh: SETTINGS.MELEE_MH, oh: SETTINGS.MELEE_OH, th: SETTINGS.MELEE_TH },
+        necro: { mh: SETTINGS.NECRO_MH, oh: SETTINGS.NECRO_OH },
+    };
+
+    // Can't use $: here as it doesn't track rune state - computed in template via {#key tick}
+
+    function getWeaponIcon(hand) {
+        const st = uiState.activeTab;
+        const wk = weaponKeys[st];
+        if (!wk) return '/armour_icons/Main_hand_slot.webp';
+
+        const key = hand === 'th' ? wk.th : hand === 'oh' ? wk.oh : wk.mh;
+        if (!key) return getWeaponFallback(hand);
+        const val = getGearState()[key];
+        if (!val || val === 'none' || val === 'custom' || val === 'custom oh' || val === 'custom th') {
+            return getWeaponFallback(hand);
+        }
+        const base = val.replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '').replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
+        return `/gear_icons/${st}/${base}.png`;
+    }
+
+    function getWeaponBadge(hand) {
+        const wk = weaponKeys[uiState.activeTab];
+        if (!wk) return null;
+        const key = hand === 'th' ? wk.th : hand === 'oh' ? wk.oh : wk.mh;
+        if (!key) return null;
+        const val = getGearState()[key];
+        if (!val) return null;
+        if (val.endsWith(' [IM]')) return '/effect_icons/shard_of_genesis.png';
+        return null;
+    }
+
+    function getWeaponFallback(hand) {
+        return hand === 'mh' ? '/armour_icons/Main_hand_slot.webp'
+            : hand === 'th' ? '/armour_icons/2h_slot.png'
+            : '/armour_icons/Off-hand_slot.webp';
+    }
 
     $: currentAbility = tick !== undefined && tick >= 0 && rotationStore.abilityBar && rotationStore.abilityBar[tick] ? allAbils[rotationStore.abilityBar[tick]] : null;
     $: currentAbilityKey = tick !== undefined && tick >= 0 && rotationStore.abilityBar ? rotationStore.abilityBar[tick] : null;
@@ -233,17 +359,10 @@
             </li>
             <li class="flex-grow">
                 <button
-                    onclick={() => setExtraActionsTab('abilities')}
+                    onclick={() => setExtraActionsTab('actions')}
                     class="tab-btn"
-                    class:tab-active={uiState.extraActions.tab === 'abilities'}
-                >Abilities</button>
-            </li>
-            <li class="flex-grow">
-                <button
-                    onclick={() => setExtraActionsTab('gear')}
-                    class="tab-btn"
-                    class:tab-active={uiState.extraActions.tab === 'gear'}
-                >Gear</button>
+                    class:tab-active={uiState.extraActions.tab === 'actions' || uiState.extraActions.tab === 'gear' || uiState.extraActions.tab === 'abilities'}
+                >Actions</button>
             </li>
         </ul>
 
@@ -261,7 +380,7 @@
                             {#each tickDmg as hit}
                                 <div class="damage-row">
                                     <span class="text-xs text-gray-300">
-                                        {#if allAbils[hit.ability]?.title} <!-- Capitalise -->
+                                        {#if allAbils[hit.ability]?.title}
                                             {allAbils[hit.ability].title.replace(/\b\w/g, l => l.toUpperCase())}
                                         {:else}
                                             {hit.ability.replace(/\b\w/g, l => l.toUpperCase())}
@@ -316,29 +435,89 @@
                     </div>
                 {/if}
             </div>
-        {:else if uiState.extraActions.tab === 'gear'}
-            <GearChoice
-                gearItems={activeGear}
-                handleAbilityClick={handleAbilityClickExtra}
-                {handleDragStart}
-                style={uiState.activeTab}
-                settings={settingsStore.settings}
-            />
-        {:else if uiState.extraActions.tab === 'abilities'}
-            <p class="section-label">Abilities</p>
-            <AbilityChoice
-                abilities={offGcdAbilities}
-                handleAbilityClick={handleAbilityClickExtra}
-                {handleDragStart}
-                style={uiState.extraActions.tab}
-            />
-            <p class="section-label" style="margin-top: 8px;">Consumables</p>
-            <AbilityChoice
-                abilities={consumables}
-                handleAbilityClick={handleAbilityClickExtra}
-                {handleDragStart}
-                style={uiState.extraActions.tab}
-            />
+        {:else}
+            <!-- Equipped gear visual + actions side by side -->
+            <div class="actions-layout">
+                <!-- Left: equipped gear grid -->
+                <div class="equipped-panel">
+                    {#key uiState.extraActions.tick}
+                    {@const gs = buildGearState(uiState.extraActions.tick)}
+                    {@const isTwoHanded = weaponTypeKeys[uiState.activeTab] && gs[weaponTypeKeys[uiState.activeTab]] === SETTINGS.WEAPON_VALUES.TH}
+                    <div class="equip-grid">
+                        <!--        Col1    Col2    Col3    -->
+                        <!-- Row1:          Head    Pocket  -->
+                        <div></div>
+                        <div class="equip-cell"><img src={getEquipIcon('helmet')} alt='Head' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.helmet; }} /></div>
+                        <div class="equip-cell"><img src={getEquipIcon('pocket')} alt='Pocket' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.pocket; }} /></div>
+                        <!-- Row2:  Cape    Neck    Ammo    -->
+                        <div class="equip-cell"><img src={getEquipIcon('cape')} alt='Cape' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.cape; }} /></div>
+                        <div class="equip-cell"><img src={getEquipIcon('necklace')} alt='Neck' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.necklace; }} /></div>
+                        <div class="equip-cell"><img src={getAmmoIcon()} alt='Ammo' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.ammo; }} /></div>
+                        <!-- Row3:  MH/2H   Body    OH/empty -->
+                        {#if isTwoHanded}
+                            <div class="equip-cell equip-badgeable">
+                                <img src={getWeaponIcon('th')} alt='2H' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = getWeaponFallback('th'); }} />
+                                {#if getWeaponBadge('th')}<img src={getWeaponBadge('th')} alt="" class="equip-badge" />{/if}
+                            </div>
+                            <div class="equip-cell"><img src={getEquipIcon('body')} alt='Body' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.body; }} /></div>
+                            <div></div>
+                        {:else}
+                            <div class="equip-cell equip-badgeable">
+                                <img src={getWeaponIcon('mh')} alt='MH' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = getWeaponFallback('mh'); }} />
+                                {#if getWeaponBadge('mh')}<img src={getWeaponBadge('mh')} alt="" class="equip-badge" />{/if}
+                            </div>
+                            <div class="equip-cell"><img src={getEquipIcon('body')} alt='Body' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.body; }} /></div>
+                            <div class="equip-cell equip-badgeable">
+                                <img src={getWeaponIcon('oh')} alt='OH' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = getWeaponFallback('oh'); }} />
+                                {#if getWeaponBadge('oh')}<img src={getWeaponBadge('oh')} alt="" class="equip-badge" />{/if}
+                            </div>
+                        {/if}
+                        <!-- Row4:          Legs            -->
+                        <div></div>
+                        <div class="equip-cell"><img src={getEquipIcon('legs')} alt='Legs' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.legs; }} /></div>
+                        <div></div>
+                        <!-- Row5:  Gloves  Boots   Ring    -->
+                        <div class="equip-cell"><img src={getEquipIcon('gloves')} alt='Gloves' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.gloves; }} /></div>
+                        <div class="equip-cell"><img src={getEquipIcon('boots')} alt='Boots' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.boots; }} /></div>
+                        <div class="equip-cell"><img src={getEquipIcon('ring')} alt='Ring' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.ring; }} /></div>
+                    </div>
+                    {/key}
+                </div>
+                <!-- Right: actions -->
+                <div class="actions-panel">
+                    <GearChoice
+                            gearItems={activeGear}
+                            handleAbilityClick={handleAbilityClickExtra}
+                            {handleDragStart}
+                            style={uiState.activeTab}
+                            settings={settingsStore.settings}
+                        />
+                    <AbilityChoice
+                            abilities={offGcdAbilities}
+                            handleAbilityClick={handleAbilityClickExtra}
+                            {handleDragStart}
+                            style="abilities"
+                        />
+                    <AbilityChoice
+                            abilities={prayers}
+                            handleAbilityClick={handleAbilityClickExtra}
+                            {handleDragStart}
+                            style="abilities"
+                        />
+                    <AbilityChoice
+                            abilities={spells}
+                            handleAbilityClick={handleAbilityClickExtra}
+                            {handleDragStart}
+                            style="abilities"
+                        />
+                    <AbilityChoice
+                            abilities={consumables}
+                            handleAbilityClick={handleAbilityClickExtra}
+                            {handleDragStart}
+                            style="abilities"
+                        />
+                </div>
+            </div>
         {/if}
 
         <!-- Extra actions bar (always visible) -->
@@ -379,9 +558,9 @@
 
     .tick-summary {
         width: 100%;
-        padding: 0.5rem;
+        padding: 0.3rem;
         border-bottom: 1px solid #444;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.3rem;
     }
 
     .nulled-badge {
@@ -517,6 +696,76 @@
         letter-spacing: 0.5px;
         width: 100%;
         padding: 0 0.5rem;
+    }
+    .action-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .action-row > :first-child {
+        flex: 1;
+        min-width: 0;
+    }
+    .row-label {
+        font-size: 0.55rem;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        writing-mode: vertical-rl;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .actions-layout {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+    }
+    .equipped-panel {
+        flex: 0 0 25%;
+        min-width: 0;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .equip-grid {
+        display: inline-grid;
+        grid-template-columns: repeat(3, 46px);
+        grid-auto-rows: 46px;
+        gap: 2px;
+        justify-items: center;
+        align-items: center;
+    }
+    .equip-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .equip-icon {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        border: 1px solid #555;
+        border-radius: 3px;
+        background: rgba(0,0,0,0.3);
+    }
+    .equip-badgeable {
+        position: relative;
+    }
+    .equip-badge {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 14px;
+        height: 14px;
+        border-radius: 2px;
+    }
+    .actions-panel {
+        flex: 0 0 75%;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
     }
 
     .extra-actions-bar {

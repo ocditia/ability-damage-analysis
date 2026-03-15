@@ -135,11 +135,11 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
         }
         // channeller's ring
         if (
-            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELER_E) &&
+            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E) &&
             abils[abilityKey]['ability classification'] === 'channel'
         ) {
             crit_chance += 0.04;
-            crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELER_RING_STACKS]);
+            crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELLER_RING_STACKS]);
         }
 
         // (g)conc

@@ -193,7 +193,7 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         poisonPerTick: new Array(BAR_SIZE).fill(0),
         lastAftershockProc: 0,
         distributionStats: [],
-        combatStyle: "melee",
+        combatStyle: uiStore.activeTab ?? "melee",
         fulProcHistory: [],
         scrollDamage: 0,
         familiarPerTick: new Array(BAR_SIZE).fill(0),
@@ -402,6 +402,7 @@ function processCurrentTick(state: RotationState, settingsCopy: any, BAR_SIZE: n
     const stalledAbility = rotationStore.stalledAbilities[state.tick];
     if (stalledAbility) {
         style_specific_unification(settingsCopy, abils[stalledAbility]['main style']); //Update gear/combat style
+        state.combatStyle = abils[stalledAbility]['main style'];
         const abil_duration = typeof abils[stalledAbility]['duration'] === 'number' ? abils[stalledAbility]['duration'] : 3;
         settingsCopy['ability'] = stalledAbility;
         // Skip on_stall() call but do everything else
@@ -451,6 +452,7 @@ function processCurrentTickCore(
     const stalledAbility = rotation.stalledAbilities[state.tick];
     if (stalledAbility) {
         style_specific_unification(settingsCopy, abils[stalledAbility]['main style']);
+        state.combatStyle = abils[stalledAbility]['main style'];
         const abil_duration = typeof abils[stalledAbility]['duration'] === 'number' ? abils[stalledAbility]['duration'] : 3;
         settingsCopy['ability'] = stalledAbility;
 
@@ -819,6 +821,7 @@ function processAbilityCore(
     onStall = true
 ) {
     style_specific_unification(settingsCopy, abils[abilityKey]['main style']);
+    rotationState.combatStyle = abils[abilityKey]['main style'];
     updateFulProbability(rotationState, settingsCopy);
 
     on_stall(settingsCopy, abilityKey, rotationState.timers);
@@ -960,6 +963,7 @@ function processAbility(
 ) {
     //TODO release stalled abilities here
     style_specific_unification(settingsCopy, abils[abilityKey]['main style']); //Update gear/combat style
+    rotationState.combatStyle = abils[abilityKey]['main style'];
     updateFulProbability(rotationState, settingsCopy);
 
     on_stall(settingsCopy, abilityKey, rotationState.timers);
@@ -1470,15 +1474,27 @@ function isChannelled(settingsCopy: any, key: string): boolean {
 /**
  * 
  */
+function getAftershockVariant(combatStyle: string): ABILITIES {
+    switch (combatStyle) {
+        case 'melee': return ABILITIES.AFTERSHOCK_MELEE;
+        case 'ranged': return ABILITIES.AFTERSHOCK_RANGED;
+        case 'necromancy':
+        case 'necro': return ABILITIES.AFTERSHOCK_NECRO;
+        case 'magic':
+        default: return ABILITIES.AFTERSHOCK_MAGIC;
+    }
+}
+
 function handleAftershock(state: RotationState, settingsCopy: any) {
         // Check every 10 ticks if 500 damage has been done since last checkpoint
         if (state.tick % 10 === 0 && settingsCopy[SETTINGS.AFTERSHOCK] > 0) {
             const currentTotalDamage = state.dmgs.reduce((acc, current) => acc + current, 0);
             const damageSinceLastCheck = currentTotalDamage - state.lastAftershockProc;
-            
+
             if (damageSinceLastCheck >= 50000) {
                 state.lastAftershockProc = currentTotalDamage;
-                processSingleHitAbility(state, settingsCopy, ABILITIES.AFTERSHOCK, state.tick+2);
+                const aftershockAbility = getAftershockVariant(state.combatStyle);
+                processSingleHitAbility(state, settingsCopy, aftershockAbility, state.tick+2);
             }
         }
 }

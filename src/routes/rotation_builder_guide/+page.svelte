@@ -93,7 +93,7 @@
                             to see available abilities.
                         </p>
                         <p class="mb-4">
-                            <strong>Left click</strong> an ability to add it to the next free slot on the bar.
+                            <strong>Left click</strong> to add an ability to the next free slot on the bar.
                             You can also <strong>drag</strong> abilities from the panel onto a specific tick.
                             To remove an ability, <strong>right click</strong> it on the bar.
                         </p>

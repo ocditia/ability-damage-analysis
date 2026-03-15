@@ -556,7 +556,8 @@ const SETTINGS = {
     },
     RANGED_MH: 'ranged main-hand weapon',
     RANGED_MH_VALUES: {
-        CUSTOM: 'custom'
+        CUSTOM: 'custom',
+        BLIGHTBOUND: 'blightbound crossbow',
     },
     MELEE_MH: 'melee main-hand weapon',
     MELEE_MH_VALUES: {
@@ -591,7 +592,8 @@ const SETTINGS = {
     RANGED_OH: 'ranged off-hand weapon',
     RANGED_OH_VALUES: {
         CUSTOM: 'custom oh',
-        CUSTOM_SHIELD: 'custom shield'
+        CUSTOM_SHIELD: 'custom shield',
+        BLIGHTBOUND: 'off-hand blightbound crossbow',
     },
     MELEE_OH: 'melee off-hand weapon',
     MELEE_OH_VALUES: {
@@ -1886,7 +1888,10 @@ const settingsConfig = {
     [SETTINGS.RANGED_MH]: {
         label: 'Mh',
         default: SETTINGS.RANGED_MH_VALUES.CUSTOM,
-        options: [{ text: 'Custom', value: SETTINGS.RANGED_MH_VALUES.CUSTOM }]
+        options: [
+            { text: 'Custom', value: SETTINGS.RANGED_MH_VALUES.CUSTOM },
+            { text: 'Blightbound', value: SETTINGS.RANGED_MH_VALUES.BLIGHTBOUND },
+        ]
     },
     [SETTINGS.MELEE_MH]: {
         label: 'Mh',

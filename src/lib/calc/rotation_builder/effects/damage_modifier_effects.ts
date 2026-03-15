@@ -325,23 +325,6 @@ export function applyVanquishEffect(
 }
 
 /**
- * Apply metamorphosis effect
- */
-export function applyMetamorphosisEffect(
-    ctx: DamageModifierContext,
-    damage: number
-): number {
-    const { settings, abilityKey } = ctx;
-    const damageType = abils[abilityKey]?.['damage type'];
-
-    if (settings['meta'] === true && damageType === 'magic') {
-        return Math.floor(1.66 * damage);
-    }
-
-    return damage;
-}
-
-/**
  * Apply essence corruption 25 stack bonus (flat damage)
  */
 export function applyEssenceCorruptionEffect(
@@ -403,10 +386,6 @@ export function applyAllDamageModifiers(
 
     // Vanquish
     damage = applyVanquishEffect(ctx, damage);
-
-    // Metamorphosis
-    damage = applyMetamorphosisEffect(ctx, damage);
-
 
     // Scrimshaws
     damage = applyElementsScrimshawEffect(ctx, damage);

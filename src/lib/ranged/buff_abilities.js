@@ -1,4 +1,4 @@
-import { hit_damage_calculation, ability_damage_calculation } from '../calc/damage_calc.js';
+import { hit_damage_calculation, ability_damage_calculation } from '../calc/damage_calc_rb.js';
 import { ABILITIES } from '../calc/const/const.ts';
 
 const ranged_buff_abilities = {

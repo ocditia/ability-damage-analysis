@@ -30,7 +30,7 @@ function applyAbilitySpecificEffects(
 
     // Death Spark empowered auto (Omni Guard) - at 5 stacks the auto does 2x damage
     if (abilityKey === ABILITIES.NECRO_AUTO &&
-        settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD &&
+        (settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD || settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD_IM) &&
         (settings[SETTINGS.DEATH_SPARK_STACKS] || 0) >= 5) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2);
     }
@@ -130,7 +130,7 @@ function applyStackEffects(ctx: EffectContext): void {
     // Omni Guard - Death Spark: each auto generates 1 stack (max 5).
     // Empowered auto at 5 stacks resets to 0 (damage applied in applyAbilitySpecificEffects).
     if (abilityKey === ABILITIES.NECRO_AUTO &&
-        settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD) {
+        (settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD || settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD_IM)) {
         const currentStacks = settings[SETTINGS.DEATH_SPARK_STACKS] || 0;
         if (currentStacks >= 5) {
             // Empowered auto was fired — reset stacks
@@ -142,7 +142,7 @@ function applyStackEffects(ctx: EffectContext): void {
 
     // Devourer's Guard - Soul Reave: each auto generates 1 stack, at 4 generates 1 Residual Soul (resets)
     if (abilityKey === ABILITIES.NECRO_AUTO &&
-        settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD) {
+        (settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD || settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD_IM)) {
         const stacks = (settings[SETTINGS.SOUL_REAVE_STACKS] || 0) + 1;
         if (stacks >= 4) {
             settings[SETTINGS.SOUL_REAVE_STACKS] = 0;

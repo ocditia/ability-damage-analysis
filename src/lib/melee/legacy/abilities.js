@@ -1,5 +1,5 @@
 import { ABILITIES } from '../calc/const';
-import { ability_damage_calculation, hit_damage_calculation } from '../calc/damage_calc.js';
+import { ability_damage_calculation, hit_damage_calculation } from '../../calc/legacy/damage_calc.js';
 
 const abilities = {
     [ABILITIES.MELEE_AUTO]: {
@@ -329,6 +329,12 @@ const abilities = {
     [ABILITIES.PURIFYING_LIGHT]: {
         title: 'purifying light',
         calc: hit_damage_calculation,
+    },
+    [ABILITIES.AFTERSHOCK_MELEE]: {
+        title: 'Aftershock',
+        calc: hit_damage_calculation,
+        icon: '/effect_icons/perks/Aftershock.png',
+        common: false
     }
 };
 

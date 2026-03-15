@@ -1,4 +1,5 @@
 import { ToolMode } from '$lib/calc/rotation_builder/ui_material/toolModes.ts';
+import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
 
 // UI Constants
 const BASE_BAR_ROW_GAP = 30;
@@ -88,7 +89,15 @@ export const uiActions = {
         uiStore.extraActions.show = true;
         uiStore.extraActions.tick = tick;
         uiStore.extraActions.infoAbility = ability;
-        uiStore.extraActions.barIndex = 0;
+        // Find the first empty slot in the extra action bar for this tick
+        const extraBar = rotationStore.extraActionBar[tick];
+        let idx = 0;
+        if (extraBar) {
+            while (idx < extraBar.length && extraBar[idx] != null) {
+                idx++;
+            }
+        }
+        uiStore.extraActions.barIndex = idx;
     },
 
     hideExtraActions() {

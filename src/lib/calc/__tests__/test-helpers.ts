@@ -151,7 +151,7 @@ export function createBaseSettings(overrides: Record<string, any> = {}): Record<
 
         // Magic crit chance settings (rota_object_helper.ts calc_crit_chance)
         [SETTINGS.CONCENTRATED_BLAST_STACKS]: 0,  // Line 146 - magic crit boost
-        [SETTINGS.CHANNELER_RING_STACKS]: 0,      // Line 142 - channeler ring crit stacks
+        [SETTINGS.CHANNELLER_RING_STACKS]: 0,      // Line 142 - channeller ring crit stacks
         [SETTINGS.FLOW_STACKS]: 0,                // Line 119 - magic boosted AD multiplier (CRITICAL)
 
         // Melee crit chance settings
@@ -497,7 +497,7 @@ export function createBlankSettings(
         [SETTINGS.CUSTOM_CRIT]: 0,
         [SETTINGS.CRIT_BUFF]: false,
         [SETTINGS.CONCENTRATED_BLAST_STACKS]: 0,
-        [SETTINGS.CHANNELER_RING_STACKS]: 0,
+        [SETTINGS.CHANNELLER_RING_STACKS]: 0,
         [SETTINGS.FLOW_STACKS]: 0,
         [SETTINGS.FURY_BUFF]: SETTINGS.FURY_BUFF_VALUES?.NONE || 'none',
         [SETTINGS.DRACOLICH_INFUSION]: false,

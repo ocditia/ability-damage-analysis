@@ -294,7 +294,7 @@
                                 <Select
                                     bind:setting={settings[SETTINGS.VULN]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Vulnerability_icon.webp"
+                                    img="/effect_icons/magic/Vulnerability_icon.webp"
                                 />
                                 <Select
                                     bind:setting={settings[SETTINGS.ENDURING_RUIN_BLEED]}
@@ -344,15 +344,6 @@
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Applies to regular abilities only</h5>
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.WALKED_TARGET]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.NEEDLE_STRIKE]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/needle_strike.png"
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.PUNCTURE_STACKS]}
                                     onchange={() => updateDamages()}

@@ -1,5 +1,5 @@
 import { ABILITIES } from '../calc/const/const';
-import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc.js';
+import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../../calc/legacy/damage_calc.js';
 
 const abilities = {
     [ABILITIES.MAGIC_AUTO]: {
@@ -173,10 +173,10 @@ const abilities = {
         icon: '/ability_icons/magic/30x30/zuriels_staff.png',
         common: false
     },
-    [ABILITIES.AFTERSHOCK]: {
+    [ABILITIES.AFTERSHOCK_MAGIC]: {
         title: 'Aftershock',
         calc: hit_damage_calculation,
-        icon: '/effect_icons/Aftershock.png',
+        icon: '/effect_icons/perks/Aftershock.png',
         common: false
     }
 };
