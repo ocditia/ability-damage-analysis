@@ -101,7 +101,7 @@ const abilities = {
     [ABILITIES.THE_LAST_COMMAND]: {
         title: 'The last command',
         calc: hit_damage_calculation,
-        icon: '/gear_icons/legatuss_emberstaff.png'
+        icon: '/gear_icons/magic/legatuss emberstaff.png'
     },
     [ABILITIES.RUNE_FLAME]: {
         title: 'Rune flame',

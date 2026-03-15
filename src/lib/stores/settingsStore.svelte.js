@@ -8,7 +8,7 @@ export const settingsStore = $state({
 });
 
 // Initialize settings
-export async function initializeSettings() {
+export function initializeSettings() {
     if (settingsStore.initialized) return;
 
     let storedSettings = {};
@@ -38,7 +38,7 @@ export async function initializeSettings() {
     settingsStore.initialized = true;
 }
 
-await initializeSettings();
+initializeSettings();
 // Settings actions
 export const settingsActions = {
     // Update a setting value

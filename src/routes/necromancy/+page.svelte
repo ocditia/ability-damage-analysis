@@ -253,7 +253,7 @@
                                 <Select
                                     bind:setting={settings[SETTINGS.SLAYER_PERK]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/25px-Undead_Slayer.webp"
+                                    img="/effect_icons/perks/25px-Undead_Slayer.webp"
                                 />
                                 <Select
                                     bind:setting={settings[SETTINGS.SLAYER_SIGIL]}

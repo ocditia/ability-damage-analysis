@@ -92,7 +92,7 @@ const abilities = {
     [ABILITIES.THE_FINAL_FLURRY]: {
         title: 'The final flurry',
         calc: ability_damage_calculation,
-        icon: '/gear_icons/varanuss_mercy.png'
+        icon: '/gear_icons/melee/varanuss mercy.png'
     },
     [ABILITIES.SLICE_N_DICE]: {
         title: 'Slice & dice',
@@ -118,7 +118,7 @@ const abilities = {
     /*[ABILITIES.THE_FINAL_FLURRY]: {
         title: 'The final flurry',
         calc: ability_damage_calculation,
-        icon: '/gear_icons/varanuss_mercy.png'
+        icon: '/gear_icons/melee/varanuss mercy.png'
     },*/
     [ABILITIES.ARMADYLS_JUDGEMENT]: {
         title: "Armadyl's judgement",
