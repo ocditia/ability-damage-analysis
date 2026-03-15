@@ -3146,7 +3146,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.ENERGY_DRAIN]: {
         // ability name
-        'min hit': 0.55, // min % of abil expressed as a decimal
+        'min hit': 0.65, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3159,7 +3159,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.FAVOUR_OF_THE_WAR_GOD]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.25, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3172,7 +3172,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.ARMADYLS_JUDGEMENT]: {
         // ability name
-        'min hit': 3.6, // min % of abil expressed as a decimal
+        'min hit': 4.0, // min % of abil expressed as a decimal
         'var hit': 0.8,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3185,7 +3185,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.WARSTRIKE]: {
         // ability name
-        'min hit': 2.0, // min % of abil expressed as a decimal
+        'min hit': 2.25, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3199,7 +3199,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.SUNDER]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.25, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3213,7 +3213,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.BACKSTAB]: {
         // ability name
-        'min hit': 1.3, // min % of abil expressed as a decimal
+        'min hit': 1.5, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3226,7 +3226,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.LIQUEFY]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.25, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3252,7 +3252,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.ICY_TEMPEST_1]: {
         // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
+        'min hit': 1.15, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3264,7 +3264,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.ICY_TEMPEST_2]: {
         // ability name
-        'min hit': 1.5, // min % of abil expressed as a decimal
+        'min hit': 1.75, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3277,7 +3277,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.ICY_TEMPEST]: {
         // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
+        'min hit': 1.15, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3290,11 +3290,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             1: [ABILITIES.ICY_TEMPEST_1, 'next hit', ABILITIES.ICY_TEMPEST_2]
         },
         hitTimings: [0, 0], 
-        cooldown: 0
+        cooldown: 15
     },
     [ABILITIES.WEAKEN_SPECIAL_ATTACK]: {
         // ability name
-        'min hit': 0.55, // min % of abil expressed as a decimal
+        'min hit': 0.75, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3321,7 +3321,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.SLICE_N_DICE_1]: {
         // ability name
-        'min hit': 1.6, // min % of abil expressed as a decimal
+        'min hit': 1.8, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3334,7 +3334,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 3},
     [ABILITIES.SLICE_N_DICE_2]: {
         // ability name
-        'min hit': 0.8, // min % of abil expressed as a decimal
+        'min hit': 0.9, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3347,7 +3347,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 3},
     [ABILITIES.SLICE_N_DICE_3]: {
         // ability name
-        'min hit': 0.4, // min % of abil expressed as a decimal
+        'min hit': 0.45, // min % of abil expressed as a decimal
         'var hit': 0.1,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3399,7 +3399,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.DRACONIC_PUNCTURE]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.25, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3417,7 +3417,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.SWEEP_HIT]: {
         // ability name
-        'min hit': 1.05, // min % of abil expressed as a decimal
+        'min hit': 1.2, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3448,7 +3448,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.DRACONIC_CLEAVE]: {
         // ability name
-        'min hit': 2.5, // min % of abil expressed as a decimal
+        'min hit': 2.75, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3461,7 +3461,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 7.2},
     [ABILITIES.DRACONIC_BLOW]: {
         // ability name
-        'min hit': 2.1, // min % of abil expressed as a decimal
+        'min hit': 2.4, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3474,7 +3474,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.DRACONIC_SLASH]: {
         // ability name
-        'min hit': 2.1, // min % of abil expressed as a decimal
+        'min hit': 2.4, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3540,7 +3540,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.QUICK_SMASH]: {
         // ability name
-        'min hit': 1.0, // min % of abil expressed as a decimal
+        'min hit': 1.15, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3553,7 +3553,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 10.2},
     [ABILITIES.AIMED_STRIKE]: {
         // ability name
-        'min hit': 1.3, // min % of abil expressed as a decimal
+        'min hit': 1.5, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3566,7 +3566,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.DISRUPT]: {
         // ability name
-        'min hit': 2.0, // min % of abil expressed as a decimal
+        'min hit': 2.3, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3592,7 +3592,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.IMPALE]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.3, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3605,7 +3605,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.HEALING_BLADE]: {
         // ability name
-        'min hit': 1.6, // min % of abil expressed as a decimal
+        'min hit': 1.85, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3618,7 +3618,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.SARADOMINS_LIGHTNING_HIT]: {
         // ability name
-        'min hit': 2.5, // min % of abil expressed as a decimal
+        'min hit': 2.85, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3644,11 +3644,12 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             1: [ABILITIES.SARADOMINS_LIGHTNING_HIT, 'next hit', ABILITIES.SARADOMINS_LIGHTNING_HIT]
         },
         hitTimings: [2, 2], // TODO fix
+        adrenaline: 100,
         cooldown: 0
     },
     [ABILITIES.OBLITERATE]: {
         // ability name
-        'min hit': 1.4, // min % of abil expressed as a decimal
+        'min hit': 1.6, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3662,7 +3663,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.FEINT]: {
         // ability name
-        'min hit': 2.3, // min % of abil expressed as a decimal
+        'min hit': 2.55, // min % of abil expressed as a decimal
         'var hit': 0.4,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3670,12 +3671,12 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
-        'damage type': 'melee'
-    ,
+        'damage type': 'melee',
+        adrenaline: 25,
         cooldown: 0},
     [ABILITIES.SPEAR_WALL]: {
         // ability name
-        'min hit': 0.9, // min % of abil expressed as a decimal
+        'min hit': 1.05, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -3688,7 +3689,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.ICE_CLEAVE]: {
         // ability name
-        'min hit': 1.6, // min % of abil expressed as a decimal
+        'min hit': 1.85, // min % of abil expressed as a decimal
         'var hit': 0.3,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
