@@ -13,6 +13,7 @@ const SETTINGS = {
     ABILITY_DAMAGE: 'ability damage',
     NECROMANCY_LEVEL: 'necromancy level',
     MAGIC_LEVEL: 'magic level',
+    ATTACK_LEVEL: 'attack level',
     STRENGTH_LEVEL: 'strength level',
     RANGED_LEVEL: 'ranged level',
     POTION: 'potion',
@@ -110,6 +111,7 @@ const SETTINGS = {
         LVL3_UNDEAD: 'tier 3 undead'
     },
     TARGET_HP_PERCENT: 'target hp percent',
+    PLAYER_HP_PERCENT: 'player hp percent',
     GENOCIDAL: 'genocidal',
     IMPATIENT: 'impatient',
     AFTERSHOCK: 'aftershock',
@@ -198,7 +200,8 @@ const SETTINGS = {
         ELITE_TECTONIC: 'elite tectonic mask',
         SLISKE: 'anima core helm of sliske',
         GHOST_HUNTER: 'ghost hunter goggles',
-        MASTERWORK: 'masterwork magic hat'
+        MASTERWORK: 'masterwork magic hat',
+        TUMEKENS_RESPLENDENCE: 'mask of tumeken\'s resplendence'
     },
     RANGED_HELMET: 'ranged helmet',
     RANGED_HELMET_VALUES: {
@@ -235,6 +238,7 @@ const SETTINGS = {
         TECTONIC: 'tectonic robe top',
         GHOST_HUNTER: 'ghost hunter body',
         MASTERWORK: 'masterwork magic robe top',
+        TUMEKENS_RESPLENDENCE: 'robe top of tumeken\'s resplendence'
     },
     RANGED_BODY: 'ranged body',
     RANGED_BODY_VALUES: {
@@ -272,6 +276,7 @@ const SETTINGS = {
         SLISKE: 'anima core legs of sliske',
         GHOST_HUNTER: 'ghost hunter legs',
         MASTERWORK: 'masterwork magic robe bottom',
+        TUMEKENS_RESPLENDENCE: 'robe bottom of tumeken\'s resplendence'
     },
     RANGED_LEGS: 'ranged legs',
     RANGED_LEGS_VALUES: {
@@ -309,6 +314,7 @@ const SETTINGS = {
         KWW_E: 'enhanced kerapacs wristwraps',
         MASTERWORK: 'masterwork magic gloves',
         TUSKA: 'warpriest of tuska gauntlets',
+        TUMEKENS_RESPLENDENCE: 'gloves of tumeken\'s resplendence'
     },
     RANGED_GLOVES: 'ranged gloves',
     RANGED_GLOVES_VALUES: {
@@ -346,7 +352,8 @@ const SETTINGS = {
         BLAST_E: 'enhanced blast diffusion boots',
         SH: 'silverhawk boots',
         MASTERWORK: 'masterwork magic boots',
-        TUSKA: 'warpriest of tuska boots'
+        TUSKA: 'warpriest of tuska boots',
+        TUMEKENS_RESPLENDENCE: 'boots of tumeken\'s resplendence'
     },
     RANGED_BOOTS: 'ranged boots',
     RANGED_BOOTS_VALUES: {
@@ -465,87 +472,7 @@ const SETTINGS = {
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring'
     },
-    MAGIC_POCKET: 'mage pocket',
-    MAGIC_POCKET_VALUES: {
-        NONE: 'none',
-        GRIM: 'erethdors grimoire',
-        FUL: 'scripture of ful',
-        JAS: 'scripture of jas',
-        AMASCUT: 'scripture of amascut',
-        GWD3: 'gwd3 scripture',
-        IGOD: 'illuminated god book',
-        UNDERWORLD_GRIM: 'underworld grimoire 4',
-        ELEMENTS: 'scrimshaw of elements',
-        SUPERIOR_ELEMENTS: 'superior scrimshaw of elements'
-    },
-    RANGED_POCKET: 'range pocket',
-    RANGED_POCKET_VALUES: {
-        NONE: 'none',
-        GRIM: 'erethdors grimoire',
-        FUL: 'scripture of ful',
-        JAS: 'scripture of jas',
-        AMASCUT: 'scripture of amascut',
-        GWD3: 'gwd3 scripture',
-        IGOD: 'illuminated god book',
-        UNDERWORLD_GRIM: 'underworld grimoire 4',
-        CRUELTY: 'scrimshaw of cruelty',
-        SUPERIOR_CRUELTY: 'superior scrimshaw of cruelty'
-    },
-    MELEE_POCKET: 'melee pocket',
-    MELEE_POCKET_VALUES: {
-        NONE: 'none',
-        GRIM: 'erethdors grimoire',
-        FUL: 'scripture of ful',
-        JAS: 'scripture of jas',
-        AMASCUT: 'scripture of amascut',
-        GWD3: 'gwd3 scripture',
-        IGOD: 'illuminated god book',
-        UNDERWORLD_GRIM: 'underworld grimoire 4'
-    },
-    /*
-    MAGIC_RING: 'magic ring',
-    MAGIC_RING_VALUES: {
-        NONE: 'none',
-        REAVERS: 'reavers ring',
-        RODI: 'ring of death (i)',
-        ROD: 'ring of death',
-        ASRI: 'asylum surgeons ring (i)',
-        ASR: 'asylum surgeons ring',
-        CHANNELLER: "channeller's ring",
-        CHANNELLER_E: "channeller's ring+"
-    },
-    RANGED_RING: 'range ring',
-    RANGED_RING_VALUES: {
-        NONE: 'none',
-        REAVERS: 'reavers ring',
-        RODI: 'ring of death (i)',
-        ROD: 'ring of death',
-        ASRI: 'asylum surgeons ring (i)',
-        ASR: 'asylum surgeons ring',
-        STALKER: 'stalkers ring',
-        STALKER_E: 'stalkers ring+'
-    },
-    MELEE_RING: 'melee ring',
-    MELEE_RING_VALUES: {
-        NONE: 'none',
-        REAVERS: 'reavers ring',
-        RODI: 'ring of death (i)',
-        ROD: 'ring of death',
-        ASRI: 'asylum surgeons ring (i)',
-        ASR: 'asylum surgeons ring',
-        CHAMPION: 'champions ring',
-        CHAMPION_E: 'champions ring+'
-    },
-    NECRO_RING: 'necro ring',
-    NECRO_RING_VALUES: {
-        NONE: 'none',
-        REAVERS: 'reavers ring',
-        ZORGOTH: 'zorgoths soul ring',
-        RODI: 'ring of death (i)',
-        ROD: 'ring of death',
-        ASRI: 'asylum surgeons ring (i)',
-        ASR: 'asylum surgeons ring'
-    },
+    */
     MAGIC_POCKET: 'mage pocket',
     MAGIC_POCKET_VALUES: {
         NONE: 'none',
@@ -594,7 +521,6 @@ const SETTINGS = {
         IGOD: 'illuminated god book',
         UNDERWORLD_GRIM: 'underworld grimoire 4'
     },
-    */
     POCKET: 'pocket',
     POCKET_VALUES: {
         NONE: 'none',
@@ -625,7 +551,8 @@ const SETTINGS = {
     MAGIC_MH: 'magic main-hand weapon',
     MAGIC_MH_VALUES: {
         CUSTOM: 'custom',
-        ROAR_OF_AWAKENING: 'roar of awakening'
+        ROAR_OF_AWAKENING: 'roar of awakening',
+        ROAR_OF_AWAKENING_IM: 'roar of awakening [IM]',
     },
     RANGED_MH: 'ranged main-hand weapon',
     RANGED_MH_VALUES: {
@@ -636,6 +563,7 @@ const SETTINGS = {
         CUSTOM: 'custom',
         DARK_ICE_SHARD: 'dark ice shard',
         LENG: 'dark shard of leng',
+        LENG_IM: 'dark shard of leng [IM]',
         KERIS: 'keris',
         KERIS_PROC: 'keris proc',
         PRIMED_KERIS: 'primed keris',
@@ -647,7 +575,9 @@ const SETTINGS = {
     NECRO_MH_VALUES: {
         CUSTOM: 'custom',
         OMNI_GUARD: 'omni guard',
-        DEVOURERS_GUARD: 'devourers guard'
+        OMNI_GUARD_IM: 'omni guard [IM]',
+        DEVOURERS_GUARD: 'devourers guard',
+        DEVOURERS_GUARD_IM: 'devourers guard [IM]'
     },
     OH: 'off-hand weapon',
     OH_TIER_CUSTOM: 'off-hand weapon custom tier',
@@ -655,6 +585,7 @@ const SETTINGS = {
     MAGIC_OH_VALUES: {
         CUSTOM: 'custom oh',
         ODE_TO_DECEIT: 'ode to deceit',
+        ODE_TO_DECEIT_IM: 'ode to deceit [IM]',
         CUSTOM_SHIELD: 'custom shield'
     },
     RANGED_OH: 'ranged off-hand weapon',
@@ -667,7 +598,8 @@ const SETTINGS = {
         CUSTOM: 'custom oh',
         CUSTOM_SHIELD: 'custom shield',
         DARK_ICE_SLIVER: 'dark ice sliver',
-        LENG: 'dark sliver of leng'
+        LENG: 'dark sliver of leng',
+        LENG_IM: 'dark sliver of leng [IM]'
     },
     NECRO_OH: 'necro off-hand weapon',
     NECRO_OH_VALUES: {
@@ -688,11 +620,13 @@ const SETTINGS = {
         INQ_STAFF: 'inquisitor staff',
         INQ_STAFF_E: 'inquisitor staff+',
         FSOA: 'fractured staff of armadyl',
+        FSOA_IM: 'fractured staff of armadyl [IM]',
     },
     RANGED_TH: 'ranged two-hand weapon',
     RANGED_TH_VALUES: {
         CUSTOM: 'custom th',
         BOLG: 'bow of the last guardian',
+        BOLG_IM: 'bow of the last guardian [IM]',
         HEX_E: 'hexhunter bow+',
         HEX: 'hexhunter bow',
     },
@@ -703,6 +637,7 @@ const SETTINGS = {
         T_MAUL_E: 'terrasaur maul+',
         MW_SPEAR: 'masterwork spear of annihilation',
         EZK: 'ezk',
+        EZK_IM: 'ezk [IM]',
     },
     NECRO_TH: 'necro two-hand weapon',
     NECRO_TH_VALUES: {
@@ -719,6 +654,29 @@ const SETTINGS = {
         HYDRIX_BOLTS: 'hydrix bakriminel bolts (e)'
     },
     AMMO_TIER: 'ammo tier',
+    MELEE_AMMO_SLOT: 'melee ammo slot',
+    MELEE_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+        NODON_SPIKE_HARNESS: 'nodon spike harness',
+    },
+    RANGED_AMMO_SLOT: 'ranged ammo slot',
+    RANGED_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+        FUL_ARROWS: 'ful arrows',
+        WEN_ARROWS: 'wen arrows',
+        DEATHSPORE_ARROWS: 'deathspore arrows',
+        JAS_ARROWS: 'jas arrows',
+        BIK_ARROWS: 'bik arrows',
+        HYDRIX_BOLTS: 'hydrix bakriminel bolts (e)',
+    },
+    MAGIC_AMMO_SLOT: 'magic ammo slot',
+    MAGIC_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+    },
+    NECRO_AMMO_SLOT: 'necro ammo slot',
+    NECRO_AMMO_SLOT_VALUES: {
+        NONE: 'none',
+    },
     AUTO_CAST: 'auto cast',
     AUTO_CAST_VALUES: {
         NONE: 'none',
@@ -731,6 +689,7 @@ const SETTINGS = {
     BITING: 'biting',
     PRECISE: 'precise',
     ERUPTIVE: 'eruptive',
+    EQ_PERK: 'eq perk',
     FLANKING: 'flanking',
     CAROMING: 'caroming',
     RUTHLESS_RANK: 'ruthless rank',
@@ -772,6 +731,8 @@ const SETTINGS = {
         STUNNED: 'stunned',
         BOUND_STUNNED: 'bound and stunned'
     },
+    DEVOURER_NEXUS: 'devourer nexus',
+    TUMEKENS_RESPLENDENCE_ASPHYX: 'tumeken\'s resplendence asphyxiate',
     DRACONIC_FRUIT: 'draconic fruit',
     ENDURING_RUIN_HIT: 'enduring ruin hit',
     ENDURING_RUIN_HIT_VALUES: {
@@ -933,6 +894,10 @@ const settingsConfig = {
         label: 'Magic Level',
         default: 145,
         style: 'magic'
+    },
+    [SETTINGS.ATTACK_LEVEL]: {
+        label: 'Attack Level',
+        default: 145
     },
     [SETTINGS.STRENGTH_LEVEL]: {
         label: 'Strength Level',
@@ -1136,6 +1101,10 @@ const settingsConfig = {
         label: 'Target hp %',
         default: 50
     },
+    [SETTINGS.PLAYER_HP_PERCENT]: {
+        label: 'Player hp %',
+        default: 100
+    },
     [SETTINGS.GENOCIDAL]: {
         label: 'Genocidal %',
         default: 0
@@ -1236,6 +1205,49 @@ const settingsConfig = {
         label: 'Demon Slayer Perk',
         default: false
     },
+    [SETTINGS.DEVOURER_NEXUS]: {
+        label: 'Devourer nexus',
+        default: false
+    },
+    [SETTINGS.MELEE_AMMO_SLOT]: {
+        label: 'Ammo slot',
+        default: SETTINGS.MELEE_AMMO_SLOT_VALUES.NODON_SPIKE_HARNESS,
+        options: [
+            { text: 'None', value: SETTINGS.MELEE_AMMO_SLOT_VALUES.NONE },
+            { text: 'Nodon harness', value: SETTINGS.MELEE_AMMO_SLOT_VALUES.NODON_SPIKE_HARNESS },
+        ]
+    },
+    [SETTINGS.RANGED_AMMO_SLOT]: {
+        label: 'Ammo',
+        default: SETTINGS.RANGED_AMMO_SLOT_VALUES.FUL_ARROWS,
+        options: [
+            { text: 'None', value: SETTINGS.RANGED_AMMO_SLOT_VALUES.NONE },
+            { text: 'Ful arrows', value: SETTINGS.RANGED_AMMO_SLOT_VALUES.FUL_ARROWS },
+            { text: 'Wen arrows', value: SETTINGS.RANGED_AMMO_SLOT_VALUES.WEN_ARROWS },
+            { text: 'Deathspore arrows', value: SETTINGS.RANGED_AMMO_SLOT_VALUES.DEATHSPORE_ARROWS },
+            { text: 'Jas arrows', value: SETTINGS.RANGED_AMMO_SLOT_VALUES.JAS_ARROWS },
+            { text: 'Bik arrows', value: SETTINGS.RANGED_AMMO_SLOT_VALUES.BIK_ARROWS },
+            { text: 'Hydrix bolts (e)', value: SETTINGS.RANGED_AMMO_SLOT_VALUES.HYDRIX_BOLTS },
+        ]
+    },
+    [SETTINGS.MAGIC_AMMO_SLOT]: {
+        label: 'Ammo slot',
+        default: SETTINGS.MAGIC_AMMO_SLOT_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.MAGIC_AMMO_SLOT_VALUES.NONE },
+        ]
+    },
+    [SETTINGS.NECRO_AMMO_SLOT]: {
+        label: 'Ammo slot',
+        default: SETTINGS.NECRO_AMMO_SLOT_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.NECRO_AMMO_SLOT_VALUES.NONE },
+        ]
+    },
+    [SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX]: {
+        label: 'Tumekens asphyx',
+        default: false
+    },
     [SETTINGS.SLAYER_PERK]: {
         label: 'Slayer perk',
         default: SETTINGS.SLAYER_PERK.NONE,
@@ -1328,9 +1340,10 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_HELMET]: {
         label: 'Helmet',
-        default: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC,
+        default: SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_HELMET_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC },
             { text: 'Masterwork', value: SETTINGS.MAGIC_HELMET_VALUES.MASTERWORK },
@@ -1375,9 +1388,10 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_BODY]: {
         label: 'Body',
-        default: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC,
+        default: SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_BODY_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_BODY_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC },
             { text: 'Masterwork', value: SETTINGS.MAGIC_BODY_VALUES.MASTERWORK },
@@ -1423,9 +1437,10 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_LEGS]: {
         label: 'Legs',
-        default: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC,
+        default: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_LEGS_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.TECTONIC },
             { text: 'Elite tectonic', value: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC },
             { text: 'Masterwork', value: SETTINGS.MAGIC_LEGS_VALUES.MASTERWORK },
@@ -1471,9 +1486,10 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_GLOVES]: {
         label: 'Gloves',
-        default: SETTINGS.MAGIC_GLOVES_VALUES.MASTERWORK,
+        default: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_GLOVES_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'DTB', value: SETTINGS.MAGIC_GLOVES_VALUES.DTB },
             { text: 'Cinderbanes', value: SETTINGS.MAGIC_GLOVES_VALUES.CINDERS },
             { text: 'Kerrywaps', value: SETTINGS.MAGIC_GLOVES_VALUES.KWW },
@@ -1521,9 +1537,10 @@ const settingsConfig = {
     },
     [SETTINGS.MAGIC_BOOTS]: {
         label: 'Boots',
-        default: SETTINGS.MAGIC_BOOTS_VALUES.MASTERWORK,
+        default: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE,
         options: [
             { text: 'None/Tank', value: SETTINGS.MAGIC_BOOTS_VALUES.NONE },
+            { text: 'Tumekens resplendence', value: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE },
             { text: 'Blast diff', value: SETTINGS.MAGIC_BOOTS_VALUES.BLAST },
             { text: 'Blast diff+', value: SETTINGS.MAGIC_BOOTS_VALUES.BLAST_E },
             { text: 'Masterwork', value: SETTINGS.MAGIC_BOOTS_VALUES.MASTERWORK },
@@ -1676,6 +1693,7 @@ const settingsConfig = {
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR }
         ]
     },
+    */
     [SETTINGS.MAGIC_POCKET]: {
         label: 'Pocket',
         default: SETTINGS.POCKET_VALUES.GRIM,
@@ -1736,7 +1754,6 @@ const settingsConfig = {
             { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM }
         ]
     },
-    */
     /*
     [SETTINGS.MAGIC_RING]: {
         label: 'Ring',
@@ -1791,66 +1808,6 @@ const settingsConfig = {
             { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
             { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR }
-        ]
-    },
-    [SETTINGS.MAGIC_POCKET]: {
-        label: 'Pocket',
-        default: SETTINGS.POCKET_VALUES.GRIM,
-        options: [
-            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
-            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
-            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
-            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
-            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
-            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
-            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
-            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM },
-            { text: 'Elements', value: SETTINGS.POCKET_VALUES.ELEMENTS },
-            { text: 'Superior elements', value: SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS }
-        ]
-    },
-    [SETTINGS.RANGED_POCKET]: {
-        label: 'Pocket',
-        default: SETTINGS.POCKET_VALUES.GRIM,
-        options: [
-            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
-            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
-            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
-            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
-            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
-            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
-            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
-            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM },
-            { text: 'Cruelty', value: SETTINGS.POCKET_VALUES.CRUELTY },
-            { text: 'Superior cruelty', value: SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY }
-        ]
-    },
-    [SETTINGS.MELEE_POCKET]: {
-        label: 'Pocket',
-        default: SETTINGS.POCKET_VALUES.GRIM,
-        options: [
-            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
-            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
-            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
-            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
-            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
-            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
-            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
-            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM }
-        ]
-    },
-    [SETTINGS.NECRO_POCKET]: {
-        label: 'Pocket',
-        default: SETTINGS.POCKET_VALUES.GRIM,
-        options: [
-            { text: 'None', value: SETTINGS.POCKET_VALUES.NONE },
-            { text: 'Grimoire (active)', value: SETTINGS.POCKET_VALUES.GRIM },
-            { text: 'Ful (active)', value: SETTINGS.POCKET_VALUES.FUL },
-            { text: 'Jas (active)', value: SETTINGS.POCKET_VALUES.JAS },
-            { text: 'Amascut (active)', value: SETTINGS.POCKET_VALUES.AMASCUT },
-            { text: 'New god book (inactive)', value: SETTINGS.POCKET_VALUES.GWD3 },
-            { text: 'OG god book', value: SETTINGS.POCKET_VALUES.IGOD },
-            { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM }
         ]
     },
     */
@@ -1922,7 +1879,8 @@ const settingsConfig = {
         default: SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING,
         options: [
             { text: 'Custom', value: SETTINGS.MAGIC_MH_VALUES.CUSTOM },
-            { text: 'Roar of Awakening', value: SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING }
+            { text: 'Roar of Awakening', value: SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING },
+            { text: 'Roar of Awakening [IM]', value: SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING_IM },
         ]
     },
     [SETTINGS.RANGED_MH]: {
@@ -1936,6 +1894,7 @@ const settingsConfig = {
         options: [
             { text: 'Custom', value: SETTINGS.MELEE_MH_VALUES.CUSTOM },
             { text: 'Leng', value: SETTINGS.MELEE_MH_VALUES.LENG },
+            { text: 'Leng [IM]', value: SETTINGS.MELEE_MH_VALUES.LENG_IM },
             { text: 'Leng t85', value: SETTINGS.MELEE_MH_VALUES.DARK_ICE_SHARD },
             { text: 'Consecrated Keris', value: SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS },
             { text: 'Consecrated Keris proc', value: SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC },
@@ -1951,7 +1910,9 @@ const settingsConfig = {
         options: [
             { text: 'Custom', value: SETTINGS.NECRO_MH_VALUES.CUSTOM },
             { text: 'Omni Guard', value: SETTINGS.NECRO_MH_VALUES.OMNI_GUARD },
-            { text: "Devourer's Guard", value: SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD }
+            { text: 'Omni Guard [IM]', value: SETTINGS.NECRO_MH_VALUES.OMNI_GUARD_IM },
+            { text: "Devourer's Guard", value: SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD },
+            { text: "Devourer's Guard [IM]", value: SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD_IM }
         ]
     },
     [SETTINGS.MAGIC_OH]: {
@@ -1960,6 +1921,7 @@ const settingsConfig = {
         options: [
             { text: 'Custom', value: SETTINGS.MAGIC_OH_VALUES.CUSTOM },
             { text: 'Ode to Deceit', value: SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT },
+            { text: 'Ode to Deceit [IM]', value: SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT_IM },
             { text: 'Custom shield', value: SETTINGS.MAGIC_OH_VALUES.CUSTOM_SHIELD }
         ]
     },
@@ -1978,6 +1940,7 @@ const settingsConfig = {
             { text: 'Custom', value: SETTINGS.MELEE_OH_VALUES.CUSTOM },
             { text: 'Custom shield', value: SETTINGS.MELEE_OH_VALUES.CUSTOM_SHIELD },
             { text: 'Leng', value: SETTINGS.MELEE_OH_VALUES.LENG },
+            { text: 'Leng [IM]', value: SETTINGS.MELEE_OH_VALUES.LENG_IM },
             { text: 'Leng t85', value: SETTINGS.MELEE_OH_VALUES.DARK_ICE_SLIVER }
         ]
     },
@@ -1998,6 +1961,7 @@ const settingsConfig = {
             { text: 'Inq', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF },
             { text: 'Inq+', value: SETTINGS.MAGIC_TH_VALUES.INQ_STAFF_E },
             { text: 'FSOA (+22.5% crit dmg)', value: SETTINGS.MAGIC_TH_VALUES.FSOA },
+            { text: 'FSOA [IM]', value: SETTINGS.MAGIC_TH_VALUES.FSOA_IM },
         ]
     },
     [SETTINGS.RANGED_TH]: {
@@ -2006,6 +1970,7 @@ const settingsConfig = {
         options: [
             { text: 'Custom', value: SETTINGS.RANGED_TH_VALUES.CUSTOM },
             { text: 'Bow of the Last Guardian', value: SETTINGS.RANGED_TH_VALUES.BOLG },
+            { text: 'BotLG [IM]', value: SETTINGS.RANGED_TH_VALUES.BOLG_IM },
             { text: 'Hex', value: SETTINGS.RANGED_TH_VALUES.HEX },
             { text: 'Hex+', value: SETTINGS.RANGED_TH_VALUES.HEX_E }
         ]
@@ -2019,6 +1984,7 @@ const settingsConfig = {
             { text: 'Terrasaur maul+', value: SETTINGS.MELEE_TH_VALUES.T_MAUL_E },
             { text: 'MW Spear', value: SETTINGS.MELEE_TH_VALUES.MW_SPEAR},
             { text: 'EZK', value: SETTINGS.MELEE_TH_VALUES.EZK},
+            { text: 'EZK [IM]', value: SETTINGS.MELEE_TH_VALUES.EZK_IM},
         ]
     },
     [SETTINGS.NECRO_TH]: {

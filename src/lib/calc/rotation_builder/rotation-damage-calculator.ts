@@ -219,6 +219,18 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     const adaptedSettings = Object.fromEntries(
         Object.entries(settingsStore.settings).map(([key, value]: [string, { value: any }]) => [key, value.value])
     );
+    // Map per-style pocket to generic POCKET for calc engine
+    const pocketByStyle: Record<string, string> = {
+        'magic': SETTINGS.MAGIC_POCKET,
+        'ranged': SETTINGS.RANGED_POCKET,
+        'melee': SETTINGS.MELEE_POCKET,
+        'necro': SETTINGS.NECRO_POCKET,
+    };
+    const stylePocketKey = pocketByStyle[uiStore.activeTab];
+    if (stylePocketKey && adaptedSettings[stylePocketKey] != null) {
+        adaptedSettings[SETTINGS.POCKET] = adaptedSettings[stylePocketKey];
+    }
+
     const settingsCopy = structuredClone(adaptedSettings);
 
     logger.log(LogCategory.SETTINGS, 'Damage calculation settings', {
