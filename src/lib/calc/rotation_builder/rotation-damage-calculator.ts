@@ -862,6 +862,12 @@ function processAbilityCore(
         }
     }
 
+    // Apply pending flamebound rival after hits are processed
+    if (settingsCopy['_pendingFlamebound']) {
+        settingsCopy[SETTINGS.FLAMEBOUND_RIVAL] = true;
+        delete settingsCopy['_pendingFlamebound'];
+    }
+
     processAbilityTicksCore(rotationState, settingsCopy, abilityKey, abil_duration, rotation);
 }
 
@@ -1002,6 +1008,12 @@ function processAbility(
         } else {
             processSingleHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         }
+    }
+
+    // Apply pending flamebound rival after hits are processed
+    if (settingsCopy['_pendingFlamebound']) {
+        settingsCopy[SETTINGS.FLAMEBOUND_RIVAL] = true;
+        delete settingsCopy['_pendingFlamebound'];
     }
 
     processAbilityTicks(rotationState, settingsCopy, abilityKey, abil_duration);

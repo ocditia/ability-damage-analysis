@@ -3498,47 +3498,45 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'damage type': 'melee',
         cooldown: 0},
     [ABILITIES.IGNEOUS_SHOWDOWN_HIT]: {
-        // ability name
-        'min hit': 2.3, // min % of abil expressed as a decimal
+        'min hit': 2.6,
         'var hit': 0.4,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'special attack',
         'main style': 'melee',
-        'damage type': 'melee'
-    ,
-        cooldown: 0},
+        'damage type': 'melee',
+        cooldown: 0,
+    },
     [ABILITIES.IGNEOUS_SHOWDOWN_BONUS]: {
-        // ability name
-        'min hit': 2.15, // min % of abil expressed as a decimal
+        'min hit': 2.45,
         'var hit': 0.2,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'special attack',
         'main style': 'melee',
-        'damage type': 'melee'
-    ,
-        cooldown: 0},
+        'damage type': 'melee',
+        cooldown: 0,
+    },
     [ABILITIES.IGNEOUS_SHOWDOWN]: {
-        // ability name
-        'min hit': 2.3, // min % of abil expressed as a decimal
+        'min hit': 2.6,
         'var hit': 0.4,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'multihit',
+        'ability type': 'special attack',
         'main style': 'melee',
         'damage type': 'melee',
         'hits': {
             1: [ABILITIES.IGNEOUS_SHOWDOWN_HIT]
         },
-        hitTimings: [1], // TODO fix
-        cooldown: 0
+        hitTimings: [1],
+        adrenaline: 50,
+        cooldown: 60,
     },
     [ABILITIES.QUICK_SMASH]: {
         // ability name
