@@ -252,6 +252,14 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             settings[SETTINGS.METEOR_STRIKE_BUFF] = true;
             timers[SETTINGS.METEOR_STRIKE_BUFF] = 50; // 30 seconds
             break;
+        case ABILITIES.IGNEOUS_SHOWDOWN:
+            if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true) {
+                // Already applied: bonus hits handled by get_hit_sequence, generate 15% adrenaline
+                addAdrenaline(settings, 15);
+            }
+            // Note: FLAMEBOUND_RIVAL is set to true AFTER hits process (see _pendingFlamebound flag)
+            settings['_pendingFlamebound'] = true;
+            break;
     }
 
     // Vestments of Havoc 2-piece: melee ultimate triggers adrenaline regen

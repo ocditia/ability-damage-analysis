@@ -6,21 +6,6 @@ const abilities = {
         title: 'Auto',
         calc: hit_damage_calculation,
     },
-    [ABILITIES.SEVER]: {
-        title: 'Sever',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/sever.png'
-    },
-    [ABILITIES.CLEAVE]: {
-        title: 'Cleave',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/cleave.png'
-    },
-    [ABILITIES.DECIMATE]: {
-        title: 'Decimate',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/deci.png'
-    },
     [ABILITIES.GREATER_BARGE]: {
         title: 'Greater barge',
         calc: hit_damage_calculation,
@@ -51,25 +36,10 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/havoc.png'
     },
-    [ABILITIES.SMASH]: {
-        title: 'Smash',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/smash.png'
-    },
-    [ABILITIES.SLICE]: {
-        title: 'Slice',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/slice.png'
-    },
     [ABILITIES.FURY]: {
         title: 'Fury',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/fury.png'
-    },
-    [ABILITIES.KICK]: {
-        title: 'Kick',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/kick.png'
     },
     [ABILITIES.BACKHAND]: {
         title: 'Backhand',
@@ -85,11 +55,6 @@ const abilities = {
         title: 'Bladed dive',
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/bd.png'
-    },
-    [ABILITIES.DESTROY]: {
-        title: 'Destroy',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/destroy.png'
     },
     [ABILITIES.ASSAULT]: {
         title: 'Assault',
@@ -116,25 +81,10 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/slaughter.png'
     },
-    [ABILITIES.FORCEFUL_BACKHAND]: {
-        title: 'Forceful backhand',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/forceful.png'
-    },
     [ABILITIES.FLURRY]: {
         title: 'Flurry',
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/flurry.png'
-    },
-    [ABILITIES.BLOOD_TENDRILS]: {
-        title: 'Blood tendrils',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/blood-tend.png'
-    },
-    [ABILITIES.STOMP]: {
-        title: 'Stomp',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/melee/30x30/stomp.png'
     },
     [ABILITIES.OVERPOWER]: {
         title: 'Overpower',

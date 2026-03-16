@@ -358,16 +358,6 @@ function ability_specific_effects(settings, dmgObject) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1.1+0.03*settings[SETTINGS.LUNGING]));
         }
 
-        // wrack energising
-        if (settings['ability'] === ABILITIES.WRACK && settings[SETTINGS.ENERGISING] > 0) {
-            dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
-        }
-
-        // wrack and ruin energising
-        if (settings['ability'] === ABILITIES.WRACK_AND_RUIN && settings[SETTINGS.ENERGISING] > 0) {
-            dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD']);
-        }
-
         // greater chain half damage
         const gchain_not_halved = ['bleed', 'burn', 'dot'];
         if (
@@ -378,11 +368,6 @@ function ability_specific_effects(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
-        // slice energising
-        if (settings['ability'] === ABILITIES.SLICE && settings[SETTINGS.ENERGISING] > 0) {
-            dmgObject['boosted AD'] = Math.floor(0.8 * dmgObject['boosted AD'])
-        }
-
         // dismember lunging
         if ((settings['ability'] === ABILITIES.DISMEMBER_1_HIT_BETA || settings['ability'] === ABILITIES.DISMEMBER_HIT) && settings[SETTINGS.LUNGING] > 0) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1.1 + 0.03 * settings[SETTINGS.LUNGING]));
@@ -452,11 +437,6 @@ function set_min_var(settings, dmgObject) {
             var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
         }
 
-        if (settings['ability'] === ABILITIES.DEEP_IMPACT) {
-            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
-            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
-        }
-
         // dragon breath runic charge
         if ((settings['ability'] === ABILITIES.DRAGON_BREATH_BETA || settings['ability'] === ABILITIES.DRAGON_BREATH) && settings[SETTINGS.RUNIC_CHARGE] === true) {
             min_percent = 2.6;
@@ -522,18 +502,6 @@ function set_min_var(settings, dmgObject) {
             var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
         }
 
-        if (settings['ability'] === ABILITIES.FORCEFUL_BACKHAND) {
-            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
-            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
-        }
-
-        // bolstered smash
-        if (settings['ability'] === ABILITIES.SMASH && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-            settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK) {
-            min_percent = 1.6;
-            var_percent = 0.2;
-        }
-
         // frenzy
         if (settings['ability'] === ABILITIES.FRENZY_HIT) {
             min_percent += 0.1 * (settings['rotation key'] - 1);
@@ -546,11 +514,6 @@ function set_min_var(settings, dmgObject) {
         if (settings['ability'] === ABILITIES.BINDING_SHOT) {
             min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
             var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
-        }
-
-        if (settings['ability'] === ABILITIES.TIGHT_BINDINGS) {
-            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
-            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
         }
     }
 
@@ -1382,13 +1345,6 @@ function roll_damage(settings, dmgObject, key) {
         settings['corruption damage'][key]['damage list'] = [...dmg_list];
     }
 
-    // store igneous cleave damage
-    if (settings['ability'] === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
-        if (!('igneous cleave bleed damage' in settings)) {
-            settings['igneous cleave bleed damage'] = create_object(settings);
-        }
-        settings['igneous cleave bleed damage'][key]['damage list'] = [...dmg_list];
-    }
     return dmg_list;
 }
 
@@ -1491,29 +1447,6 @@ function calc_sgb(settings, dmg) {
     const size = Math.min(settings[SETTINGS.TARGET_SIZE], 5);
 
     return Math.floor(dmg * (hits[size] - 1));
-}
-
-function calc_igneous_bleed(settings) { 
-    let total_damage = 0;
-
-    let total_hits = 6 + settings[SETTINGS.IGNEOUS_EXTENSIOS];
-    if (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR &&
-        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
-    ) {
-        total_hits += 3;
-    }
-
-    for (let splat=2; splat <=total_hits; splat++) {
-        let hit_dmg = JSON.parse(JSON.stringify(settings['igneous cleave bleed damage']));
-        for (let key in hit_dmg) {
-            for (let i=0; i<hit_dmg[key]['damage list'].length; i++) {
-                hit_dmg[key]['damage list'][i] = Math.floor(hit_dmg[key]['damage list'][i] * 1.05**(splat-1));
-            }
-            hit_dmg[key] = calc_on_npc(settings, hit_dmg[key]);
-        }
-        total_damage += get_user_value(settings, hit_dmg);
-    }
-    return total_damage;
 }
 
 function add_split_soul(settings, dmgObject) {
@@ -2005,10 +1938,6 @@ function get_hit_sequence(settings) {
 
         if (settings['ability'] === ABILITIES.MASSACRE) {
             rotation[1].push(ABILITIES.MASSACRE_BLEED, ABILITIES.MASSACRE_BLEED, ABILITIES.MASSACRE_BLEED);
-        }
-
-        if (settings['ability'] === ABILITIES.BLOOD_TENDRILS) {
-            rotation[1].push(ABILITIES.BLOOD_TENDRILS_2, ABILITIES.BLOOD_TENDRILS_2);
         }
     }
 

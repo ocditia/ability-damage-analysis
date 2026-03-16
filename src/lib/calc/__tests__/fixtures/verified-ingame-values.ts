@@ -88,9 +88,6 @@ export const BLANK_T5_L99_RANGED: SettingsProfile = {
     expectedAD: 442,
     damages: [
         // Single hit abilities
-        { ability: ABILITIES.DAZING_SHOT, min: 419, max: 507 },
-        { ability: ABILITIES.INCENDIARY_SHOT, min: 1193, max: 1458 },
-        
 
         // Multi-hit abilities
 
@@ -98,7 +95,6 @@ export const BLANK_T5_L99_RANGED: SettingsProfile = {
         { ability: ABILITIES.SNAP_SHOT, hits: [{ min: 486, max: 574 }, { min: 663, max: 795 }] },
 
         // Bleed/DoT abilities
-        { ability: ABILITIES.FRAGMENTATION_SHOT, hitCount: 5, perHitMin: 110, perHitMax: 136 },
         { ability: ABILITIES.RAPID_FIRE, hitCount: 8, perHitMin: 287, perHitMax: 331 }
     ],
 };
@@ -114,7 +110,6 @@ export const BLANK_T1_L99_RANGED: SettingsProfile = {
     expectedAD: 383,
     damages: [
         // Add verified values here
-        // { ability: ABILITIES.DAZING_SHOT, min: 363 },
     ],
 };
 
@@ -129,8 +124,6 @@ export const BLANK_T5_L99_MELEE: SettingsProfile = {
     expectedAD: 442,  // Same formula as ranged 2H
     damages: [
         // Single-hit abilities
-        { ability: ABILITIES.SLICE, min: 419, max: 507 },
-        { ability: ABILITIES.CLEAVE, min: 486, max: 574 },
         { ability: ABILITIES.METEOR_STRIKE, min: 1193, max: 1458 },
         { ability: ABILITIES.QUAKE, min: 574, max: 706 },
 
@@ -191,8 +184,6 @@ export const T100_P6E2_RANGED: SettingsProfile = {
     },
     damages: [
         // Single hit abilities
-        { ability: ABILITIES.DAZING_SHOT, min: 1925, max: 2101 },
-        { ability: ABILITIES.INCENDIARY_SHOT, min: 5477, max: 6031 },
         
 
         // Multi-hit abilities
@@ -201,7 +192,6 @@ export const T100_P6E2_RANGED: SettingsProfile = {
         { ability: ABILITIES.SNAP_SHOT, hits: [{ min: 2223, max: 2375 }, { min: 3038, max: 3290 }] },
 
         // Bleed/DoT abilities
-        { ability: ABILITIES.FRAGMENTATION_SHOT, hitCount: 5, perHitMin: 457, perHitMax: 566 },
         { ability: ABILITIES.RAPID_FIRE, hitCount: 8, perHitMin: 1311, perHitMax: 1370 }
     ],
 };

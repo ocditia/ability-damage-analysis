@@ -142,9 +142,7 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
     // Igneous Showdown with EZK and Flamebound Rival
     if (
         abilityKey === ABILITIES.IGNEOUS_SHOWDOWN &&
-        settings[SETTINGS.FLAMEBOUND_RIVAL] === true &&
-        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-        (settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM)
+        settings[SETTINGS.FLAMEBOUND_RIVAL] === true
     ) {
         rotation[1].push(
             'next hit', ABILITIES.IGNEOUS_SHOWDOWN_BONUS,
@@ -160,9 +158,6 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
     ) {
         if (abilityKey === ABILITIES.DISMEMBER) {
             rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
-        }
-        if (abilityKey === ABILITIES.BLOOD_TENDRILS) {
-            rotation[1].push(ABILITIES.BLOOD_TENDRILS_2, ABILITIES.BLOOD_TENDRILS_2);
         }
         if (abilityKey === ABILITIES.SLAUGHTER) {
             rotation[1].push(ABILITIES.SLAUGHTER_HIT, ABILITIES.SLAUGHTER_HIT);

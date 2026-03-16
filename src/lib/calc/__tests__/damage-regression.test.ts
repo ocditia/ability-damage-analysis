@@ -232,47 +232,7 @@ describe('Manual Tests', () => {
     });
 
     describe('Buff Multipliers', () => {
-        it('Berserk doubles melee damage', () => {
-            const baseSettings = createMeleeSettings({
-                [SETTINGS.ABILITY_DAMAGE]: 1800,
-            });
-            const berserkSettings = createMeleeSettings({
-                [SETTINGS.ABILITY_DAMAGE]: 1800,
-                [SETTINGS.BERSERK]: true,
-            });
-
-            const baseResult = calculateSingleAbilityDamage(baseSettings, {
-                ability: 'slice',
-            });
-            const berserkResult = calculateSingleAbilityDamage(berserkSettings, {
-                ability: 'slice',
-                buffs: { berserk: true },
-            });
-
-            const ratio = berserkResult.expected / baseResult.expected;
-            expect(ratio).toBeCloseTo(2.0, 1);
-        });
-
-        it('Sunshine increases magic damage by 50%', () => {
-            const baseSettings = createMagicSettings({
-                [SETTINGS.ABILITY_DAMAGE]: 1700,
-            });
-            const sunshineSettings = createMagicSettings({
-                [SETTINGS.ABILITY_DAMAGE]: 1700,
-                [SETTINGS.SUNSHINE]: true,
-            });
-
-            const baseResult = calculateSingleAbilityDamage(baseSettings, {
-                ability: 'wrack',
-            });
-            const sunshineResult = calculateSingleAbilityDamage(sunshineSettings, {
-                ability: 'wrack',
-                buffs: { sunshine: true },
-            });
-
-            const ratio = sunshineResult.expected / baseResult.expected;
-            expect(ratio).toBeCloseTo(1.5, 1);
-        });
+        
     });
 
     describe('Perk Effects', () => {
