@@ -142,7 +142,8 @@ function calc_weapon_tier(settings, hand) {
             ammo_tier = settings[SETTINGS.AMMO_TIER];
         }
         else {
-            ammo_tier = weapons[settings[SETTINGS.AMMO]]['tier'];
+            const ammoItem = armour[settings[SETTINGS.AMMO]];
+            ammo_tier = ammoItem?.offensiveTier?.ranged ?? ammoItem?.tier ?? 999;
         }
     }
 

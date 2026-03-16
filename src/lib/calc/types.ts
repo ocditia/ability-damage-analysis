@@ -33,6 +33,8 @@ export interface Equipment {
     type?: string;
     /** Weapon classification (obsidian, none) — only present on weapons */
     classification?: string;
+    /** Whether this item is commonly used / should appear prominently in dropdowns. Defaults to false. */
+    popular?: boolean;
 }
 
 

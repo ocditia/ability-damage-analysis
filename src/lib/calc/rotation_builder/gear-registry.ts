@@ -4,7 +4,7 @@
  * dropdown options are generated dynamically by (slot, combatStyle).
  */
 
-import { armour } from '../const/const';
+import { armour, weapons } from '../const/const';
 import { GearSlots } from './gear';
 import type { EquipmentStyle } from '../types';
 
@@ -19,6 +19,10 @@ export interface GearItem {
     slot: GearSlots;
     /** Item's native style */
     style: EquipmentStyle;
+    /** Whether this item is commonly used */
+    popular: boolean;
+    /** Weapon type — only present on weapons */
+    weaponType?: string;
 }
 
 // Index: slot -> style -> GearItem[]
@@ -35,9 +39,8 @@ function toDisplayName(value: string): string {
         .join(' ');
 }
 
-// Build the indexes on module load
-function buildIndex() {
-    for (const [key, piece] of Object.entries(armour)) {
+function indexCollection(collection: Record<string, any>) {
+    for (const [key, piece] of Object.entries(collection)) {
         if (!piece || typeof piece !== 'object') continue;
         const slot = (piece as any).slot as GearSlots;
         const style = (piece as any).style as EquipmentStyle;
@@ -45,11 +48,14 @@ function buildIndex() {
         // Skip items whose slot isn't in the GearSlots enum
         if (!Object.values(GearSlots).includes(slot)) continue;
 
+        const weaponType = (piece as any)['weapon type'];
         const item: GearItem = {
             value: key,
             text: toDisplayName(key),
             slot,
             style,
+            popular: !!(piece as any).popular,
+            ...(weaponType ? { weaponType } : {}),
         };
 
         // Slot -> style index
@@ -67,7 +73,9 @@ function buildIndex() {
     }
 }
 
-buildIndex();
+// Build indexes on module load
+indexCollection(armour);
+indexCollection(weapons);
 
 /**
  * Get all gear items available for a given slot and combat style.
@@ -76,23 +84,28 @@ buildIndex();
  */
 export function getItemsForSlot(slot: GearSlots | string, combatStyle: GearCombatStyle): GearItem[] {
     const styleMap = slotStyleIndex.get(slot);
-    if (!styleMap) return [{ value: 'none', text: 'None', slot: slot as GearSlots, style: 'hybrid' }];
+    if (!styleMap) return [{ value: 'none', text: 'None', slot: slot as GearSlots, style: 'hybrid', popular: false }];
 
     const styleItems = styleMap.get(combatStyle) ?? [];
     const hybridItems = styleMap.get('hybrid') ?? [];
 
-    // Deduplicate by value, style-specific first
+    // Deduplicate by value, style-specific first. Popular items sorted before non-popular.
     const seen = new Set<string>();
-    const result: GearItem[] = [{ value: 'none', text: 'None', slot: slot as GearSlots, style: 'hybrid' }];
+    const popular: GearItem[] = [];
+    const rest: GearItem[] = [];
 
     for (const item of [...styleItems, ...hybridItems]) {
         if (!seen.has(item.value)) {
             seen.add(item.value);
-            result.push(item);
+            if (item.popular) {
+                popular.push(item);
+            } else {
+                rest.push(item);
+            }
         }
     }
 
-    return result;
+    return [{ value: 'none', text: 'None', slot: slot as GearSlots, style: 'hybrid', popular: false }, ...popular, ...rest];
 }
 
 /**

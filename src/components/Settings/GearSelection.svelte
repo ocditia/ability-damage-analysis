@@ -6,6 +6,8 @@
 
     let { settings, styleTab, updateDamages, openDropdown = $bindable(null) } = $props();
 
+    let showAllGear = $state(false);
+
     const styleFolder = {
         [SettingsCombatStyles.MELEE]: 'melee',
         [SettingsCombatStyles.RANGED]: 'ranged',
@@ -22,9 +24,25 @@
 
     function getSlotOptions(slot) {
         if (slot.gearSlot) {
-            return getItemsForSlot(slot.gearSlot, gearStyle[styleTab]);
+            const items = getItemsForSlot(slot.gearSlot, gearStyle[styleTab]);
+            if (showAllGear) return items;
+            return items.filter(i => i.popular || i.value === 'none' || i.value === settings[slot.key]?.value);
         }
         return settings[slot.key]?.options ?? [];
+    }
+
+    /** Get weapon options from gear registry, optionally filtered by weapon type */
+    function getWeaponOptions(slot, weaponTypeFilter = null) {
+        const items = getItemsForSlot(slot, gearStyle[styleTab]);
+        let filtered = weaponTypeFilter
+            ? items.filter(i => i.weaponType === weaponTypeFilter || i.value === 'none')
+            : items;
+        if (!showAllGear) {
+            const currentMh = settings[weaponSlotsByStyle[styleTab]?.mh]?.value;
+            const currentOh = settings[weaponSlotsByStyle[styleTab]?.oh]?.value;
+            filtered = filtered.filter(i => i.popular || i.value === 'none' || i.value === currentMh || i.value === currentOh);
+        }
+        return filtered;
     }
 
     function isWeaponTwoHand(value) {
@@ -290,7 +308,18 @@
     }
 </script>
 
-<h5 class="uppercase font-bold text-lg text-center mb-4">Armour</h5>
+<div class="flex items-center justify-center gap-2 mb-4">
+    <h5 class="uppercase font-bold text-lg text-center">Armour</h5>
+    <button
+        type="button"
+        class="text-xs px-2 py-0.5 rounded border"
+        style="border-color: {showAllGear ? '#888' : '#555'}; color: {showAllGear ? '#fff' : '#888'}; background: {showAllGear ? 'rgba(255,255,255,0.1)' : 'transparent'};"
+        onclick={() => { showAllGear = !showAllGear; }}
+        title={showAllGear ? 'Showing all gear — click to show popular only' : 'Showing popular gear — click to show all'}
+    >
+        {showAllGear ? 'All' : 'Popular'}
+    </button>
+</div>
 <div class="flex flex-wrap gap-2 justify-center mb-3">
     {#each (armourSlotsByStyle[styleTab] ?? []) as slot}
         {@const slotOptions = getSlotOptions(slot)}
@@ -306,7 +335,7 @@
                 <img
                     src={gearIcon(slot.key, slot.fallback, iconFolder)}
                     alt={settings[slot.key]?.label ?? ''}
-                    class="w-7 h-7"
+                    class="w-7 h-7 object-contain"
                     onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback, iconFolder); e.target.src = icons.fallbackIcon; }}
                 />
                 {#if gearBadge(slot.key)}
@@ -347,7 +376,7 @@
                 <img
                     src={gearIcon(slot.key, slot.fallback, iconFolder)}
                     alt={settings[slot.key]?.label ?? ''}
-                    class="w-7 h-7"
+                    class="w-7 h-7 object-contain"
                     onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback, iconFolder); e.target.src = icons.fallbackIcon; }}
                 />
                 {#if gearBadge(slot.key)}
@@ -384,9 +413,13 @@
                 onclick={() => { openDropdown = openDropdown === SETTINGS.AUTO_CAST ? null : SETTINGS.AUTO_CAST; }}
             >
                 <img
-                    src={settings[SETTINGS.AUTO_CAST]?.value === 'exsanguinate' ? '/effect_icons/Exsanguinate_icon.webp' : settings[SETTINGS.AUTO_CAST]?.value === 'incite fear' ? '/ability_icons/magic/Incite_Fear_icon.webp' : '/effect_icons/magic/Curse_icon.png'}
+                    src={
+                        settings[SETTINGS.AUTO_CAST]?.value === 'exsanguinate' ? '/effect_icons/Exsanguinate_icon.webp' : 
+                        settings[SETTINGS.AUTO_CAST]?.value === 'incite fear' ? '/ability_icons/magic/Incite_Fear_icon.webp' :
+                        settings[SETTINGS.AUTO_CAST]?.value === 'crumble undead' ? '/ability_icons/magic/Crumble_Undead_icon.png' 
+                        : '/ability_icons/magic/Vanilla_fudge_log.png'}
                     alt="Auto Cast"
-                    class="w-7 h-7"
+                    class="w-7 h-7 object-contain"
                 />
             </button>
             {#if openDropdown === SETTINGS.AUTO_CAST}
@@ -408,16 +441,18 @@
     <!-- Weapon: combined MH + 2H dropdown, OH -->
     {#each [weaponSlotsByStyle[styleTab]].filter(Boolean) as ws}
         {@const is2h = isWeaponTwoHand(settings[ws.mh]?.value)}
-        {@const weaponText = settings[ws.mh]?.options?.find(o => o.value === settings[ws.mh]?.value)?.text
-            ?? (ws.th && settings[ws.th]?.options?.find(o => o.value === settings[ws.mh]?.value)?.text)
-            ?? 'Custom'}
+        {@const mhItems = getWeaponOptions('mainhand', 'main-hand')}
+        {@const thItems = getWeaponOptions('mainhand', 'two-hand')}
+        {@const ohItems = getWeaponOptions('offhand')}
+        {@const currentValue = settings[ws.mh]?.value}
+        {@const weaponText = [...mhItems, ...thItems].find(o => o.value === currentValue)?.text ?? 'Custom'}
         <div class="relative">
             <button type="button" class="stack-toggle"
-                class:stack-active={settings[ws.mh]?.value}
+                class:stack-active={currentValue}
                 title="Weapon: {weaponText}{is2h ? ' (2H)' : ''}"
                 onclick={() => { openDropdown = openDropdown === 'weapon_combined' ? null : 'weapon_combined'; }}
             >
-                <img src={gearIcon(ws.mh, '/armour_icons/Main_hand_slot.webp', styleFolder[styleTab])} alt="Weapon" class="w-7 h-7"
+                <img src={gearIcon(ws.mh, '/armour_icons/Main_hand_slot.webp', styleFolder[styleTab])} alt="Weapon" class="w-7 h-7 object-contain"
                     onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Main_hand_slot.webp'; }}
                 />
                 {#if gearBadge(ws.mh)}
@@ -430,20 +465,20 @@
             </button>
             {#if openDropdown === 'weapon_combined'}
                 <div class="icon-dropdown" style="min-width: 180px;">
-                    {#if ws.mh && settings[ws.mh]}
+                    {#if mhItems.length > 0}
                         <div style="padding: 0.2rem 0.5rem; font-size: 0.65rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">Main-hand</div>
-                        {#each settings[ws.mh]?.options ?? [] as option}
+                        {#each mhItems as option}
                             <button type="button" class="icon-dropdown-item"
-                                class:active={settings[ws.mh]?.value === option.value && !is2h}
+                                class:active={currentValue === option.value && !is2h}
                                 onclick={() => onWeaponSelected(ws, option.value)}
                             >{option.text}</button>
                         {/each}
                     {/if}
-                    {#if ws.th && settings[ws.th]}
+                    {#if thItems.length > 0}
                         <div style="padding: 0.2rem 0.5rem; font-size: 0.65rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 0.2rem;">Two-handed</div>
-                        {#each settings[ws.th]?.options ?? [] as option}
+                        {#each thItems as option}
                             <button type="button" class="icon-dropdown-item"
-                                class:active={settings[ws.mh]?.value === option.value && is2h}
+                                class:active={currentValue === option.value && is2h}
                                 onclick={() => onWeaponSelected(ws, option.value)}
                             >{option.text}</button>
                         {/each}
@@ -456,10 +491,10 @@
             <div class="relative">
                 <button type="button" class="stack-toggle"
                     class:stack-active={settings[ws.oh]?.value && settings[ws.oh]?.value !== 'none'}
-                    title="Off-hand: {settings[ws.oh]?.options?.find(o => o.value === settings[ws.oh]?.value)?.text ?? 'None'}"
+                    title="Off-hand: {ohItems.find(o => o.value === settings[ws.oh]?.value)?.text ?? 'None'}"
                     onclick={() => { openDropdown = openDropdown === ws.oh ? null : ws.oh; }}
                 >
-                    <img src={gearIcon(ws.oh, '/armour_icons/Off-hand_slot.webp', styleFolder[styleTab])} alt="Off-hand" class="w-7 h-7"
+                    <img src={gearIcon(ws.oh, '/armour_icons/Off-hand_slot.webp', styleFolder[styleTab])} alt="Off-hand" class="w-7 h-7 object-contain"
                         onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Off-hand_slot.webp'; }}
                     />
                     {#if gearBadge(ws.oh)}
@@ -472,7 +507,7 @@
                 </button>
                 {#if openDropdown === ws.oh}
                     <div class="icon-dropdown" style="min-width: 160px;">
-                        {#each settings[ws.oh]?.options ?? [] as option}
+                        {#each ohItems as option}
                             <button type="button" class="icon-dropdown-item"
                                 class:active={settings[ws.oh]?.value === option.value}
                                 onclick={() => { settings[ws.oh].value = option.value; openDropdown = null; updateDamages(); }}
