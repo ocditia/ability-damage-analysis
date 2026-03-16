@@ -365,27 +365,6 @@ function ability_specific_effects(settings, dmgObject) {
         if (settings['ability'] === ABILITIES.COMBUST_HIT && settings[SETTINGS.LUNGING] > 0) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
         }
-
-        // wrack bound
-        if (
-            settings['ability'] === 'wrack' &&
-            (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
-        ) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.3);
-        }
-
-        // wrack and ruin bound
-        if (
-            settings['ability'] === 'wrack and ruin' &&
-            (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
-        ) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.6);
-        }
-
         // energising - no longer affects damage (now gives accuracy bonus)
 
         // greater chain half damage
@@ -398,16 +377,6 @@ function ability_specific_effects(settings, dmgObject) {
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {
-        // slice bound
-        if (
-            settings['ability'] === 'slice' &&
-            (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-                settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
-        ) {
-            dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * 1.4);
-        }
-
         // dismember lunging - (10 + 3 per rank)% more damage
         if (settings['ability'] === ABILITIES.DISMEMBER_HIT && settings[SETTINGS.LUNGING] > 0) {
             dmgObject['boosted AD'] = Math.floor(dmgObject['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
@@ -478,21 +447,10 @@ function set_min_var(settings, dmgObject) {
     let var_percent = abils[settings['ability']]['var hit'];
 
     if (abils[settings['ability']]['main style'] === 'magic') {
-        // detonate
-        if (settings['ability'] === ABILITIES.DETONATE) {
-            min_percent = min_percent + 0.45 * (settings[SETTINGS.DETONATE]/20); // TODO: fix missing reference for SETTINGS.DETONATE
-            var_percent = var_percent + 0.1 * (settings[SETTINGS.DETONATE]/20);
-        }
-
         // flank
         if (settings['ability'] === ABILITIES.IMPACT) {
             min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
             var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
-        }
-
-        if (settings['ability'] === ABILITIES.DEEP_IMPACT) {
-            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
-            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
         }
     }
 
@@ -518,35 +476,13 @@ function set_min_var(settings, dmgObject) {
             var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
         }
 
-        if (settings['ability'] === ABILITIES.FORCEFUL_BACKHAND) {
-            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
-            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
-        }
-
-        // bolstered smash
-        if (settings['ability'] === ABILITIES.SMASH && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-            (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM)) {
-            min_percent = 1.6;
-            var_percent = 0.2;
-        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
-        // salt the wound stack bonus
-        if (settings['ability'] === 'salt the wound') {
-            min_percent = min_percent + 0.1 * settings[SETTINGS.PUNCTURE_STACKS];
-            var_percent = var_percent + 0.05 * settings[SETTINGS.PUNCTURE_STACKS];
-        }
-
         // flank
         if (settings['ability'] === ABILITIES.BINDING_SHOT) {
             min_percent += min_percent * 0.4 * settings[SETTINGS.FLANKING];
             var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
-        }
-
-        if (settings['ability'] === ABILITIES.TIGHT_BINDINGS) {
-            min_percent += min_percent * 0.15 * settings[SETTINGS.FLANKING];
-            var_percent += var_percent * 0.15 * settings[SETTINGS.FLANKING];
         }
     }
 
@@ -1295,13 +1231,6 @@ function roll_damage(settings, dmgObject, key) {
         settings['corruption damage'][key]['damage list'] = [...dmg_list];
     }
 
-    // store igneous cleave damage
-    if (settings['ability'] === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
-        if (!('igneous cleave bleed damage' in settings)) {
-            settings['igneous cleave bleed damage'] = create_object(settings);
-        }
-        settings['igneous cleave bleed damage'][key]['damage list'] = [...dmg_list];
-    }
     return dmg_list;
 }
 
@@ -1408,29 +1337,6 @@ function calc_sgb(settings, dmg) {
     const size = Math.min(settings[SETTINGS.TARGET_SIZE], 5);
 
     return Math.floor(dmg * (hits[size] - 1));
-}
-
-function calc_igneous_bleed(settings) { 
-    let total_damage = 0;
-
-    let total_hits = 6 + settings[SETTINGS.IGNEOUS_EXTENSIOS];
-    if (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR &&
-        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
-    ) {
-        total_hits += 3;
-    }
-
-    for (let splat=2; splat <=total_hits; splat++) {
-        let hit_dmg = JSON.parse(JSON.stringify(settings['igneous cleave bleed damage']));
-        for (let key in hit_dmg) {
-            for (let i=0; i<hit_dmg[key]['damage list'].length; i++) {
-                hit_dmg[key]['damage list'][i] = Math.floor(hit_dmg[key]['damage list'][i] * 1.05**(splat-1));
-            }
-            hit_dmg[key] = calc_on_npc(settings, hit_dmg[key]);
-        }
-        total_damage += get_user_value(settings, hit_dmg);
-    }
-    return total_damage;
 }
 
 function add_split_soul(settings, dmgObject) {
@@ -1710,10 +1616,6 @@ function apply_additional(settings, total_damage) {
         delete settings['fsoa damage'];
     }
 
-    // handle igneous cleave bleed
-    if (settings['ability'] === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
-        total_damage += calc_igneous_bleed(settings);
-    }
     return total_damage;
 }
 
@@ -1774,10 +1676,6 @@ function get_hit_sequence(settings) {
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
         if (settings['ability'] === ABILITIES.DISMEMBER) {
             rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
-        }
-
-        if (settings['ability'] === ABILITIES.BLOOD_TENDRILS) {
-            rotation[1].push(ABILITIES.BLOOD_TENDRILS_2, ABILITIES.BLOOD_TENDRILS_2);
         }
 
         if (settings['ability'] === ABILITIES.SLAUGHTER) {

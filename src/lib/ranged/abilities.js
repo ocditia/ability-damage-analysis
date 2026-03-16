@@ -11,20 +11,10 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/grico.png'
     },
-    [ABILITIES.DAZING_SHOT]: {
-        title: 'Dazing shot',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/dazing.png'
-    },
     [ABILITIES.PIERCING_SHOT]: {
         title: 'Piercing shot',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/piercing.png'
-    },
-    [ABILITIES.FRAGMENTATION_SHOT]: {
-        title: 'Fragmentation shot',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/frag-shot.png'
     },
     [ABILITIES.CORRUPTION_SHOT]: {
         title: 'Corruption shot',
@@ -40,11 +30,6 @@ const abilities = {
         title: 'Snipe',
         calc: ability_damage_calculation,
         icon: '/ability_icons/ranged/30x30/snipe.png'
-    },
-    [ABILITIES.DEMORALISE]: {
-        title: 'Demoralise',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/demoralise.png'
     },
     [ABILITIES.RICOCHET]: {
         title: 'Ricochet',
@@ -66,30 +51,10 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/tendril.png'
     },
-    [ABILITIES.TIGHT_BINDINGS]: {
-        title: 'Tight bindings',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/tbind.png'
-    },
-    [ABILITIES.ROUT]: {
-        title: 'Rout',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/rout.png'
-    },
     [ABILITIES.BOMBARDMENT]: {
         title: 'Bombardment',
         calc: hit_damage_calculation,
         icon: '/ability_icons/ranged/30x30/bombard.png'
-    },
-    [ABILITIES.SALT_THE_WOUND]: {
-        title: 'Salt the wound',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/salt.png'
-    },
-    [ABILITIES.INCENDIARY_SHOT]: {
-        title: 'Incendiary shot',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/ranged/30x30/incend.png'
     },
     [ABILITIES.DEADSHOT]: {
         title: 'Deadshot',

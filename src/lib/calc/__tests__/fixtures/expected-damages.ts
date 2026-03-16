@@ -56,36 +56,8 @@ export const BASE_DAMAGE_CASES: AbilityTestCase[] = [
             comment: 'CALCULATOR: 95% min + 20% var',
         },
     },
-    // Cleave: min_hit = 1.10, var_hit = 0.20 → 110-130% of AD
-    {
-        ability: 'cleave',
-        description: 'Cleave with 1800 AD - 110-130%',
-        settings: {
-            [SETTINGS.ABILITY_DAMAGE]: 1800,
-            [SETTINGS.USE_RAW_ABILITY_DAMAGE]: true,
-        },
-        expected: {
-            min: 1980,  // 1800 * 1.10
-            max: 2340,  // 1800 * 1.10 + 1800 * 0.20
-            comment: 'CALCULATOR: 110% min + 20% var',
-        },
-    },
 
-    // Magic Basics
-    // Wrack: min_hit = 0.95, var_hit = 0.20 → 95-115% of AD
-    {
-        ability: 'wrack',
-        description: 'Wrack with 1700 AD - 95-115%',
-        settings: {
-            [SETTINGS.ABILITY_DAMAGE]: 1700,
-            [SETTINGS.USE_RAW_ABILITY_DAMAGE]: true,
-        },
-        expected: {
-            min: 1615,  // 1700 * 0.95
-            max: 1955,  // 1700 * 0.95 + 1700 * 0.20
-            comment: 'CALCULATOR: 95% min + 20% var',
-        },
-    },
+   
     // Dragon Breath: min_hit = 1.88, var_hit = 0.38 → 188-226% of AD
     {
         ability: 'dragon breath',
@@ -180,21 +152,6 @@ export const BUFF_INTERACTION_CASES: AbilityTestCase[] = [
             min: 3420, // 1710 * 2
             max: 4140, // 2070 * 2
             comment: 'CALCULATOR: Base * 2 (Berserk)',
-        },
-    },
-    // Wrack with Sunshine: base * 1.5
-    {
-        ability: 'wrack',
-        description: 'Wrack with Sunshine (1.5x damage)',
-        settings: {
-            [SETTINGS.ABILITY_DAMAGE]: 1700,
-            [SETTINGS.USE_RAW_ABILITY_DAMAGE]: true,
-            [SETTINGS.SUNSHINE]: true,
-        },
-        expected: {
-            min: 2422, // floor(1615 * 1.5)
-            max: 2932, // floor(1955 * 1.5)
-            comment: 'CALCULATOR: Base * 1.5 (Sunshine)',
         },
     },
 ];

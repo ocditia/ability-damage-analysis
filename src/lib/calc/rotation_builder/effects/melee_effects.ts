@@ -60,16 +60,6 @@ function applyAbilitySpecificEffects(
 ): void {
     const { settings, abilityKey } = ctx;
 
-    // Slice bound/stunned bonus
-    if (
-        abilityKey === ABILITIES.SLICE &&
-        (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
-            settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-            settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
-    ) {
-        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.4);
-    }
-
     // Punish low HP bonus
     if (abilityKey === ABILITIES.PUNISH && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2.5);
@@ -128,11 +118,6 @@ function applyAbilityPercentModifiers(
     if (abilityKey === ABILITIES.BACKHAND) {
         distribution['min hit'] += distribution['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
         distribution['var hit'] += distribution['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
-    }
-    // Flanking - Forceful Backhand (threshold stun)
-    else if (abilityKey === ABILITIES.FORCEFUL_BACKHAND) {
-        distribution['min hit'] += distribution['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
-        distribution['var hit'] += distribution['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
     }
 }
 

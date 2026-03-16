@@ -810,7 +810,6 @@ const SETTINGS = {
     SCRIPTURE_OF_FUL_PROB: 'scripture of ful probability',
     SCRIPTURE_OF_FUL_COOLDOWN_PROB: 'scripture of ful cooldown probability',
     BERSERK: 'berserk',
-    DETONATE: 'detonate charge percent',
     DIVINE_RAGE: 'divine rage',
     ECLIPSED_SOUL: 'eclipsed soul',
 
@@ -2379,10 +2378,6 @@ const settingsConfig = {
     [SETTINGS.BERSERK]: {
         label: 'Berserk',
         default: false
-    },
-    [SETTINGS.DETONATE]: {
-        label: 'Deto Charge percent',
-        default: 100
     },
     [SETTINGS.DIVINE_RAGE]: {
         label: 'Divine rage',

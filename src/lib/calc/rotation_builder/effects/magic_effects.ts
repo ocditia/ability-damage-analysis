@@ -83,25 +83,6 @@ function applyAbilitySpecificEffects(
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
     }
 
-    // Wrack bound/stunned bonus
-    if (
-        abilityKey === ABILITIES.WRACK &&
-        (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
-            settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-            settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
-    ) {
-        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.3);
-    }
-
-    // Wrack and Ruin bound/stunned bonus
-    if (
-        abilityKey === ABILITIES.WRACK_AND_RUIN &&
-        (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
-            settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-            settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
-    ) {
-        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.6);
-    }
 }
 
 /**
@@ -120,21 +101,10 @@ function applyAbilityPercentModifiers(
         distribution['var hit'] = 0.5;
     }
 
-    // Detonate (variable charge time)
-    if (abilityKey === ABILITIES.DETONATE) {
-        distribution['min hit'] = distribution['min hit'] + 0.45 * settings[SETTINGS.DETONATE];
-        distribution['var hit'] = distribution['var hit'] + 0.1 * settings[SETTINGS.DETONATE];
-    }
-
     // Flanking - Impact (basic stun)
     if (abilityKey === ABILITIES.IMPACT) {
         distribution['min hit'] += distribution['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
         distribution['var hit'] += distribution['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
-    }
-    // Flanking - Deep Impact (threshold stun)
-    else if (abilityKey === ABILITIES.DEEP_IMPACT) {
-        distribution['min hit'] += distribution['min hit'] * 0.15 * settings[SETTINGS.FLANKING];
-        distribution['var hit'] += distribution['var hit'] * 0.15 * settings[SETTINGS.FLANKING];
     }
 }
 

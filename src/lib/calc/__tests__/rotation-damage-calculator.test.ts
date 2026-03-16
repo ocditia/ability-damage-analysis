@@ -24,7 +24,7 @@ describe('calculateRotationDamageCore', () => {
     describe('Basic Functionality', () => {
         it('should return a valid result object', () => {
             const settings = createMeleeSettings();
-            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.SLICE);
+            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.DISMEMBER);
 
             const result = calculateRotationDamageCore(settings, rotation, 20);
 
@@ -63,30 +63,9 @@ describe('calculateRotationDamageCore', () => {
     });
 
     describe('Multi-Ability Rotations', () => {
-        it('should sum damage from multiple abilities', () => {
-            const settings = createMeleeSettings();
-
-            // Single ability
-            const single = createSingleAbilityRotation(MELEE_ABILITIES.SLICE);
-            const singleResult = calculateRotationDamageCore(settings, single, 20);
-
-            // Two of the same ability (at different ticks to avoid GCD conflicts)
-            const double = createRotationFromAbilities([
-                MELEE_ABILITIES.SLICE,
-                null, null, // GCD ticks
-                MELEE_ABILITIES.SLICE
-            ]);
-            const doubleResult = calculateRotationDamageCore(settings, double, 20);
-
-            // Double should be roughly 2x single
-            expect(doubleResult.regularDamage).toBeGreaterThan(singleResult.regularDamage * 1.5);
-        });
-
         it('should handle mixed ability types', () => {
             const settings = createMeleeSettings();
             const rotation = createRotationFromAbilities([
-                MELEE_ABILITIES.SLICE,    // Basic
-                null, null,
                 MELEE_ABILITIES.FURY,     // Channeled
                 null, null, null,
                 MELEE_ABILITIES.DISMEMBER // Bleed
@@ -102,7 +81,7 @@ describe('calculateRotationDamageCore', () => {
 
             // First ability at tick 0
             const rotation = createRotationFromAbilities([
-                MELEE_ABILITIES.SLICE,
+                MELEE_ABILITIES.DISMEMBER,
                 null, null,
                 MELEE_ABILITIES.FURY
             ]);
@@ -158,7 +137,7 @@ describe('calculateRotationDamageCore', () => {
         it('should respect bar size parameter', () => {
             const settings = createMeleeSettings();
             const rotation = createRotationFromAbilities([
-                MELEE_ABILITIES.SLICE,
+                MELEE_ABILITIES.DISMEMBER,
                 null, null,
                 MELEE_ABILITIES.FURY
             ], 50);
@@ -188,7 +167,7 @@ describe('calculateRotationDamageCore', () => {
 
             // Create rotation with ability at tick 0, but tick 0 is nulled
             const rotation = {
-                abilityBar: [MELEE_ABILITIES.SLICE, null, null, MELEE_ABILITIES.FURY],
+                abilityBar: [MELEE_ABILITIES.DISMEMBER, null, null, MELEE_ABILITIES.FURY],
                 extraActionBar: Array(20).fill(null),
                 nulledTicks: [true, false, false, false, ...Array(16).fill(false)],
                 stalledAbilities: Array(20).fill(null)
@@ -244,7 +223,7 @@ describe('calculateRotationDamageCore', () => {
         it('should include stats for each ability in rotation', () => {
             const settings = createMeleeSettings();
             const rotation = createRotationFromAbilities([
-                MELEE_ABILITIES.SLICE,
+                MELEE_ABILITIES.DISMEMBER,
                 null, null,
                 MELEE_ABILITIES.FURY
             ]);
@@ -311,7 +290,7 @@ describe('calculateRotationDamageCore', () => {
             const abilities: (string | null)[] = [];
             for (let i = 0; i < 200; i++) {
                 if (i % 3 === 0) {
-                    abilities.push(MELEE_ABILITIES.SLICE);
+                    abilities.push(MELEE_ABILITIES.DISMEMBER);
                 } else {
                     abilities.push(null);
                 }
@@ -334,7 +313,7 @@ describe('Rotation Calculation Edge Cases', () => {
         const settings = createMeleeSettings();
         const barSize = 20;
         const abilities = Array(barSize).fill(null);
-        abilities[barSize - 1] = MELEE_ABILITIES.SLICE;
+        abilities[barSize - 1] = MELEE_ABILITIES.DISMEMBER;
         const rotation = createRotationFromAbilities(abilities, barSize);
 
         // Should not crash
@@ -345,9 +324,9 @@ describe('Rotation Calculation Edge Cases', () => {
     it('should handle consecutive abilities (no gaps)', () => {
         const settings = createMeleeSettings();
         const rotation = createRotationFromAbilities([
-            MELEE_ABILITIES.SLICE,
-            MELEE_ABILITIES.SLICE,
-            MELEE_ABILITIES.SLICE
+            MELEE_ABILITIES.DISMEMBER,
+            MELEE_ABILITIES.DISMEMBER,
+            MELEE_ABILITIES.DISMEMBER
         ]);
 
         // Should not crash, but abilities have cooldowns so behavior may vary

@@ -159,9 +159,6 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         if (abilityKey === ABILITIES.DISMEMBER) {
             rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
         }
-        if (abilityKey === ABILITIES.BLOOD_TENDRILS) {
-            rotation[1].push(ABILITIES.BLOOD_TENDRILS_2, ABILITIES.BLOOD_TENDRILS_2);
-        }
         if (abilityKey === ABILITIES.SLAUGHTER) {
             rotation[1].push(ABILITIES.SLAUGHTER_HIT, ABILITIES.SLAUGHTER_HIT);
         }

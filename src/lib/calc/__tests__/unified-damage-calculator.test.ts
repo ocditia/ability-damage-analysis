@@ -25,7 +25,7 @@ describe('calculateSingleAbilityDamage', () => {
         it('should return a result with expected damage and distribution stats', () => {
             const settings = createMeleeSettings();
             const result = calculateSingleAbilityDamage(settings, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
 
             expect(result).toHaveProperty('expected');
@@ -37,7 +37,7 @@ describe('calculateSingleAbilityDamage', () => {
         it('should return positive damage for valid abilities', () => {
             const settings = createMeleeSettings();
             const result = calculateSingleAbilityDamage(settings, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
 
             expect(result.expected).toBeGreaterThan(0);
@@ -61,9 +61,9 @@ describe('calculateSingleAbilityDamage', () => {
             settings = createMeleeSettings();
         });
 
-        it('should calculate damage for Slice (basic ability)', () => {
+        it('should calculate damage for Dismember (basic ability)', () => {
             const result = calculateSingleAbilityDamage(settings, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
 
             expect(result.expected).toBeGreaterThan(0);
@@ -97,7 +97,7 @@ describe('calculateSingleAbilityDamage', () => {
 
         it('threshold abilities should deal more damage than basics', () => {
             const slice = calculateSingleAbilityDamage(settings, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
             const assault = calculateSingleAbilityDamage(settings, {
                 ability: MELEE_ABILITIES.ASSAULT
@@ -185,12 +185,12 @@ describe('calculateSingleAbilityDamage', () => {
                 const settings = createMeleeSettings();
 
                 const withoutBerserk = calculateSingleAbilityDamage(settings, {
-                    ability: MELEE_ABILITIES.SLICE,
+                    ability: MELEE_ABILITIES.DISMEMBER,
                     buffs: {}
                 });
 
                 const withBerserk = calculateSingleAbilityDamage(settings, {
-                    ability: MELEE_ABILITIES.SLICE,
+                    ability: MELEE_ABILITIES.DISMEMBER,
                     buffs: { berserk: true }
                 });
 
@@ -258,10 +258,10 @@ describe('calculateSingleAbilityDamage', () => {
             const highAD = createMeleeSettings({ [SETTINGS.ABILITY_DAMAGE]: 2000 });
 
             const lowResult = calculateSingleAbilityDamage(lowAD, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
             const highResult = calculateSingleAbilityDamage(highAD, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
 
             // Damage should roughly double when AD doubles
@@ -277,10 +277,10 @@ describe('calculateSingleAbilityDamage', () => {
             const withPrecise = createMeleeSettings({ [SETTINGS.PRECISE]: 6 });
 
             const resultWithout = calculateSingleAbilityDamage(withoutPrecise, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
             const resultWith = calculateSingleAbilityDamage(withPrecise, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
 
             // Precise increases average damage
@@ -292,10 +292,10 @@ describe('calculateSingleAbilityDamage', () => {
             const withEquil = createMeleeSettings({ [SETTINGS.EQUILIBRIUM]: 4 });
 
             const resultWithout = calculateSingleAbilityDamage(withoutEquil, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
             const resultWith = calculateSingleAbilityDamage(withEquil, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
 
             // Both should produce valid damage
@@ -308,10 +308,10 @@ describe('calculateSingleAbilityDamage', () => {
             const withBiting = createMeleeSettings({ [SETTINGS.BITING]: 4 });
 
             const resultWithout = calculateSingleAbilityDamage(withoutBiting, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
             const resultWith = calculateSingleAbilityDamage(withBiting, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
 
             expect(resultWith.expected).toBeGreaterThanOrEqual(resultWithout.expected);
@@ -324,10 +324,10 @@ describe('calculateSingleAbilityDamage', () => {
             const withVuln = createMeleeSettings({ [SETTINGS.VULN]: SETTINGS.VULN_VALUES.VULNERABILITY });
 
             const resultWithout = calculateSingleAbilityDamage(withoutVuln, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
             const resultWith = calculateSingleAbilityDamage(withVuln, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
 
             expect(resultWith.expected).toBeGreaterThan(resultWithout.expected);
@@ -338,10 +338,10 @@ describe('calculateSingleAbilityDamage', () => {
             const withHelm = createMeleeSettings({ [SETTINGS.SLAYER_HELM]: SETTINGS.SLAYER_HELM_VALUES.FULL });
 
             const resultWithout = calculateSingleAbilityDamage(withoutHelm, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
             const resultWith = calculateSingleAbilityDamage(withHelm, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
 
             expect(resultWith.expected).toBeGreaterThan(resultWithout.expected);
@@ -362,7 +362,7 @@ describe('calculateSingleAbilityDamage', () => {
         it('distribution stats should have required properties', () => {
             const settings = createMeleeSettings();
             const result = calculateSingleAbilityDamage(settings, {
-                ability: MELEE_ABILITIES.SLICE
+                ability: MELEE_ABILITIES.DISMEMBER
             });
 
             if (result.distributionStats.length > 0) {
@@ -377,7 +377,7 @@ describe('calculateSingleAbilityDamage', () => {
 describe('calculateMultipleAbilities', () => {
     it('should calculate damage for multiple abilities at once', () => {
         const settings = createMeleeSettings();
-        const abilities = [MELEE_ABILITIES.SLICE, MELEE_ABILITIES.FURY, MELEE_ABILITIES.CLEAVE];
+        const abilities = [MELEE_ABILITIES.DISMEMBER, MELEE_ABILITIES.FURY];
 
         const results = calculateMultipleAbilities(settings, abilities);
 
@@ -393,7 +393,7 @@ describe('calculateMultipleAbilities', () => {
 
     it('should apply buffs to all abilities', () => {
         const settings = createMeleeSettings();
-        const abilities = [MELEE_ABILITIES.SLICE, MELEE_ABILITIES.FURY];
+        const abilities = [MELEE_ABILITIES.DISMEMBER, MELEE_ABILITIES.FURY];
 
         const withoutBuffs = calculateMultipleAbilities(settings, abilities, {});
         const withBerserk = calculateMultipleAbilities(settings, abilities, { berserk: true });
@@ -418,7 +418,7 @@ describe('Edge Cases', () => {
     it('should handle zero ability damage', () => {
         const settings = createMeleeSettings({ [SETTINGS.ABILITY_DAMAGE]: 0 });
         const result = calculateSingleAbilityDamage(settings, {
-            ability: MELEE_ABILITIES.SLICE
+            ability: MELEE_ABILITIES.DISMEMBER
         });
 
         // Should not crash, damage should be 0 or minimal
@@ -428,7 +428,7 @@ describe('Edge Cases', () => {
     it('should handle very high ability damage', () => {
         const settings = createMeleeSettings({ [SETTINGS.ABILITY_DAMAGE]: 10000 });
         const result = calculateSingleAbilityDamage(settings, {
-            ability: MELEE_ABILITIES.SLICE
+            ability: MELEE_ABILITIES.DISMEMBER
         });
 
         expect(result.expected).toBeGreaterThan(0);
@@ -444,7 +444,7 @@ describe('Edge Cases', () => {
         });
 
         const result = calculateSingleAbilityDamage(settings, {
-            ability: MELEE_ABILITIES.SLICE,
+            ability: MELEE_ABILITIES.DISMEMBER,
             buffs: { berserk: true }
         });
 

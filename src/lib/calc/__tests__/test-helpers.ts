@@ -262,13 +262,9 @@ export function createRotationFromAbilities(abilities: (string | null)[], barSiz
  * Common melee abilities for testing
  */
 export const MELEE_ABILITIES = {
-    SLICE: 'slice',
     FURY: 'fury',
     GREATER_FURY: 'greater fury',
-    CLEAVE: 'cleave',
-    DECIMATE: 'decimate',
     ASSAULT: 'assault',
-    DESTROY: 'destroy',
     DISMEMBER: 'dismember',
     BERSERK: 'berserk',
     OVERPOWER: 'overpower',
@@ -292,12 +288,10 @@ export const RANGED_ABILITIES = {
  * Common magic abilities for testing
  */
 export const MAGIC_ABILITIES = {
-    WRACK: 'wrack',
     IMPACT: 'impact',
     DRAGON_BREATH: 'dragon breath',
     WILD_MAGIC: 'wild magic',
     ASPHYXIATE: 'asphyxiate',
-    DETONATE: 'detonate',
     SUNSHINE: 'sunshine',
     OMNIPOWER: 'omnipower',
 } as const;

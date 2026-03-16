@@ -256,8 +256,8 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
  * Applies final damage modifiers that occur when damage is actually dealt
  * (e.g. vulnerability, slayer sigil, Zerk essence). After modifiers, handles
  * split soul (ECB spec) by creating additional damage objects from the soul
- * split portion, and grants adrenaline from critical hits when a crit buff
- * (Tsunami, Incendiary Shot, Meteor Strike) is active.
+ * split portion, and grants adrenaline from critical hits when Tsunami crit buff
+ * is active.
  */
 function on_damage(settings: Record<string, any>, dmgObject: DamageObject): DamageObject[] {
     const abilityKey = dmgObject.ability;
