@@ -7,6 +7,7 @@
     import GradientSeparator from '../UI/GradientSeparator.svelte';
     import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
+    import { getItemsForSlot, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { bossPresets, getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
     import { familiars, calculateFamiliarHitChance } from '$lib/familiars/familiars';
@@ -62,6 +63,32 @@
         [SettingsCombatStyles.NECROMANCY]: 'necro',
     };
 
+    /** Map UI style tab to gear registry combat style */
+    const gearStyle = {
+        [SettingsCombatStyles.MELEE]: 'melee',
+        [SettingsCombatStyles.RANGED]: 'ranged',
+        [SettingsCombatStyles.MAGIC]: 'magic',
+        [SettingsCombatStyles.NECROMANCY]: 'necromancy',
+    };
+
+    /** Get dropdown options for a slot — dynamic from gear registry if gearSlot is set, otherwise static from settings */
+    function getSlotOptions(slot) {
+        if (slot.gearSlot) {
+            return getItemsForSlot(slot.gearSlot, gearStyle[styleTab]);
+        }
+        return settings[slot.key]?.options ?? [];
+    }
+
+    /** Resolve icon folder for a gear item — uses the item's style from the registry */
+    function getIconFolder(value, fallbackFolder) {
+        if (!value || value === 'none') return fallbackFolder;
+        const item = getItemForValue(value);
+        if (!item) return fallbackFolder;
+        if (item.style === 'hybrid') return 'shared';
+        const styleFolderMap = { melee: 'melee', ranged: 'ranged', magic: 'magic', necromancy: 'necro' };
+        return styleFolderMap[item.style] ?? fallbackFolder;
+    }
+
     function gearIcon(settingKey, fallback, folder = 'shared') {
         const val = settings[settingKey]?.value;
         if (!val || val === 'none') return fallback;
@@ -90,47 +117,46 @@
 
     const armourSlotsByStyle = {
         [SettingsCombatStyles.RANGED]: [
-            { key: SETTINGS.RANGED_HELMET, fallback: '/armour_icons/Head_slot.webp' },
-            { key: SETTINGS.RANGED_BODY, fallback: '/armour_icons/Torso_slot.png' },
-            { key: SETTINGS.RANGED_LEGS, fallback: '/armour_icons/Legs_slot.png' },
-            { key: SETTINGS.RANGED_GLOVES, fallback: '/armour_icons/Hands_slot.webp' },
-            { key: SETTINGS.RANGED_BOOTS, fallback: '/armour_icons/Feet_slot.png' },
-            { key: SETTINGS.RANGED_POCKET, fallback: '/armour_icons/Pocket_slot.webp' },
-            { key: SETTINGS.RANGED_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png' },
+            { key: SETTINGS.RANGED_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
+            { key: SETTINGS.RANGED_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
+            { key: SETTINGS.RANGED_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
+            { key: SETTINGS.RANGED_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
+            { key: SETTINGS.RANGED_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.RANGED_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
+            { key: SETTINGS.RANGED_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
         [SettingsCombatStyles.MAGIC]: [
-            { key: SETTINGS.MAGIC_HELMET, fallback: '/armour_icons/Head_slot.webp' },
-            { key: SETTINGS.MAGIC_BODY, fallback: '/armour_icons/Torso_slot.png' },
-            { key: SETTINGS.MAGIC_LEGS, fallback: '/armour_icons/Legs_slot.png' },
-            { key: SETTINGS.MAGIC_GLOVES, fallback: '/armour_icons/Hands_slot.webp' },
-            { key: SETTINGS.MAGIC_BOOTS, fallback: '/armour_icons/Feet_slot.png' },
-            { key: SETTINGS.MAGIC_POCKET, fallback: '/armour_icons/Pocket_slot.webp' },
-            { key: SETTINGS.MAGIC_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png' },
+            { key: SETTINGS.MAGIC_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
+            { key: SETTINGS.MAGIC_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
+            { key: SETTINGS.MAGIC_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
+            { key: SETTINGS.MAGIC_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
+            { key: SETTINGS.MAGIC_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.MAGIC_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
+            { key: SETTINGS.MAGIC_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
         [SettingsCombatStyles.MELEE]: [
-            { key: SETTINGS.MELEE_HELMET, fallback: '/armour_icons/Head_slot.webp' },
-            { key: SETTINGS.MELEE_BODY, fallback: '/armour_icons/Torso_slot.png' },
-            { key: SETTINGS.MELEE_LEGS, fallback: '/armour_icons/Legs_slot.png' },
-            { key: SETTINGS.MELEE_GLOVES, fallback: '/armour_icons/Hands_slot.webp' },
-            { key: SETTINGS.MELEE_BOOTS, fallback: '/armour_icons/Feet_slot.png' },
-            { key: SETTINGS.MELEE_POCKET, fallback: '/armour_icons/Pocket_slot.webp' },
-            { key: SETTINGS.MELEE_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png' },
+            { key: SETTINGS.MELEE_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
+            { key: SETTINGS.MELEE_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
+            { key: SETTINGS.MELEE_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
+            { key: SETTINGS.MELEE_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
+            { key: SETTINGS.MELEE_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.MELEE_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
+            { key: SETTINGS.MELEE_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
         [SettingsCombatStyles.NECROMANCY]: [
-            { key: SETTINGS.NECRO_HELMET, fallback: '/armour_icons/Head_slot.webp' },
-            { key: SETTINGS.NECRO_BODY, fallback: '/armour_icons/Torso_slot.png' },
-            { key: SETTINGS.NECRO_LEGS, fallback: '/armour_icons/Legs_slot.png' },
-            { key: SETTINGS.NECRO_GLOVES, fallback: '/armour_icons/Hands_slot.webp' },
-            { key: SETTINGS.NECRO_BOOTS, fallback: '/armour_icons/Feet_slot.png' },
-            { key: SETTINGS.NECRO_POCKET, fallback: '/armour_icons/Pocket_slot.webp' },
-            { key: SETTINGS.NECRO_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png' },
+            { key: SETTINGS.NECRO_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
+            { key: SETTINGS.NECRO_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
+            { key: SETTINGS.NECRO_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
+            { key: SETTINGS.NECRO_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
+            { key: SETTINGS.NECRO_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.NECRO_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
+            { key: SETTINGS.NECRO_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
     };
     const sharedArmourSlots = [
-        { key: SETTINGS.NECKLACE, fallback: '/armour_icons/Neck_slot.png' },
-        { key: SETTINGS.CAPE, fallback: '/armour_icons/Back_slot.png' },
-        { key: SETTINGS.RING, fallback: '/armour_icons/Ring_slot.png' },
-        { key: SETTINGS.AURA, fallback: '/armour_icons/Aura_slot.webp' },
+        { key: SETTINGS.NECKLACE, fallback: '/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
+        { key: SETTINGS.CAPE, fallback: '/armour_icons/Back_slot.png', gearSlot: 'cape' },
+        { key: SETTINGS.RING, fallback: '/armour_icons/Ring_slot.png', gearSlot: 'ring' },
     ];
 
     const weaponSlotsByStyle = {
@@ -274,6 +300,7 @@
         // debugPreset2();
         settings[SETTINGS.UNDEAD_SLAYER_ABILITY]['value'] = false;
         settings[SETTINGS.BLACKHOLE]['value'] = false;
+
     });
         
 
@@ -505,12 +532,12 @@
                 [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
                 [SETTINGS.MELEE_BODY]: SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
                 [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
-                [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.TMW,
+                [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.GOP_E,
                 [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
-                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.EOFOR,
+                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.AM_HEJ,
                 [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.ZUK,
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHAMPION_E,
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
+                [SETTINGS.RING]: SETTINGS.RING_VALUES.REAVERS,
+                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.FUL,
             },
             'Trimmed Masterwork': {
                 [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.TMW,
@@ -930,19 +957,21 @@
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Armour</h5>
                     <div class="flex flex-wrap gap-2 justify-center mb-3">
                         {#each (armourSlotsByStyle[styleTab] ?? []) as slot}
+                            {@const slotOptions = getSlotOptions(slot)}
+                            {@const iconFolder = slot.gearSlot ? getIconFolder(settings[slot.key]?.value, styleFolder[styleTab]) : styleFolder[styleTab]}
                             <div class="relative">
                                 <button
                                     type="button"
                                     class="stack-toggle"
                                     class:stack-active={settings[slot.key]?.value && settings[slot.key]?.value !== 'none'}
-                                    title="{settings[slot.key]?.label ?? slot.key}: {settings[slot.key]?.options?.find(o => o.value === settings[slot.key]?.value)?.text ?? 'None'}"
+                                    title="{settings[slot.key]?.label ?? slot.key}: {slotOptions.find(o => o.value === settings[slot.key]?.value)?.text ?? 'None'}"
                                     onclick={() => { openDropdown = openDropdown === slot.key ? null : slot.key; }}
                                 >
                                     <img
-                                        src={gearIcon(slot.key, slot.fallback, styleFolder[styleTab])}
+                                        src={gearIcon(slot.key, slot.fallback, iconFolder)}
                                         alt={settings[slot.key]?.label ?? ''}
                                         class="w-7 h-7"
-                                        onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback, styleFolder[styleTab]); e.target.src = icons.fallbackIcon; }}
+                                        onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback, iconFolder); e.target.src = icons.fallbackIcon; }}
                                     />
                                     {#if gearBadge(slot.key)}
                                         {#if gearBadge(slot.key).img}
@@ -954,7 +983,7 @@
                                 </button>
                                 {#if openDropdown === slot.key}
                                     <div class="icon-dropdown" style="min-width: 160px;">
-                                        {#each settings[slot.key]?.options ?? [] as option}
+                                        {#each slotOptions as option}
                                             <button
                                                 type="button"
                                                 class="icon-dropdown-item"
@@ -969,19 +998,21 @@
                             </div>
                         {/each}
                         {#each sharedArmourSlots as slot}
+                            {@const slotOptions = getSlotOptions(slot)}
+                            {@const iconFolder = slot.gearSlot ? getIconFolder(settings[slot.key]?.value, 'shared') : 'shared'}
                             <div class="relative">
                                 <button
                                     type="button"
                                     class="stack-toggle"
                                     class:stack-active={settings[slot.key]?.value && settings[slot.key]?.value !== 'none'}
-                                    title="{settings[slot.key]?.label ?? slot.key}: {settings[slot.key]?.options?.find(o => o.value === settings[slot.key]?.value)?.text ?? 'None'}"
+                                    title="{settings[slot.key]?.label ?? slot.key}: {slotOptions.find(o => o.value === settings[slot.key]?.value)?.text ?? 'None'}"
                                     onclick={() => { openDropdown = openDropdown === slot.key ? null : slot.key; }}
                                 >
                                     <img
-                                        src={gearIcon(slot.key, slot.fallback)}
+                                        src={gearIcon(slot.key, slot.fallback, iconFolder)}
                                         alt={settings[slot.key]?.label ?? ''}
                                         class="w-7 h-7"
-                                        onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback); e.target.src = icons.fallbackIcon; }}
+                                        onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback, iconFolder); e.target.src = icons.fallbackIcon; }}
                                     />
                                     {#if gearBadge(slot.key)}
                                         {#if gearBadge(slot.key).img}
@@ -993,7 +1024,7 @@
                                 </button>
                                 {#if openDropdown === slot.key}
                                     <div class="icon-dropdown" style="min-width: 160px;">
-                                        {#each settings[slot.key]?.options ?? [] as option}
+                                        {#each slotOptions as option}
                                             <button
                                                 type="button"
                                                 class="icon-dropdown-item"

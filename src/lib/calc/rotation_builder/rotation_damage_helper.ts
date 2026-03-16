@@ -110,7 +110,12 @@ function calc_channelled_hit(settings: Record<string, any>, hit_index: number, r
 export function handleBuffs(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
     //TODO handle swiftness' weird damage calc + cleanup format
     switch (abilityKey) {
-        // Damage Buff Ults
+        // Magic Buff Abilities
+        case ABILITIES.INSTABILITY:
+            settings[SETTINGS.INSTABILITY] = true; 
+            timers[SETTINGS.INSTABILITY] = 50;
+            break;
+        case ABILITIES.TSUNAMI:
         case ABILITIES.SUNSHINE:
             settings[SETTINGS.SUNSHINE] = true;
             timers[SETTINGS.SUNSHINE] = 50;
@@ -119,30 +124,10 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             settings[SETTINGS.SUNSHINE] = true;
             timers[SETTINGS.SUNSHINE] = 63;
             break;
-        case ABILITIES.DEATHS_SWIFTNESS:
-            settings['death swiftness'] = true;
-            timers['death swiftness'] = 50;
+            settings[SETTINGS.CRIT_BUFF] = true; 
+            timers[SETTINGS.CRIT_BUFF] = 51;
             break;
-        case ABILITIES.GREATER_DEATHS_SWIFTNESS:
-            settings['death swiftness'] = true;
-            timers['death swiftness'] = 63;
-            break;
-        case ABILITIES.BERSERK:
-            settings[SETTINGS.BERSERK] = true;
-            // Vestments of Havoc: 3+ pieces extends Berserk by 10 ticks
-            const vestPieces = [
-                settings[SETTINGS.MELEE_HELMET] === SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
-                settings[SETTINGS.MELEE_BODY] === SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
-                settings[SETTINGS.MELEE_LEGS] === SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
-                settings[SETTINGS.MELEE_BOOTS] === SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
-            ].filter(Boolean).length;
-            timers[SETTINGS.BERSERK] = vestPieces >= 3 ? 43 : 33;
-            break;
-        // Buff Special Attacks
-        case ABILITIES.BLACKHOLE:
-            settings[SETTINGS.BLACKHOLE] = true;
-            timers[SETTINGS.BLACKHOLE] = 35;
-            break;
+        // Ranged Buff Abilities
         case ABILITIES.GALESHOT:
             settings[SETTINGS.SEARING_WINDS] = true;
             timers[SETTINGS.SEARING_WINDS] = 10; // 6 seconds
@@ -157,29 +142,70 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
                 timers[SETTINGS.SHADOW_IMBUED] += 6;
             }
             break;
-        case ABILITIES.SPLIT_SOUL_ECB: //TODO remove split soul on changing weapon
-            settings['split soul'] = true;
-            timers['split soul'] = 25;
+        case ABILITIES.DEATHS_SWIFTNESS:
+            settings['death swiftness'] = true;
+            timers['death swiftness'] = 50;
             break;
-        case ABILITIES.SPLIT_SOUL_NECRO:
-            settings[SETTINGS.SPLIT_SOUL_NECRO] = true;
-            timers[SETTINGS.SPLIT_SOUL_NECRO] = 34; // 20.4s = 34 ticks
+        case ABILITIES.GREATER_DEATHS_SWIFTNESS:
+            settings['death swiftness'] = true;
+            timers['death swiftness'] = 63;
             break;
         case ABILITIES.BALANCE_BY_FORCE:
             settings[ABILITIES.BALANCE_BY_FORCE] = true; 
             timers[ABILITIES.BALANCE_BY_FORCE] = 50;
             break;
-            case ABILITIES.INSTABILITY:
-                settings[SETTINGS.INSTABILITY] = true; 
-                timers[SETTINGS.INSTABILITY] = 50;
-                break;
-        // Crit Buff
-        case ABILITIES.TSUNAMI:
-            settings[SETTINGS.CRIT_BUFF] = true; 
-            timers[SETTINGS.CRIT_BUFF] = 51;
+        case ABILITIES.SPLIT_SOUL_ECB: //TODO remove split soul on changing weapon
+            settings[SETTINGS.SPLIT_SOUL] = true;
+            timers[SETTINGS.SPLIT_SOUL] = 25;
             break;
-        // Conjure abilities — tracked via timers, processed by processConjureTick
-        case ABILITIES.CONJURE_UNDEAD_ARMY:
+        // Melee Buff Abilities
+        case ABILITIES.FURY:
+            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.REGULAR; 
+            break;
+        case ABILITIES.GREATER_FURY:
+            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.GREATER; 
+            break;
+        case ABILITIES.CHAOS_ROAR:
+            settings[SETTINGS.CHAOS_ROAR] = true;
+            break;
+        case ABILITIES.METEOR_STRIKE:
+            settings[SETTINGS.METEOR_STRIKE_BUFF] = true;
+            timers[SETTINGS.METEOR_STRIKE_BUFF] = 50; // 30 seconds
+            break;
+        case ABILITIES.IGNEOUS_SHOWDOWN:
+            if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true) {
+                // Already applied: bonus hits handled by get_hit_sequence, generate 15% adrenaline
+                addAdrenaline(settings, 15);
+            }
+            // Note: FLAMEBOUND_RIVAL is set to true AFTER hits process (see _pendingFlamebound flag)
+            settings['_pendingFlamebound'] = true;
+            break;
+        case ABILITIES.BERSERK:
+            settings[SETTINGS.BERSERK] = true;
+            // Vestments of Havoc: 3+ pieces extends Berserk by 10 ticks
+            const vestPieces = [
+                settings[SETTINGS.MELEE_HELMET] === SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
+                settings[SETTINGS.MELEE_BODY] === SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
+                settings[SETTINGS.MELEE_LEGS] === SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
+                settings[SETTINGS.MELEE_BOOTS] === SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
+            ].filter(Boolean).length;
+            timers[SETTINGS.BERSERK] = vestPieces >= 3 ? 43 : 33;
+            break;
+        case ABILITIES.BLACKHOLE:
+            settings[SETTINGS.BLACKHOLE] = true;
+            timers[SETTINGS.BLACKHOLE] = 35;
+            break;
+        case ABILITIES.RAMPAGE:
+            settings[SETTINGS.RAMPAGE] = true;
+            timers[SETTINGS.RAMPAGE] = 100;
+            break;
+        // Necromancy Buff Abilities
+        case ABILITIES.SPLIT_SOUL_NECRO:
+            settings[SETTINGS.SPLIT_SOUL_NECRO] = true;
+            timers[SETTINGS.SPLIT_SOUL_NECRO] = 34; // 20.4s = 34 ticks
+            break;        
+    
+        case ABILITIES.CONJURE_UNDEAD_ARMY: // Conjure abilities — tracked via timers, processed by processConjureTick
             timers['conjure_skeleton_warrior'] = getConjureDuration(settings);
             timers['conjure_vengeful_ghost'] = getConjureDuration(settings);
             timers['conjure_putrid_zombie'] = getConjureDuration(settings);
@@ -197,8 +223,8 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
         case ABILITIES.CONJURE_PHANTOM_GUARDIAN:
             timers['conjure_phantom_guardian'] = getConjureDuration(settings);
             break;
-        // Command abilities — trigger burst damage from conjures
-        case ABILITIES.COMMAND_SKELETON_WARRIOR:
+        
+        case ABILITIES.COMMAND_SKELETON_WARRIOR: // Command abilities — trigger effect from conjures
             timers['command_skeleton_warrior'] = 10; // 6s = 10 ticks, 10 hits
             break;
         case ABILITIES.COMMAND_PUTRID_ZOMBIE:
@@ -237,28 +263,6 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
         case ABILITIES.NATURAL_INSTINCT:
             settings[SETTINGS.NATURAL_INSTINCT] = true; 
             timers[ABILITIES.NATURAL_INSTINCT] = 34;
-            break;
-        // Melee Basic Buffs
-        case ABILITIES.FURY:
-            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.REGULAR; 
-            break;
-        case ABILITIES.GREATER_FURY:
-            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.GREATER; 
-            break;
-        case ABILITIES.CHAOS_ROAR:
-            settings[SETTINGS.CHAOS_ROAR] = true;
-            break;
-        case ABILITIES.METEOR_STRIKE:
-            settings[SETTINGS.METEOR_STRIKE_BUFF] = true;
-            timers[SETTINGS.METEOR_STRIKE_BUFF] = 50; // 30 seconds
-            break;
-        case ABILITIES.IGNEOUS_SHOWDOWN:
-            if (settings[SETTINGS.FLAMEBOUND_RIVAL] === true) {
-                // Already applied: bonus hits handled by get_hit_sequence, generate 15% adrenaline
-                addAdrenaline(settings, 15);
-            }
-            // Note: FLAMEBOUND_RIVAL is set to true AFTER hits process (see _pendingFlamebound flag)
-            settings['_pendingFlamebound'] = true;
             break;
     }
 

@@ -364,7 +364,7 @@ const weapons = {
     [SETTINGS.AMMO_VALUES.BIK_ARROWS]:{
         tier: 99
     },
-    'hydrix bakriminel bolts':{
+    [SETTINGS.AMMO_VALUES.HYDRIX_BOLTS]:{
         tier: 99
     },
     [SETTINGS.MELEE_TH_VALUES.EZK]:{
@@ -1140,6 +1140,15 @@ const armour: Record<string, ArmourPiece> = {
         slot: 'necklace',
         style: 'hybrid'
     },
+    [SETTINGS.NECKLACE_VALUES.DRAGON_RIDER_NECKLACE]: {
+        'necromancy strength': 30.2,
+        'magic strength': 30.2,
+        'melee strength': 30.2,
+        'ranged strength': 30.2,
+        tier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
+        slot: 'necklace',
+        style: 'hybrid'
+    },
     'blood amulet of fury': {
         'necromancy strength': 37.3,
         'magic strength': 37.3,
@@ -1237,7 +1246,7 @@ const armour: Record<string, ArmourPiece> = {
         'ranged strength': 0,
         tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
-        style: 'hybrid'
+        style: 'magic'
     },
     [SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS]: {
         'necromancy strength': 0,
@@ -1246,25 +1255,7 @@ const armour: Record<string, ArmourPiece> = {
         'ranged strength': 0,
         tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
-        style: 'hybrid'
-    },
-    [SETTINGS.POCKET_VALUES.CRUELTY]: {
-        'necromancy strength': 0,
-        'magic strength': 0,
-        'melee strength': 0,
-        'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
-        slot: 'pocket',
-        style: 'hybrid'
-    },
-    [SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY]: {
-        'necromancy strength': 0,
-        'magic strength': 0,
-        'melee strength': 0,
-        'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
-        slot: 'pocket',
-        style: 'hybrid'
+        style: 'magic'
     },
     [SETTINGS.MAGIC_GLOVES_VALUES.KWW]: {
         'necromancy strength': 0,
@@ -1518,7 +1509,7 @@ const armour: Record<string, ArmourPiece> = {
         slot: 'cape',
         style: 'magic'
     },
-    'TokHaar-Kal-Mor': {
+    [SETTINGS.CAPE_VALUES.KILN]: {
         'necromancy strength': 0,
         'magic strength': 33.5,
         'melee strength': 0,
@@ -1528,6 +1519,15 @@ const armour: Record<string, ArmourPiece> = {
         style: 'necromancy'
     },
     [SETTINGS.CAPE_VALUES.COMP]: {
+        'necromancy strength': 31.5,
+        'magic strength': 31.5,
+        'melee strength': 31.5,
+        'ranged strength': 31.5,
+        tier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
+        slot: 'cape',
+        style: 'hybrid'
+    },
+    [SETTINGS.CAPE_VALUES.MAX]: {
         'necromancy strength': 31.5,
         'magic strength': 31.5,
         'melee strength': 31.5,
@@ -1562,6 +1562,61 @@ const armour: Record<string, ArmourPiece> = {
         tier: { melee: 95, ranged: 95, magic: 95, necro: 95 },
         slot: 'pocket',
         style: 'hybrid'
+    },
+    [SETTINGS.POCKET_VALUES.CRUELTY]: {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        slot: 'pocket',
+        style: 'ranged'
+    },
+    [SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY]: {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 0,
+        'ranged strength': 0,
+        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        slot: 'pocket',
+        style: 'ranged'
+    },
+    // Ammo
+    [SETTINGS.AMMO_VALUES.FUL_ARROWS]: {
+        'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
+        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        slot: 'ammo',
+        style: 'ranged'
+    },
+    [SETTINGS.AMMO_VALUES.WEN_ARROWS]: {
+        'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
+        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        slot: 'ammo',
+        style: 'ranged'
+    },
+    [SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS]: {
+        'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
+        tier: { melee: 0, ranged: 95, magic: 0, necro: 0 },
+        slot: 'ammo',
+        style: 'ranged'
+    },
+    [SETTINGS.AMMO_VALUES.JAS_ARROWS]: {
+        'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
+        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        slot: 'ammo',
+        style: 'ranged'
+    },
+    [SETTINGS.AMMO_VALUES.BIK_ARROWS]: {
+        'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
+        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        slot: 'ammo',
+        style: 'ranged'
+    },
+    [SETTINGS.AMMO_VALUES.HYDRIX_BOLTS]: {
+        'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
+        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        slot: 'ammo',
+        style: 'ranged'
     },
     'underworld grimoire 3': {
         'necromancy strength': 10,
@@ -2168,6 +2223,8 @@ export enum ABILITIES {
     PULVERISE = 'pulverise',
     FRENZY_HIT = 'frenzy hit',
     FRENZY = 'frenzy',
+
+    // Melee Special Attacks
     VINE_CALL_INTIAL = 'vine call initial',
     VINE_CALL_AOE = 'vine call aoe',
     VINE_CALL = 'vine call',
@@ -2216,6 +2273,7 @@ export enum ABILITIES {
     THE_FINAL_FLURRY_1 = 'the final flurry 1',
     THE_FINAL_FLURRY_2 = 'the final flurry 2',
     THE_FINAL_FLURRY ='the final flurry',
+    RAMPAGE = 'rampage',
 
     ICE_CLEAVE = 'ice cleave',
     BERSERK = 'berserk',
@@ -3540,28 +3598,39 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
-        adrenaline: 0,
+        adrenaline: 50,
         hits: {
             1: [ABILITIES.THE_FINAL_FLURRY_1, 'next hit', ABILITIES.THE_FINAL_FLURRY_1,
                 'next hit', ABILITIES.THE_FINAL_FLURRY_2
             ]
         }
     },
+    [ABILITIES.RAMPAGE]: {
+        'min hit': 0.0, // min % of abil expressed as a decimal
+        'var hit': 0.0,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': false, // is the ability affected by damage potential
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee',
+        adrenaline: 100,
+        cooldown: 0},
     [ABILITIES.BERSERK]: {
         'min hit': 0.0, // min % of abil expressed as a decimal
         'var hit': 0.0,
         'on-hit effects': false, // does the ability get on-hit effects
         'crit effects': false, // can the ability crit
         'damage potential effects': false, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
-        adrenaline: 100
-    ,
+        adrenaline: 100,
         cooldown: 60},
     [ABILITIES.BLACKHOLE]: {
         'min hit': 0.0, // min % of abil expressed as a decimal
@@ -4843,9 +4912,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 0},
+        'damage type': 'necrotic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        adrenaline: 60,
+        cooldown: 60},
     [ABILITIES.DEATHSKULLS_4]: {
         // Death Skulls - single target, igneous (4 damaging hits: M→P→M→P→M→P→M)
         // Non-igneous swapped at calc time to 3 hits (M→P→M→P→M)
@@ -4929,8 +4998,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        'damage type': 'necrotic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         cooldown: 0},
     [ABILITIES.VOLLEY_OF_SOULS]: {
         // ability name - single hit component used by multihit
@@ -4940,9 +5008,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
+        adrenaline: 0,
         cooldown: 0},
     [ABILITIES.VOLLEY_OF_SOULS_DYNAMIC]: {
         // Volley of Souls with dynamic hits based on residual souls

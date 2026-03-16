@@ -1245,7 +1245,7 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
                         likelihood: scale, // Total likelihood (crit + non-crit = 1)
                         minDamage: minDamage,
                         maxDamage: maxDamage,
-                        ability: namedDmgObject.ability,
+                        ability: dmgObj.ability,
                         distributionType: 'combined',
                         critProbability: critDist['probability'],
                         critMean: critMean,
@@ -1266,7 +1266,7 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
                         likelihood: scale * critDist['probability'],
                         minDamage: Math.min(...damageList),
                         maxDamage: Math.max(...damageList),
-                        ability: namedDmgObject.ability,
+                        ability: dmgObj.ability,
                         distributionType: 'crit'
                     });
                 } else if (nonCritDist && nonCritDist['damage list'].length > 0) {
@@ -1277,7 +1277,7 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
                         likelihood: scale * nonCritDist['probability'],
                         minDamage: Math.min(...damageList),
                         maxDamage: Math.max(...damageList),
-                        ability: namedDmgObject.ability,
+                        ability: dmgObj.ability,
                         distributionType: 'non_crit'
                     });
                 }

@@ -272,7 +272,7 @@ export const sharedGear: Record<string, Record<string, { title: string; icon: st
         [SETTINGS.RING]: {...SETTINGS.RING_VALUES},
         [SETTINGS.NECKLACE]: {...SETTINGS.NECKLACE_VALUES},
         [SETTINGS.CAPE]: {...SETTINGS.CAPE_VALUES},
-        [SETTINGS.POCKET]: {...SETTINGS.POCKET_VALUES},
+        [SETTINGS.POCKET]: {...SETTINGS.POCKET_VALUES}, // Already uses generic key
     }, 'shared'),
     'Essence of Finality': {
         EOF: { title: 'EoF', icon: '/gear_icons/shared/essence of finality amulet.png', group: 'eof' },
