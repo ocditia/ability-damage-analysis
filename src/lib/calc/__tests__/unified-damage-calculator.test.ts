@@ -7,7 +7,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { calculateSingleAbilityDamage, calculateMultipleAbilities } from '../unified-damage-calculator';
-import { SETTINGS } from '../settings.js';
+import { SETTINGS } from '../settings_rb.js';
 import {
     createBaseSettings,
     createMeleeSettings,
@@ -80,7 +80,7 @@ describe('calculateSingleAbilityDamage', () => {
 
         it('should calculate damage for Assault (threshold channeled)', () => {
             const result = calculateSingleAbilityDamage(settings, {
-                ability: MELEE_ABILITIES.ASSAULT
+                ability: MELEE_ABILITIES.THE_FINAL_FLURRY
             });
 
             expect(result.expected).toBeGreaterThan(0);
@@ -100,7 +100,7 @@ describe('calculateSingleAbilityDamage', () => {
                 ability: MELEE_ABILITIES.DISMEMBER
             });
             const assault = calculateSingleAbilityDamage(settings, {
-                ability: MELEE_ABILITIES.ASSAULT
+                ability: MELEE_ABILITIES.THE_FINAL_FLURRY
             });
 
             expect(assault.expected).toBeGreaterThan(slice.expected);
@@ -202,12 +202,12 @@ describe('calculateSingleAbilityDamage', () => {
                 const settings = createMeleeSettings();
 
                 const withoutBerserk = calculateSingleAbilityDamage(settings, {
-                    ability: MELEE_ABILITIES.ASSAULT,
+                    ability: MELEE_ABILITIES.THE_FINAL_FLURRY,
                     buffs: {}
                 });
 
                 const withBerserk = calculateSingleAbilityDamage(settings, {
-                    ability: MELEE_ABILITIES.ASSAULT,
+                    ability: MELEE_ABILITIES.THE_FINAL_FLURRY,
                     buffs: { berserk: true }
                 });
 

@@ -7,7 +7,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { calculateRotationDamageCore } from '../rotation_builder/rotation-damage-calculator';
-import { SETTINGS } from '../settings.js';
+import { SETTINGS } from '../settings_rb.js';
 import {
     createBaseSettings,
     createMeleeSettings,
@@ -36,7 +36,7 @@ describe('calculateRotationDamageCore', () => {
 
         it('should calculate positive damage for a single ability', () => {
             const settings = createMeleeSettings();
-            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.SLICE);
+            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.QUICK_SMASH);
 
             const result = calculateRotationDamageCore(settings, rotation, 20);
 
@@ -152,7 +152,7 @@ describe('calculateRotationDamageCore', () => {
 
         it('should handle very large bar sizes', () => {
             const settings = createMeleeSettings();
-            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.SLICE, 200);
+            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.QUICK_SMASH, 200);
 
             const result = calculateRotationDamageCore(settings, rotation, 200);
 
@@ -213,7 +213,7 @@ describe('calculateRotationDamageCore', () => {
     describe('Distribution Stats', () => {
         it('should return distribution stats for analysis', () => {
             const settings = createMeleeSettings();
-            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.SLICE);
+            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.QUICK_SMASH);
 
             const result = calculateRotationDamageCore(settings, rotation, 20);
 
@@ -238,7 +238,7 @@ describe('calculateRotationDamageCore', () => {
     describe('Damage Types', () => {
         it('should separate regular and poison damage', () => {
             const settings = createMeleeSettings();
-            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.SLICE);
+            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.QUICK_SMASH);
 
             const result = calculateRotationDamageCore(settings, rotation, 20);
 
@@ -249,7 +249,7 @@ describe('calculateRotationDamageCore', () => {
 
         it('should track familiar damage separately', () => {
             const settings = createMeleeSettings();
-            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.SLICE);
+            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.QUICK_SMASH);
 
             const result = calculateRotationDamageCore(settings, rotation, 20);
 
@@ -262,7 +262,7 @@ describe('calculateRotationDamageCore', () => {
         it('should apply berserk buff from settings', () => {
             const withoutBerserk = createMeleeSettings({ [SETTINGS.BERSERK]: false });
             const withBerserk = createMeleeSettings({ [SETTINGS.BERSERK]: true });
-            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.SLICE);
+            const rotation = createSingleAbilityRotation(MELEE_ABILITIES.QUICK_SMASH);
 
             const resultWithout = calculateRotationDamageCore(withoutBerserk, rotation, 20);
             const resultWith = calculateRotationDamageCore(withBerserk, rotation, 20);
@@ -340,7 +340,7 @@ describe('Rotation Calculation Edge Cases', () => {
             [SETTINGS.CUSTOM_CRIT]: 0,
             [SETTINGS.BITING]: 0,
         });
-        const rotation = createSingleAbilityRotation(MELEE_ABILITIES.SLICE);
+        const rotation = createSingleAbilityRotation(MELEE_ABILITIES.QUICK_SMASH);
 
         const result = calculateRotationDamageCore(settings, rotation, 20);
 
@@ -357,7 +357,7 @@ describe('Rotation Calculation Edge Cases', () => {
             [SETTINGS.PRECISE]: 6,
             [SETTINGS.BITING]: 4,
         });
-        const rotation = createSingleAbilityRotation(MELEE_ABILITIES.ASSAULT, 30);
+        const rotation = createSingleAbilityRotation(MELEE_ABILITIES.THE_FINAL_FLURRY, 30);
 
         const result = calculateRotationDamageCore(settings, rotation, 30);
 

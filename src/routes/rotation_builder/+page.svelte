@@ -2,20 +2,17 @@
 	import { onMount, onDestroy } from 'svelte';
 	import Navbar from '$components/Layout/Navbar.svelte';
 	import Header from '$components/Layout/Header.svelte';
-	import { abilities  as r_dmg_abilities } from '$lib/ranged/abilities_rb';
-	import { ranged_buff_abilities } from '$lib/ranged/buff_abilities';
-	import { melee_buff_abilities } from '$lib/melee/buff_abilities';
-    import { abilities as magic_dmg_abilities } from '$lib/magic/abilities_rb';
-    import { abilities as melee_dmg_abilities } from '$lib/melee/abilities_rb';
-    import { abilities as necro_dmg_abilities } from '$lib/necromancy/abilities_rb';
+	import { abilities  as rangedAbils } from '$lib/ranged/abilities_rb';
+    import { abilities as magicAbils } from '$lib/magic/abilities_rb';
+    import { abilities as meleeAbils } from '$lib/melee/abilities_rb';
+    import { abilities as necroAbils } from '$lib/necromancy/abilities_rb';
     import { abilities as def_abilities } from '$lib/defence/abilities';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings_rb';
     import RotationSettings from '../../components/Settings/RotationSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
         import ExtraActionsPanel from '../../components/RotationBuilder/ExtraActionsPanel.svelte';
     import DamageDistributionChart from '../../components/RotationBuilder/DamageDistributionChart.svelte';
-    import { magic_buff_abilities } from '$lib/magic/buff_abilities';
-    	import TabButton from '../../components/UI/TabButton.svelte';
+	import TabButton from '../../components/UI/TabButton.svelte';
     import GradientSeparator from '../../components/UI/GradientSeparator.svelte';
     import Popup from '../../components/UI/Popup.svelte';
     import RotationConfigManager from '../../components/RotationBuilder/RotationConfigManager.svelte';
@@ -30,10 +27,6 @@
     import { getBossPresetWithEnrage, type BossAttack, type BossAttackPattern } from '$lib/familiars/boss_presets';
 
 
-    let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abilities eventually
-    let meleeAbils = {...melee_dmg_abilities, ...melee_buff_abilities};
-    let magicAbils = {...magic_dmg_abilities, ...magic_buff_abilities};
-	let rangedAbils = {...r_dmg_abilities, ...ranged_buff_abilities};
 	let defAbils = {...def_abilities};
     let allAbils = {...magicAbils, ...rangedAbils, ...necroAbils, ...meleeAbils, ...def_abilities};
 
@@ -511,15 +504,7 @@
      * @param tick - The tick to check
      */
     function buffActive(key: string, tick: number) {
-        let active = false;
-        //TODO make separate ranged and necro split souls
-        if (key === 'split soul ecb') {
-            active = rotationStore.buffs['split soul'].activeRows.includes(tick);
-        } 
-        else {
-            active = rotationStore.buffs[key].activeRows.includes(tick);
-        }
-        return active;
+        return rotationStore.buffs[key]?.activeRows.includes(tick) ?? false;
     }   
 </script>
 
@@ -916,31 +901,29 @@
 					<div class="rotation-title-row">
 						<h1 class="rotation-header">{bossName}</h1>
 						<button class="reset-btn" onclick={clearRotation} title="Reset rotation">Reset</button>
-						{#if rotationStore.totalDamage > 0 || rotationStore.poisonDamage > 0 || rotationStore.familiarDamage > 0 || rotationStore.dreadnipDamage > 0 || rotationStore.conjureDamage > 0}
-							<div class="damage-summary">
+						<div class="damage-summary">
 								<span class="dmg-total">{(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage + rotationStore.conjureDamage).toLocaleString()}</span>
-								<span class="dmg-breakdown">(<span class="dmg-val">{rotationStore.totalDamage.toLocaleString()}</span>{#if rotationStore.poisonDamage > 0} + <span class="dmg-val poison">{rotationStore.poisonDamage.toLocaleString()}</span>{/if}{#if rotationStore.familiarDamage > 0} + <span class="dmg-val familiar">{rotationStore.familiarDamage.toLocaleString()}</span>{/if}{#if rotationStore.dreadnipDamage > 0} + <span class="dmg-val dreadnip">{rotationStore.dreadnipDamage.toLocaleString()}</span>{/if}{#if rotationStore.conjureDamage > 0} + <span class="dmg-val conjure">{rotationStore.conjureDamage.toLocaleString()}</span>{/if})</span>
+								{#if rotationStore.totalDamage > 0 || rotationStore.poisonDamage > 0 || rotationStore.familiarDamage > 0 || rotationStore.dreadnipDamage > 0 || rotationStore.conjureDamage > 0}
+									<span class="dmg-breakdown">(<span class="dmg-val">{rotationStore.totalDamage.toLocaleString()}</span>{#if rotationStore.poisonDamage > 0} + <span class="dmg-val poison">{rotationStore.poisonDamage.toLocaleString()}</span>{/if}{#if rotationStore.familiarDamage > 0} + <span class="dmg-val familiar">{rotationStore.familiarDamage.toLocaleString()}</span>{/if}{#if rotationStore.dreadnipDamage > 0} + <span class="dmg-val dreadnip">{rotationStore.dreadnipDamage.toLocaleString()}</span>{/if}{#if rotationStore.conjureDamage > 0} + <span class="dmg-val conjure">{rotationStore.conjureDamage.toLocaleString()}</span>{/if})</span>
+								{/if}
 							</div>
-						{/if}
 					</div>
 					<GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
 
 					<!-- Damage Distribution Chart -->
-					{#if rotationStore.distributionStats.length > 0}
-						<DamageDistributionChart
-							distributionStats={rotationStore.distributionStats}
-							totalDamage={rotationStore.totalDamage}
-							poisonDamage={rotationStore.poisonDamage}
-							familiarDamage={rotationStore.familiarDamage}
-							dreadnipDamage={rotationStore.dreadnipDamage}
-							conjureDamage={rotationStore.conjureDamage}
-							poisonPerTick={rotationStore.poisonPerTick}
-							familiarPerTick={rotationStore.familiarPerTick}
-							dreadnipPerTick={rotationStore.dreadnipPerTick}
-							conjurePerTick={rotationStore.conjurePerTick}
-							{allAbils}
-						/>
-					{/if}
+					<DamageDistributionChart
+						distributionStats={rotationStore.distributionStats}
+						totalDamage={rotationStore.totalDamage}
+						poisonDamage={rotationStore.poisonDamage}
+						familiarDamage={rotationStore.familiarDamage}
+						dreadnipDamage={rotationStore.dreadnipDamage}
+						conjureDamage={rotationStore.conjureDamage}
+						poisonPerTick={rotationStore.poisonPerTick}
+						familiarPerTick={rotationStore.familiarPerTick}
+						dreadnipPerTick={rotationStore.dreadnipPerTick}
+						conjurePerTick={rotationStore.conjurePerTick}
+						{allAbils}
+					/>
                     <RotationConfigManager
                         {refreshUI}
                         onOpenKeybinds={() => showKeybindModal = true}

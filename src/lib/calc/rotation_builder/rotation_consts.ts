@@ -1,5 +1,6 @@
 import { settingsConfig, SETTINGS } from '../settings_rb.js';
 import { SettingsCombatStyles } from './types/SettingsCombatStyles';
+import { BUFF_COLORS, STACK_COLORS } from '../../utils/colors';
 
 /*
  * All the buffs displayed as bars under the rotation in the UI.
@@ -29,6 +30,7 @@ export const buffs = [
     SETTINGS.SPLIT_SOUL_NECRO,
     SETTINGS.METEOR_STRIKE_BUFF,
     SETTINGS.VESTMENTS_REGEN,
+    SETTINGS.RAMPAGE,
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -38,162 +40,169 @@ export function createBuffTimings(barSize: number) {
                 title: 'Crit Buff',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
-                colour: '#FFD700'
+                activeRows: [],
+                colour: BUFF_COLORS.crit_buff
             },
             [SETTINGS.DEATH_SWIFTNESS]: {
                 title: 'Death\'s Swiftness',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
-                colour: '#00bf63'
+                activeRows: [],
+                colour: BUFF_COLORS.death_swiftness
             },
             [SETTINGS.SUNSHINE]: {
                 title: 'Sunshine',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
-                colour: '#86F6FE'
+                activeRows: [],
+                colour: BUFF_COLORS.sunshine
             },
             [SETTINGS.BERSERK]: {
                 title: 'Berserk',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
-                colour: '#E28329'
+                activeRows: [],
+                colour: BUFF_COLORS.berserk
             },
             [SETTINGS.NATURAL_INSTINCT]: {
                 title: 'Natural Instinct',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
-                colour: '#B3B3B4'
+                activeRows: [],
+                colour: BUFF_COLORS.natural_instinct
             },
             [SETTINGS.SPLIT_SOUL]: {
                 title: 'Split Soul',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
-                colour: '#5b1db6'//
+                activeRows: [],
+                colour: BUFF_COLORS.split_soul
             },
             [SETTINGS.GREATER_DRACOLICH_INFUSION]: {
                 title: 'Dracolich Infusion (Greater)',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
-                colour: '#0D1EB1'
+                activeRows: [],
+                colour: BUFF_COLORS.greater_dracolich
             },
             [SETTINGS.ICY_PRECISION]: {
                 title: 'Icy Precision',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
-                colour: '#5AC8E1'
+                activeRows: [],
+                colour: BUFF_COLORS.icy_precision
             },
             [SETTINGS.BALANCE_BY_FORCE]: {
                 title: 'Balance By Force',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
-                colour: '#266d63'
+                activeRows: [],
+                colour: BUFF_COLORS.balance_by_force
             },
             [SETTINGS.INSTABILITY]: {
                 title: 'Instability',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
-                colour: '#76ffbc'
+                activeRows: [],
+                colour: BUFF_COLORS.instability
             },
             [SETTINGS.CHAOS_ROAR]: {
                 title: 'Chaos Roar',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
-                activeRows: [], // Array of row indices where this buff is active
-                colour: '#ef353a'
+                activeRows: [],
+                colour: BUFF_COLORS.chaos_roar
             },
             [SETTINGS.BLACKHOLE]: {
                 title: 'Blackhole',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#efbdf7'
+                colour: BUFF_COLORS.blackhole
             },
             [SETTINGS.SEARING_WINDS]: {
                 title: 'Searing Winds',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#ff8c00'
+                colour: BUFF_COLORS.searing_winds
             },
             [SETTINGS.SHADOW_IMBUED]: {
                 title: 'Shadow Imbued',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#6a0dad'
+                colour: BUFF_COLORS.shadow_imbued
             },
             [SETTINGS.DEATHSPORE_BUFF]: {
                 title: 'Feasting Spores',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#4a7c59'
+                colour: BUFF_COLORS.deathspore_buff
             },
             [SETTINGS.ESS_CORRUPTION_ADREN]: {
                 title: 'Essence Corruption Adrenaline',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#9932CC'
+                colour: BUFF_COLORS.essence_corruption_adren
             },
             [SETTINGS.LIVING_DEATH]: {
                 title: 'Living Death',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#4B0082'
+                colour: BUFF_COLORS.living_death
             },
             [SETTINGS.HAUNTED]: {
                 title: 'Haunted',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#6B21A8'
+                colour: BUFF_COLORS.haunted
             },
             [SETTINGS.THREADS_OF_FATE]: {
                 title: 'Threads of Fate',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#9333EA'
+                colour: BUFF_COLORS.threads_of_fate
             },
             [SETTINGS.INVOKE_DEATH]: {
                 title: 'Invoke Death',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#DC2626'
+                colour: BUFF_COLORS.invoke_death
             },
             [SETTINGS.SPLIT_SOUL_NECRO]: {
                 title: 'Split Soul (Necro)',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#7C3AED'
+                colour: BUFF_COLORS.split_soul_necro
             },
             [SETTINGS.METEOR_STRIKE_BUFF]: {
                 title: 'Meteor Strike',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#FF4500'
+                colour: BUFF_COLORS.meteor_strike_buff
             },
             [SETTINGS.VESTMENTS_REGEN]: {
                 title: 'Vestments Regen',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#521c18'
+                colour: BUFF_COLORS.vestments_regen
+            },
+            [SETTINGS.RAMPAGE]: {
+                title: 'Rampage',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: BUFF_COLORS.rampage
             }
         }
     )
@@ -208,7 +217,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/Crit_buff.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#f5e942',
+                colour: STACK_COLORS.adrenaline,
                 number: 'true',
                 combatStyle: SettingsCombatStyles.ALL
             },
@@ -218,7 +227,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/Bloodlust.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#cc0000',
+                colour: STACK_COLORS.bloodlust,
                 combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
@@ -227,7 +236,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/Perfect Equilibrium (self status).png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#4cfc42',
+                colour: STACK_COLORS.perfect_equilibrium,
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.ICY_CHILL_STACKS]: {
@@ -236,7 +245,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/Icy_Chill.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#03f4fc',
+                colour: STACK_COLORS.icy_chill,
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.BIK_STACKS]: {
@@ -245,7 +254,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/evolving_toxin.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#8CFA3A',
+                colour: STACK_COLORS.bik,
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.DEATHSPORE_STACKS]: {
@@ -254,7 +263,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/gear_icons/ranged/deathspore arrows.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#4a7c59',
+                colour: STACK_COLORS.deathspore,
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.NECROSIS_STACKS]: {
@@ -263,7 +272,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/necrosis.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#8B008B',
+                colour: STACK_COLORS.necrosis,
                 combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.RESIDUAL_SOULS]: {
@@ -272,7 +281,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/residual_soul.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#00CED1',
+                colour: STACK_COLORS.residual_souls,
                 combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.ESSENCE_CORRUPTION]: {
@@ -281,7 +290,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/essence_corruption.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#9932CC',
+                colour: STACK_COLORS.essence_corruption,
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.DEATH_SPARK_STACKS]: {
@@ -290,7 +299,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/necrosis.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#FFD700',
+                colour: STACK_COLORS.death_spark,
                 combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.SOUL_REAVE_STACKS]: {
@@ -299,7 +308,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/necromancy/Soul_Reave.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#7B68EE',
+                colour: STACK_COLORS.soul_reave,
                 combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.BLOOD_TITHE]: {
@@ -308,7 +317,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/Exsanguinate_icon.webp',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#cc0000',
+                colour: STACK_COLORS.blood_tithe,
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.GLACIAL_EMBRACE]: {
@@ -317,7 +326,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/Glacial_Embrace.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#5AC8E1',
+                colour: STACK_COLORS.glacial_embrace,
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.FAMILIAR_SPEC_POINTS]: {
@@ -326,7 +335,7 @@ export function createStackTimings(barSize: number) {
                 idx: -1,
                 image: '/effect_icons/familiar.png',
                 stackTicks: Array(barSize).fill(0),
-                colour: '#ff9900',
+                colour: STACK_COLORS.familiar_spec_points,
                 number: 'true',
                 combatStyle: SettingsCombatStyles.ALL
             },

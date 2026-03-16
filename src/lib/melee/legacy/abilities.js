@@ -106,11 +106,6 @@ const abilities = {
         calc: hit_damage_calculation,
         icon: '/ability_icons/melee/30x30/pulverise.png'
     },
-    [ABILITIES.FRENZY]: {
-        title: 'Frenzy',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/melee/30x30/frenzy.png'
-    },
     [ABILITIES.SLICE_N_DICE]: {
         title: 'Slice & dice',
         calc: ability_damage_calculation,

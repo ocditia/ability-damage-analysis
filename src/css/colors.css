@@ -1,32 +1,33 @@
 /**
- * Global color variables for the application
+ * Global color variables for the application.
+ * Keep in sync with src/lib/utils/colors.ts (the central colour registry).
  */
 
 :root {
-    /* Combat style colors */
+    /* Combat style colors — match STYLE_COLORS in colors.ts */
     --color-ranged: #00bf63;
     --color-ranged-bg: rgba(0, 191, 99, 0.2);
     --color-ranged-light: rgba(0, 191, 99, 0.5);
-    
+
     --color-necro: #d694ff;
     --color-necro-bg: rgba(214, 148, 255, 0.2);
     --color-necro-light: rgba(214, 148, 255, 0.5);
-    
+
     --color-magic: #94a3ff;
     --color-magic-bg: rgba(148, 163, 255, 0.2);
     --color-magic-light: rgba(148, 163, 255, 0.5);
-    
+
     --color-melee: #fe5c5c;
     --color-melee-bg: rgba(254, 92, 92, 0.2);
     --color-melee-light: rgba(254, 92, 92, 0.5);
-    
+
     /* UI element colors */
     --color-abilities: #FF4DB8;
     --color-abilities-bg: rgba(255, 77, 184, 0.2);
-    
+
     --color-gear: #949494;
     --color-gear-bg: #94949433;
-    
+
     /* Card border colors */
     --card-border-default: #c2ba9e;
     --card-border-magic: #5271ff;
@@ -34,26 +35,26 @@
     --card-border-melee: #ff5757;
     --card-border-necro: #8c52ff;
     --card-border-rotation: #cccb74;
-    
-    /* Damage type colors */
+
+    /* Damage source colors — match DAMAGE_SOURCE_COLORS in colors.ts */
     --color-poison: #01df01;
     --color-familiar: #00eeee;
     --color-conjure: #d694ff;
     --color-dreadnip: #ff8c00;
-    
+
     /* Functional colors */
     --color-success: #4fd1c5;
     --color-warning: #fbd38d;
     --color-error: #fc8181;
     --color-info: #90cdf4;
-    
+
     /* Text colors */
     --color-text-primary: #ffffff;
     --color-text-secondary: rgba(255, 255, 255, 0.7);
     --color-text-disabled: rgba(255, 255, 255, 0.4);
-    
+
     /* Background colors */
     --color-bg-primary: #1a202c;
     --color-bg-secondary: #2d3748;
     --color-bg-tertiary: #4a5568;
-} 
+}

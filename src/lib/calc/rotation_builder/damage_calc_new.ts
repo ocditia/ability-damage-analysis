@@ -597,7 +597,7 @@ function handleSplitSoul(
     const hasSoulSplitData = settings['soul split']?.['damage list'];
 
     // ECB Split Soul: applies to all damage types while active
-    const ecbActive = settings['split soul'] === true;
+    const ecbActive = settings[SETTINGS.SPLIT_SOUL] === true;
     // Necro Split Soul: only applies to necrotic damage
     const necroActive = settings[SETTINGS.SPLIT_SOUL_NECRO] === true && damageType === 'necrotic';
 
@@ -609,7 +609,8 @@ function handleSplitSoul(
         return;
     }
 
-    const splitSoulObject = create_damage_object(settings, ABILITIES.SPLIT_SOUL_ECB);
+    const splitSoulAbility = necroActive ? ABILITIES.SPLIT_SOUL_NECRO : ABILITIES.SPLIT_SOUL_ECB;
+    const splitSoulObject = create_damage_object(settings, splitSoulAbility);
     splitSoulObject.likelihood = dmgObject.likelihood;
 
     iterateDistributions(dmgObject, (distribution, kind) => {

@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { SETTINGS } from '../settings.js';
+import { SETTINGS } from '../settings_rb.js';
 import { createBaseSettings, createMeleeSettings, createSingleAbilityRotation, MELEE_ABILITIES } from './test-helpers';
 import { calculateRotationDamageCore } from '../rotation_builder/rotation-damage-calculator';
 
@@ -48,7 +48,7 @@ describe('Settings Debug', () => {
 
     it('should pass settings correctly through calculateRotationDamageCore', () => {
         const settings = createMeleeSettings();
-        const rotation = createSingleAbilityRotation(MELEE_ABILITIES.SLICE);
+        const rotation = createSingleAbilityRotation(MELEE_ABILITIES.QUICK_SMASH);
 
         console.log('Before calling calculateRotationDamageCore:');
         console.log('  settings[ability damage]:', settings['ability damage']);

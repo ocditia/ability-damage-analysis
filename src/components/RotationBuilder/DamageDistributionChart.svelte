@@ -10,6 +10,7 @@
     Chart.register(...registerables);
     
     import { abils } from '../../lib/calc/const/const';
+    import { STYLE_COLORS, ABILITY_COLORS, DAMAGE_SOURCE_COLORS, getDamageColour } from '../../lib/utils/colors';
 
     export let distributionStats = [];
     export let totalDamage = 0;
@@ -50,18 +51,8 @@
         return num.toLocaleString();
     };
 
-    const STYLE_COLOURS = {
-        melee:   '#e74c3c',
-        ranged:  '#2ecc71',
-        magic:   '#3498db',
-        necromancy: '#9b59b6',
-        necrotic: '#9b59b6',
-        poison:  '#4CAF50',
-        familiar:'#00eeee',
-        dreadnip:'#ff8c00',
-        conjure: '#d694ff',
-        unknown: '#888'
-    };
+    // Merged style + damage source colours for chart lookups
+    const STYLE_COLOURS = { ...STYLE_COLORS, ...DAMAGE_SOURCE_COLORS };
 
     /**
      * Derive the parent ability key from a sub-hit key.
@@ -85,6 +76,10 @@
 
     function getIconPath(key) {
         if (allAbils[key]?.icon) return allAbils[key].icon;
+        // getParentKey may have stripped a suffix — try common hit-key variants
+        for (const suffix of [' hit', ' last hit']) {
+            if (allAbils[key + suffix]?.icon) return allAbils[key + suffix].icon;
+        }
         // Secondary source icons
         const secondaryIcons = {
             '_poison': '/effect_icons/poison.png',
@@ -143,7 +138,7 @@
                 key,
                 label: key.startsWith('_') ? key.slice(1).replace(/\b\w/g, l => l.toUpperCase()) : getDisplayName(key),
                 damage: Math.round(val.damage),
-                colour: STYLE_COLOURS[val.style] || STYLE_COLOURS.unknown,
+                colour: ABILITY_COLORS[key] || STYLE_COLOURS[val.style] || STYLE_COLOURS.unknown,
                 icon: getIconPath(key)
             }))
             .sort((a, b) => b.damage - a.damage);
@@ -1046,9 +1041,7 @@
                     <line x1="4" y1="4" x2="4" y2="20"></line>
                 </svg>
                 <span class="thumbnail-title">Cumulative Damage</span>
-                {#if totalDamage > 0}
-                    <span class="thumbnail-stat">{formatDmg(totalDamage)}</span>
-                {/if}
+                <span class="thumbnail-stat">{totalDamage > 0 ? formatDmg(totalDamage) : '0'}</span>
             </button>
             <button class="thumbnail-card" on:click={() => toggleChart('breakdown')}>
                 <svg class="thumbnail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1057,9 +1050,7 @@
                     <rect x="4" y="16" width="6" height="3" rx="1"></rect>
                 </svg>
                 <span class="thumbnail-title">Damage Breakdown</span>
-                {#if distributionStats.length > 0}
-                    <span class="thumbnail-stat">{new Set(distributionStats.map(s => getParentKey(s.ability))).size} sources</span>
-                {/if}
+                <span class="thumbnail-stat">{distributionStats.length > 0 ? `${new Set(distributionStats.map(s => getParentKey(s.ability))).size} sources` : '0 sources'}</span>
             </button>
             <button class="thumbnail-card" on:click={() => toggleChart('distribution')}>
                 <svg class="thumbnail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1067,9 +1058,7 @@
                     <line x1="4" y1="20" x2="20" y2="20"></line>
                 </svg>
                 <span class="thumbnail-title">Distribution</span>
-                {#if gaussianParams.stdDev > 0}
-                    <span class="thumbnail-stat">{formatDmg(Math.round(gaussianParams.mean))} avg</span>
-                {/if}
+                <span class="thumbnail-stat">{gaussianParams.stdDev > 0 ? `${formatDmg(Math.round(gaussianParams.mean))} avg` : '0 avg'}</span>
             </button>
         </div>
     {:else}

@@ -48,6 +48,8 @@ export interface AbilityInfo {
     title?: string; // display name
     icon?: string; // icon path
     description?: string; // ability description
+    calc?: Function; // damage calculation function (ability_damage_calculation or hit_damage_calculation)
+    common?: boolean // For UI filtering of irrelevant abilities
     
     // Special properties
     isUltimate?: boolean; // whether this is an ultimate ability

@@ -153,7 +153,7 @@ function applyMultiplicativeEffects(
 
     // Berserk
     if (settings[SETTINGS.BERSERK] === true) {
-        boost = Math.floor(boost * 2);
+        boost = Math.floor(boost * 1.75);
     }
 
     // ZGS Blackhole

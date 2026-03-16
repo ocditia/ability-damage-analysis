@@ -241,6 +241,14 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
         crit_chance = 1;
     }
 
+    // The Final Flurry: hits 1 & 2 get +25% crit, hit 3 gets +50% crit
+    if (abilityKey === ABILITIES.THE_FINAL_FLURRY_1) {
+        crit_chance += 0.25;
+    }
+    if (abilityKey === ABILITIES.THE_FINAL_FLURRY_2) {
+        crit_chance += 0.5;
+    }
+
     return Math.min(1, crit_chance);
 }
 

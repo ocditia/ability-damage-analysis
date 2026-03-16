@@ -5,7 +5,7 @@
  * for testing damage calculations across different scenarios.
  */
 
-import { SETTINGS } from '../settings.js';
+import { SETTINGS } from '../settings_rb.js';
 
 /**
  * Creates a base settings object with sensible defaults for testing.
@@ -170,6 +170,37 @@ export function createBaseSettings(overrides: Record<string, any> = {}): Record<
         // Melee bloodlust stacks
         [SETTINGS.BLOODLUST_STACKS]: 0,
 
+        // CSM update settings
+        [SETTINGS.METEOR_STRIKE_BUFF]: false,
+        [SETTINGS.VESTMENTS_REGEN]: false,
+        [SETTINGS.FLAMEBOUND_RIVAL]: false,
+        [SETTINGS.ATTACK_LEVEL]: 99,
+        [SETTINGS.PLAYER_HP_PERCENT]: 100,
+        [SETTINGS.CHAOS_ROAR]: false,
+        [SETTINGS.NATURAL_INSTINCT]: false,
+        [SETTINGS.SEARING_WINDS]: false,
+        [SETTINGS.SHADOW_IMBUED]: false,
+        [SETTINGS.INSTABILITY]: false,
+        [SETTINGS.KALG_SPEC]: false,
+        [SETTINGS.ECLIPSED_SOUL]: false,
+        [SETTINGS.LVL20ARMOUR]: false,
+        [SETTINGS.IMPATIENT]: 0,
+        [SETTINGS.EXPECTED_ADRENALINE]: false,
+        [SETTINGS.DEATHMARK]: false,
+        [SETTINGS.CAP_ADRENALINE]: true,
+        [SETTINGS.HEIGHTENED_SENSES]: false,
+        [SETTINGS.VIGOUR]: false,
+        [SETTINGS.FURY_OF_THE_SMALL]: false,
+        [SETTINGS.CONSERVATION_OF_ENERGY]: false,
+        [SETTINGS.INFERNAL_PUZZLE_BOX]: 0,
+        [SETTINGS.ICY_CHILL_STACKS]: 0,
+        [SETTINGS.ICY_PRECISION]: 0,
+        [SETTINGS.ESSENCE_CORRUPTION]: 0,
+        [SETTINGS.DEATH_SPARK_STACKS]: 0,
+        [SETTINGS.SOUL_REAVE_STACKS]: 0,
+        [SETTINGS.DEATHSPORE_BUFF]: false,
+        [SETTINGS.DEATHSPORE_COOLDOWN]: 0,
+
         // Apply any overrides
         ...overrides
     };
@@ -263,11 +294,14 @@ export function createRotationFromAbilities(abilities: (string | null)[], barSiz
  */
 export const MELEE_ABILITIES = {
     FURY: 'fury',
-    GREATER_FURY: 'greater fury',
     ASSAULT: 'assault',
+    GREATER_FURY: 'greater fury',
+    QUICK_SMASH: 'quick smash',
+    THE_FINAL_FLURRY: 'the final flurry',
     DISMEMBER: 'dismember',
     BERSERK: 'berserk',
     OVERPOWER: 'overpower',
+    METEOR_STRIKE: 'meteor strike',
 } as const;
 
 /**
@@ -522,6 +556,38 @@ export function createBlankSettings(
         [SETTINGS.NECROSIS_STACKS]: 0,
         [SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: 0,
         [SETTINGS.RUIN]: 0,
+
+        // CSM update settings
+        [SETTINGS.METEOR_STRIKE_BUFF]: false,
+        [SETTINGS.VESTMENTS_REGEN]: false,
+        [SETTINGS.FLAMEBOUND_RIVAL]: false,
+        [SETTINGS.ATTACK_LEVEL]: 99,
+        [SETTINGS.PLAYER_HP_PERCENT]: 100,
+        [SETTINGS.CHAOS_ROAR]: false,
+        [SETTINGS.NATURAL_INSTINCT]: false,
+        [SETTINGS.SEARING_WINDS]: false,
+        [SETTINGS.SHADOW_IMBUED]: false,
+        [SETTINGS.INSTABILITY]: false,
+        [SETTINGS.BLOODLUST_STACKS]: 0,
+        [SETTINGS.KALG_SPEC]: false,
+        [SETTINGS.ECLIPSED_SOUL]: false,
+        [SETTINGS.LVL20ARMOUR]: false,
+        [SETTINGS.IMPATIENT]: 0,
+        [SETTINGS.EXPECTED_ADRENALINE]: false,
+        [SETTINGS.DEATHMARK]: false,
+        [SETTINGS.CAP_ADRENALINE]: true,
+        [SETTINGS.HEIGHTENED_SENSES]: false,
+        [SETTINGS.VIGOUR]: false,
+        [SETTINGS.FURY_OF_THE_SMALL]: false,
+        [SETTINGS.CONSERVATION_OF_ENERGY]: false,
+        [SETTINGS.INFERNAL_PUZZLE_BOX]: 0,
+        [SETTINGS.ICY_CHILL_STACKS]: 0,
+        [SETTINGS.ICY_PRECISION]: 0,
+        [SETTINGS.ESSENCE_CORRUPTION]: 0,
+        [SETTINGS.DEATH_SPARK_STACKS]: 0,
+        [SETTINGS.SOUL_REAVE_STACKS]: 0,
+        [SETTINGS.DEATHSPORE_BUFF]: false,
+        [SETTINGS.DEATHSPORE_COOLDOWN]: 0,
 
         // Apply overrides last
         ...overrides,
