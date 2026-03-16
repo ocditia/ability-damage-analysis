@@ -8,10 +8,8 @@
     import FamiliarSelection from '../../components/Settings/FamiliarSelection.svelte';
     import TabButton from '../UI/TabButton.svelte';
     import GradientSeparator from '../UI/GradientSeparator.svelte';
-    import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
+    import { SETTINGS } from '$lib/calc/settings_rb';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
-    import { getItemsForSlot, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
-    import { weapons } from '$lib/calc/const/const';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { bossPresets, getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
     import { familiars, calculateFamiliarHitChance } from '$lib/familiars/familiars';
@@ -59,145 +57,6 @@
         const max = stackLimits[key] ?? 999;
         return Math.max(0, Math.min(v, max));
     }
-
-    const styleFolder = {
-        [SettingsCombatStyles.MELEE]: 'melee',
-        [SettingsCombatStyles.RANGED]: 'ranged',
-        [SettingsCombatStyles.MAGIC]: 'magic',
-        [SettingsCombatStyles.NECROMANCY]: 'necro',
-    };
-
-    /** Map UI style tab to gear registry combat style */
-    const gearStyle = {
-        [SettingsCombatStyles.MELEE]: 'melee',
-        [SettingsCombatStyles.RANGED]: 'ranged',
-        [SettingsCombatStyles.MAGIC]: 'magic',
-        [SettingsCombatStyles.NECROMANCY]: 'necromancy',
-    };
-
-    /** Get dropdown options for a slot — dynamic from gear registry if gearSlot is set, otherwise static from settings */
-    function getSlotOptions(slot) {
-        if (slot.gearSlot) {
-            return getItemsForSlot(slot.gearSlot, gearStyle[styleTab]);
-        }
-        return settings[slot.key]?.options ?? [];
-    }
-
-    /** Check if a weapon value is a two-hand weapon by looking up const.ts weapons data */
-    function isWeaponTwoHand(value) {
-        if (!value || value === 'custom' || value === 'none') return false;
-        const weapon = weapons[value];
-        return weapon?.['weapon type'] === 'two-hand';
-    }
-
-    /** After selecting a weapon in MH, update and recalculate */
-    function onWeaponSelected(ws, value) {
-        settings[ws.mh].value = value;
-        openDropdown = null;
-        updateDamages();
-    }
-
-    /** Resolve icon folder for a gear item — uses the item's style from the registry */
-    function getIconFolder(value, fallbackFolder) {
-        if (!value || value === 'none') return fallbackFolder;
-        const item = getItemForValue(value);
-        if (!item) return fallbackFolder;
-        if (item.style === 'hybrid') return 'shared';
-        const styleFolderMap = { melee: 'melee', ranged: 'ranged', magic: 'magic', necromancy: 'necro' };
-        return styleFolderMap[item.style] ?? fallbackFolder;
-    }
-
-    function gearIcon(settingKey, fallback, folder = 'shared') {
-        const val = settings[settingKey]?.value;
-        if (!val || val === 'none') return fallback;
-        const base = val.replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '').replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
-        if (base !== val) return `/gear_icons/${folder}/${base}.png`;
-        return `/gear_icons/${folder}/${val}.png`;
-    }
-
-    function gearBadge(settingKey) {
-        const val = settings[settingKey]?.value;
-        if (!val) return null;
-        if (val.endsWith(' [IM]')) return { img: '/effect_icons/shard_of_genesis.png' };
-        if (val.endsWith(' (i)')) return { text: 'i' };
-        if (val.endsWith('+')) return { text: '+' };
-        if (val.endsWith(' (or)')) return { text: 'or' };
-        if (val.endsWith(' (e)')) return { text: 'e' };
-        return null;
-    }
-
-    function gearIconWithFallback(settingKey, fallback, folder = 'shared') {
-        const val = settings[settingKey]?.value;
-        if (!val || val === 'none') return fallback;
-        const base = val.replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '').replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
-        return { primary: `/gear_icons/${folder}/${val}.png`, fallbackIcon: `/gear_icons/${folder}/${base}.png`, slotFallback: fallback };
-    }
-
-    const armourSlotsByStyle = {
-        [SettingsCombatStyles.RANGED]: [
-            { key: SETTINGS.RANGED_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
-            { key: SETTINGS.RANGED_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
-            { key: SETTINGS.RANGED_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
-            { key: SETTINGS.RANGED_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
-            { key: SETTINGS.RANGED_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
-            { key: SETTINGS.RANGED_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
-            { key: SETTINGS.RANGED_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
-        ],
-        [SettingsCombatStyles.MAGIC]: [
-            { key: SETTINGS.MAGIC_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
-            { key: SETTINGS.MAGIC_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
-            { key: SETTINGS.MAGIC_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
-            { key: SETTINGS.MAGIC_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
-            { key: SETTINGS.MAGIC_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
-            { key: SETTINGS.MAGIC_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
-            { key: SETTINGS.MAGIC_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
-        ],
-        [SettingsCombatStyles.MELEE]: [
-            { key: SETTINGS.MELEE_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
-            { key: SETTINGS.MELEE_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
-            { key: SETTINGS.MELEE_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
-            { key: SETTINGS.MELEE_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
-            { key: SETTINGS.MELEE_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
-            { key: SETTINGS.MELEE_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
-            { key: SETTINGS.MELEE_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
-        ],
-        [SettingsCombatStyles.NECROMANCY]: [
-            { key: SETTINGS.NECRO_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
-            { key: SETTINGS.NECRO_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
-            { key: SETTINGS.NECRO_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
-            { key: SETTINGS.NECRO_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
-            { key: SETTINGS.NECRO_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
-            { key: SETTINGS.NECRO_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
-            { key: SETTINGS.NECRO_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
-        ],
-    };
-    const sharedArmourSlots = [
-        { key: SETTINGS.NECKLACE, fallback: '/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
-        { key: SETTINGS.CAPE, fallback: '/armour_icons/Back_slot.png', gearSlot: 'cape' },
-        { key: SETTINGS.RING, fallback: '/armour_icons/Ring_slot.png', gearSlot: 'ring' },
-    ];
-
-    const weaponSlotsByStyle = {
-        [SettingsCombatStyles.RANGED]: {
-            mh: SETTINGS.RANGED_MH,
-            oh: SETTINGS.RANGED_OH,
-            th: SETTINGS.RANGED_TH,
-        },
-        [SettingsCombatStyles.MAGIC]: {
-            mh: SETTINGS.MAGIC_MH,
-            oh: SETTINGS.MAGIC_OH,
-            th: SETTINGS.MAGIC_TH,
-        },
-        [SettingsCombatStyles.MELEE]: {
-            mh: SETTINGS.MELEE_MH,
-            oh: SETTINGS.MELEE_OH,
-            th: SETTINGS.MELEE_TH,
-        },
-        [SettingsCombatStyles.NECROMANCY]: {
-            mh: SETTINGS.NECRO_MH,
-            oh: SETTINGS.NECRO_OH,
-        },
-    };
 
     const prayerSettingByStyle = {
         [SettingsCombatStyles.RANGED]: SETTINGS.RANGED_PRAYER,

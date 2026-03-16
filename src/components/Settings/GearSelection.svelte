@@ -53,11 +53,6 @@
 
     function onWeaponSelected(ws, value) {
         settings[ws.mh].value = value;
-        if (ws.weaponType) {
-            settings[ws.weaponType].value = isWeaponTwoHand(value)
-                ? SETTINGS.WEAPON_VALUES.TH
-                : SETTINGS.WEAPON_VALUES.DW;
-        }
         openDropdown = null;
         updateDamages();
     }
@@ -90,12 +85,7 @@
         return null;
     }
 
-    function gearIconWithFallback(settingKey, fallback, folder = 'shared') {
-        const val = settings[settingKey]?.value;
-        if (!val || val === 'none') return { primary: fallback, fallbackIcon: fallback, slotFallback: fallback };
-        const base = val.replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '').replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
-        return { primary: `/gear_icons/${folder}/${val}.png`, fallbackIcon: `/gear_icons/${folder}/${base}.png`, slotFallback: fallback };
-    }
+
 
     const armourSlotsByStyle = {
         [SettingsCombatStyles.RANGED]: [
@@ -143,22 +133,16 @@
 
     const weaponSlotsByStyle = {
         [SettingsCombatStyles.RANGED]: {
-            weaponType: SETTINGS.WEAPON_TYPE_RANGED,
             mh: SETTINGS.RANGED_MH,
             oh: SETTINGS.RANGED_OH,
-            th: SETTINGS.RANGED_TH,
         },
         [SettingsCombatStyles.MAGIC]: {
-            weaponType: SETTINGS.WEAPON_TYPE_MAGE,
             mh: SETTINGS.MAGIC_MH,
             oh: SETTINGS.MAGIC_OH,
-            th: SETTINGS.MAGIC_TH,
         },
         [SettingsCombatStyles.MELEE]: {
-            weaponType: SETTINGS.WEAPON_TYPE_MELEE,
             mh: SETTINGS.MELEE_MH,
             oh: SETTINGS.MELEE_OH,
-            th: SETTINGS.MELEE_TH,
         },
         [SettingsCombatStyles.NECROMANCY]: {
             mh: SETTINGS.NECRO_MH,
