@@ -202,8 +202,8 @@ function calc_bonus(settings) {
 
     for (const slotSetting of slots) {
         const piece = armour[settings[slotSetting]];
-        if (piece?.tier) {
-            bonus += calcSlotBonus(piece.tier[tierKey], piece.slot);
+        if (piece?.offensiveTier) {
+            bonus += calcSlotBonus(piece.offensiveTier[tierKey], piece.slot);
         }
     }
 
@@ -1539,7 +1539,6 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.MAGIC_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.MAGIC_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.MAGIC_PRAYER];
-        settings[SETTINGS.WEAPON] = settings[SETTINGS.WEAPON_TYPE_MAGE];
     } else if (effectiveStyle == 'ranged') {
         settings[SETTINGS.MH] = settings[SETTINGS.RANGED_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.RANGED_OH];
@@ -1550,7 +1549,6 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.RANGED_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.RANGED_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.RANGED_PRAYER];
-        settings[SETTINGS.WEAPON] = settings[SETTINGS.WEAPON_TYPE_RANGED];
     } else if (effectiveStyle == 'melee') {
         settings[SETTINGS.MH] = settings[SETTINGS.MELEE_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.MELEE_OH];
@@ -1561,7 +1559,6 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.MELEE_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.MELEE_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.MELEE_PRAYER];
-        settings[SETTINGS.WEAPON] = settings[SETTINGS.WEAPON_TYPE_MELEE];
     } else if (effectiveStyle == 'necromancy') {
         settings[SETTINGS.MH] = settings[SETTINGS.NECRO_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.NECRO_OH];
@@ -1572,7 +1569,15 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.NECRO_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.NECRO_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.NECRO_PRAYER];
-        settings[SETTINGS.WEAPON] = SETTINGS.WEAPON_VALUES.DW
+    }
+
+    // Derive weapon type from the equipped MH weapon
+    const mhWeapon = weapons[settings[SETTINGS.MH]];
+    if (mhWeapon && mhWeapon['weapon type'] === 'two-hand') {
+        settings[SETTINGS.WEAPON] = SETTINGS.WEAPON_VALUES.TH;
+        settings[SETTINGS.TH] = settings[SETTINGS.MH];
+    } else {
+        settings[SETTINGS.WEAPON] = SETTINGS.WEAPON_VALUES.DW;
     }
     
     return settings;

@@ -6,7 +6,7 @@
 
 import { armour } from '../const/const';
 import { GearSlots } from './gear';
-import type { ArmourStyle } from '../types';
+import type { EquipmentStyle } from '../types';
 
 export type GearCombatStyle = 'melee' | 'ranged' | 'magic' | 'necromancy';
 
@@ -18,7 +18,7 @@ export interface GearItem {
     /** Which slot this item belongs to */
     slot: GearSlots;
     /** Item's native style */
-    style: ArmourStyle;
+    style: EquipmentStyle;
 }
 
 // Index: slot -> style -> GearItem[]
@@ -40,7 +40,7 @@ function buildIndex() {
     for (const [key, piece] of Object.entries(armour)) {
         if (!piece || typeof piece !== 'object') continue;
         const slot = (piece as any).slot as GearSlots;
-        const style = (piece as any).style as ArmourStyle;
+        const style = (piece as any).style as EquipmentStyle;
         if (!slot || !style) continue;
         // Skip items whose slot isn't in the GearSlots enum
         if (!Object.values(GearSlots).includes(slot)) continue;

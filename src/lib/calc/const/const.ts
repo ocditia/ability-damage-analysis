@@ -1,6 +1,6 @@
 import { AbilityInfo } from "$lib/types/AbilityTypes";
 import { SETTINGS } from "../settings_rb";
-import type { ArmourPiece } from "../types";
+import type { Equipment } from "../types";
 
 const weapons = {
     'custom main-hand weapon': {
@@ -419,13 +419,13 @@ const gear = {
     }
 };
 
-const armour: Record<string, ArmourPiece> = {
+const armour: Record<string, Equipment> = {
     [SETTINGS.RING_VALUES.TOKKUL]: {
         'necromancy strength': 2.4,
         'magic strength': 2.4,
         'melee strength': 2.4,
         'ranged strength': 2.4,
-        tier: { melee: 10, ranged: 10, magic: 10, necro: 10 },
+        offensiveTier: { melee: 10, ranged: 10, magic: 10, necro: 10 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -434,7 +434,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'hybrid'
     },
@@ -443,7 +443,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'hybrid'
     },
@@ -452,7 +452,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'hybrid'
     },
@@ -461,7 +461,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 23.2,
-        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged'
     },
@@ -470,7 +470,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 34.8,
-        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged'
     },
@@ -479,7 +479,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 29,
-        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'hybrid'
     },
@@ -488,7 +488,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 24,
-        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged'
     },
@@ -497,7 +497,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 36,
-        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged'
     },
@@ -506,7 +506,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 31,
-        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'ranged'
     },
@@ -515,7 +515,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 23.2,
-        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged'
     },
@@ -524,7 +524,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 34.8,
-        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged'
     },
@@ -533,7 +533,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 29,
-        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'ranged'
     },
@@ -542,7 +542,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 14.5,
-        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'ranged'
     },
@@ -551,7 +551,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 14.5,
-        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'ranged'
     },
@@ -560,7 +560,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 24,
-        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged'
     },
@@ -569,7 +569,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 36,
-        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged'
     },
@@ -578,7 +578,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 31,
-        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'ranged'
     },
@@ -587,7 +587,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 15,
-        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'ranged'
     },
@@ -596,7 +596,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 15,
-        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'ranged'
     },
@@ -605,7 +605,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 20.3,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'helmet',
         style: 'magic'
     },
@@ -614,7 +614,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 30.5,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -623,7 +623,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 25.4,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -632,7 +632,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 23.2,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'helmet',
         style: 'magic'
     },
@@ -641,7 +641,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 34.8,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -650,7 +650,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 29,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -659,7 +659,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 24,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'helmet',
         style: 'magic'
     },
@@ -668,7 +668,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 36,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -677,7 +677,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 31,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -686,7 +686,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'hybrid'
     },
@@ -695,7 +695,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'hybrid'
     },
@@ -704,7 +704,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'hybrid'
     },
@@ -713,7 +713,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 14.5,
         'melee strength': 14.5,
         'ranged strength': 14.5,
-        tier: { melee: 90, ranged: 90, magic: 90, necro: 90 },
+        offensiveTier: { melee: 90, ranged: 90, magic: 90, necro: 90 },
         slot: 'helmet',
         style: 'hybrid'
     },
@@ -722,7 +722,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'hybrid'
     },
@@ -731,7 +731,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'helmet',
         style: 'necromancy'
     },
@@ -740,7 +740,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'helmet',
         style: 'necromancy'
     },
@@ -749,7 +749,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'body',
         style: 'necromancy'
     },
@@ -758,7 +758,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'legs',
         style: 'necromancy'
     },
@@ -767,7 +767,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'gloves',
         style: 'necromancy'
     },
@@ -776,7 +776,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'boots',
         style: 'necromancy'
     },
@@ -785,7 +785,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'helmet',
         style: 'necromancy'
     },
@@ -794,7 +794,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'body',
         style: 'necromancy'
     },
@@ -803,7 +803,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'legs',
         style: 'necromancy'
     },
@@ -812,7 +812,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'gloves',
         style: 'necromancy'
     },
@@ -821,7 +821,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'boots',
         style: 'necromancy'
     },
@@ -830,7 +830,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 11,
         'melee strength': 11,
         'ranged strength': 11,
-        tier: { melee: 85, ranged: 85, magic: 85, necro: 85 },
+        offensiveTier: { melee: 85, ranged: 85, magic: 85, necro: 85 },
         slot: 'gloves',
         style: 'hybrid'
     },
@@ -839,7 +839,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 12.7,
         'ranged strength': 0,
-        tier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -848,7 +848,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 14.5,
         'ranged strength': 0,
-        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -857,7 +857,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 12.7,
-        tier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'ranged'
     },
@@ -866,7 +866,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 14.5,
-        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'ranged'
     },
@@ -875,7 +875,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 12.7,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'boots',
         style: 'magic'
     },
@@ -884,7 +884,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 14.5,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'boots',
         style: 'magic'
     },
@@ -893,7 +893,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 6.9,
         'melee strength': 6.9,
         'ranged strength': 6.9,
-        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
+        offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'boots',
         style: 'hybrid'
     },
@@ -902,7 +902,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 23.2,
         'ranged strength': 0,
-        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee'
     },
@@ -911,7 +911,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 34.8,
         'ranged strength': 0,
-        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee'
     },
@@ -920,7 +920,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 29,
         'ranged strength': 0,
-        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee'
     },
@@ -929,7 +929,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 14.5,
         'ranged strength': 0,
-        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
@@ -938,7 +938,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 14.5,
         'ranged strength': 0,
-        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -947,7 +947,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 24,
         'ranged strength': 0,
-        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee'
     },
@@ -956,7 +956,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 36,
         'ranged strength': 0,
-        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee'
     },
@@ -965,7 +965,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 31,
         'ranged strength': 0,
-        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee'
     },
@@ -974,7 +974,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 15,
         'ranged strength': 0,
-        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -983,7 +983,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 15,
         'ranged strength': 0,
-        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
@@ -992,7 +992,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 13.5,
         'ranged strength': 0,
-        tier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
@@ -1001,7 +1001,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 14.5,
         'ranged strength': 0,
-        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
@@ -1010,7 +1010,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 28,
         'ranged strength': 0,
-        tier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee'
     },
@@ -1019,7 +1019,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 42,
         'ranged strength': 0,
-        tier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee'
     },
@@ -1028,7 +1028,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 37,
         'ranged strength': 0,
-        tier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee'
     },
@@ -1037,7 +1037,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 19,
         'ranged strength': 0,
-        tier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -1046,7 +1046,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 43,
         'melee strength': 43,
         'ranged strength': 43,
-        tier: { melee: 99, ranged: 99, magic: 99, necro: 99 },
+        offensiveTier: { melee: 99, ranged: 99, magic: 99, necro: 99 },
         slot: 'cape',
         style: 'hybrid'
     },
@@ -1055,7 +1055,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 99 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 99 },
         slot: 'cape',
         style: 'necromancy'
     },
@@ -1064,7 +1064,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 43,
-        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'ranged'
     },
@@ -1073,7 +1073,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 43,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 99, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 99, necro: 0 },
         slot: 'cape',
         style: 'magic'
     },
@@ -1082,7 +1082,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 43,
         'ranged strength': 0,
-        tier: { melee: 99, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 99, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'melee'
     },
@@ -1091,7 +1091,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 56,
         'melee strength': 56,
         'ranged strength': 56,
-        tier: { melee: 97, ranged: 97, magic: 97, necro: 97 },
+        offensiveTier: { melee: 97, ranged: 97, magic: 97, necro: 97 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1100,7 +1100,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 59,
         'melee strength': 59,
         'ranged strength': 59,
-        tier: { melee: 102, ranged: 102, magic: 102, necro: 102 },
+        offensiveTier: { melee: 102, ranged: 102, magic: 102, necro: 102 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1109,7 +1109,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 46.3,
         'melee strength': 46.3,
         'ranged strength': 46.3,
-        tier: { melee: 84, ranged: 84, magic: 84, necro: 84 },
+        offensiveTier: { melee: 84, ranged: 84, magic: 84, necro: 84 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1118,7 +1118,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 48,
         'melee strength': 48,
         'ranged strength': 48,
-        tier: { melee: 87, ranged: 87, magic: 87, necro: 87 },
+        offensiveTier: { melee: 87, ranged: 87, magic: 87, necro: 87 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1127,7 +1127,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 30.2,
         'ranged strength': 0,
-        tier: { melee: 60, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 60, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'melee'
     },
@@ -1136,7 +1136,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 30.2,
         'melee strength': 30.2,
         'ranged strength': 30.2,
-        tier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
+        offensiveTier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1145,7 +1145,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 30.2,
         'melee strength': 30.2,
         'ranged strength': 30.2,
-        tier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
+        offensiveTier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1154,7 +1154,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 37.3,
         'melee strength': 37.3,
         'ranged strength': 37.3,
-        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
+        offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1163,7 +1163,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 46,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'necklace',
         style: 'magic'
     },
@@ -1172,7 +1172,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 46,
         'ranged strength': 0,
-        tier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'melee'
     },
@@ -1181,7 +1181,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 46,
-        tier: { melee: 0, ranged: 80, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 80, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'ranged'
     },
@@ -1190,7 +1190,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 7,
         'melee strength': 7,
         'ranged strength': 7,
-        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
+        offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -1199,7 +1199,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 8,
         'melee strength': 8,
         'ranged strength': 8,
-        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
+        offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -1208,7 +1208,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 8,
         'melee strength': 8,
         'ranged strength': 8,
-        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
+        offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -1217,7 +1217,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 8,
         'melee strength': 8,
         'ranged strength': 8,
-        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
+        offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -1226,7 +1226,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 8,
         'melee strength': 8,
         'ranged strength': 8,
-        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
+        offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -1235,7 +1235,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 7,
         'melee strength': 7,
         'ranged strength': 7,
-        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
+        offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -1244,7 +1244,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
         style: 'magic'
     },
@@ -1253,7 +1253,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
         style: 'magic'
     },
@@ -1262,7 +1262,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 13.5,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'gloves',
         style: 'magic'
     },
@@ -1271,7 +1271,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 14.5,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'gloves',
         style: 'magic'
     },
@@ -1280,7 +1280,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'ranged'
     },
@@ -1289,7 +1289,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'ranged'
     },
@@ -1298,7 +1298,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 21.6,
         'ranged strength': 0,
-        tier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee'
     },
@@ -1307,7 +1307,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1316,7 +1316,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 4.2,
         'melee strength': 4.2,
         'ranged strength': 4.2,
-        tier: { melee: 10, ranged: 10, magic: 10, necro: 10 },
+        offensiveTier: { melee: 10, ranged: 10, magic: 10, necro: 10 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1325,7 +1325,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 27.7,
         'melee strength': 27.7,
         'ranged strength': 27.7,
-        tier: { melee: 88, ranged: 88, magic: 88, necro: 88 },
+        offensiveTier: { melee: 88, ranged: 88, magic: 88, necro: 88 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1334,7 +1334,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 30.4,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'ring',
         style: 'magic'
     },
@@ -1343,7 +1343,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 30.4,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'magic'
     },
@@ -1352,7 +1352,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 30.4,
-        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'ranged'
     },
@@ -1361,7 +1361,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 30.4,
-        tier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'ranged'
     },
@@ -1370,7 +1370,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 30.4,
         'ranged strength': 0,
-        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'melee'
     },
@@ -1379,7 +1379,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 30.4,
         'ranged strength': 0,
-        tier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'melee'
     },
@@ -1388,7 +1388,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 21,
         'melee strength': 21,
         'ranged strength': 21,
-        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
+        offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1397,7 +1397,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 25.2,
         'melee strength': 25.2,
         'ranged strength': 25.2,
-        tier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
+        offensiveTier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1406,7 +1406,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 27.7,
         'melee strength': 27.7,
         'ranged strength': 27.7,
-        tier: { melee: 88, ranged: 88, magic: 88, necro: 88 },
+        offensiveTier: { melee: 88, ranged: 88, magic: 88, necro: 88 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1415,7 +1415,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 23.4,
         'melee strength': 23.4,
         'ranged strength': 23.4,
-        tier: { melee: 78, ranged: 78, magic: 78, necro: 78 },
+        offensiveTier: { melee: 78, ranged: 78, magic: 78, necro: 78 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1424,7 +1424,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 92 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 92 },
         slot: 'ring',
         style: 'necromancy'
     },
@@ -1433,7 +1433,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 92 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 92 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1442,7 +1442,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 17.3,
         'melee strength': 17.3,
         'ranged strength': 17.3,
-        tier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
+        offensiveTier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1451,7 +1451,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 19.8,
         'melee strength': 19.8,
         'ranged strength': 19.8,
-        tier: { melee: 69, ranged: 69, magic: 69, necro: 69 },
+        offensiveTier: { melee: 69, ranged: 69, magic: 69, necro: 69 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1460,7 +1460,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 21.0,
         'melee strength': 21.0,
         'ranged strength': 21.0,
-        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
+        offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1469,7 +1469,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 23.7,
         'melee strength': 23.7,
         'ranged strength': 23.7,
-        tier: { melee: 79, ranged: 79, magic: 79, necro: 79 },
+        offensiveTier: { melee: 79, ranged: 79, magic: 79, necro: 79 },
         slot: 'ring',
         style: 'hybrid'
     },
@@ -1478,7 +1478,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1487,7 +1487,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 33.5,
         'ranged strength': 0,
-        tier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'melee'
     },
@@ -1496,7 +1496,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 33.5,
-        tier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'ranged'
     },
@@ -1505,7 +1505,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 33.5,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'cape',
         style: 'magic'
     },
@@ -1514,7 +1514,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 33.5,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 85 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 85 },
         slot: 'cape',
         style: 'necromancy'
     },
@@ -1523,7 +1523,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 31.5,
         'melee strength': 31.5,
         'ranged strength': 31.5,
-        tier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
+        offensiveTier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
         slot: 'cape',
         style: 'hybrid'
     },
@@ -1532,7 +1532,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 31.5,
         'melee strength': 31.5,
         'ranged strength': 31.5,
-        tier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
+        offensiveTier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
         slot: 'cape',
         style: 'hybrid'
     },
@@ -1541,7 +1541,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 31.5,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'cape',
         style: 'magic'
     },
@@ -1550,7 +1550,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 21.6,
         'melee strength': 21.6,
         'ranged strength': 21.6,
-        tier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
+        offensiveTier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'cape',
         style: 'hybrid'
     },
@@ -1559,7 +1559,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 15,
         'melee strength': 15,
         'ranged strength': 15,
-        tier: { melee: 95, ranged: 95, magic: 95, necro: 95 },
+        offensiveTier: { melee: 95, ranged: 95, magic: 95, necro: 95 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -1568,7 +1568,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
         style: 'ranged'
     },
@@ -1577,44 +1577,44 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
         style: 'ranged'
     },
     // Ammo
     [SETTINGS.AMMO_VALUES.FUL_ARROWS]: {
         'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
-        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'ranged'
     },
     [SETTINGS.AMMO_VALUES.WEN_ARROWS]: {
         'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
-        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'ranged'
     },
     [SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS]: {
         'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
-        tier: { melee: 0, ranged: 95, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 95, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'ranged'
     },
     [SETTINGS.AMMO_VALUES.JAS_ARROWS]: {
         'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
-        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'ranged'
     },
     [SETTINGS.AMMO_VALUES.BIK_ARROWS]: {
         'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
-        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'ranged'
     },
     [SETTINGS.AMMO_VALUES.HYDRIX_BOLTS]: {
         'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
-        tier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'ranged'
     },
@@ -1623,7 +1623,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 10,
         'melee strength': 10,
         'ranged strength': 10,
-        tier: { melee: 65, ranged: 65, magic: 65, necro: 65 },
+        offensiveTier: { melee: 65, ranged: 65, magic: 65, necro: 65 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -1632,7 +1632,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 15.0,
         'melee strength': 15.0,
         'ranged strength': 15.0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
         style: 'hybrid'
     },
@@ -1641,7 +1641,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 36.8,
         'melee strength': 36.8,
         'ranged strength': 36.8,
-        tier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
+        offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1650,7 +1650,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 38.4,
         'melee strength': 38.4,
         'ranged strength': 38.4,
-        tier: { melee: 73, ranged: 73, magic: 73, necro: 73 },
+        offensiveTier: { melee: 73, ranged: 73, magic: 73, necro: 73 },
         slot: 'necklace',
         style: 'hybrid'
     },
@@ -1659,7 +1659,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 80 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 80 },
         slot: 'necklace',
         style: 'necromancy'
     },
@@ -1668,7 +1668,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 52,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'melee'
     },
@@ -1677,7 +1677,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 52,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'melee'
     },
@@ -1686,7 +1686,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 20.3,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'helmet',
         style: 'magic'
     },
@@ -1695,7 +1695,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 30.5,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -1704,7 +1704,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 25.4,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -1713,7 +1713,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 21.6,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'helmet',
         style: 'magic'
     },
@@ -1722,7 +1722,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 32.5,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -1731,7 +1731,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 27.1,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -1740,7 +1740,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 25.4,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -1749,7 +1749,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 12.7,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'gloves',
         style: 'magic'
     },
@@ -1758,7 +1758,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 12.7,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'boots',
         style: 'magic'
     },
@@ -1767,7 +1767,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 17.7,
         'ranged strength': 0,
-        tier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee'
     },
@@ -1776,7 +1776,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 26.5,
         'ranged strength': 0,
-        tier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee'
     },
@@ -1785,7 +1785,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 22.1,
         'ranged strength': 0,
-        tier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee'
     },
@@ -1794,7 +1794,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 11,
         'ranged strength': 0,
-        tier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
@@ -1803,7 +1803,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 11,
         'ranged strength': 0,
-        tier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -1812,7 +1812,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 20.3,
         'ranged strength': 0,
-        tier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee'
     },
@@ -1821,7 +1821,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 30.5,
         'ranged strength': 0,
-        tier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee'
     },
@@ -1830,7 +1830,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 25.4,
         'ranged strength': 0,
-        tier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee'
     },
@@ -1839,7 +1839,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 12.7,
         'ranged strength': 0,
-        tier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee'
     },
@@ -1848,7 +1848,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 12.7,
         'ranged strength': 0,
-        tier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee'
     },
@@ -1857,7 +1857,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'hybrid'
     },
@@ -1866,7 +1866,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'hybrid'
     },
@@ -1875,7 +1875,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'hybrid'
     },
@@ -1884,7 +1884,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
         style: 'hybrid'
     },
@@ -1893,7 +1893,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 28,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'helmet',
         style: 'magic'
     },
@@ -1902,7 +1902,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 42,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -1911,7 +1911,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 37,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -1920,7 +1920,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 19,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'gloves',
         style: 'magic'
     },
@@ -1929,7 +1929,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 19,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'boots',
         style: 'magic'
     },
@@ -1938,7 +1938,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 25,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
         slot: 'helmet',
         style: 'magic'
     },
@@ -1947,7 +1947,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 37,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
         slot: 'body',
         style: 'magic'
     },
@@ -1956,7 +1956,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 32,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
         slot: 'legs',
         style: 'magic'
     },
@@ -1965,7 +1965,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 16,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
         slot: 'gloves',
         style: 'magic'
     },
@@ -1974,7 +1974,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 16,
         'melee strength': 0,
         'ranged strength': 0,
-        tier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
         slot: 'boots',
         style: 'magic'
     },
@@ -1991,7 +1991,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 52,
         'ranged strength': 0,
-        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'melee'
     },
@@ -2000,7 +2000,7 @@ const armour: Record<string, ArmourPiece> = {
         'magic strength': 0,
         'melee strength': 24,
         'ranged strength': 0,
-        tier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'melee'
     },
@@ -2221,8 +2221,6 @@ export enum ABILITIES {
     ASSAULT_HIT = 'assault hit',
     ASSAULT = 'assault',
     PULVERISE = 'pulverise',
-    FRENZY_HIT = 'frenzy hit',
-    FRENZY = 'frenzy',
 
     // Melee Special Attacks
     VINE_CALL_INTIAL = 'vine call initial',
@@ -2869,41 +2867,6 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'damage type': 'melee',
         adrenaline: 60,
         cooldown: 60},
-    [ABILITIES.FRENZY_HIT]: {
-        // ability name
-        'min hit': 1.45, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    ,
-        cooldown: 60},
-    [ABILITIES.FRENZY]: {
-        // ability name
-        'min hit': 1.45, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee',
-        hits: {
-            1: [ABILITIES.FRENZY_HIT],
-            2: [],
-            3: [ABILITIES.FRENZY_HIT],
-            4: [],
-            5: [ABILITIES.FRENZY_HIT],
-            6: [],
-            7: [ABILITIES.FRENZY_HIT]
-        },
-        cooldown: 60
-    },
     [ABILITIES.VINE_CALL_INTIAL]: {
         // ability name
         'min hit': 1.0, // min % of abil expressed as a decimal
@@ -4935,9 +4898,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
                 ABILITIES.DEATHSKULLS
             ]
         },
-        adrenaline: 100,
+        adrenaline: 60,
         hitTimings: [0, 2, 4, 6],
-        cooldown: 30
+        cooldown: 60
     },
     [ABILITIES.DEATHSKULLS_7]: {
         // ability name
@@ -4961,6 +4924,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
                 ABILITIES.DEATHSKULLS
             ]
         },
+        adrenaline: 60,
         cooldown: 0
     },
     [ABILITIES.SOUL_CRUSH]: {
@@ -4973,7 +4937,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'special attack',
         'main style': 'necromancy',
         'damage type': 'necrotic',
-        cooldown: 0
+        cooldown: 60
     },
     [ABILITIES.SOUL_STRIKE]: {
         // ability name

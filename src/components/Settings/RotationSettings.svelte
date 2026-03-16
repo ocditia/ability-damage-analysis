@@ -3,11 +3,14 @@
     import Checkbox from '../../components/Settings/Checkbox.svelte';
     import Number from '../../components/Settings/Number.svelte';
     import Select from '../../components/Settings/Select.svelte';
+    import GearSelection from '../../components/Settings/GearSelection.svelte';
+    import PerkSelection from '../../components/Settings/PerkSelection.svelte';
     import TabButton from '../UI/TabButton.svelte';
     import GradientSeparator from '../UI/GradientSeparator.svelte';
     import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
     import { getItemsForSlot, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
+    import { weapons } from '$lib/calc/const/const';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { bossPresets, getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
     import { familiars, calculateFamiliarHitChance } from '$lib/familiars/familiars';
@@ -77,6 +80,20 @@
             return getItemsForSlot(slot.gearSlot, gearStyle[styleTab]);
         }
         return settings[slot.key]?.options ?? [];
+    }
+
+    /** Check if a weapon value is a two-hand weapon by looking up const.ts weapons data */
+    function isWeaponTwoHand(value) {
+        if (!value || value === 'custom' || value === 'none') return false;
+        const weapon = weapons[value];
+        return weapon?.['weapon type'] === 'two-hand';
+    }
+
+    /** After selecting a weapon in MH, update and recalculate */
+    function onWeaponSelected(ws, value) {
+        settings[ws.mh].value = value;
+        openDropdown = null;
+        updateDamages();
     }
 
     /** Resolve icon folder for a gear item — uses the item's style from the registry */
@@ -161,19 +178,16 @@
 
     const weaponSlotsByStyle = {
         [SettingsCombatStyles.RANGED]: {
-            weaponType: SETTINGS.WEAPON_TYPE_RANGED,
             mh: SETTINGS.RANGED_MH,
             oh: SETTINGS.RANGED_OH,
             th: SETTINGS.RANGED_TH,
         },
         [SettingsCombatStyles.MAGIC]: {
-            weaponType: SETTINGS.WEAPON_TYPE_MAGE,
             mh: SETTINGS.MAGIC_MH,
             oh: SETTINGS.MAGIC_OH,
             th: SETTINGS.MAGIC_TH,
         },
         [SettingsCombatStyles.MELEE]: {
-            weaponType: SETTINGS.WEAPON_TYPE_MELEE,
             mh: SETTINGS.MELEE_MH,
             oh: SETTINGS.MELEE_OH,
             th: SETTINGS.MELEE_TH,
@@ -954,307 +968,11 @@
                 </div>
             {:else if tab === 'equipment'}
                 <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">Armour</h5>
-                    <div class="flex flex-wrap gap-2 justify-center mb-3">
-                        {#each (armourSlotsByStyle[styleTab] ?? []) as slot}
-                            {@const slotOptions = getSlotOptions(slot)}
-                            {@const iconFolder = slot.gearSlot ? getIconFolder(settings[slot.key]?.value, styleFolder[styleTab]) : styleFolder[styleTab]}
-                            <div class="relative">
-                                <button
-                                    type="button"
-                                    class="stack-toggle"
-                                    class:stack-active={settings[slot.key]?.value && settings[slot.key]?.value !== 'none'}
-                                    title="{settings[slot.key]?.label ?? slot.key}: {slotOptions.find(o => o.value === settings[slot.key]?.value)?.text ?? 'None'}"
-                                    onclick={() => { openDropdown = openDropdown === slot.key ? null : slot.key; }}
-                                >
-                                    <img
-                                        src={gearIcon(slot.key, slot.fallback, iconFolder)}
-                                        alt={settings[slot.key]?.label ?? ''}
-                                        class="w-7 h-7"
-                                        onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback, iconFolder); e.target.src = icons.fallbackIcon; }}
-                                    />
-                                    {#if gearBadge(slot.key)}
-                                        {#if gearBadge(slot.key).img}
-                                            <img src={gearBadge(slot.key).img} alt="" class="gear-badge-img" />
-                                        {:else}
-                                            <span class="stack-count">{gearBadge(slot.key).text}</span>
-                                        {/if}
-                                    {/if}
-                                </button>
-                                {#if openDropdown === slot.key}
-                                    <div class="icon-dropdown" style="min-width: 160px;">
-                                        {#each slotOptions as option}
-                                            <button
-                                                type="button"
-                                                class="icon-dropdown-item"
-                                                class:active={settings[slot.key]?.value === option.value}
-                                                onclick={() => { settings[slot.key].value = option.value; openDropdown = null; updateDamages(); }}
-                                            >
-                                                {option.text}
-                                            </button>
-                                        {/each}
-                                    </div>
-                                {/if}
-                            </div>
-                        {/each}
-                        {#each sharedArmourSlots as slot}
-                            {@const slotOptions = getSlotOptions(slot)}
-                            {@const iconFolder = slot.gearSlot ? getIconFolder(settings[slot.key]?.value, 'shared') : 'shared'}
-                            <div class="relative">
-                                <button
-                                    type="button"
-                                    class="stack-toggle"
-                                    class:stack-active={settings[slot.key]?.value && settings[slot.key]?.value !== 'none'}
-                                    title="{settings[slot.key]?.label ?? slot.key}: {slotOptions.find(o => o.value === settings[slot.key]?.value)?.text ?? 'None'}"
-                                    onclick={() => { openDropdown = openDropdown === slot.key ? null : slot.key; }}
-                                >
-                                    <img
-                                        src={gearIcon(slot.key, slot.fallback, iconFolder)}
-                                        alt={settings[slot.key]?.label ?? ''}
-                                        class="w-7 h-7"
-                                        onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback, iconFolder); e.target.src = icons.fallbackIcon; }}
-                                    />
-                                    {#if gearBadge(slot.key)}
-                                        {#if gearBadge(slot.key).img}
-                                            <img src={gearBadge(slot.key).img} alt="" class="gear-badge-img" />
-                                        {:else}
-                                            <span class="stack-count">{gearBadge(slot.key).text}</span>
-                                        {/if}
-                                    {/if}
-                                </button>
-                                {#if openDropdown === slot.key}
-                                    <div class="icon-dropdown" style="min-width: 160px;">
-                                        {#each slotOptions as option}
-                                            <button
-                                                type="button"
-                                                class="icon-dropdown-item"
-                                                class:active={settings[slot.key]?.value === option.value}
-                                                onclick={() => { settings[slot.key].value = option.value; openDropdown = null; updateDamages(); }}
-                                            >
-                                                {option.text}
-                                            </button>
-                                        {/each}
-                                    </div>
-                                {/if}
-                            </div>
-                        {/each}
-                        {#if styleTab === SettingsCombatStyles.MAGIC && settings[SETTINGS.AUTO_CAST]}
-                            <div class="relative">
-                                <button
-                                    type="button"
-                                    class="stack-toggle"
-                                    class:stack-active={settings[SETTINGS.AUTO_CAST]?.value && settings[SETTINGS.AUTO_CAST]?.value !== 'none'}
-                                    title="Auto Cast: {settings[SETTINGS.AUTO_CAST]?.options?.find(o => o.value === settings[SETTINGS.AUTO_CAST]?.value)?.text ?? 'None'}"
-                                    onclick={() => { openDropdown = openDropdown === SETTINGS.AUTO_CAST ? null : SETTINGS.AUTO_CAST; }}
-                                >
-                                    <img
-                                        src={settings[SETTINGS.AUTO_CAST]?.value === 'exsanguinate' ? '/effect_icons/Exsanguinate_icon.webp' : settings[SETTINGS.AUTO_CAST]?.value === 'incite fear' ? '/ability_icons/magic/Incite_Fear_icon.webp' : '/effect_icons/magic/Curse_icon.png'}
-                                        alt="Auto Cast"
-                                        class="w-7 h-7"
-                                    />
-                                </button>
-                                {#if openDropdown === SETTINGS.AUTO_CAST}
-                                    <div class="icon-dropdown" style="min-width: 140px;">
-                                        {#each settings[SETTINGS.AUTO_CAST]?.options ?? [] as option}
-                                            <button
-                                                type="button"
-                                                class="icon-dropdown-item"
-                                                class:active={settings[SETTINGS.AUTO_CAST]?.value === option.value}
-                                                onclick={() => { settings[SETTINGS.AUTO_CAST].value = option.value; openDropdown = null; updateDamages(); }}
-                                            >
-                                                {option.text}
-                                            </button>
-                                        {/each}
-                                    </div>
-                                {/if}
-                            </div>
-                        {/if}
-                        <!-- Weapon: combined MH + 2H dropdown, OH, Ammo -->
-                        {#each [weaponSlotsByStyle[styleTab]].filter(Boolean) as ws}
-                            {@const is2h = ws.weaponType && settings[ws.weaponType]?.value === SETTINGS.WEAPON_VALUES.TH}
-                            {@const activeWeaponKey = is2h ? ws.th : ws.mh}
-                            {@const activeWeaponText = settings[activeWeaponKey]?.options?.find(o => o.value === settings[activeWeaponKey]?.value)?.text ?? 'Custom'}
-                            <div class="relative">
-                                <button type="button" class="stack-toggle"
-                                    class:stack-active={activeWeaponKey && settings[activeWeaponKey]?.value}
-                                    title="Weapon: {activeWeaponText}{is2h ? ' (2H)' : ''}"
-                                    onclick={() => { openDropdown = openDropdown === 'weapon_combined' ? null : 'weapon_combined'; }}
-                                >
-                                    <img src={gearIcon(activeWeaponKey, '/armour_icons/Main_hand_slot.webp', styleFolder[styleTab])} alt="Weapon" class="w-7 h-7"
-                                        onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Main_hand_slot.webp'; }}
-                                    />
-                                    {#if gearBadge(activeWeaponKey)}
-                                        {#if gearBadge(activeWeaponKey).img}
-                                            <img src={gearBadge(activeWeaponKey).img} alt="" class="gear-badge-img" />
-                                        {:else}
-                                            <span class="stack-count">{gearBadge(activeWeaponKey).text}</span>
-                                        {/if}
-                                    {/if}
-                                </button>
-                                {#if openDropdown === 'weapon_combined'}
-                                    <div class="icon-dropdown" style="min-width: 180px;">
-                                        {#if ws.mh && settings[ws.mh]}
-                                            <div style="padding: 0.2rem 0.5rem; font-size: 0.65rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">Main-hand</div>
-                                            {#each settings[ws.mh]?.options ?? [] as option}
-                                                <button type="button" class="icon-dropdown-item"
-                                                    class:active={!is2h && settings[ws.mh]?.value === option.value}
-                                                    onclick={() => {
-                                                        settings[ws.mh].value = option.value;
-                                                        if (ws.weaponType) settings[ws.weaponType].value = SETTINGS.WEAPON_VALUES.DW;
-                                                        openDropdown = null;
-                                                        updateDamages();
-                                                    }}
-                                                >{option.text}</button>
-                                            {/each}
-                                        {/if}
-                                        {#if ws.th && settings[ws.th]}
-                                            <div style="padding: 0.2rem 0.5rem; font-size: 0.65rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 0.2rem;">Two-handed</div>
-                                            {#each settings[ws.th]?.options ?? [] as option}
-                                                <button type="button" class="icon-dropdown-item"
-                                                    class:active={is2h && settings[ws.th]?.value === option.value}
-                                                    onclick={() => {
-                                                        settings[ws.th].value = option.value;
-                                                        if (ws.weaponType) settings[ws.weaponType].value = SETTINGS.WEAPON_VALUES.TH;
-                                                        openDropdown = null;
-                                                        updateDamages();
-                                                    }}
-                                                >{option.text}</button>
-                                            {/each}
-                                        {/if}
-                                    </div>
-                                {/if}
-                            </div>
-                            <!-- OH: only show when dual-wield -->
-                            {#if !is2h && ws.oh && settings[ws.oh]}
-                                <div class="relative">
-                                    <button type="button" class="stack-toggle"
-                                        class:stack-active={settings[ws.oh]?.value && settings[ws.oh]?.value !== 'none'}
-                                        title="Off-hand: {settings[ws.oh]?.options?.find(o => o.value === settings[ws.oh]?.value)?.text ?? 'None'}"
-                                        onclick={() => { openDropdown = openDropdown === ws.oh ? null : ws.oh; }}
-                                    >
-                                        <img src={gearIcon(ws.oh, '/armour_icons/Off-hand_slot.webp', styleFolder[styleTab])} alt="Off-hand" class="w-7 h-7"
-                                            onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Off-hand_slot.webp'; }}
-                                        />
-                                        {#if gearBadge(ws.oh)}
-                                            {#if gearBadge(ws.oh).img}
-                                                <img src={gearBadge(ws.oh).img} alt="" class="gear-badge-img" />
-                                            {:else}
-                                                <span class="stack-count">{gearBadge(ws.oh).text}</span>
-                                            {/if}
-                                        {/if}
-                                    </button>
-                                    {#if openDropdown === ws.oh}
-                                        <div class="icon-dropdown" style="min-width: 160px;">
-                                            {#each settings[ws.oh]?.options ?? [] as option}
-                                                <button type="button" class="icon-dropdown-item"
-                                                    class:active={settings[ws.oh]?.value === option.value}
-                                                    onclick={() => { settings[ws.oh].value = option.value; openDropdown = null; updateDamages(); }}
-                                                >{option.text}</button>
-                                            {/each}
-                                        </div>
-                                    {/if}
-                                </div>
-                            {/if}
-                        {/each}
-                    </div>
-                    {#if ARMOUR_PRESETS[styleTab]}
-                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; padding: 0.4rem 0.5rem; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
-                            <span style="font-size: 0.75rem; color: #aaa; white-space: nowrap;">Preset</span>
-                            <select
-                                style="flex: 1; background: rgba(0,0,0,0.3); color: #ddd; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 0.25rem 0.4rem; font-size: 0.8rem; cursor: pointer;"
-                                bind:value={selectedPreset}
-                                onchange={() => { if (selectedPreset) applyArmourPreset(selectedPreset); }}
-                            >
-                                <option value="">-- Select preset --</option>
-                                {#each Object.keys(ARMOUR_PRESETS[styleTab]) as name}
-                                    <option value={name}>{name}</option>
-                                {/each}
-                            </select>
-                        </div>
-                    {/if}
+                    <GearSelection {settings} {styleTab} {updateDamages} bind:openDropdown />
                 </div>
                 <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">Perks</h5>
-                    <div class="flex flex-wrap gap-2 justify-center mb-3">
-                        {#each [
-                            { key: SETTINGS.PRECISE, img: '/effect_icons/perks/Precise.webp', title: 'Precise', step: 1, max: 6 },
-                            { key: SETTINGS.ERUPTIVE, img: '/effect_icons/perks/Eruptive.webp', title: 'Eruptive', step: 1, max: 4 },
-                            { key: SETTINGS.EQ_PERK, img: '/effect_icons/perks/Equilibrium.png', title: 'Equilbrium', step: 1, max: 4 },
-                            { key: SETTINGS.CAROMING, img: '/effect_icons/perks/caroming.png', title: 'Caroming', step: 1, max: 4 },
-                            { key: SETTINGS.BITING, img: '/effect_icons/perks/Biting.webp', title: 'Biting', step: 1, max: 4 },
-                            { key: SETTINGS.AFTERSHOCK, img: '/effect_icons/perks/Aftershock.png', title: 'Aftershock', step: 1, max: 4 },
-                            { key: SETTINGS.GENOCIDAL, img: '/effect_icons/perks/genocidal.png', title: 'Genocidal %', step: 0.1, max: 4.9 },
-                            { key: SETTINGS.FLANKING, img: '/effect_icons/perks/Flanking.webp', title: 'Flanking', step: 1, max: 4 },
-                            { key: SETTINGS.LVL20ARMOUR, img: '/effect_icons/perks/level-20.png', title: 'Level 20 Armour', toggle: true },
-                            { key: SETTINGS.IMPATIENT, img: '/effect_icons/perks/Impatient.png', title: 'Impatient', step: 1, max: 4 },
-                            { key: SETTINGS.SLAYER_PERK_UNDEAD, img: '/effect_icons/perks/25px-Undead_Slayer.webp', title: 'Undead Slayer', toggle: true },
-                            { key: SETTINGS.SLAYER_PERK_DRAGON, img: '/effect_icons/perks/dragon_slayer_perk.png', title: 'Dragon Slayer', toggle: true },
-                            { key: SETTINGS.SLAYER_PERK_DEMON, img: '/effect_icons/perks/demon_slayer_perk.webp', title: 'Demon Slayer', toggle: true },
-                        ] as perk}
-                            <button
-                                type="button"
-                                class="stack-toggle"
-                                class:stack-active={perk.toggle ? settings[perk.key]?.value : settings[perk.key]?.value > 0}
-                                title="{perk.title}{perk.toggle ? '' : ' (right-click to set, scroll to adjust)'}"
-                                onclick={() => { if (perk.toggle) { settings[perk.key].value = !settings[perk.key].value; } else { settings[perk.key].value = settings[perk.key].value > 0 ? 0 : (perk.step ?? 1); } updateDamages(); }}
-                                oncontextmenu={(e) => { if (!perk.toggle) { e.preventDefault(); editingStack = editingStack === perk.key ? null : perk.key; } }}
-                                onwheel={(e) => { if (!perk.toggle) { e.preventDefault(); const curr = settings[perk.key]?.value ?? 0; const step = perk.step ?? 1; const max = perk.max ?? 999; settings[perk.key].value = Math.max(0, Math.min(max, Math.round((curr + (e.deltaY < 0 ? step : -step)) * 10) / 10)); updateDamages(); } }}
-                            >
-                                <img src={perk.img} alt={perk.title} class="w-7 h-7" />
-                                {#if !perk.toggle && settings[perk.key] != null}
-                                    <span class="stack-count">{settings[perk.key].value ?? 0}</span>
-                                {/if}
-                                {#if !perk.toggle && editingStack === perk.key}
-                                    <input
-                                        type="number"
-                                        class="stack-edit"
-                                        value={settings[perk.key]?.value ?? 0}
-                                        min="0"
-                                        max={perk.max ?? 999}
-                                        step={perk.step ?? 1}
-                                        oninput={(e) => { const max = perk.max ?? 999; settings[perk.key].value = Math.max(0, Math.min(max, parseFloat(e.target.value) || 0)); updateDamages(); }}
-                                        onblur={() => { editingStack = null; }}
-                                        onkeydown={(e) => { if (e.key === 'Enter') editingStack = null; }}
-                                        onclick={(e) => e.stopPropagation()}
-                                        use:focusOnMount
-                                    />
-                                {/if}
-                            </button>
-                        {/each}
-                        {#each [
-                            { key: SETTINGS.RUTHLESS_RANK, img: '/effect_icons/perks/Ruthless.webp', title: 'Ruthless Rank', label: 'Rank', step: 1, max: 3 },
-                            { key: SETTINGS.RUTHLESS_STACKS, img: '/effect_icons/perks/Ruthless.webp', title: 'Ruthless Stacks', label: 'Stacks', step: 1, max: 5 },
-                        ] as perk}
-                            <button
-                                type="button"
-                                class="stack-toggle"
-                                class:stack-active={settings[perk.key]?.value > 0}
-                                title="{perk.title} (right-click to set, scroll to adjust)"
-                                onclick={() => { settings[perk.key].value = settings[perk.key].value > 0 ? 0 : 1; updateDamages(); }}
-                                oncontextmenu={(e) => { e.preventDefault(); editingStack = editingStack === perk.key ? null : perk.key; }}
-                                onwheel={(e) => { e.preventDefault(); const curr = settings[perk.key]?.value ?? 0; settings[perk.key].value = Math.max(0, Math.min(perk.max, curr + (e.deltaY < 0 ? 1 : -1))); updateDamages(); }}
-                            >
-                                <span class="stack-label">{perk.label}</span>
-                                <img src={perk.img} alt={perk.title} class="w-7 h-7" />
-                                <span class="stack-count">{settings[perk.key]?.value ?? 0}</span>
-                                {#if editingStack === perk.key}
-                                    <input
-                                        type="number"
-                                        class="stack-edit"
-                                        value={settings[perk.key]?.value ?? 0}
-                                        min="0"
-                                        max={perk.max}
-                                        oninput={(e) => { settings[perk.key].value = Math.max(0, Math.min(perk.max, parseInt(e.target.value) || 0)); updateDamages(); }}
-                                        onblur={() => { editingStack = null; }}
-                                        onkeydown={(e) => { if (e.key === 'Enter') editingStack = null; }}
-                                        onclick={(e) => e.stopPropagation()}
-                                        use:focusOnMount
-                                    />
-                                {/if}
-                            </button>
-                        {/each}
-                    </div>
-                </div>   
+                    <PerkSelection {settings} {updateDamages} />
+                </div>
                 <div class="md:col-span-1">
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Familiars</h5>
                     <div class="flex flex-wrap gap-2 justify-center mb-3">

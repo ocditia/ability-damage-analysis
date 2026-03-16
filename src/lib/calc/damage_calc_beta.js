@@ -134,8 +134,8 @@ function calc_bonus(settings) {
 
     for (const slotSetting of slots) {
         const piece = armour[settings[slotSetting]];
-        if (piece?.tier) {
-            bonus += calcSlotBonus(piece.tier[tierKey], piece.slot);
+        if (piece?.offensiveTier) {
+            bonus += calcSlotBonus(piece.offensiveTier[tierKey], piece.slot);
         }
     }
 
@@ -502,11 +502,6 @@ function set_min_var(settings, dmgObject) {
             var_percent += var_percent * 0.4 * settings[SETTINGS.FLANKING];
         }
 
-        // frenzy
-        if (settings['ability'] === ABILITIES.FRENZY_HIT) {
-            min_percent += 0.1 * (settings['rotation key'] - 1);
-            var_percent += 0.1 * (settings['rotation key'] - 1);
-        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {
