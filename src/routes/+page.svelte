@@ -1,8 +1,11 @@
 <script>
+    import Navbar from '$components/Layout/Navbar.svelte';
 </script>
 
+<Navbar />
+
 <header
-    class="bg-center bg-cover relative z-10 h-64 md:h-96 mt-10 lg:mt-0"
+    class="bg-center bg-cover relative z-0 h-64 md:h-96 mt-10 lg:mt-0"
     style="background-image:url(/bg_main.png)"
 ></header>
 

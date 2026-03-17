@@ -127,6 +127,18 @@
                                     /> Necromancy
                                 </a>
                             </li>
+                            <li>
+                                <a
+                                    href="/rotation_builder"
+                                    class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
+                                >
+                                    <img
+                                        class="size-10 inline mr-1"
+                                        src="/style_icons/rota_icon_white.svg"
+                                        alt=""
+                                    /> Rotation
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
