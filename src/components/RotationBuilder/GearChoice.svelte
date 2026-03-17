@@ -1,59 +1,71 @@
 <script>
     import { SETTINGS } from '$lib/calc/settings_rb';
     import { getStyleColor } from '$lib/utils/colors';
+    import { getItemsForSlot, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
+    import { GearSlots } from '$lib/calc/rotation_builder/gear';
 
-    export let gearItems = {};
     export let handleAbilityClick;
     export let handleDragStart;
     export let style = 'ranged';
-    export let settings;
 
     let showAll = false;
 
     $: styleColor = getStyleColor(style);
 
-    // Define row categories: label, slot set
+    // Map UI style tabs to gear registry combat style
+    const gearStyleMap = {
+        ranged: 'ranged',
+        magic: 'magic',
+        melee: 'melee',
+        necro: 'necromancy',
+    };
+
+    // Map UI style to icon folder
+    const iconFolderMap = {
+        ranged: 'ranged',
+        magic: 'magic',
+        melee: 'melee',
+        necro: 'necro',
+    };
+
+    // Row definitions: label + which GearSlots to include
     const rowDefs = [
-        { label: 'W', slots: new Set([
-            SETTINGS.RANGED_MH, SETTINGS.MAGIC_MH, SETTINGS.MELEE_MH, SETTINGS.NECRO_MH,
-            SETTINGS.RANGED_OH, SETTINGS.MAGIC_OH, SETTINGS.MELEE_OH, SETTINGS.NECRO_OH,
-            SETTINGS.RANGED_TH, SETTINGS.MAGIC_TH, SETTINGS.MELEE_TH, SETTINGS.NECRO_TH,
-        ])},
-        { label: 'A', slots: new Set([SETTINGS.AMMO, SETTINGS.POCKET]) },
-        { label: 'J', slots: new Set([SETTINGS.RING, SETTINGS.NECKLACE, SETTINGS.CAPE, 'Essence of Finality']) },
-        { label: 'E', slots: new Set([
-            SETTINGS.RANGED_HELMET, SETTINGS.MAGIC_HELMET, SETTINGS.MELEE_HELMET, SETTINGS.NECRO_HELMET,
-            SETTINGS.RANGED_BODY, SETTINGS.MAGIC_BODY, SETTINGS.MELEE_BODY, SETTINGS.NECRO_BODY,
-            SETTINGS.RANGED_LEGS, SETTINGS.MAGIC_LEGS, SETTINGS.MELEE_LEGS, SETTINGS.NECRO_LEGS,
-            SETTINGS.RANGED_GLOVES, SETTINGS.MAGIC_GLOVES, SETTINGS.MELEE_GLOVES, SETTINGS.NECRO_GLOVES,
-            SETTINGS.RANGED_BOOTS, SETTINGS.MAGIC_BOOTS, SETTINGS.MELEE_BOOTS, SETTINGS.NECRO_BOOTS,
-        ])},
+        { label: 'W', slots: [GearSlots.MAINHAND, GearSlots.OFFHAND] },
+        { label: 'A', slots: [GearSlots.AMMO, GearSlots.POCKET] },
+        { label: 'J', slots: [GearSlots.RING, GearSlots.NECKLACE, GearSlots.CAPE] },
+        { label: 'E', slots: [GearSlots.HELMET, GearSlots.BODY, GearSlots.LEGS, GearSlots.GLOVES, GearSlots.BOOTS] },
     ];
 
-    const commonKeys = new Set([
-        'BOLG', 'BOLG_IM', 'HEX_E', 'FSOA', 'FSOA_IM', 'INQ_STAFF', 'INQ_STAFF_E',
-        'LENG', 'LENG_IM', 'EZK', 'EZK_IM', 'MW_SPEAR',
-        'OMNI_GUARD', 'OMNI_GUARD_IM', 'DEVOURERS_GUARD', 'DEVOURERS_GUARD_IM',
-        'ROAR_OF_AWAKENING', 'ROAR_OF_AWAKENING_IM', 'ODE_TO_DECEIT', 'ODE_TO_DECEIT_IM',
-        'CUSTOM_SHIELD',
-        'ELITE_DRACOLICH', 'ELITE_SIRENIC', 'ELITE_TECTONIC', 'TUMEKENS_RESPLENDENCE',
-        'TMW', 'VESTMENTS', 'TFN',
-        'CINDERS', 'DTB', 'KWW_E', 'NIGHTMARES_E',
-        'EOF', 'EOF_BLACK', 'EOF_BLUE', 'EOF_GREEN', 'EOF_PINK', 'EOF_PURPLE', 'EOF_RED', 'EOF_YELLOW',
-        'FUL_ARROWS', 'WEN_ARROWS', 'DEATHSPORE_ARROWS', 'JAS_ARROWS', 'BIK_ARROWS', 'HYDRIX_BOLTS',
-        'EOFOR', 'AOSOR', 'AOS', 'REAPEROR', 'REAPER',
-        'REAVERS', 'STALKER_E', 'CHAMPION_E', 'CHANNELER_E', 'RODI',
-        'ZUK',
-        'GRIM', 'FUL', 'JAS',
-    ]);
+    function getIconFolder(item) {
+        if (item.style === 'hybrid') return 'shared';
+        const map = { melee: 'melee', ranged: 'ranged', magic: 'magic', necromancy: 'necro' };
+        return map[item.style] ?? iconFolderMap[style] ?? 'shared';
+    }
 
-    function getRowItems(slotSet) {
+    function resolveIcon(item) {
+        const folder = getIconFolder(item);
+        const base = item.value
+            .replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '')
+            .replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
+        return `/gear_icons/${folder}/${base}.png`;
+    }
+
+    function getRowItems(slots) {
+        const gearStyle = gearStyleMap[style] ?? 'ranged';
         const result = [];
-        for (const [slot, items] of Object.entries(gearItems)) {
-            if (!slotSet.has(slot)) continue;
-            const entries = showAll ? Object.entries(items) : Object.entries(items).filter(([key]) => commonKeys.has(key));
-            for (const [key, item] of entries) {
-                result.push(item);
+        for (const slot of slots) {
+            const items = getItemsForSlot(slot, gearStyle);
+            for (const item of items) {
+                if (item.value === 'none') continue;
+                if (!showAll && !item.popular) continue;
+                result.push({
+                    title: item.text,
+                    value: item.value,
+                    icon: resolveIcon(item),
+                    slot: item.slot,
+                    style: item.style,
+                    weaponType: item.weaponType,
+                });
             }
         }
         return result;
@@ -65,7 +77,7 @@
 <div class="ability-groups">
     <div style="display: flex; justify-content: flex-end; margin-bottom: 2px;">
         <button class="filter-btn" class:active={!showAll} onclick={() => showAll = !showAll}>
-            {showAll ? 'All' : 'Common'}
+            {showAll ? 'All' : 'Popular'}
         </button>
     </div>
     {#each rows as row}
@@ -89,7 +101,6 @@
                                 ondragstart={(e) => handleDragStart(e, item)}
                                 title={item.title}
                                 style="width: 30px; height: 30px; object-fit: contain; background-color: #333; border: 1px solid {styleColor};"
-                                onerror={(e) => { if (item.iconFallback && !e.target.dataset.tried) { e.target.dataset.tried = '1'; e.target.src = item.iconFallback; } }}
                             />
                         {:else}
                             <div

@@ -23,12 +23,14 @@ const EXTRA_BAR_SIZE = 12;
 function toExtraAction(input) {
     if (isExtraAction(input)) return input;
 
-    // Gear object: { title, icon, iconFallback? }
+    // Gear object from GearChoice: { title, value?, icon, slot?, style?, weaponType? }
     if (typeof input === 'object' && input.title) {
-        const slot = gearSwaps[input.title];
+        const value = input.value || input.title;
+        // Look up the per-style settings key from gearSwaps (e.g. 'elite dracolich coif' → 'ranged helmet')
+        const slot = gearSwaps[value] || gearSwaps[input.title];
         return {
             type: 'gear',
-            value: input.title,
+            value,
             title: input.title,
             icon: input.icon || '',
             ...(slot ? { slot } : {}),

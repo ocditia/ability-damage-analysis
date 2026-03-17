@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import AbilityChoice from './AbilityChoice.svelte';
     import GearChoice from './GearChoice.svelte';
-    import { offGcdAbilities, prayers, spells, consumables, allExtraActions, rangedGear, meleeGear, magicGear, necroGear, sharedGear, gearSwaps } from '$lib/special/abilities';
+    import { offGcdAbilities, prayers, spells, consumables, allExtraActions, gearSwaps } from '$lib/special/abilities';
     import { SETTINGS } from '$lib/calc/settings_rb';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
@@ -32,13 +32,6 @@
     export let setExtraActionsTab = (tab) => {};
 
     const EXTRA_BAR_SIZE = 12;
-    const gearByStyle = {
-        ranged: { ...rangedGear, ...sharedGear },
-        melee: { ...meleeGear, ...sharedGear },
-        magic: { ...magicGear, ...sharedGear },
-        necro: { ...necroGear, ...sharedGear },
-    };
-    $: activeGear = gearByStyle[uiState.activeTab] || rangedGear;
     $: tick = uiState.extraActions.tick;
 
     // Build gear state at the selected tick by applying gear swaps from tick 0 to tick
@@ -504,11 +497,9 @@
                 <!-- Right: actions -->
                 <div class="actions-panel">
                     <GearChoice
-                            gearItems={activeGear}
                             handleAbilityClick={handleAbilityClickExtra}
                             {handleDragStart}
                             style={uiState.activeTab}
-                            settings={settingsStore.settings}
                         />
                     <AbilityChoice
                             abilities={offGcdAbilities}
