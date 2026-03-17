@@ -1004,10 +1004,10 @@ function calc_crit_damage(settings) {
             crit_buff += 0.25;
         }
         else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_CRIT) {
-            crit_buff += 0.10;
+            crit_buff += 0.15;
         }
         else {
-            crit_buff += 0.175;
+            crit_buff += 0.2;
         }
     }
     return crit_buff;
