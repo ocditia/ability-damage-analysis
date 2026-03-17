@@ -26,6 +26,9 @@ function next_cast(settings) {
         settings[SETTINGS.CHAOS_ROAR] = false;
     }
 
+    // turn off (g)conc
+    settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 0;
+
     settings = next_hit(settings);
 
     return settings;
@@ -37,9 +40,6 @@ function next_hit(settings) {
         settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.GREATER) {
         settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.NONE;
     }
-
-    // turn off (g)conc
-    settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 0; // this does not properly handle conc buffing itself
 
     // bolg stack tracker
     if (
