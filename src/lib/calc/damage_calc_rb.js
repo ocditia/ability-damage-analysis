@@ -1,3 +1,4 @@
+import { settingsActions } from '$lib/stores';
 import { next_cast, next_hit, next_tick } from './ability_helper_rb';
 import { ABILITIES, abils, armour, gear, weapons } from './const/const';
 import { prayers } from './const/prayers';
@@ -997,6 +998,15 @@ function calc_crit_damage(settings) {
         (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)) {
             crit_buff += 0.03;
         }
+
+    // the final flurry crit damage
+    if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_1) {
+        crit_buff += 0.25;
+    }
+
+    if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_2) {
+        crit_buff += 0.5;
+    }
 
     // fsoa 22.5%
     if ((settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA || settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA_IM) && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
