@@ -74,7 +74,7 @@ export function isExtraAction(obj: any): obj is ExtraAction {
  * - string keys (abilities, prayers, etc.)
  * - { title, icon } objects (gear swaps)
  */
-export function normalizeLegacy(entry: any, gearSwapsLookup?: Record<string, string>): ExtraAction | null {
+export function normalizeLegacy(entry: any, gearSwapsLookup?: Record<string, string>, iconLookup?: Record<string, { title?: string; icon?: string }>): ExtraAction | null {
     if (!entry) return null;
     if (isExtraAction(entry)) return entry;
 
@@ -92,11 +92,12 @@ export function normalizeLegacy(entry: any, gearSwapsLookup?: Record<string, str
 
     // Legacy string key (ability, prayer, consumable, spell)
     if (typeof entry === 'string') {
+        const info = iconLookup?.[entry];
         return {
-            type: 'ability', // default — the calc handler will figure out the actual type
+            type: 'ability',
             value: entry,
-            title: entry,
-            icon: '',
+            title: info?.title || entry,
+            icon: info?.icon || '',
         };
     }
 

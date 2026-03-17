@@ -1,10 +1,12 @@
 import { createBuffTimings, createStackTimings } from '$lib/calc/rotation_builder/rotation_consts.ts';
 import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
+import { normalizeLegacy } from '$lib/calc/rotation_builder/extra-action';
+import { gearSwaps, allExtraActions } from '$lib/special/abilities';
 
 // Configuration constants
 const STORAGE_KEY = 'rotation_configs';
 const MAX_SAVED_CONFIGS = 20;
-const BAR_SIZE = 200;
+const BAR_SIZE = 300;
 const EXTRA_BAR_SIZE = 12;
 
 // Rotation store
@@ -164,7 +166,7 @@ export const rotationActions = {
 
         try {
             rotationStore.abilityBar = config.data.a.map(a => a || null);
-            rotationStore.extraActionBar = config.data.e.map(row => row.map(a => a || null));
+            rotationStore.extraActionBar = config.data.e.map(row => row.map(a => a ? (normalizeLegacy(a, gearSwaps, allExtraActions) || a) : null));
             rotationStore.nulledTicks = config.data.n;
             rotationStore.stalledAbilities = config.data.t.map(a => a || null);
 
@@ -186,7 +188,7 @@ export const rotationActions = {
             onSuccess(`Rotation "${config.name}" has been loaded!`);
 
         } catch (e) {
-            onError('Failed to load rotation. The file might be corrupted.');
+            onError('Failed to load rotation. The file might be corrupted. Sorry if update killed your rotation =(');
         }
     },
 
