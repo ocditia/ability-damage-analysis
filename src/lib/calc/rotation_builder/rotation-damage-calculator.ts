@@ -47,6 +47,7 @@ interface RotationState {
     bossPhases: import('$lib/familiars/boss_presets').BossPhase[] | null;
     currentPhaseIdx: number;
     pauseTicksRemaining: number;
+    phaseTransitions: PhaseTransitionRecord[];
 }
 
 interface DamageDistributionStat {
@@ -69,6 +70,14 @@ interface DamageDistributionStat {
     nonCritMax?: number;
 }
 
+interface PhaseTransitionRecord {
+    tick: number;
+    phaseIdx: number;
+    label: string;
+    hp: number;
+    pause: number;
+}
+
 interface DamageResult {
     regularDamage: number;
     poisonDamage: number;
@@ -80,6 +89,7 @@ interface DamageResult {
     familiarPerTick: number[];
     dreadnipPerTick: number[];
     conjurePerTick: number[];
+    phaseTransitions: PhaseTransitionRecord[];
 }
 
 
@@ -210,7 +220,8 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         conjurePerTick: new Array(BAR_SIZE).fill(0),
         bossPhases: null,
         currentPhaseIdx: 0,
-        pauseTicksRemaining: 0
+        pauseTicksRemaining: 0,
+        phaseTransitions: []
     };
 
     // Find the last tick that has an ability (familiar/dreadnip stop after this)
@@ -314,7 +325,8 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         poisonPerTick: state.poisonPerTick,
         familiarPerTick: state.familiarPerTick,
         dreadnipPerTick: state.dreadnipPerTick,
-        conjurePerTick: state.conjurePerTick
+        conjurePerTick: state.conjurePerTick,
+        phaseTransitions: state.phaseTransitions
     };
 }
 
@@ -359,7 +371,8 @@ export function calculateRotationDamageCore(
         conjurePerTick: new Array(barSize).fill(0),
         bossPhases: null,
         currentPhaseIdx: 0,
-        pauseTicksRemaining: 0
+        pauseTicksRemaining: 0,
+        phaseTransitions: []
     };
 
     // Find the last tick that has an ability (familiar/dreadnip stop after this)
@@ -436,7 +449,8 @@ export function calculateRotationDamageCore(
         poisonPerTick: state.poisonPerTick,
         familiarPerTick: state.familiarPerTick,
         dreadnipPerTick: state.dreadnipPerTick,
-        conjurePerTick: state.conjurePerTick
+        conjurePerTick: state.conjurePerTick,
+        phaseTransitions: state.phaseTransitions
     };
 }
 
@@ -1238,9 +1252,23 @@ function checkPhaseTransition(state: RotationState, settingsCopy: any) {
     if (cumulativeDamage < currentPhase.hp) return;
 
     // Phase transition triggered
-    if (currentPhase.pause) {
-        state.pauseTicksRemaining = currentPhase.pause;
+    const pause = currentPhase.pause || 0;
+    if (pause) {
+        state.pauseTicksRemaining = pause;
     }
+
+    const isLast = state.currentPhaseIdx === state.bossPhases.length - 1;
+    const label = currentPhase.stats?.name
+        ? currentPhase.stats.name
+        : (isLast ? 'Kill' : `P${state.currentPhaseIdx + 2}`);
+
+    state.phaseTransitions.push({
+        tick: state.tick,
+        phaseIdx: state.currentPhaseIdx,
+        label,
+        hp: currentPhase.hp,
+        pause
+    });
 
     // Apply stat overrides from this phase
     if (currentPhase.stats) {

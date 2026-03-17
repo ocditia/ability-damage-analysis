@@ -18,7 +18,7 @@ export class Logger {
             acc[category] = false;
             return acc;
         }, {} as LoggerConfig);
-        this.enable(LogCategory.ABILITY_DAMAGE);
+        // this.enable(LogCategory.ABILITY_DAMAGE);
     }
 
     public static getInstance(): Logger {

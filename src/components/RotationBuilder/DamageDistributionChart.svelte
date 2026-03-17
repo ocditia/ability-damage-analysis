@@ -84,7 +84,7 @@
         const secondaryIcons = {
             '_poison': '/effect_icons/poison.png',
             '_familiar': '/effect_icons/familiar.png',
-            '_dreadnip': '/effect_icons/Dreadnip_active_(self_status).png',
+            '_dreadnip': '/ability_icons/special/Dreadnip.png',
             '_conjure': '/effect_icons/necrosis.png'
         };
         return secondaryIcons[key] || null;

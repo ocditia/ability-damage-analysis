@@ -243,10 +243,6 @@ function calc_boosted_ad(settings, dmgObject) {
             base_ad_boost = Math.floor(1.3 * base_ad_boost);
         }
 
-        // flow stacks
-        if (abils[settings['ability']]['main style'] === 'magic') {
-            base_ad_boost = Math.floor((1 + 0.01 * settings[SETTINGS.FLOW_STACKS]) * base_ad_boost);
-        }
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {

@@ -441,7 +441,8 @@ export function calculateTotalDamageNew() {
     rotationStore.familiarPerTick = dmgResult.familiarPerTick || [];
     rotationStore.dreadnipPerTick = dmgResult.dreadnipPerTick || [];
     rotationStore.conjurePerTick = dmgResult.conjurePerTick || [];
-    
+    rotationStore.phaseTransitions = dmgResult.phaseTransitions || [];
+
     // Calculate Gaussian parameters for more accurate damage modeling
     const gaussianParams = calculateGaussianParameters(rotationStore.distributionStats);
     logger.log(LogCategory.ROTATION, 'Total Damage = ' + rotationStore.totalDamage + 

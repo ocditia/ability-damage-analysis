@@ -53,8 +53,14 @@
 		return val && val !== 'none' ? val : 'ROTATION';
 	});
 
-	// Phase/kill markers derived from damage data + boss preset
-	let phaseMarkers = $derived(getPhaseMarkers());
+	// Phase/kill markers from calc engine (single source of truth)
+	let phaseMarkers = $derived(rotationStore.phaseTransitions.map(pt => ({
+		tick: pt.tick,
+		label: pt.label,
+		hp: pt.hp,
+		...(pt.pause > 0 && pt.phaseIdx < (getEffectiveBoss()?.phases?.length ?? 1) - 1
+			? { pauseEnd: pt.tick + pt.pause } : {})
+	})));
 	let phaseTickMap = $derived(new Map(phaseMarkers.map(m => [m.tick, m])));
 	// Set of ticks that fall within a phase pause (boss invulnerable)
 	let pauseTickSet = $derived.by(() => {
@@ -66,6 +72,9 @@
 		}
 		return s;
 	});
+
+	// Boss pattern start tick
+	let patternStartTick = $derived(settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? -1);
 
 	// Dynamic row layout state
 	let abilityBarElement: HTMLElement | null = null;
@@ -303,81 +312,6 @@
 		return { ...entry, isStart: entry.tickInAttack % entry.attack.ticks === 0 };
 	}
 
-	// Build per-tick expected damage from distributionStats
-	function buildDamagePerTick(): Record<number, number> {
-		const stats = rotationStore.distributionStats;
-		const perTick: Record<number, number> = {};
-		if (!stats) return perTick;
-		for (const stat of stats) {
-			const mean = (stat.minDamage + stat.maxDamage) / 2 * stat.likelihood;
-			perTick[stat.tick] = (perTick[stat.tick] || 0) + mean;
-		}
-		return perTick;
-	}
-
-	// Get phase thresholds with pause offsets
-	function getPhaseMarkers(): Array<{tick: number, label: string, hp: number, pauseEnd?: number, statsChange?: string}> {
-		const bossHealth = getBossHealth();
-		if (!bossHealth) return [];
-
-		const boss = getEffectiveBoss();
-		if (!boss) return [];
-
-		const perTick = buildDamagePerTick();
-		const poisonPerTick = rotationStore.poisonPerTick;
-		const familiarPerTick = rotationStore.familiarPerTick;
-		const dreadnipPerTick = rotationStore.dreadnipPerTick;
-		const maxTick = Math.max(
-			...Object.keys(perTick).map(Number),
-			poisonPerTick.length - 1,
-			familiarPerTick.length - 1,
-			dreadnipPerTick.length - 1,
-			0
-		);
-
-		// Build phase list: use phases if defined, otherwise just the kill HP
-		const phaseList = boss.phases ?? [{ hp: bossHealth }];
-
-		const markers: Array<{tick: number, label: string, hp: number, pauseEnd?: number, statsChange?: string}> = [];
-		let cumulative = 0;
-		let phaseIdx = 0;
-		let pauseRemaining = 0;
-
-		for (let t = 0; t <= maxTick && phaseIdx < phaseList.length; t++) {
-			if (pauseRemaining > 0) {
-				pauseRemaining--;
-				continue;
-			}
-
-			cumulative += perTick[t] || 0;
-			const totalAtTick = cumulative
-				+ (poisonPerTick[t] || 0)
-				+ (familiarPerTick[t] || 0)
-				+ (dreadnipPerTick[t] || 0);
-
-			const phase = phaseList[phaseIdx];
-			if (totalAtTick >= phase.hp) {
-				const isLast = phaseIdx === phaseList.length - 1;
-				const label = phase.stats?.name
-					? phase.stats.name
-					: (isLast ? 'Kill' : `P${phaseIdx + 2}`);
-				const pause = phase.pause || 0;
-				markers.push({
-					tick: t,
-					label,
-					hp: phase.hp,
-					...(pause > 0 && !isLast ? { pauseEnd: t + pause } : {}),
-					...(phase.stats?.name ? { statsChange: phase.stats.name } : {})
-				});
-
-				if (!isLast && pause > 0) {
-					pauseRemaining = pause;
-				}
-				phaseIdx++;
-			}
-		}
-		return markers;
-	}
 
 	// Generate CSS for grid-template-rows based on calculated row heights
 	function getGridTemplateRows(): string {
@@ -759,6 +693,28 @@
 		pointer-events: none;
 	}
 
+	.pattern-start-marker {
+		position: absolute;
+		top: -2px;
+		left: -2px;
+		bottom: -2px;
+		width: 3px;
+		background: #3b82f6;
+		z-index: 4;
+		pointer-events: none;
+	}
+
+	.pattern-start-label {
+		position: absolute;
+		top: -14px;
+		left: -2px;
+		font-size: 0.5rem;
+		color: #3b82f6;
+		font-weight: bold;
+		white-space: nowrap;
+		pointer-events: none;
+	}
+
 	.phase-pause {
 		background: repeating-linear-gradient(
 			45deg,
@@ -1035,6 +991,11 @@
                                         <span class="phase-label">{marker.label}</span>
                                     </div>
                                 {/if}
+                                {#if hasAttackPattern && index === patternStartTick}
+                                    <div class="pattern-start-marker" title="Boss pattern starts (tick {index})">
+                                        <span class="pattern-start-label">Start</span>
+                                    </div>
+                                {/if}
                                 {#each Object.keys(rotationStore.buffs) as key}
                                     {#if buffActive(key, index) && getBuffLocalIndex(key, index) >= 0}
                                         <div title="{rotationStore.buffs[key].title}"
@@ -1284,4 +1245,5 @@
         { id: 'magic', label: 'Magic', gear: { ...magicGear, ...sharedGear } },
         { id: 'necro', label: 'Necro', gear: { ...necroGear, ...sharedGear } },
     ]}
+    phaseBreaks={phaseMarkers.map(m => ({ tick: (m.pauseEnd ?? m.tick) + 1, label: m.label }))}
 />

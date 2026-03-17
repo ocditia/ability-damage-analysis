@@ -1,16 +1,32 @@
 <script>
     import { renderComponent } from '@tanstack/svelte-table';
 
-    import { SETTINGS, settingsConfig } from '$lib/calc/settings';
-    import { abilities } from '$lib/magic/abilities_beta';
+    import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
+    import { abils } from '$lib/calc/const/const';
+    import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
+
+    const abilities = Object.fromEntries(
+        Object.entries(abils).filter(([, a]) =>
+            a.title && a['main style'] === 'magic' &&
+            a['ability classification'] !== 'conjure' &&
+            a['ability classification'] !== 'self cast'
+        )
+    );
+
+    import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
 
     import AbilityDamageTable from '$components/AbilityDamageTable/AbilityDamageTable.svelte';
     import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
+    import GearSelection from '$components/Settings/GearSelection.svelte';
+    import PerkSelection from '$components/Settings/PerkSelection.svelte';
+    import FamiliarSelection from '$components/Settings/FamiliarSelection.svelte';
     import Checkbox from '$components/Settings/Checkbox.svelte';
     import Header from '$components/Layout/Header.svelte';
     import Navbar from '$components/Layout/Navbar.svelte';
     import Number from '$components/Settings/Number.svelte';
     import Select from '$components/Settings/Select.svelte';
+
+    let openDropdown = $state(null);
 
     let tab = $state('general');
 
@@ -27,7 +43,7 @@
 
     let storedSettings = {};
     if (typeof localStorage !== 'undefined') {
-        storedSettings = JSON.parse(localStorage.getItem('settings')) || {};
+        storedSettings = JSON.parse(localStorage.getItem('settings_magic_rb')) || {};
     }
 
     let settings = $state(
@@ -48,7 +64,7 @@
             const settingsToSave = Object.fromEntries(
                 Object.entries(settings).map(([key, value]) => [key, { value: value.value }])
             );
-            localStorage.setItem('settings', JSON.stringify(settingsToSave));
+            localStorage.setItem('settings_magic_rb', JSON.stringify(settingsToSave));
         }
     }
 
@@ -64,14 +80,22 @@
         damages = damages.map(ability => {
             adaptedSettings['ability'] = ability.key;
 
-            ability.regular = ability.calc({ ...adaptedSettings, sunshine: false});
-            ability.sunshine = ability.calc({ ...adaptedSettings, sunshine: true});
+            const regular = calculateSingleAbilityDamage(adaptedSettings, {
+                ability: ability.key
+            });
+            const sunshine = calculateSingleAbilityDamage(adaptedSettings, {
+                ability: ability.key,
+                buffs: { sunshine: true }
+            });
+
+            ability.regular = Math.round(regular.expected);
+            ability.sunshine = Math.round(sunshine.expected);
 
             return ability;
         })
     }
 
-    updateDamages();
+    updateDamages()
 
     const sortAbilities = (rowA, rowB) => {
         const nameA = rowA.original.abilityInfo.title;
@@ -107,7 +131,7 @@
 </script>
 
 <Navbar />
-<Header img="/magic_background.png" text="Magic Calculator" icon="/style_icons/magic-white.svg" />
+<Header img="/magic_background.png" text="Magic Calculator (RB)" icon="/style_icons/magic-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
     <div class="responsive-container">
@@ -150,31 +174,18 @@
                             Bosses
                         </button>
                     </li>
-                    <li class="flex-grow me-2">
-                        <button
-                            onclick={() => (tab = 'beta')}
-                            class:text-[#968A5C]={tab === 'beta'}
-                            class="text-[#C2BA9E] font-bold text-2xl text-link uppercase inline-block hover:text-[#968A5C]"
-                        >
-                            Beta
-                        </button>
-                    </li>
                 </ul>
                 <form class="w-full">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
                         {#if tab === 'general'}
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">General</h5>
                                 <Select
                                     bind:setting={settings[SETTINGS.MODE]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Select
-                                    bind:setting={settings[SETTINGS.DAMAGE_PER_UNIT]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.DAMAGE_UNITS]}
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.FLAMEBOUND_RIVAL]}
                                     onchange={() => updateDamages()}
                                 />
                                 <Number
@@ -222,22 +233,8 @@
                                     bind:setting={settings[SETTINGS.HITCAP]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Number
-                                    bind:setting={settings[SETTINGS.HIT_COUNTER_START]}
-                                    onchange={() => updateDamages()}
-                                    step="1"
-                                    max="1000"
-                                    min="0"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.HIT_COUNTER_END]}
-                                    onchange={() => updateDamages()}
-                                    step="1"
-                                    max="1000"
-                                    min="0"
-                                />
                             </div>
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">
                                     Applies to dots
                                 </h5>
@@ -245,6 +242,11 @@
                                     bind:setting={settings[SETTINGS.VULN]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/magic/Vulnerability_icon.webp"
+                                />
+                                <Select
+                                    bind:setting={settings[SETTINGS.ENDURING_RUIN_BLEED]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/enduring_ruin.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
@@ -258,11 +260,6 @@
                                     bind:setting={settings[SETTINGS.CRYPTBLOOM]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/Cryptbloom_helm.png"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.SLAYER_PERK]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/perks/25px-Undead_Slayer.webp"
                                 />
                                 <Select
                                     bind:setting={settings[SETTINGS.SLAYER_SIGIL]}
@@ -298,10 +295,15 @@
                                     onchange={() => updateDamages()}
                                 />
                             </div>
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">
-                                    Applies to regular abils only
+                                    Applies to regular abilities only
                                 </h5>
+                                <Select
+                                    bind:setting={settings[SETTINGS.ENDURING_RUIN_HIT]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/enduring_ruin.png"
+                                />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.CONFLAGRATE]}
                                     onchange={() => updateDamages()}
@@ -346,6 +348,14 @@
                                     max="3"
                                     min="0"
                                 />
+                                <Number
+                                    bind:setting={settings[SETTINGS.GRAVITATE]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/gravitate.png"
+                                    step="1"
+                                    max="20"
+                                    min="0"
+                                />
                                 <Select
                                     bind:setting={settings[SETTINGS.MAGIC_PRAYER]}
                                     onchange={() => updateDamages()}
@@ -359,6 +369,9 @@
                                     bind:setting={settings[SETTINGS.ECLIPSED_SOUL]}
                                     onchange={() => updateDamages()}
                                 />
+                            </div>
+                            <div class="md:col-span-1 space-y-2">
+                                <h5 class="uppercase font-bold text-lg text-center">Part 2</h5>
                                 <Number
                                     bind:setting={settings[SETTINGS.BLOOD_TITHE]}
                                     onchange={() => updateDamages()}
@@ -389,9 +402,6 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/swiftness_of_the_avianse.png"
                                 />
-                            </div>
-                            <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">part 2</h5>
                                 <Number
                                     bind:setting={settings[SETTINGS.BERSERKERS_FURY]}
                                     onchange={() => updateDamages()}
@@ -440,209 +450,16 @@
                             </div>
                         {:else if tab === 'equipment'}
                             <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Armour</h5>
-                                <Select
-                                    bind:setting={settings[SETTINGS.MAGIC_HELMET]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Head_slot.webp"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.MAGIC_BODY]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Torso_slot.png"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.MAGIC_LEGS]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Legs_slot.png"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.MAGIC_GLOVES]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Hands_slot.webp"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.MAGIC_BOOTS]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Feet_slot.png"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.NECKLACE]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Neck_slot.png"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.CAPE]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Back_slot.png"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.RING]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Ring_slot.png"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.POCKET]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Pocket_slot.webp"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.FAMILIAR]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/familiar.png"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.AUTO_CAST]}
-                                    onchange={() => updateDamages()}
-                                />
+                                <GearSelection {settings} styleTab={SettingsCombatStyles.MAGIC} {updateDamages} bind:openDropdown />
                             </div>
                             <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Perks</h5>
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.LVL20ARMOUR]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/perks/level-20.png"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.BITING]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/perks/Biting.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.PRECISE]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/perks/Precise.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.ERUPTIVE]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/perks/Eruptive.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.FLANKING]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/perks/Flanking.webp"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.ULTIMATUS]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/perks/ultimatums.png"
-                                    step="1"
-                                    min="0"
-                                    max="4"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.LUNGING]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/perks/Lunging.webp"
-                                    step="1"
-                                    min="0"
-                                    max="4"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.GENOCIDAL]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/perks/genocidal.png"
-                                    max="4.9"
-                                    step="0.1"
-                                    min="0"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.RUTHLESS_RANK]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/perks/Ruthless.webp"
-                                    max="3"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.RUTHLESS_STACKS]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/perks/Ruthless.webp"
-                                    max="5"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.ENERGISING]}
-                                    onchange={() => updateDamages()}
-                                    max="4"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.AFTERSHOCK]}
-                                    onchange={() => updateDamages()}
-                                    max="4"
-                                    step="1"
-                                    min="0"
-                                />
-                                <div class="md:col-span-1">
-                                    <Number
-                                        bind:setting={settings[SETTINGS.EQ_PERK]}
-                                        onchange={() => updateDamages()}
-                                    />
-                                </div>
+                                <PerkSelection {settings} {updateDamages} />
                             </div>
                             <div class="md:col-span-1">
-                                <h5 class="uppercase font-bold text-lg text-center">Weapons</h5>
-                                <Select
-                                    bind:setting={settings[SETTINGS.WEAPON]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Main_hand_slot.webp"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.MAGIC_MH]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Main_hand_slot.webp"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.MH_TIER_CUSTOM]}
-                                    onchange={() => updateDamages()}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.MAGIC_OH]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Off-hand_slot.webp"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.OH_TIER_CUSTOM]}
-                                    onchange={() => updateDamages()}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.MAGIC_TH]}
-                                    onchange={() => updateDamages()}
-                                    img="/armour_icons/Off-hand_slot.webp"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.TH_TIER_CUSTOM]}
-                                    onchange={() => updateDamages()}
-                                    max="100"
-                                    step="1"
-                                    min="0"
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.INNATE_MASTERY]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/shard_of_genesis.png"
-                                />
+                                <FamiliarSelection {settings} {updateDamages} bind:openDropdown />
                             </div>
                         {:else if tab === 'bosses'}
-                            <div class="md:col-span-1">
+                            <div class="md:col-span-1 space-y-2">
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
                                     onchange={() => updateDamages()}
@@ -689,10 +506,8 @@
                         </div>
                         <div class="pb-5">
                             <p>
-                                The calculator prevents irrational settings from being selected, for
-                                example, revenge does nothing if you do not have mainhand + shield
-                                (Ms) as your selected weapon. Be sure to check all settings if
-                                effects are not giving the expected results.
+                                This page uses the unified rotation builder calculation pipeline.
+                                Compare results with the original magic page to verify accuracy.
                             </p>
                         </div>
                         <div>

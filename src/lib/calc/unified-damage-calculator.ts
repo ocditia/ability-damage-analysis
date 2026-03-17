@@ -17,7 +17,6 @@ interface SingleAbilityResult {
 
 /**
  * Calculates damage for a single ability by treating it as a rotation of length 1.
- * This unifies the calculation logic between single-ability pages and the rotation builder.
  *
  * @param settings - Flat settings object (key -> value), same format as used by damage_calc.js
  * @param input - The ability to calculate and optional buff states
