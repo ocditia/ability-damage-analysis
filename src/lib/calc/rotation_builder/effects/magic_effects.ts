@@ -34,14 +34,6 @@ function applyBoostedADEffects(
         applied = true;
     }
 
-    // Flow stacks
-    if (settings[SETTINGS.FLOW_STACKS] > 0) {
-        distribution['boosted AD'] = Math.floor(
-            distribution['boosted AD'] * (1 + 0.01 * settings[SETTINGS.FLOW_STACKS])
-        );
-        applied = true;
-    }
-
     return { applied };
 }
 

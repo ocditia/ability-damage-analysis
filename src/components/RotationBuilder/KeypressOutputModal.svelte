@@ -3,7 +3,19 @@
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
     import { allExtraActions } from '$lib/special/abilities';
 
-    let { show = $bindable(false), allAbils = {}, gearTabs = [] } = $props();
+    let { show = $bindable(false), allAbils = {}, gearTabs = [], phaseBreaks = [] } = $props();
+
+    // For each sequence index, check if a phase break falls between the previous and current tick
+    function getPhaseBreakBefore(i) {
+        const tick = sequence.ticks[i];
+        const prevTick = i > 0 ? sequence.ticks[i - 1] : -1;
+        // Only show once per tick (skip if same tick as previous entry)
+        if (i > 0 && tick === prevTick) return null;
+        for (const pb of phaseBreaks) {
+            if (pb.tick > prevTick && pb.tick <= tick) return pb.label;
+        }
+        return null;
+    }
 
     let activeView = $state('sequence');
 
@@ -41,7 +53,17 @@
         )
         : { keys: [], ticks: [] });
 
-    let plainText = $derived(sequence.keys.join(' \u2192 '));
+    let plainText = $derived.by(() => {
+        const parts = [];
+        for (let i = 0; i < sequence.keys.length; i++) {
+            const breakLabel = getPhaseBreakBefore(i);
+            if (breakLabel) {
+                parts.push(`\n--- ${breakLabel} ---\n`);
+            }
+            parts.push(sequence.keys[i]);
+        }
+        return parts.join(' \u2192 ');
+    });
 
     // Build a map of key -> ability for the keyboard view
     let keyToAbility = $derived.by(() => {
@@ -178,6 +200,12 @@
                 {:else}
                     <div class="sequence-display">
                         {#each sequence.keys as key, i}
+                            {#if getPhaseBreakBefore(i)}
+                                <div class="phase-break">
+                                    <span class="phase-break-label">{getPhaseBreakBefore(i)}</span>
+                                    <span class="phase-break-line"></span>
+                                </div>
+                            {/if}
                             <div class="key-item">
                                 {#if getIcon(i)}
                                     <img src={getIcon(i)} alt="" class="key-icon" width="30" height="30" />
@@ -340,6 +368,29 @@
         margin-bottom: 0.75rem;
         overflow-y: auto;
         max-height: 50vh;
+    }
+
+    .phase-break {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 4px 0;
+    }
+
+    .phase-break-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: #ef4444;
+        white-space: nowrap;
+        font-family: Kumbh Sans, sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .phase-break-line {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, #ef4444, transparent);
     }
 
     .key-item {

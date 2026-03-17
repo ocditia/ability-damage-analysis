@@ -34,4 +34,4 @@ vite.config.ts.timestamp-*
 # Build and cache
 .svelte-kit/
 .cache/
-dist/
+dist/CLAUDE.md

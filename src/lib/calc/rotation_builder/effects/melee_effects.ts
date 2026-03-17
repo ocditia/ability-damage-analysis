@@ -166,6 +166,16 @@ function applyMultiplicativeEffects(
         boost = Math.floor(boost * 1.2);
     }
 
+    // Flamebound Rival: +12% damage (always applies during Igneous Showdown, or when debuff is active with EZK)
+    if (
+        (settings[SETTINGS.FLAMEBOUND_RIVAL] === true || abilityKey === ABILITIES.IGNEOUS_SHOWDOWN ||
+         abilityKey === ABILITIES.IGNEOUS_SHOWDOWN_HIT || abilityKey === ABILITIES.IGNEOUS_SHOWDOWN_BONUS) &&
+        (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM ||
+         settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM)
+    ) {
+        boost = Math.floor(boost * 1.12);
+    }
+
     return boost;
 }
 

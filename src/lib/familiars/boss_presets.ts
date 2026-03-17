@@ -13,6 +13,7 @@ export interface PhaseStats {
 	weakness?: string;
 	style?: string;
 	affinities?: BossAffinities;
+	softCap?: { threshold: number; reduction: number } | null;
 }
 
 export interface BossPhase {
@@ -74,6 +75,8 @@ export interface BossPreset {
 	health?: number;
 	phases?: Array<BossPhase>;
 	enrage?: EnrageConfig;
+	/** Damage soft cap: hits above threshold are reduced by reduction % on the excess */
+	softCap?: { threshold: number; reduction: number };
 }
 
 // --- Bosses ---
@@ -883,7 +886,10 @@ const magister: BossPreset = {
 	health: 200000
 };
 
-// Nex
+// Nex — full fight with minion phases integrated
+// Fight flow: Nex P1 (Smoke, 40k) → Fumus (20k) → Nex P2 (Shadow, 40k) → Umbra (20k)
+//           → Nex P3 (Blood, 40k) → Cruor (20k) → Nex P4 (Ice, 40k) → Glacies (20k) → Nex Zaros (40k)
+// Cumulative HP thresholds include minion HP between Nex phases
 const nex: BossPreset = {
 	name: 'Nex',
 	defenceLevel: 80,
@@ -892,7 +898,54 @@ const nex: BossPreset = {
 	style: 'Melee',
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
-	curseImmune: true
+	curseImmune: true,
+	softCap: { threshold: 5000, reduction: 0.5 },
+
+	health: 280000, // 200k Nex + 80k minions total
+	phases: [
+		// P1 Smoke → Fumus
+		{ hp: 40000, pause: 3, stats: {
+			name: 'Fumus',
+			softCap: { threshold: 1000, reduction: 0.9 }
+		}},
+		// Fumus dies → Nex P2 Shadow
+		{ hp: 60000, pause: 3, stats: {
+			name: 'Nex (Shadow)',
+			softCap: { threshold: 5000, reduction: 0.5 }
+		}},
+		// P2 Shadow → Umbra
+		{ hp: 100000, pause: 3, stats: {
+			name: 'Umbra',
+			softCap: { threshold: 1000, reduction: 0.9 }
+		}},
+		// Umbra dies → Nex P3 Blood
+		{ hp: 120000, pause: 3, stats: {
+			name: 'Nex (Blood)',
+			softCap: { threshold: 5000, reduction: 0.5 }
+		}},
+		// P3 Blood → Cruor
+		{ hp: 160000, pause: 3, stats: {
+			name: 'Cruor',
+			softCap: { threshold: 1000, reduction: 0.9 }
+		}},
+		// Cruor dies → Nex P4 Ice
+		{ hp: 180000, pause: 3, stats: {
+			name: 'Nex (Ice)',
+			softCap: { threshold: 5000, reduction: 0.5 }
+		}},
+		// P4 Ice → Glacies
+		{ hp: 220000, pause: 3, stats: {
+			name: 'Glacies',
+			softCap: { threshold: 1000, reduction: 0.9 }
+		}},
+		// Glacies dies → Nex Zaros phase
+		{ hp: 240000, pause: 3, stats: {
+			name: 'Nex (Zaros)',
+			softCap: { threshold: 2000, reduction: 0.75 }
+		}},
+		// Kill
+		{ hp: 280000 }
+	]
 };
 
 const nexAoD: BossPreset = {
