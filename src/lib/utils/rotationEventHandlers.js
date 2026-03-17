@@ -6,11 +6,48 @@ import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
 import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
 import { notifActions } from '$lib/stores/notificationStore.svelte.js';
 import { Logger, LogCategory } from './Logger';
+import { gearSwaps, allExtraActions } from '$lib/special/abilities';
+import { isExtraAction } from '$lib/calc/rotation_builder/extra-action';
 
 const logger = Logger.getInstance();
 // UI Constants
 const BAR_SIZE = 200;
 const EXTRA_BAR_SIZE = 12;
+
+/**
+ * Convert a raw click payload into an ExtraAction object for storage.
+ * - Gear items come as { title, icon } objects from GearChoice
+ * - Abilities/prayers/consumables/spells come as string keys from AbilityChoice
+ * - Already-converted ExtraAction objects pass through unchanged
+ */
+function toExtraAction(input) {
+    if (isExtraAction(input)) return input;
+
+    // Gear object: { title, icon, iconFallback? }
+    if (typeof input === 'object' && input.title) {
+        const slot = gearSwaps[input.title];
+        return {
+            type: 'gear',
+            value: input.title,
+            title: input.title,
+            icon: input.icon || '',
+            ...(slot ? { slot } : {}),
+        };
+    }
+
+    // String key — look up in allExtraActions for icon/title
+    if (typeof input === 'string') {
+        const info = allExtraActions[input];
+        return {
+            type: 'ability',
+            value: input,
+            title: info?.title || input,
+            icon: info?.icon || '',
+        };
+    }
+
+    return input; // fallback — pass through
+}
 
 /**
  * Handles ability clicks from the ability selection panel
@@ -45,7 +82,7 @@ export function handleAbilityClick(event, abilityKey, mainBar = true, stores, ca
     if (mainBar) {
         rotationStore.abilityBar[idx] = abilityKey;
     } else {
-        rotationStore.extraActionBar[uiStore.extraActions.tick][idx] = abilityKey;
+        rotationStore.extraActionBar[uiStore.extraActions.tick][idx] = toExtraAction(abilityKey);
     }
     // Immediate update for responsiveness
     calculateTotalDamageNew();

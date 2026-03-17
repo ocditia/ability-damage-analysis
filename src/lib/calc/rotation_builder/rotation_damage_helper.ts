@@ -199,6 +199,17 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             settings[SETTINGS.RAMPAGE] = true;
             timers[SETTINGS.RAMPAGE] = 100;
             break;
+        // Flow buffs (magic)
+        case ABILITIES.SONIC_WAVE:
+            const variant = settings[SETTINGS.ANIMA_CHARGED] ? SETTINGS.FLOW_AC : SETTINGS.FLOW;
+            settings[variant] = true;
+            timers[variant] = 15; // 9 seconds = 15 ticks
+            break;
+        case ABILITIES.GREATER_SONIC_WAVE:
+            const variant2 = settings[SETTINGS.ANIMA_CHARGED] ? SETTINGS.GREATER_FLOW_AC : SETTINGS.GREATER_FLOW;
+            settings[variant2] = true;
+            timers[variant2] = 15; // 9 seconds = 15 ticks
+            break;
         // Necromancy Buff Abilities
         case ABILITIES.SPLIT_SOUL_NECRO:
             settings[SETTINGS.SPLIT_SOUL_NECRO] = true;

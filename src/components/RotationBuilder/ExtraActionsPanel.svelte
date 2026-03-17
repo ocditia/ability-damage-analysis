@@ -56,12 +56,21 @@
                 if (!actions) continue;
                 for (const action of actions) {
                     if (!action) continue;
+                    // New ExtraAction format — has .type and .slot
+                    if (action.type === 'gear' && action.slot) {
+                        state[action.slot] = action.value;
+                        if (action.slot === SETTINGS.AMMO) {
+                            const styleAmmo = ammoKeys[uiState.activeTab];
+                            if (styleAmmo) state[styleAmmo] = action.value;
+                        }
+                        continue;
+                    }
+                    // Legacy format fallback
                     const key = typeof action === 'string' ? action : action.title;
                     if (!key) continue;
                     const slot = gearSwaps[key];
                     if (slot) {
                         state[slot] = key;
-                        // If swapping ammo via old 'ammo' key, also update per-style ammo slot
                         if (slot === SETTINGS.AMMO) {
                             const styleAmmo = ammoKeys[uiState.activeTab];
                             if (styleAmmo) state[styleAmmo] = key;
@@ -302,8 +311,8 @@
             </button>
         </div>
 
-        <!-- Ability summary + quick actions -->
-        <div class="tick-summary">
+         <!-- Ability summary + quick actions -->
+         <div class="tick-summary">
             <div class="flex items-center gap-2">
                 {#if currentAbility}
                     <img src={currentAbility.icon}
@@ -347,27 +356,34 @@
                 {/if}
             </div>
         </div>
-
-        <!-- Tabs -->
-        <ul class="flex flex-wrap flex-row text-sm font-medium text-center mt-2">
-            <li class="flex-grow">
+        <!-- Extra actions bar -->
+        <div class="extra-actions-bar">
+            {#each gameState.extraActionBar[tick] || Array(EXTRA_BAR_SIZE).fill(null) as action, subIndex}
                 <button
-                    onclick={() => setExtraActionsTab('info')}
-                    class="tab-btn"
-                    class:tab-active={uiState.extraActions.tab === 'info'}
-                >Info</button>
-            </li>
-            <li class="flex-grow">
-                <button
-                    onclick={() => setExtraActionsTab('actions')}
-                    class="tab-btn"
-                    class:tab-active={uiState.extraActions.tab === 'actions' || uiState.extraActions.tab === 'gear' || uiState.extraActions.tab === 'abilities'}
-                >Actions</button>
-            </li>
-        </ul>
+                    class="action-slot"
+                    style="background-color: #9da777;"
+                    tabindex="0"
+                    aria-label="Action slot"
+                    oncontextmenu={(e) => handleBarRightClick(e, tick, subIndex)}
+                >
+                    {#if action}
+                        {@const actionIcon = action.icon || allExtraActions[action]?.icon || ''}
+                        {@const actionTitle = action.title || allExtraActions[action]?.title || ''}
+                        <img src={actionIcon}
+                            alt={actionTitle}
+                            style="width: 100%; height: 100%; object-fit: contain;"
+                            title={actionTitle}
+                            draggable="true"
+                            ondragstart={(e) => handleDragStartBar(e, action, tick)}
+                        />
+                    {/if}
+                </button>
+            {/each}
+        </div>
 
-        <!-- Tab content -->
-        {#if uiState.extraActions.tab === 'info'}
+       
+
+        <!-- Info section -->
             <div class="info-tab">
                 <!-- Per-tick damage -->
                 {#if rotationStore.distributionStats && rotationStore.distributionStats.length > 0}
@@ -404,39 +420,41 @@
                     </div>
                 {/if}
 
-                <!-- Active buffs -->
-                {#if getTickBuffs(tick).length > 0}
-                    <div class="info-section">
-                        <p class="info-label">Active buffs</p>
-                        <div class="buff-list">
-                            {#each getTickBuffs(tick) as buff}
-                                <div class="buff-item">
-                                    <span class="buff-dot" style="background-color: {buff.colour};"></span>
-                                    <span class="text-xs">{buff.title}</span>
+                <!-- Buffs & Stacks side by side -->
+                {#if getTickBuffs(tick).length > 0 || getTickStacks(tick).length > 0}
+                    <div class="buffs-stacks-row">
+                        {#if getTickBuffs(tick).length > 0}
+                            <div class="info-section" style="flex: 1; min-width: 0;">
+                                <p class="info-label">Active buffs</p>
+                                <div class="buff-list">
+                                    {#each getTickBuffs(tick) as buff}
+                                        <div class="buff-item">
+                                            <span class="buff-dot" style="background-color: {buff.colour};"></span>
+                                            <span class="text-xs">{buff.title}</span>
+                                        </div>
+                                    {/each}
                                 </div>
-                            {/each}
-                        </div>
-                    </div>
-                {/if}
-
-                <!-- Stack values -->
-                {#if getTickStacks(tick).length > 0}
-                    <div class="info-section">
-                        <p class="info-label">Stacks</p>
-                        <div class="stack-list">
-                            {#each getTickStacks(tick) as stack}
-                                <div class="stack-item">
-                                    <img src={stack.image} alt={stack.title} style="width: 16px; height: 16px;" />
-                                    <span class="text-xs">{stack.title}</span>
-                                    <span class="stack-val" style="color: {stack.colour};">{stack.value?.toFixed ? stack.value.toFixed(1) : stack.value}</span>
+                            </div>
+                        {/if}
+                        {#if getTickStacks(tick).length > 0}
+                            <div class="info-section" style="flex: 1; min-width: 0;">
+                                <p class="info-label">Stacks</p>
+                                <div class="stack-list">
+                                    {#each getTickStacks(tick) as stack}
+                                        <div class="stack-item">
+                                            <img src={stack.image} alt={stack.title} style="width: 16px; height: 16px;" />
+                                            <span class="text-xs">{stack.title}</span>
+                                            <span class="stack-val" style="color: {stack.colour};">{stack.value?.toFixed ? stack.value.toFixed(1) : stack.value}</span>
+                                        </div>
+                                    {/each}
                                 </div>
-                            {/each}
-                        </div>
+                            </div>
+                        {/if}
                     </div>
                 {/if}
             </div>
-        {:else}
-            <!-- Equipped gear visual + actions side by side -->
+
+            <!-- Equipped gear visual + actions -->
             <div class="actions-layout">
                 <!-- Left: equipped gear grid -->
                 <div class="equipped-panel">
@@ -518,41 +536,17 @@
                         />
                 </div>
             </div>
-        {/if}
 
-        <!-- Extra actions bar (always visible) -->
-        <div class="extra-actions-bar">
-            {#each gameState.extraActionBar[tick] || Array(EXTRA_BAR_SIZE).fill(null) as action, subIndex}
-                <button
-                    class="action-slot"
-                    style="background-color: #9da777;"
-                    tabindex="0"
-                    aria-label="Action slot"
-                    oncontextmenu={(e) => handleBarRightClick(e, tick, subIndex)}
-                >
-                    {#if action}
-                        <img src={allExtraActions[action] ? allExtraActions[action].icon : action.icon}
-                            alt={allExtraActions[action] ? allExtraActions[action].title : action.title}
-                            style="width: 100%; height: 100%; object-fit: contain;"
-                            title="{allExtraActions[action] ? allExtraActions[action].title : action.title}"
-                            draggable="true"
-                            ondragstart={(e) => handleDragStartBar(e, action, tick)}
-                        />
-                    {/if}
-                </button>
-            {/each}
-        </div>
     </div>
 
 <style>
     .extra-action-section {
-        border: 2px solid #ffd700;
-        margin-top: 5%;
+        border-left: 8px solid var(--card-border-rotation, #ffd700);
         display: flex;
         flex-direction: column;
         align-items: center;
         padding: 1rem;
-        background-color: rgba(20, 20, 15, 0.6);
+        background: #171d21;
         max-width: 100%;
     }
 
@@ -620,6 +614,16 @@
     .info-tab {
         width: 100%;
         padding: 0.5rem 0;
+    }
+
+    .buffs-stacks-row {
+        display: flex;
+        gap: 0.5rem;
+        border-bottom: 1px solid #333;
+    }
+
+    .buffs-stacks-row .info-section {
+        border-bottom: none;
     }
 
     .info-section {

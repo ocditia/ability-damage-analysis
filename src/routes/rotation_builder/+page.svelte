@@ -2,10 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import Navbar from '$components/Layout/Navbar.svelte';
 	import Header from '$components/Layout/Header.svelte';
-	import { abilities  as rangedAbils } from '$lib/ranged/abilities_rb';
-    import { abilities as magicAbils } from '$lib/magic/abilities_rb';
-    import { abilities as meleeAbils } from '$lib/melee/abilities_rb';
-    import { abilities as necroAbils } from '$lib/necromancy/abilities_rb';
+    import { abils } from '$lib/calc/const/const';
     import { abilities as def_abilities } from '$lib/defence/abilities';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings_rb';
     import RotationSettings from '../../components/Settings/RotationSettings.svelte';
@@ -27,8 +24,15 @@
     import { getBossPresetWithEnrage, type BossAttack, type BossAttackPattern } from '$lib/familiars/boss_presets';
 
 
+    const filterByStyle = (style) => Object.fromEntries(
+        Object.entries(abils).filter(([, a]) => a.title && a['main style'] === style)
+    );
+    const rangedAbils = filterByStyle('ranged');
+    const magicAbils = filterByStyle('magic');
+    const meleeAbils = filterByStyle('melee');
+    const necroAbils = filterByStyle('necromancy');
 	let defAbils = {...def_abilities};
-    let allAbils = {...magicAbils, ...rangedAbils, ...necroAbils, ...meleeAbils, ...def_abilities};
+    let allAbils = {...abils, ...def_abilities};
 
     // Keybind modal state
     let showKeybindModal = $state(false);
@@ -414,7 +418,7 @@
 		{ id: 'magic', label: 'Magic', abilities: magicAbils, badge: 'beta' },
 		{ id: 'melee', label: 'Melee', abilities: meleeAbils, badge: 'beta' },
 		{ id: 'necro', label: 'Necro', abilities: necroAbils, badge: 'beta' },
-		{ id: 'defence', label: 'Defence', abilities: defAbils }
+		{ id: 'defence', label: 'Defence', abilities: defAbils, badge: 'beta'}
 	];
 
 	// Create stores object for event handlers
@@ -820,9 +824,7 @@
 
 	.settings-panel {
 		transition: all 0.3s ease;
-		overflow: hidden;
-		min-width: 0; /* Allow panel to shrink below content size */
-		position: relative; /* Ensure proper positioning context for the button */
+		min-width: 0;
 	}
 
 	.settings-panel.collapsed {
@@ -831,12 +833,14 @@
 		padding: 0;
 		margin: 0;
 		visibility: hidden;
-		height: 0;
 		opacity: 0;
 	}
 
 	.settings-content {
-		height: 100%;
+		position: sticky;
+		top: 1rem;
+		max-height: calc(100vh - 2rem);
+		overflow-y: auto;
 	}
 
 	.card-rotation {
@@ -964,24 +968,7 @@
 											/>
 										{/if}
 								{/each}
-					{#if uiStore.extraActions.show}
-						<ExtraActionsPanel
-							uiState={uiStore}
-							gameState={rotationStore}
-							{allAbils}
-							{handleAbilityClickExtra}
-							{handleDragStart}
-							{handleBarRightClick}
-							{handleDragStartBar}
-							extraActions={uiStore.extraActions}
-							closeExtraActions={() => uiActions.hideExtraActions()}
-							setExtraActionsTab={(tab) => uiActions.setExtraActionsTab(tab)}
-							onRemoveAbility={() => refreshUI()}
-							onToggleNull={() => refreshUI()}
-							onRefreshUI={() => refreshUI()}
-						/>
-					{/if}
-                    <div
+	                    <div
 						bind:this={abilityBarElement}
 						style="grid-template-rows: {getGridTemplateRows()}; grid-template-columns: repeat({columnsPerRow}, {CELL_SIZE}px);"
 						class="ability-bar"
@@ -1027,7 +1014,7 @@
                                 {#if rotationStore.cooldownReady[index]}
                                     {@const cdList = rotationStore.cooldownReady[index]}
                                     {#each cdList.slice(0, 3) as readyAbilKey, cdIdx}
-                                        {@const abilInfo = allAbils[readyAbilKey] || allExtraActions[readyAbilKey]}
+                                        {@const abilInfo = allExtraActions[readyAbilKey] || allAbils[readyAbilKey]}
                                         {#if abilInfo?.icon}
                                             <img
                                                 class="cooldown-ready-icon"
@@ -1117,7 +1104,25 @@
             <div class="settings-panel col-span-{uiStore.settingsPanelCollapsed ? '0' : '4'} {uiStore.settingsPanelCollapsed ? 'collapsed' : ''}"
 				style={uiStore.settingsPanelCollapsed ? 'visibility: hidden; height: 0; margin: 0;' : ''}>
                 <div class="settings-content">
-                    <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
+                    {#if uiStore.extraActions.show}
+                        <ExtraActionsPanel
+                            uiState={uiStore}
+                            gameState={rotationStore}
+                            {allAbils}
+                            {handleAbilityClickExtra}
+                            {handleDragStart}
+                            {handleBarRightClick}
+                            {handleDragStartBar}
+                            extraActions={uiStore.extraActions}
+                            closeExtraActions={() => uiActions.hideExtraActions()}
+                            setExtraActionsTab={(tab) => uiActions.setExtraActionsTab(tab)}
+                            onRemoveAbility={() => refreshUI()}
+                            onToggleNull={() => refreshUI()}
+                            onRefreshUI={() => refreshUI()}
+                        />
+                    {:else}
+                        <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
+                    {/if}
                 </div>
             </div>
             <div class="col-span-12 mt-8">

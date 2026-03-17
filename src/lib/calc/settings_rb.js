@@ -728,7 +728,10 @@ const SETTINGS = {
     ICY_PRECISION: 'icy precision',
     ICY_CHILL_STACKS: 'icy chill stacks',
     PUNCTURE_STACKS: 'puncture stacks',
-    FLOW_STACKS: 'flow stacks',
+    FLOW: 'flow',
+    GREATER_FLOW: 'greater flow',
+    FLOW_AC: 'flow ac',
+    GREATER_FLOW_AC: 'greater flow ac',
     CONFLAGRATE: 'conflagrate',
     KERAPACS_WRIST_WRAPS: 'kerapacs wrist wraps',
     KERAPACS_WRIST_WRAPS_VALUES: {
@@ -2080,6 +2083,10 @@ const settingsConfig = {
         label: 'Flanking',
         default: 0
     },
+    [SETTINGS.EQ_PERK]: {
+        label: 'Equilibrium',
+        default: 0
+    },
     [SETTINGS.RUTHLESS_RANK]: {
         label: 'Ruthless rank',
         default: 0
@@ -2161,9 +2168,21 @@ const settingsConfig = {
         label: 'Puncture Stacks',
         default: 0
     },
-    [SETTINGS.FLOW_STACKS]: {
-        label: 'Flow stacks',
-        default: 0
+    [SETTINGS.FLOW]: {
+        label: 'Flow',
+        default: false
+    },
+    [SETTINGS.GREATER_FLOW]: {
+        label: 'Greater Flow',
+        default: false
+    },
+    [SETTINGS.FLOW_AC]: {
+        label: 'Flow (Animate Dead)',
+        default: false
+    },
+    [SETTINGS.GREATER_FLOW_AC]: {
+        label: 'Greater Flow (Animate Dead)',
+        default: false
     },
     [SETTINGS.CONFLAGRATE]: {
         label: 'Conflagrate',

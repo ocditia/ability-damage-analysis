@@ -42,7 +42,7 @@ const logger = Logger.getInstance();
  */
 function on_stall(settings: Record<string, any>, abilityKey: string, timers?: Record<string, number>) {
     if (consumeDeathsporeBuff(settings, abilityKey, timers)) return;
-    handleAdrenalineCost(settings, abilityKey);
+    handleAdrenalineCost(settings, abilityKey, timers);
     // Essence corruption adrenaline: magic basic with >= 25 stacks starts/resets 6-tick buff
     if (
         timers &&
@@ -195,11 +195,6 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
     // Generate damage rolls
     rollDamageList(dmgObject);
 
-    // Store igneous cleave damage for later reference
-    if (abilityKey === ABILITIES.IGNEOUS_CLEAVE_BLEED) {
-        settings['igneous cleave bleed damage']['damage list'] = structuredClone(dmgObject);
-    }
-
     // Track BoLG perfect equilibrium stacks (on-hit, non-proc only)
     if (abils[abilityKey]['on-hit effects'] === true &&
         abils[abilityKey]['ability type'] != 'proc') {
@@ -350,11 +345,40 @@ function consumeDeathsporeBuff(settings: Record<string, any>, abilityKey: string
 }
 
 /**
+ * Consumes the best active Flow buff if a magic ability that costs adrenaline is used.
+ * Returns the adrenaline cost reduction percentage (0 if no buff consumed).
+ */
+function consumeFlowBuff(settings: Record<string, any>, abilityKey: string, timers?: Record<string, number>): number {
+    const isMagic = abils[abilityKey]?.['main style'] === 'magic';
+    const type = abils[abilityKey]?.['ability type'];
+    const costsAdrenaline = ['threshold', 'ultimate', 'special attack'].includes(type);
+    if (!isMagic || !costsAdrenaline) return 0;
+
+    // Consume the best available flow buff (highest reduction first)
+    const flowBuffs: Array<{ key: string; reduction: number }> = [
+        { key: SETTINGS.GREATER_FLOW_AC, reduction: 45 },
+        { key: SETTINGS.FLOW_AC, reduction: 35 },
+        { key: SETTINGS.GREATER_FLOW, reduction: 20 },
+        { key: SETTINGS.FLOW, reduction: 10 },
+    ];
+
+    for (const buff of flowBuffs) {
+        if (settings[buff.key]) {
+            settings[buff.key] = false;
+            if (timers) delete timers[buff.key];
+            return buff.reduction;
+        }
+    }
+    return 0;
+}
+
+/**
  * Handles adrenaline gain/cost for an ability based on its type.
  * Basics gain adrenaline (with impatient), thresholds/ultimates/specs spend it.
  */
-function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string): void {
+function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string, timers?: Record<string, number>): void {
     const type = abils[abilityKey]['ability type'];
+    const flowReduction = consumeFlowBuff(settings, abilityKey, timers);
 
     if (type == 'basic') {
         let basicAdren = settings[SETTINGS.FURY_OF_THE_SMALL] ? 10 : 9;
@@ -384,20 +408,24 @@ function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string)
         }
         cost -= settings[SETTINGS.VIGOUR] ? 10 : 0;
         cost -= settings[SETTINGS.CONSERVATION_OF_ENERGY] ? 10 : 0;
+        if (flowReduction > 0) cost = Math.max(0, Math.floor(cost - flowReduction));
         addAdrenaline(settings, -cost);
     }
     else if (type == 'threshold') {
         let cost = abils[abilityKey].adrenaline;
+        if (flowReduction > 0) cost = Math.max(0, Math.floor(cost - flowReduction));
         addAdrenaline(settings, -cost);
     }
     else if (type == 'special attack') {
         let cost = abils[abilityKey].adrenaline;
         const multi = settings[SETTINGS.VIGOUR] ? 0.9 : 1;
         cost *= multi;
+        if (flowReduction > 0) cost = Math.max(0, Math.floor(cost - flowReduction));
         addAdrenaline(settings, -cost);
     }
     else if (type == 'ability') {
         // Necromancy 'ability' type — Finger of Death consumes necrosis to reduce cost
+        // TODO move to threshold
         let cost = abils[abilityKey].adrenaline || 0;
         if (abilityKey === ABILITIES.FINGER_OF_DEATH) {
             const necrosis = settings[SETTINGS.NECROSIS_STACKS] || 0;

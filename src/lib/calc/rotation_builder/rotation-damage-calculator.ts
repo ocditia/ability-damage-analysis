@@ -6,11 +6,8 @@ import { SETTINGS } from '../settings_rb';
 import { on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
 import { create_damage_object } from './rota_object_helper';
 import { buffs } from './rotation_consts';
-import { abilities as rangedAbils } from '../../ranged/abilities_rb';
-import { abilities as magicAbils } from '../../magic/abilities_rb';
-import { abilities as meleeAbils } from '../../melee/abilities_rb';
-import { abilities as necroAbils } from '../../necromancy/abilities_rb';
 import { gearSwaps, allExtraActions as specialAbils, CONSUMABLES } from '../../special/abilities';
+import { isExtraAction, normalizeLegacy, type ExtraAction } from './extra-action';
 import { CombatStyle, DamageObject, RotationInput } from '../types';
 import { familiars, dreadnipData, calculateFamiliarHitChance } from '$lib/familiars/familiars';
 import { getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
@@ -79,7 +76,6 @@ interface DamageResult {
     conjurePerTick: number[];
 }
 
-const allAbilities = { ...rangedAbils, ...magicAbils, ...meleeAbils, ...necroAbils };
 
 /**
  * Forward-fill a cumulative per-tick array so that ticks without new damage
@@ -427,7 +423,7 @@ function processCurrentTick(state: RotationState, settingsCopy: any, BAR_SIZE: n
         const hit_tick = state.tick + state.hit_delay;
         state.damageQueue[hit_tick] ??= [];
         handleBuffs(settingsCopy, state.timers, stalledAbility);
-        if (stalledAbility in allAbilities) {
+        if (stalledAbility in abils) {
             processStalledAbility(state, settingsCopy, stalledAbility, hit_tick); //TODO fix / remove
         }
     }
@@ -476,7 +472,7 @@ function processCurrentTickCore(
         const hit_tick = state.tick + state.hit_delay;
         state.damageQueue[hit_tick] ??= [];
         handleBuffs(settingsCopy, state.timers, stalledAbility);
-        if (stalledAbility in allAbilities) {
+        if (stalledAbility in abils) {
             processStalledAbility(state, settingsCopy, stalledAbility, hit_tick);
         }
     }
@@ -783,41 +779,7 @@ function handleExtraActionsCore(settings: any, timers: Record<string, number>, t
 
     rotation.extraActionBar[tick].forEach(element => {
         if (!element) return;
-        if (specialAbils[element]) {
-            if (element === CONSUMABLES.ADRENALINE_RENEWAL) {
-                timers[element] = 10;
-            }
-            else if (element === CONSUMABLES.SPIRITUAL_PRAYER) {
-                settings[SETTINGS.FAMILIAR_SPEC_POINTS] = Math.min(60, (settings[SETTINGS.FAMILIAR_SPEC_POINTS] || 0) + 15);
-            }
-            else if (element.includes("Adrenaline")) {
-                const amount = parseInt(element.split(" ")[1]);
-                settings[SETTINGS.ADRENALINE] += amount;
-            }
-            else if (element === ABILITIES.RUNIC_CHARGE) {
-                settings[SETTINGS.ANIMA_CHARGED] = true;
-                timers[SETTINGS.ANIMA_CHARGED] = 25;
-            }
-            else if (element === ABILITIES.EXSANGUINATE) {
-                settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.EXSANGUINATE;
-            }
-            else if (element === ABILITIES.INCITE_FEAR) {
-                settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR;
-            }
-            else if (element === ABILITIES.DREADNIP) {
-                timers['_dreadnip_deploy'] = 1; // Signal to processDreadnipTick
-                timers[COOLDOWN_PREFIX + ABILITIES.DREADNIP] = dreadnipData.duration; // Show expiry
-            }
-            // Start cooldowns for off-GCD abilities that have them
-            const cd = abils[element as ABILITIES]?.['cooldown'];
-            if (cd && cd > 0) {
-                timers[COOLDOWN_PREFIX + element] = Math.ceil(cd / 0.6);
-            }
-        }
-        else if (gearSwaps[element.title]) {
-            const slot = gearSwaps[element.title];
-            settings[slot] = element.title;
-        }
+        processExtraAction(element, settings, timers);
     });
 }
 
@@ -849,7 +811,7 @@ function processAbilityCore(
 
     // Cooldowns are now tracked via timers in on_stall (damage_calc_new.ts)
 
-    if (abilityKey in allAbilities) {
+    if (abilityKey in abils) {
         const classification = abils[abilityKey]?.['ability classification'];
         if (isChannelled(settingsCopy, abilityKey)) {
             // Handled in processAbilityTicksCore
@@ -997,7 +959,7 @@ function processAbility(
 
     // Cooldowns are now tracked via timers in on_stall (damage_calc_new.ts)
 
-    if (abilityKey in allAbilities) {
+    if (abilityKey in abils) {
         const classification = abils[abilityKey]?.['ability classification'];
         if (isChannelled(settingsCopy, abilityKey)) {
             // Handled in processAbilityTicks
@@ -1427,44 +1389,68 @@ function handleExtraActions(settings: any, timers: Record<string, number>, tick:
 
     rotationStore.extraActionBar[tick].forEach(element => {
         if (!element) return;
-        if (specialAbils[element]) {
-            if (element === CONSUMABLES.ADRENALINE_RENEWAL) {
-                timers[element] = 10;
-            }
-            else if (element === CONSUMABLES.SPIRITUAL_PRAYER) {
-                settings[SETTINGS.FAMILIAR_SPEC_POINTS] = Math.min(60, (settings[SETTINGS.FAMILIAR_SPEC_POINTS] || 0) + 15);
-            }
-            else if (element.includes("Adrenaline")) {
-                const amount = parseInt(element.split(" ")[1]);
-                settings[SETTINGS.ADRENALINE] += amount;
-            }
-            else if (element === ABILITIES.RUNIC_CHARGE) {
-                settings[SETTINGS.ANIMA_CHARGED] = true;
-                timers[SETTINGS.ANIMA_CHARGED] = 25;
-            }
-            else if (element === ABILITIES.EXSANGUINATE) {
-                settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.EXSANGUINATE;
-            }
-            else if (element === ABILITIES.INCITE_FEAR) {
-                settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR;
-            }
-            else if (element === ABILITIES.DREADNIP) {
-                timers['_dreadnip_deploy'] = 1;
-                timers[COOLDOWN_PREFIX + ABILITIES.DREADNIP] = dreadnipData.duration; // Show expiry
-            }
-            // Start cooldowns for off-GCD abilities that have them
-            const cd = abils[element as ABILITIES]?.['cooldown'];
-            if (cd && cd > 0) {
-                timers[COOLDOWN_PREFIX + element] = Math.ceil(cd / 0.6);
-            }
-        }
-        // Handle gear swaps
-        //TODO nicer implementation unifying extra actions
-        else if (gearSwaps[element.title]) {
-            const slot = gearSwaps[element.title];
-            settings[slot] = element.title;
-        }
+        processExtraAction(element, settings, timers);
     });
+}
+
+/** Process a single extra action entry — handles both new ExtraAction and legacy formats */
+function processExtraAction(element: any, settings: any, timers: Record<string, number>) {
+    // New ExtraAction format
+    if (isExtraAction(element)) {
+        if (element.type === 'gear' && element.slot) {
+            settings[element.slot] = element.value;
+        } else {
+            // Ability/prayer/consumable/spell — process by value
+            processExtraActionByValue(element.value, settings, timers);
+        }
+        return;
+    }
+
+    // Legacy format: string key (abilities, consumables, etc.)
+    if (typeof element === 'string' && specialAbils[element]) {
+        processExtraActionByValue(element, settings, timers);
+        return;
+    }
+
+    // Legacy format: { title, icon } object (gear swaps)
+    if (typeof element === 'object' && element.title && gearSwaps[element.title]) {
+        const slot = gearSwaps[element.title];
+        settings[slot] = element.title;
+        return;
+    }
+}
+
+/** Process an extra action by its string value key */
+function processExtraActionByValue(value: string, settings: any, timers: Record<string, number>) {
+    if (value === CONSUMABLES.ADRENALINE_RENEWAL) {
+        timers[value] = 10;
+    }
+    else if (value === CONSUMABLES.SPIRITUAL_PRAYER) {
+        settings[SETTINGS.FAMILIAR_SPEC_POINTS] = Math.min(60, (settings[SETTINGS.FAMILIAR_SPEC_POINTS] || 0) + 15);
+    }
+    else if (value.includes("Adrenaline")) {
+        const amount = parseInt(value.split(" ")[1]);
+        settings[SETTINGS.ADRENALINE] += amount;
+    }
+    else if (value === ABILITIES.RUNIC_CHARGE) {
+        settings[SETTINGS.ANIMA_CHARGED] = true;
+        timers[SETTINGS.ANIMA_CHARGED] = 25;
+    }
+    else if (value === ABILITIES.EXSANGUINATE) {
+        settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.EXSANGUINATE;
+    }
+    else if (value === ABILITIES.INCITE_FEAR) {
+        settings[SETTINGS.AUTO_CAST] = SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR;
+    }
+    else if (value === ABILITIES.DREADNIP) {
+        timers['_dreadnip_deploy'] = 1;
+        timers[COOLDOWN_PREFIX + ABILITIES.DREADNIP] = dreadnipData.duration;
+    }
+    // Start cooldowns for off-GCD abilities that have them
+    const cd = abils[value as ABILITIES]?.['cooldown'];
+    if (cd && cd > 0) {
+        timers[COOLDOWN_PREFIX + value] = Math.ceil(cd / 0.6);
+    }
 }
 
 function handleTimers(timers: Record<string, number>, settings: any) {

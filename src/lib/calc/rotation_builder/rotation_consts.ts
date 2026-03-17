@@ -31,6 +31,11 @@ export const buffs = [
     SETTINGS.METEOR_STRIKE_BUFF,
     SETTINGS.VESTMENTS_REGEN,
     SETTINGS.RAMPAGE,
+    SETTINGS.FLOW,
+    SETTINGS.GREATER_FLOW,
+    SETTINGS.FLOW_AC,
+    SETTINGS.GREATER_FLOW_AC,
+    SETTINGS.ANIMA_CHARGED,
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -203,6 +208,41 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.rampage
+            },
+            [SETTINGS.FLOW]: {
+                title: 'Flow',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#0ce6ff'
+            },
+            [SETTINGS.GREATER_FLOW]: {
+                title: 'Greater Flow',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#0ce6ff'
+            },
+            [SETTINGS.FLOW_AC]: {
+                title: 'Flow (Animate Dead)',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#0ce6ff'
+            },
+            [SETTINGS.GREATER_FLOW_AC]: {
+                title: 'Greater Flow (Animate Dead)',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#0ce6ff'
+            },
+            [SETTINGS.ANIMA_CHARGED]: {
+                title: 'Animate Dead (Anima Charged)',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#a855f7'
             }
         }
     )
