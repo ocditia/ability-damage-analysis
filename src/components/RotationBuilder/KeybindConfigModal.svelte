@@ -1,5 +1,6 @@
 <script>
     import { keybindStore, keybindActions } from '$lib/stores/keybindStore.svelte.js';
+    import { ownedItemsStore, ownedItemsActions } from '$lib/stores/ownedItemsStore.svelte.js';
     import { allExtraActions } from '$lib/special/abilities';
 
     export let show = false;
@@ -159,6 +160,13 @@
                         />
                         <span class="ability-name" title={abil.key}>{abil.title}</span>
                         <input
+                            type="checkbox"
+                            class="owned-checkbox"
+                            checked={ownedItemsStore.items.has(abil.key)}
+                            onchange={() => ownedItemsActions.toggleOwned(abil.key)}
+                            title="Owned"
+                        />
+                        <input
                             type="text"
                             class="keybind-input"
                             placeholder="key"
@@ -304,6 +312,14 @@
     }
     .ability-row:hover {
         background: rgba(255, 255, 255, 0.03);
+    }
+
+    .owned-checkbox {
+        flex-shrink: 0;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+        accent-color: #4ade80;
     }
 
     .ability-icon {

@@ -3,25 +3,40 @@ import { ABILITIES } from "./const/const";
 type DamageKind = 'non_crit' | 'crit';
 export type CombatStyle = 'melee' | 'ranged' | 'magic' | 'necro' | 'necromancy' | 'poison';
 
-export type ArmourSlot = 'helmet' | 'body' | 'legs' | 'gloves' | 'boots' | 'necklace' | 'ring' | 'cape' | 'pocket' | 'ammo' | 'not used';
-export type ArmourStyle = 'melee' | 'ranged' | 'magic' | 'necromancy' | 'hybrid';
+export type EquipmentSlot = 'helmet' | 'body' | 'legs' | 'gloves' | 'boots' | 'necklace' | 'ring' | 'cape' | 'pocket' | 'ammo' | 'mainhand' | 'offhand' | 'not used';
+export type EquipmentStyle = 'melee' | 'ranged' | 'magic' | 'necromancy' | 'hybrid';
+export type WeaponType = 'main-hand' | 'off-hand' | 'two-hand' | 'shield';
 
-export interface ArmourTier {
+export interface OffensiveTier {
     melee: number;
     ranged: number;
     magic: number;
     necro: number;
 }
 
-export interface ArmourPiece {
-    'necromancy strength': number;
-    'magic strength': number;
-    'melee strength': number;
-    'ranged strength': number;
-    tier: ArmourTier;
-    slot: ArmourSlot;
-    style: ArmourStyle;
+/** Base equipment piece — covers armour, accessories, and weapons */
+export interface Equipment {
+    /** Deprecated — use offensiveTier instead. Will be removed. */
+    'necromancy strength'?: number;
+    'magic strength'?: number;
+    'melee strength'?: number;
+    'ranged strength'?: number;
+    /** Per-style offensive tier for armour/accessories */
+    offensiveTier?: OffensiveTier;
+    /** Flat weapon tier (weapons only) */
+    tier?: number;
+    slot: EquipmentSlot;
+    style: EquipmentStyle;
+    /** Weapon type — only present on weapons */
+    'weapon type'?: WeaponType;
+    /** Weapon subtype (bow, crossbow, wand, staff, etc.) — only present on weapons */
+    type?: string;
+    /** Weapon classification (obsidian, none) — only present on weapons */
+    classification?: string;
+    /** Whether this item is commonly used / should appear prominently in dropdowns. Defaults to false. */
+    popular?: boolean;
 }
+
 
 /**
  * Input for rotation damage calculation - decoupled from stores

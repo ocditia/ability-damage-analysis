@@ -1,179 +1,45 @@
-import { ABILITIES } from '../calc/const/const';
-import { ability_damage_calculation, hit_damage_calculation, calc_aftershock } from '../calc/damage_calc_rb.js';
+import { ABILITIES, abils } from '../calc/const/const';
 
-const abilities = {
-    [ABILITIES.MAGIC_AUTO]: {
-        title: 'Auto',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/Magic_ability.png'
-    },
-    [ABILITIES.GREATER_CONCENTRATED_BLAST]: {
-        title: 'Gconc',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png'
-    },
-    [ABILITIES.DRAGON_BREATH]: {
-        title: 'Dragon breath',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/dragon_breath.png'
-    },
-    [ABILITIES.MAGMA_TEMPEST]: {
-        title: 'Magma tempest',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/magma_tempest.png'
-    },
-    [ABILITIES.CORRUPTION_BLAST]: {
-        title: 'Corruption blast',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/corruption_blast.png'
-    },
-    [ABILITIES.COMBUST]: {
-        title: 'Combust',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/combust.png'
-    },
-    [ABILITIES.TIME_STRIKE]: {
-        title: 'Timestrike',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/time_strike-bg.png'
-    },
-    [ABILITIES.GREATER_SONIC_WAVE]: {
-        title: 'Greater sonic wave',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/greater_sonic_wave.png'
-    },
-    [ABILITIES.GREATER_CHAIN]: {
-        title: 'Greater chain',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/greater_chain.png'
-    },
-    [ABILITIES.IMPACT]: {
-        title: 'Impact',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/impact.png',
-        common: false
-    },
-    [ABILITIES.SONIC_WAVE]: {
-        title: 'Sonic wave',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/sonic_wave.png',
-        common: false
-    },
-    [ABILITIES.CONCENTRATED_BLAST]: {
-        title: 'Concentrated blast',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/concentrated_blast.png',
-        common: false
-    },
-    [ABILITIES.CHAIN]: {
-        title: 'Chain',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/chain.png',
-        common: false
-    },
-    [ABILITIES.WILD_MAGIC]: {
-        title: 'Wild magic',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/wild_magic.png'
-    },
-    [ABILITIES.ASPHYXIATE]: {
-        title: 'Asphyxiate',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/asphyxiate.png'
-    },
-    [ABILITIES.SMOKE_CLOUD]: {
-        title: 'Smoke cloud',
-        calc: ability_damage_calculation,
-        icon: '/effect_icons/smoke_cloud.png'
-    },
-    [ABILITIES.SMOKE_TENDRILS]: {
-        title: 'Smoke tendrils',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/smoke_tendrils.png'
-    },
-    [ABILITIES.OMNIPOWER]: {
-        title: 'Omnipower',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/omnipower.png'
-    },
-    [ABILITIES.TSUNAMI]: {
-        title: 'Tsunami',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/tsunami.png'
-    },
-    [ABILITIES.CLAWS_OF_GUTHIX]: {
-        title: 'Claws of Guthix',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/guthix_staff-bg.png'
-    },
-    [ABILITIES.TEMPEST_OF_ARMADYL]: {
-        title: 'Tempest of Armadyl',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/armadyl_battlestaff-bg.png'
-    },
-    [ABILITIES.IBAN_BLAST]: {
-        title: 'Iban blast',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/iban_staff.png',
-        common: false
-    },
-    [ABILITIES.INSTABILITY]: {
-        title: 'Instability',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/Fractured_Staff_of_Armadyl.webp'
-    },
-    [ABILITIES.RUNE_FLAME]: {
-        title: 'Rune flame',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/mindspike.png',
-        common: false
-    },
-    [ABILITIES.DEVOUR]: {
-        title: 'Devour',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/obliteration.png',
-        common: false
-    },
-    [ABILITIES.REAP]: {
-        title: 'Reap',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/penance_trident.png',
-        common: false
-    },
-    [ABILITIES.SOULFIRE]: {
-        title: 'Soulfire',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/roar_of_awakening.png'
-    },
-    [ABILITIES.SARADOMIN_STRIKE]: {
-        title: 'Saradomin strike',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/saradomin_staff.png',
-        common: false
-    },
-    [ABILITIES.FROM_THE_SHADOWS]: {
-        title: 'From the shadows',
-        calc: ability_damage_calculation,
-        icon: '/ability_icons/magic/30x30/staff_of_sliske.png'
-    },
-    [ABILITIES.FLAMES_OF_ZAMORAK]: {
-        title: 'Flames of Zamorak',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/zamorak_staff.png',
-        common: false
-    },
-    [ABILITIES.MIASMIC_BARRAGE]: {
-        title: 'Miasmic barrage',
-        calc: hit_damage_calculation,
-        icon: '/ability_icons/magic/30x30/zuriels_staff.png',
-        common: false
-    },
-    [ABILITIES.AFTERSHOCK_MAGIC]: {
-        title: 'Aftershock',
-        calc: hit_damage_calculation,
-        icon: '/effect_icons/perks/Aftershock.png',
-        common: false
-    }
-};
+const magicAbilityKeys = [
+    ABILITIES.MAGIC_AUTO,
+    ABILITIES.GREATER_CONCENTRATED_BLAST,
+    ABILITIES.DRAGON_BREATH,
+    ABILITIES.MAGMA_TEMPEST,
+    ABILITIES.CORRUPTION_BLAST,
+    ABILITIES.COMBUST,
+    ABILITIES.TIME_STRIKE,
+    ABILITIES.GREATER_SONIC_WAVE,
+    ABILITIES.GREATER_CHAIN,
+    ABILITIES.IMPACT,
+    ABILITIES.SONIC_WAVE,
+    ABILITIES.CONCENTRATED_BLAST,
+    ABILITIES.CHAIN,
+    ABILITIES.WILD_MAGIC,
+    ABILITIES.ASPHYXIATE,
+    ABILITIES.SMOKE_CLOUD,
+    ABILITIES.SMOKE_TENDRILS,
+    ABILITIES.OMNIPOWER,
+    ABILITIES.TSUNAMI,
+    ABILITIES.CLAWS_OF_GUTHIX,
+    ABILITIES.TEMPEST_OF_ARMADYL,
+    ABILITIES.IBAN_BLAST,
+    ABILITIES.INSTABILITY,
+    ABILITIES.RUNE_FLAME,
+    ABILITIES.DEVOUR,
+    ABILITIES.REAP,
+    ABILITIES.SOULFIRE,
+    ABILITIES.SARADOMIN_STRIKE,
+    ABILITIES.FROM_THE_SHADOWS,
+    ABILITIES.FLAMES_OF_ZAMORAK,
+    ABILITIES.MIASMIC_BARRAGE,
+    ABILITIES.AFTERSHOCK_MAGIC,
+    ABILITIES.GLACIAL_EMBRACE_HIT,
+    ABILITIES.SUNSHINE,
+    ABILITIES.GREATER_SUNSHINE
+];
+
+const abilities = Object.fromEntries(
+    magicAbilityKeys.map(key => [key, abils[key]])
+);
 
 export { abilities };

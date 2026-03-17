@@ -61,6 +61,12 @@ export function calculateSingleAbilityDamage(
     if (input.buffs?.deathSwiftness) {
         settingsWithBuffs[SETTINGS.DEATH_SWIFTNESS] = true;
     }
+    if (input.buffs?.splitSoul) {
+        settingsWithBuffs[SETTINGS.SPLIT_SOUL] = true;
+    }
+    if (input.buffs?.splitSoulNecro) {
+        settingsWithBuffs[SETTINGS.SPLIT_SOUL_NECRO] = true;
+    }
 
     // Calculate damage without UI callbacks (headless mode)
     try {

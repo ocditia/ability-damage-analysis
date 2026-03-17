@@ -92,7 +92,7 @@ const abilities = {
     [ABILITIES.THE_FINAL_FLURRY]: {
         title: 'The final flurry',
         calc: ability_damage_calculation,
-        icon: '/gear_icons/melee/varanuss mercy.png'
+        icon: '/gear_icons/melee/varanus\'s mercy.png'
     },
     [ABILITIES.SLICE_N_DICE]: {
         title: 'Slice & dice',
@@ -114,12 +114,6 @@ const abilities = {
         calc: ability_damage_calculation,
         icon: '/ability_icons/melee/30x30/ezk-bg.png'
     },
-    //already have final flurry
-    /*[ABILITIES.THE_FINAL_FLURRY]: {
-        title: 'The final flurry',
-        calc: ability_damage_calculation,
-        icon: '/gear_icons/melee/varanuss mercy.png'
-    },*/
     [ABILITIES.ARMADYLS_JUDGEMENT]: {
         title: "Armadyl's judgement",
         calc: hit_damage_calculation,

@@ -142,17 +142,32 @@ export const uiActions = {
         uiStore.dragDrop.validSlot = true;
     },
 
-    // Keyboard shortcuts
+    // Keyboard shortcuts — ignore when user is typing in an input field
     handleKeypress(event) {
+        const el = event.target;
+        const tag = el?.tagName;
+        if (tag === 'TEXTAREA' || tag === 'SELECT') return;
+        if (tag === 'INPUT' && el.type !== 'checkbox' && el.type !== 'radio') return;
+
         switch (event.key) {
             case "r":
                 this.setActiveTool(ToolMode.Regular);
                 break;
             case "s":
-                this.setActiveTool(ToolMode.Stall);
+                if (uiStore.activeTool == ToolMode.Stall) {
+                    this.setActiveTool(ToolMode.Regular)
+                }
+                else {
+                    this.setActiveTool(ToolMode.Stall);
+                }
                 break;
             case "n":
-                this.setActiveTool(ToolMode.Null);
+                if (uiStore.activeTool == ToolMode.Null) {
+                    this.setActiveTool(ToolMode.Regular)
+                }
+                else {
+                    this.setActiveTool(ToolMode.Null);
+                }
                 break;
             case "1":
                 this.setActiveTab("ranged");

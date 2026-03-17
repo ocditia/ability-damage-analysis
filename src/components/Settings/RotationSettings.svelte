@@ -3,9 +3,12 @@
     import Checkbox from '../../components/Settings/Checkbox.svelte';
     import Number from '../../components/Settings/Number.svelte';
     import Select from '../../components/Settings/Select.svelte';
+    import GearSelection from '../../components/Settings/GearSelection.svelte';
+    import PerkSelection from '../../components/Settings/PerkSelection.svelte';
+    import FamiliarSelection from '../../components/Settings/FamiliarSelection.svelte';
     import TabButton from '../UI/TabButton.svelte';
     import GradientSeparator from '../UI/GradientSeparator.svelte';
-    import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
+    import { SETTINGS } from '$lib/calc/settings_rb';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { bossPresets, getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
@@ -54,109 +57,6 @@
         const max = stackLimits[key] ?? 999;
         return Math.max(0, Math.min(v, max));
     }
-
-    const styleFolder = {
-        [SettingsCombatStyles.MELEE]: 'melee',
-        [SettingsCombatStyles.RANGED]: 'ranged',
-        [SettingsCombatStyles.MAGIC]: 'magic',
-        [SettingsCombatStyles.NECROMANCY]: 'necro',
-    };
-
-    function gearIcon(settingKey, fallback, folder = 'shared') {
-        const val = settings[settingKey]?.value;
-        if (!val || val === 'none') return fallback;
-        const base = val.replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '').replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
-        if (base !== val) return `/gear_icons/${folder}/${base}.png`;
-        return `/gear_icons/${folder}/${val}.png`;
-    }
-
-    function gearBadge(settingKey) {
-        const val = settings[settingKey]?.value;
-        if (!val) return null;
-        if (val.endsWith(' [IM]')) return { img: '/effect_icons/shard_of_genesis.png' };
-        if (val.endsWith(' (i)')) return { text: 'i' };
-        if (val.endsWith('+')) return { text: '+' };
-        if (val.endsWith(' (or)')) return { text: 'or' };
-        if (val.endsWith(' (e)')) return { text: 'e' };
-        return null;
-    }
-
-    function gearIconWithFallback(settingKey, fallback, folder = 'shared') {
-        const val = settings[settingKey]?.value;
-        if (!val || val === 'none') return fallback;
-        const base = val.replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '').replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
-        return { primary: `/gear_icons/${folder}/${val}.png`, fallbackIcon: `/gear_icons/${folder}/${base}.png`, slotFallback: fallback };
-    }
-
-    const armourSlotsByStyle = {
-        [SettingsCombatStyles.RANGED]: [
-            { key: SETTINGS.RANGED_HELMET, fallback: '/armour_icons/Head_slot.webp' },
-            { key: SETTINGS.RANGED_BODY, fallback: '/armour_icons/Torso_slot.png' },
-            { key: SETTINGS.RANGED_LEGS, fallback: '/armour_icons/Legs_slot.png' },
-            { key: SETTINGS.RANGED_GLOVES, fallback: '/armour_icons/Hands_slot.webp' },
-            { key: SETTINGS.RANGED_BOOTS, fallback: '/armour_icons/Feet_slot.png' },
-            { key: SETTINGS.RANGED_POCKET, fallback: '/armour_icons/Pocket_slot.webp' },
-            { key: SETTINGS.RANGED_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png' },
-        ],
-        [SettingsCombatStyles.MAGIC]: [
-            { key: SETTINGS.MAGIC_HELMET, fallback: '/armour_icons/Head_slot.webp' },
-            { key: SETTINGS.MAGIC_BODY, fallback: '/armour_icons/Torso_slot.png' },
-            { key: SETTINGS.MAGIC_LEGS, fallback: '/armour_icons/Legs_slot.png' },
-            { key: SETTINGS.MAGIC_GLOVES, fallback: '/armour_icons/Hands_slot.webp' },
-            { key: SETTINGS.MAGIC_BOOTS, fallback: '/armour_icons/Feet_slot.png' },
-            { key: SETTINGS.MAGIC_POCKET, fallback: '/armour_icons/Pocket_slot.webp' },
-            { key: SETTINGS.MAGIC_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png' },
-        ],
-        [SettingsCombatStyles.MELEE]: [
-            { key: SETTINGS.MELEE_HELMET, fallback: '/armour_icons/Head_slot.webp' },
-            { key: SETTINGS.MELEE_BODY, fallback: '/armour_icons/Torso_slot.png' },
-            { key: SETTINGS.MELEE_LEGS, fallback: '/armour_icons/Legs_slot.png' },
-            { key: SETTINGS.MELEE_GLOVES, fallback: '/armour_icons/Hands_slot.webp' },
-            { key: SETTINGS.MELEE_BOOTS, fallback: '/armour_icons/Feet_slot.png' },
-            { key: SETTINGS.MELEE_POCKET, fallback: '/armour_icons/Pocket_slot.webp' },
-            { key: SETTINGS.MELEE_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png' },
-        ],
-        [SettingsCombatStyles.NECROMANCY]: [
-            { key: SETTINGS.NECRO_HELMET, fallback: '/armour_icons/Head_slot.webp' },
-            { key: SETTINGS.NECRO_BODY, fallback: '/armour_icons/Torso_slot.png' },
-            { key: SETTINGS.NECRO_LEGS, fallback: '/armour_icons/Legs_slot.png' },
-            { key: SETTINGS.NECRO_GLOVES, fallback: '/armour_icons/Hands_slot.webp' },
-            { key: SETTINGS.NECRO_BOOTS, fallback: '/armour_icons/Feet_slot.png' },
-            { key: SETTINGS.NECRO_POCKET, fallback: '/armour_icons/Pocket_slot.webp' },
-            { key: SETTINGS.NECRO_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png' },
-        ],
-    };
-    const sharedArmourSlots = [
-        { key: SETTINGS.NECKLACE, fallback: '/armour_icons/Neck_slot.png' },
-        { key: SETTINGS.CAPE, fallback: '/armour_icons/Back_slot.png' },
-        { key: SETTINGS.RING, fallback: '/armour_icons/Ring_slot.png' },
-        { key: SETTINGS.AURA, fallback: '/armour_icons/Aura_slot.webp' },
-    ];
-
-    const weaponSlotsByStyle = {
-        [SettingsCombatStyles.RANGED]: {
-            weaponType: SETTINGS.WEAPON_TYPE_RANGED,
-            mh: SETTINGS.RANGED_MH,
-            oh: SETTINGS.RANGED_OH,
-            th: SETTINGS.RANGED_TH,
-        },
-        [SettingsCombatStyles.MAGIC]: {
-            weaponType: SETTINGS.WEAPON_TYPE_MAGE,
-            mh: SETTINGS.MAGIC_MH,
-            oh: SETTINGS.MAGIC_OH,
-            th: SETTINGS.MAGIC_TH,
-        },
-        [SettingsCombatStyles.MELEE]: {
-            weaponType: SETTINGS.WEAPON_TYPE_MELEE,
-            mh: SETTINGS.MELEE_MH,
-            oh: SETTINGS.MELEE_OH,
-            th: SETTINGS.MELEE_TH,
-        },
-        [SettingsCombatStyles.NECROMANCY]: {
-            mh: SETTINGS.NECRO_MH,
-            oh: SETTINGS.NECRO_OH,
-        },
-    };
 
     const prayerSettingByStyle = {
         [SettingsCombatStyles.RANGED]: SETTINGS.RANGED_PRAYER,
@@ -274,6 +174,7 @@
         // debugPreset2();
         settings[SETTINGS.UNDEAD_SLAYER_ABILITY]['value'] = false;
         settings[SETTINGS.BLACKHOLE]['value'] = false;
+
     });
         
 
@@ -505,12 +406,12 @@
                 [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
                 [SETTINGS.MELEE_BODY]: SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
                 [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
-                [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.TMW,
+                [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.GOP_E,
                 [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
-                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.EOFOR,
+                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.AM_HEJ,
                 [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.ZUK,
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHAMPION_E,
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
+                [SETTINGS.RING]: SETTINGS.RING_VALUES.REAVERS,
+                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.FUL,
             },
             'Trimmed Masterwork': {
                 [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.TMW,
@@ -927,380 +828,13 @@
                 </div>
             {:else if tab === 'equipment'}
                 <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">Armour</h5>
-                    <div class="flex flex-wrap gap-2 justify-center mb-3">
-                        {#each (armourSlotsByStyle[styleTab] ?? []) as slot}
-                            <div class="relative">
-                                <button
-                                    type="button"
-                                    class="stack-toggle"
-                                    class:stack-active={settings[slot.key]?.value && settings[slot.key]?.value !== 'none'}
-                                    title="{settings[slot.key]?.label ?? slot.key}: {settings[slot.key]?.options?.find(o => o.value === settings[slot.key]?.value)?.text ?? 'None'}"
-                                    onclick={() => { openDropdown = openDropdown === slot.key ? null : slot.key; }}
-                                >
-                                    <img
-                                        src={gearIcon(slot.key, slot.fallback, styleFolder[styleTab])}
-                                        alt={settings[slot.key]?.label ?? ''}
-                                        class="w-7 h-7"
-                                        onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback, styleFolder[styleTab]); e.target.src = icons.fallbackIcon; }}
-                                    />
-                                    {#if gearBadge(slot.key)}
-                                        {#if gearBadge(slot.key).img}
-                                            <img src={gearBadge(slot.key).img} alt="" class="gear-badge-img" />
-                                        {:else}
-                                            <span class="stack-count">{gearBadge(slot.key).text}</span>
-                                        {/if}
-                                    {/if}
-                                </button>
-                                {#if openDropdown === slot.key}
-                                    <div class="icon-dropdown" style="min-width: 160px;">
-                                        {#each settings[slot.key]?.options ?? [] as option}
-                                            <button
-                                                type="button"
-                                                class="icon-dropdown-item"
-                                                class:active={settings[slot.key]?.value === option.value}
-                                                onclick={() => { settings[slot.key].value = option.value; openDropdown = null; updateDamages(); }}
-                                            >
-                                                {option.text}
-                                            </button>
-                                        {/each}
-                                    </div>
-                                {/if}
-                            </div>
-                        {/each}
-                        {#each sharedArmourSlots as slot}
-                            <div class="relative">
-                                <button
-                                    type="button"
-                                    class="stack-toggle"
-                                    class:stack-active={settings[slot.key]?.value && settings[slot.key]?.value !== 'none'}
-                                    title="{settings[slot.key]?.label ?? slot.key}: {settings[slot.key]?.options?.find(o => o.value === settings[slot.key]?.value)?.text ?? 'None'}"
-                                    onclick={() => { openDropdown = openDropdown === slot.key ? null : slot.key; }}
-                                >
-                                    <img
-                                        src={gearIcon(slot.key, slot.fallback)}
-                                        alt={settings[slot.key]?.label ?? ''}
-                                        class="w-7 h-7"
-                                        onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback); e.target.src = icons.fallbackIcon; }}
-                                    />
-                                    {#if gearBadge(slot.key)}
-                                        {#if gearBadge(slot.key).img}
-                                            <img src={gearBadge(slot.key).img} alt="" class="gear-badge-img" />
-                                        {:else}
-                                            <span class="stack-count">{gearBadge(slot.key).text}</span>
-                                        {/if}
-                                    {/if}
-                                </button>
-                                {#if openDropdown === slot.key}
-                                    <div class="icon-dropdown" style="min-width: 160px;">
-                                        {#each settings[slot.key]?.options ?? [] as option}
-                                            <button
-                                                type="button"
-                                                class="icon-dropdown-item"
-                                                class:active={settings[slot.key]?.value === option.value}
-                                                onclick={() => { settings[slot.key].value = option.value; openDropdown = null; updateDamages(); }}
-                                            >
-                                                {option.text}
-                                            </button>
-                                        {/each}
-                                    </div>
-                                {/if}
-                            </div>
-                        {/each}
-                        {#if styleTab === SettingsCombatStyles.MAGIC && settings[SETTINGS.AUTO_CAST]}
-                            <div class="relative">
-                                <button
-                                    type="button"
-                                    class="stack-toggle"
-                                    class:stack-active={settings[SETTINGS.AUTO_CAST]?.value && settings[SETTINGS.AUTO_CAST]?.value !== 'none'}
-                                    title="Auto Cast: {settings[SETTINGS.AUTO_CAST]?.options?.find(o => o.value === settings[SETTINGS.AUTO_CAST]?.value)?.text ?? 'None'}"
-                                    onclick={() => { openDropdown = openDropdown === SETTINGS.AUTO_CAST ? null : SETTINGS.AUTO_CAST; }}
-                                >
-                                    <img
-                                        src={settings[SETTINGS.AUTO_CAST]?.value === 'exsanguinate' ? '/effect_icons/Exsanguinate_icon.webp' : settings[SETTINGS.AUTO_CAST]?.value === 'incite fear' ? '/ability_icons/magic/Incite_Fear_icon.webp' : '/effect_icons/magic/Curse_icon.png'}
-                                        alt="Auto Cast"
-                                        class="w-7 h-7"
-                                    />
-                                </button>
-                                {#if openDropdown === SETTINGS.AUTO_CAST}
-                                    <div class="icon-dropdown" style="min-width: 140px;">
-                                        {#each settings[SETTINGS.AUTO_CAST]?.options ?? [] as option}
-                                            <button
-                                                type="button"
-                                                class="icon-dropdown-item"
-                                                class:active={settings[SETTINGS.AUTO_CAST]?.value === option.value}
-                                                onclick={() => { settings[SETTINGS.AUTO_CAST].value = option.value; openDropdown = null; updateDamages(); }}
-                                            >
-                                                {option.text}
-                                            </button>
-                                        {/each}
-                                    </div>
-                                {/if}
-                            </div>
-                        {/if}
-                        <!-- Weapon: combined MH + 2H dropdown, OH, Ammo -->
-                        {#each [weaponSlotsByStyle[styleTab]].filter(Boolean) as ws}
-                            {@const is2h = ws.weaponType && settings[ws.weaponType]?.value === SETTINGS.WEAPON_VALUES.TH}
-                            {@const activeWeaponKey = is2h ? ws.th : ws.mh}
-                            {@const activeWeaponText = settings[activeWeaponKey]?.options?.find(o => o.value === settings[activeWeaponKey]?.value)?.text ?? 'Custom'}
-                            <div class="relative">
-                                <button type="button" class="stack-toggle"
-                                    class:stack-active={activeWeaponKey && settings[activeWeaponKey]?.value}
-                                    title="Weapon: {activeWeaponText}{is2h ? ' (2H)' : ''}"
-                                    onclick={() => { openDropdown = openDropdown === 'weapon_combined' ? null : 'weapon_combined'; }}
-                                >
-                                    <img src={gearIcon(activeWeaponKey, '/armour_icons/Main_hand_slot.webp', styleFolder[styleTab])} alt="Weapon" class="w-7 h-7"
-                                        onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Main_hand_slot.webp'; }}
-                                    />
-                                    {#if gearBadge(activeWeaponKey)}
-                                        {#if gearBadge(activeWeaponKey).img}
-                                            <img src={gearBadge(activeWeaponKey).img} alt="" class="gear-badge-img" />
-                                        {:else}
-                                            <span class="stack-count">{gearBadge(activeWeaponKey).text}</span>
-                                        {/if}
-                                    {/if}
-                                </button>
-                                {#if openDropdown === 'weapon_combined'}
-                                    <div class="icon-dropdown" style="min-width: 180px;">
-                                        {#if ws.mh && settings[ws.mh]}
-                                            <div style="padding: 0.2rem 0.5rem; font-size: 0.65rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">Main-hand</div>
-                                            {#each settings[ws.mh]?.options ?? [] as option}
-                                                <button type="button" class="icon-dropdown-item"
-                                                    class:active={!is2h && settings[ws.mh]?.value === option.value}
-                                                    onclick={() => {
-                                                        settings[ws.mh].value = option.value;
-                                                        if (ws.weaponType) settings[ws.weaponType].value = SETTINGS.WEAPON_VALUES.DW;
-                                                        openDropdown = null;
-                                                        updateDamages();
-                                                    }}
-                                                >{option.text}</button>
-                                            {/each}
-                                        {/if}
-                                        {#if ws.th && settings[ws.th]}
-                                            <div style="padding: 0.2rem 0.5rem; font-size: 0.65rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 0.2rem;">Two-handed</div>
-                                            {#each settings[ws.th]?.options ?? [] as option}
-                                                <button type="button" class="icon-dropdown-item"
-                                                    class:active={is2h && settings[ws.th]?.value === option.value}
-                                                    onclick={() => {
-                                                        settings[ws.th].value = option.value;
-                                                        if (ws.weaponType) settings[ws.weaponType].value = SETTINGS.WEAPON_VALUES.TH;
-                                                        openDropdown = null;
-                                                        updateDamages();
-                                                    }}
-                                                >{option.text}</button>
-                                            {/each}
-                                        {/if}
-                                    </div>
-                                {/if}
-                            </div>
-                            <!-- OH: only show when dual-wield -->
-                            {#if !is2h && ws.oh && settings[ws.oh]}
-                                <div class="relative">
-                                    <button type="button" class="stack-toggle"
-                                        class:stack-active={settings[ws.oh]?.value && settings[ws.oh]?.value !== 'none'}
-                                        title="Off-hand: {settings[ws.oh]?.options?.find(o => o.value === settings[ws.oh]?.value)?.text ?? 'None'}"
-                                        onclick={() => { openDropdown = openDropdown === ws.oh ? null : ws.oh; }}
-                                    >
-                                        <img src={gearIcon(ws.oh, '/armour_icons/Off-hand_slot.webp', styleFolder[styleTab])} alt="Off-hand" class="w-7 h-7"
-                                            onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Off-hand_slot.webp'; }}
-                                        />
-                                        {#if gearBadge(ws.oh)}
-                                            {#if gearBadge(ws.oh).img}
-                                                <img src={gearBadge(ws.oh).img} alt="" class="gear-badge-img" />
-                                            {:else}
-                                                <span class="stack-count">{gearBadge(ws.oh).text}</span>
-                                            {/if}
-                                        {/if}
-                                    </button>
-                                    {#if openDropdown === ws.oh}
-                                        <div class="icon-dropdown" style="min-width: 160px;">
-                                            {#each settings[ws.oh]?.options ?? [] as option}
-                                                <button type="button" class="icon-dropdown-item"
-                                                    class:active={settings[ws.oh]?.value === option.value}
-                                                    onclick={() => { settings[ws.oh].value = option.value; openDropdown = null; updateDamages(); }}
-                                                >{option.text}</button>
-                                            {/each}
-                                        </div>
-                                    {/if}
-                                </div>
-                            {/if}
-                        {/each}
-                    </div>
-                    {#if ARMOUR_PRESETS[styleTab]}
-                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; padding: 0.4rem 0.5rem; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
-                            <span style="font-size: 0.75rem; color: #aaa; white-space: nowrap;">Preset</span>
-                            <select
-                                style="flex: 1; background: rgba(0,0,0,0.3); color: #ddd; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 0.25rem 0.4rem; font-size: 0.8rem; cursor: pointer;"
-                                bind:value={selectedPreset}
-                                onchange={() => { if (selectedPreset) applyArmourPreset(selectedPreset); }}
-                            >
-                                <option value="">-- Select preset --</option>
-                                {#each Object.keys(ARMOUR_PRESETS[styleTab]) as name}
-                                    <option value={name}>{name}</option>
-                                {/each}
-                            </select>
-                        </div>
-                    {/if}
+                    <GearSelection {settings} {styleTab} {updateDamages} bind:openDropdown />
                 </div>
                 <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">Perks</h5>
-                    <div class="flex flex-wrap gap-2 justify-center mb-3">
-                        {#each [
-                            { key: SETTINGS.PRECISE, img: '/effect_icons/perks/Precise.webp', title: 'Precise', step: 1, max: 6 },
-                            { key: SETTINGS.ERUPTIVE, img: '/effect_icons/perks/Eruptive.webp', title: 'Eruptive', step: 1, max: 4 },
-                            { key: SETTINGS.EQ_PERK, img: '/effect_icons/perks/Equilibrium.png', title: 'Equilbrium', step: 1, max: 4 },
-                            { key: SETTINGS.CAROMING, img: '/effect_icons/perks/caroming.png', title: 'Caroming', step: 1, max: 4 },
-                            { key: SETTINGS.BITING, img: '/effect_icons/perks/Biting.webp', title: 'Biting', step: 1, max: 4 },
-                            { key: SETTINGS.AFTERSHOCK, img: '/effect_icons/perks/Aftershock.png', title: 'Aftershock', step: 1, max: 4 },
-                            { key: SETTINGS.GENOCIDAL, img: '/effect_icons/perks/genocidal.png', title: 'Genocidal %', step: 0.1, max: 4.9 },
-                            { key: SETTINGS.FLANKING, img: '/effect_icons/perks/Flanking.webp', title: 'Flanking', step: 1, max: 4 },
-                            { key: SETTINGS.LVL20ARMOUR, img: '/effect_icons/perks/level-20.png', title: 'Level 20 Armour', toggle: true },
-                            { key: SETTINGS.IMPATIENT, img: '/effect_icons/perks/Impatient.png', title: 'Impatient', step: 1, max: 4 },
-                            { key: SETTINGS.SLAYER_PERK_UNDEAD, img: '/effect_icons/perks/25px-Undead_Slayer.webp', title: 'Undead Slayer', toggle: true },
-                            { key: SETTINGS.SLAYER_PERK_DRAGON, img: '/effect_icons/perks/dragon_slayer_perk.png', title: 'Dragon Slayer', toggle: true },
-                            { key: SETTINGS.SLAYER_PERK_DEMON, img: '/effect_icons/perks/demon_slayer_perk.webp', title: 'Demon Slayer', toggle: true },
-                        ] as perk}
-                            <button
-                                type="button"
-                                class="stack-toggle"
-                                class:stack-active={perk.toggle ? settings[perk.key]?.value : settings[perk.key]?.value > 0}
-                                title="{perk.title}{perk.toggle ? '' : ' (right-click to set, scroll to adjust)'}"
-                                onclick={() => { if (perk.toggle) { settings[perk.key].value = !settings[perk.key].value; } else { settings[perk.key].value = settings[perk.key].value > 0 ? 0 : (perk.step ?? 1); } updateDamages(); }}
-                                oncontextmenu={(e) => { if (!perk.toggle) { e.preventDefault(); editingStack = editingStack === perk.key ? null : perk.key; } }}
-                                onwheel={(e) => { if (!perk.toggle) { e.preventDefault(); const curr = settings[perk.key]?.value ?? 0; const step = perk.step ?? 1; const max = perk.max ?? 999; settings[perk.key].value = Math.max(0, Math.min(max, Math.round((curr + (e.deltaY < 0 ? step : -step)) * 10) / 10)); updateDamages(); } }}
-                            >
-                                <img src={perk.img} alt={perk.title} class="w-7 h-7" />
-                                {#if !perk.toggle && settings[perk.key] != null}
-                                    <span class="stack-count">{settings[perk.key].value ?? 0}</span>
-                                {/if}
-                                {#if !perk.toggle && editingStack === perk.key}
-                                    <input
-                                        type="number"
-                                        class="stack-edit"
-                                        value={settings[perk.key]?.value ?? 0}
-                                        min="0"
-                                        max={perk.max ?? 999}
-                                        step={perk.step ?? 1}
-                                        oninput={(e) => { const max = perk.max ?? 999; settings[perk.key].value = Math.max(0, Math.min(max, parseFloat(e.target.value) || 0)); updateDamages(); }}
-                                        onblur={() => { editingStack = null; }}
-                                        onkeydown={(e) => { if (e.key === 'Enter') editingStack = null; }}
-                                        onclick={(e) => e.stopPropagation()}
-                                        use:focusOnMount
-                                    />
-                                {/if}
-                            </button>
-                        {/each}
-                        {#each [
-                            { key: SETTINGS.RUTHLESS_RANK, img: '/effect_icons/perks/Ruthless.webp', title: 'Ruthless Rank', label: 'Rank', step: 1, max: 3 },
-                            { key: SETTINGS.RUTHLESS_STACKS, img: '/effect_icons/perks/Ruthless.webp', title: 'Ruthless Stacks', label: 'Stacks', step: 1, max: 5 },
-                        ] as perk}
-                            <button
-                                type="button"
-                                class="stack-toggle"
-                                class:stack-active={settings[perk.key]?.value > 0}
-                                title="{perk.title} (right-click to set, scroll to adjust)"
-                                onclick={() => { settings[perk.key].value = settings[perk.key].value > 0 ? 0 : 1; updateDamages(); }}
-                                oncontextmenu={(e) => { e.preventDefault(); editingStack = editingStack === perk.key ? null : perk.key; }}
-                                onwheel={(e) => { e.preventDefault(); const curr = settings[perk.key]?.value ?? 0; settings[perk.key].value = Math.max(0, Math.min(perk.max, curr + (e.deltaY < 0 ? 1 : -1))); updateDamages(); }}
-                            >
-                                <span class="stack-label">{perk.label}</span>
-                                <img src={perk.img} alt={perk.title} class="w-7 h-7" />
-                                <span class="stack-count">{settings[perk.key]?.value ?? 0}</span>
-                                {#if editingStack === perk.key}
-                                    <input
-                                        type="number"
-                                        class="stack-edit"
-                                        value={settings[perk.key]?.value ?? 0}
-                                        min="0"
-                                        max={perk.max}
-                                        oninput={(e) => { settings[perk.key].value = Math.max(0, Math.min(perk.max, parseInt(e.target.value) || 0)); updateDamages(); }}
-                                        onblur={() => { editingStack = null; }}
-                                        onkeydown={(e) => { if (e.key === 'Enter') editingStack = null; }}
-                                        onclick={(e) => e.stopPropagation()}
-                                        use:focusOnMount
-                                    />
-                                {/if}
-                            </button>
-                        {/each}
-                    </div>
-                </div>   
+                    <PerkSelection {settings} {updateDamages} />
+                </div>
                 <div class="md:col-span-1">
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">Familiars</h5>
-                    <div class="flex flex-wrap gap-2 justify-center mb-3">
-                        <!-- Familiar selector (dropdown) -->
-                        <div class="relative">
-                            <button
-                                type="button"
-                                class="stack-toggle"
-                                class:stack-active={settings[SETTINGS.FAMILIAR]?.value && settings[SETTINGS.FAMILIAR]?.value !== SETTINGS.FAMILIAR_VALUES.NONE}
-                                title="Familiar: {settings[SETTINGS.FAMILIAR]?.options?.find(o => o.value === settings[SETTINGS.FAMILIAR]?.value)?.text ?? 'None'}"
-                                onclick={() => { openDropdown = openDropdown === SETTINGS.FAMILIAR ? null : SETTINGS.FAMILIAR; }}
-                            >
-                                <img src={familiarIcons[settings[SETTINGS.FAMILIAR]?.value] ?? '/effect_icons/familiar.png'} alt="Familiar" class="w-7 h-7" />
-                            </button>
-                            {#if openDropdown === SETTINGS.FAMILIAR}
-                                <div class="icon-dropdown" style="min-width: 140px;">
-                                    {#each settings[SETTINGS.FAMILIAR]?.options ?? [] as option}
-                                        <button type="button" class="icon-dropdown-item"
-                                            class:active={settings[SETTINGS.FAMILIAR]?.value === option.value}
-                                            onclick={() => { settings[SETTINGS.FAMILIAR].value = option.value; openDropdown = null; recalcFamiliarAccuracy(); updateDamages(); }}
-                                        >{option.text}</button>
-                                    {/each}
-                                </div>
-                            {/if}
-                        </div>
-                        <!-- Kalg spec (always visible) -->
-                        <button type="button" class="stack-toggle"
-                            class:stack-active={settings[SETTINGS.KALG_SPEC]?.value}
-                            title="Kal'gerion Spec"
-                            onclick={() => { settings[SETTINGS.KALG_SPEC].value = !settings[SETTINGS.KALG_SPEC].value; updateDamages(); }}
-                        >
-                            <img src="/effect_icons/crit_i_kal.png" alt="Kalg spec" class="w-7 h-7" />
-                        </button>
-                        <!-- Scroll-related options (ripper/steel titan only) -->
-                        {#if settings[SETTINGS.FAMILIAR]?.value === SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON || settings[SETTINGS.FAMILIAR]?.value === SETTINGS.FAMILIAR_VALUES.STEEL_TITAN}
-                            <button type="button" class="stack-toggle"
-                                class:stack-active={settings[SETTINGS.USE_FAMILIAR_SCROLLS]?.value}
-                                title="Use Familiar Scrolls"
-                                onclick={() => { settings[SETTINGS.USE_FAMILIAR_SCROLLS].value = !settings[SETTINGS.USE_FAMILIAR_SCROLLS].value; updateDamages(); }}
-                            >
-                                <img src={settings[SETTINGS.FAMILIAR]?.value === SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON
-                                    ? '/familiars/scrolls/Ripper_Demon_scroll_(Death_From_Above).png'
-                                    : '/familiars/scrolls/Steel_Titan_scroll_(Steel_of_Legends).png'} alt="Scrolls" class="w-7 h-7" />
-                            </button>
-                            <button type="button" class="stack-toggle"
-                                class:stack-active={settings[SETTINGS.SPIRIT_CAPE]?.value}
-                                title="Spirit Cape"
-                                onclick={() => { settings[SETTINGS.SPIRIT_CAPE].value = !settings[SETTINGS.SPIRIT_CAPE].value; updateDamages(); }}
-                            >
-                                <img src="/effect_icons/Spirit_cape.png" alt="Spirit Cape" class="w-7 h-7" />
-                            </button>
-                            <button type="button" class="stack-toggle"
-                                class:stack-active={settings[SETTINGS.SUMMONING_RENEWAL]?.value}
-                                title="Summoning Renewal"
-                                onclick={() => { settings[SETTINGS.SUMMONING_RENEWAL].value = !settings[SETTINGS.SUMMONING_RENEWAL].value; updateDamages(); }}
-                            >
-                                <img src="/effect_icons/Summoning_renewal_(4).png" alt="Summoning Renewal" class="w-7 h-7" />
-                            </button>
-                            <button type="button" class="stack-toggle"
-                                class:stack-active={settings[SETTINGS.SPIRIT_WEED_INCENSE]?.value && settings[SETTINGS.SPIRIT_WEED_INCENSE]?.value !== SETTINGS.SPIRIT_WEED_INCENSE_VALUES.NONE}
-                                title="Spirit Weed Incense: {settings[SETTINGS.SPIRIT_WEED_INCENSE]?.options?.find(o => o.value === settings[SETTINGS.SPIRIT_WEED_INCENSE]?.value)?.text ?? 'None'} (click to cycle)"
-                                onclick={() => { const order = [SETTINGS.SPIRIT_WEED_INCENSE_VALUES.NONE, SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL1, SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL2, SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL3, SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL4]; const idx = order.indexOf(settings[SETTINGS.SPIRIT_WEED_INCENSE].value); settings[SETTINGS.SPIRIT_WEED_INCENSE].value = order[(idx + 1) % order.length]; updateDamages(); }}
-                            >
-                                <img src="/effect_icons/Spirit_weed_incense_sticks.png" alt="Spirit Weed Incense" class="w-7 h-7" />
-                                {#if settings[SETTINGS.SPIRIT_WEED_INCENSE]?.value && settings[SETTINGS.SPIRIT_WEED_INCENSE]?.value !== SETTINGS.SPIRIT_WEED_INCENSE_VALUES.NONE}
-                                    <span class="stack-count">{[SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL1, SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL2, SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL3, SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL4].indexOf(settings[SETTINGS.SPIRIT_WEED_INCENSE].value) + 1}</span>
-                                {/if}
-                            </button>
-                            <button type="button" class="stack-toggle"
-                                class:stack-active={settings[SETTINGS.PRISM_OF_RESTORATION]?.value}
-                                title="Prism of Restoration"
-                                onclick={() => { settings[SETTINGS.PRISM_OF_RESTORATION].value = !settings[SETTINGS.PRISM_OF_RESTORATION].value; updateDamages(); }}
-                            >
-                                <img src="/effect_icons/Prism_of_Restoration_icon.png" alt="Prism of Restoration" class="w-7 h-7" />
-                            </button>
-                        {/if}
-                    </div>
+                    <FamiliarSelection {settings} {updateDamages} bind:openDropdown onFamiliarChange={recalcFamiliarAccuracy} />
                 </div>
                 
             {:else if tab === 'bosses'}

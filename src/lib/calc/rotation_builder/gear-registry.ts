@@ -1,0 +1,202 @@
+/**
+ * Gear Registry — single source of truth for gear dropdown options.
+ * Builds indexed lookups from the armour data in const.ts so that
+ * dropdown options are generated dynamically by (slot, combatStyle).
+ */
+
+import { armour, weapons } from '../const/const';
+import { GearSlots } from './gear';
+import type { EquipmentStyle } from '../types';
+
+export type GearCombatStyle = 'melee' | 'ranged' | 'magic' | 'necromancy';
+
+export interface GearItem {
+    /** The string key used in settings (e.g. 'elite dracolich coif') */
+    value: string;
+    /** Display label for the dropdown */
+    text: string;
+    /** Which slot this item belongs to */
+    slot: GearSlots;
+    /** Item's native style */
+    style: EquipmentStyle;
+    /** Whether this item is commonly used */
+    popular: boolean;
+    /** Weapon type — only present on weapons */
+    weaponType?: string;
+}
+
+// Index: slot -> style -> GearItem[]
+const slotStyleIndex: Map<string, Map<string, GearItem[]>> = new Map();
+
+// Value -> GearItem lookup
+const itemByValue: Map<string, GearItem> = new Map();
+
+/** Convert a gear value string to a display label (title case) */
+function toDisplayName(value: string): string {
+    return value
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
+function indexCollection(collection: Record<string, any>) {
+    for (const [key, piece] of Object.entries(collection)) {
+        if (!piece || typeof piece !== 'object') continue;
+        const slot = (piece as any).slot as GearSlots;
+        const style = (piece as any).style as EquipmentStyle;
+        if (!slot || !style) continue;
+        // Skip items whose slot isn't in the GearSlots enum
+        if (!Object.values(GearSlots).includes(slot)) continue;
+
+        const weaponType = (piece as any)['weapon type'];
+        const item: GearItem = {
+            value: key,
+            text: toDisplayName(key),
+            slot,
+            style,
+            popular: !!(piece as any).popular,
+            ...(weaponType ? { weaponType } : {}),
+        };
+
+        // Slot -> style index
+        if (!slotStyleIndex.has(slot)) {
+            slotStyleIndex.set(slot, new Map());
+        }
+        const styleMap = slotStyleIndex.get(slot)!;
+        if (!styleMap.has(style)) {
+            styleMap.set(style, []);
+        }
+        styleMap.get(style)!.push(item);
+
+        // Value lookup
+        itemByValue.set(key, item);
+    }
+}
+
+// Build indexes on module load
+indexCollection(armour);
+indexCollection(weapons);
+
+/**
+ * Get all gear items available for a given slot and combat style.
+ * Returns items matching the style + all hybrid items for that slot.
+ * Always includes a 'None' option first.
+ */
+export function getItemsForSlot(slot: GearSlots | string, combatStyle: GearCombatStyle): GearItem[] {
+    const styleMap = slotStyleIndex.get(slot);
+    if (!styleMap) return [{ value: 'none', text: 'None', slot: slot as GearSlots, style: 'hybrid', popular: false }];
+
+    const styleItems = styleMap.get(combatStyle) ?? [];
+    const hybridItems = styleMap.get('hybrid') ?? [];
+
+    // Deduplicate by value, style-specific first. Popular items sorted before non-popular.
+    const seen = new Set<string>();
+    const popular: GearItem[] = [];
+    const rest: GearItem[] = [];
+
+    for (const item of [...styleItems, ...hybridItems]) {
+        if (!seen.has(item.value)) {
+            seen.add(item.value);
+            if (item.popular) {
+                popular.push(item);
+            } else {
+                rest.push(item);
+            }
+        }
+    }
+
+    return [{ value: 'none', text: 'None', slot: slot as GearSlots, style: 'hybrid', popular: false }, ...popular, ...rest];
+}
+
+/**
+ * Look up a GearItem by its value string.
+ */
+export function getItemForValue(value: string): GearItem | undefined {
+    return itemByValue.get(value);
+}
+
+/**
+ * Count how many set pieces are currently equipped.
+ * @param settings - flattened settings object
+ * @param setValues - map of generic slot key -> expected value string
+ *   e.g. { 'helmet': 'vestments of havoc hood', 'body': 'vestments of havoc top', ... }
+ */
+export function countSetPieces(
+    settings: Record<string, any>,
+    setValues: Record<string, string>
+): number {
+    let count = 0;
+    for (const [slotKey, expectedValue] of Object.entries(setValues)) {
+        if (settings[slotKey] === expectedValue) count++;
+    }
+    return count;
+}
+
+/**
+ * Check if a full set is equipped.
+ */
+export function hasFullSet(
+    settings: Record<string, any>,
+    setValues: Record<string, string>
+): boolean {
+    return countSetPieces(settings, setValues) === Object.keys(setValues).length;
+}
+
+// ---- Settings key resolution ----
+// Maps (style, genericSlot) → per-style settings key string
+
+const STYLE_SLOT_TO_SETTINGS_KEY: Record<string, Record<string, string>> = {
+    melee: {
+        helmet: 'melee helmet', body: 'melee body', legs: 'melee legs',
+        gloves: 'melee gloves', boots: 'melee boots', pocket: 'melee pocket',
+        mainhand: 'melee main-hand weapon', offhand: 'melee off-hand weapon',
+        ammo: 'melee ammo slot',
+    },
+    ranged: {
+        helmet: 'ranged helmet', body: 'ranged body', legs: 'ranged legs',
+        gloves: 'ranged gloves', boots: 'ranged boots', pocket: 'range pocket',
+        mainhand: 'ranged main-hand weapon', offhand: 'ranged off-hand weapon',
+        ammo: 'ranged ammo slot',
+    },
+    magic: {
+        helmet: 'magic helmet', body: 'magic body', legs: 'magic legs',
+        gloves: 'magic gloves', boots: 'magic boots', pocket: 'mage pocket',
+        mainhand: 'magic main-hand weapon', offhand: 'magic off-hand weapon',
+        ammo: 'magic ammo slot',
+    },
+    necromancy: {
+        helmet: 'necro helmet', body: 'necro body', legs: 'necro legs',
+        gloves: 'necro gloves', boots: 'necro boots', pocket: 'necro pocket',
+        mainhand: 'necro main-hand weapon', offhand: 'necro off-hand weapon',
+        ammo: 'necro ammo slot',
+    },
+};
+
+const SHARED_SLOT_KEYS: Record<string, string> = {
+    necklace: 'necklace', ring: 'ring', cape: 'cape',
+    pocket: 'pocket', ammo: 'ammo',
+};
+
+/**
+ * Get the settings key for a gear item — the key that gets written to settings
+ * when this item is equipped (e.g., 'ranged helmet', 'necklace', 'melee main-hand weapon').
+ */
+export function getSettingsKeyForItem(value: string): string | undefined {
+    const item = itemByValue.get(value);
+    if (!item) return undefined;
+
+    // Shared/hybrid slots (necklace, ring, cape) use the shared key
+    if (item.style === 'hybrid' && SHARED_SLOT_KEYS[item.slot]) {
+        return SHARED_SLOT_KEYS[item.slot];
+    }
+
+    // Style-specific: look up by item's style + slot
+    const styleMap = STYLE_SLOT_TO_SETTINGS_KEY[item.style];
+    if (styleMap?.[item.slot]) return styleMap[item.slot];
+
+    // Fallback for hybrid items in style-specific slots (e.g., hybrid pocket)
+    // Use the shared key if available
+    if (SHARED_SLOT_KEYS[item.slot]) return SHARED_SLOT_KEYS[item.slot];
+
+    return undefined;
+}

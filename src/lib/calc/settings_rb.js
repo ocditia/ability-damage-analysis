@@ -616,6 +616,8 @@ const SETTINGS = {
     NECRO_OH_VALUES: {
         CUSTOM: 'custom oh',
         CUSTOM_SHIELD: 'custom shield',
+        SOULBOUND_LANTERN: 'soulbound lantern',
+        SOULBOUND_LANTERN_IM: 'soulbound lantern [IM]',
         SPECTRAL: 'spectral shield'
     },
     TH: 'two-hand weapon',
@@ -728,7 +730,10 @@ const SETTINGS = {
     ICY_PRECISION: 'icy precision',
     ICY_CHILL_STACKS: 'icy chill stacks',
     PUNCTURE_STACKS: 'puncture stacks',
-    FLOW_STACKS: 'flow stacks',
+    FLOW: 'flow',
+    GREATER_FLOW: 'greater flow',
+    FLOW_AC: 'flow ac',
+    GREATER_FLOW_AC: 'greater flow ac',
     CONFLAGRATE: 'conflagrate',
     KERAPACS_WRIST_WRAPS: 'kerapacs wrist wraps',
     KERAPACS_WRIST_WRAPS_VALUES: {
@@ -1902,7 +1907,7 @@ const settingsConfig = {
     },
     [SETTINGS.RANGED_MH]: {
         label: 'Mh',
-        default: SETTINGS.RANGED_MH_VALUES.CUSTOM,
+        default: SETTINGS.RANGED_TH_VALUES.BOLG_IM,
         options: [
             { text: 'Custom', value: SETTINGS.RANGED_MH_VALUES.CUSTOM },
             { text: 'Blightbound', value: SETTINGS.RANGED_MH_VALUES.BLIGHTBOUND },
@@ -1926,7 +1931,7 @@ const settingsConfig = {
     },
     [SETTINGS.NECRO_MH]: {
         label: 'Mh',
-        default: SETTINGS.NECRO_MH_VALUES.CUSTOM,
+        default: SETTINGS.NECRO_MH_VALUES.OMNI_GUARD_IM,
         options: [
             { text: 'Custom', value: SETTINGS.NECRO_MH_VALUES.CUSTOM },
             { text: 'Omni Guard', value: SETTINGS.NECRO_MH_VALUES.OMNI_GUARD },
@@ -1967,10 +1972,12 @@ const settingsConfig = {
     },
     [SETTINGS.NECRO_OH]: {
         label: 'Oh',
-        default: SETTINGS.NECRO_OH_VALUES.CUSTOM,
+        default: SETTINGS.NECRO_OH_VALUES.SOULBOUND_LANTERN_IM,
         options: [
             { text: 'Custom', value: SETTINGS.NECRO_OH_VALUES.CUSTOM },
-            { text: 'Custom shield', vaule: SETTINGS.NECRO_OH_VALUES.CUSTOM_SHIELD },
+            { text: 'Custom shield', value: SETTINGS.NECRO_OH_VALUES.CUSTOM_SHIELD },
+            { text: 'Soulbound Lantern', value: SETTINGS.NECRO_OH_VALUES.SOULBOUND_LANTERN },
+            { text: 'Soulbound Lantern [IM]', value: SETTINGS.NECRO_OH_VALUES.SOULBOUND_LANTERN_IM },
             { text: 'Spectral shield', value: SETTINGS.NECRO_OH_VALUES.SPECTRAL }
         ]
     },
@@ -2060,6 +2067,10 @@ const settingsConfig = {
         label: 'Flanking',
         default: 0
     },
+    [SETTINGS.EQ_PERK]: {
+        label: 'Equilibrium',
+        default: 0
+    },
     [SETTINGS.RUTHLESS_RANK]: {
         label: 'Ruthless rank',
         default: 0
@@ -2141,9 +2152,21 @@ const settingsConfig = {
         label: 'Puncture Stacks',
         default: 0
     },
-    [SETTINGS.FLOW_STACKS]: {
-        label: 'Flow stacks',
-        default: 0
+    [SETTINGS.FLOW]: {
+        label: 'Flow',
+        default: false
+    },
+    [SETTINGS.GREATER_FLOW]: {
+        label: 'Greater Flow',
+        default: false
+    },
+    [SETTINGS.FLOW_AC]: {
+        label: 'Flow (Animate Dead)',
+        default: false
+    },
+    [SETTINGS.GREATER_FLOW_AC]: {
+        label: 'Greater Flow (Animate Dead)',
+        default: false
     },
     [SETTINGS.CONFLAGRATE]: {
         label: 'Conflagrate',

@@ -2,20 +2,14 @@
 	import { onMount, onDestroy } from 'svelte';
 	import Navbar from '$components/Layout/Navbar.svelte';
 	import Header from '$components/Layout/Header.svelte';
-	import { abilities  as r_dmg_abilities } from '$lib/ranged/abilities_rb';
-	import { ranged_buff_abilities } from '$lib/ranged/buff_abilities';
-	import { melee_buff_abilities } from '$lib/melee/buff_abilities';
-    import { abilities as magic_dmg_abilities } from '$lib/magic/abilities_rb';
-    import { abilities as melee_dmg_abilities } from '$lib/melee/abilities_rb';
-    import { abilities as necro_dmg_abilities } from '$lib/necromancy/abilities_rb';
+    import { abils } from '$lib/calc/const/const';
     import { abilities as def_abilities } from '$lib/defence/abilities';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings_rb';
     import RotationSettings from '../../components/Settings/RotationSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
         import ExtraActionsPanel from '../../components/RotationBuilder/ExtraActionsPanel.svelte';
     import DamageDistributionChart from '../../components/RotationBuilder/DamageDistributionChart.svelte';
-    import { magic_buff_abilities } from '$lib/magic/buff_abilities';
-    	import TabButton from '../../components/UI/TabButton.svelte';
+	import TabButton from '../../components/UI/TabButton.svelte';
     import GradientSeparator from '../../components/UI/GradientSeparator.svelte';
     import Popup from '../../components/UI/Popup.svelte';
     import RotationConfigManager from '../../components/RotationBuilder/RotationConfigManager.svelte';
@@ -30,12 +24,15 @@
     import { getBossPresetWithEnrage, type BossAttack, type BossAttackPattern } from '$lib/familiars/boss_presets';
 
 
-    let necroAbils = {...necro_dmg_abilities}; //TODO add other styles buff abilities eventually
-    let meleeAbils = {...melee_dmg_abilities, ...melee_buff_abilities};
-    let magicAbils = {...magic_dmg_abilities, ...magic_buff_abilities};
-	let rangedAbils = {...r_dmg_abilities, ...ranged_buff_abilities};
+    const filterByStyle = (style) => Object.fromEntries(
+        Object.entries(abils).filter(([, a]) => a.title && a['main style'] === style)
+    );
+    const rangedAbils = filterByStyle('ranged');
+    const magicAbils = filterByStyle('magic');
+    const meleeAbils = filterByStyle('melee');
+    const necroAbils = filterByStyle('necromancy');
 	let defAbils = {...def_abilities};
-    let allAbils = {...magicAbils, ...rangedAbils, ...necroAbils, ...meleeAbils, ...def_abilities};
+    let allAbils = {...abils, ...def_abilities};
 
     // Keybind modal state
     let showKeybindModal = $state(false);
@@ -421,7 +418,7 @@
 		{ id: 'magic', label: 'Magic', abilities: magicAbils, badge: 'beta' },
 		{ id: 'melee', label: 'Melee', abilities: meleeAbils, badge: 'beta' },
 		{ id: 'necro', label: 'Necro', abilities: necroAbils, badge: 'beta' },
-		{ id: 'defence', label: 'Defence', abilities: defAbils }
+		{ id: 'defence', label: 'Defence', abilities: defAbils, badge: 'beta'}
 	];
 
 	// Create stores object for event handlers
@@ -511,15 +508,7 @@
      * @param tick - The tick to check
      */
     function buffActive(key: string, tick: number) {
-        let active = false;
-        //TODO make separate ranged and necro split souls
-        if (key === 'split soul ecb') {
-            active = rotationStore.buffs['split soul'].activeRows.includes(tick);
-        } 
-        else {
-            active = rotationStore.buffs[key].activeRows.includes(tick);
-        }
-        return active;
+        return rotationStore.buffs[key]?.activeRows.includes(tick) ?? false;
     }   
 </script>
 
@@ -835,9 +824,7 @@
 
 	.settings-panel {
 		transition: all 0.3s ease;
-		overflow: hidden;
-		min-width: 0; /* Allow panel to shrink below content size */
-		position: relative; /* Ensure proper positioning context for the button */
+		min-width: 0;
 	}
 
 	.settings-panel.collapsed {
@@ -846,12 +833,14 @@
 		padding: 0;
 		margin: 0;
 		visibility: hidden;
-		height: 0;
 		opacity: 0;
 	}
 
 	.settings-content {
-		height: 100%;
+		position: sticky;
+		top: 1rem;
+		max-height: calc(100vh - 2rem);
+		overflow-y: auto;
 	}
 
 	.card-rotation {
@@ -916,31 +905,29 @@
 					<div class="rotation-title-row">
 						<h1 class="rotation-header">{bossName}</h1>
 						<button class="reset-btn" onclick={clearRotation} title="Reset rotation">Reset</button>
-						{#if rotationStore.totalDamage > 0 || rotationStore.poisonDamage > 0 || rotationStore.familiarDamage > 0 || rotationStore.dreadnipDamage > 0 || rotationStore.conjureDamage > 0}
-							<div class="damage-summary">
+						<div class="damage-summary">
 								<span class="dmg-total">{(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage + rotationStore.conjureDamage).toLocaleString()}</span>
-								<span class="dmg-breakdown">(<span class="dmg-val">{rotationStore.totalDamage.toLocaleString()}</span>{#if rotationStore.poisonDamage > 0} + <span class="dmg-val poison">{rotationStore.poisonDamage.toLocaleString()}</span>{/if}{#if rotationStore.familiarDamage > 0} + <span class="dmg-val familiar">{rotationStore.familiarDamage.toLocaleString()}</span>{/if}{#if rotationStore.dreadnipDamage > 0} + <span class="dmg-val dreadnip">{rotationStore.dreadnipDamage.toLocaleString()}</span>{/if}{#if rotationStore.conjureDamage > 0} + <span class="dmg-val conjure">{rotationStore.conjureDamage.toLocaleString()}</span>{/if})</span>
+								{#if rotationStore.totalDamage > 0 || rotationStore.poisonDamage > 0 || rotationStore.familiarDamage > 0 || rotationStore.dreadnipDamage > 0 || rotationStore.conjureDamage > 0}
+									<span class="dmg-breakdown">(<span class="dmg-val">{rotationStore.totalDamage.toLocaleString()}</span>{#if rotationStore.poisonDamage > 0} + <span class="dmg-val poison">{rotationStore.poisonDamage.toLocaleString()}</span>{/if}{#if rotationStore.familiarDamage > 0} + <span class="dmg-val familiar">{rotationStore.familiarDamage.toLocaleString()}</span>{/if}{#if rotationStore.dreadnipDamage > 0} + <span class="dmg-val dreadnip">{rotationStore.dreadnipDamage.toLocaleString()}</span>{/if}{#if rotationStore.conjureDamage > 0} + <span class="dmg-val conjure">{rotationStore.conjureDamage.toLocaleString()}</span>{/if})</span>
+								{/if}
 							</div>
-						{/if}
 					</div>
 					<GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
 
 					<!-- Damage Distribution Chart -->
-					{#if rotationStore.distributionStats.length > 0}
-						<DamageDistributionChart
-							distributionStats={rotationStore.distributionStats}
-							totalDamage={rotationStore.totalDamage}
-							poisonDamage={rotationStore.poisonDamage}
-							familiarDamage={rotationStore.familiarDamage}
-							dreadnipDamage={rotationStore.dreadnipDamage}
-							conjureDamage={rotationStore.conjureDamage}
-							poisonPerTick={rotationStore.poisonPerTick}
-							familiarPerTick={rotationStore.familiarPerTick}
-							dreadnipPerTick={rotationStore.dreadnipPerTick}
-							conjurePerTick={rotationStore.conjurePerTick}
-							{allAbils}
-						/>
-					{/if}
+					<DamageDistributionChart
+						distributionStats={rotationStore.distributionStats}
+						totalDamage={rotationStore.totalDamage}
+						poisonDamage={rotationStore.poisonDamage}
+						familiarDamage={rotationStore.familiarDamage}
+						dreadnipDamage={rotationStore.dreadnipDamage}
+						conjureDamage={rotationStore.conjureDamage}
+						poisonPerTick={rotationStore.poisonPerTick}
+						familiarPerTick={rotationStore.familiarPerTick}
+						dreadnipPerTick={rotationStore.dreadnipPerTick}
+						conjurePerTick={rotationStore.conjurePerTick}
+						{allAbils}
+					/>
                     <RotationConfigManager
                         {refreshUI}
                         onOpenKeybinds={() => showKeybindModal = true}
@@ -981,24 +968,7 @@
 											/>
 										{/if}
 								{/each}
-					{#if uiStore.extraActions.show}
-						<ExtraActionsPanel
-							uiState={uiStore}
-							gameState={rotationStore}
-							{allAbils}
-							{handleAbilityClickExtra}
-							{handleDragStart}
-							{handleBarRightClick}
-							{handleDragStartBar}
-							extraActions={uiStore.extraActions}
-							closeExtraActions={() => uiActions.hideExtraActions()}
-							setExtraActionsTab={(tab) => uiActions.setExtraActionsTab(tab)}
-							onRemoveAbility={() => refreshUI()}
-							onToggleNull={() => refreshUI()}
-							onRefreshUI={() => refreshUI()}
-						/>
-					{/if}
-                    <div
+	                    <div
 						bind:this={abilityBarElement}
 						style="grid-template-rows: {getGridTemplateRows()}; grid-template-columns: repeat({columnsPerRow}, {CELL_SIZE}px);"
 						class="ability-bar"
@@ -1044,7 +1014,7 @@
                                 {#if rotationStore.cooldownReady[index]}
                                     {@const cdList = rotationStore.cooldownReady[index]}
                                     {#each cdList.slice(0, 3) as readyAbilKey, cdIdx}
-                                        {@const abilInfo = allAbils[readyAbilKey] || allExtraActions[readyAbilKey]}
+                                        {@const abilInfo = allExtraActions[readyAbilKey] || allAbils[readyAbilKey]}
                                         {#if abilInfo?.icon}
                                             <img
                                                 class="cooldown-ready-icon"
@@ -1134,7 +1104,25 @@
             <div class="settings-panel col-span-{uiStore.settingsPanelCollapsed ? '0' : '4'} {uiStore.settingsPanelCollapsed ? 'collapsed' : ''}"
 				style={uiStore.settingsPanelCollapsed ? 'visibility: hidden; height: 0; margin: 0;' : ''}>
                 <div class="settings-content">
-                    <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
+                    {#if uiStore.extraActions.show}
+                        <ExtraActionsPanel
+                            uiState={uiStore}
+                            gameState={rotationStore}
+                            {allAbils}
+                            {handleAbilityClickExtra}
+                            {handleDragStart}
+                            {handleBarRightClick}
+                            {handleDragStartBar}
+                            extraActions={uiStore.extraActions}
+                            closeExtraActions={() => uiActions.hideExtraActions()}
+                            setExtraActionsTab={(tab) => uiActions.setExtraActionsTab(tab)}
+                            onRemoveAbility={() => refreshUI()}
+                            onToggleNull={() => refreshUI()}
+                            onRefreshUI={() => refreshUI()}
+                        />
+                    {:else}
+                        <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
+                    {/if}
                 </div>
             </div>
             <div class="col-span-12 mt-8">

@@ -20,7 +20,7 @@ export function groupAbilitiesByType(abilities: Record<string, any>): Array<{ ty
     for (const [key, ability] of Object.entries(abilities)) {
         const abilInfo = abils[key as keyof typeof abils];
         if (!abilInfo) {
-            // Abilities not in abils record are buff abilities (from separate buff_abilities.js files)
+            // Abilities not in abils record are buff abilities
             groups['buff'].push([key, ability]);
         } else {
             const type = abilInfo['ability type'] || 'other';
