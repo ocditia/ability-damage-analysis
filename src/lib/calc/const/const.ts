@@ -1636,7 +1636,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
-        style: 'hybrid'
+        style: 'hybrid',
+        popular: true
     },
     'TokHaar-Kal-Ket': {
         'necromancy strength': 0,
@@ -2387,7 +2388,6 @@ export enum ABILITIES {
     ADAPTIVE_STRIKE_TH = 'adaptive strike 2h',
     REND = 'rend',
     CHAOS_ROAR = 'chaos roar',
-    QUAKE = 'quake',
     ASSAULT_HIT = 'assault hit',
     ASSAULT = 'assault',
     PULVERISE = 'pulverise',
@@ -3047,23 +3047,6 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 60,
         title: 'Chaos roar',
         icon: '/ability_icons/melee/30x30/roar.png',
-        calc: hit_damage_calculation
-    },
-    [ABILITIES.QUAKE]: {
-        // ability name
-        'min hit': 1.3, // min % of abil expressed as a decimal
-        'var hit': 0.3,
-        'on-hit effects': true, // does the ability get on-hit effects
-        'crit effects': true, // can the ability crit
-        'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        'main style': 'melee',
-        'damage type': 'melee'
-    ,
-        cooldown: 20.4,
-        title: 'Quake',
-        icon: '/ability_icons/melee/30x30/quake.png',
         calc: hit_damage_calculation
     },
     [ABILITIES.ASSAULT_HIT]: {

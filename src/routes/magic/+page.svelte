@@ -243,11 +243,6 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/magic/Vulnerability_icon.webp"
                                 />
-                                <Select
-                                    bind:setting={settings[SETTINGS.ENDURING_RUIN_BLEED]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/enduring_ruin.png"
-                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
                                     onchange={() => updateDamages()}
@@ -290,20 +285,17 @@
                                     bind:setting={settings[SETTINGS.DEVOURER_NEXUS]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Select
+                                <!-- <Select
                                     bind:setting={settings[SETTINGS.CHAIN_MODIFIER]}
                                     onchange={() => updateDamages()}
-                                />
+                                /> 
+                                TODO display only chain or gchain according to this setting
+                                -->
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">
                                     Applies to regular abilities only
                                 </h5>
-                                <Select
-                                    bind:setting={settings[SETTINGS.ENDURING_RUIN_HIT]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/enduring_ruin.png"
-                                />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.CONFLAGRATE]}
                                     onchange={() => updateDamages()}
@@ -421,7 +413,7 @@
                                     img="/ability_icons/magic/30x30/asphyxiate.png"
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.RUNIC_CHARGE]}
+                                    bind:setting={settings[SETTINGS.ANIMA_CHARGED]}
                                     onchange={() => updateDamages()}
                                 />
                                 <Checkbox
@@ -431,11 +423,6 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.COMBUSTED]}
                                     onchange={() => updateDamages()}
-                                />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.KALG_SPEC]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/crit_i_kal.png"
                                 />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.TELOS_RED_BEAM]}
