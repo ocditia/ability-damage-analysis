@@ -45,8 +45,31 @@ export function calculateSingleAbilityDamage(
     // Place the ability at tick 0
     rotation.abilityBar[0] = ability;
 
-    // Apply buff flags to settings
+    // Map per-style pocket and ammo to generic keys based on ability style
     const settingsWithBuffs = { ...settings };
+    const style = abilityData?.['main style'];
+    const pocketByStyle: Record<string, string> = {
+        'magic': SETTINGS.MAGIC_POCKET,
+        'ranged': SETTINGS.RANGED_POCKET,
+        'melee': SETTINGS.MELEE_POCKET,
+        'necromancy': SETTINGS.NECRO_POCKET,
+    };
+    const ammoByStyle: Record<string, string> = {
+        'ranged': SETTINGS.RANGED_AMMO_SLOT,
+        'magic': SETTINGS.MAGIC_AMMO_SLOT,
+        'melee': SETTINGS.MELEE_AMMO_SLOT,
+        'necromancy': SETTINGS.NECRO_AMMO_SLOT,
+    };
+    if (style) {
+        const pocketKey = pocketByStyle[style];
+        if (pocketKey && settingsWithBuffs[pocketKey] != null) {
+            settingsWithBuffs[SETTINGS.POCKET] = settingsWithBuffs[pocketKey];
+        }
+        const ammoKey = ammoByStyle[style];
+        if (ammoKey && settingsWithBuffs[ammoKey] != null) {
+            settingsWithBuffs[SETTINGS.AMMO] = settingsWithBuffs[ammoKey];
+        }
+    }
 
     if (input.buffs?.berserk) {
         settingsWithBuffs[SETTINGS.BERSERK] = true;
