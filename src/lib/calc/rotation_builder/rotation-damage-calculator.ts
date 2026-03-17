@@ -8,6 +8,7 @@ import { create_damage_object } from './rota_object_helper';
 import { buffs } from './rotation_consts';
 import { gearSwaps, allExtraActions as specialAbils, CONSUMABLES } from '../../special/abilities';
 import { isExtraAction, normalizeLegacy, type ExtraAction } from './extra-action';
+import { getSettingsKeyForItem } from './gear-registry';
 import { CombatStyle, DamageObject, RotationInput } from '../types';
 import { familiars, dreadnipData, calculateFamiliarHitChance } from '$lib/familiars/familiars';
 import { getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
@@ -1413,9 +1414,11 @@ function processExtraAction(element: any, settings: any, timers: Record<string, 
     }
 
     // Legacy format: { title, icon } object (gear swaps)
-    if (typeof element === 'object' && element.title && gearSwaps[element.title]) {
-        const slot = gearSwaps[element.title];
-        settings[slot] = element.title;
+    if (typeof element === 'object' && element.title) {
+        const slot = getSettingsKeyForItem(element.title) || gearSwaps[element.title];
+        if (slot) {
+            settings[slot] = element.title;
+        }
         return;
     }
 }

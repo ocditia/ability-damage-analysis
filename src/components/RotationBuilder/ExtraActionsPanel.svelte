@@ -3,6 +3,7 @@
     import AbilityChoice from './AbilityChoice.svelte';
     import GearChoice from './GearChoice.svelte';
     import { offGcdAbilities, prayers, spells, consumables, allExtraActions, gearSwaps } from '$lib/special/abilities';
+    import { getSettingsKeyForItem } from '$lib/calc/rotation_builder/gear-registry';
     import { SETTINGS } from '$lib/calc/settings_rb';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
@@ -61,7 +62,7 @@
                     // Legacy format fallback
                     const key = typeof action === 'string' ? action : action.title;
                     if (!key) continue;
-                    const slot = gearSwaps[key];
+                    const slot = getSettingsKeyForItem(key) || gearSwaps[key];
                     if (slot) {
                         state[slot] = key;
                         if (slot === SETTINGS.AMMO) {

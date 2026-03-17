@@ -141,3 +141,62 @@ export function hasFullSet(
 ): boolean {
     return countSetPieces(settings, setValues) === Object.keys(setValues).length;
 }
+
+// ---- Settings key resolution ----
+// Maps (style, genericSlot) → per-style settings key string
+
+const STYLE_SLOT_TO_SETTINGS_KEY: Record<string, Record<string, string>> = {
+    melee: {
+        helmet: 'melee helmet', body: 'melee body', legs: 'melee legs',
+        gloves: 'melee gloves', boots: 'melee boots', pocket: 'melee pocket',
+        mainhand: 'melee main-hand weapon', offhand: 'melee off-hand weapon',
+        ammo: 'melee ammo slot',
+    },
+    ranged: {
+        helmet: 'ranged helmet', body: 'ranged body', legs: 'ranged legs',
+        gloves: 'ranged gloves', boots: 'ranged boots', pocket: 'range pocket',
+        mainhand: 'ranged main-hand weapon', offhand: 'ranged off-hand weapon',
+        ammo: 'ranged ammo slot',
+    },
+    magic: {
+        helmet: 'magic helmet', body: 'magic body', legs: 'magic legs',
+        gloves: 'magic gloves', boots: 'magic boots', pocket: 'mage pocket',
+        mainhand: 'magic main-hand weapon', offhand: 'magic off-hand weapon',
+        ammo: 'magic ammo slot',
+    },
+    necromancy: {
+        helmet: 'necro helmet', body: 'necro body', legs: 'necro legs',
+        gloves: 'necro gloves', boots: 'necro boots', pocket: 'necro pocket',
+        mainhand: 'necro main-hand weapon', offhand: 'necro off-hand weapon',
+        ammo: 'necro ammo slot',
+    },
+};
+
+const SHARED_SLOT_KEYS: Record<string, string> = {
+    necklace: 'necklace', ring: 'ring', cape: 'cape',
+    pocket: 'pocket', ammo: 'ammo',
+};
+
+/**
+ * Get the settings key for a gear item — the key that gets written to settings
+ * when this item is equipped (e.g., 'ranged helmet', 'necklace', 'melee main-hand weapon').
+ */
+export function getSettingsKeyForItem(value: string): string | undefined {
+    const item = itemByValue.get(value);
+    if (!item) return undefined;
+
+    // Shared/hybrid slots (necklace, ring, cape) use the shared key
+    if (item.style === 'hybrid' && SHARED_SLOT_KEYS[item.slot]) {
+        return SHARED_SLOT_KEYS[item.slot];
+    }
+
+    // Style-specific: look up by item's style + slot
+    const styleMap = STYLE_SLOT_TO_SETTINGS_KEY[item.style];
+    if (styleMap?.[item.slot]) return styleMap[item.slot];
+
+    // Fallback for hybrid items in style-specific slots (e.g., hybrid pocket)
+    // Use the shared key if available
+    if (SHARED_SLOT_KEYS[item.slot]) return SHARED_SLOT_KEYS[item.slot];
+
+    return undefined;
+}

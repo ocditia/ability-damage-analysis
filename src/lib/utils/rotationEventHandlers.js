@@ -8,6 +8,7 @@ import { notifActions } from '$lib/stores/notificationStore.svelte.js';
 import { Logger, LogCategory } from './Logger';
 import { gearSwaps, allExtraActions } from '$lib/special/abilities';
 import { isExtraAction } from '$lib/calc/rotation_builder/extra-action';
+import { getSettingsKeyForItem } from '$lib/calc/rotation_builder/gear-registry';
 
 const logger = Logger.getInstance();
 // UI Constants
@@ -26,8 +27,8 @@ function toExtraAction(input) {
     // Gear object from GearChoice: { title, value?, icon, slot?, style?, weaponType? }
     if (typeof input === 'object' && input.title) {
         const value = input.value || input.title;
-        // Look up the per-style settings key from gearSwaps (e.g. 'elite dracolich coif' → 'ranged helmet')
-        const slot = gearSwaps[value] || gearSwaps[input.title];
+        // Resolve per-style settings key: try gear registry first, fall back to legacy gearSwaps
+        const slot = getSettingsKeyForItem(value) || gearSwaps[value] || gearSwaps[input.title];
         return {
             type: 'gear',
             value,
