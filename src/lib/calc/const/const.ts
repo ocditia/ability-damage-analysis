@@ -385,6 +385,24 @@ const weapons: Record<string, Equipment> = {
         classification: 'none',
     popular: true
     },
+    [SETTINGS.NECRO_OH_VALUES.SOULBOUND_LANTERN]: {
+        style: 'necromancy',
+        'weapon type': 'off-hand',
+        slot: 'offhand',
+        tier: 95,
+        type: 'none',
+        classification: 'none',
+        popular: true
+    },
+    [SETTINGS.NECRO_OH_VALUES.SOULBOUND_LANTERN_IM]: {
+        style: 'necromancy',
+        'weapon type': 'off-hand',
+        slot: 'offhand',
+        tier: 100,
+        type: 'none',
+        classification: 'none',
+        popular: true
+    },
     [SETTINGS.NECRO_OH_VALUES.SPECTRAL]: {
         style: 'necromancy',
         'weapon type': 'shield',
@@ -392,7 +410,7 @@ const weapons: Record<string, Equipment> = {
         tier: 75,
         type: 'shield',
         classification: 'none',
-    popular: true
+        popular: true
     },
     [SETTINGS.MELEE_MH_VALUES.KERIS]: {
         style: 'melee',
@@ -6969,7 +6987,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
-        cooldown: 120},
+        cooldown: 120,
+        title: 'Natural Instinct',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/defence/30px-Natural_Instinct.png'
+    },
     [ABILITIES.RESONANCE]: {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal
@@ -6993,7 +7015,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
-        cooldown: 30},
+        cooldown: 30,
+        title: 'Freedom',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/defence/30px-Freedom.png'
+    },
     [ABILITIES.DIVERT]: {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal
@@ -7005,7 +7031,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
-        cooldown: 30},
+        cooldown: 30,
+        title: 'Divert',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/defence/Divert.png'},
     [ABILITIES.PREPARATION]: {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal
@@ -7017,7 +7046,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
-        cooldown: 20.4},
+        cooldown: 20.4,
+        title: 'Preparation',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/defence/30px-Preparation.png'
+    },
     [ABILITIES.ANTICIPATION]: {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal
@@ -7029,7 +7062,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
-        cooldown: 24.6},
+        cooldown: 24.6,
+        title: 'Anticipation',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/defence/30px-Anticipation.png'
+    },
     [ABILITIES.REFLECT]: {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal
@@ -7042,7 +7079,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
         adrenaline: 15,
-        cooldown: 30},
+        cooldown: 30,
+        title: 'Reflect',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/defence/30px-Reflect.png'
+    },
     [ABILITIES.DEVOTION]: {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal
@@ -7055,7 +7096,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
         adrenaline: 15,
-        cooldown: 60},
+        cooldown: 60,
+        title: 'Devotion',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/defence/30px-Devotion.png'
+    },
     [ABILITIES.REVENGE]: {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal
@@ -7068,7 +7113,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
         adrenaline: 15,
-        cooldown: 45},
+        cooldown: 45,
+        title: 'Revenge',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/defence/30px-Revenge.png'        
+    },
     [ABILITIES.IMMORTALITY]: {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal
@@ -7080,7 +7129,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
-        cooldown: 120},
+        cooldown: 120,
+        title: 'Immortality',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/defence/30px-Immortality.png'
+    },
     [ABILITIES.BARRICADE]: {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal
@@ -7092,7 +7145,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
-        cooldown: 60},
+        cooldown: 60,
+        title: 'Barricade',
+        calc: ability_damage_calculation,
+        icon: '/ability_icons/defence/30px-Barricade.png'
+    },
     [ABILITIES.POWER_OF_DARKNESS]: {
         // ability name
         'min hit': 0.0, // min % of abil expressed as a decimal

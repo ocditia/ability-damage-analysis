@@ -250,6 +250,16 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         strengthLevel: settingsCopy[SETTINGS.STRENGTH_LEVEL]
     });
 
+    // Resolve soft cap from boss preset
+    const bossKey = settingsCopy[SETTINGS.BOSS_PRESET];
+    const enrage = settingsCopy[SETTINGS.BOSS_ENRAGE] ?? 0;
+    if (bossKey && bossKey !== 'none') {
+        const boss = getBossPresetWithEnrage(bossKey, enrage);
+        if (boss?.softCap) {
+            settingsCopy['_softCap'] = boss.softCap;
+        }
+    }
+
     // Check if rotation contains any melee abilities (for Vestments max adrenaline)
     settingsCopy['_hasMeleeAbilities'] = rotationStore.abilityBar.some(
         (abilKey: string | null) => abilKey && abils[abilKey as ABILITIES]?.['main style'] === 'melee'
@@ -337,6 +347,18 @@ export function calculateRotationDamageCore(
     }
 
     const settingsCopy = structuredClone(settings);
+
+    // Resolve soft cap from boss preset (if not already set by caller)
+    if (!settingsCopy['_softCap']) {
+        const bossKey = settingsCopy[SETTINGS.BOSS_PRESET];
+        const bossEnrage = settingsCopy[SETTINGS.BOSS_ENRAGE] ?? 0;
+        if (bossKey && bossKey !== 'none') {
+            const boss = getBossPresetWithEnrage(bossKey, bossEnrage);
+            if (boss?.softCap) {
+                settingsCopy['_softCap'] = boss.softCap;
+            }
+        }
+    }
 
     // Check if rotation contains any melee abilities (for Vestments max adrenaline)
     if (settingsCopy['_hasMeleeAbilities'] === undefined) {
@@ -1141,29 +1163,37 @@ function processChannelledTick(
     });
 }
 
+/** Apply boss soft cap: damage above threshold is reduced by reduction % */
+function applySoftCap(dmg: number, softCap?: { threshold: number; reduction: number }): number {
+    if (!softCap || dmg <= softCap.threshold) return dmg;
+    return softCap.threshold + (dmg - softCap.threshold) * (1 - softCap.reduction);
+}
+
 /**
  * Processes all damage hits queued for a specific tick.
- * 
+ *
  * For each queued hit:
  * 1. Sets the current ability context
  * 2. Gets user-selected damage metric
  * 3. Calculates the final damage value by:
  *    - Applying on damage effects
- * 4. Scales damage by likelihood of hit occuring 
- * 
+ *    - Applying boss soft cap (if configured)
+ * 4. Scales damage by likelihood of hit occuring
+ *
  * @param tick - The current game tick being processed
  * @param state - The rotation state containing damage queue and tracking arrays
  * @param settingsCopy - The current game settings used for damage calculation
  */
 function processQueuedDamage(tick: number, state: RotationState, settingsCopy: any) {
+    const softCap = settingsCopy['_softCap'];
     if (state.damageQueue[tick]) {
         state.damageQueue[tick].forEach(namedDmgObject => {
             settingsCopy['ability'] = namedDmgObject.ability;
             const scale = namedDmgObject.likelihood;
-            
+
             const damageObjects = on_damage(settingsCopy, namedDmgObject);
             damageObjects.forEach(dmgObj => {
-                let dmg = get_user_value(settingsCopy, dmgObj);
+                let dmg = applySoftCap(get_user_value(settingsCopy, dmgObj), softCap);
                 state.dmgs.push(Math.floor(dmg * scale)); // Scale damage by likelihood of hit occuring
                 state.cinderHitCount += scale;
 
@@ -1400,6 +1430,9 @@ function processExtraAction(element: any, settings: any, timers: Record<string, 
     if (isExtraAction(element)) {
         if (element.type === 'gear' && element.slot) {
             settings[element.slot] = element.value;
+            // Ammo/pocket swaps: also update the generic key so the calc engine sees it
+            if (element.slot.includes('ammo')) settings[SETTINGS.AMMO] = element.value;
+            if (element.slot.includes('pocket')) settings[SETTINGS.POCKET] = element.value;
         } else {
             // Ability/prayer/consumable/spell — process by value
             processExtraActionByValue(element.value, settings, timers);
@@ -1418,6 +1451,8 @@ function processExtraAction(element: any, settings: any, timers: Record<string, 
         const slot = getSettingsKeyForItem(element.title) || gearSwaps[element.title];
         if (slot) {
             settings[slot] = element.title;
+            if (slot.includes('ammo')) settings[SETTINGS.AMMO] = element.title;
+            if (slot.includes('pocket')) settings[SETTINGS.POCKET] = element.title;
         }
         return;
     }
