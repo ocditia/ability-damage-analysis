@@ -1,9 +1,8 @@
 <script>
     import { onMount } from 'svelte';
-    import AbilityChoice from './AbilityChoice.svelte';
-    import GearChoice from './GearChoice.svelte';
-    import { offGcdAbilities, prayers, spells, consumables, allExtraActions, gearSwaps } from '$lib/special/abilities';
-    import { getSettingsKeyForItem } from '$lib/calc/rotation_builder/gear-registry';
+    import ActionChoice from './ActionChoice.svelte';
+    import { allExtraActions, gearSwaps } from '$lib/special/abilities';
+    import { getSettingsKeyForItem, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
     import { SETTINGS } from '$lib/calc/settings_rb';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
@@ -118,9 +117,17 @@
         const key = prefix + slot;
         const val = getGearState()[key];
         if (!val || val === 'none' || val === 'custom' || val === 'custom oh' || val === 'custom th') return slotFallbacks[slot];
-        const base = val.replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '').replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
-        const folder = sharedSlots.includes(slot) ? 'shared' : (stylePrefix[uiState.activeTab] ?? 'shared');
-        return `/gear_icons/${folder}/${base}.png`;
+        // Use gear registry to resolve the correct icon folder from item's style
+        const item = getItemForValue(val);
+        let folder = sharedSlots.includes(slot) ? 'shared' : (stylePrefix[uiState.activeTab] ?? 'shared');
+        if (item) {
+            if (item.style === 'hybrid') folder = 'shared';
+            else {
+                const map = { melee: 'melee', ranged: 'ranged', magic: 'magic', necromancy: 'necro' };
+                folder = map[item.style] ?? folder;
+            }
+        }
+        return `/gear_icons/${folder}/${val}.png`;
     }
 
     const weaponTypeKeys = {
@@ -307,7 +314,7 @@
 
          <!-- Ability summary + quick actions -->
          <div class="tick-summary">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 w-full">
                 {#if currentAbility}
                     <img src={currentAbility.icon}
                         alt={currentAbility.title}
@@ -325,6 +332,18 @@
                 {/if}
                 {#if isNulled}
                     <span class="nulled-badge">Nulled</span>
+                {/if}
+                <!-- Cumulative damage inline -->
+                {#if rotationStore.distributionStats && rotationStore.distributionStats.length > 0}
+                    {@const cumDmgInline = calculateCumulativeDamage()}
+                    {#if cumDmgInline.total > 0}
+                        <span class="cumulative-inline">
+                            <span class="cumulative-inline-val">{formatDamage(cumDmgInline.total)}</span>
+                            {#if cumDmgInline.min !== cumDmgInline.max}
+                                <span class="text-xs text-gray-500">({formatDamage(cumDmgInline.min)}-{formatDamage(cumDmgInline.max)})</span>
+                            {/if}
+                        </span>
+                    {/if}
                 {/if}
             </div>
             {#if currentStalledAbility}
@@ -382,7 +401,6 @@
                 <!-- Per-tick damage -->
                 {#if rotationStore.distributionStats && rotationStore.distributionStats.length > 0}
                     {@const tickDmg = getTickDamage(tick)}
-                    {@const cumDmg = calculateCumulativeDamage()}
 
                     {#if tickDmg.length > 0}
                         <div class="info-section">
@@ -402,16 +420,6 @@
                             {/each}
                         </div>
                     {/if}
-
-                    <div class="info-section">
-                        <p class="info-label">Cumulative (ticks 0-{tick})</p>
-                        <div class="damage-row">
-                            <span class="damage-val-lg">{formatDamage(cumDmg.total)}</span>
-                            {#if cumDmg.min !== cumDmg.max}
-                                <span class="text-xs text-gray-500">({formatDamage(cumDmg.min)}-{formatDamage(cumDmg.max)})</span>
-                            {/if}
-                        </div>
-                    </div>
                 {/if}
 
                 <!-- Buffs & Stacks side by side -->
@@ -497,35 +505,11 @@
                 </div>
                 <!-- Right: actions -->
                 <div class="actions-panel">
-                    <GearChoice
-                            handleAbilityClick={handleAbilityClickExtra}
-                            {handleDragStart}
-                            style={uiState.activeTab}
-                        />
-                    <AbilityChoice
-                            abilities={offGcdAbilities}
-                            handleAbilityClick={handleAbilityClickExtra}
-                            {handleDragStart}
-                            style="abilities"
-                        />
-                    <AbilityChoice
-                            abilities={prayers}
-                            handleAbilityClick={handleAbilityClickExtra}
-                            {handleDragStart}
-                            style="abilities"
-                        />
-                    <AbilityChoice
-                            abilities={spells}
-                            handleAbilityClick={handleAbilityClickExtra}
-                            {handleDragStart}
-                            style="abilities"
-                        />
-                    <AbilityChoice
-                            abilities={consumables}
-                            handleAbilityClick={handleAbilityClickExtra}
-                            {handleDragStart}
-                            style="abilities"
-                        />
+                    <ActionChoice
+                        handleAbilityClick={handleAbilityClickExtra}
+                        {handleDragStart}
+                        style={uiState.activeTab}
+                    />
                 </div>
             </div>
 
@@ -546,7 +530,21 @@
         width: 100%;
         padding: 0.3rem;
         border-bottom: 1px solid #444;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.1rem;
+    }
+
+    .cumulative-inline {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+    }
+
+    .cumulative-inline-val {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #4CAF50;
     }
 
     .nulled-badge {
@@ -605,7 +603,7 @@
 
     .info-tab {
         width: 100%;
-        padding: 0.5rem 0;
+        padding: 0.2rem 0;
     }
 
     .buffs-stacks-row {
@@ -726,8 +724,8 @@
     }
     .equip-grid {
         display: inline-grid;
-        grid-template-columns: repeat(3, 46px);
-        grid-auto-rows: 46px;
+        grid-template-columns: repeat(3, 35px);
+        grid-auto-rows: 35px;
         gap: 2px;
         justify-items: center;
         align-items: center;
@@ -738,8 +736,8 @@
         justify-content: center;
     }
     .equip-icon {
-        width: 44px;
-        height: 44px;
+        width: 33px;
+        height: 33px;
         object-fit: contain;
         border: 1px solid #555;
         border-radius: 3px;

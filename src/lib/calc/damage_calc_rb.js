@@ -5,7 +5,7 @@ import { create_object } from './object_helper.js';
 import { SETTINGS } from './settings_rb';
 
 function calc_level_damage(level) {
-    return Math.floor(145 * 2.5 * (Math.log(1 + 0.6 * (level / 145)) / Math.log(1.6)));
+    return Math.round(145 * 2.5 * (Math.log(1 + 0.6 * (level / 145)) / Math.log(1.6)));
 }
 
 function calc_base_ad(settings) {
@@ -250,9 +250,6 @@ function calc_boosted_ad(settings, dmgObject) {
             base_ad_boost += 0.3;
         }
 
-        // flow stacks
-        //boosted_AD = Math.floor(boosted_AD * (1 + 0.01 * settings[SETTINGS.FLOW_STACKS]));
-        base_ad_boost += 0.01 * settings[SETTINGS.FLOW_STACKS];
     }
 
     if (abils[settings['ability']]['main style'] === 'melee') {

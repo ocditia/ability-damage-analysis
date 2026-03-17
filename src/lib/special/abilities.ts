@@ -47,8 +47,8 @@ export const consumables: Record<string, { title: string; icon: string; group?: 
     },
     [ABILITIES.DREADNIP]: {
         title: 'Dreadnip',
-        icon: '/effect_icons/Dreadnip_active_(self_status).png'
-    },
+        icon: '/ability_icons/special/Dreadnip.png'
+    }
 };
 
 // Off-GCD abilities (sigils, slayer, mobility, etc.)
@@ -97,13 +97,13 @@ export const prayers: Record<string, { title: string; icon: string }> = {
         title: 'Deflect Magic',
         icon: '/ability_icons/special/Deflect_Magic.png'
     },
-    [ABILITIES.DEFLECT_MELEE]: {
-        title: 'Deflect Melee',
-        icon: '/ability_icons/special/Deflect_Melee.png'
-    },
     [ABILITIES.DEFLECT_RANGED]: {
         title: 'Deflect Ranged',
         icon: '/ability_icons/special/Deflect_Ranged.png'
+    },
+    [ABILITIES.DEFLECT_MELEE]: {
+        title: 'Deflect Melee',
+        icon: '/ability_icons/special/Deflect_Melee.png'
     },
     [ABILITIES.SOUL_SPLIT]: {
         title: 'Soul Split',

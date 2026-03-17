@@ -11,7 +11,7 @@ import { isExtraAction, normalizeLegacy, type ExtraAction } from './extra-action
 import { getSettingsKeyForItem } from './gear-registry';
 import { CombatStyle, DamageObject, RotationInput } from '../types';
 import { familiars, dreadnipData, calculateFamiliarHitChance } from '$lib/familiars/familiars';
-import { getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
+import { getBossPresetWithEnrage, type BossPhase, type BossPreset } from '$lib/familiars/boss_presets';
 import { Logger, LogCategory } from '$lib/utils/Logger';
 import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
 import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
@@ -42,6 +42,10 @@ interface RotationState {
     activeConjures: Record<string, { tickSummoned: number; duration: number }>; // Active conjure spirits
     conjureDamage: number; // Accumulated conjure damage
     conjurePerTick: number[]; // Cumulative conjure damage at each tick
+    // Boss phase tracking
+    bossPhases: import('$lib/familiars/boss_presets').BossPhase[] | null;
+    currentPhaseIdx: number;
+    pauseTicksRemaining: number;
 }
 
 interface DamageDistributionStat {
@@ -201,7 +205,10 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         lastAbilityTick: -1,
         activeConjures: {},
         conjureDamage: 0,
-        conjurePerTick: new Array(BAR_SIZE).fill(0)
+        conjurePerTick: new Array(BAR_SIZE).fill(0),
+        bossPhases: null,
+        currentPhaseIdx: 0,
+        pauseTicksRemaining: 0
     };
 
     // Find the last tick that has an ability (familiar/dreadnip stop after this)
@@ -250,13 +257,16 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         strengthLevel: settingsCopy[SETTINGS.STRENGTH_LEVEL]
     });
 
-    // Resolve soft cap from boss preset
+    // Resolve boss preset for soft cap and phase tracking
     const bossKey = settingsCopy[SETTINGS.BOSS_PRESET];
     const enrage = settingsCopy[SETTINGS.BOSS_ENRAGE] ?? 0;
     if (bossKey && bossKey !== 'none') {
         const boss = getBossPresetWithEnrage(bossKey, enrage);
         if (boss?.softCap) {
             settingsCopy['_softCap'] = boss.softCap;
+        }
+        if (boss?.phases?.length) {
+            state.bossPhases = boss.phases;
         }
     }
 
@@ -335,7 +345,10 @@ export function calculateRotationDamageCore(
         lastAbilityTick: -1,
         activeConjures: {},
         conjureDamage: 0,
-        conjurePerTick: new Array(barSize).fill(0)
+        conjurePerTick: new Array(barSize).fill(0),
+        bossPhases: null,
+        currentPhaseIdx: 0,
+        pauseTicksRemaining: 0
     };
 
     // Find the last tick that has an ability (familiar/dreadnip stop after this)
@@ -348,7 +361,7 @@ export function calculateRotationDamageCore(
 
     const settingsCopy = structuredClone(settings);
 
-    // Resolve soft cap from boss preset (if not already set by caller)
+    // Resolve boss preset for soft cap and phase tracking (if not already set by caller)
     if (!settingsCopy['_softCap']) {
         const bossKey = settingsCopy[SETTINGS.BOSS_PRESET];
         const bossEnrage = settingsCopy[SETTINGS.BOSS_ENRAGE] ?? 0;
@@ -356,6 +369,9 @@ export function calculateRotationDamageCore(
             const boss = getBossPresetWithEnrage(bossKey, bossEnrage);
             if (boss?.softCap) {
                 settingsCopy['_softCap'] = boss.softCap;
+            }
+            if (boss?.phases?.length) {
+                state.bossPhases = boss.phases;
             }
         }
     }
@@ -529,6 +545,13 @@ function processTickOperationsCore(
     settingsCopy: any,
     rotation: RotationInput
 ) {
+    // Skip all processing during boss phase pause (invulnerable)
+    if (state.pauseTicksRemaining > 0) {
+        state.pauseTicksRemaining--;
+        state.tick += 1;
+        return;
+    }
+
     handleExtraActionsCore(settingsCopy, state.timers, state.tick, rotation);
     // Skip copyStacks - no UI updates needed for headless calculation
     recalcFulProbability(state, settingsCopy);
@@ -538,6 +561,7 @@ function processTickOperationsCore(
     processFamiliarTick(state, settingsCopy);
     processDreadnipTick(state, settingsCopy);
     processConjureTick(state, settingsCopy);
+    checkPhaseTransition(state, settingsCopy);
 
     state.tick += 1;
 }
@@ -940,6 +964,13 @@ function processTickOperations(
     state: RotationState,
     settingsCopy: any
 ) {
+    // Skip all processing during boss phase pause (invulnerable)
+    if (state.pauseTicksRemaining > 0) {
+        state.pauseTicksRemaining--;
+        state.tick += 1;
+        return;
+    }
+
     handleExtraActions(settingsCopy, state.timers, state.tick);
     copyStacks(state.tick, settingsCopy, state.timers);
     recalcFulProbability(state, settingsCopy);
@@ -949,6 +980,7 @@ function processTickOperations(
     processFamiliarTick(state, settingsCopy);
     processDreadnipTick(state, settingsCopy);
     processConjureTick(state, settingsCopy);
+    checkPhaseTransition(state, settingsCopy);
 
     state.tick += 1;
 }
@@ -1167,6 +1199,39 @@ function processChannelledTick(
 function applySoftCap(dmg: number, softCap?: { threshold: number; reduction: number }): number {
     if (!softCap || dmg <= softCap.threshold) return dmg;
     return softCap.threshold + (dmg - softCap.threshold) * (1 - softCap.reduction);
+}
+
+/**
+ * Check if cumulative damage has crossed the current phase's HP threshold.
+ * If so, apply the next phase's stat overrides and set pause ticks.
+ *
+ * Currently applies: soft cap changes, pause ticks.
+ * TODO: recalculate hit chance when defence/armour/affinities change at phase transitions.
+ */
+function checkPhaseTransition(state: RotationState, settingsCopy: any) {
+    if (!state.bossPhases || state.currentPhaseIdx >= state.bossPhases.length) return;
+
+    const cumulativeDamage = state.dmgs.reduce((a, b) => a + b, 0)
+        + state.poisonDamage + state.scrollDamage + state.dreadnipDamage + state.conjureDamage;
+
+    const currentPhase = state.bossPhases[state.currentPhaseIdx];
+    if (cumulativeDamage < currentPhase.hp) return;
+
+    // Phase transition triggered
+    if (currentPhase.pause) {
+        state.pauseTicksRemaining = currentPhase.pause;
+    }
+
+    // Apply stat overrides from this phase
+    if (currentPhase.stats) {
+        const stats = currentPhase.stats;
+        // Update soft cap (may be null to remove it, or a new value)
+        if ('softCap' in stats) {
+            settingsCopy['_softCap'] = stats.softCap ?? undefined;
+        }
+    }
+
+    state.currentPhaseIdx++;
 }
 
 /**

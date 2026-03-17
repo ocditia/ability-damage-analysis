@@ -101,7 +101,7 @@ const weapons: Record<string, Equipment> = {
         tier: 80,
         type: 'bow',
         classification: 'none',
-    popular: true
+        popular: false
     },
     [SETTINGS.RANGED_TH_VALUES.HEX_E]: {
         style: 'ranged',
@@ -275,16 +275,16 @@ const weapons: Record<string, Equipment> = {
         tier: 100,
         type: 'none',
         classification: 'none',
-    popular: true
+        popular: true
     },
     [SETTINGS.MELEE_MH_VALUES.KERIS]: {
-        style: 'melee',
+        style: 'melee', 
         'weapon type': 'main-hand',
         slot: 'mainhand',
         tier: 50,
         type: 'none',
         classification: 'none',
-    popular: true
+        popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.KERIS_PROC]: {
         style: 'melee',
@@ -293,7 +293,7 @@ const weapons: Record<string, Equipment> = {
         tier: 50,
         type: 'none',
         classification: 'none',
-    popular: true
+        popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.KERIS_AVG]: {
         style: 'melee',
@@ -302,7 +302,7 @@ const weapons: Record<string, Equipment> = {
         tier: 50,
         type: 'none',
         classification: 'none',
-    popular: true
+        popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS]: {
         style: 'melee',
@@ -311,7 +311,7 @@ const weapons: Record<string, Equipment> = {
         tier: 70,
         type: 'none',
         classification: 'none',
-    popular: true
+        popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC]: {
         style: 'melee',
@@ -320,7 +320,7 @@ const weapons: Record<string, Equipment> = {
         tier: 70,
         type: 'none',
         classification: 'none',
-    popular: true
+        popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_AVG]: {
         style: 'melee',
@@ -329,7 +329,7 @@ const weapons: Record<string, Equipment> = {
         tier: 70,
         type: 'none',
         classification: 'none',
-    popular: true
+        popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS]: {
         style: 'melee',
@@ -338,7 +338,7 @@ const weapons: Record<string, Equipment> = {
         tier: 80,
         type: 'none',
         classification: 'none',
-    popular: true
+        popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC]: {
         style: 'melee',
@@ -347,7 +347,7 @@ const weapons: Record<string, Equipment> = {
         tier: 80,
         type: 'none',
         classification: 'none',
-    popular: true
+        popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_AVG]: {
         style: 'melee',
@@ -356,7 +356,7 @@ const weapons: Record<string, Equipment> = {
         tier: 80,
         type: 'none',
         classification: 'none',
-    popular: true
+        popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.DARK_ICE_SHARD]: {
         style: 'melee',
@@ -1520,7 +1520,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'ranged',
-        popular: true
+        popular: false
     },
     [SETTINGS.RING_VALUES.STALKER_E]: {
         'necromancy strength': 0,
@@ -1529,7 +1529,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 30.4,
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'ring',
-        style: 'ranged'
+        style: 'ranged',
+        popular: true
     },
     [SETTINGS.RING_VALUES.CHAMPION]: {
         'necromancy strength': 0,
@@ -1816,7 +1817,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'necklace',
         style: 'hybrid',
-        popular: true
+        popular: false
     },
     'reaper necklace (or)': {
         'necromancy strength': 38.4,
@@ -1826,7 +1827,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 73, ranged: 73, magic: 73, necro: 73 },
         slot: 'necklace',
         style: 'hybrid',
-        popular: true
+        popular: false
     },
     [SETTINGS.NECKLACE_VALUES.MOONSTONE]: {
         'necromancy strength': 44.1,
@@ -6117,7 +6118,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': false, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'dot', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         hits: {
@@ -6129,6 +6130,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
                 ABILITIES.CORRUPTION_SHOT_HIT_5
             ]
         },
+        adrenaline: 20,
         cooldown: 15,
         hitTimings: [1, 3, 5, 7, 9],
     

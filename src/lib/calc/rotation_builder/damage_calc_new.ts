@@ -280,7 +280,7 @@ function on_damage(settings: Record<string, any>, dmgObject: DamageObject): Dama
 // HELPER FUNCTIONS
 // ============================================================
 
-// Helper functions for accessing the new DamageObject structure
+// Helper functions for accessing DamageObjects
 function getDamageDistribution(dmgObject: DamageObject, kind: DamageKind): DamageDistribution | undefined {
     return dmgObject.distributions[kind];
 }
@@ -298,7 +298,7 @@ function iterateDistributions(dmgObject: DamageObject, callback: (distribution: 
 /**
  * Abilities that consume the Anima Charged buff from Runic Charge.
  * Dragon Breath: empowered to 260-310% damage.
- * Sonic Wave / Greater Sonic Wave: improved Flow buff (+25%).
+ * Sonic Wave / Greater Sonic Wave: improved Flow buff (+25%). (FLOW_AC/GREATER_FLOW_AC)
  * Concentrated Blast / Greater Concentrated Blast: +20% crit per hit.
  */
 const ANIMA_CHARGED_ABILITIES: Set<string> = new Set([
