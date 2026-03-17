@@ -225,6 +225,7 @@ const SETTINGS = {
     NECRO_HELMET_VALUES: {
         NONE: 'none',
         TFN: 'crown of the first necromancer',
+        TFN_ADDON: 'crown of the first necromancer with addon',
         T90DD: 'deathdealer hood (tier 90)',
         GHOST_HUNTER: 'ghost hunter goggles',
     },
@@ -877,6 +878,9 @@ const SETTINGS = {
     TELOS_BLACK_BEAM: 'telos black beam',
     ENERGISING: 'energising',
     ULTIMATUMS: 'ultimatums',
+    BLAST_INFUSED: 'blast infused',
+    GCONC_UNLOCK: 'gconc unlock',
+    STRENGTH_MASTER_CAPE: 'strength master cape',
 
     // Testing/utility flags
     USE_RAW_ABILITY_DAMAGE: 'use raw ability damage', // Skip recalculating AD from equipment
@@ -1397,6 +1401,7 @@ const settingsConfig = {
         options: [
             { text: 'None/Tank', value: SETTINGS.NECRO_HELMET_VALUES.NONE },
             { text: 'TFN', value: SETTINGS.NECRO_HELMET_VALUES.TFN },
+            { text: 'TFN + addon', value: SETTINGS.NECRO_HELMET_VALUES.TFN_ADDON },
             { text: 't90 deathdealer', value: SETTINGS.NECRO_HELMET_VALUES.T90DD },
             { text: 'Ghost hunter', value: SETTINGS.NECRO_HELMET_VALUES.GHOST_HUNTER},
         ]
@@ -2581,6 +2586,18 @@ const settingsConfig = {
     [SETTINGS.ULTIMATUMS]: {
         label: 'Ultimatums',
         default: 0
+    },
+    [SETTINGS.BLAST_INFUSED]: {
+        label: 'Blast infused',
+        default: false
+    },
+    [SETTINGS.GCONC_UNLOCK]: {
+        label: 'Gconc unlocked',
+        default: true
+    },
+    [SETTINGS.STRENGTH_MASTER_CAPE]: {
+        label: '120 str cape',
+        default: true
     },
 };
 

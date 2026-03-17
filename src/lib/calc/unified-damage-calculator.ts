@@ -47,6 +47,9 @@ export function calculateSingleAbilityDamage(
 
     // Map per-style pocket and ammo to generic keys based on ability style
     const settingsWithBuffs = { ...settings };
+
+    // Disable aftershock for single-ability calculations — it distorts per-ability comparisons
+    settingsWithBuffs[SETTINGS.AFTERSHOCK] = 0;
     const style = abilityData?.['main style'];
     const pocketByStyle: Record<string, string> = {
         'magic': SETTINGS.MAGIC_POCKET,

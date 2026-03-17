@@ -258,11 +258,6 @@
                                     bind:setting={settings[SETTINGS.HITCAP]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.INSTABILITY]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/instability.png"
-                                />
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">

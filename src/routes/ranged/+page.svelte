@@ -216,10 +216,6 @@
                                     onchange={() => updateDamages()}
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.FLAMEBOUND_RIVAL]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <Checkbox
                                     bind:setting={settings[SETTINGS.BALANCE_BY_FORCE]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/balance_by_force.png"
@@ -276,11 +272,6 @@
                                     bind:setting={settings[SETTINGS.HITCAP]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.INSTABILITY]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/instability.png"
-                                />
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">
@@ -290,11 +281,6 @@
                                     bind:setting={settings[SETTINGS.VULN]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/magic/Vulnerability_icon.webp"
-                                />
-                                <Select
-                                    bind:setting={settings[SETTINGS.ENDURING_RUIN_BLEED]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/enduring_ruin.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.INFERNAL_PUZZLE_BOX]}
@@ -341,15 +327,10 @@
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">Applies to regular abilities only</h5>
-                                <Select
-                                    bind:setting={settings[SETTINGS.ENDURING_RUIN_HIT]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/enduring_ruin.png"
-                                />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.SEARING_WINDS]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/balance_by_force.png"
+                                    img="/ability_icons/ranged/30x30/galeshot.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.STONE_OF_JAS]}
@@ -370,14 +351,6 @@
                                     img="/effect_icons/Ruby_Aurora_icon.webp"
                                     step="1"
                                     max="3"
-                                    min="0"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.GRAVITATE]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/gravitate.png"
-                                    step="1"
-                                    max="20"
                                     min="0"
                                 />
                                 <Select
