@@ -1353,26 +1353,6 @@ const settingsConfig = {
         label: 'Additional crit chance %',
         default: 0
     },
-    [SETTINGS.HELMET]: {
-        label: 'Helmet',
-        default: 'none',
-    },
-    [SETTINGS.BODY]: {
-        label: 'Body',
-        default: 'none',
-    },
-    [SETTINGS.LEGS]: {
-        label: 'Legs',
-        default: 'none',
-    },
-    [SETTINGS.GLOVES]: {
-        label: 'Gloves',
-        default: 'none',
-    },
-    [SETTINGS.BOOTS]: {
-        label: 'Boots',
-        default: 'none',
-    },
     [SETTINGS.MAGIC_HELMET]: {
         label: 'Helmet',
         default: SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE,
