@@ -39,6 +39,7 @@ interface RotationState {
     dreadnipActiveTick: number; // Tick when dreadnip was deployed (-1 = inactive)
     dreadnipAttacks: number; // Number of attacks made by current dreadnip
     lastAbilityTick: number; // Last tick with an ability — familiar/dreadnip stop after this
+    firstAbilityTick: number; // First tick with a non-nulled ability — familiar/dreadnip start here
     activeConjures: Record<string, { tickSummoned: number; duration: number }>; // Active conjure spirits
     conjureDamage: number; // Accumulated conjure damage
     conjurePerTick: number[]; // Cumulative conjure damage at each tick
@@ -203,6 +204,7 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         dreadnipActiveTick: -1,
         dreadnipAttacks: 0,
         lastAbilityTick: -1,
+        firstAbilityTick: -1,
         activeConjures: {},
         conjureDamage: 0,
         conjurePerTick: new Array(BAR_SIZE).fill(0),
@@ -215,6 +217,14 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     for (let i = rotationStore.abilityBar.length - 1; i >= 0; i--) {
         if (rotationStore.abilityBar[i] != null) {
             state.lastAbilityTick = i;
+            break;
+        }
+    }
+
+    // Find the first tick with a non-nulled ability (familiar/dreadnip start here)
+    for (let i = 0; i < rotationStore.abilityBar.length; i++) {
+        if (rotationStore.abilityBar[i] != null && !rotationStore.nulledTicks[i]) {
+            state.firstAbilityTick = i;
             break;
         }
     }
@@ -343,6 +353,7 @@ export function calculateRotationDamageCore(
         dreadnipActiveTick: -1,
         dreadnipAttacks: 0,
         lastAbilityTick: -1,
+        firstAbilityTick: -1,
         activeConjures: {},
         conjureDamage: 0,
         conjurePerTick: new Array(barSize).fill(0),
@@ -355,6 +366,14 @@ export function calculateRotationDamageCore(
     for (let i = rotation.abilityBar.length - 1; i >= 0; i--) {
         if (rotation.abilityBar[i] != null) {
             state.lastAbilityTick = i;
+            break;
+        }
+    }
+
+    // Find the first tick with a non-nulled ability (familiar/dreadnip start here)
+    for (let i = 0; i < rotation.abilityBar.length; i++) {
+        if (rotation.abilityBar[i] != null && !(rotation.nulledTicks[i] ?? false)) {
+            state.firstAbilityTick = i;
             break;
         }
     }
@@ -585,7 +604,8 @@ const PRISM_SCROLL_SAVE_CHANCE = 0.1;
 function processFamiliarTick(state: RotationState, settings: any) {
     const familiar = settings[SETTINGS.FAMILIAR];
     if (!familiar || familiar === SETTINGS.FAMILIAR_VALUES.NONE) return;
-    // Familiar stops attacking after the last ability tick
+    // Familiar doesn't attack before the first non-nulled ability or after the last ability
+    if (state.firstAbilityTick < 0 || state.tick < state.firstAbilityTick) return;
     if (state.lastAbilityTick < 0 || state.tick > state.lastAbilityTick) return;
 
     const familiarData = familiars[familiar];

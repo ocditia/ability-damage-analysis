@@ -93,7 +93,15 @@
     };
 
     const stylePrefix = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necro' };
-    const sharedSlots = ['necklace', 'ring', 'cape', 'pocket'];
+    const sharedSlots = ['necklace', 'ring', 'cape'];
+
+    // Pocket keys are inconsistent ('range pocket', 'mage pocket', etc.) so handle separately
+    const pocketKeys = {
+        ranged: 'range pocket',
+        magic: 'mage pocket',
+        melee: 'melee pocket',
+        necro: 'necro pocket',
+    };
 
     const ammoKeys = {
         ranged: SETTINGS.RANGED_AMMO_SLOT,
@@ -113,8 +121,13 @@
     }
 
     function getEquipIcon(slot) {
-        const prefix = sharedSlots.includes(slot) ? '' : (stylePrefix[uiState.activeTab] ?? 'ranged') + ' ';
-        const key = prefix + slot;
+        let key;
+        if (slot === 'pocket') {
+            key = pocketKeys[uiState.activeTab] ?? 'pocket';
+        } else {
+            const prefix = sharedSlots.includes(slot) ? '' : (stylePrefix[uiState.activeTab] ?? 'ranged') + ' ';
+            key = prefix + slot;
+        }
         const val = getGearState()[key];
         if (!val || val === 'none' || val === 'custom' || val === 'custom oh' || val === 'custom th') return slotFallbacks[slot];
         // Use gear registry to resolve the correct icon folder from item's style

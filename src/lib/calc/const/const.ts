@@ -47,7 +47,6 @@ const weapons: Record<string, Equipment> = {
         tier: 92,
         type: 'wand',
         classification: 'none',
-    popular: true
     },
     'imperium core': {
         style: 'magic',
@@ -56,7 +55,6 @@ const weapons: Record<string, Equipment> = {
         tier: 92,
         type: 'core',
         classification: 'none',
-    popular: true
     },
     [SETTINGS.MAGIC_TH_VALUES.INQ_STAFF]: {
         style: 'magic',
@@ -65,7 +63,6 @@ const weapons: Record<string, Equipment> = {
         tier: 80,
         type: 'staff',
         classification: 'none',
-    popular: true
     },
     [SETTINGS.MAGIC_TH_VALUES.INQ_STAFF_E]: {
         style: 'magic',
@@ -83,7 +80,6 @@ const weapons: Record<string, Equipment> = {
         tier: 80,
         type: 'none',
         classification: 'none',
-    popular: true
     },
     [SETTINGS.MELEE_TH_VALUES.T_MAUL_E]: {
         style: 'melee',
@@ -110,7 +106,6 @@ const weapons: Record<string, Equipment> = {
         tier: 80,
         type: 'bow',
         classification: 'none',
-    popular: true
     },
     [SETTINGS.RANGED_TH_VALUES.BOLG]: {
         style: 'ranged',
@@ -119,7 +114,6 @@ const weapons: Record<string, Equipment> = {
         tier: 95,
         type: 'bow',
         classification: 'none',
-    popular: true
     },
     [SETTINGS.RANGED_TH_VALUES.BOLG_IM]: {
         style: 'ranged',
@@ -137,7 +131,6 @@ const weapons: Record<string, Equipment> = {
         tier: 92,
         type: 'crossbow',
         classification: 'none',
-    popular: true
     },
     [SETTINGS.RANGED_OH_VALUES.BLIGHTBOUND]: {
         style: 'ranged',
@@ -146,7 +139,6 @@ const weapons: Record<string, Equipment> = {
         tier: 92,
         type: 'crossbow',
         classification: 'none',
-    popular: true
     },
     [SETTINGS.NECRO_MH_VALUES.OMNI_GUARD]: {
         style: 'necromancy',
@@ -173,7 +165,6 @@ const weapons: Record<string, Equipment> = {
         tier: 95,
         type: 'armguard',
         classification: 'none',
-    popular: true
     },
     [SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD_IM]: {
         style: 'necromancy',
@@ -212,7 +203,6 @@ const weapons: Record<string, Equipment> = {
         tier: 95,
         type: 'wand',
         classification: 'none',
-    popular: true
     },
     [SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING_IM]: {
         style: 'magic',
@@ -230,7 +220,6 @@ const weapons: Record<string, Equipment> = {
         tier: 95,
         type: 'orb',
         classification: 'none',
-    popular: true
     },
     [SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT_IM]: {
         style: 'magic',
@@ -248,7 +237,7 @@ const weapons: Record<string, Equipment> = {
         tier: 95,
         type: 'none',
         classification: 'none',
-    popular: true
+    popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.LENG_IM]: {
         style: 'melee',
@@ -266,7 +255,7 @@ const weapons: Record<string, Equipment> = {
         tier: 95,
         type: 'none',
         classification: 'none',
-    popular: true
+    popular: false
     },
     [SETTINGS.MELEE_OH_VALUES.LENG_IM]: {
         style: 'melee',
@@ -365,7 +354,7 @@ const weapons: Record<string, Equipment> = {
         tier: 88,
         type: 'none',
         classification: 'none',
-    popular: true
+    popular: false
     },
     [SETTINGS.MELEE_OH_VALUES.DARK_ICE_SLIVER]: {
         style: 'melee',
@@ -374,7 +363,7 @@ const weapons: Record<string, Equipment> = {
         tier: 88,
         type: 'none',
         classification: 'none',
-    popular: true
+    popular: false
     },
     [SETTINGS.MELEE_TH_VALUES.MW_SPEAR]: {
         style: 'melee',
@@ -392,7 +381,7 @@ const weapons: Record<string, Equipment> = {
         tier: 95,
         type: 'none',
         classification: 'none',
-        popular: true
+        popular: false
     },
     [SETTINGS.NECRO_OH_VALUES.SOULBOUND_LANTERN_IM]: {
         style: 'necromancy',
@@ -410,7 +399,7 @@ const weapons: Record<string, Equipment> = {
         tier: 75,
         type: 'shield',
         classification: 'none',
-        popular: true
+        popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.KERIS]: {
         style: 'melee',
@@ -419,7 +408,7 @@ const weapons: Record<string, Equipment> = {
         tier: 50,
         type: 'none',
         classification: 'none',
-    popular: true
+    popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.KERIS_PROC]: {
         style: 'melee',
@@ -428,7 +417,7 @@ const weapons: Record<string, Equipment> = {
         tier: 50,
         type: 'none',
         classification: 'none',
-    popular: true
+    popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS]: {
         style: 'melee',
@@ -437,7 +426,7 @@ const weapons: Record<string, Equipment> = {
         tier: 70,
         type: 'none',
         classification: 'none',
-    popular: true
+    popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC]: {
         style: 'melee',
@@ -446,7 +435,7 @@ const weapons: Record<string, Equipment> = {
         tier: 70,
         type: 'none',
         classification: 'none',
-    popular: true
+    popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS]: {
         style: 'melee',
@@ -455,7 +444,7 @@ const weapons: Record<string, Equipment> = {
         tier: 80,
         type: 'none',
         classification: 'none',
-    popular: true
+    popular: false
     },
     [SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC]: {
         style: 'melee',
@@ -464,7 +453,7 @@ const weapons: Record<string, Equipment> = {
         tier: 80,
         type: 'none',
         classification: 'none',
-    popular: true
+    popular: false
     },
     [SETTINGS.MELEE_TH_VALUES.EZK]:{
         style: 'melee',
@@ -473,7 +462,7 @@ const weapons: Record<string, Equipment> = {
         tier: 95,
         type: 'none',
         classification: 'obsidian',
-    popular: true
+    popular: false
     },
     [SETTINGS.MELEE_TH_VALUES.EZK_IM]:{
         style: 'melee',
@@ -491,7 +480,7 @@ const weapons: Record<string, Equipment> = {
         tier: 95,
         type: 'staff',
         classification: 'none',
-    popular: true
+    popular: false
     },
     [SETTINGS.MAGIC_TH_VALUES.FSOA_IM]:{
         style: 'magic',
@@ -601,7 +590,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged',
-        popular: true
+        popular: false
     },
     [SETTINGS.RANGED_BODY_VALUES.ELITE_SIRENIC]: {
         'necromancy strength': 0,
@@ -611,7 +600,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged',
-        popular: true
+        popular: false
     },
     [SETTINGS.RANGED_LEGS_VALUES.ELITE_SIRENIC]: {
         'necromancy strength': 0,
@@ -621,7 +610,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'ranged',
-        popular: true
+        popular: false
     },
     [SETTINGS.RANGED_HELMET_VALUES.DRACOLICH]: {
         'necromancy strength': 0,
@@ -631,7 +620,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged',
-        popular: true
+        popular: false
     },
     [SETTINGS.RANGED_BODY_VALUES.DRACOLICH]: {
         'necromancy strength': 0,
@@ -641,7 +630,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged',
-        popular: true
+        popular: false
     },
     [SETTINGS.RANGED_LEGS_VALUES.DRACOLICH]: {
         'necromancy strength': 0,
@@ -651,7 +640,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'ranged',
-        popular: true
+        popular: false
     },
     [SETTINGS.RANGED_GLOVES_VALUES.DRACOLICH]: {
         'necromancy strength': 0,
@@ -661,7 +650,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'ranged',
-        popular: true
+        popular: false
     },
     [SETTINGS.RANGED_BOOTS_VALUES.DRACOLICH]: {
         'necromancy strength': 0,
@@ -671,7 +660,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'ranged',
-        popular: true
+        popular: false
     },
     [SETTINGS.RANGED_HELMET_VALUES.ELITE_DRACOLICH]: {
         'necromancy strength': 0,
@@ -731,7 +720,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'helmet',
         style: 'magic',
-        popular: true
+        popular: false
     },
     [SETTINGS.MAGIC_BODY_VALUES.VIRTUS]: {
         'necromancy strength': 0,
@@ -741,7 +730,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'body',
         style: 'magic',
-        popular: true
+        popular: false
     },
     [SETTINGS.MAGIC_LEGS_VALUES.VIRTUS]: {
         'necromancy strength': 0,
@@ -751,7 +740,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'legs',
         style: 'magic',
-        popular: true
+        popular: false
     },
     [SETTINGS.MAGIC_HELMET_VALUES.TECTONIC]: {
         'necromancy strength': 0,
@@ -761,7 +750,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'helmet',
         style: 'magic',
-        popular: true
+        popular: false
     },
     [SETTINGS.MAGIC_BODY_VALUES.TECTONIC]: {
         'necromancy strength': 0,
@@ -771,7 +760,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'body',
         style: 'magic',
-        popular: true
+        popular: false
     },
     [SETTINGS.MAGIC_LEGS_VALUES.TECTONIC]: {
         'necromancy strength': 0,
@@ -781,7 +770,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'legs',
         style: 'magic',
-        popular: true
+        popular: false
     },
     [SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC]: {
         'necromancy strength': 0,
@@ -1539,7 +1528,7 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 0,
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'ring',
-        style: 'melee'
+        style: 'melee',
     },
     [SETTINGS.RING_VALUES.CHAMPION_E]: {
         'necromancy strength': 0,
@@ -6000,7 +5989,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'channel', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'ranged',
         'damage type': 'ranged',
         'duration': 3,

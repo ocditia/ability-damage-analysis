@@ -4,6 +4,7 @@
     import { getItemsForSlot } from '$lib/calc/rotation_builder/gear-registry';
     import { GearSlots } from '$lib/calc/rotation_builder/gear';
     import { offGcdAbilities, prayers, spells, consumables } from '$lib/special/abilities';
+    import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
 
     export let handleAbilityClick;
     export let handleDragStart;
@@ -48,6 +49,16 @@
         return `/gear_icons/${folder}/${base}.png`;
     }
 
+    function getBadge(value) {
+        if (!value) return null;
+        if (value.endsWith(' [IM]')) return { img: '/effect_icons/shard_of_genesis.png' };
+        if (value.endsWith(' (i)')) return { text: 'i' };
+        if (value.endsWith('+')) return { text: '+' };
+        if (value.endsWith(' (or)')) return { text: 'or' };
+        if (value.endsWith(' (e)')) return { text: 'e' };
+        return null;
+    }
+
     function getGearRowItems(slots) {
         const gearStyle = gearStyleMap[style] ?? 'ranged';
         const result = [];
@@ -55,7 +66,7 @@
             const items = getItemsForSlot(slot, gearStyle);
             for (const item of items) {
                 if (item.value === 'none') continue;
-                if (!showAllGear && !item.popular) continue;
+                if (!showAllGear && !item.popular && !ownedItemsStore.items.has(item.value)) continue;
                 result.push({
                     title: item.text,
                     value: item.value,
@@ -80,8 +91,8 @@
         }));
     }
 
-    // Force reactivity on showAllGear and style by referencing them
-    $: _gearDeps = [showAllGear, style];
+    // Force reactivity on showAllGear, style, and owned items by referencing them
+    $: _gearDeps = [showAllGear, style, ownedItemsStore.items.size];
     $: gearRowData = _gearDeps && gearRows.map(r => ({ label: r.label, items: getGearRowItems(r.slots) })).filter(r => r.items.length > 0);
     $: abilityItems = recordToItems(offGcdAbilities);
     $: prayerItems = recordToItems(prayers);
@@ -102,6 +113,7 @@
             <span class="row-label">{row.label}</span>
             <div class="item-grid">
                 {#each row.items as item}
+                    {@const badge = getBadge(item.value)}
                     <button class="item-btn" title={item.title}
                         onclick={(e) => handleAbilityClick(e, item)}
                         style="border-color: {styleColor};"
@@ -109,6 +121,13 @@
                         <img src={item.icon} alt={item.title} draggable="true"
                             ondragstart={(e) => handleDragStart(e, item)}
                             onerror={(e) => { if (!e.target.dataset.tried && item.iconFallback) { e.target.dataset.tried = '1'; e.target.src = item.iconFallback; } }} />
+                        {#if badge}
+                            {#if badge.img}
+                                <img src={badge.img} alt="" class="item-badge-img" />
+                            {:else}
+                                <span class="item-badge-text">{badge.text}</span>
+                            {/if}
+                        {/if}
                     </button>
                 {/each}
             </div>
@@ -248,26 +267,48 @@
     }
 
     .item-btn {
-        width: 30px;
-        height: 30px;
-        padding: 0;
-        border: 1px solid #555;
-        background: #333;
+        position: relative;
+        padding: 2px;
+        border: 2px solid transparent;
+        border-radius: 6px;
+        opacity: 0.6;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
-
-    .item-btn img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
+        transition: all 0.15s ease;
+        background: none;
     }
 
     .item-btn:hover {
-        border-color: #fff;
+        opacity: 0.85;
+    }
+
+    .item-btn img {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+    }
+
+    .item-badge-img {
+        position: absolute;
+        bottom: -2px;
+        right: -2px;
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+        pointer-events: none;
+    }
+
+    .item-badge-text {
+        position: absolute;
+        bottom: -2px;
+        right: -2px;
+        font-size: 0.6rem;
+        font-weight: bold;
+        color: white;
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 3px;
+        padding: 0 3px;
+        line-height: 1.2;
+        pointer-events: none;
     }
 
 </style>
