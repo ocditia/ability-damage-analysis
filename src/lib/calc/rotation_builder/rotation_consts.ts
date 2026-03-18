@@ -224,21 +224,21 @@ export function createBuffTimings(barSize: number) {
                 colour: '#0ce6ff'
             },
             [SETTINGS.FLOW_AC]: {
-                title: 'Flow (Animate Dead)',
+                title: 'Flow (Anima Charged)',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#0ce6ff'
             },
             [SETTINGS.GREATER_FLOW_AC]: {
-                title: 'Greater Flow (Animate Dead)',
+                title: 'Greater Flow (Anima Charged)',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#0ce6ff'
             },
             [SETTINGS.ANIMA_CHARGED]: {
-                title: 'Animate Dead (Anima Charged)',
+                title: 'Anima Charged',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],

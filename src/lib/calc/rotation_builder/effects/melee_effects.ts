@@ -130,15 +130,6 @@ function applyMinVarEffects(
 ): void {
     const { settings, abilityKey } = ctx;
 
-    // Vestments of havoc set effect
-    if (
-        settings[SETTINGS.HELMET] === SETTINGS.MELEE_HELMET_VALUES.HAVOC &&
-        settings[SETTINGS.BODY] === SETTINGS.MELEE_BODY_VALUES.HAVOC &&
-        settings[SETTINGS.LEGS] === SETTINGS.MELEE_LEGS_VALUES.HAVOC
-    ) {
-        distribution['min hit'] = Math.floor(distribution['min hit'] * 1.06);
-        distribution['var hit'] = Math.floor(distribution['var hit'] * 1.06);
-    }
 }
 
 /**

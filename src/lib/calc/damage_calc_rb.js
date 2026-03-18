@@ -1,7 +1,7 @@
 import { settingsActions } from '$lib/stores';
 import { ABILITIES, abils, armour, gear, weapons } from './const/const';
 import { prayers } from './const/prayers';
-import { create_object } from './object_helper.js';
+import { create_object } from './rotation_builder/rota_object_helper';
 import { SETTINGS } from './settings_rb';
 
 function calc_level_damage(level) {
@@ -1738,9 +1738,5 @@ function calc_aftershock(settings) {
     return get_user_value(settings, dmgObject);
 }
 
-export { calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
-    calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
-    get_user_value, get_hit_sequence, add_split_soul, apply_additional,
-    calc_crit_damage, calc_split_soul_hit, calc_aftershock,
-    calcSlotBonus, SLOT_MULTIPLIERS
-};
+// Only export functions actually used by the rotation builder
+export { style_specific_unification, calc_base_ad, apply_additional };

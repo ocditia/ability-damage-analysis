@@ -48,6 +48,10 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
     // base crit chance
     let crit_chance = 0.1;
 
+    if (settings[SETTINGS.EQ_PERK]) {
+        return 0.0 // No crits if Equilibrium perk used
+    }
+
     // eclipsed soul
     if (settings[SETTINGS.ECLIPSED_SOUL] === true && 
         (prayers[settings[SETTINGS.PRAYER]].book === "normal")) {
@@ -96,6 +100,11 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
         crit_chance += 0.12;
     }
 
+    // leagues pocket
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET) {
+        crit_chance += 0.12;
+    }
+
     // reaver's ring
     if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.REAVERS) {
         crit_chance += 0.05;
@@ -133,29 +142,70 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
         if (settings[SETTINGS.LEGS] === SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC) {
             crit_chance += 0.02;
         }
+
+        //tumeken armour
+        let tumekens_resplendence = 0;
+        if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.SUNSHINE] === true && tumekens_resplendence >= 3) {
+            crit_chance += 0.015 * tumekens_resplendence;
+        }
+        
+        if (settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.TUSKA &&
+            settings[SETTINGS.GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUSKA &&
+            settings[SETTINGS.BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUSKA
+        ) {
+            crit_chance += 0.03;
+        }
+
         // channeller's ring
         if (
-            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E) &&
+            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER || 
+                settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E) 
+            &&
             abils[abilityKey]['ability classification'] === 'channel'
         ) {
             crit_chance += 0.04;
             crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELLER_RING_STACKS]);
         }
 
-        // (g)conc
-        crit_chance += 0.05 * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
+        // (g)conc stacks: +5% (conc), +7% (gconc), +15% (conc+AC), +17% (gconc+AC) per stack
+        const isGreater = settings['_conc_is_greater'];
+        const isAC = settings['_conc_anima_charged'];
+        const concPerStack = isGreater ? (isAC ? 0.17 : 0.07) : (isAC ? 0.15 : 0.05);
+        crit_chance += concPerStack * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
 
-        // (g)conc self boost
-        if (
-            abilityKey === ABILITIES.CONCENTRATED_BLAST_2 ||
-            abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_2
-        ) {
+        // conc self boost
+        if (abilityKey === ABILITIES.CONCENTRATED_BLAST_2) {
             crit_chance += 0.05;
-        } else if (
-            abilityKey === ABILITIES.CONCENTRATED_BLAST_3 ||
-            abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3
-        ) {
+        } else if (abilityKey === ABILITIES.CONCENTRATED_BLAST_3) {
             crit_chance += 0.1;
+        }
+
+        // gconc self boost (higher base + anima charged bonus)
+        if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_2) {
+            crit_chance += 0.07;
+            if (settings[SETTINGS.ANIMA_CHARGED] === true) {
+                crit_chance += 0.1;
+            }
+        } else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) {
+            crit_chance += 0.14;
+            if (settings[SETTINGS.ANIMA_CHARGED] === true) {
+                crit_chance += 0.2;
+            }
         }
 
         // smoke tendrils
@@ -195,6 +245,14 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
             else if (settings[SETTINGS.POF_DINOS] === SETTINGS.POF_DINOS_VALUES.CORBICULA_2) {
                 crit_chance += 0.4;
             }   
+        }
+
+        // The Final Flurry: hits 1 & 2 get +25% crit, hit 3 gets +50% crit
+        if (abilityKey === ABILITIES.THE_FINAL_FLURRY_1) {
+            crit_chance += 0.25;
+        }
+        if (abilityKey === ABILITIES.THE_FINAL_FLURRY_2) {
+            crit_chance += 0.5;
         }
     }
 
@@ -244,21 +302,26 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
         crit_chance = 1;
     }
 
-    // The Final Flurry: hits 1 & 2 get +25% crit, hit 3 gets +50% crit
-    if (abilityKey === ABILITIES.THE_FINAL_FLURRY_1) {
-        crit_chance += 0.25;
-        console.log(`[CRIT DEBUG] ${abilityKey}: base=${(crit_chance - 0.25).toFixed(2)} +0.25 = ${crit_chance.toFixed(2)}`);
-    }
-    if (abilityKey === ABILITIES.THE_FINAL_FLURRY_2) {
-        crit_chance += 0.5;
-        console.log(`[CRIT DEBUG] ${abilityKey}: base=${(crit_chance - 0.5).toFixed(2)} +0.50 = ${crit_chance.toFixed(2)}`);
+    // min hit mode
+    if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_NO_CRIT ||
+        settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_NO_CRIT ||
+        settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MEAN_NO_CRIT
+    ) {
+        crit_chance = 0;
     }
 
+
     const result = Math.min(1, crit_chance);
-    if (abilityKey.includes('final flurry') || abilityKey.includes('slice & dice')) {
-        console.log(`[CRIT DEBUG] ${abilityKey}: final crit_chance=${result.toFixed(2)}`);
-    }
     return result;
 }
 
-export { calc_crit_chance, create_damage_object }; 
+/**
+ * Legacy wrapper — reads ability from settings['ability'].
+ * Used by damage_calc_rb.js which sets settings['ability'] before calling.
+ */
+function create_object(settings: Record<string, any>): DamageObject {
+    const ability = settings['ability'] as ABILITIES;
+    return create_damage_object(settings, ability);
+}
+
+export { calc_crit_chance, create_damage_object, create_object };

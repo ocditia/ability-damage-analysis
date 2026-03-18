@@ -69,6 +69,27 @@ export function calc_crit_damage(settings: Record<string, any>): number {
         }
     }
 
+    // tumeken's resplendence pc
+    if (abils[settings['ability']]['main style'] === 'magic' && 
+        settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] === true
+    ) {
+        crit_buff += 0.35;
+    }
+
+	// magic leagues relic
+	if (abils[settings['ability']]['main style'] === 'magic' && 
+		settings[SETTINGS.MAGIC_LEAGUES_RELIC] === true) {
+		crit_buff += 0.5;
+		}
+        
+    if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_1) {
+        crit_buff += 0.25;
+    }
+
+    if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_2) {
+        crit_buff += 0.5;
+    }
+
     return crit_buff;
 }
 

@@ -155,6 +155,18 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
         dmgObjects.push(...bonusHits);
     }
 
+    // Clear conc stacks after the consuming ability's damage objects have been created
+    // (crit chance was already calculated with the stacks included)
+    const concAbilities = new Set([
+        ABILITIES.CONCENTRATED_BLAST, ABILITIES.CONCENTRATED_BLAST_1, ABILITIES.CONCENTRATED_BLAST_2, ABILITIES.CONCENTRATED_BLAST_3,
+        ABILITIES.GREATER_CONCENTRATED_BLAST, ABILITIES.GREATER_CONCENTRATED_BLAST_1, ABILITIES.GREATER_CONCENTRATED_BLAST_2, ABILITIES.GREATER_CONCENTRATED_BLAST_3,
+    ]);
+    if (!concAbilities.has(abilityKey) && settings[SETTINGS.CONCENTRATED_BLAST_STACKS] > 0) {
+        settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 0;
+        delete settings['_conc_is_greater'];
+        delete settings['_conc_anima_charged'];
+    }
+
     return dmgObjects;
 }
 
@@ -305,8 +317,8 @@ const ANIMA_CHARGED_ABILITIES: Set<string> = new Set([
     ABILITIES.DRAGON_BREATH,
     ABILITIES.SONIC_WAVE,
     ABILITIES.GREATER_SONIC_WAVE,
-    ABILITIES.CONCENTRATED_BLAST,
-    ABILITIES.GREATER_CONCENTRATED_BLAST,
+    ABILITIES.CONCENTRATED_BLAST, ABILITIES.CONCENTRATED_BLAST_1,
+    ABILITIES.GREATER_CONCENTRATED_BLAST, ABILITIES.GREATER_CONCENTRATED_BLAST_1,
 ]);
 
 /**
@@ -451,6 +463,10 @@ function startCooldown(timers: Record<string, number>, abilityKey: string, setti
         if (abilityKey === ABILITIES.DEATHSKULLS_4 && settings?.[SETTINGS.LIVING_DEATH] === true) {
             cdSeconds = 10.2;
         }
+        if (abilityKey === ABILITIES.OVERPOWER && settings?.[SETTINGS.BERSERK] === true) {
+            cdSeconds = 9.0;
+        }
+
         timers[COOLDOWN_PREFIX + abilityKey] = 1 + Math.ceil(cdSeconds / 0.6);
     }
 }
@@ -532,10 +548,6 @@ function splitAbilityIntoHits(
     if (classification == 'multihit') {
         let hits = get_hit_sequence(settings);
 
-        if (abilityKey.includes('final flurry') || abilityKey.includes('slice & dice')) {
-            console.log(`[MULTIHIT DEBUG] ${abilityKey} hits:`, JSON.stringify(hits));
-        }
-
         for (let tick in hits) {
             for (let hit in hits[tick]) {
                 if (abils[hits[tick][hit]]) {
@@ -543,16 +555,11 @@ function splitAbilityIntoHits(
                     iterateDistributions(clone, (cloneDist, kind) => {
                         const sourceDist = getDamageDistribution(dmgObject, kind);
                         if (sourceDist && cloneDist) {
-                            cloneDist['probability'] = sourceDist['probability'];
+                            // Copy boosted AD from parent, but keep the sub-hit's own crit probability
+                            // (sub-hits like Final Flurry have different crit chances per hit)
                             cloneDist['boosted AD'] = sourceDist['boosted AD'];
                         }
                     });
-                    clone.ability = hits[tick][hit] as ABILITIES;
-                    if (abilityKey.includes('final flurry') || abilityKey.includes('slice & dice')) {
-                        const nc = clone.distributions['non_crit'];
-                        const cr = clone.distributions['crit'];
-                        console.log(`[MULTIHIT DEBUG] sub-hit: ${clone.ability}, min=${nc['min hit']}, var=${nc['var hit']}, crit_prob=${cr['probability']}, non_crit_prob=${nc['probability']}`);
-                    }
                     dmgObjects.push(clone);
                 }
             }
