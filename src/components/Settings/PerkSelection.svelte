@@ -38,7 +38,7 @@
             class="stack-toggle"
             class:stack-active={perk.toggle ? settings[perk.key]?.value : settings[perk.key]?.value > 0}
             title="{perk.title}{perk.toggle ? '' : ' (right-click to set, scroll to adjust)'}"
-            onclick={() => { if (perk.toggle) { settings[perk.key].value = !settings[perk.key].value; } else { settings[perk.key].value = settings[perk.key].value > 0 ? 0 : (perk.step ?? 1); } updateDamages(); }}
+            onclick={() => { if (perk.toggle) { settings[perk.key].value = !settings[perk.key].value; } else { settings[perk.key].value = settings[perk.key].value > 0 ? 0 : (perk.max ?? perk.step ?? 1); } updateDamages(); }}
             oncontextmenu={(e) => { if (!perk.toggle) { e.preventDefault(); editingStack = editingStack === perk.key ? null : perk.key; } }}
             onwheel={(e) => { if (!perk.toggle) { e.preventDefault(); const curr = settings[perk.key]?.value ?? 0; const step = perk.step ?? 1; const max = perk.max ?? 999; settings[perk.key].value = Math.max(0, Math.min(max, Math.round((curr + (e.deltaY < 0 ? step : -step)) * 10) / 10)); updateDamages(); } }}
         >
