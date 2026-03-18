@@ -48,6 +48,10 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
     // base crit chance
     let crit_chance = 0.1;
 
+    if (settings[SETTINGS.EQ_PERK]) {
+        return 0.0 // No crits if Equilibrium perk used
+    }
+
     // eclipsed soul
     if (settings[SETTINGS.ECLIPSED_SOUL] === true && 
         (prayers[settings[SETTINGS.PRAYER]].book === "normal")) {
