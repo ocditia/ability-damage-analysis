@@ -182,8 +182,11 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
             crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELLER_RING_STACKS]);
         }
 
-        // (g)conc
-        crit_chance += 0.05 * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
+        // (g)conc stacks: +5% (conc), +7% (gconc), +15% (conc+AC), +17% (gconc+AC) per stack
+        const isGreater = settings['_conc_is_greater'];
+        const isAC = settings['_conc_anima_charged'];
+        const concPerStack = isGreater ? (isAC ? 0.17 : 0.07) : (isAC ? 0.15 : 0.05);
+        crit_chance += concPerStack * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
 
         // conc self boost
         if (abilityKey === ABILITIES.CONCENTRATED_BLAST_2) {
