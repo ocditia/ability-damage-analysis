@@ -1,5 +1,4 @@
 import { settingsActions } from '$lib/stores';
-import { next_cast, next_hit, next_tick } from './ability_helper_rb';
 import { ABILITIES, abils, armour, gear, weapons } from './const/const';
 import { prayers } from './const/prayers';
 import { create_object } from './object_helper.js';
@@ -1591,7 +1590,7 @@ function style_specific_unification(settings, style = null) {
     return settings;
 }
 
-function hit_damage_calculation(settings, rotationCalc = false) {
+export function hit_damage_calculation(settings, rotationCalc = false) {
     settings = style_specific_unification(settings); // initialise some settings
     let total_damage = calc_damage_object(settings); // calculate the ability
     //total_damage = apply_additional(settings, total_damage, rotationCalc);
@@ -1630,27 +1629,6 @@ function apply_additional(settings, total_damage) {
     }
 
     return total_damage;
-}
-
-function ability_damage_calculation(settings) {
-    let rotation = get_hit_sequence(settings);
-    let damage = 0;
-    for (let key in rotation) {
-        if (key <= settings[SETTINGS.MAX_CHANNEL_DURATION]) {
-            for (let iter = 0; iter < rotation[key].length; iter++) {
-                if (rotation[key][iter] === 'next cast') {
-                    settings = next_cast(settings);
-                } else if (rotation[key][iter] === 'next hit') {
-                    settings = next_hit(settings);
-                } else {
-                    settings['ability'] = rotation[key][iter];
-                    damage += hit_damage_calculation(settings);
-                }
-            }
-            settings = next_tick(settings);
-        }
-    }
-    return damage;
 }
 
 /**
@@ -1760,8 +1738,7 @@ function calc_aftershock(settings) {
     return get_user_value(settings, dmgObject);
 }
 
-export { ability_damage_calculation, hit_damage_calculation,
-    calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
+export { calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
     get_user_value, get_hit_sequence, add_split_soul, apply_additional,
     calc_crit_damage, calc_split_soul_hit, calc_aftershock,
