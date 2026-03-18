@@ -6,6 +6,21 @@
     let editingStack = $state(null);
     function focusOnMount(node) { node.focus(); node.select(); }
 
+    // Long-press support for mobile (opens edit input like right-click)
+    let longPressTimer = null;
+    let longPressFired = false;
+    function onTouchStart(key, toggle) {
+        if (toggle) return;
+        longPressFired = false;
+        longPressTimer = setTimeout(() => {
+            longPressFired = true;
+            editingStack = editingStack === key ? null : key;
+        }, 400);
+    }
+    function onTouchEnd() {
+        clearTimeout(longPressTimer);
+    }
+
     const perks = [
         { key: SETTINGS.PRECISE, img: '/effect_icons/perks/Precise.webp', title: 'Precise', step: 1, max: 6 },
         { key: SETTINGS.ERUPTIVE, img: '/effect_icons/perks/Eruptive.webp', title: 'Eruptive', step: 1, max: 4 },
@@ -38,9 +53,12 @@
             class="stack-toggle"
             class:stack-active={perk.toggle ? settings[perk.key]?.value : settings[perk.key]?.value > 0}
             title="{perk.title}{perk.toggle ? '' : ' (right-click to set, scroll to adjust)'}"
-            onclick={() => { if (perk.toggle) { settings[perk.key].value = !settings[perk.key].value; } else { settings[perk.key].value = settings[perk.key].value > 0 ? 0 : (perk.max ?? perk.step ?? 1); } updateDamages(); }}
+            onclick={() => { if (longPressFired) return; if (perk.toggle) { settings[perk.key].value = !settings[perk.key].value; } else { settings[perk.key].value = settings[perk.key].value > 0 ? 0 : (perk.max ?? perk.step ?? 1); } updateDamages(); }}
             oncontextmenu={(e) => { if (!perk.toggle) { e.preventDefault(); editingStack = editingStack === perk.key ? null : perk.key; } }}
             onwheel={(e) => { if (!perk.toggle) { e.preventDefault(); const curr = settings[perk.key]?.value ?? 0; const step = perk.step ?? 1; const max = perk.max ?? 999; settings[perk.key].value = Math.max(0, Math.min(max, Math.round((curr + (e.deltaY < 0 ? step : -step)) * 10) / 10)); updateDamages(); } }}
+            ontouchstart={() => onTouchStart(perk.key, perk.toggle)}
+            ontouchend={onTouchEnd}
+            ontouchcancel={onTouchEnd}
         >
             <img src={perk.img} alt={perk.title} class="w-7 h-7" />
             {#if !perk.toggle && settings[perk.key] != null}
@@ -71,9 +89,12 @@
             class="stack-toggle"
             class:stack-active={settings[perk.key]?.value > 0}
             title="{perk.title} (right-click to set, scroll to adjust)"
-            onclick={() => { settings[perk.key].value = settings[perk.key].value > 0 ? 0 : 1; updateDamages(); }}
+            onclick={() => { if (longPressFired) return; settings[perk.key].value = settings[perk.key].value > 0 ? 0 : (perk.max ?? 1); updateDamages(); }}
             oncontextmenu={(e) => { e.preventDefault(); editingStack = editingStack === perk.key ? null : perk.key; }}
             onwheel={(e) => { e.preventDefault(); const curr = settings[perk.key]?.value ?? 0; settings[perk.key].value = Math.max(0, Math.min(perk.max, curr + (e.deltaY < 0 ? 1 : -1))); updateDamages(); }}
+            ontouchstart={() => onTouchStart(perk.key, false)}
+            ontouchend={onTouchEnd}
+            ontouchcancel={onTouchEnd}
         >
             <span class="stack-label">{perk.label}</span>
             <img src={perk.img} alt={perk.title} class="w-7 h-7" />
