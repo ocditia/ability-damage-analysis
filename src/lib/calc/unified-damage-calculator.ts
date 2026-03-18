@@ -50,6 +50,9 @@ export function calculateSingleAbilityDamage(
 
     // Disable aftershock for single-ability calculations — it distorts per-ability comparisons
     settingsWithBuffs[SETTINGS.AFTERSHOCK] = 0;
+
+    // Disable rotation builder buff booleans — single-ability pages use dropdown settings instead
+    settingsWithBuffs[SETTINGS.GREATER_DRACOLICH_INFUSION] = false;
     const style = abilityData?.['main style'];
     const pocketByStyle: Record<string, string> = {
         'magic': SETTINGS.MAGIC_POCKET,

@@ -793,6 +793,11 @@ const SETTINGS = {
     FROSTBLADES: 'frostblades',
     IGNEOUS_EXTENSIOS: 'igneous extensions',
     DRACOLICH_INFUSION: 'dracolich infusion',
+    DRACOLICH_INFUSION_VALUES: {
+        NONE: 'none',
+        REGULAR: 'regular',
+        GREATER: 'greater',
+    },
     GREATER_DRACOLICH_INFUSION: 'greater dracolich infusion',
     INSTABILITY: 'instability',
     TIME_SINCE_ATTACK: 'time since attack',
@@ -2345,7 +2350,12 @@ const settingsConfig = {
     },
     [SETTINGS.DRACOLICH_INFUSION]: {
         label: 'Dracolich infusion',
-        default: false
+        default: SETTINGS.DRACOLICH_INFUSION_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.DRACOLICH_INFUSION_VALUES.NONE },
+            { text: 'Regular', value: SETTINGS.DRACOLICH_INFUSION_VALUES.REGULAR },
+            { text: 'Greater', value: SETTINGS.DRACOLICH_INFUSION_VALUES.GREATER }
+        ]
     },
     [SETTINGS.GREATER_DRACOLICH_INFUSION]: {
         label: 'Greater dracolich infusion',

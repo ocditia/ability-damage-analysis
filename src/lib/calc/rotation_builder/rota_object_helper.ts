@@ -217,10 +217,13 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
             crit_chance = 1;
         }
 
-        // dracolich
+        // dracolich — supports both boolean (rotation builder buff) and dropdown (single-ability page)
         if (settings[SETTINGS.GREATER_DRACOLICH_INFUSION] === true) {
             crit_chance += 0.4;
-        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === true) {
+        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === true ||
+                   settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES?.GREATER) {
+            crit_chance += 0.4;
+        } else if (settings[SETTINGS.DRACOLICH_INFUSION] === SETTINGS.DRACOLICH_INFUSION_VALUES?.REGULAR) {
             crit_chance += 0.2;
         }
 
@@ -244,12 +247,18 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
     // The Final Flurry: hits 1 & 2 get +25% crit, hit 3 gets +50% crit
     if (abilityKey === ABILITIES.THE_FINAL_FLURRY_1) {
         crit_chance += 0.25;
+        console.log(`[CRIT DEBUG] ${abilityKey}: base=${(crit_chance - 0.25).toFixed(2)} +0.25 = ${crit_chance.toFixed(2)}`);
     }
     if (abilityKey === ABILITIES.THE_FINAL_FLURRY_2) {
         crit_chance += 0.5;
+        console.log(`[CRIT DEBUG] ${abilityKey}: base=${(crit_chance - 0.5).toFixed(2)} +0.50 = ${crit_chance.toFixed(2)}`);
     }
 
-    return Math.min(1, crit_chance);
+    const result = Math.min(1, crit_chance);
+    if (abilityKey.includes('final flurry') || abilityKey.includes('slice & dice')) {
+        console.log(`[CRIT DEBUG] ${abilityKey}: final crit_chance=${result.toFixed(2)}`);
+    }
+    return result;
 }
 
 export { calc_crit_chance, create_damage_object }; 
