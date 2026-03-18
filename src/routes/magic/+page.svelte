@@ -131,7 +131,7 @@
 </script>
 
 <Navbar />
-<Header img="/magic_background.png" text="Magic Calculator (RB)" icon="/style_icons/magic-white.svg" />
+<Header img="/magic_background.png" text="Magic Calculator)" icon="/style_icons/magic-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
     <div class="responsive-container">

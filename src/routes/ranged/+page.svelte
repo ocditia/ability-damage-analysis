@@ -162,7 +162,7 @@
 </script>
 
 <Navbar />
-<Header img="/range_background.png" text="Ranged Calculator (RB)" icon="/style_icons/ranged-white.svg" />
+<Header img="/range_background.png" text="Ranged Calculator" icon="/style_icons/ranged-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
     <div class="responsive-container">
