@@ -456,9 +456,6 @@ function startCooldown(timers: Record<string, number>, abilityKey: string, setti
         }
 
         timers[COOLDOWN_PREFIX + abilityKey] = 1 + Math.ceil(cdSeconds / 0.6);
-        if (abilityKey === ABILITIES.OVERPOWER) {
-            console.log(`[CD DEBUG] overpower: berserk=${settings?.[SETTINGS.BERSERK]}, cdSeconds=${cdSeconds}, ticks=${timers[COOLDOWN_PREFIX + abilityKey]}`);
-        }
     }
 }
 
@@ -539,10 +536,6 @@ function splitAbilityIntoHits(
     if (classification == 'multihit') {
         let hits = get_hit_sequence(settings);
 
-        if (abilityKey.includes('final flurry') || abilityKey.includes('slice & dice')) {
-            console.log(`[MULTIHIT DEBUG] ${abilityKey} hits:`, JSON.stringify(hits));
-        }
-
         for (let tick in hits) {
             for (let hit in hits[tick]) {
                 if (abils[hits[tick][hit]]) {
@@ -554,12 +547,6 @@ function splitAbilityIntoHits(
                             cloneDist['boosted AD'] = sourceDist['boosted AD'];
                         }
                     });
-                    clone.ability = hits[tick][hit] as ABILITIES;
-                    if (abilityKey.includes('final flurry') || abilityKey.includes('slice & dice')) {
-                        const nc = clone.distributions['non_crit'];
-                        const cr = clone.distributions['crit'];
-                        console.log(`[MULTIHIT DEBUG] sub-hit: ${clone.ability}, min=${nc['min hit']}, var=${nc['var hit']}, crit_prob=${cr['probability']}, non_crit_prob=${nc['probability']}`);
-                    }
                     dmgObjects.push(clone);
                 }
             }

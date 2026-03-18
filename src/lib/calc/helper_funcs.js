@@ -1,7 +1,7 @@
 import { next_cast, next_hit, next_tick } from './ability_helper';
 import { ABILITIES, abils, armour, gear, weapons } from './const';
 import { prayers } from './const/prayers';
-import { create_object } from './object_helper';
+import { create_object } from './rotation_builder/rota_object_helper';
 import { SETTINGS } from './settings';
 
 function calc_tfn_pieces(settings) {
