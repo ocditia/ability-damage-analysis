@@ -451,7 +451,14 @@ function startCooldown(timers: Record<string, number>, abilityKey: string, setti
         if (abilityKey === ABILITIES.DEATHSKULLS_4 && settings?.[SETTINGS.LIVING_DEATH] === true) {
             cdSeconds = 10.2;
         }
+        if (abilityKey === ABILITIES.OVERPOWER && settings?.[SETTINGS.BERSERK] === true) {
+            cdSeconds = 9.0;
+        }
+
         timers[COOLDOWN_PREFIX + abilityKey] = 1 + Math.ceil(cdSeconds / 0.6);
+        if (abilityKey === ABILITIES.OVERPOWER) {
+            console.log(`[CD DEBUG] overpower: berserk=${settings?.[SETTINGS.BERSERK]}, cdSeconds=${cdSeconds}, ticks=${timers[COOLDOWN_PREFIX + abilityKey]}`);
+        }
     }
 }
 
