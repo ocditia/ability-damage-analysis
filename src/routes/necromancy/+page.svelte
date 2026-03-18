@@ -133,7 +133,7 @@
 <Navbar />
 <Header
     img="/necro_background.png"
-    text="Necromancy Calculator (RB)"
+    text="Necromancy Calculator"
     icon="/style_icons/necro-white.svg"
 />
 

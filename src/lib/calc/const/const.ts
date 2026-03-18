@@ -3883,7 +3883,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         adrenaline: 0,
@@ -5473,7 +5473,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         cooldown: 0,
@@ -5521,7 +5521,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {
@@ -5538,7 +5538,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {
@@ -5561,7 +5561,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {
@@ -5586,7 +5586,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'necrotic',
         hits: {

@@ -424,8 +424,15 @@ function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string,
         addAdrenaline(settings, -cost);
     }
     else if (type == 'threshold') {
-        let cost = abils[abilityKey].adrenaline;
+        let cost = abils[abilityKey].adrenaline || 0;
         if (flowReduction > 0) cost = Math.max(0, Math.floor(cost - flowReduction));
+
+        if (abilityKey === ABILITIES.FINGER_OF_DEATH) {
+            const necrosis = settings[SETTINGS.NECROSIS_STACKS] || 0;
+            const consumed = Math.min(necrosis, 6);
+            cost = Math.max(0, cost - consumed * 10);
+            settings[SETTINGS.NECROSIS_STACKS] = necrosis - consumed;
+        }
         addAdrenaline(settings, -cost);
     }
     else if (type == 'special attack') {
@@ -433,18 +440,6 @@ function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string,
         const multi = settings[SETTINGS.VIGOUR] ? 0.9 : 1;
         cost *= multi;
         if (flowReduction > 0) cost = Math.max(0, Math.floor(cost - flowReduction));
-        addAdrenaline(settings, -cost);
-    }
-    else if (type == 'ability') {
-        // Necromancy 'ability' type — Finger of Death consumes necrosis to reduce cost
-        // TODO move to threshold
-        let cost = abils[abilityKey].adrenaline || 0;
-        if (abilityKey === ABILITIES.FINGER_OF_DEATH) {
-            const necrosis = settings[SETTINGS.NECROSIS_STACKS] || 0;
-            const consumed = Math.min(necrosis, 6);
-            cost = Math.max(0, cost - consumed * 10);
-            settings[SETTINGS.NECROSIS_STACKS] = necrosis - consumed;
-        }
         addAdrenaline(settings, -cost);
     }
 }
