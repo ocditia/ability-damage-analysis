@@ -265,13 +265,6 @@ function calc_crit_chance(settings) {
         if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_2) {
             crit_chance += 0.5;
         }
-
-        if (settings['ability'] === ABILITIES.FINAL_FLURRY_1_HIT_BETA) {
-            crit_chance += 0.25;
-        }
-        if (settings['ability'] === ABILITIES.FINAL_FLURRY_2_HIT_BETA) {
-            crit_chance += 0.5;
-        }
     }
 
     if (abils[settings['ability']]['main style'] === 'ranged') {

@@ -532,6 +532,10 @@ function splitAbilityIntoHits(
     if (classification == 'multihit') {
         let hits = get_hit_sequence(settings);
 
+        if (abilityKey.includes('final flurry') || abilityKey.includes('slice & dice')) {
+            console.log(`[MULTIHIT DEBUG] ${abilityKey} hits:`, JSON.stringify(hits));
+        }
+
         for (let tick in hits) {
             for (let hit in hits[tick]) {
                 if (abils[hits[tick][hit]]) {
@@ -544,6 +548,11 @@ function splitAbilityIntoHits(
                         }
                     });
                     clone.ability = hits[tick][hit] as ABILITIES;
+                    if (abilityKey.includes('final flurry') || abilityKey.includes('slice & dice')) {
+                        const nc = clone.distributions['non_crit'];
+                        const cr = clone.distributions['crit'];
+                        console.log(`[MULTIHIT DEBUG] sub-hit: ${clone.ability}, min=${nc['min hit']}, var=${nc['var hit']}, crit_prob=${cr['probability']}, non_crit_prob=${nc['probability']}`);
+                    }
                     dmgObjects.push(clone);
                 }
             }
@@ -694,7 +703,7 @@ function handleBolgProc(
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH;
 
     const shouldProc = settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 8 ||
-        (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] === 4 && settings[SETTINGS.BALANCE_BY_FORCE] === true);
+        (settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] >= 4 && settings[SETTINGS.BALANCE_BY_FORCE] === true);
 
     if (!isBolg || !shouldProc) {
         return false;
