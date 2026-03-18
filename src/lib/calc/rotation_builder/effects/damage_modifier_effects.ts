@@ -304,8 +304,15 @@ export function applyNopeEffect(
     damage: number
 ): number {
     const { settings } = ctx;
+    let boost = 0;
+    if (settings[SETTINGS.NOPE] == 1) {
+        boost = 0.02
+    }
+    else if (settings[SETTINGS.NOPE] == 2) {
+        boost = 0.03
+    }
 
-    return Math.floor(damage * (1 + settings[SETTINGS.NOPE]));
+    return Math.floor(damage * (1 + boost));
 }
 
 /**
