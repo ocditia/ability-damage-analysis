@@ -2015,6 +2015,6 @@ function calc_base_damage_ability_page(settings) {
 export { ability_damage_calculation, hit_damage_calculation,
     calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
-    get_user_value, get_hit_sequence, add_split_soul, apply_additional,
-    calc_crit_damage, calc_split_soul_hit, calc_aftershock, calc_base_damage_ability_page
+    get_user_value, get_hit_sequence, add_split_soul, apply_additional, 
+    calc_split_soul_hit, calc_aftershock, calc_base_damage_ability_page
 };
