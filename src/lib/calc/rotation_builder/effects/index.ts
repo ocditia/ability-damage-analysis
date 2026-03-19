@@ -157,7 +157,7 @@ export function applyStyleMinVarEffects(
         styleEffectsMap[style].applyMinVarEffects(ctx, distribution);
     }
 
-    // Apply precise perk (style-agnostic)
+    // Apply precise perk
     if (settings[SETTINGS.PRECISE] > 0) {
         const max_hit = distribution['min hit'] + distribution['var hit'];
         distribution['min hit'] = distribution['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
@@ -193,9 +193,8 @@ export function applyStyleMultiplicativeEffects(
         boost = Math.floor(boost * (1 + revenge));
     }
 
-    // Crystal weapons (proc based, added in probability calculations)
-    // Spendthrift (proc based, added in probability calculations)
-
+    // Crystal weapons (proc based, addsd later
+    // Spendthrift?
     // Ruthless perk
     // TODO: fix - currently breaks calc if no ruthless stacks
     boost = Math.floor(

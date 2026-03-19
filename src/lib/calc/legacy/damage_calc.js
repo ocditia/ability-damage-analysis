@@ -40,7 +40,7 @@ function calc_base_ad(settings) {
     } else if (abils[settings['ability']]['main style'] === 'melee') {
         if (settings[SETTINGS.WEAPON] === 'main-hand') {
             let AD_mh =
-                Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.STRENGTH_LEVEL]) +
                 Math.floor(
                     9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
                 );
@@ -48,7 +48,7 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * (Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
+                    0.5 * (calc_level_damage(settings[SETTINGS.STRENGTH_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
@@ -59,7 +59,7 @@ function calc_base_ad(settings) {
             base_AD = AD_mh + AD_oh;
         } else if (settings[SETTINGS.WEAPON] === 'two-hand') {
             base_AD =
-                Math.floor(2.5 * settings[SETTINGS.STRENGTH_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.STRENGTH_LEVEL]) +
                 Math.floor(1.25 * settings[SETTINGS.STRENGTH_LEVEL]) +
                 Math.floor(9.6 * calc_weapon_tier(settings, 'two-hand weapon')) +
                 calc_bonus(settings) +
@@ -70,7 +70,7 @@ function calc_base_ad(settings) {
     } else if (abils[settings['ability']]['main style'] === 'ranged') {
         if (settings[SETTINGS.WEAPON] === 'main-hand') {
             let AD_mh =
-                Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.RANGED_LEVEL]) +
                 Math.floor(
                     9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
                 );
@@ -78,7 +78,7 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * (Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
+                    0.5 * (calc_level_damage(settings[SETTINGS.RANGED_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
                                 calc_bonus(settings)
@@ -89,8 +89,8 @@ function calc_base_ad(settings) {
             base_AD = AD_mh + AD_oh;
         } else if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
             base_AD =
-                Math.floor(2.5 * settings[SETTINGS.RANGED_LEVEL]) +
-                Math.floor(1.25 * settings[SETTINGS.RANGED_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.RANGED_LEVEL]) +
+                Math.floor(0.5 * calc_level_damage(settings[SETTINGS.RANGED_LEVEL])) +
                 Math.floor(
                     9.6 * calc_weapon_tier(settings, 'two-hand weapon') + calc_bonus(settings)
                 ) +
@@ -98,10 +98,10 @@ function calc_base_ad(settings) {
                     4.8 * calc_weapon_tier(settings, 'two-hand weapon') + 0.5 * calc_bonus(settings)
                 );
         }
-    } else if (abils[settings['ability']]['main style'] === 'necromancy') {
+    } lse if (abils[settings['ability']]['main style'] === 'necromancy') {
         if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
             let AD_mh =
-                Math.floor(2.5 * settings[SETTINGS.NECROMANCY_LEVEL]) +
+                calc_level_damage(settings[SETTINGS.NECROMANCY_LEVEL]) +
                 Math.floor(
                     9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
                 );
@@ -109,25 +109,23 @@ function calc_base_ad(settings) {
             let AD_oh = 0;
             if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
                 AD_oh = Math.floor(
-                    0.5 * (Math.floor(2.5 * settings[SETTINGS.NECROMANCY_LEVEL]) +
+                    0.5 * (calc_level_damage(settings[SETTINGS.NECROMANCY_LEVEL]) +
                         Math.floor(
                             9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
-                                calc_bonus(settings)
+                            calc_bonus(settings)
                         ))
                 );
             }
-
             base_AD = AD_mh + AD_oh;
         }
     }
 
 	// base damage buffs (eruptive / equilibrium)
 	let buff = 1 + settings[SETTINGS.ERUPTIVE] * 0.005;
-	if (settings[SETTINGS.AURA] === 'equilibrium') {
-        buff += 0.12;
+    if (settings[SETTINGS.EQ_PERK] > 0) {
+        buff += 0.1 + settings[SETTINGS.EQ_PERK] * 0.01;
     }
     base_AD = Math.floor(base_AD * buff);
-
     return base_AD;
 }
 
@@ -1768,123 +1766,6 @@ function style_specific_unification(settings, style = null) {
     return settings;
 }
 
-function hit_damage_calculation(settings, rotationCalc = false) {
-    settings = style_specific_unification(settings); // initialise some settings
-    let total_damage = calc_damage_object(settings); // calculate the ability
-    total_damage = apply_additional(settings, total_damage, rotationCalc);
-    //TODO add next cast next hit next tick etc
-    return total_damage;
-}
-
-//todo rename
-function apply_additional(settings, total_damage) {
-
-    // handle sgb logic
-    if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
-        total_damage += calc_sgb(settings, total_damage);
-    }
-
-    if (settings['bolg damage']) {
-            total_damage += calc_bolg(settings)
-            delete settings['bolg damage'];
-    }
-
-    // handle bloat logic
-    if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
-        total_damage += calc_bloat(settings);
-        delete settings['bloat damage'];
-    }
-    // handle corruption shot/blast
-    if ('corruption damage' in settings) {
-        total_damage += calc_corruption(settings);
-        delete settings['corruption damage'];
-    }
-
-    // handle instability (fsoa)
-    if ('fsoa damage' in settings) {
-        total_damage += calc_fsoa(settings);
-        delete settings['fsoa damage'];
-    }
-
-    // scripture of jas
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.JAS) {
-        let hitcap = 30000;
-        if (settings[SETTINGS.HITCAP] === false) {
-            hitcap = 1000000000
-        }
-        if (!('jas damage' in settings)) {
-            settings['jas damage'] = 0;
-        }
-        let jas_damage = {'damage list': [Math.floor(Math.min(hitcap, 0.15*total_damage))]};
-        jas_damage = calc_on_npc(settings,jas_damage);
-        jas_damage = Math.min(jas_damage['damage list'][0], 30000 - settings['jas damage'])
-        settings['jas damage'] += jas_damage;
-        total_damage += jas_damage;
-    }
-
-    // leagues pocket jas
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET &&
-        settings[SETTINGS.LEAGUES_POCKET_JAS] === true
-    ) {
-        let hitcap = 30000;
-        if (settings[SETTINGS.HITCAP] === false) {
-            hitcap = 1000000000
-        }
-        if (!('jas damage' in settings)) {
-            settings['jas damage'] = 0;
-        }
-        let jas_damage = {'damage list': [Math.floor(Math.min(hitcap, 0.15*total_damage))]};
-        jas_damage = calc_on_npc(settings,jas_damage);
-        jas_damage = Math.min(jas_damage['damage list'][0], 30000 - settings['jas damage'])
-        settings['jas damage'] += jas_damage;
-        total_damage += jas_damage;
-    }
-
-    return total_damage;
-}
-
-function ability_damage_calculation(settings) {
-    settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 1;
-    if (settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) {
-        settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 3;
-        if (abils[settings['ability']]['ability classification'] === 'channel') {
-            settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = Math.min(settings[SETTINGS.MAX_CHANNEL_DURATION], 
-                Object.keys(abils[settings['ability']]['hits']).map(item => parseInt(item, 10)).pop());
-        }
-    }
-
-    let rotation = get_hit_sequence(settings);
-    let damage = 0;
-    let hit_counter = 0;
-    for (let key in rotation) {
-		settings['rotation key'] = key;
-        if (key <= settings[SETTINGS.MAX_CHANNEL_DURATION]) {
-            const abil_cast = rotation[key].length;
-            for (let iter = 0; iter < rotation[key].length; iter++) {
-                if (rotation[key][iter] === 'next cast') {
-                    settings = next_cast(settings);
-                } else if (rotation[key][iter] === 'next hit') {
-                    settings = next_hit(settings);
-                } else {
-                    hit_counter += 1;
-                    let abil = settings['ability'];
-                    settings['ability'] = rotation[key][iter];
-                    let hit_damage = hit_damage_calculation(settings);
-                    if (settings[SETTINGS.HIT_COUNTER_START] <= hit_counter && hit_counter <= settings[SETTINGS.HIT_COUNTER_END]) {
-                        damage += hit_damage;    
-                    } else {
-                        damage += 0
-                    }
-                    settings['ability'] = abil;
-                }
-            }
-            if (abil_cast >= 1) {
-                settings = next_tick(settings);
-            }      
-        } 
-    }
-    return damage;
-}
 
 /**
  * Handles modifiers for the number of hits of multi-hit abilities, returning
@@ -2012,9 +1893,9 @@ function calc_base_damage_ability_page(settings) {
         return calc_base_ad(settings);
 }
 
-export { ability_damage_calculation, hit_damage_calculation,
+export {
     calc_base_ad, calc_boosted_ad, ability_specific_effects, set_min_var,
     calc_style_specific, calc_on_hit, roll_damage, calc_core, calc_on_npc, style_specific_unification,
-    get_user_value, get_hit_sequence, add_split_soul, apply_additional, 
+    get_user_value, get_hit_sequence, 
     calc_split_soul_hit, calc_aftershock, calc_base_damage_ability_page
 };

@@ -616,7 +616,7 @@ function applyDamageListModifiers(
             // Crit damage scaling
             if (distribution['crit'] === true && abils[abilityKey]['crit effects'] === true) {
                 distribution['damage list'][i] = Math.floor(
-                    distribution['damage list'][i] * (1 + calc_crit_damage(settings))
+                    distribution['damage list'][i] * (1 + calc_crit_damage(settings, dmgObject))
                 );
             }
         }

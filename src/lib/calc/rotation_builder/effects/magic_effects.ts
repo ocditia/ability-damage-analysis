@@ -34,6 +34,11 @@ function applyBoostedADEffects(
         applied = true;
     }
 
+    // crumble undead
+    if (settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.CRUMBLE_UNDEAD) {
+        distribution['boosted AD'] = Math.floor(1.3 * distribution['boosted AD']);
+    }
+
     return { applied };
 }
 
@@ -47,7 +52,7 @@ function applyAbilitySpecificEffects(
     const { settings, abilityKey } = ctx;
 
     // Conflagrate (boosted Combust)
-    if (abilityKey === ABILITIES.COMBUST_HIT && settings[SETTINGS.CONFLAGRATE] === true) {
+    if (abilityKey === ABILITIES.COMBUST && settings[SETTINGS.CONFLAGRATE] === true) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.4);
     }
 
@@ -62,7 +67,7 @@ function applyAbilitySpecificEffects(
     }
 
     // Kerapac's wristwraps (Combust)
-    if (abilityKey === ABILITIES.COMBUST_HIT) {
+    if (abilityKey === ABILITIES.COMBUST) {
         if (settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR) {
             distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.25);
         } else if (settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED) {
@@ -71,10 +76,18 @@ function applyAbilitySpecificEffects(
     }
 
     // Combust lunging - (10 + 3 per rank)% more damage
-    if (abilityKey === ABILITIES.COMBUST_HIT && settings[SETTINGS.LUNGING] > 0) {
+    if (abilityKey === ABILITIES.COMBUST && settings[SETTINGS.LUNGING] > 0) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
     }
 
+    //TODO
+    // // greater chain half damage
+    // const gchain_not_halved = ['bleed', 'burn', 'dot'];
+    // if (
+    //     gchain_not_halved.includes(abils[settings['ability']][['ability classification']] === false)
+    // ) {
+    //     dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 0.5);
+    // }
 }
 
 /**

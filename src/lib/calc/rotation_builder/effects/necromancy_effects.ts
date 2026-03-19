@@ -46,6 +46,10 @@ function applyAbilitySpecificEffects(
             distribution['boosted AD'] * (1 + 0.03 * settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS])
         );
     }
+
+    if (abilityKey === ABILITIES.SPECTRAL_SCYTHE_3) {
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + (1-settings[SETTINGS.TARGET_HP_PERCENT]/100)));
+    }
 }
 
 /**
@@ -60,6 +64,12 @@ function applyAbilityPercentModifiers(
     // Death Grasp (Death Guard spec)
     if (abilityKey === ABILITIES.DEATH_GRASP) {
         distribution['min hit'] = distribution['min hit'] + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
+    }
+
+    // soul crush
+    if (settings['ability'] === ABILITIES.SOUL_CRUSH) {
+        distribution['min hit'] += distribution['min hit'] * 1.35 * settings[SETTINGS.RESIDUAL_SOULS];
+        distribution['var hit'] += distribution['var hit'] * 0.3 * settings[SETTINGS.RESIDUAL_SOULS];
     }
 
     // Flanking - Soul Strike (basic stun)

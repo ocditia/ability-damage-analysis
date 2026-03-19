@@ -26,19 +26,39 @@ export function calculateAdditiveBoost(ctx: EffectContext): number {
     // Draconic fruit (2%)
     boost += settings[SETTINGS.DRACONIC_FRUIT] === true ? 0.02 : 0;
 
-    // Ruby aurora stacks (1% per stack)
-    boost += settings[SETTINGS.RUBY_AURORA] * 0.01;
-
-    // Scripture of Ful (20% * probability buff is active)
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.FUL) {
-        const fulProb = settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] || 0;
-        boost += 0.2 * fulProb;
+    // berserker necklace
+    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.BERSERKER &&
+        (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM) && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
+    ) {
+        boost += 0.05;
     }
+
+    // Flamebound Rival: +12% damage (always applies during Igneous Showdown, or when debuff is active with EZK)
+    if (
+        (settings[SETTINGS.FLAMEBOUND_RIVAL] === true || abilityKey === ABILITIES.IGNEOUS_SHOWDOWN ||
+         abilityKey === ABILITIES.IGNEOUS_SHOWDOWN_HIT || abilityKey === ABILITIES.IGNEOUS_SHOWDOWN_BONUS) &&
+        (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM ||
+         settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM)
+    ) {
+        boost = Math.floor(boost * 1.12);
+    }
+
 
     // Enduring ruin (melee only)
     if (abils[abilityKey]?.['main style'] === 'melee') {
         boost += settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR ? 0.1 : 0;
         boost += settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED ? 0.16 : 0;
+    }
+
+    // Ruby aurora stacks (1% per stack)
+    boost += settings[SETTINGS.RUBY_AURORA] * 0.01;
+
+    // Scripture of Ful (20% * probability buff is active)
+    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.FUL) {
+        // TODO - expected vs max
+        // const fulProb = settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] || 0;
+        const fulProb = 1;
+        boost += 0.2 * fulProb;
     }
 
     // Gorajan trailblazer (7%)

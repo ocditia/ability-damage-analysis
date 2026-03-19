@@ -9,15 +9,17 @@
     // Long-press support for mobile (opens edit input like right-click)
     let longPressTimer = null;
     let longPressFired = false;
-    function onTouchStart(key, toggle) {
+    function onTouchStart(e, key, toggle) {
         if (toggle) return;
         longPressFired = false;
         longPressTimer = setTimeout(() => {
             longPressFired = true;
+            e.preventDefault();
             editingStack = editingStack === key ? null : key;
         }, 400);
     }
-    function onTouchEnd() {
+    function onTouchEnd(e) {
+        if (longPressFired) e.preventDefault();
         clearTimeout(longPressTimer);
     }
 
@@ -30,6 +32,7 @@
         { key: SETTINGS.AFTERSHOCK, img: '/effect_icons/perks/Aftershock.png', title: 'Aftershock', step: 1, max: 4 },
         { key: SETTINGS.GENOCIDAL, img: '/effect_icons/perks/genocidal.png', title: 'Genocidal %', step: 0.1, max: 4.9 },
         { key: SETTINGS.FLANKING, img: '/effect_icons/perks/Flanking.webp', title: 'Flanking', step: 1, max: 4 },
+        { key: SETTINGS.LUNGING, img: '/effect_icons/perks/Lunging.webp', title: 'Lunging', step: 1, max: 4 },
         { key: SETTINGS.ULTIMATUMS, img: '/effect_icons/perks/ultimatums.png', title: 'Ultimatums', step: 1, max: 4 },
         { key: SETTINGS.LVL20ARMOUR, img: '/effect_icons/perks/level-20.png', title: 'Level 20 Armour', toggle: true },
         { key: SETTINGS.IMPATIENT, img: '/effect_icons/perks/Impatient.png', title: 'Impatient', step: 1, max: 4 },
@@ -56,8 +59,8 @@
             onclick={() => { if (longPressFired) return; if (perk.toggle) { settings[perk.key].value = !settings[perk.key].value; } else { settings[perk.key].value = settings[perk.key].value > 0 ? 0 : (perk.max ?? perk.step ?? 1); } updateDamages(); }}
             oncontextmenu={(e) => { if (!perk.toggle) { e.preventDefault(); editingStack = editingStack === perk.key ? null : perk.key; } }}
             onwheel={(e) => { if (!perk.toggle) { e.preventDefault(); const curr = settings[perk.key]?.value ?? 0; const step = perk.step ?? 1; const max = perk.max ?? 999; settings[perk.key].value = Math.max(0, Math.min(max, Math.round((curr + (e.deltaY < 0 ? step : -step)) * 10) / 10)); updateDamages(); } }}
-            ontouchstart={() => onTouchStart(perk.key, perk.toggle)}
-            ontouchend={onTouchEnd}
+            ontouchstart={(e) => onTouchStart(e, perk.key, perk.toggle)}
+            ontouchend={(e) => onTouchEnd(e)}
             ontouchcancel={onTouchEnd}
         >
             <img src={perk.img} alt={perk.title} class="w-7 h-7" />
@@ -92,8 +95,8 @@
             onclick={() => { if (longPressFired) return; settings[perk.key].value = settings[perk.key].value > 0 ? 0 : (perk.max ?? 1); updateDamages(); }}
             oncontextmenu={(e) => { e.preventDefault(); editingStack = editingStack === perk.key ? null : perk.key; }}
             onwheel={(e) => { e.preventDefault(); const curr = settings[perk.key]?.value ?? 0; settings[perk.key].value = Math.max(0, Math.min(perk.max, curr + (e.deltaY < 0 ? 1 : -1))); updateDamages(); }}
-            ontouchstart={() => onTouchStart(perk.key, false)}
-            ontouchend={onTouchEnd}
+            ontouchstart={(e) => onTouchStart(e, perk.key, false)}
+            ontouchend={(e) => onTouchEnd(e)}
             ontouchcancel={onTouchEnd}
         >
             <span class="stack-label">{perk.label}</span>

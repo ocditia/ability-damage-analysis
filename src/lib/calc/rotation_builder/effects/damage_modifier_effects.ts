@@ -352,6 +352,23 @@ export function applyEssenceCorruptionEffect(
 }
 
 /**
+ * Apply Enduring Ruin bleed bonus (Gloves of Passage effect)
+ * +20% (regular) or +25% (enchanted) to bleed abilities
+ */
+function applyEnduringRuinBleedEffect(ctx: DamageModifierContext, damage: number): number {
+    const classification = abils[ctx.abilityKey]?.['ability classification'];
+    if (classification !== 'bleed') return damage;
+
+    if (ctx.settings[SETTINGS.ENDURING_RUIN_BLEED] === SETTINGS.ENDURING_RUIN_BLEED_VALUES.REGULAR) {
+        return Math.floor(damage * 1.2);
+    }
+    if (ctx.settings[SETTINGS.ENDURING_RUIN_BLEED] === SETTINGS.ENDURING_RUIN_BLEED_VALUES.ENCHANTED) {
+        return Math.floor(damage * 1.25);
+    }
+    return damage;
+}
+
+/**
  * Apply hit cap (30000 max damage)
  */
 export function applyHitCap(damage: number): number {
@@ -375,6 +392,9 @@ export function applyAllDamageModifiers(
 
     // Vulnerability/curse
     damage = applyVulnerabilityEffect(ctx, damage);
+
+    // Enduring Ruin bleed bonus (Gloves of Passage)
+    damage = applyEnduringRuinBleedEffect(ctx, damage);
 
     // Wilderness puzzlebox
     damage = applyWildernessPuzzleboxEffect(ctx, damage);
@@ -404,9 +424,27 @@ export function applyAllDamageModifiers(
     // Essence corruption (flat addition)
     damage = applyEssenceCorruptionEffect(ctx, damage);
 
+    // Tokkul-zo ring (+10%)
+    if (ctx.settings[SETTINGS.RING] === SETTINGS.RING_VALUES.TOKKUL) {
+        damage = Math.floor(damage * 1.1);
+    }
+
     // Necklace of salamancy
     damage = applySalamancyEffect(ctx, damage);
 
+    // Balance of Power (Zamorak, +6% per rank)
+    if (ctx.settings[SETTINGS.BALANCE_OF_POWER] > 0) {
+        damage = Math.floor(damage * (1 + 0.06 * ctx.settings[SETTINGS.BALANCE_OF_POWER]));
+    }
+
+    // Telos red beam (+30%)
+    if (ctx.settings[SETTINGS.TELOS_RED_BEAM] === true) {
+        damage = Math.floor(damage * 1.3);
+    }
+
+    if (ctx.settings[SETTINGS.TELOS_RED_BEAM] === true) {
+        damage = Math.floor(damage * 0.7);
+    }
     // Hit cap (must be last)
     damage = applyHitCap(damage);
 

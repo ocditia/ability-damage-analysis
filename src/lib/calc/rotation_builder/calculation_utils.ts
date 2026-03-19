@@ -5,6 +5,7 @@
 
 import { SETTINGS } from '../settings_rb';
 import { ABILITIES, abils, weapons } from '../const/const';
+import { DamageObject } from '../types';
 
 // =============================================================================
 // Crit Damage Calculation
@@ -15,7 +16,7 @@ import { ABILITIES, abils, weapons } from '../const/const';
  * @param settings - game settings object
  * @returns crit damage multiplier (0.5 base + bonuses)
  */
-export function calc_crit_damage(settings: Record<string, any>): number {
+export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageObject): number {
     let crit_buff = 0.5; // base crit damage
 
     // Smoke cloud (+15% magic, +6% other)
@@ -82,11 +83,11 @@ export function calc_crit_damage(settings: Record<string, any>): number {
 		crit_buff += 0.5;
 		}
         
-    if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_1) {
+    if (dmgObj.ability === ABILITIES.THE_FINAL_FLURRY_1) {
         crit_buff += 0.25;
     }
 
-    if (settings['ability'] === ABILITIES.THE_FINAL_FLURRY_2) {
+    if (dmgObj.ability === ABILITIES.THE_FINAL_FLURRY_2) {
         crit_buff += 0.5;
     }
 

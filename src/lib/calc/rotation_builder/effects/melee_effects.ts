@@ -35,6 +35,16 @@ function applyBoostedADEffects(
         applied = true;
     }
 
+    // keris
+    if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
+        if ([SETTINGS.MELEE_MH_VALUES.KERIS, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS].includes(settings[SETTINGS.MH])) {
+            distribution['boosted AD'] = Math.floor(1.333 * distribution['boosted AD']);
+        }
+        else if ([SETTINGS.MELEE_MH_VALUES.KERIS_PROC, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
+            distribution['boosted AD'] = 2 * distribution['boosted AD'];
+        }
+    }
+
     // Chaos roar (1.75x boosted AD for next ability)
     if (
         settings[SETTINGS.CHAOS_ROAR] === true &&
@@ -83,7 +93,7 @@ function applyAbilityPercentModifiers(
     // Greater Barge tick bonus
     if (abilityKey === ABILITIES.GREATER_BARGE) {
         distribution['min hit'] = distribution['min hit'] + Math.min(0.05 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.5);
-        distribution['var hit'] = distribution['var hit'] + Math.min(0.02 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
+        distribution['var hit'] = distribution['var hit'] + Math.min(0.07 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
     }
 
     // Icy Tempest
@@ -155,16 +165,6 @@ function applyMultiplicativeEffects(
     // Rampage (dragon battleaxe spec)
     if (settings[SETTINGS.RAMPAGE] === true) {
         boost = Math.floor(boost * 1.2);
-    }
-
-    // Flamebound Rival: +12% damage (always applies during Igneous Showdown, or when debuff is active with EZK)
-    if (
-        (settings[SETTINGS.FLAMEBOUND_RIVAL] === true || abilityKey === ABILITIES.IGNEOUS_SHOWDOWN ||
-         abilityKey === ABILITIES.IGNEOUS_SHOWDOWN_HIT || abilityKey === ABILITIES.IGNEOUS_SHOWDOWN_BONUS) &&
-        (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM ||
-         settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM)
-    ) {
-        boost = Math.floor(boost * 1.12);
     }
 
     return boost;

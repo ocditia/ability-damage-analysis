@@ -34,5 +34,10 @@ export function calculatePrayerBoost(
         prayerBoost += 0.1;
     }
 
+    if (settings[SETTINGS.DIVINE_RAGE] === true &&
+        (prayers[settings[SETTINGS.PRAYER]]['book'] === "normal" || prayers[settings[SETTINGS.PRAYER]]['style'] === "none")) {
+        prayerBoost += 0.05;
+    }
+
     return 1 + prayerBoost;
 }
