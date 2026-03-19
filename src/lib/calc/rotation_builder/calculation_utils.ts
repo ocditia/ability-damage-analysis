@@ -236,6 +236,9 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         }
     }
 
+    // TO-DO give the option to get a start and end hit for an ability
+    // to track and kill off the rest
+
     return rotation;
 }
 
