@@ -56,17 +56,17 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
         crit_buff += 0.03;
     }
 
-    // FSOA crit bonus (15-30%, avg 22.5%)
+    // FSOA crit bonus (15-25%, avg 20%)
     if (
         (settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA || settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA_IM) &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
-            crit_buff += 0.3;
+            crit_buff += 0.25;
         } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_CRIT) {
             crit_buff += 0.15;
         } else {
-            crit_buff += 0.225;
+            crit_buff += 0.2;
         }
     }
 
