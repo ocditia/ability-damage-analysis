@@ -4,7 +4,12 @@ import { prayers } from './const/prayers';
 import { create_object } from './rotation_builder/rota_object_helper';
 import { SETTINGS } from './settings_rb';
 
-function calc_level_damage(level) {
+function calc_level_damage(settings) {
+    let style = abils[settings['ability']]['main style'];
+    if (style === 'melee') {
+        style = 'strength';
+    }
+    const level = settings[style + ' level'];
     return Math.round(145 * 2.5 * (Math.log(1 + 0.6 * (level / 145)) / Math.log(1.6)));
 }
 
@@ -12,117 +17,28 @@ function calc_base_ad(settings) {
     // see wiki page /ability_damage for more info
     let base_AD = 0;
 
-    if (abils[settings['ability']]['main style'] === 'magic') {
-        if (settings[SETTINGS.WEAPON] === 'main-hand') {
-            let AD_mh =
-                calc_level_damage(settings[SETTINGS.MAGIC_LEVEL]) +
-                Math.floor(
-                    9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
-                );
+    if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
+        let AD_mh = Math.floor(calc_level_damage(settings)
+                                + 9.6 * calc_weapon_tier(settings, 'main-hand weapon')
+                                + calc_bonus(settings));
 
-            let AD_oh = 0;
-            if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
-                AD_oh = Math.floor(
-                    0.5 * (calc_level_damage(settings[SETTINGS.MAGIC_LEVEL]) +
-                        Math.floor(
-                            9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
-                                calc_bonus(settings)
-                        ))
-                );
-            }
-
-            base_AD = AD_mh + AD_oh;
-        } else if (settings[SETTINGS.WEAPON] === 'two-hand') {
-            base_AD =
-                calc_level_damage(settings[SETTINGS.MAGIC_LEVEL]) +
-                Math.floor(0.5 * calc_level_damage(settings[SETTINGS.MAGIC_LEVEL])) +
-                Math.floor(
-                    14.4 * calc_weapon_tier(settings, 'two-hand weapon') +
-                        1.5 * calc_bonus(settings)
-                );
+        let AD_oh = 0;
+        if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
+            AD_oh = Math.floor(0.5 * Math.floor(calc_level_damage(settings)
+                                    + 9.6 * calc_weapon_tier(settings, 'off-hand weapon')
+                                    + calc_bonus(settings)));
         }
-    } else if (abils[settings['ability']]['main style'] === 'melee') {
-        if (settings[SETTINGS.WEAPON] === 'main-hand') {
-            let AD_mh =
-                calc_level_damage(settings[SETTINGS.STRENGTH_LEVEL]) +
-                Math.floor(
-                    9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
-                );
-
-            let AD_oh = 0;
-            if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
-                AD_oh = Math.floor(
-                    0.5 * (calc_level_damage(settings[SETTINGS.STRENGTH_LEVEL]) +
-                        Math.floor(
-                            9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
-                                calc_bonus(settings)
-                        ))
-                );
-            }
-
-            base_AD = AD_mh + AD_oh;
-        } else if (settings[SETTINGS.WEAPON] === 'two-hand') {
-            base_AD =
-                calc_level_damage(settings[SETTINGS.STRENGTH_LEVEL]) +
-                Math.floor(0.5 * calc_level_damage(settings[SETTINGS.STRENGTH_LEVEL])) +
-                Math.floor(9.6 * calc_weapon_tier(settings, 'two-hand weapon')) +
-                calc_bonus(settings) +
-                Math.floor(
-                    4.8 * calc_weapon_tier(settings, 'two-hand weapon') + 0.5 * calc_bonus(settings)
-                );
-        }
-    } else if (abils[settings['ability']]['main style'] === 'ranged') {
-        if (settings[SETTINGS.WEAPON] === 'main-hand') {
-            let AD_mh =
-                calc_level_damage(settings[SETTINGS.RANGED_LEVEL]) +
-                Math.floor(
-                    9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
-                );
-
-            let AD_oh = 0;
-            if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
-                AD_oh = Math.floor(
-                    0.5 * (calc_level_damage(settings[SETTINGS.RANGED_LEVEL]) +
-                        Math.floor(
-                            9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
-                                calc_bonus(settings)
-                        ))
-                );
-            }
-
-            base_AD = AD_mh + AD_oh;
-        } else if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
-            base_AD =
-                calc_level_damage(settings[SETTINGS.RANGED_LEVEL]) +
-                Math.floor(0.5 * calc_level_damage(settings[SETTINGS.RANGED_LEVEL])) +
-                Math.floor(
-                    9.6 * calc_weapon_tier(settings, 'two-hand weapon') + calc_bonus(settings)
-                ) +
-                Math.floor(
-                    4.8 * calc_weapon_tier(settings, 'two-hand weapon') + 0.5 * calc_bonus(settings)
-                );
-        }
-    } else if (abils[settings['ability']]['main style'] === 'necromancy') {
-        if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
-            let AD_mh =
-                calc_level_damage(settings[SETTINGS.NECROMANCY_LEVEL]) +
-                Math.floor(
-                    9.6 * calc_weapon_tier(settings, 'main-hand weapon') + calc_bonus(settings)
-                );
-
-            let AD_oh = 0;
-            if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
-                AD_oh = Math.floor(
-                    0.5 * (calc_level_damage(settings[SETTINGS.NECROMANCY_LEVEL]) +
-                        Math.floor(
-                            9.6 * calc_weapon_tier(settings, 'off-hand weapon') +
-                                calc_bonus(settings)
-                        ))
-                );
-            }
-
-            base_AD = AD_mh + AD_oh;
-        }
+        base_AD = AD_mh + AD_oh;
+    }
+    
+    else if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
+        base_AD = Math.floor(Math.floor(calc_level_damage(settings)
+                                + 9.6 * calc_weapon_tier(settings, 'two-hand weapon')
+                                + calc_bonus(settings)) 
+                    +
+                    Math.floor(0.5 * Math.floor(calc_level_damage(settings)
+                                    + 9.6 * calc_weapon_tier(settings, 'two-hand weapon')
+                                    + calc_bonus(settings))));
     }
     
     // base damage buffs (eruptive / equilibrium)

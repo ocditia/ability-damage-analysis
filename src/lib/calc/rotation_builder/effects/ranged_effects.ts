@@ -57,7 +57,8 @@ export function handleWenBuffActivation(
  */
 function applyBoostedADEffects(
     ctx: EffectContext,
-    distribution: DamageDistribution
+    distribution: DamageDistribution,
+    baseDamage: number
 ): BoostedADResult {
     const { settings, abilityKey } = ctx;
     let applied = false;
@@ -86,7 +87,7 @@ function applyBoostedADEffects(
         settings[SETTINGS.ICY_PRECISION] > 0
     ) {
         distribution['boosted AD'] = Math.floor(
-            distribution['boosted AD'] * 1.25
+            distribution['boosted AD'] * 1.3
         );
         applied = true;
     }

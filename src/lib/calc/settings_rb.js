@@ -706,6 +706,12 @@ const SETTINGS = {
     EQ_PERK: 'eq perk',
     FLANKING: 'flanking',
     CAROMING: 'caroming',
+    CHAIN_MODIFIER: 'chain modifier',
+    CHAIN_MODIFIER_VALUES: {
+        NONE: 'none',
+        REGULAR: 'regular',
+        GREATER: 'greater',
+    },
     RUTHLESS_RANK: 'ruthless rank',
     // Boss Specific Buffs
     TELOS_RED_BEAM: 'Telos red beam',
@@ -735,7 +741,9 @@ const SETTINGS = {
     GREATER_FLOW: 'greater flow',
     FLOW_AC: 'flow ac',
     GREATER_FLOW_AC: 'greater flow ac',
+    COMBUSTED: 'combusted',
     CONFLAGRATE: 'conflagrate',
+    GREATER_CHAIN: 'greater chain',
     KERAPACS_WRIST_WRAPS: 'kerapacs wrist wraps',
     KERAPACS_WRIST_WRAPS_VALUES: {
         NONE: 'none',
@@ -2178,6 +2186,14 @@ const settingsConfig = {
         label: 'Greater Flow (Animate Dead)',
         default: false
     },
+    [SETTINGS.COMBUSTED]: {
+        label: 'Combusted',
+        default: false
+    },
+    [SETTINGS.GREATER_CHAIN]: {
+        label: 'Greater Chain',
+        default: false
+    },
     [SETTINGS.CONFLAGRATE]: {
         label: 'Conflagrate',
         default: false
@@ -2311,6 +2327,15 @@ const settingsConfig = {
     [SETTINGS.CAROMING]: {
         label: 'Caroming',
         default: 4
+    },
+    [SETTINGS.CHAIN_MODIFIER]: {
+        label: 'Chain modifier',
+        default: SETTINGS.CHAIN_MODIFIER_VALUES.NONE,
+        options: [
+            { text: 'None', value: SETTINGS.CHAIN_MODIFIER_VALUES.NONE },
+            { text: 'Regular', value: SETTINGS.CHAIN_MODIFIER_VALUES.REGULAR },
+            { text: 'Greater', value: SETTINGS.CHAIN_MODIFIER_VALUES.GREATER },
+        ]
     },
     [SETTINGS.MH_TIER_CUSTOM]: {
         label: 'MH custom tier',

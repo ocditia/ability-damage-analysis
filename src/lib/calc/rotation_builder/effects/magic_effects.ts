@@ -12,7 +12,8 @@ import { EffectContext, BoostedADResult, StyleEffects } from './types';
  */
 function applyBoostedADEffects(
     ctx: EffectContext,
-    distribution: DamageDistribution
+    distribution: DamageDistribution,
+    baseDamage: number
 ): BoostedADResult {
     const { settings, abilityKey } = ctx;
     let applied = false;
@@ -39,6 +40,31 @@ function applyBoostedADEffects(
         distribution['boosted AD'] = Math.floor(1.3 * distribution['boosted AD']);
     }
 
+    // blast infused — magic basics get +8% of base AD added to boosted AD
+    if (abils[abilityKey]?.['main style'] === 'magic' &&
+        abils[abilityKey]?.['ability type'] === 'basic' &&
+        settings[SETTINGS.BLAST_INFUSED] === true
+    ) {
+        distribution['boosted AD'] += Math.floor(baseDamage * 80 / 1000);
+    }
+
+    // blood tithe (exsanguinate) — basics get +1% of base AD per stack
+    if (abils[abilityKey]?.['ability type'] === 'basic' && settings[SETTINGS.BLOOD_TITHE] > 0) {
+        distribution['boosted AD'] += Math.floor(baseDamage / 1000 * settings[SETTINGS.BLOOD_TITHE] * 10);
+    }
+
+    // caroming chain — reduces bounced hit damage to a percentage
+    if (settings[SETTINGS.CHAIN_MODIFIER] !== SETTINGS.CHAIN_MODIFIER_VALUES.NONE) {
+        let chainModifier = 25;
+        if (settings[SETTINGS.CHAIN_MODIFIER] === SETTINGS.CHAIN_MODIFIER_VALUES.GREATER) {
+            chainModifier = 50;
+        }
+        if (settings[SETTINGS.CAROMING] >= 1) {
+            chainModifier += 5 * (1 + settings[SETTINGS.CAROMING]);
+        }
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] / 100 * chainModifier);
+    }
+
     return { applied };
 }
 
@@ -50,6 +76,15 @@ function applyAbilitySpecificEffects(
     distribution: DamageDistribution
 ): void {
     const { settings, abilityKey } = ctx;
+
+    if (abilityKey === ABILITIES.THE_LAST_COMMAND) {
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + 0.01 * (100 - Math.max(settings[SETTINGS.TARGET_HP_PERCENT],25))));
+    }
+
+    // Dragon Breath — 25% more damage if target is combusted
+    if (abilityKey === ABILITIES.DRAGON_BREATH && settings[SETTINGS.COMBUSTED] === true) {
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.25);
+    }
 
     // Conflagrate (boosted Combust)
     if (abilityKey === ABILITIES.COMBUST && settings[SETTINGS.CONFLAGRATE] === true) {
@@ -80,14 +115,13 @@ function applyAbilitySpecificEffects(
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
     }
 
-    //TODO
-    // // greater chain half damage
-    // const gchain_not_halved = ['bleed', 'burn', 'dot'];
-    // if (
-    //     gchain_not_halved.includes(abils[settings['ability']][['ability classification']] === false)
-    // ) {
-    //     dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 0.5);
-    // }
+    // Greater chain — non-bleed/burn/dot abilities deal half damage
+    if (
+        settings[SETTINGS.GREATER_CHAIN] === true &&
+        !['bleed', 'burn', 'dot'].includes(abils[abilityKey]?.['ability classification'])
+    ) {
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 0.5);
+    }
 }
 
 /**
@@ -106,10 +140,33 @@ function applyAbilityPercentModifiers(
         distribution['var hit'] = 0.5;
     }
 
-    // Flanking - Impact (basic stun)
+    // Flanking - Impact
     if (abilityKey === ABILITIES.IMPACT) {
         distribution['min hit'] += distribution['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
         distribution['var hit'] += distribution['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
+    }
+
+    if (abilityKey === ABILITIES.ASPHYXIATE_HIT) {
+        let tumekens_resplendence = 0;
+        if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
+            tumekens_resplendence += 1;
+        }
+        if (tumekens_resplendence >= 4) {
+            distribution['min hit'] = 0.71;
+            distribution['var hit'] = 0.13;
+        }
     }
 }
 
@@ -138,7 +195,7 @@ function applyMinVarEffects(
 function applyMultiplicativeEffects(
     ctx: EffectContext,
     distribution: DamageDistribution,
-    boost: number
+    boost: number = 10000
 ): number {
     const { settings, abilityKey } = ctx;
 
@@ -152,10 +209,8 @@ function applyMultiplicativeEffects(
         boost = Math.floor(boost * 1.5);
     }
 
-    // Blood tithe (exsanguinate) - basics only
-    if (abils[abilityKey]?.['ability type'] === 'basic') {
-        boost = Math.floor(boost * (1 + settings[SETTINGS.BLOOD_TITHE] / 100));
-    }
+    // blast infused — moved to applyBoostedADEffects
+    // blood tithe — moved to applyBoostedADEffects
 
     return boost;
 }

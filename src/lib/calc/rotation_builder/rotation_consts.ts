@@ -337,7 +337,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Death Spark',
                 displaySetting: SETTINGS.SHOW_DEATH_SPARK_STACKS,
                 idx: -1,
-                image: '/effect_icons/necrosis.png',
+                image: '/effect_icons/necromancy/Death_Spark_max.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.death_spark,
                 combatStyle: SettingsCombatStyles.NECROMANCY

@@ -12,7 +12,8 @@ import { EffectContext, BoostedADResult, StyleEffects } from './types';
  */
 function applyBoostedADEffects(
     ctx: EffectContext,
-    distribution: DamageDistribution
+    distribution: DamageDistribution,
+    baseDamage: number
 ): BoostedADResult {
     const { settings, abilityKey } = ctx;
     let applied = false;
@@ -70,15 +71,17 @@ function applyAbilitySpecificEffects(
 ): void {
     const { settings, abilityKey } = ctx;
 
+    // Dismember lunging - (10 + 3 per rank)% more damage
+    if (abilityKey === ABILITIES.DISMEMBER_HIT && settings[SETTINGS.LUNGING] > 0) {
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
+    }
+    
     // Punish low HP bonus
     if (abilityKey === ABILITIES.PUNISH && settings[SETTINGS.TARGET_HP_PERCENT] <= 50) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2.5);
     }
 
-    // Dismember lunging - (10 + 3 per rank)% more damage
-    if (abilityKey === ABILITIES.DISMEMBER_HIT && settings[SETTINGS.LUNGING] > 0) {
-        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
-    }
+    
 }
 
 /**
@@ -234,6 +237,18 @@ function applyBonusDamageEffects(
     }
 }
 
+/**
+ * Consume stacks after damage has been calculated.
+ */
+function consumeStacks(ctx: EffectContext): void {
+    const { settings, abilityKey } = ctx;
+
+    // Icy Tempest — consumes all Primordial Ice stacks
+    if (abilityKey === ABILITIES.ICY_TEMPEST) {
+        settings[SETTINGS.PRIMORDIAL_ICE] = 0;
+    }
+}
+
 export const meleeEffects: StyleEffects = {
     applyBoostedADEffects,
     applyAbilitySpecificEffects,
@@ -241,5 +256,6 @@ export const meleeEffects: StyleEffects = {
     applyMinVarEffects,
     applyMultiplicativeEffects,
     applyStackEffects,
-    applyBonusDamageEffects
+    applyBonusDamageEffects,
+    consumeStacks
 };
