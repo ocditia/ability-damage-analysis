@@ -95,6 +95,7 @@ function calc_channelled_hit(settings: Record<string, any>, hit_index: number, r
             for (let hit of o) {
                 hits.push(hit);
                 handle_edraco(settings, timers, hit.ability);
+                handle_tumekens(settings, timers, hit.ability);
             }
         }
     }
@@ -199,6 +200,10 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
         case ABILITIES.RAMPAGE:
             settings[SETTINGS.RAMPAGE] = true;
             timers[SETTINGS.RAMPAGE] = 100;
+            break;
+        case ABILITIES.BARRICADE:
+            settings[SETTINGS.BARRICADE] = true;
+            timers[SETTINGS.BARRICADE] = 17 + 3 * (settings[SETTINGS.MALLETOPS] || 0); // 10s + 1.8s per malletops rank
             break;
         // Flow buffs (magic)
         case ABILITIES.SONIC_WAVE:
@@ -343,6 +348,28 @@ export function handle_edraco(settings: Record<string, any>, timers: Record<stri
 }
 
 /**
+ * Activates Tumeken's Resplendence buff after the last hit of Asphyxiate (5pc set effect).
+ * 9 second buff (15 ticks) that enhances the next Asphyxiate.
+ */
+export function handle_tumekens(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
+    if (abilityKey !== ABILITIES.ASPHYXIATE_LAST_HIT) return;
+
+    let tumekensCount = 0;
+    if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+    if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+    if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+    if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+    if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+    console.log('[handle_tumekens] tumekensCount:', tumekensCount, 'helmet:', settings[SETTINGS.MAGIC_HELMET], 'body:', settings[SETTINGS.MAGIC_BODY]);
+
+    if (tumekensCount >= 5) {
+        settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] = true;
+        timers[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] = 15; // 9s = 15 ticks
+        console.log('[handle_tumekens] BUFF ACTIVATED');
+    }
+}
+
+/**
  * Handle SGB special attack by creating additional damage objects based on target size
  * Each target size corresponds to a hit multiplier where the integer part represents
  * guaranteed hits and the fractional part represents probability of an additional hit
@@ -384,21 +411,28 @@ export function handle_sgb(settings: Record<string, any>, dmgObject: DamageObjec
 }
 
 export function get_user_value(settings: Record<string, any>, dmgObject: DamageObject) {
+    let divider = 1
+    if (settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) {
+        divider = 3;
+    }
+    divider = Math.max(divider, settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER])
+
+    
     switch (settings[SETTINGS.MODE]) {
         case SETTINGS.MODE_VALUES.MEAN:
-            return get_mean_damage(settings, dmgObject);
+            return Math.floor(get_mean_damage(settings, dmgObject)/divider);
         case SETTINGS.MODE_VALUES.MEAN_NO_CRIT:
-            return get_mean_no_crit(settings, dmgObject);
+            return Math.floor(get_mean_no_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MEAN_CRIT:
-            return get_mean_crit(settings, dmgObject);
+            return Math.floor(get_mean_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MIN_NO_CRIT:
-            return get_min_no_crit(settings, dmgObject);
+            return Math.floor(get_min_no_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MIN_CRIT:
-            return get_min_crit(settings, dmgObject);
+            return Math.floor(get_min_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MAX_NO_CRIT:
-            return get_max_no_crit(settings, dmgObject);
+            return Math.floor(get_max_no_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         case SETTINGS.MODE_VALUES.MAX_CRIT:
-            return get_max_crit(settings, dmgObject);
+            return Math.floor(get_max_crit(settings, dmgObject)/settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER]);
         default:
             return null;
     }

@@ -65,6 +65,8 @@ export const BUFF_COLORS = {
     meteor_strike_buff:       '#FF4500',
     vestments_regen:          '#521c18',
     rampage:                  '#410c00',
+    barricade:                '#C0C0C0',
+    tumekens_asphyx:          '#FFB347',
 } as const;
 
 // ─── Stack colours (rotation bar indicators) ────────────────────────────────

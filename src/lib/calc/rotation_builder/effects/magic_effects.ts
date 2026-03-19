@@ -146,7 +146,27 @@ function applyAbilityPercentModifiers(
         distribution['var hit'] += distribution['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
     }
 
-    if (abilityKey === ABILITIES.ASPHYXIATE_HIT) {
+}
+
+/**
+ * Apply magic effects that modify min/var hit (on-hit phase)
+ */
+function applyMinVarEffects(
+    ctx: EffectContext,
+    distribution: DamageDistribution
+): void {
+    const { settings, abilityKey } = ctx;
+
+    // Channeler's ring
+    if (
+        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLERS_RING &&
+        abils[abilityKey]?.['ability classification'] === 'channel'
+    ) {
+        distribution['min hit'] = Math.floor(distribution['min hit'] * 1.04);
+        distribution['var hit'] = Math.floor(distribution['var hit'] * 1.04);
+    }
+
+    if (abilityKey === ABILITIES.ASPHYXIATE_HIT || abilityKey === ABILITIES.ASPHYXIATE_LAST_HIT) {
         let tumekens_resplendence = 0;
         if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
             tumekens_resplendence += 1;
@@ -167,25 +187,6 @@ function applyAbilityPercentModifiers(
             distribution['min hit'] = 0.71;
             distribution['var hit'] = 0.13;
         }
-    }
-}
-
-/**
- * Apply magic effects that modify min/var hit (on-hit phase)
- */
-function applyMinVarEffects(
-    ctx: EffectContext,
-    distribution: DamageDistribution
-): void {
-    const { settings, abilityKey } = ctx;
-
-    // Channeler's ring
-    if (
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLERS_RING &&
-        abils[abilityKey]?.['ability classification'] === 'channel'
-    ) {
-        distribution['min hit'] = Math.floor(distribution['min hit'] * 1.04);
-        distribution['var hit'] = Math.floor(distribution['var hit'] * 1.04);
     }
 }
 

@@ -40,7 +40,7 @@ export function calculateAdditiveBoost(ctx: EffectContext): number {
         (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM ||
          settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM)
     ) {
-        boost = Math.floor(boost * 1.12);
+        boost += 0.12;
     }
 
 

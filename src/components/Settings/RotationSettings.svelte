@@ -344,7 +344,7 @@
 <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-rotation">
     <button 
         class="collapse-button-settings"
-        onclick={() => uiState.settingsPanelCollapsed = true}
+        onclick={() => { if (uiState) uiState.settingsPanelCollapsed = true; }}
     >
         → Hide
     </button>
@@ -577,7 +577,7 @@
                             bind:setting={settings[SETTINGS.NOPE]}
                             img="/effect_icons/nopenopenope.png"
                             title="Nope nope nope"
-                            max={3}
+                            max={2}
                             onchange={updateDamages}
                         />
                     </div>
@@ -643,10 +643,10 @@
                     <GearSelection {settings} {styleTab} {updateDamages} bind:openDropdown />
                 </div>
                 <div class="md:col-span-1">
-                    <PerkSelection {settings} {updateDamages} />
+                    <PerkSelection bind:settings {updateDamages} />
                 </div>
                 <div class="md:col-span-1">
-                    <FamiliarSelection {settings} {updateDamages} bind:openDropdown onFamiliarChange={recalcFamiliarAccuracy} />
+                    <FamiliarSelection bind:settings {updateDamages} bind:openDropdown onFamiliarChange={recalcFamiliarAccuracy} />
                 </div>
                 
             {:else if tab === 'bosses'}
@@ -695,7 +695,7 @@
                                     {#if settings[SETTINGS.FAMILIAR]?.value && settings[SETTINGS.FAMILIAR].value !== 'none'}
                                         <p class="text-amber-400">Familiar hit chance: {settings[SETTINGS.FAMILIAR_ACCURACY]?.value ?? '?'}%</p>
                                     {/if}
-                                    {#if baseBoss?.phases?.some(p => p.attackPattern)}
+                                    {#if boss?.phases?.some(p => p.attackPattern)}
                                         <div class="flex items-center gap-2 mt-2">
                                             <label class="text-xs text-gray-400 whitespace-nowrap">Pattern start tick:</label>
                                             <input type="number"
@@ -705,7 +705,7 @@
                                                 class="w-16 text-xs text-center bg-gray-800 border border-gray-600 rounded px-1 py-0.5 text-white"
                                             />
                                         </div>
-                                        {#each baseBoss.phases as phase, i}
+                                        {#each boss.phases as phase, i}
                                             {#if phase.attackPattern}
                                                 <p class="text-purple-400 text-xs">P{i + 1}: {phase.attackPattern.cycle.map(a => a.label ?? a.name).join(' → ')}</p>
                                             {/if}

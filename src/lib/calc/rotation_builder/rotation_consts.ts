@@ -36,6 +36,8 @@ export const buffs = [
     SETTINGS.FLOW_AC,
     SETTINGS.GREATER_FLOW_AC,
     SETTINGS.ANIMA_CHARGED,
+    SETTINGS.BARRICADE,
+    SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX,
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -243,6 +245,20 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#a855f7'
+            },
+            [SETTINGS.BARRICADE]: {
+                title: 'Barricade',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: BUFF_COLORS.barricade
+            },
+            [SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX]: {
+                title: "Tumeken's Resplendence",
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: BUFF_COLORS.tumekens_asphyx
             }
         }
     )
