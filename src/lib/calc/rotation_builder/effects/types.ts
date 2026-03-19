@@ -39,7 +39,8 @@ export interface StyleEffects {
      */
     applyBoostedADEffects: (
         ctx: EffectContext,
-        distribution: DamageDistribution
+        distribution: DamageDistribution,
+        baseDamage: number
     ) => BoostedADResult;
 
     /**
@@ -93,4 +94,12 @@ export interface StyleEffects {
         ctx: EffectContext,
         distribution: DamageDistribution
     ) => void;
+
+    /**
+     * Consume stacks after damage has been calculated.
+     * Called after on_hit, so stacks were available for damage calculation
+     * but are now spent. Handles residual souls, necrosis, conc stacks, etc.
+     * Optional — styles without stack consumption can omit this.
+     */
+    consumeStacks?: (ctx: EffectContext) => void;
 }

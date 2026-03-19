@@ -10,6 +10,7 @@ import {
     applyStyleAbilitySpecificEffects,
     applyStyleAbilityPercentModifiers,
     applyStyleStackEffects,
+    consumeStyleStacks,
     applyStyleBonusDamageEffects,
     applyStyleMinVarEffects,
     applyStyleMultiplicativeEffects,
@@ -118,13 +119,14 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
     // Handle Wen buff consumption for ranged abilities
     handleWenBuffConsumption(settings, timers, abilityKey);
     // TODO - accuracy (including offstyle gear penalty and ingen)
+    const baseDamage = settings[SETTINGS.ABILITY_DAMAGE];
     const effectCtx: EffectContext = { settings, abilityKey };
     const cleanupFunctions: Array<() => void> = [];
 
     iterateDistributions(dmgObject, (distribution) => {
         // Apply style-specific boosted AD effects (weapons, flow stacks, chaos roar, etc.)
         // Also applies shared pocket effects (Scripture of Amascut)
-        const result = applyStyleBoostedADEffects(effectCtx, distribution);
+        const result = applyStyleBoostedADEffects(effectCtx, distribution, baseDamage);
         if (result.cleanup) {
             cleanupFunctions.push(result.cleanup);
         }
@@ -221,6 +223,9 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
 
     // Apply style-specific stack effects (wen, bik, residual souls, necrosis)
     applyStyleStackEffects(effectCtx);
+
+    // Consume stacks that were used for this ability's damage
+    consumeStyleStacks(effectCtx);
 
     // Piercing Shot: each hit reduces Snipe cooldown by 4 ticks
     if ((abilityKey === ABILITIES.PIERCING_SHOT || abilityKey === ABILITIES.PIERCING_SHOT_HIT) && timers[COOLDOWN_PREFIX + ABILITIES.SNIPE] > 0) {
@@ -431,7 +436,6 @@ function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string,
             const necrosis = settings[SETTINGS.NECROSIS_STACKS] || 0;
             const consumed = Math.min(necrosis, 6);
             cost = Math.max(0, cost - consumed * 10);
-            settings[SETTINGS.NECROSIS_STACKS] = necrosis - consumed;
         }
         addAdrenaline(settings, -cost);
     }
@@ -440,6 +444,11 @@ function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string,
         const multi = settings[SETTINGS.VIGOUR] ? 0.9 : 1;
         cost *= multi;
         if (flowReduction > 0) cost = Math.max(0, Math.floor(cost - flowReduction));
+
+        if (abilityKey === ABILITIES.ICY_TEMPEST) {
+            const prim_ice = settings[SETTINGS.PRIMORDIAL_ICE] || 0;
+            cost = Math.max(0, cost - prim_ice * 12);
+        }
         addAdrenaline(settings, -cost);
     }
 }
@@ -492,12 +501,7 @@ function set_min_var(settings: Record<string, any>, dmgObject: DamageObject) {
         applyStyleAbilityPercentModifiers(ctx, distribution);
 
         // 3. Shared effects (not style-specific)
-        // Ultimatums: all ultimates gain (3 + 1 per rank)% base damage
-        if (settings[SETTINGS.ULTIMATUMS] > 0 && abils[abilityKey]?.['ability type'] === 'ultimate') {
-            const mult = 1 + (0.03 + 0.01 * settings[SETTINGS.ULTIMATUMS]);
-            distribution['min hit'] *= mult;
-            distribution['var hit'] *= mult;
-        }
+        // Ultimatums — moved to applyBoostedADEffects (shared, in effects/index.ts)
 
         if (abilityKey === ABILITIES.AFTERSHOCK_MAGIC || abilityKey === ABILITIES.AFTERSHOCK_MELEE ||
             abilityKey === ABILITIES.AFTERSHOCK_RANGED || abilityKey === ABILITIES.AFTERSHOCK_NECRO) {
@@ -560,10 +564,7 @@ function splitAbilityIntoHits(
             }
         }
 
-        // Consume residual souls after Volley of Souls cast
-        if (abilityKey === ABILITIES.VOLLEY_OF_SOULS_DYNAMIC && settings[SETTINGS.RESIDUAL_SOULS] >= 2) {
-            settings[SETTINGS.RESIDUAL_SOULS] = 0;
-        }
+        // Residual soul consumption now handled by consumeStacks in necromancy_effects.ts
     }
     else if (['bleed', 'burn', 'dot'].includes(classification)) {
         let n_hits = abils[abilityKey]['hits'][1].length;

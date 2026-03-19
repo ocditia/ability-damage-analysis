@@ -33,11 +33,12 @@ export function getConjureDuration(settings: Record<string, any>): number {
 export function countTFNPieces(settings: Record<string, any>): number {
     let count = 0;
     if (settings[SETTINGS.NECRO_HELMET] === SETTINGS.NECRO_HELMET_VALUES.TFN) count++;
+    else if (settings[SETTINGS.NECRO_HELMET] === SETTINGS.NECRO_HELMET_VALUES.TFN_ADDON) count += 2;
     if (settings[SETTINGS.NECRO_BODY] === SETTINGS.NECRO_BODY_VALUES.TFN) count++;
     if (settings[SETTINGS.NECRO_LEGS] === SETTINGS.NECRO_LEGS_VALUES.TFN) count++;
     if (settings[SETTINGS.NECRO_GLOVES] === SETTINGS.NECRO_GLOVES_VALUES.TFN) count++;
     if (settings[SETTINGS.NECRO_BOOTS] === SETTINGS.NECRO_BOOTS_VALUES.TFN) count++;
-    return count;
+    return Math.min(count, 5);
 }
 
 /**

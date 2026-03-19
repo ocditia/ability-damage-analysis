@@ -8,6 +8,7 @@
     import FamiliarSelection from '../../components/Settings/FamiliarSelection.svelte';
     import TabButton from '../UI/TabButton.svelte';
     import GradientSeparator from '../UI/GradientSeparator.svelte';
+    import ToggleButton from '../UI/ToggleButton.svelte';
     import { SETTINGS } from '$lib/calc/settings_rb';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
@@ -42,16 +43,14 @@
         [SETTINGS.GLACIAL_EMBRACE]: 5,
         [SETTINGS.ESSENCE_CORRUPTION]: 100,
         [SETTINGS.PRIMORDIAL_ICE]: 10,
-        [SETTINGS.NECROSIS_STACKS]: 12,
         [SETTINGS.ADRENALINE]: maxAdrenaline,
         [SETTINGS.FAMILIAR_SPEC_POINTS]: 60,
-    });
-    const buffLimits = {
-        [SETTINGS.STONE_OF_JAS]: 6,
-        [SETTINGS.BERSERKERS_FURY]: 5.5,
-        [SETTINGS.INFERNAL_PUZZLE_BOX]: 6,
-    };
 
+
+        [SETTINGS.NECROSIS_STACKS]: 12,
+        [SETTINGS.DEATH_SPARK_STACKS]: 5,
+        [SETTINGS.SOUL_REAVE_STACKS]: 4,
+    });
     function clampStack(key, val) {
         const v = parseInt(val) || 0;
         const max = stackLimits[key] ?? 999;
@@ -537,93 +536,50 @@
                             { key: SETTINGS.REAPER_CREW, img: '/effect_icons/death.png', title: 'Reaper Crew', toggle: true },
                             { key: SETTINGS.SWIFTNESS_OF_THE_AVIANSIE, img: '/effect_icons/swiftness_of_the_avianse.png', title: 'Swiftness of the Aviansie', toggle: true },
                             { key: SETTINGS.SMOKE_CLOUD, img: '/effect_icons/smoke_cloud.png', title: 'Smoke Cloud', toggle: true },
-                            { key: SETTINGS.STONE_OF_JAS, img: '/effect_icons/stone_of_jas.png', title: 'Stone of Jas', step: 1 },
-                            { key: SETTINGS.BERSERKERS_FURY, img: '/effect_icons/berserkers_fury.png', title: "Berserker's Fury", step: 0.5 },
-                            { key: SETTINGS.INFERNAL_PUZZLE_BOX, img: '/effect_icons/infernal_puzzlebox.png', title: 'Infernal Puzzle Box', step: 1 },
+                            { key: SETTINGS.STONE_OF_JAS, img: '/effect_icons/stone_of_jas.png', title: 'Stone of Jas', step: 1, max: 6 },
+                            { key: SETTINGS.BERSERKERS_FURY, img: '/effect_icons/berserkers_fury.png', title: "Berserker's Fury", step: 0.5, max: 5.5 },
+                            { key: SETTINGS.INFERNAL_PUZZLE_BOX, img: '/effect_icons/infernal_puzzlebox.png', title: 'Infernal Puzzle Box', step: 1, max: 6 },
                         ] as buff}
-                            <button
-                                type="button"
-                                class="stack-toggle"
-                                class:stack-active={buff.toggle ? settings[buff.key]?.value : settings[buff.key]?.value > 0}
-                                title="{buff.title}{buff.toggle ? '' : ' (right-click to set, scroll to adjust)'}"
-                                onclick={() => { if (buff.toggle) { settings[buff.key].value = !settings[buff.key].value; } else { settings[buff.key].value = settings[buff.key].value > 0 ? 0 : (buff.step ?? 1); } updateDamages(); }}
-                                oncontextmenu={(e) => { if (!buff.toggle) { e.preventDefault(); editingStack = editingStack === buff.key ? null : buff.key; } }}
-                                onwheel={(e) => { if (!buff.toggle) { e.preventDefault(); const curr = settings[buff.key]?.value ?? 0; const step = buff.step ?? 1; const next = curr + (e.deltaY < 0 ? step : -step); const max = buffLimits[buff.key] ?? 999; settings[buff.key].value = Math.max(0, Math.min(max, Math.round(next * 10) / 10)); updateDamages(); } }}
-                            >
-                                <img src={buff.img} alt={buff.title} class="w-7 h-7" />
-                                {#if !buff.toggle && settings[buff.key] != null}
-                                    <span class="stack-count">{settings[buff.key].value ?? 0}</span>
-                                {/if}
-                                {#if !buff.toggle && editingStack === buff.key}
-                                    <input
-                                        type="number"
-                                        class="stack-edit"
-                                        value={settings[buff.key]?.value ?? 0}
-                                        min="0"
-                                        step={buff.step ?? 1}
-                                        oninput={(e) => { const max = buffLimits[buff.key] ?? 999; settings[buff.key].value = Math.max(0, Math.min(max, parseFloat(e.target.value) || 0)); updateDamages(); }}
-                                        onblur={() => { editingStack = null; }}
-                                        onkeydown={(e) => { if (e.key === 'Enter') editingStack = null; }}
-                                        onclick={(e) => e.stopPropagation()}
-                                        use:focusOnMount
-                                    />
-                                {/if}
-                            </button>
+                            <ToggleButton
+                                bind:setting={settings[buff.key]}
+                                img={buff.img}
+                                title={buff.title}
+                                toggle={buff.toggle ?? false}
+                                step={buff.step ?? 1}
+                                max={buff.max}
+                                onchange={updateDamages}
+                            />
                         {/each}
                     </div>
                     <div class="flex flex-wrap gap-2 justify-center my-2">
-                        <button
-                            type="button"
-                            class="stack-toggle"
-                            class:stack-active={settings[SETTINGS.VULN]?.value && settings[SETTINGS.VULN]?.value !== SETTINGS.VULN_VALUES.NONE}
-                            title="Vulnerability: {settings[SETTINGS.VULN]?.value ?? 'none'} (click to cycle)"
-                            onclick={() => { const order = [SETTINGS.VULN_VALUES.NONE, SETTINGS.VULN_VALUES.CURSE, SETTINGS.VULN_VALUES.VULNERABILITY]; const idx = order.indexOf(settings[SETTINGS.VULN].value); settings[SETTINGS.VULN].value = order[(idx + 1) % order.length]; updateDamages(); }}
-                        >
-                            <img src={settings[SETTINGS.VULN]?.value === SETTINGS.VULN_VALUES.CURSE ? '/effect_icons/magic/Curse_icon.png' : '/effect_icons/magic/Vulnerability_icon.webp'} alt="Vulnerability" class="w-7 h-7" />
-                            {#if settings[SETTINGS.VULN]?.value && settings[SETTINGS.VULN]?.value !== SETTINGS.VULN_VALUES.NONE}
-                                <span class="stack-count">{settings[SETTINGS.VULN].value === SETTINGS.VULN_VALUES.CURSE ? 'C' : 'V'}</span>
-                            {/if}
-                        </button>
-                        <button
-                            type="button"
-                            class="stack-toggle"
-                            class:stack-active={settings[SETTINGS.POISON]?.value && settings[SETTINGS.POISON]?.value !== SETTINGS.POISON_VALUES.NONE}
-                            title="Poison: {settings[SETTINGS.POISON]?.value ?? 'none'} (click to cycle)"
-                            onclick={() => { const order = [SETTINGS.POISON_VALUES.NONE, SETTINGS.POISON_VALUES.WEAPON_POISON0, SETTINGS.POISON_VALUES.WEAPON_POISON1, SETTINGS.POISON_VALUES.WEAPON_POISON2, SETTINGS.POISON_VALUES.WEAPON_POISON3]; const idx = order.indexOf(settings[SETTINGS.POISON].value); settings[SETTINGS.POISON].value = order[(idx + 1) % order.length]; updateDamages(); }}
-                        >
-                            <img src="/effect_icons/poison.png" alt="Poison" class="w-7 h-7" />
-                            {#if settings[SETTINGS.POISON]?.value && settings[SETTINGS.POISON]?.value !== SETTINGS.POISON_VALUES.NONE}
-                                <span class="stack-count">{'+'.repeat([SETTINGS.POISON_VALUES.WEAPON_POISON1, SETTINGS.POISON_VALUES.WEAPON_POISON2, SETTINGS.POISON_VALUES.WEAPON_POISON3].indexOf(settings[SETTINGS.POISON].value) + 1) || '0'}</span>
-                            {/if}
-                        </button>
-                        <button
-                            type="button"
-                            class="stack-toggle"
-                            class:stack-active={settings[SETTINGS.NOPE]?.value > 0}
-                            title="Nope nope nope (right-click to set, scroll to adjust)"
-                            onclick={() => { settings[SETTINGS.NOPE].value = settings[SETTINGS.NOPE].value > 0 ? 0 : 1; updateDamages(); }}
-                            oncontextmenu={(e) => { e.preventDefault(); editingStack = editingStack === SETTINGS.NOPE ? null : SETTINGS.NOPE; }}
-                            onwheel={(e) => { e.preventDefault(); const curr = settings[SETTINGS.NOPE]?.value ?? 0; settings[SETTINGS.NOPE].value = Math.max(0, Math.min(3, curr + (e.deltaY < 0 ? 1 : -1))); updateDamages(); }}
-                        >
-                            <img src="/effect_icons/nopenopenope.png" alt="Nope nope nope" class="w-7 h-7" />
-                            {#if settings[SETTINGS.NOPE] != null}
-                                <span class="stack-count">{settings[SETTINGS.NOPE].value ?? 0}</span>
-                            {/if}
-                            {#if editingStack === SETTINGS.NOPE}
-                                <input
-                                    type="number"
-                                    class="stack-edit"
-                                    value={settings[SETTINGS.NOPE]?.value ?? 0}
-                                    min="0"
-                                    max="3"
-                                    oninput={(e) => { settings[SETTINGS.NOPE].value = Math.max(0, Math.min(3, parseInt(e.target.value) || 0)); updateDamages(); }}
-                                    onblur={() => { editingStack = null; }}
-                                    onkeydown={(e) => { if (e.key === 'Enter') editingStack = null; }}
-                                    onclick={(e) => e.stopPropagation()}
-                                    use:focusOnMount
-                                />
-                            {/if}
-                        </button>
+                        <ToggleButton
+                            bind:setting={settings[SETTINGS.VULN]}
+                            img={(v) => v === SETTINGS.VULN_VALUES.CURSE ? '/effect_icons/magic/Curse_icon.png' : '/effect_icons/magic/Vulnerability_icon.webp'}
+                            title="Vulnerability (click to cycle)"
+                            cycle={[SETTINGS.VULN_VALUES.NONE, SETTINGS.VULN_VALUES.CURSE, SETTINGS.VULN_VALUES.VULNERABILITY]}
+                            badgeFn={(v) => v === SETTINGS.VULN_VALUES.CURSE ? 'C' : v === SETTINGS.VULN_VALUES.VULNERABILITY ? 'V' : null}
+                            onchange={updateDamages}
+                        />
+                        <ToggleButton
+                            bind:setting={settings[SETTINGS.POISON]}
+                            img="/effect_icons/poison.png"
+                            title="Poison (click to cycle)"
+                            cycle={[SETTINGS.POISON_VALUES.NONE, SETTINGS.POISON_VALUES.WEAPON_POISON0, SETTINGS.POISON_VALUES.WEAPON_POISON1, SETTINGS.POISON_VALUES.WEAPON_POISON2, SETTINGS.POISON_VALUES.WEAPON_POISON3]}
+                            badgeFn={(v) => {
+                                if (!v || v === SETTINGS.POISON_VALUES.NONE) return null;
+                                const levels = [SETTINGS.POISON_VALUES.WEAPON_POISON0, SETTINGS.POISON_VALUES.WEAPON_POISON1, SETTINGS.POISON_VALUES.WEAPON_POISON2, SETTINGS.POISON_VALUES.WEAPON_POISON3];
+                                const idx = levels.indexOf(v);
+                                return idx >= 0 ? '+'.repeat(idx) || '0' : null;
+                            }}
+                            onchange={updateDamages}
+                        />
+                        <ToggleButton
+                            bind:setting={settings[SETTINGS.NOPE]}
+                            img="/effect_icons/nopenopenope.png"
+                            title="Nope nope nope"
+                            max={3}
+                            onchange={updateDamages}
+                        />
                     </div>
                 </div>
                 <div class="md:col-span-1" space-y-2>
@@ -672,15 +628,13 @@
                             { key: SETTINGS.HEIGHTENED_SENSES, img: '/effect_icons/Heightened Senses.png', title: 'Heightened Senses' },
                             { key: SETTINGS.EXPECTED_ADRENALINE, img: 'settings_icons/Animal_trait_re-roller.png', title: 'Expected Adrenaline' },
                         ] as toggle}
-                            <button
-                                type="button"
-                                class="stack-toggle"
-                                class:stack-active={settings[toggle.key]?.value}
+                            <ToggleButton
+                                bind:setting={settings[toggle.key]}
+                                img={toggle.img}
                                 title={toggle.title}
-                                onclick={() => { settings[toggle.key].value = !settings[toggle.key].value; updateDamages(); }}
-                            >
-                                <img src={toggle.img} alt={toggle.title} class="w-7 h-7" />
-                            </button>
+                                toggle={true}
+                                onchange={updateDamages}
+                            />
                         {/each}
                     </div>
                 </div>
@@ -841,26 +795,6 @@
         max-height: 200px;
         overflow-y: auto;
         margin-top: 2px;
-    }
-    .gear-badge-img {
-        position: absolute;
-        bottom: -2px;
-        right: -2px;
-        width: 14px;
-        height: 14px;
-        border-radius: 3px;
-    }
-    .stack-label {
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        font-size: 0.5rem;
-        font-weight: bold;
-        color: white;
-        background: rgba(0, 0, 0, 0.7);
-        border-radius: 3px;
-        padding: 0 3px;
-        line-height: 1.2;
     }
     .icon-dropdown-item {
         display: block;

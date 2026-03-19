@@ -5,6 +5,7 @@
 import { ABILITIES, abils } from '../../const/const';
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
+import { countTFNPieces } from '../rotation_damage_helper';
 import { EffectContext, BoostedADResult, StyleEffects } from './types';
 
 /**
@@ -13,9 +14,27 @@ import { EffectContext, BoostedADResult, StyleEffects } from './types';
  */
 function applyBoostedADEffects(
     ctx: EffectContext,
-    distribution: DamageDistribution
+    distribution: DamageDistribution,
+    baseDamage: number
 ): BoostedADResult {
-    // Necromancy has no (known) weapon buffs that modify boosted AD
+    const { settings, abilityKey } = ctx;
+
+    // Conjure abilities: TFN set effect + Conjurer's Raising Amulet, then early return
+    if (abils[abilityKey]?.['ability type'] === 'conjure') {
+        let conjBoost = 0;
+        const tfnPieces = countTFNPieces(settings);
+        if (tfnPieces >= 2) {
+            conjBoost += 0.07 * tfnPieces;
+        }
+        if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.MOONSTONE) {
+            conjBoost += 0.05;
+        }
+        if (conjBoost > 0) {
+            distribution['boosted AD'] = Math.floor((1 + conjBoost) * distribution['boosted AD']);
+            return { applied: true };
+        }
+    }
+
     return { applied: false };
 }
 
@@ -88,8 +107,7 @@ function applyMinVarEffects(
 ): void {
     const { settings, abilityKey } = ctx;
 
-    // First Necromancer's equipment set effect
-    // (Add when set bonus is confirmed)
+    // First Necromancer's equipment set effect ?
 }
 
 /**
@@ -180,28 +198,38 @@ function applyBonusDamageEffects(
 }
 
 /**
- * Consume residual souls for Volley of Souls
- * Called from on_cast after hit sequence is determined
+ * Consume stacks after damage has been calculated.
+ * Handles residual souls and necrosis stacks.
  */
-export function consumeResidualSouls(settings: Record<string, any>): void {
-    if (settings[SETTINGS.RESIDUAL_SOULS] >= 2) {
+function consumeStacks(ctx: EffectContext): void {
+    const { settings, abilityKey } = ctx;
+
+    // Volley of Souls — consumes all residual souls
+    if (abilityKey === ABILITIES.VOLLEY_OF_SOULS_DYNAMIC && (settings[SETTINGS.RESIDUAL_SOULS] || 0) >= 2) {
         settings[SETTINGS.RESIDUAL_SOULS] = 0;
     }
-}
 
-/**
- * Check if Volley of Souls can be cast
- */
-export function canCastVolleyOfSouls(settings: Record<string, any>): boolean {
-    return (settings[SETTINGS.RESIDUAL_SOULS] || 0) >= 2;
-}
+    // Soul Crush — consumes all residual souls
+    if (abilityKey === ABILITIES.SOUL_CRUSH) {
+        settings[SETTINGS.RESIDUAL_SOULS] = 0;
+    }
 
-/**
- * Get the number of hits for Volley of Souls based on residual souls
- */
-export function getVolleyOfSoulsHitCount(settings: Record<string, any>): number {
-    const souls = settings[SETTINGS.RESIDUAL_SOULS] || 0;
-    return souls >= 2 ? souls : 0;
+    // Soul Strike — consumes 1 residual soul
+    if (abilityKey === ABILITIES.SOUL_STRIKE && (settings[SETTINGS.RESIDUAL_SOULS] || 0) > 0) {
+        settings[SETTINGS.RESIDUAL_SOULS] -= 1;
+    }
+
+    // Finger of Death — consumes up to 6 necrosis stacks
+    if (abilityKey === ABILITIES.FINGER_OF_DEATH) {
+        const necrosis = settings[SETTINGS.NECROSIS_STACKS] || 0;
+        const consumed = Math.min(necrosis, 6);
+        settings[SETTINGS.NECROSIS_STACKS] = necrosis - consumed;
+    }
+
+    // Death Grasp — consumes all residual souls
+    if (abilityKey === ABILITIES.DEATH_GRASP) {
+        settings[SETTINGS.NECROSIS_STACKS] = 0;
+    }
 }
 
 export const necromancyEffects: StyleEffects = {
@@ -211,5 +239,6 @@ export const necromancyEffects: StyleEffects = {
     applyMinVarEffects,
     applyMultiplicativeEffects,
     applyStackEffects,
-    applyBonusDamageEffects
-};
+    applyBonusDamageEffects,
+    consumeStacks
+}

@@ -1,27 +1,8 @@
 <script>
     import { SETTINGS } from '$lib/calc/settings_rb';
+    import ToggleButton from '../UI/ToggleButton.svelte';
 
     let { settings, updateDamages } = $props();
-
-    let editingStack = $state(null);
-    function focusOnMount(node) { node.focus(); node.select(); }
-
-    // Long-press support for mobile (opens edit input like right-click)
-    let longPressTimer = null;
-    let longPressFired = false;
-    function onTouchStart(e, key, toggle) {
-        if (toggle) return;
-        longPressFired = false;
-        longPressTimer = setTimeout(() => {
-            longPressFired = true;
-            e.preventDefault();
-            editingStack = editingStack === key ? null : key;
-        }, 400);
-    }
-    function onTouchEnd(e) {
-        if (longPressFired) e.preventDefault();
-        clearTimeout(longPressTimer);
-    }
 
     const perks = [
         { key: SETTINGS.PRECISE, img: '/effect_icons/perks/Precise.webp', title: 'Precise', step: 1, max: 6 },
@@ -51,128 +32,28 @@
 <div class="flex flex-wrap gap-2 justify-center mb-3">
     {#each perks as perk}
         {#if settings[perk.key] != null}
-        <button
-            type="button"
-            class="stack-toggle"
-            class:stack-active={perk.toggle ? settings[perk.key]?.value : settings[perk.key]?.value > 0}
-            title="{perk.title}{perk.toggle ? '' : ' (right-click to set, scroll to adjust)'}"
-            onclick={() => { if (longPressFired) return; if (perk.toggle) { settings[perk.key].value = !settings[perk.key].value; } else { settings[perk.key].value = settings[perk.key].value > 0 ? 0 : (perk.max ?? perk.step ?? 1); } updateDamages(); }}
-            oncontextmenu={(e) => { if (!perk.toggle) { e.preventDefault(); editingStack = editingStack === perk.key ? null : perk.key; } }}
-            onwheel={(e) => { if (!perk.toggle) { e.preventDefault(); const curr = settings[perk.key]?.value ?? 0; const step = perk.step ?? 1; const max = perk.max ?? 999; settings[perk.key].value = Math.max(0, Math.min(max, Math.round((curr + (e.deltaY < 0 ? step : -step)) * 10) / 10)); updateDamages(); } }}
-            ontouchstart={(e) => onTouchStart(e, perk.key, perk.toggle)}
-            ontouchend={(e) => onTouchEnd(e)}
-            ontouchcancel={onTouchEnd}
-        >
-            <img src={perk.img} alt={perk.title} class="w-7 h-7" />
-            {#if !perk.toggle && settings[perk.key] != null}
-                <span class="stack-count">{settings[perk.key].value ?? 0}</span>
-            {/if}
-            {#if !perk.toggle && editingStack === perk.key}
-                <input
-                    type="number"
-                    class="stack-edit"
-                    value={settings[perk.key]?.value ?? 0}
-                    min="0"
-                    max={perk.max ?? 999}
-                    step={perk.step ?? 1}
-                    oninput={(e) => { const max = perk.max ?? 999; settings[perk.key].value = Math.max(0, Math.min(max, parseFloat(e.target.value) || 0)); updateDamages(); }}
-                    onblur={() => { editingStack = null; }}
-                    onkeydown={(e) => { if (e.key === 'Enter') editingStack = null; }}
-                    onclick={(e) => e.stopPropagation()}
-                    use:focusOnMount
-                />
-            {/if}
-        </button>
+            <ToggleButton
+                bind:setting={settings[perk.key]}
+                img={perk.img}
+                title={perk.title}
+                toggle={perk.toggle ?? false}
+                step={perk.step ?? 1}
+                max={perk.max}
+                onchange={updateDamages}
+            />
         {/if}
     {/each}
     {#each ruthlessPerks as perk}
         {#if settings[perk.key] != null}
-        <button
-            type="button"
-            class="stack-toggle"
-            class:stack-active={settings[perk.key]?.value > 0}
-            title="{perk.title} (right-click to set, scroll to adjust)"
-            onclick={() => { if (longPressFired) return; settings[perk.key].value = settings[perk.key].value > 0 ? 0 : (perk.max ?? 1); updateDamages(); }}
-            oncontextmenu={(e) => { e.preventDefault(); editingStack = editingStack === perk.key ? null : perk.key; }}
-            onwheel={(e) => { e.preventDefault(); const curr = settings[perk.key]?.value ?? 0; settings[perk.key].value = Math.max(0, Math.min(perk.max, curr + (e.deltaY < 0 ? 1 : -1))); updateDamages(); }}
-            ontouchstart={(e) => onTouchStart(e, perk.key, false)}
-            ontouchend={(e) => onTouchEnd(e)}
-            ontouchcancel={onTouchEnd}
-        >
-            <span class="stack-label">{perk.label}</span>
-            <img src={perk.img} alt={perk.title} class="w-7 h-7" />
-            <span class="stack-count">{settings[perk.key]?.value ?? 0}</span>
-            {#if editingStack === perk.key}
-                <input
-                    type="number"
-                    class="stack-edit"
-                    value={settings[perk.key]?.value ?? 0}
-                    min="0"
-                    max={perk.max}
-                    oninput={(e) => { settings[perk.key].value = Math.max(0, Math.min(perk.max, parseInt(e.target.value) || 0)); updateDamages(); }}
-                    onblur={() => { editingStack = null; }}
-                    onkeydown={(e) => { if (e.key === 'Enter') editingStack = null; }}
-                    onclick={(e) => e.stopPropagation()}
-                    use:focusOnMount
-                />
-            {/if}
-        </button>
+            <ToggleButton
+                bind:setting={settings[perk.key]}
+                img={perk.img}
+                title={perk.title}
+                step={perk.step}
+                max={perk.max}
+                label={perk.label}
+                onchange={updateDamages}
+            />
         {/if}
     {/each}
 </div>
-
-<style>
-    .stack-toggle {
-        position: relative;
-        padding: 4px;
-        border: 2px solid transparent;
-        border-radius: 6px;
-        opacity: 0.4;
-        cursor: pointer;
-        transition: all 0.15s ease;
-        background: none;
-    }
-    .stack-toggle:hover { opacity: 0.7; }
-    .stack-active { opacity: 1; border-color: #4ade80; }
-    .stack-count {
-        position: absolute;
-        bottom: -2px;
-        right: -2px;
-        font-size: 0.6rem;
-        font-weight: bold;
-        color: white;
-        background: rgba(0, 0, 0, 0.7);
-        border-radius: 3px;
-        padding: 0 3px;
-        line-height: 1.2;
-    }
-    .stack-label {
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        font-size: 0.5rem;
-        font-weight: bold;
-        color: white;
-        background: rgba(0, 0, 0, 0.7);
-        border-radius: 3px;
-        padding: 0 3px;
-        line-height: 1.2;
-    }
-    .stack-edit {
-        position: absolute;
-        bottom: -24px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 40px;
-        height: 20px;
-        font-size: 0.7rem;
-        text-align: center;
-        background: #1e293b;
-        color: white;
-        border: 1px solid #4ade80;
-        border-radius: 4px;
-        z-index: 10;
-        -moz-appearance: textfield;
-    }
-    .stack-edit::-webkit-inner-spin-button { display: none; }
-</style>

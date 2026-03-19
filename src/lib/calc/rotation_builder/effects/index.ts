@@ -13,13 +13,13 @@ import { EffectContext, BoostedADResult, StyleEffects } from './types';
 import { magicEffects } from './magic_effects';
 import { meleeEffects } from './melee_effects';
 import { rangedEffects, handleWenBuffActivation } from './ranged_effects';
-import { necromancyEffects, consumeResidualSouls, canCastVolleyOfSouls, getVolleyOfSoulsHitCount } from './necromancy_effects';
+import { necromancyEffects } from './necromancy_effects';
 
 // Re-export types
 export * from './types';
 
 // Re-export necromancy utility functions
-export { consumeResidualSouls, canCastVolleyOfSouls, getVolleyOfSoulsHitCount };
+export { };
 
 // Re-export ranged utility functions
 export { handleWenBuffActivation as handleWenBuffConsumption };
@@ -94,7 +94,8 @@ export function getStyleEffects(style: CombatStyle): StyleEffects {
  */
 export function applyStyleBoostedADEffects(
     ctx: EffectContext,
-    distribution: DamageDistribution
+    distribution: DamageDistribution,
+    baseDamage: number
 ): BoostedADResult {
     const { settings } = ctx;
     let result: BoostedADResult = { applied: false };
@@ -102,12 +103,18 @@ export function applyStyleBoostedADEffects(
     // Apply style-specific effects
     const style = getAbilityStyle(ctx.abilityKey);
     if (style) {
-        result = styleEffectsMap[style].applyBoostedADEffects(ctx, distribution);
+        result = styleEffectsMap[style].applyBoostedADEffects(ctx, distribution, baseDamage);
     }
 
     // Scripture of Amascut (shared across all styles, +10% boosted AD)
     if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.AMASCUT) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.1);
+        result.applied = true;
+    }
+
+    // Ultimatums perk: ultimates gain (3 + 1 per rank)% boosted AD
+    if (settings[SETTINGS.ULTIMATUMS] > 0 && abils[ctx.abilityKey]?.['ability type'] === 'ultimate') {
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] / 100 * (100 + 3 + settings[SETTINGS.ULTIMATUMS]));
         result.applied = true;
     }
 
@@ -215,6 +222,17 @@ export function applyStyleStackEffects(ctx: EffectContext): void {
 }
 
 /**
+ * Consume stacks after damage has been calculated for the ability's combat style.
+ * Optional — only fires if the style implements consumeStacks.
+ */
+export function consumeStyleStacks(ctx: EffectContext): void {
+    const style = getAbilityStyle(ctx.abilityKey);
+    if (style && styleEffectsMap[style].consumeStacks) {
+        styleEffectsMap[style].consumeStacks(ctx);
+    }
+}
+
+/**
  * Apply bonus damage effects for the ability's combat style
  */
 export function applyStyleBonusDamageEffects(
@@ -232,13 +250,14 @@ export function applyStyleBonusDamageEffects(
  */
 export function collectCleanupFunctions(
     ctx: EffectContext,
-    distribution: DamageDistribution
+    distribution: DamageDistribution,
+    baseDamage: number
 ): Array<() => void> {
     const cleanups: Array<() => void> = [];
 
     const style = getAbilityStyle(ctx.abilityKey);
     if (style) {
-        const result = styleEffectsMap[style].applyBoostedADEffects(ctx, distribution);
+        const result = styleEffectsMap[style].applyBoostedADEffects(ctx, distribution, baseDamage);
         if (result.cleanup) {
             cleanups.push(result.cleanup);
         }
