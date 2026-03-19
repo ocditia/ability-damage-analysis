@@ -194,13 +194,6 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
     }
 
-    // Ruin perk combust extension
-    if (abilityKey === ABILITIES.COMBUST) {
-        for (let i = 0; i < 2 * settings[SETTINGS.RUIN]; i++) {
-            rotation[1].push(ABILITIES.COMBUST_HIT);
-        }
-    }
-
     // Igneous cape auto-swap: default hit sequences are igneous.
     // When not wearing an igneous cape, swap to non-igneous hit sequences.
     const hasIgneousCape = settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK;
