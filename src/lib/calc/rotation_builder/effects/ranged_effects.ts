@@ -160,19 +160,6 @@ function applyMinVarEffects(
         }
     }
 
-    // Sirenic armour set effect (with Bik arrows)
-    if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.BIK_ARROWS) {
-        // Sirenic 3-piece
-        if (
-            settings[SETTINGS.HELMET] === SETTINGS.RANGED_HELMET_VALUES.SIRENIC &&
-            settings[SETTINGS.BODY] === SETTINGS.RANGED_BODY_VALUES.SIRENIC &&
-            settings[SETTINGS.LEGS] === SETTINGS.RANGED_LEGS_VALUES.SIRENIC
-        ) {
-            distribution['min hit'] = Math.floor(distribution['min hit'] * 1.04);
-            distribution['var hit'] = Math.floor(distribution['var hit'] * 1.04);
-        }
-    }
-
     // Jas arrows bane effect
     if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.JAS_ARROWS) {
         distribution['min hit'] = Math.floor(distribution['min hit'] * 1.3);

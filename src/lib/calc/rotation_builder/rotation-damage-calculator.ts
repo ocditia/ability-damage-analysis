@@ -1,7 +1,7 @@
 import { abils, ABILITIES } from '../const/const';
 import { style_specific_unification, calc_base_ad, apply_additional } from '../damage_calc_rb';
 import { get_hit_sequence, addAdrenaline } from './calculation_utils';
-import { calc_channelled_hit, handleBuffs, get_user_value, handle_edraco, getConjureDamageMultiplier } from './rotation_damage_helper';
+import { calc_channelled_hit, handleBuffs, get_user_value, handle_edraco, handle_tumekens, getConjureDamageMultiplier } from './rotation_damage_helper';
 import { SETTINGS } from '../settings_rb';
 import { on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
 import { create_damage_object } from './rota_object_helper';
@@ -971,6 +971,7 @@ function processChannelledTickCore(
             }
         });
         handle_edraco(settingsCopy, state.timers, hitKey);
+        handle_tumekens(settingsCopy, state.timers, hitKey);
     }
     dmgObjects.forEach(dmgObject => {
         if (settingsCopy.isNulledTick) {
@@ -1216,6 +1217,7 @@ function processChannelledTick(
             }
         });
             handle_edraco(settingsCopy, state.timers, hitKey);
+            handle_tumekens(settingsCopy, state.timers, hitKey);
     }
     dmgObjects.forEach(dmgObject => {
         if (settingsCopy.isNulledTick) {

@@ -1049,6 +1049,7 @@ const raksha: BossPreset = {
 		{ hp: 400000 },
 		{ hp: 600000, heal: 200000, pause: 12 }, // heals from 200k to 400k
 		{ hp: 1000000 } // kill (600k + 400k total damage)
+		// TODO rocks last ~16 ticks (from popup to next auto after rocks)
 	]
 };
 
@@ -1228,18 +1229,7 @@ const telos: BossPreset = {
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
 	curseImmune: false,
-	enrage: { label: 'Enrage %', min: 0, max: 4000, default: 100, step: 5 },
-	phases: [
-		{ hp: 450000, pause: 10, attackPattern: { cycle: [
-			{ name: 'Auto', type: 'auto', ticks: 4, count: 7, style: 'melee' },
-			{ name: 'Tendrils', type: 'special', ticks: 5, label: 'Tend', color: '#27ae60' },
-			{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
-			{ name: 'Uppercut', type: 'special', ticks: 3, label: 'Upper', color: '#e74c3c' },
-			{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
-			{ name: 'Hold Still', type: 'special', ticks: 6, label: 'Hold', color: '#e67e22' },
-			{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
-		]}},
-	]
+	enrage: { label: 'Enrage %', min: 0, max: 4000, default: 100, step: 5 }
 };
 
 const telosAnimaGolemP3: BossPreset = {
@@ -2213,21 +2203,95 @@ type EnrageGenerator = (base: BossPreset, enrage: number) => BossPreset;
 
 function generateTelosEnrage(base: BossPreset, enrage: number): BossPreset {
 	// Telos: enrage 0-4000%
-	// HP scales significantly with enrage
-	// Base HP ~200k at 0%, scales up
-	// Defence level and armour increase with enrage
 	const result = structuredClone(base);
 
-	// HP scaling: roughly 200k base, +2k per enrage% up to 600%, then slower
-	if (enrage <= 600) {
-		result.health = 200000 + enrage * 2000;
-	} else {
-		result.health = 1400000 + (enrage - 600) * 1000;
-	}
+	result.health = Math.min(600000, 400000 + enrage * 1000);
+	const p5Hp = Math.min(300000, 100000 + enrage * 500);
 
-	// Defence scales: base 80, +1 per 20 enrage (capped at ~99)
+	// Defence scales: base 80, +1 per 20 enrage (capped at 99)
 	result.defenceLevel = Math.min(99, 80 + Math.floor(enrage / 20));
 	result.armour = Math.min(99, 80 + Math.floor(enrage / 20));
+
+	// P1-P4: each 1/4 of total HP, then P5 after a heal
+	const quarter = Math.floor(result.health / 4);
+
+	// P1: 7 autos → Tendrils → (3 autos → Uppercut → 3 autos → Hold Still) repeating with 3 autos
+	const telosP1: BossAttackPattern = { cycle: [
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 7, style: 'melee' },
+		{ name: 'Tendrils', type: 'special', ticks: 5, label: 'Tend', color: '#27ae60' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Uppercut', type: 'special', ticks: 3, label: 'Upper', color: '#e74c3c' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Hold Still', type: 'special', ticks: 6, label: 'Hold', color: '#e67e22' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Tendrils', type: 'special', ticks: 5, label: 'Tend', color: '#27ae60' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Uppercut', type: 'special', ticks: 3, label: 'Upper', color: '#e74c3c' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Hold Still', type: 'special', ticks: 6, label: 'Hold', color: '#e67e22' },
+	]};
+
+	// P2: Carries over from P1 — specials change
+	const telosP2: BossAttackPattern = { cycle: [
+		{ name: 'Onslaught', type: 'special', ticks: 5, label: 'Onsl', color: '#3498db' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Hold Still', type: 'special', ticks: 6, label: 'Hold', color: '#e67e22' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Black Virus', type: 'special', ticks: 5, label: 'Virus', color: '#2c3e50' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Uppercut', type: 'special', ticks: 3, label: 'Upper', color: '#e74c3c' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Tendrils', type: 'special', ticks: 5, label: 'Tend', color: '#27ae60' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+	]};
+
+	// P3: Resets — 7 magic autos, spec skip once, then Uppercut → Hold Still → Red Virus repeating
+	const telosP3: BossAttackPattern = { cycle: [
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 7, style: 'magic' },
+		{ name: 'Red Virus', type: 'special', ticks: 5, label: 'Virus', color: '#c0392b' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'magic' },
+		{ name: 'Spec Skip', type: 'mechanic', ticks: 4, label: 'Skip', color: '#7f8c8d' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'magic' },
+		{ name: 'Uppercut', type: 'special', ticks: 3, label: 'Upper', color: '#e74c3c' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'magic' },
+		{ name: 'Hold Still', type: 'special', ticks: 6, label: 'Hold', color: '#e67e22' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'magic' },
+		{ name: 'Red Virus', type: 'special', ticks: 5, label: 'Virus', color: '#c0392b' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'magic' },
+		{ name: 'Uppercut', type: 'special', ticks: 3, label: 'Upper', color: '#e74c3c' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'magic' },
+		{ name: 'Hold Still', type: 'special', ticks: 6, label: 'Hold', color: '#e67e22' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'magic' },
+	]};
+
+	// P4: 3 autos → Hold Still → Uppercut → Weak Anima Bomb repeating
+	const telosP4: BossAttackPattern = { cycle: [
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Hold Still', type: 'special', ticks: 6, label: 'Hold', color: '#e67e22' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Uppercut', type: 'special', ticks: 3, label: 'Upper', color: '#e74c3c' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+		{ name: 'Weak Anima Bomb', type: 'special', ticks: 5, label: 'Bomb', color: '#9b59b6' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 3, style: 'melee' },
+	]};
+
+	// P5: Golem Spawn → 10 autos → Virus → 17 autos → Anima Bomb → 2 autos repeating
+	const telosP5: BossAttackPattern = { cycle: [
+		{ name: 'Golem Spawn', type: 'mechanic', ticks: 5, label: 'Golem', color: '#16a085' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 10, style: 'melee' },
+		{ name: 'Virus', type: 'special', ticks: 5, label: 'Virus', color: '#c0392b' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 17, style: 'melee' },
+		{ name: 'Anima Bomb', type: 'special', ticks: 5, label: 'Bomb', color: '#9b59b6' },
+		{ name: 'Auto', type: 'auto', ticks: 4, count: 2, style: 'melee' },
+	]};
+
+	result.phases = [
+		{ hp: quarter, pause: 10, attackPattern: telosP1 },
+		{ hp: quarter * 2, pause: 10, attackPattern: telosP2 },
+		{ hp: quarter * 3, pause: 10, attackPattern: telosP3 },
+		{ hp: result.health, heal: p5Hp, pause: 10, attackPattern: telosP4 },
+		{ hp: result.health + p5Hp, attackPattern: telosP5 },
+	];
 
 	return result;
 }

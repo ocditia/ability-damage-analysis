@@ -131,7 +131,7 @@
 </script>
 
 <Navbar />
-<Header img="/magic_background.png" text="Magic Calculator)" icon="/style_icons/magic-white.svg" />
+<Header img="/magic_background.png" text="Magic Calculator" icon="/style_icons/magic-white.svg" />
 
 <div class="space-y-14 mt-10 z-20">
     <div class="responsive-container">
@@ -184,8 +184,12 @@
                                     bind:setting={settings[SETTINGS.MODE]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.FLAMEBOUND_RIVAL]}
+                                <Select
+                                bind:setting={settings[SETTINGS.DAMAGE_PER_UNIT]}
+                                onchange={() => updateDamages()}
+                                />
+                                <Select
+                                    bind:setting={settings[SETTINGS.DAMAGE_UNITS]}
                                     onchange={() => updateDamages()}
                                 />
                                 <Number
@@ -281,16 +285,10 @@
                                     max="9999"
                                     min="0"
                                 />
-                                <Checkbox
-                                    bind:setting={settings[SETTINGS.DEVOURER_NEXUS]}
-                                    onchange={() => updateDamages()}
-                                />
-                                <!-- <Select
+                                <Select
                                     bind:setting={settings[SETTINGS.CHAIN_MODIFIER]}
                                     onchange={() => updateDamages()}
                                 /> 
-                                TODO display only chain or gchain according to this setting
-                                -->
                             </div>
                             <div class="md:col-span-1 space-y-2">
                                 <h5 class="uppercase font-bold text-lg text-center">

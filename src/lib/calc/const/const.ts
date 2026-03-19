@@ -2316,6 +2316,7 @@ export enum ABILITIES {
     CORRUPTION_BLAST_HIT_5 = 'corruption blast hit 5',
     GREATER_SONIC_WAVE = 'greater sonic wave',
     ASPHYXIATE_HIT = 'asphyxiate hit',
+    ASPHYXIATE_LAST_HIT = 'asphyxiate last hit',
     ASPHYXIATE = 'asphyxiate',
     WILD_MAGIC_HIT = 'wild magic hit',
     WILD_MAGIC = 'wild magic',
@@ -4379,6 +4380,17 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'main style': 'magic',
         'damage type': 'magic',
         cooldown: 5.4},
+    [ABILITIES.ASPHYXIATE_LAST_HIT]: {
+        'min hit': 1.1,
+        'var hit': 0.2,
+        'on-hit effects': true,
+        'crit effects': true,
+        'damage potential effects': true,
+        'ability classification': 'regular',
+        'ability type': 'threshold',
+        'main style': 'magic',
+        'damage type': 'magic',
+    },
     [ABILITIES.ASPHYXIATE]: {
         // ability name
         'min hit': 1.1, // min % of abil expressed as a decimal
@@ -4399,7 +4411,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             4: [],
             5: [ABILITIES.ASPHYXIATE_HIT],
             6: [],
-            7: [ABILITIES.ASPHYXIATE_HIT]
+            7: [ABILITIES.ASPHYXIATE_LAST_HIT]
         },
         cooldown: 5.4
     ,

@@ -16,7 +16,17 @@ const SETTINGS = {
     ATTACK_LEVEL: 'attack level',
     STRENGTH_LEVEL: 'strength level',
     RANGED_LEVEL: 'ranged level',
-    POTION: 'potion',
+    POTION: 'potion',DAMAGE_PER_UNIT: 'damage per unit',
+    DAMAGE_PER_UNIT_VALUES: {
+        ABIL: 'abil',
+        TICK: 'tick',
+    },
+    DAMAGE_UNITS: 'damage units',
+    DAMAGE_UNITS_VALUES: {
+        RAW: 'raw',
+        PERCENT: 'percent',
+    },
+    DAMAGE_PER_UNIT_DIVIDER: 'damage per time unit divider',
     POTION_VALUES: {
         NONE: 'none',
         ELDER: 'elder overload',
@@ -587,7 +597,7 @@ const SETTINGS = {
         CUSTOM: 'custom',
         OMNI_GUARD: 'omni guard',
         OMNI_GUARD_IM: 'omni guard [IM]',
-        DEVOURERS_GUARD: 'devourers guard',
+        DEVOURERS_GUARD: 'devourer\'s guard',
         DEVOURERS_GUARD_IM: 'devourers guard [IM]'
     },
     OH: 'off-hand weapon',
@@ -741,6 +751,8 @@ const SETTINGS = {
     GREATER_FLOW: 'greater flow',
     FLOW_AC: 'flow ac',
     GREATER_FLOW_AC: 'greater flow ac',
+    BARRICADE: 'barricade',
+    MALLETOPS: 'malletops',
     COMBUSTED: 'combusted',
     CONFLAGRATE: 'conflagrate',
     GREATER_CHAIN: 'greater chain',
@@ -874,6 +886,18 @@ const SETTINGS = {
     },
     MAX_CHANNEL_DURATION: 'max channel duration',
     FLAMEBOUND_RIVAL: 'flamebound rival',
+    DAMAGE_PER_UNIT: 'damage per unit',
+    DAMAGE_PER_UNIT_VALUES: {
+        ABIL: 'abil',
+        TICK: 'tick',
+    },
+    DAMAGE_UNITS: 'damage units',
+    DAMAGE_UNITS_VALUES: {
+        RAW: 'raw',
+        PERCENT: 'percent',
+    },
+    DAMAGE_PER_UNIT_DIVIDER: 'damage per time unit divider',
+
     AUTO_SPEED: 'auto speed',
     AUTO_SPEED_VALUES: {
         FASTEST: 'fastest',
@@ -2158,9 +2182,30 @@ const settingsConfig = {
         label: 'Residual Souls',
         default: 0
     },
+
+    [SETTINGS.DAMAGE_PER_UNIT]: {
+        label: 'Damage per',
+        default: SETTINGS.DAMAGE_PER_UNIT_VALUES.ABIL,
+        options: [
+            { text: 'abil', value: SETTINGS.DAMAGE_PER_UNIT_VALUES.ABIL },
+            { text: 'tick', value: SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK },
+        ]
+    },
+    [SETTINGS.DAMAGE_UNITS]: {
+        label: 'Damage result',
+        default: SETTINGS.DAMAGE_UNITS_VALUES.RAW,
+        options: [
+            { text: 'Raw', value: SETTINGS.DAMAGE_UNITS_VALUES.RAW },
+            { text: 'AD%', value: SETTINGS.DAMAGE_UNITS_VALUES.PERCENT },
+        ]
+    },
+    [SETTINGS.DAMAGE_PER_UNIT_DIVIDER]: {
+        label: 'Damager per unit divider',
+        default: 1
+    },
     [SETTINGS.ICY_PRECISION]: {
         label: 'Icy Precision stacks',
-        default: 15
+        default: 10
     },
     [SETTINGS.ICY_CHILL_STACKS]: {
         label: 'Icy Chill',
@@ -2185,6 +2230,14 @@ const settingsConfig = {
     [SETTINGS.GREATER_FLOW_AC]: {
         label: 'Greater Flow (Animate Dead)',
         default: false
+    },
+    [SETTINGS.BARRICADE]: {
+        label: 'Barricade',
+        default: false
+    },
+    [SETTINGS.MALLETOPS]: {
+        label: 'Malletops',
+        default: 0
     },
     [SETTINGS.COMBUSTED]: {
         label: 'Combusted',
