@@ -179,13 +179,13 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         if (abilityKey === ABILITIES.DISMEMBER) {
-            rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
+            rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
         }
         if (abilityKey === ABILITIES.SLAUGHTER) {
-            rotation[1].push(ABILITIES.SLAUGHTER_HIT, ABILITIES.SLAUGHTER_HIT);
+            rotation[1].push(ABILITIES.SLAUGHTER_HIT, ABILITIES.SLAUGHTER_HIT, ABILITIES.SLAUGHTER_HIT);
         }
         if (abilityKey === ABILITIES.MASSACRE) {
-            rotation[1].push(ABILITIES.MASSACRE_BLEED, ABILITIES.MASSACRE_BLEED);
+            rotation[1].push(ABILITIES.MASSACRE_BLEED, ABILITIES.MASSACRE_BLEED, ABILITIES.MASSACRE_BLEED);
         }
     }
 
