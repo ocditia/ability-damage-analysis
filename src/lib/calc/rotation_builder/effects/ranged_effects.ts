@@ -8,6 +8,7 @@ import { DamageDistribution } from '../../types';
 import { EffectContext, BoostedADResult, StyleEffects } from './types';
 import { handle_wen_buff } from '../rotation_damage_helper';
 import { addAdrenaline } from '../calculation_utils';
+import { settingsActions } from '$lib/stores';
 
 /**
  * Check if Icy Precision should be Activated and handle it
@@ -119,17 +120,6 @@ function applyAbilityPercentModifiers(
     distribution: DamageDistribution
 ): void {
     const { settings, abilityKey } = ctx;
-
-    // Caroming - +4% ability damage per rank to all Ricochet/Greater Ricochet hits
-    const ricochetAbilities: ABILITIES[] = [
-        ABILITIES.RICOCHET, ABILITIES.GREATER_RICOCHET,
-        ABILITIES.GREATER_RICOCHET_1, ABILITIES.GREATER_RICOCHET_2, ABILITIES.GREATER_RICOCHET_3
-    ];
-    if (settings[SETTINGS.CAROMING] > 0 && ricochetAbilities.includes(abilityKey)) {
-        const caromingBoost = 0.04 * settings[SETTINGS.CAROMING];
-        distribution['min hit'] += distribution['min hit'] * caromingBoost;
-        distribution['var hit'] += distribution['var hit'] * caromingBoost;
-    }
 
     // Flanking - Binding Shot (basic stun)
     if (settings[SETTINGS.FLANKING] > 0) {
@@ -310,11 +300,21 @@ function applyBonusDamageEffects(
     ctx: EffectContext,
     distribution: DamageDistribution
 ): void {
-    const { settings } = ctx;
+    const { settings, abilityKey } = ctx;
+
+    // Caroming - +4% ability damage per rank to all Ricochet/Greater Ricochet hits
+    const ricochetAbilities: ABILITIES[] = [
+        ABILITIES.RICOCHET, ABILITIES.GREATER_RICOCHET,
+        ABILITIES.GREATER_RICOCHET_1, ABILITIES.GREATER_RICOCHET_2, ABILITIES.GREATER_RICOCHET_3
+    ];
+    if (settings[SETTINGS.CAROMING] > 0 && ricochetAbilities.includes(abilityKey)) {
+        const caromingBoost = 0.04 * settings[SETTINGS.CAROMING];
+        distribution['min hit'] += Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * caromingBoost); 
+    }
 
     // Searing Winds (Galeshot buff) - adds 20% of ability damage as flat bonus to each hit
     if (settings[SETTINGS.SEARING_WINDS] === true) {
-        const bonus = Math.floor(distribution['boosted AD'] * 0.2);
+        const bonus = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 0.2);
         distribution['min hit'] += bonus;
     }
 }
