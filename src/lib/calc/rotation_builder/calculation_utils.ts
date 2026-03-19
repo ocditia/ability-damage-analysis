@@ -234,6 +234,15 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         }
     }
 
+    settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 1;
+    if (settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) {
+        settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 3;
+        if (abils[settings['ability']]['ability classification'] === 'channel') {
+            settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = Math.min(settings[SETTINGS.HIT_COUNTER_END], 
+                Object.keys(abils[settings['ability']]["hits"]).map(item => parseInt(item, 10)).pop());
+        }
+    }
+
     return rotation;
 }
 
