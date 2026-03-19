@@ -37,8 +37,8 @@ export function calculateAdditiveBoost(ctx: EffectContext): number {
     if (
         (settings[SETTINGS.FLAMEBOUND_RIVAL] === true || abilityKey === ABILITIES.IGNEOUS_SHOWDOWN ||
          abilityKey === ABILITIES.IGNEOUS_SHOWDOWN_HIT || abilityKey === ABILITIES.IGNEOUS_SHOWDOWN_BONUS) &&
-        (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM ||
-         settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM)
+        (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM) &&
+        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         boost += 0.12;
     }
