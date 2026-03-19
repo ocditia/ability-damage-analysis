@@ -1590,6 +1590,7 @@ function style_specific_unification(settings, style = null) {
     return settings;
 }
 
+
 //todo rename
 function apply_additional(settings, total_damage) {
 

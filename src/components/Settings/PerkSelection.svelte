@@ -32,6 +32,7 @@
         { key: SETTINGS.AFTERSHOCK, img: '/effect_icons/perks/Aftershock.png', title: 'Aftershock', step: 1, max: 4 },
         { key: SETTINGS.GENOCIDAL, img: '/effect_icons/perks/genocidal.png', title: 'Genocidal %', step: 0.1, max: 4.9 },
         { key: SETTINGS.FLANKING, img: '/effect_icons/perks/Flanking.webp', title: 'Flanking', step: 1, max: 4 },
+        { key: SETTINGS.LUNGING, img: '/effect_icons/perks/Lunging.webp', title: 'Lunging', step: 1, max: 4 },
         { key: SETTINGS.ULTIMATUMS, img: '/effect_icons/perks/ultimatums.png', title: 'Ultimatums', step: 1, max: 4 },
         { key: SETTINGS.LVL20ARMOUR, img: '/effect_icons/perks/level-20.png', title: 'Level 20 Armour', toggle: true },
         { key: SETTINGS.IMPATIENT, img: '/effect_icons/perks/Impatient.png', title: 'Impatient', step: 1, max: 4 },
