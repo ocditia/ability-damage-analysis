@@ -199,12 +199,6 @@ function applyMultiplicativeEffects(
     boost: number = 10000
 ): number {
     const { settings, abilityKey } = ctx;
-
-    // Divine rage (note: += 0.05 to a base of 10000 is effectively no change after flooring)
-    if (settings[SETTINGS.DIVINE_RAGE] === true) {
-        boost += 0.05;
-    }
-
     // Sunshine
     if (settings[SETTINGS.SUNSHINE] === true) {
         boost = Math.floor(boost * 1.5);
