@@ -1590,14 +1590,6 @@ function style_specific_unification(settings, style = null) {
     return settings;
 }
 
-export function hit_damage_calculation(settings, rotationCalc = false) {
-    settings = style_specific_unification(settings); // initialise some settings
-    let total_damage = calc_damage_object(settings); // calculate the ability
-    //total_damage = apply_additional(settings, total_damage, rotationCalc);
-    //TODO add next cast next hit next tick etc
-    return total_damage;
-}
-
 //todo rename
 function apply_additional(settings, total_damage) {
 

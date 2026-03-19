@@ -108,15 +108,6 @@ function applyAbilitySpecificEffects(
 ): void {
     const { settings, abilityKey } = ctx;
 
-    // Piercing shot bound/stunned bonus
-    if (
-        abilityKey === ABILITIES.PIERCING_SHOT_HIT &&
-        (settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.STUNNED ||
-            settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND ||
-            settings[SETTINGS.TARGET_DISABILITY] === SETTINGS.TARGET_DISABILITY_VALUES.BOUND_STUNNED)
-    ) {
-        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.3);
-    }
 }
 
 /**
@@ -191,11 +182,15 @@ function applyMinVarEffects(
     if (settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.FUL_ARROWS) {
         distribution['min hit'] = Math.floor(distribution['min hit'] * 1.15);
         distribution['var hit'] = Math.floor(distribution['var hit'] * 1.15);
-    }
+}
+
+    // enchanted bolts (proc based, will come later)
+    // sirenic set effect (proc based, will come later)
+    // gemstone armour effect (proc based, will come later)
 
     // Pernix quiver (low HP bonus)
     if (
-        settings['ammo slot'] === 'pernix quiver' &&
+        settings[SETTINGS.QUIVER] === true &&
         settings[SETTINGS.TARGET_HP_PERCENT] <= 25
     ) {
         distribution['var hit'] = Math.floor(

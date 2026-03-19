@@ -3330,16 +3330,16 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
-        'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
+        'ability classification': 'multihit', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'melee',
         'damage type': 'melee',
         hits: {
             1: [ABILITIES.ICY_TEMPEST_1, 'next hit', ABILITIES.ICY_TEMPEST_2]
         },
+        adrenaline: 30,
         hitTimings: [0, 0], 
-        cooldown: 15
-    ,
+        cooldown: 15,
         title: 'Icy tempest',
         icon: '/ability_icons/melee/leng.png',
     },
@@ -5447,7 +5447,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'special attack',
         'main style': 'necromancy',
         'damage type': 'necrotic',
-        cooldown: 60
+        adrenaline: 25,
+        cooldown: 60,
+        title: 'Soul Crush',
+        icon: '/gear_icons/necro/devourer\'s guard.png',
     },
     [ABILITIES.SOUL_STRIKE]: {
         // ability name
@@ -5462,7 +5465,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'damage type': 'necrotic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         adrenaline: 0,
         cooldown: 0,
-        title: 'Soul strike main',
+        title: 'Soul Strike Main',
         icon: '/ability_icons/necro/30x30/soul_strike.png',
     },
     [ABILITIES.SOUL_STRIKE_AOE]: {
@@ -5681,8 +5684,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'main style': 'necromancy',
         'damage type': 'necrotic',
         adrenaline: 25,
-        cooldown: 0,
-        title: 'Death grasp',
+        cooldown: 30,
+        title: 'Death Grasp',
         icon: '/ability_icons/necro/30x30/deathguard-bg.png',
     },
     [ABILITIES.DEATH_ESSENCE]: {

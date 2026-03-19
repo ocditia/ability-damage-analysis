@@ -415,41 +415,6 @@
             {/if}
         </div>
     {/each}
-    {#if styleTab === SettingsCombatStyles.MAGIC && settings[SETTINGS.AUTO_CAST]}
-        <div class="relative">
-            <button
-                type="button"
-                class="stack-toggle"
-                class:stack-active={settings[SETTINGS.AUTO_CAST]?.value && settings[SETTINGS.AUTO_CAST]?.value !== 'none'}
-                title="Auto Cast: {settings[SETTINGS.AUTO_CAST]?.options?.find(o => o.value === settings[SETTINGS.AUTO_CAST]?.value)?.text ?? 'None'}"
-                onclick={() => { openDropdown = openDropdown === SETTINGS.AUTO_CAST ? null : SETTINGS.AUTO_CAST; }}
-            >
-                <img
-                    src={
-                        settings[SETTINGS.AUTO_CAST]?.value === 'exsanguinate' ? '/effect_icons/Exsanguinate_icon.webp' : 
-                        settings[SETTINGS.AUTO_CAST]?.value === 'incite fear' ? '/ability_icons/magic/Incite_Fear_icon.webp' :
-                        settings[SETTINGS.AUTO_CAST]?.value === 'crumble undead' ? '/ability_icons/magic/Crumble_Undead_icon.png' 
-                        : '/ability_icons/magic/Vanilla_fudge_log.png'}
-                    alt="Auto Cast"
-                    class="w-7 h-7 object-contain"
-                />
-            </button>
-            {#if openDropdown === SETTINGS.AUTO_CAST}
-                <div class="icon-dropdown" style="min-width: 140px;">
-                    {#each settings[SETTINGS.AUTO_CAST]?.options ?? [] as option}
-                        <button
-                            type="button"
-                            class="icon-dropdown-item"
-                            class:active={settings[SETTINGS.AUTO_CAST]?.value === option.value}
-                            onclick={() => { settings[SETTINGS.AUTO_CAST].value = option.value; openDropdown = null; updateDamages(); }}
-                        >
-                            {option.text}
-                        </button>
-                    {/each}
-                </div>
-            {/if}
-        </div>
-    {/if}
     <!-- Weapon: combined MH + 2H dropdown, OH -->
     {#each [weaponSlotsByStyle[styleTab]].filter(Boolean) as ws}
         {@const is2h = isWeaponTwoHand(settings[ws.mh]?.value)}
@@ -530,6 +495,54 @@
             </div>
         {/if}
     {/each}
+    {#if styleTab === SettingsCombatStyles.RANGED && settings[SETTINGS.QUIVER] != null}
+        <button
+            type="button"
+            class="stack-toggle"
+            class:stack-active={settings[SETTINGS.QUIVER]?.value}
+            title="Pernix Quiver (+4% damage when target ≤25% HP)"
+            onclick={() => { settings[SETTINGS.QUIVER].value = !settings[SETTINGS.QUIVER].value; updateDamages(); }}
+        >
+            <img src="/gear_icons/ranged/pernix quiver.png" alt="Pernix Quiver" class="w-7 h-7 object-contain"
+                onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Ammo_slot.png'; }}
+            />
+        </button>
+    {/if}
+    {#if styleTab === SettingsCombatStyles.MAGIC && settings[SETTINGS.AUTO_CAST]}
+        <div class="relative">
+            <button
+                type="button"
+                class="stack-toggle"
+                class:stack-active={settings[SETTINGS.AUTO_CAST]?.value && settings[SETTINGS.AUTO_CAST]?.value !== 'none'}
+                title="Auto Cast: {settings[SETTINGS.AUTO_CAST]?.options?.find(o => o.value === settings[SETTINGS.AUTO_CAST]?.value)?.text ?? 'None'}"
+                onclick={() => { openDropdown = openDropdown === SETTINGS.AUTO_CAST ? null : SETTINGS.AUTO_CAST; }}
+            >
+                <img
+                    src={
+                        settings[SETTINGS.AUTO_CAST]?.value === 'exsanguinate' ? '/effect_icons/Exsanguinate_icon.webp' : 
+                        settings[SETTINGS.AUTO_CAST]?.value === 'incite fear' ? '/ability_icons/magic/Incite_Fear_icon.webp' :
+                        settings[SETTINGS.AUTO_CAST]?.value === 'crumble undead' ? '/ability_icons/magic/Crumble_Undead_icon.png' 
+                        : '/ability_icons/magic/Vanilla_fudge_log.png'}
+                    alt="Auto Cast"
+                    class="w-7 h-7 object-contain"
+                />
+            </button>
+            {#if openDropdown === SETTINGS.AUTO_CAST}
+                <div class="icon-dropdown" style="min-width: 140px;">
+                    {#each settings[SETTINGS.AUTO_CAST]?.options ?? [] as option}
+                        <button
+                            type="button"
+                            class="icon-dropdown-item"
+                            class:active={settings[SETTINGS.AUTO_CAST]?.value === option.value}
+                            onclick={() => { settings[SETTINGS.AUTO_CAST].value = option.value; openDropdown = null; updateDamages(); }}
+                        >
+                            {option.text}
+                        </button>
+                    {/each}
+                </div>
+            {/if}
+        </div>
+    {/if}
 </div>
 {#if ARMOUR_PRESETS[styleTab]}
     <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; padding: 0.4rem 0.5rem; background: rgba(255,255,255,0.05); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">

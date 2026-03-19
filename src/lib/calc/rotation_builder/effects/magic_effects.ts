@@ -34,6 +34,11 @@ function applyBoostedADEffects(
         applied = true;
     }
 
+    // crumble undead
+    if (settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.CRUMBLE_UNDEAD) {
+        distribution['boosted AD'] = Math.floor(1.3 * distribution['boosted AD']);
+    }
+
     return { applied };
 }
 
@@ -75,6 +80,14 @@ function applyAbilitySpecificEffects(
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
     }
 
+    //TODO
+    // // greater chain half damage
+    // const gchain_not_halved = ['bleed', 'burn', 'dot'];
+    // if (
+    //     gchain_not_halved.includes(abils[settings['ability']][['ability classification']] === false)
+    // ) {
+    //     dmgObject[boosted_AD] = Math.floor(dmgObject[boosted_AD] * 0.5);
+    // }
 }
 
 /**
