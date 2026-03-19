@@ -228,7 +228,7 @@ function applyBonusDamageEffects(
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW &&
         settings[SETTINGS.FROSTBLADES] === true
     ) {
-        distribution['min hit'] += Math.floor(0.24 * distribution['boosted AD']);
+        distribution['min hit'] += Math.floor(0.24 * settings[SETTINGS.ABILITY_DAMAGE]);
     }
 
     // Am-zi necklace (melee only: +floor(1.35 * Attack level) to min hit)
