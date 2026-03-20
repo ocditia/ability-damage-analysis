@@ -3,6 +3,8 @@ import { prayers } from '../const/prayers';
 import { SETTINGS } from '../settings_rb';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
 import { Logger, LogCategory } from '../../utils/Logger';
+import { abilities } from '$lib/defence/abilities';
+import { expect } from 'vitest';
 
 const logger = Logger.getInstance();
 
@@ -227,16 +229,21 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
                 crit_chance += 0.01;
             }
         }
-
-        // (g)fury
-        if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.REGULAR && abilityKey !== ABILITIES.FURY) {
-            crit_chance += 0.25;
-            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.NONE; // TODO check this is the correct place - should only work on one hitsplat
-        } else if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.GREATER && abilityKey !== ABILITIES.GREATER_FURY) {
-            crit_chance = 1;
-            settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.NONE; // TODO check this is the correct place - should only work on one hitsplat
+        if (!(abils[abilityKey]['ability classification'] === 'multihit' && 
+            abils[abilityKey]['hits'] && 
+            Object.keys(abils[abilityKey]['hits']))) 
+        {
+            // (g)fury
+            if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.REGULAR && abilityKey !== ABILITIES.FURY) {
+                crit_chance += 0.25;
+                settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.NONE; // TODO check this is the correct place - should only work on one hitsplat
+            } else if (settings[SETTINGS.FURY_BUFF] === SETTINGS.FURY_BUFF_VALUES.GREATER && abilityKey !== ABILITIES.GREATER_FURY) {
+                crit_chance = 1;
+                settings[SETTINGS.FURY_BUFF] = SETTINGS.FURY_BUFF_VALUES.NONE; // TODO check this is the correct place - should only work on one hitsplat
+            }
         }
-
+            
+        
         // no fear (pof meteor strike)
         if (abilityKey === 'meteor strike') {
             if (settings[SETTINGS.POF_DINOS] === SETTINGS.POF_DINOS_VALUES.CORBICULA_1) {
@@ -285,13 +292,6 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
             crit_chance += 0.2;
         }
 
-        // deathspore arrows
-        if (
-            settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-            settings[SETTINGS.AMMO] === SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS
-        ) {
-            crit_chance += 0.03;
-        }
     }
 
     // max hit mode
@@ -310,8 +310,9 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
         crit_chance = 0;
     }
 
-
     const result = Math.min(1, crit_chance);
+
+    console.log(abilityKey, ' - ', result*100, '%')
     return result;
 }
 
