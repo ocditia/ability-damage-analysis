@@ -442,9 +442,11 @@ export function applyAllDamageModifiers(
         damage = Math.floor(damage * 1.3);
     }
 
-    if (ctx.settings[SETTINGS.TELOS_RED_BEAM] === true) {
+    // Telos black beam (-30%)
+    if (ctx.settings[SETTINGS.TELOS_BLACK_BEAM] === true) {
         damage = Math.floor(damage * 0.7);
     }
+    
     // Hit cap (must be last)
     damage = applyHitCap(damage);
 
