@@ -4,7 +4,6 @@ import { SETTINGS } from '../settings_rb';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
 import { Logger, LogCategory } from '../../utils/Logger';
 import { abilities } from '$lib/defence/abilities';
-import { expect } from 'vitest';
 
 const logger = Logger.getInstance();
 
