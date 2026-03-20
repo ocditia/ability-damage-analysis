@@ -50,6 +50,12 @@ export function calculateAdditiveBoost(ctx: EffectContext): number {
         boost += settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED ? 0.16 : 0;
     }
 
+     // Am-hej necklace 5% of str level
+     if (abils[abilityKey]?.['main style'] === 'melee' &&
+        settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.AM_HEJ) {
+        boost += Math.floor(0.05 * settings[SETTINGS.STRENGTH_LEVEL])/100;
+    }
+
     // Ruby aurora stacks (1% per stack)
     boost += settings[SETTINGS.RUBY_AURORA] * 0.01;
 
@@ -156,12 +162,6 @@ export function calculatePvEBoost(ctx: EffectContext): number {
         boost = Math.floor(boost * 1.15);
     } else if (settings[SETTINGS.NECKLACE] === 'salve amulet (e)') {
         boost = Math.floor(boost * 1.2);
-    }
-
-    // Am-hej necklace (melee only: +floor(5% of Strength level) as % boost)
-    if (abils[abilityKey]?.['main style'] === 'melee' &&
-        settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.AM_HEJ) {
-        boost += Math.floor(0.05 * settings[SETTINGS.STRENGTH_LEVEL]) / 100;
     }
 
     // Dragon rider necklace (10% boost to Dragon Breath)
