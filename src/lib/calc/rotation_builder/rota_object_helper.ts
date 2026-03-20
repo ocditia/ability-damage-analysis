@@ -3,8 +3,6 @@ import { prayers } from '../const/prayers';
 import { SETTINGS } from '../settings_rb';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
 import { Logger, LogCategory } from '../../utils/Logger';
-import { abilities } from '$lib/defence/abilities';
-import { expect } from 'vitest';
 
 const logger = Logger.getInstance();
 
@@ -312,7 +310,6 @@ function calc_crit_chance(settings: Record<string, any>, abilityKey: ABILITIES):
 
     const result = Math.min(1, crit_chance);
 
-    console.log(abilityKey, ' - ', result*100, '%')
     return result;
 }
 
