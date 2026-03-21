@@ -118,6 +118,9 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             timers[SETTINGS.INSTABILITY] = 50;
             break;
         case ABILITIES.TSUNAMI:
+            settings[SETTINGS.CRIT_BUFF] = true;
+            timers[SETTINGS.CRIT_BUFF] = 51;
+            break;
         case ABILITIES.SUNSHINE:
             settings[SETTINGS.SUNSHINE] = true;
             timers[SETTINGS.SUNSHINE] = 50;
@@ -125,9 +128,6 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
         case ABILITIES.GREATER_SUNSHINE:
             settings[SETTINGS.SUNSHINE] = true;
             timers[SETTINGS.SUNSHINE] = 63;
-            break;
-            settings[SETTINGS.CRIT_BUFF] = true; 
-            timers[SETTINGS.CRIT_BUFF] = 51;
             break;
         // Ranged Buff Abilities
         case ABILITIES.GALESHOT:
@@ -413,6 +413,7 @@ export function handle_sgb(settings: Record<string, any>, dmgObject: DamageObjec
 export function get_user_value(settings: Record<string, any>, dmgObject: DamageObject) {
     let divider = 1
     if (settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) {
+        settings[SETTINGS.ABILITY]
         divider = 3;
     }
     divider = Math.max(divider, settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER])

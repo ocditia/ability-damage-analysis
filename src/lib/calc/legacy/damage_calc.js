@@ -2,7 +2,6 @@ import { next_cast, next_hit, next_tick } from './ability_helper';
 import { ABILITIES, abils, armour, gear, prayers, weapons } from './const';
 import { create_object } from './object_helper';
 import { SETTINGS } from './settings';
-import { calc_tfn_pieces } from './helper_funcs';
 
 function calc_base_ad(settings) {
     // see wiki page /ability_damage for more info

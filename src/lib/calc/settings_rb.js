@@ -10,18 +10,7 @@ const SETTINGS = {
         MAX_NO_CRIT: 'max no crit',
         MAX_CRIT: 'max crit'
     },
-    CALC_TYPE: 'calc type',
-    CALC_TYPE_VALUES: {
-        ABILITY: 'ability',
-        ROTATION: 'rotation'
-    },
-    ABILITY_DAMAGE: 'ability damage',
-    NECROMANCY_LEVEL: 'necromancy level',
-    MAGIC_LEVEL: 'magic level',
-    ATTACK_LEVEL: 'attack level',
-    STRENGTH_LEVEL: 'strength level',
-    RANGED_LEVEL: 'ranged level',
-    POTION: 'potion',DAMAGE_PER_UNIT: 'damage per unit',
+    DAMAGE_PER_UNIT: 'damage per unit',
     DAMAGE_PER_UNIT_VALUES: {
         ABIL: 'abil',
         TICK: 'tick',
@@ -32,6 +21,22 @@ const SETTINGS = {
         PERCENT: 'percent',
     },
     DAMAGE_PER_UNIT_DIVIDER: 'damage per time unit divider',
+    CALC_TYPE: 'calc type',
+    CALC_TYPE_VALUES: {
+        ABILITY: 'ability',
+        ROTATION: 'rotation'
+    },
+    HIT_COUNTER_START: 'hit counter start',
+    HIT_COUNTER_END: 'hit counter end',
+
+    // Player Stats
+    ABILITY_DAMAGE: 'ability damage',
+    NECROMANCY_LEVEL: 'necromancy level',
+    MAGIC_LEVEL: 'magic level',
+    ATTACK_LEVEL: 'attack level',
+    STRENGTH_LEVEL: 'strength level',
+    RANGED_LEVEL: 'ranged level',
+    POTION: 'potion',
     POTION_VALUES: {
         NONE: 'none',
         ELDER: 'elder overload',
@@ -43,6 +48,7 @@ const SETTINGS = {
     },
     HIT_CHANCE: 'hit chance',
     REAPER_CREW: 'reaper crew',
+
     //Prayers
     PRAYER: 'prayer',
     MAGIC_PRAYER: 'magic prayer',
@@ -102,7 +108,7 @@ const SETTINGS = {
         HASTENED_DECAY: 'hastened decay',
         DECAY: 'decay'
     },
-    // Misc
+    // Misc buffs
     RUBY_AURORA: 'ruby aurora',
     REVENGE: 'revenge',
     BERSERKERS_FURY: 'berserkers fury',
@@ -130,6 +136,7 @@ const SETTINGS = {
     GENOCIDAL: 'genocidal',
     IMPATIENT: 'impatient',
     AFTERSHOCK: 'aftershock',
+    // Familiars
     FAMILIAR: 'familiar',
     FAMILIAR_VALUES: {
         NONE: 'none',
@@ -138,6 +145,7 @@ const SETTINGS = {
         STEEL_TITAN: 'steel titan'
     },
     FAMILIAR_ACCURACY: 'familiar accuracy',
+    KALG_SPEC: 'kalg spec',
     USE_FAMILIAR_SCROLLS: 'use familiar scrolls',
     FAMILIAR_SPEC_POINTS: 'familiar spec points',
     FAMILIAR_SPEC_REGEN_ACCUMULATOR: 'familiar spec regen accumulator',
@@ -153,16 +161,19 @@ const SETTINGS = {
         LVL4: 4
     },
     PRISM_OF_RESTORATION: 'prism of restoration',
+
     AURA: 'aura',
     AURA_VALUES: {
         NONE: 'none',
     },
+    // On Damage
     VULN: 'vulnerability',
     VULN_VALUES: {
         NONE: 'none',
         CURSE: 'curse',
         VULNERABILITY: 'vuln'
     },
+    // Poison
     POISON: 'poison',
     POISON_VALUES: {
         NONE: 'none',
@@ -201,7 +212,6 @@ const SETTINGS = {
     SPIRIT_PACT: 'spirit pact',
     SKELETON_WARRIOR_RAGE_STACKS: 'skeleton rage stacks',
     NOPE: 'nopenopenope',
-    KALG_SPEC: 'kalg spec',
     CUSTOM_ON_AD: 'custom on ad',
     CUSTOM_ON_HIT: 'custom on hit',
     CUSTOM_ON_NPC: 'custom on npc',
@@ -592,10 +602,13 @@ const SETTINGS = {
         LENG_IM: 'dark shard of leng [IM]',
         KERIS: 'keris',
         KERIS_PROC: 'keris proc',
+        KERIS_AVG: 'keris avg',
         PRIMED_KERIS: 'primed keris',
         PRIMED_KERIS_PROC: 'primed keris proc',
+        PRIMED_KERIS_AVG: 'primed keris avg',
         CONSECRATED_KERIS: 'consecrated keris',
-        CONSECRATED_KERIS_PROC: 'consecrated keris proc'
+        CONSECRATED_KERIS_PROC: 'consecrated keris proc',
+        CONSECRATED_KERIS_AVG: 'consecrated keris avg',
     },
     NECRO_MH: 'necro main-hand weapon',
     NECRO_MH_VALUES: {
@@ -945,6 +958,14 @@ const settingsConfig = {
     [SETTINGS.CALC_TYPE]: {
         label: 'Mode',
         default: SETTINGS.CALC_TYPE_VALUES.ABILITY,
+    },
+    [SETTINGS.HIT_COUNTER_START]: { 
+        label: 'Start hit',
+        default: 0
+    },
+    [SETTINGS.HIT_COUNTER_END]: {
+        label: 'End hit',
+        default: 0
     },
     [SETTINGS.ABILITY_DAMAGE]: {
         label: 'Override base damage',
@@ -1698,7 +1719,7 @@ const settingsConfig = {
             { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
             { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELLER },
-            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELLER_E },
+            { text: 'Channeller+', value: SETTINGS.RING_VALUES.CHANNELLER_E },
             { text: 'Stalker', value: SETTINGS.RING_VALUES.STALKER },
             { text: 'Stalker+', value: SETTINGS.RING_VALUES.STALKER_E },
             { text: 'Champion', value: SETTINGS.RING_VALUES.CHAMPION },
@@ -1722,7 +1743,7 @@ const settingsConfig = {
             { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
             { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELLER },
-            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELLER_E }
+            { text: 'Channeller+', value: SETTINGS.RING_VALUES.CHANNELLER_E }
         ]
     },
     [SETTINGS.RANGED_RING]: {
@@ -1839,7 +1860,7 @@ const settingsConfig = {
             { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
             { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
             { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELLER },
-            { text: 'Channeler+', value: SETTINGS.RING_VALUES.CHANNELLER_E }
+            { text: 'Channeller+', value: SETTINGS.RING_VALUES.CHANNELLER_E }
         ]
     },
     [SETTINGS.RANGED_RING]: {

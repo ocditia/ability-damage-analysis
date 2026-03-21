@@ -227,12 +227,49 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         }
     }
 
+    // Tumeken 8 Hit asphyx
+    // if (abilityKey === ABILITIES.ASPHYXIATE_HIT || abilityKey === ABILITIES.ASPHYXIATE_LAST_HIT) {
+    //     let tumekens_resplendence = 0;
+    //     if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
+    //         tumekens_resplendence += 1;
+    //     }
+    //     if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
+    //         tumekens_resplendence += 1;
+    //     }
+    //     if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
+    //         tumekens_resplendence += 1;
+    //     }
+    //     if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
+    //         tumekens_resplendence += 1;
+    //     }
+    //     if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
+    //         tumekens_resplendence += 1;
+    //     }
+    //     if (tumekens_resplendence >= 4) {
+    //         rotation =  {
+    //             1: [ABILITIES.ASPHYXIATE_HIT],
+    //             2: [ABILITIES.ASPHYXIATE_HIT],
+    //             3: [ABILITIES.ASPHYXIATE_HIT],
+    //             4: [ABILITIES.ASPHYXIATE_HIT],
+    //             5: [ABILITIES.ASPHYXIATE_HIT],
+    //             6: [ABILITIES.ASPHYXIATE_HIT],
+    //             7: [ABILITIES.ASPHYXIATE_HIT],
+    //             8: [ABILITIES.ASPHYXIATE_LAST_HIT]
+    //         }
+    //     }
+    // }
+
     settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 1;
     if (settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) {
         settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 3;
         if (abils[settings['ability']]['ability classification'] === 'channel') {
-            settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = Math.min(settings[SETTINGS.HIT_COUNTER_END], 
-                Object.keys(abils[settings['ability']]["hits"]).map(item => parseInt(item, 10)).pop());
+            if (settings[SETTINGS.HIT_COUNTER_END] != null && settings[SETTINGS.HIT_COUNTER_END] > 0) {
+                settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = settings[SETTINGS.HIT_COUNTER_END];
+            } else {
+                const lastHitTick = Object.keys(abils[settings['ability']]["hits"])
+                    .map(item => parseInt(item, 10)).pop();
+                settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = lastHitTick ?? 3;
+            }
         }
     }
 
