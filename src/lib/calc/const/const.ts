@@ -88,7 +88,7 @@ const weapons: Record<string, Equipment> = {
         tier: 80,
         type: 'none',
         classification: 'none',
-    popular: true
+        popular: false
     },
     [SETTINGS.RANGED_TH_VALUES.HEX]: {
         style: 'ranged',
@@ -963,7 +963,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 11,
         offensiveTier: { melee: 85, ranged: 85, magic: 85, necro: 85 },
         slot: 'gloves',
-        style: 'hybrid'
+        style: 'hybrid',
+        popular: true
     },
     [SETTINGS.MELEE_BOOTS_VALUES.LACERATION]: {
         'necromancy strength': 0,
@@ -1017,7 +1018,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'boots',
-        style: 'magic'
+        style: 'magic',
+        popular: true
     },
     [SETTINGS.RANGED_BOOTS_VALUES.SH]: {
         'necromancy strength': 6.9,
@@ -1036,7 +1038,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee',
-        popular: true
+        popular: false
     },
     [SETTINGS.MELEE_BODY_VALUES.MASTERWORK]: {
         'necromancy strength': 0,
@@ -1046,7 +1048,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee',
-        popular: true
+        popular: false
     },
     [SETTINGS.MELEE_LEGS_VALUES.MASTERWORK]: {
         'necromancy strength': 0,
@@ -1056,7 +1058,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee',
-        popular: true
+        popular: false
     },
     [SETTINGS.MELEE_GLOVES_VALUES.MASTERWORK]: {
         'necromancy strength': 0,
@@ -1066,7 +1068,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee',
-        popular: true
+        popular: false
     },
     [SETTINGS.MELEE_BOOTS_VALUES.MASTERWORK]: {
         'necromancy strength': 0,
@@ -1076,7 +1078,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee',
-        popular: true
+        popular: false
     },
     [SETTINGS.MELEE_HELMET_VALUES.TMW]: {
         'necromancy strength': 0,
@@ -1086,7 +1088,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee',
-        popular: true
+        popular: false
     },
     [SETTINGS.MELEE_BODY_VALUES.TMW]: {
         'necromancy strength': 0,
@@ -1096,7 +1098,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee',
-        popular: true
+        popular: false
     },
     [SETTINGS.MELEE_LEGS_VALUES.TMW]: {
         'necromancy strength': 0,
@@ -1106,7 +1108,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee',
-        popular: true
+        popular: false
     },
     [SETTINGS.MELEE_BOOTS_VALUES.TMW]: {
         'necromancy strength': 0,
@@ -1116,7 +1118,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee',
-        popular: true
+        popular: false
     },
     [SETTINGS.MELEE_GLOVES_VALUES.TMW]: {
         'necromancy strength': 0,
@@ -1126,7 +1128,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee',
-        popular: true
+        popular: false
     },
     [SETTINGS.MELEE_GLOVES_VALUES.GOP]: {
         'necromancy strength': 0,
@@ -1271,7 +1273,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 87, ranged: 87, magic: 87, necro: 87 },
         slot: 'necklace',
         style: 'hybrid',
-        popular: true
+        popular: false
     },
     [SETTINGS.NECKLACE_VALUES.BERSERKER]: {
         'necromancy strength': 0,
@@ -1363,7 +1365,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 8,
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
-        style: 'hybrid'
+        style: 'hybrid',
+        popular: true
     },
     [SETTINGS.POCKET_VALUES.AMASCUT]: {
         'necromancy strength': 8,
@@ -1490,7 +1493,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'ring',
-        style: 'magic'
+        style: 'magic',
+        popular: true
     },
     [SETTINGS.RING_VALUES.CHANNELLER_E]: {
         'necromancy strength': 0,
@@ -1499,7 +1503,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'ring',
-        style: 'magic'
+        style: 'magic',
+        popular: true
     },
     [SETTINGS.RING_VALUES.STALKER]: {
         'necromancy strength': 0,
@@ -1537,7 +1542,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 0,
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'ring',
-        style: 'melee'
+        style: 'melee',
+        popular: true
     },
     [SETTINGS.RING_VALUES.ASR]: {
         'necromancy strength': 21,
@@ -1582,7 +1588,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 92 },
         slot: 'ring',
-        style: 'necromancy'
+        style: 'necromancy',
+        popular: true
     },
     'occultists ring': {
         'necromancy strength': 30.4,
@@ -1591,7 +1598,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 92 },
         slot: 'ring',
-        style: 'hybrid'
+        style: 'hybrid',
+        popular: true
     },
     [SETTINGS.RING_VALUES.LOTD]: {
         'necromancy strength': 17.3,
@@ -1637,7 +1645,7 @@ const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'hybrid',
-        popular: true
+        popular: false
     },
     'TokHaar-Kal-Ket': {
         'necromancy strength': 0,
@@ -2087,7 +2095,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'gloves',
-        style: 'magic'
+        style: 'magic',
+        popular: true
     },
     [SETTINGS.MAGIC_BOOTS_VALUES.MASTERWORK]: {
         'necromancy strength': 0,
@@ -2096,7 +2105,8 @@ const armour: Record<string, Equipment> = {
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'boots',
-        style: 'magic'
+        style: 'magic',
+        popular: true
     },
     [SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE]: {
         'necromancy strength': 0,
