@@ -248,6 +248,23 @@ export const rotationActions = {
         }
     },
 
+    insertTicks(pos, count) {
+        const fills = { abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null };
+        for (const [key, fill] of Object.entries(fills)) {
+            const arr = rotationStore[key];
+            rotationStore[key] = [...arr.slice(0, pos), ...Array(count).fill(fill), ...arr.slice(pos)].slice(0, BAR_SIZE);
+        }
+    },
+
+    removeTicks(pos, count) {
+        const fills = { abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null };
+        for (const [key, fill] of Object.entries(fills)) {
+            const arr = rotationStore[key];
+            const removed = [...arr.slice(0, pos), ...arr.slice(pos + count)];
+            rotationStore[key] = [...removed, ...Array(BAR_SIZE - removed.length).fill(fill)];
+        }
+    },
+
     // Import rotation from data
     async importRotation(data, onSuccess, onError, refreshUICallback) {
         try {

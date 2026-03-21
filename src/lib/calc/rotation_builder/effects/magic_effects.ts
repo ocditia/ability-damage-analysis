@@ -157,14 +157,6 @@ function applyMinVarEffects(
 ): void {
     const { settings, abilityKey } = ctx;
 
-    // Channeler's ring
-    if (
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLERS_RING &&
-        abils[abilityKey]?.['ability classification'] === 'channel'
-    ) {
-        distribution['min hit'] = Math.floor(distribution['min hit'] * 1.04);
-        distribution['var hit'] = Math.floor(distribution['var hit'] * 1.04);
-    }
 
     if (abilityKey === ABILITIES.ASPHYXIATE_HIT || abilityKey === ABILITIES.ASPHYXIATE_LAST_HIT) {
         let tumekens_resplendence = 0;
@@ -187,6 +179,15 @@ function applyMinVarEffects(
             distribution['min hit'] = 0.71;
             distribution['var hit'] = 0.13;
         }
+    }
+
+    // Channeler's ring
+    if (
+        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLERS_RING &&
+        abils[abilityKey]?.['ability classification'] === 'channel'
+    ) {
+        distribution['min hit'] = Math.floor(distribution['min hit'] * 1.04);
+        distribution['var hit'] = Math.floor(distribution['var hit'] * 1.04);
     }
 }
 

@@ -185,12 +185,26 @@
                                     onchange={() => updateDamages()}
                                 />
                                 <Select
-                                bind:setting={settings[SETTINGS.DAMAGE_PER_UNIT]}
-                                onchange={() => updateDamages()}
+                                    bind:setting={settings[SETTINGS.DAMAGE_PER_UNIT]}
+                                    onchange={() => updateDamages()}
                                 />
                                 <Select
                                     bind:setting={settings[SETTINGS.DAMAGE_UNITS]}
                                     onchange={() => updateDamages()}
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.HIT_COUNTER_START]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="100"
+                                    min="0"
+                                />
+                                <Number
+                                    bind:setting={settings[SETTINGS.HIT_COUNTER_END]}
+                                    onchange={() => updateDamages()}
+                                    step="1"
+                                    max="100"
+                                    min="0"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.ESSENCE_CORRUPTION]}

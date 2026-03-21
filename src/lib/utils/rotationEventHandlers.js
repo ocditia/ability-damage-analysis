@@ -1,7 +1,7 @@
 import { ToolMode } from '$lib/calc/rotation_builder/ui_material/toolModes';
 import { abils } from '$lib/calc/const/const';
 import { calculateTotalDamage, calculateGaussianParameters } from '$lib/calc/rotation_builder/rotation-damage-calculator';
-import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
+import { rotationStore, rotationActions } from '$lib/stores/rotationStore.svelte.js';
 import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
 import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
 import { notifActions } from '$lib/stores/notificationStore.svelte.js';
@@ -12,7 +12,7 @@ import { getSettingsKeyForItem } from '$lib/calc/rotation_builder/gear-registry'
 
 const logger = Logger.getInstance();
 // UI Constants
-const BAR_SIZE = 200;
+const BAR_SIZE = 300;
 const EXTRA_BAR_SIZE = 12;
 
 /**
@@ -219,10 +219,27 @@ export function handleDragLeave(event, index, stores) {
  * @param {Object} stores - Object containing uiStore, rotationStore, uiActions
  * @param {Function} refreshUI - Function to refresh the UI
  */
-export function handleBarLeftClick(event, ability, index, stores, refreshUI) {
+export function handleBarLeftClick(event, ability, index, stores, refreshUI, calculateTotalDamageNew) {
     const { uiStore, rotationStore, uiActions } = stores;
     
     event.currentTarget.focus();
+
+    if (uiStore.activeTool === ToolMode.Insert) {
+        notifActions.showInputPrompt(
+            'Insert Ticks',
+            `Insert empty ticks before tick ${index}. Everything from tick ${index} onward will shift right.`,
+            'Number of ticks (e.g. 3)',
+            (value) => {
+                const count = parseInt(value);
+                if (count > 0) {
+                    rotationActions.insertTicks(index, count);
+                    refreshUI();
+                    calculateTotalDamageNew();
+                }
+            }
+        );
+        return;
+    }
 
     if (uiStore.activeTool === ToolMode.Null) {
         rotationStore.nulledTicks[index] = !rotationStore.nulledTicks[index];
@@ -281,9 +298,27 @@ export function handleBarLeftClick(event, ability, index, stores, refreshUI) {
  * @param {Function} calculateTotalDamageNew - Function to recalculate damage
  */
 export function handleBarRightClick(event, index, innerIdx = null, stores, refreshUI, calculateTotalDamageNew) {
-    const { rotationStore } = stores;
+    const { rotationStore, uiStore } = stores;
     
     event.preventDefault();
+
+    if (uiStore.activeTool === ToolMode.Insert) {
+        notifActions.showInputPrompt(
+            'Remove Ticks',
+            `Remove ticks starting at tick ${index}. Everything after will shift left.`,
+            'Number of ticks (e.g. 3)',
+            (value) => {
+                const count = parseInt(value);
+                if (count > 0) {
+                    rotationActions.removeTicks(index, count);
+                    refreshUI();
+                    calculateTotalDamageNew();
+                }
+            }
+        );
+        return;
+    }
+
     if (innerIdx != null) {
         rotationStore.extraActionBar[index][innerIdx] = null;
     }

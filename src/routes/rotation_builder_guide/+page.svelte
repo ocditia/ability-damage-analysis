@@ -126,7 +126,7 @@
 
                         <h3 id="tool-modes" class="subsection-heading">Tool Modes</h3>
                         <p class="mb-4">
-                            There are three tool modes, switchable via the toolbar or keyboard shortcuts:
+                            There are four tool modes, switchable via the toolbar or keyboard shortcuts:
                         </p>
                         <p class="mb-4">
                             <span class="tool-name">Regular</span> (<span class="keybind">r</span>) is the default mode.
@@ -142,6 +142,11 @@
                             Nulled ticks deal 0 damage but still apply buffs, stacks, and adrenaline as normal &mdash;
                             useful for simulating boss phase transitions or prebuilding on dummies.
                             Click a nulled tick again to un-null it.
+                        </p>
+                        <p class="mb-4">
+                            <span class="tool-name">Insert</span> (<span class="keybind">i</span>) left click to insert
+                            ticks into a rotation, moving everything afterwards to the right. Right click to delete ticks in a rotation,
+                            moving everything afterwards to the left.
                         </p>
 
                         <h3 id="extra-actions" class="subsection-heading">Extra Actions</h3>
@@ -230,6 +235,7 @@
                             <li><span class="keybind">r</span>: <span class="tool-name">Regular</span> tool</li>
                             <li><span class="keybind">s</span>: <span class="tool-name">Stall</span> tool</li>
                             <li><span class="keybind">n</span>: <span class="tool-name">Null</span> tool</li>
+                            <li><span class="keybind">i</span>: <span class="tool-name">Insert</span> tool</li>
                             <li><span class="keybind">1</span>: <span class="text-style text-ranged">Ranged</span></li>
                             <li><span class="keybind">2</span>: <span class="text-style text-magic">Magic</span></li>
                             <li><span class="keybind">3</span>: <span class="text-style text-melee">Melee</span></li>

@@ -580,9 +580,10 @@ function processTickOperationsCore(
     settingsCopy: any,
     rotation: RotationInput
 ) {
-    // Skip all processing during boss phase pause (invulnerable)
+    // During boss phase pause (invulnerable): still tick down buffs/timers, but skip damage
     if (state.pauseTicksRemaining > 0) {
         state.pauseTicksRemaining--;
+        handleTimers(state.timers, settingsCopy);
         state.tick += 1;
         return;
     }
@@ -1001,9 +1002,11 @@ function processTickOperations(
     state: RotationState,
     settingsCopy: any
 ) {
-    // Skip all processing during boss phase pause (invulnerable)
+    // During boss phase pause (invulnerable): still tick down buffs/timers, but skip damage
     if (state.pauseTicksRemaining > 0) {
         state.pauseTicksRemaining--;
+        handleTimers(state.timers, settingsCopy);
+        copyStacks(state.tick, settingsCopy, state.timers);
         state.tick += 1;
         return;
     }

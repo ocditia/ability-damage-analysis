@@ -1,4 +1,4 @@
-import { SETTINGS } from './settings';
+import { SETTINGS } from './settings_rb';
 import { abils, ABILITIES } from './const';
 
 function next_tick(settings) {
