@@ -244,6 +244,7 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     const adaptedSettings = Object.fromEntries(
         Object.entries(settingsStore.settings).map(([key, value]: [string, { value: any }]) => [key, value.value])
     );
+    
     // Map per-style pocket to generic POCKET for calc engine
     const pocketByStyle: Record<string, string> = {
         'magic': SETTINGS.MAGIC_POCKET,
@@ -269,6 +270,7 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     }
 
     const settingsCopy = structuredClone(adaptedSettings);
+    settingsCopy[SETTINGS.CALC_TYPE] = SETTINGS.CALC_TYPE_VALUES.ROTATION;
 
     logger.log(LogCategory.SETTINGS, 'Damage calculation settings', {
         abilityDamage: settingsCopy[SETTINGS.ABILITY_DAMAGE],
@@ -1205,13 +1207,16 @@ function processChannelledTick(
     }
     let hit_index = 1 + currentTick - state.start_tick;
     let dmgObjects: DamageObject[] = [];
+    console.log('[processChannelledTick]', abilityKey, 'hit_index:', hit_index, 'rotation[hit_index]:', rotation[hit_index]);
 
     if (rotation[hit_index].length > 0) {
         let hitKey = rotation[hit_index][0];
         let dmgObject = create_damage_object(settingsCopy, hitKey);
         let dmgObjs = on_cast(settingsCopy, dmgObject, state.timers, hitKey);
+        console.log('[processChannelledTick] on_cast returned', dmgObjs.length, 'objects for', hitKey);
         dmgObjs.forEach(dmgObj => {
             let o = on_hit(settingsCopy, dmgObj, state.timers, dmgObj.ability);
+            console.log('[processChannelledTick] on_hit returned', o.length, 'objects, damage list:', dmgObj.distributions?.non_crit?.['damage list']?.length);
             for (let hit of o) {
                 dmgObjects.push(hit);
             }
@@ -1219,6 +1224,7 @@ function processChannelledTick(
             handle_edraco(settingsCopy, state.timers, hitKey);
             handle_tumekens(settingsCopy, state.timers, hitKey);
     }
+    console.log('[processChannelledTick] total dmgObjects:', dmgObjects.length);
     dmgObjects.forEach(dmgObject => {
         if (settingsCopy.isNulledTick) {
             dmgObject = zeroDamageObject(dmgObject);

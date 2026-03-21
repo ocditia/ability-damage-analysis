@@ -10,6 +10,11 @@ const SETTINGS = {
         MAX_NO_CRIT: 'max no crit',
         MAX_CRIT: 'max crit'
     },
+    CALC_TYPE: 'calc type',
+    CALC_TYPE_VALUES: {
+        ABILITY: 'ability',
+        ROTATION: 'rotation'
+    },
     ABILITY_DAMAGE: 'ability damage',
     NECROMANCY_LEVEL: 'necromancy level',
     MAGIC_LEVEL: 'magic level',
@@ -936,6 +941,10 @@ const settingsConfig = {
             { text: 'Max no crit', value: SETTINGS.MODE_VALUES.MAX_NO_CRIT },
             { text: 'Max crit', value: SETTINGS.MODE_VALUES.MAX_CRIT }
         ]
+    },
+    [SETTINGS.CALC_TYPE]: {
+        label: 'Mode',
+        default: SETTINGS.CALC_TYPE_VALUES.ABILITY,
     },
     [SETTINGS.ABILITY_DAMAGE]: {
         label: 'Override base damage',

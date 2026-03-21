@@ -62,9 +62,12 @@ export function calculateAdditiveBoost(ctx: EffectContext): number {
     // Scripture of Ful (20% * probability buff is active)
     if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.FUL) {
         // TODO - expected vs max
-        // const fulProb = settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] || 0;
-        const fulProb = 1;
-        boost += 0.2 * fulProb;
+        if (settings[SETTINGS.CALC_TYPE] === SETTINGS.CALC_TYPE_VALUES.ROTATION) {
+            const fulProb = settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] || 0;
+            boost += 0.2 * fulProb;
+        } else {
+            boost += 0.2;
+        }
     }
 
     // Gorajan trailblazer (7%)
