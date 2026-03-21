@@ -534,11 +534,13 @@
                     <div class="flex flex-wrap gap-2 justify-center my-2">
                         {#each [
                             { key: SETTINGS.REAPER_CREW, img: '/effect_icons/death.png', title: 'Reaper Crew', toggle: true },
-                            { key: SETTINGS.SWIFTNESS_OF_THE_AVIANSIE, img: '/effect_icons/swiftness_of_the_avianse.png', title: 'Swiftness of the Aviansie', toggle: true },
-                            { key: SETTINGS.SMOKE_CLOUD, img: '/effect_icons/smoke_cloud.png', title: 'Smoke Cloud', toggle: true },
-                            { key: SETTINGS.STONE_OF_JAS, img: '/effect_icons/stone_of_jas.png', title: 'Stone of Jas', step: 1, max: 6 },
                             { key: SETTINGS.BERSERKERS_FURY, img: '/effect_icons/berserkers_fury.png', title: "Berserker's Fury", step: 0.5, max: 5.5 },
+                            { key: SETTINGS.SMOKE_CLOUD, img: '/effect_icons/smoke_cloud.png', title: 'Smoke Cloud', toggle: true },
+                            { key: SETTINGS.SWIFTNESS_OF_THE_AVIANSIE, img: '/effect_icons/swiftness_of_the_avianse.png', title: 'Swiftness of the Aviansie', toggle: true },
+                            { key: SETTINGS.STONE_OF_JAS, img: '/effect_icons/stone_of_jas.png', title: 'Stone of Jas', step: 1, max: 6 },
                             { key: SETTINGS.INFERNAL_PUZZLE_BOX, img: '/effect_icons/infernal_puzzlebox.png', title: 'Infernal Puzzle Box', step: 1, max: 6 },
+                            { key: SETTINGS.DIVINE_RAGE, img: '/ability_icons/special/Divine_Rage.png', title: 'Divine Rage', toggle: true },
+                            { key: SETTINGS.ECLIPSED_SOUL, img: '/ability_icons/special/Eclipsed_Soul.png', title: 'Eclipsed Soul', toggle: true }
                         ] as buff}
                             <ToggleButton
                                 bind:setting={settings[buff.key]}
