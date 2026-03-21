@@ -264,7 +264,7 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 3;
         if (abils[settings['ability']]['ability classification'] === 'channel') {
             if (settings[SETTINGS.HIT_COUNTER_END] != null && settings[SETTINGS.HIT_COUNTER_END] > 0) {
-                settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = settings[SETTINGS.HIT_COUNTER_END];
+                settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = settings[SETTINGS.HIT_COUNTER_END] - settings[SETTINGS.HIT_COUNTER_START];
             } else {
                 const lastHitTick = Object.keys(abils[settings['ability']]["hits"])
                     .map(item => parseInt(item, 10)).pop();

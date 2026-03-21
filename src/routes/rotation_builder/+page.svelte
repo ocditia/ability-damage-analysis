@@ -413,7 +413,7 @@
     }
 
 	function handleBarLeftClick(event, ability, index) {
-		eventHandlers.handleBarLeftClick(event, ability, index, stores, refreshUI);
+		eventHandlers.handleBarLeftClick(event, ability, index, stores, refreshUI, calculateTotalDamageNew);
     }
 
     function handleBarRightClick(event, index, innerIdx = null) {
@@ -424,6 +424,10 @@
 
     function handleKeypress(event: KeyboardEvent) {
         eventHandlers.handleKeypress(event, stores);
+    }
+
+    function focusOnMount(node: HTMLElement) {
+        requestAnimationFrame(() => node.focus());
     }
 
     // Helper functions
@@ -553,7 +557,11 @@
 	}
 
 	.null-cursor {
-		cursor: url('/cursor_icons/abort-icon.svg') 16 16, not-allowed; 
+		cursor: url('/cursor_icons/abort-icon.svg') 16 16, not-allowed;
+	}
+
+	.insert-cursor {
+		cursor: cell;
 	}
 
 	.ability-bar {
@@ -1108,10 +1116,11 @@
 						<h3 class="text-sm font-bold text-[#C2BA9E] uppercase tracking-wide mb-2">Advanced Features</h3>
 
 						<p class="text-sm leading-relaxed mt-2">
-							<strong>Tool Modes</strong> &mdash; switch between 3 modes via the toolbar or keyboard:
+							<strong>Tool Modes</strong> &mdash; switch between 4 modes via the toolbar or keyboard:
 							<strong>Regular</strong> (<strong>R</strong>) is the default for adding, removing, and dragging abilities.
 							<strong>Stall</strong> (<strong>S</strong>) lets you select an ability to stall, then click a tick to place it (click again to remove; channelled abilities cannot be stalled).
 							<strong>Null</strong> (<strong>N</strong>) marks ticks as nulled &mdash; 0 damage but buffs and stacks still apply (e.g. boss phase transitions).
+							<strong>Insert</strong> (<strong>I</strong>) left-click a tick to insert empty ticks (shifting everything right), right-click to remove ticks (shifting everything left).
 						</p>
 
 						<p class="text-sm leading-relaxed mt-2">
@@ -1123,15 +1132,7 @@
 						</p>
 
 						<p class="text-sm leading-relaxed mt-2">
-							<strong>Dreadnips</strong> &mdash; deploy via the extra actions panel. Attacks every 4 ticks for up to 45 seconds (18 attacks max). Hit chance scales with the selected boss preset.
-						</p>
-
-						<p class="text-sm leading-relaxed mt-2">
 							<strong>Poison</strong> &mdash; enable weapon poison in settings. Poison damage scales with Bik arrow stacks and is tracked separately in the damage breakdown and plot.
-						</p>
-
-						<p class="text-sm leading-relaxed mt-2">
-							<strong>Boss Presets</strong> &mdash; select a boss to apply its defence, armour, and affinities. Some bosses support enrage scaling (Telos, Araxxor, Arch-Glacor) which adjusts stats and HP. Phase markers show boss HP thresholds on the damage plot.
 						</p>
 
 						<p class="text-sm leading-relaxed mt-2">
@@ -1215,12 +1216,12 @@
         notifActions.hideInputPrompt();
     }}
 >
-    <input 
-        type="text" 
-        bind:value={notificationStore.inputPrompt.value} 
+    <input
+        type="text"
+        bind:value={notificationStore.inputPrompt.value}
         placeholder={notificationStore.inputPrompt.placeholder}
         onkeydown={(e) => e.key === 'Enter' && notificationStore.inputPrompt.value.trim() && notificationStore.inputPrompt.onSubmit && notificationStore.inputPrompt.onSubmit(notificationStore.inputPrompt.value.trim())}
-        autofocus
+        use:focusOnMount
         style="width: 100%; padding: 0.5rem; border: 1px solid #555; border-radius: 4px; background: #1a1a1a; color: #fff; font-size: 0.9rem;"
     />
 </Popup>

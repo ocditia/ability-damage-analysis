@@ -169,6 +169,14 @@ export const uiActions = {
                     this.setActiveTool(ToolMode.Null);
                 }
                 break;
+            case "i":
+                if (uiStore.activeTool == ToolMode.Insert) {
+                    this.setActiveTool(ToolMode.Regular)
+                }
+                else {
+                    this.setActiveTool(ToolMode.Insert);
+                }
+                break;
             case "1":
                 this.setActiveTab("ranged");
                 break;
