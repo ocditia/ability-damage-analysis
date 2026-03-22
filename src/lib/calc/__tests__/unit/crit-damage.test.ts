@@ -7,11 +7,11 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { calc_crit_damage } from '../rotation_builder/calculation_utils';
-import { SETTINGS } from '../settings_rb.js';
+import { calc_crit_damage } from '../../rotation_builder/calculation_utils';
+import { SETTINGS } from '../../settings_rb.js';
 import { ABILITIES } from '$lib/data/abilities';
-import { createBlankSettings } from './test-helpers';
-import { create_damage_object } from '../rotation_builder/rota_object_helper';
+import { createBlankSettings } from '../test-helpers';
+import { create_damage_object } from '../../rotation_builder/rota_object_helper';
 
 function critDmgSettings(overrides: Record<string, any> = {}) {
     return createBlankSettings(120, 100, {

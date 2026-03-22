@@ -2,8 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import Navbar from '$components/Layout/Navbar.svelte';
 	import Header from '$components/Layout/Header.svelte';
-    import { abils } from '$lib/calc/const/const';
-    import { abilities as def_abilities } from '$lib/defence/abilities';
+    import { abils } from '$lib/data/abilities';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings_rb';
     import RotationSettings from '../../components/Settings/RotationSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
@@ -21,7 +20,7 @@
     import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
     import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
-    import { getBossPresetWithEnrage, type BossAttack, type BossAttackPattern } from '$lib/familiars/boss_presets';
+    import { getBossPresetWithEnrage, type BossAttack, type BossAttackPattern } from '$lib/data/bosses/boss_presets';
 
 
     const filterByStyle = (style) => Object.fromEntries(
@@ -31,8 +30,9 @@
     const magicAbils = filterByStyle('magic');
     const meleeAbils = filterByStyle('melee');
     const necroAbils = filterByStyle('necromancy');
-	let defAbils = {...def_abilities};
-    let allAbils = {...abils, ...def_abilities};
+	const defAbils = filterByStyle('defence')
+	// let defAbils = {...def_abilities};
+    let allAbils = {...abils};
 
     // Keybind modal state
     let showKeybindModal = $state(false);

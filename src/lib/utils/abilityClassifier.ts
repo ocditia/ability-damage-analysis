@@ -1,5 +1,4 @@
-import { abils } from '$lib/calc/const/const';
-
+import { abils } from '$lib/data/abilities';
 // Group order for display
 const GROUP_ORDER = ['buff', 'basic', 'threshold', 'ultimate', 'special attack'];
 

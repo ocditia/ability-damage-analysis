@@ -9,7 +9,7 @@
     // Register all Chart.js components
     Chart.register(...registerables);
     
-    import { abils } from '../../lib/calc/const/const';
+    import { abils } from '$lib/data/abilities.ts';
     import { STYLE_COLORS, ABILITY_COLORS, DAMAGE_SOURCE_COLORS, getDamageColour } from '../../lib/utils/colors';
 
     export let distributionStats = [];

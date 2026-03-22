@@ -2,7 +2,7 @@
     import { renderComponent } from '@tanstack/svelte-table';
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
-    import { ABILITIES, abils } from '$lib/calc/const/const';
+    import { ABILITIES, abils } from '$lib/data/abilities';
     import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
 
     const excludedAbilities = new Set([ABILITIES.BLACKHOLE]);

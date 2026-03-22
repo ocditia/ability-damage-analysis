@@ -2,7 +2,7 @@
  * Magic-specific damage calculation effects
  */
 
-import { ABILITIES, abils } from '../../const/const';
+import { ABILITIES, abils } from '$lib/data/abilities';
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
 import { EffectContext, BoostedADResult, StyleEffects } from './types';
@@ -157,29 +157,6 @@ function applyMinVarEffects(
 ): void {
     const { settings, abilityKey } = ctx;
 
-
-    if (abilityKey === ABILITIES.ASPHYXIATE_HIT || abilityKey === ABILITIES.ASPHYXIATE_LAST_HIT) {
-        let tumekens_resplendence = 0;
-        if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
-            tumekens_resplendence += 1;
-        }
-        if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
-            tumekens_resplendence += 1;
-        }
-        if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
-            tumekens_resplendence += 1;
-        }
-        if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
-            tumekens_resplendence += 1;
-        }
-        if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
-            tumekens_resplendence += 1;
-        }
-        if (tumekens_resplendence >= 4) {
-            distribution['min hit'] = 0.71;
-            distribution['var hit'] = 0.13;
-        }
-    }
 
     // Channeler's ring
     if (

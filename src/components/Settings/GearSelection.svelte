@@ -2,7 +2,7 @@
     import { SETTINGS } from '$lib/calc/settings_rb';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
     import { getItemsForSlot, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
-    import { weapons } from '$lib/calc/const/const';
+    import { weapons } from '$lib/data/weapons';
 
     let { settings, styleTab, updateDamages, openDropdown = $bindable(null) } = $props();
 

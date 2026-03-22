@@ -4,8 +4,8 @@
  * Provides a unified interface for applying combat style-specific effects
  * during damage calculation.
  */
-
-import { ABILITIES, abils, weapons } from '../../const/const';
+import { ABILITIES, abils } from '$lib/data/abilities';
+import { weapons } from '$lib/data/weapons'
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution, DamageObject } from '../../types';
 import { EffectContext, BoostedADResult, StyleEffects } from './types';

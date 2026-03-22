@@ -1,6 +1,9 @@
 import { settingsActions } from '$lib/stores';
-import { ABILITIES, abils, armour, gear, weapons } from './const/const';
-import { prayers } from './const/prayers';
+import { gear } from '$lib/data/slayer-helmets';
+import { ABILITIES, abils } from '$lib/data/abilities';
+import { armour } from '$lib/data/armour'
+import { weapons } from '$lib/data/weapons'
+import { prayers } from '../data/prayers';
 import { create_object } from './rotation_builder/rota_object_helper';
 import { SETTINGS } from './settings_rb';
 
@@ -23,7 +26,7 @@ function calc_base_ad(settings) {
                                 + calc_bonus(settings));
 
         let AD_oh = 0;
-        if (weapons[settings[SETTINGS.OH]]['weapon type'] === 'off-hand') {
+        if (weapons[settings[SETTINGS.OH]]?.['weapon type'] === 'off-hand') {
             AD_oh = Math.floor(0.5 * Math.floor(calc_level_damage(settings)
                                     + 9.6 * calc_weapon_tier(settings, 'off-hand weapon')
                                     + calc_bonus(settings)));
@@ -1506,146 +1509,5 @@ function style_specific_unification(settings, style = null) {
     return settings;
 }
 
-
-//todo rename
-function apply_additional(settings, total_damage) {
-
-    // handle sgb logic
-    if (settings['ability'] === ABILITIES.CRYSTAL_RAIN) {
-        total_damage += calc_sgb(settings, total_damage);
-    }
-
-    if (settings['bolg damage']) {
-            total_damage += calc_bolg(settings)
-            delete settings['bolg damage'];
-    }
-
-    // handle bloat logic
-    if (settings['ability'] === ABILITIES.BLOAT) { // TODO: fix missing reference for SETTINGS.BLOAT
-        total_damage += calc_bloat(settings);
-        delete settings['bloat damage'];
-    }
-    // handle corruption shot/blast
-    if ('corruption damage' in settings) {
-        total_damage += calc_corruption(settings);
-        delete settings['corruption damage'];
-    }
-
-    // handle instability (fsoa)
-    if ('fsoa damage' in settings) {
-        total_damage += calc_fsoa(settings);
-        delete settings['fsoa damage'];
-    }
-
-    return total_damage;
-}
-
-/**
- * Handles modifiers for the number of hits of multi-hit abilities, returning
- * the modified structure as a deep copy of the original
- * @param {*} settings 
- * @returns 
- */
-function get_hit_sequence(settings) {
-    let rotation = JSON.parse(JSON.stringify(abils[settings['ability']]['hits'])); //Deep copy
-
-    if (settings['ability'] === ABILITIES.GREATER_RICOCHET) {
-        for (let i = 1; i <= settings[SETTINGS.CAROMING]; i++) {
-            rotation[1].push('next hit');
-            rotation[1].push(ABILITIES.GREATER_RICOCHET_3);
-        }
-    }
-
-    if (settings['ability'] === ABILITIES.OVERPOWER && settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK) {
-        rotation[1].push("next hit");
-        rotation[1].push(ABILITIES.OVERPOWER_HIT);
-    }
-
-    if (settings['ability'] === ABILITIES.OMNIPOWER && settings[SETTINGS.CAPE] !== SETTINGS.CAPE_VALUES.ZUK) {
-        rotation = {1:[ABILITIES.OMNIPOWER_REGULAR]};
-    }
-
-    if (settings['ability'] === ABILITIES.IGNEOUS_SHOWDOWN && settings[SETTINGS.FLAMEBOUND_RIVAL] === true
-        && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH && (settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM)
-    ) {
-        rotation[1].push("next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS, "next hit", ABILITIES.IGNEOUS_SHOWDOWN_BONUS);
-    }
-
-    // masterwork spear of annihilation
-    if (settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR && 
-        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
-        if (settings['ability'] === ABILITIES.DISMEMBER) {
-            rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
-        }
-
-        if (settings['ability'] === ABILITIES.SLAUGHTER) {
-            rotation[1].push(ABILITIES.SLAUGHTER_HIT, ABILITIES.SLAUGHTER_HIT);
-        }
-
-        if (settings['ability'] === ABILITIES.MASSACRE) {
-            rotation[1].push(ABILITIES.MASSACRE_BLEED, ABILITIES.MASSACRE_BLEED);
-        }
-    }
-
-    // strength cape
-    if (settings[SETTINGS.STRENGTH_CAPE] === true &&
-        settings['ability'] === ABILITIES.DISMEMBER
-    ) {
-        rotation[1].push(ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT, ABILITIES.DISMEMBER_HIT);
-    }
-
-    // Ruin stacks
-    if (settings['ability'] === ABILITIES.COMBUST) {
-        for (let i=0; i<2*settings[SETTINGS.RUIN]; i++) {
-            rotation[1].push(ABILITIES.COMBUST_HIT);
-        }
-    }
-
-    // Residual souls - total hits equals residual souls count (minimum 2 required)
-    if (settings['ability'] === ABILITIES.VOLLEY_OF_SOULS_DYNAMIC) {
-        const residualSouls = settings[SETTINGS.RESIDUAL_SOULS] || 0;
-        if (residualSouls >= 2) {
-            // First hit
-            rotation[1].push(ABILITIES.VOLLEY_OF_SOULS);
-            // Additional hits (residualSouls - 1 more)
-            for (let i = 1; i < residualSouls; i++) {
-                rotation[1].push('next hit', ABILITIES.VOLLEY_OF_SOULS);
-            }
-        }
-        // If residualSouls < 2, rotation[1] stays empty (no damage)
-    }
-
-    return rotation;
-}
-
-function calc_aftershock(settings) {
-    settings = style_specific_unification(settings);
-    const dmgObject = create_object(settings);
-    for (let key in dmgObject) {
-        // calc base AD
-        dmgObject[key]['base AD'] = calc_base_ad(settings);
-        // calc buffed AD
-        dmgObject[key]['boosted AD'] = calc_boosted_ad(settings, dmgObject[key]);
-        dmgObject[key]['damage list'] = [];
-        for (let i=0; i<39; i++) {
-            dmgObject[key]['damage list'].push(Math.floor(dmgObject[key]['boosted AD'] * (0.24 + 0.04*i)));
-        }
-        // calc core
-        if (abils[settings['ability']]['on-hit effects']) {
-            dmgObject[key] = calc_core(settings, dmgObject, key, newBolg);
-        }
-        // calc on npc
-        dmgObject[key] = calc_on_npc(settings, dmgObject[key]);
-        // add split soul damage
-        if (
-            settings['split soul'] === true
-        ) {
-            dmgObject[key] = add_split_soul(settings, dmgObject[key]);
-        }
-    }
-    // get user value
-    return get_user_value(settings, dmgObject);
-}
-
 // Only export functions actually used by the rotation builder
-export { style_specific_unification, calc_base_ad, apply_additional };
+export { style_specific_unification, calc_base_ad };

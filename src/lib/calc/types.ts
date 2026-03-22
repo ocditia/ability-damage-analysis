@@ -1,4 +1,4 @@
-import { ABILITIES } from "./const/const";
+import { ABILITIES } from '$lib/data/abilities';
 
 type DamageKind = 'non_crit' | 'crit';
 export type CombatStyle = 'melee' | 'ranged' | 'magic' | 'necro' | 'necromancy' | 'poison';

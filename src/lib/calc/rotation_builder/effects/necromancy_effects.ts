@@ -2,7 +2,7 @@
  * Necromancy-specific damage calculation effects
  */
 
-import { ABILITIES, abils } from '../../const/const';
+import { ABILITIES, abils } from '$lib/data/abilities';
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
 import { countTFNPieces } from '../rotation_damage_helper';

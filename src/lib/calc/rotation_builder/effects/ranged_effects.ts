@@ -1,8 +1,8 @@
 /**
  * Ranged-specific damage calculation effects
  */
-
-import { ABILITIES, abils, weapons } from '../../const/const';
+import { ABILITIES, abils } from '$lib/data/abilities';
+import { weapons } from '$lib/data/weapons'
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
 import { EffectContext, BoostedADResult, StyleEffects } from './types';
