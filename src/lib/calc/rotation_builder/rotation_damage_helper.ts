@@ -1,6 +1,6 @@
 import { create_damage_object } from './rota_object_helper';
 import { SETTINGS } from '../settings_rb';
-import { ABILITIES, abils } from '../const/const';
+import { ABILITIES, abils } from '$lib/data/abilities';
 import { on_cast, on_hit, COOLDOWN_PREFIX } from './damage_calc_new';
 import { DamageObject, DamageKind, DamageDistribution } from '../types';
 
@@ -360,12 +360,9 @@ export function handle_tumekens(settings: Record<string, any>, timers: Record<st
     if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
     if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
     if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
-    console.log('[handle_tumekens] tumekensCount:', tumekensCount, 'helmet:', settings[SETTINGS.MAGIC_HELMET], 'body:', settings[SETTINGS.MAGIC_BODY]);
-
     if (tumekensCount >= 5) {
         settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] = true;
         timers[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] = 15; // 9s = 15 ticks
-        console.log('[handle_tumekens] BUFF ACTIVATED');
     }
 }
 

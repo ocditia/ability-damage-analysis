@@ -50,6 +50,8 @@ export function createBaseSettings(overrides: Record<string, any> = {}): Record<
         [SETTINGS.FLANKING]: 0,
         [SETTINGS.LUNGING]: 0,
         [SETTINGS.ULTIMATUMS]: 0,
+        [SETTINGS.ERUPTIVE]: 0,
+        [SETTINGS.EQ_PERK]: 0,
 
         // Buffs - all off by default
         [SETTINGS.BERSERK]: false,
@@ -122,6 +124,7 @@ export function createBaseSettings(overrides: Record<string, any> = {}): Record<
         [SETTINGS.RUTHLESS_STACKS]: 0,
         [SETTINGS.RUTHLESS_RANK]: 0,
         [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MEAN,
+        [SETTINGS.DAMAGE_PER_UNIT_DIVIDER]: 1,
 
         // Additional settings that damage calc expects
         [SETTINGS.REVENGE]: 0,
@@ -488,6 +491,7 @@ export function createBlankSettings(
         [SETTINGS.CAROMING]: 0,
         [SETTINGS.AFTERSHOCK]: 0,
         [SETTINGS.ERUPTIVE]: 0,
+        [SETTINGS.EQ_PERK]: 0,
 
         // All prayers disabled
         [SETTINGS.MELEE_PRAYER]: SETTINGS.MELEE_PRAYER_VALUES.NONE,
@@ -531,6 +535,7 @@ export function createBlankSettings(
 
         // Other required settings
         [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MEAN,
+        [SETTINGS.DAMAGE_PER_UNIT_DIVIDER]: 1,
         [SETTINGS.REVENGE]: 0,
         [SETTINGS.RUTHLESS_STACKS]: 0,
         [SETTINGS.RUTHLESS_RANK]: 0,

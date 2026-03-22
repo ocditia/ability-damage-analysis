@@ -1,5 +1,5 @@
-import { abils, ABILITIES } from '../const/const';
-import { style_specific_unification, calc_base_ad, apply_additional } from '../damage_calc_rb';
+import { abils, ABILITIES } from '$lib/data/abilities';
+import { style_specific_unification, calc_base_ad } from '../damage_calc_rb';
 import { get_hit_sequence, addAdrenaline } from './calculation_utils';
 import { calc_channelled_hit, handleBuffs, get_user_value, handle_edraco, handle_tumekens, getConjureDamageMultiplier } from './rotation_damage_helper';
 import { SETTINGS } from '../settings_rb';
@@ -10,13 +10,32 @@ import { gearSwaps, allExtraActions as specialAbils, CONSUMABLES } from '../../s
 import { isExtraAction, normalizeLegacy, type ExtraAction } from './extra-action';
 import { getSettingsKeyForItem } from './gear-registry';
 import { CombatStyle, DamageObject, RotationInput } from '../types';
-import { familiars, dreadnipData, calculateFamiliarHitChance } from '$lib/familiars/familiars';
-import { getBossPresetWithEnrage, type BossPhase, type BossPreset } from '$lib/familiars/boss_presets';
+import { familiars, dreadnipData, calculateFamiliarHitChance } from '$lib/data/familiars';
+import { getBossPresetWithEnrage, type BossPhase, type BossPreset } from '$lib/data/bosses/boss_presets';
 import { Logger, LogCategory } from '$lib/utils/Logger';
 import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
 import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
 import { uiActions, uiStore } from '$lib/stores/uiStore.svelte';
 const logger = Logger.getInstance();
+
+/** Count equipped Tumeken's Resplendence pieces (uses per-style MAGIC_ keys) */
+function countTumekensResplendence(settings: Record<string, any>): number {
+    let count = 0;
+    if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) count++;
+    if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) count++;
+    if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) count++;
+    if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) count++;
+    if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) count++;
+    return count;
+}
+
+/** Swap asphyxiate for Tumeken's variant if 4+ pieces equipped */
+function resolveTumekensAsphyxiate(abilityKey: string, settings: Record<string, any>): string {
+    if (abilityKey === ABILITIES.ASPHYXIATE && countTumekensResplendence(settings) >= 4) {
+        return ABILITIES.TUMEKEN_ASPHYXIATE;
+    }
+    return abilityKey;
+}
 
 interface RotationState {
     dmgs: number[];
@@ -504,11 +523,14 @@ function processCurrentTick(state: RotationState, settingsCopy: any, BAR_SIZE: n
     // Then process any regular ability on this tick
 
     // handle either afking or chanelling if no ability on this tick
-    const abilityKey = rotationStore.abilityBar[state.tick];
+    let abilityKey = rotationStore.abilityBar[state.tick];
     if (abilityKey == null) {
         handleNullAbilityTick(state, settingsCopy);
         return;
     }
+
+    // Swap asphyxiate for Tumeken's variant if wearing 4+ pieces
+    // abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
 
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
     settingsCopy['ability'] = abilityKey;
@@ -552,11 +574,14 @@ function processCurrentTickCore(
     }
 
     // handle either afking or channelling if no ability on this tick
-    const abilityKey = rotation.abilityBar[state.tick];
+    let abilityKey = rotation.abilityBar[state.tick];
     if (abilityKey == null) {
         handleNullAbilityTickCore(state, settingsCopy, rotation);
         return;
     }
+
+    // Swap asphyxiate for Tumeken's variant if wearing 4+ pieces
+    // abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
 
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
     settingsCopy['ability'] = abilityKey;
@@ -880,6 +905,7 @@ function processAbilityCore(
 ) {
     style_specific_unification(settingsCopy, abils[abilityKey]['main style']);
     rotationState.combatStyle = abils[abilityKey]['main style'];
+    settingsCopy['ability'] = abilityKey;
     updateFulProbability(rotationState, settingsCopy);
 
     on_stall(settingsCopy, abilityKey, rotationState.timers);
@@ -1039,6 +1065,7 @@ function processAbility(
     //TODO release stalled abilities here
     style_specific_unification(settingsCopy, abils[abilityKey]['main style']); //Update gear/combat style
     rotationState.combatStyle = abils[abilityKey]['main style'];
+    settingsCopy['ability'] = abilityKey;
     updateFulProbability(rotationState, settingsCopy);
 
     on_stall(settingsCopy, abilityKey, rotationState.timers);
@@ -1165,7 +1192,7 @@ function processBleedAbility(
             if (settingsCopy.isNulledTick) {
                 hit = zeroDamageObject(hit);
             }
-            let htick = hit_tick + abils[abilityKey].hitTimings[i];
+            let htick = hit_tick + (abils[abilityKey].hitTimings?.[i] ?? 0);
             state.damageQueue[htick] ??= [];
             state.damageQueue[htick].push(hit);
         });
@@ -1210,16 +1237,12 @@ function processChannelledTick(
     }
     let hit_index = 1 + currentTick - state.start_tick;
     let dmgObjects: DamageObject[] = [];
-    console.log('[processChannelledTick]', abilityKey, 'hit_index:', hit_index, 'rotation[hit_index]:', rotation[hit_index]);
-
     if (rotation[hit_index].length > 0) {
         let hitKey = rotation[hit_index][0];
         let dmgObject = create_damage_object(settingsCopy, hitKey);
         let dmgObjs = on_cast(settingsCopy, dmgObject, state.timers, hitKey);
-        console.log('[processChannelledTick] on_cast returned', dmgObjs.length, 'objects for', hitKey);
         dmgObjs.forEach(dmgObj => {
             let o = on_hit(settingsCopy, dmgObj, state.timers, dmgObj.ability);
-            console.log('[processChannelledTick] on_hit returned', o.length, 'objects, damage list:', dmgObj.distributions?.non_crit?.['damage list']?.length);
             for (let hit of o) {
                 dmgObjects.push(hit);
             }
@@ -1227,7 +1250,6 @@ function processChannelledTick(
             handle_edraco(settingsCopy, state.timers, hitKey);
             handle_tumekens(settingsCopy, state.timers, hitKey);
     }
-    console.log('[processChannelledTick] total dmgObjects:', dmgObjects.length);
     dmgObjects.forEach(dmgObject => {
         if (settingsCopy.isNulledTick) {
             dmgObject = zeroDamageObject(dmgObject);

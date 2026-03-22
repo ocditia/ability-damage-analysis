@@ -2,7 +2,7 @@
  * Types for style-specific effect handlers
  */
 
-import { ABILITIES } from '../../const/const';
+import { ABILITIES } from '$lib/data/abilities';
 import { DamageDistribution, DamageObject } from '../../types';
 
 /**

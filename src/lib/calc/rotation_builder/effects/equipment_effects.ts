@@ -2,7 +2,7 @@
  * Shared equipment effects that apply across combat styles
  */
 
-import { ABILITIES, abils } from '../../const/const';
+import { ABILITIES, abils } from '$lib/data/abilities';
 import { SETTINGS } from '../../settings_rb';
 
 type CombatStyle = 'magic' | 'melee' | 'ranged' | 'necromancy';

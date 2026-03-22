@@ -2,7 +2,7 @@
     import { renderComponent } from '@tanstack/svelte-table';
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
-    import { abils } from '$lib/calc/const/const';
+    import { abils } from '$lib/data/abilities.ts';
     import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
 
     const abilities = Object.fromEntries(

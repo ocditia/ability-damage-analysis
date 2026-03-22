@@ -5,7 +5,7 @@
  * Single-ability pages can use this to calculate damage as a "rotation of 1".
  */
 
-import { abils, ABILITIES } from './const/const';
+import { abils, ABILITIES } from '$lib/data/abilities';
 import { SETTINGS } from './settings_rb';
 import { calculateRotationDamageCore } from './rotation_builder/rotation-damage-calculator';
 import type { RotationInput, SingleAbilityInput } from './types';

@@ -4,7 +4,8 @@
  * dropdown options are generated dynamically by (slot, combatStyle).
  */
 
-import { armour, weapons } from '../const/const';
+import { armour } from '$lib/data/armour'
+import { weapons } from '$lib/data/weapons'
 import { GearSlots } from './gear';
 import type { EquipmentStyle } from '../types';
 

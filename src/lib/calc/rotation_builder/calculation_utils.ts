@@ -4,95 +4,10 @@
  */
 
 import { SETTINGS } from '../settings_rb';
-import { ABILITIES, abils, weapons } from '../const/const';
-import { DamageObject } from '../types';
+import { ABILITIES, abils } from '$lib/data/abilities';
 
-// =============================================================================
-// Crit Damage Calculation
-// =============================================================================
-
-/**
- * Calculate the crit damage multiplier based on equipped gear and buffs
- * @param settings - game settings object
- * @returns crit damage multiplier (0.5 base + bonuses)
- */
-export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageObject): number {
-    let crit_buff = 0.5; // base crit damage
-
-    // Smoke cloud (+15% magic, +6% other)
-    if (settings[SETTINGS.SMOKE_CLOUD] === true) {
-        if (abils[settings['ability']]?.['main style'] === 'magic') {
-            crit_buff += 0.15;
-        } else {
-            crit_buff += 0.06;
-        }
-    }
-
-    // Channeler's ring (magic channels only)
-    if (
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E &&
-        abils[settings['ability']]?.['ability classification'] === 'channel' &&
-        abils[settings['ability']]?.['main style'] === 'magic'
-    ) {
-        crit_buff += 0.025 * (1 + settings[SETTINGS.CHANNELLER_RING_STACKS]);
-    }
-
-    // Champion's ring (melee, based on bleeds)
-    if (
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E &&
-        abils[settings['ability']]?.['main style'] === 'melee'
-    ) {
-        crit_buff += 0.015 * settings[SETTINGS.NUMBER_OF_BLEEDS];
-    }
-
-    // Stalker's ring (ranged with bow)
-    if (
-        abils[settings['ability']]?.['main style'] === 'ranged' &&
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E &&
-        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-        (weapons[settings[SETTINGS.TH]]?.['type'] === 'bow' ||
-            settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)
-    ) {
-        crit_buff += 0.03;
-    }
-
-    // FSOA crit bonus (15-25%, avg 20%)
-    if (
-        (settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA || settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA_IM) &&
-        settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
-    ) {
-        if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
-            crit_buff += 0.25;
-        } else if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MIN_CRIT) {
-            crit_buff += 0.15;
-        } else {
-            crit_buff += 0.2;
-        }
-    }
-
-    // tumeken's resplendence pc
-    if (abils[settings['ability']]['main style'] === 'magic' && 
-        settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] === true
-    ) {
-        crit_buff += 0.35;
-    }
-
-	// magic leagues relic
-	if (abils[settings['ability']]['main style'] === 'magic' && 
-		settings[SETTINGS.MAGIC_LEAGUES_RELIC] === true) {
-		crit_buff += 0.5;
-		}
-        
-    if (dmgObj.ability === ABILITIES.THE_FINAL_FLURRY_1) {
-        crit_buff += 0.25;
-    }
-
-    if (dmgObj.ability === ABILITIES.THE_FINAL_FLURRY_2) {
-        crit_buff += 0.5;
-    }
-
-    return crit_buff;
-}
+// Re-export calc_crit_damage from its new home for any transitive consumers
+export { calc_crit_damage } from '../crit';
 
 // =============================================================================
 // Soul Split / Split Soul Calculations
@@ -227,37 +142,6 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         }
     }
 
-    // Tumeken 8 Hit asphyx
-    // if (abilityKey === ABILITIES.ASPHYXIATE_HIT || abilityKey === ABILITIES.ASPHYXIATE_LAST_HIT) {
-    //     let tumekens_resplendence = 0;
-    //     if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
-    //         tumekens_resplendence += 1;
-    //     }
-    //     if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
-    //         tumekens_resplendence += 1;
-    //     }
-    //     if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
-    //         tumekens_resplendence += 1;
-    //     }
-    //     if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
-    //         tumekens_resplendence += 1;
-    //     }
-    //     if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
-    //         tumekens_resplendence += 1;
-    //     }
-    //     if (tumekens_resplendence >= 4) {
-    //         rotation =  {
-    //             1: [ABILITIES.ASPHYXIATE_HIT],
-    //             2: [ABILITIES.ASPHYXIATE_HIT],
-    //             3: [ABILITIES.ASPHYXIATE_HIT],
-    //             4: [ABILITIES.ASPHYXIATE_HIT],
-    //             5: [ABILITIES.ASPHYXIATE_HIT],
-    //             6: [ABILITIES.ASPHYXIATE_HIT],
-    //             7: [ABILITIES.ASPHYXIATE_HIT],
-    //             8: [ABILITIES.ASPHYXIATE_LAST_HIT]
-    //         }
-    //     }
-    // }
 
     settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 1;
     if (settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) {

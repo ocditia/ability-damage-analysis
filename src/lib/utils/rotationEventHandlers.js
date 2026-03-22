@@ -1,5 +1,5 @@
 import { ToolMode } from '$lib/calc/rotation_builder/ui_material/toolModes';
-import { abils } from '$lib/calc/const/const';
+import { abils } from '$lib/data/abilities.ts';
 import { calculateTotalDamage, calculateGaussianParameters } from '$lib/calc/rotation_builder/rotation-damage-calculator';
 import { rotationStore, rotationActions } from '$lib/stores/rotationStore.svelte.js';
 import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';

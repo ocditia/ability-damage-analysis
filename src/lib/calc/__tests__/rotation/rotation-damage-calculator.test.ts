@@ -6,8 +6,8 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { calculateRotationDamageCore } from '../rotation_builder/rotation-damage-calculator';
-import { SETTINGS } from '../settings_rb.js';
+import { calculateRotationDamageCore } from '../../rotation_builder/rotation-damage-calculator';
+import { SETTINGS } from '../../settings_rb.js';
 import {
     createBaseSettings,
     createMeleeSettings,
@@ -18,7 +18,7 @@ import {
     MELEE_ABILITIES,
     RANGED_ABILITIES,
     MAGIC_ABILITIES,
-} from './test-helpers';
+} from '../test-helpers';
 
 describe('calculateRotationDamageCore', () => {
     describe('Basic Functionality', () => {

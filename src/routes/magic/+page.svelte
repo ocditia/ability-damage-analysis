@@ -2,14 +2,18 @@
     import { renderComponent } from '@tanstack/svelte-table';
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
-    import { abils } from '$lib/calc/const/const';
+    import { abils, ABILITIES } from '$lib/data/abilities.ts';
     import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
 
+    const excludedAbilities = new Set([ABILITIES.SUNSHINE, ABILITIES.GREATER_SUNSHINE, ABILITIES.TUMEKEN_ASPHYXIATE]);
+
+
     const abilities = Object.fromEntries(
-        Object.entries(abils).filter(([, a]) =>
+        Object.entries(abils).filter(([key, a]) =>
             a.title && a['main style'] === 'magic' &&
             a['ability classification'] !== 'conjure' &&
-            a['ability classification'] !== 'self cast'
+            a['ability classification'] !== 'self cast' &&
+            !excludedAbilities.has(key)
         )
     );
 

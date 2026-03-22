@@ -2,7 +2,7 @@
  * Melee-specific damage calculation effects
  */
 
-import { ABILITIES, abils } from '../../const/const';
+import { ABILITIES, abils } from '$lib/data/abilities';
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
 import { EffectContext, BoostedADResult, StyleEffects } from './types';
@@ -188,12 +188,22 @@ function applyStackEffects(ctx: EffectContext): void {
     if (abils[abilityKey]?.['main style'] !== 'melee') return;
     if (abils[abilityKey]?.['on-hit effects'] !== true) return;
 
+    // Gflurry berserk extension
+    const isBerserk = settings[SETTINGS.BERSERK] === true;
+    if (
+        (abilityKey === ABILITIES.GREATER_FLURRY_HIT) &&
+        (settings['_bloodlust_consumed'] === ABILITIES.GREATER_FLURRY) &&
+        isBerserk && ctx.timers
+    ) {
+        ctx.timers[SETTINGS.BERSERK] += 1;
+    }
+
     // Deduplicate: multihit sub-hits share the same key
     const castId = settings['ability'] + ':' + abilityKey;
     if (settings['_last_stack_ability_melee'] === castId) return;
     settings['_last_stack_ability_melee'] = castId;
 
-    const isBerserk = settings[SETTINGS.BERSERK] === true;
+    
     const cap = isBerserk ? 8 : 4;
     let stacks = settings[SETTINGS.BLOODLUST_STACKS] || 0;
 
@@ -207,6 +217,8 @@ function applyStackEffects(ctx: EffectContext): void {
         const gain = isBerserk ? 2 : 1;
         stacks = Math.min(stacks + gain, cap);
     }
+
+    
 
     settings[SETTINGS.BLOODLUST_STACKS] = stacks;
 }

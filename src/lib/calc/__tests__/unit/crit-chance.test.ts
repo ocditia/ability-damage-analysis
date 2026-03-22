@@ -1,15 +1,15 @@
 /**
  * Crit Chance Calculation Tests
  *
- * Tests calc_crit_chance from rota_object_helper.ts
+ * Tests calc_crit_chance from crit.ts
  * Verifies that all crit chance sources stack correctly.
  */
 
 import { describe, it, expect } from 'vitest';
-import { calc_crit_chance } from '../rotation_builder/rota_object_helper';
-import { SETTINGS } from '../settings_rb.js';
-import { ABILITIES } from '../const/const';
-import { createBlankSettings } from './test-helpers';
+import { calc_crit_chance } from '../../crit';
+import { SETTINGS } from '../../settings_rb.js';
+import { ABILITIES } from '$lib/data/abilities';
+import { createBlankSettings } from '../test-helpers';
 
 // Helper: create settings with specific crit-relevant options
 function critSettings(overrides: Record<string, any> = {}) {

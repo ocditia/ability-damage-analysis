@@ -3,7 +3,7 @@
  * These effects modify the final damage values in the damage list
  */
 
-import { ABILITIES, abils, gear } from '../../const/const';
+import { ABILITIES, abils } from '$lib/data/abilities';
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
 

@@ -6,8 +6,8 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { calculateSingleAbilityDamage, calculateMultipleAbilities } from '../unified-damage-calculator';
-import { SETTINGS } from '../settings_rb.js';
+import { calculateSingleAbilityDamage, calculateMultipleAbilities } from '../../unified-damage-calculator';
+import { SETTINGS } from '../../settings_rb.js';
 import {
     createBaseSettings,
     createMeleeSettings,
@@ -18,7 +18,7 @@ import {
     MAGIC_ABILITIES,
     BUFF_PRESETS,
     percentDifference,
-} from './test-helpers';
+} from '../test-helpers';
 
 describe('calculateSingleAbilityDamage', () => {
     describe('Basic Functionality', () => {

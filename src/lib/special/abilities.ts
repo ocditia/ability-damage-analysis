@@ -1,4 +1,4 @@
-import { ABILITIES } from '../calc/const/const';
+import { ABILITIES } from '$lib/data/abilities';
 import { SETTINGS } from '../calc/settings_rb.js';
 
 export enum CONSUMABLES {

@@ -12,8 +12,8 @@
     import { SETTINGS } from '$lib/calc/settings_rb';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
-    import { bossPresets, getBossPresetWithEnrage } from '$lib/familiars/boss_presets';
-    import { familiars, calculateFamiliarHitChance } from '$lib/familiars/familiars';
+    import { bossPresets, getBossPresetWithEnrage } from '$lib/data/bosses/boss_presets';
+    import { familiars, calculateFamiliarHitChance } from '$lib/data/familiars';
     import '../../css/style.css';
     let { tab = 'general', styleTab = SettingsCombatStyles.RANGED, stacks, updateDamages, refreshUI, uiState } = $props();
 

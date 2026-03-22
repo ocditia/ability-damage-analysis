@@ -7,16 +7,16 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { calculateSingleAbilityDamage } from '../unified-damage-calculator';
-import { SETTINGS } from '../settings_rb.js';
-import { ABILITIES } from '../const/const';
+import { calculateSingleAbilityDamage } from '../../unified-damage-calculator';
+import { SETTINGS } from '../../settings_rb.js';
+import { ABILITIES } from '$lib/data/abilities';
 import {
     createBaseSettings,
     createBlankSettings,
     createMeleeSettings,
     createMagicSettings,
     createNecromancySettings,
-} from './test-helpers';
+} from '../test-helpers';
 
 // =============================================================================
 // SMOKE TESTS - Verify abilities calculate without crashing

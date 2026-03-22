@@ -3,7 +3,8 @@
  * These are flat percentage boosts applied during the on_hit phase
  */
 
-import { ABILITIES, abils, gear } from '../../const/const';
+import { gear } from '$lib/data/slayer-helmets';
+import { ABILITIES, abils } from '$lib/data/abilities';
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
 import { EffectContext } from './types';
