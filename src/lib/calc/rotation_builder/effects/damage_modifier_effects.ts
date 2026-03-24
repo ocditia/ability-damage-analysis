@@ -87,14 +87,30 @@ export function applyDemonSlayerEffect(
 ): number {
     const { settings } = ctx;
 
-    if (settings[SETTINGS.SLAYER_PERK_DEMON] === true) {
+    if (settings[SETTINGS.SLAYER_PERK] === SETTINGS.SLAYER_PERK_VALUES.UNDEAD ) {
         damage = Math.floor(damage * 1.07);
     }
 
-    if (settings[SETTINGS.DEMON_SLAYER_ABILITY] === true) {
+    if (settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.UNDEAD) {
         damage = Math.floor(damage * 1.15);
     }
 
+    if (settings[SETTINGS.SLAYER_PERK] === SETTINGS.SLAYER_PERK_VALUES.DRAGON ) {
+        damage = Math.floor(damage * 1.07);
+    }
+
+    if (settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DRAGON) {
+        damage = Math.floor(damage * 1.15);
+    }
+
+    if (settings[SETTINGS.SLAYER_PERK] === SETTINGS.SLAYER_PERK_VALUES.DEMON ) {
+        damage = Math.floor(damage * 1.07);
+    }
+
+    if (settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DEMON) {
+        damage = Math.floor(damage * 1.15);
+    }
+    
     return damage;
 }
 
