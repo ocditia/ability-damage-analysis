@@ -39,6 +39,9 @@ export const buffs = [
     SETTINGS.BARRICADE,
     SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX,
     SETTINGS.SMOKE_CLOUD,
+    SETTINGS.UNDEAD_SLAYER_ABILITY,
+    SETTINGS.DRAGON_SLAYER_ABILITY,
+    SETTINGS.DEMON_SLAYER_ABILITY,
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -267,6 +270,27 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#7B68EE'
+            },
+            [SETTINGS.UNDEAD_SLAYER_ABILITY]: {
+                title: 'Undead Slayer',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#8B5CF6'
+            },
+            [SETTINGS.DRAGON_SLAYER_ABILITY]: {
+                title: 'Dragon Slayer',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#EF4444'
+            },
+            [SETTINGS.DEMON_SLAYER_ABILITY]: {
+                title: 'Demon Slayer',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#F97316'
             }
         }
     )

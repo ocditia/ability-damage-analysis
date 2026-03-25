@@ -1616,6 +1616,18 @@ function processExtraActionByValue(value: string, settings: any, timers: Record<
         const amount = parseInt(value.split(" ")[1]);
         settings[SETTINGS.ADRENALINE] += amount;
     }
+    else if (value === ABILITIES.UNDEAD_SLAYER_ABILITY) {
+            settings[SETTINGS.UNDEAD_SLAYER_ABILITY] = true;
+            timers[SETTINGS.UNDEAD_SLAYER_ABILITY] = 17; // 15 seconds = 25 ticks
+    }
+    else if (value === ABILITIES.DRAGON_SLAYER_ABILITY) {
+        settings[SETTINGS.DRAGON_SLAYER_ABILITY] = true;
+        timers[SETTINGS.DRAGON_SLAYER_ABILITY] = 17; // 15 seconds = 25 ticks
+    }
+    else if (value === ABILITIES.DEMON_SLAYER_ABILITY) {
+        settings[SETTINGS.UNDEAD_SLAYER_ABILITY] = true;
+        timers[SETTINGS.DEMON_SLAYER_ABILITY] = 17; // 15 seconds = 25 ticks
+    }
     else if (value === ABILITIES.RUNIC_CHARGE) {
         settings[SETTINGS.ANIMA_CHARGED] = true;
         timers[SETTINGS.ANIMA_CHARGED] = 25;

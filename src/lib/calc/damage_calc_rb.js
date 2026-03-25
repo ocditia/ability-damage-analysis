@@ -68,11 +68,7 @@ function calc_weapon_tier(settings, hand) {
 
     let weapon_tier = 0;
     // custom weapon tier
-    if (
-        settings[hand] === 'custom' ||
-        settings[hand] === 'custom oh' ||
-        settings[hand] === 'custom th'
-    ) {
+    if (settings[hand]?.startsWith('custom')) {
         weapon_tier = settings[hand + ' custom tier'];
     }
     // standard weapon
