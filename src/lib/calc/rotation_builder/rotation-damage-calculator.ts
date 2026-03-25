@@ -530,7 +530,7 @@ function processCurrentTick(state: RotationState, settingsCopy: any, BAR_SIZE: n
     }
 
     // Swap asphyxiate for Tumeken's variant if wearing 4+ pieces
-    // abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
+    abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
 
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
     settingsCopy['ability'] = abilityKey;
@@ -581,7 +581,7 @@ function processCurrentTickCore(
     }
 
     // Swap asphyxiate for Tumeken's variant if wearing 4+ pieces
-    // abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
+    abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
 
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
     settingsCopy['ability'] = abilityKey;

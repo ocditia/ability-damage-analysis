@@ -6,6 +6,8 @@
     import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
 
     const excludedAbilities = new Set([ABILITIES.SUNSHINE, ABILITIES.GREATER_SUNSHINE, ABILITIES.TUMEKEN_ASPHYXIATE]);
+    
+    // const excludedAbilities = new Set([ABILITIES.SUNSHINE, ABILITIES.GREATER_SUNSHINE]);
 
 
     const abilities = Object.fromEntries(
@@ -196,7 +198,7 @@
                                     bind:setting={settings[SETTINGS.DAMAGE_UNITS]}
                                     onchange={() => updateDamages()}
                                 />
-                                <Number
+                                <!-- <Number
                                     bind:setting={settings[SETTINGS.HIT_COUNTER_START]}
                                     onchange={() => updateDamages()}
                                     step="1"
@@ -209,7 +211,7 @@
                                     step="1"
                                     max="100"
                                     min="0"
-                                />
+                                /> -->
                                 <Number
                                     bind:setting={settings[SETTINGS.ESSENCE_CORRUPTION]}
                                     onchange={() => updateDamages()}
