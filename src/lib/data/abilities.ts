@@ -2972,7 +2972,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0,
         adrenaline: 0,
         title: 'Volley of souls',
-        icon: '/ability_icons/necro/30x30/volley-2.png',
+        icon: '/ability_icons/necro/30x30/volley.png',
     },
     [ABILITIES.VOLLEY_OF_SOULS_2]: {
         // ability name
