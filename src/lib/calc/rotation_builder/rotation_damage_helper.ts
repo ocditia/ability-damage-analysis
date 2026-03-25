@@ -113,6 +113,10 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
     //TODO handle swiftness' weird damage calc + cleanup format
     switch (abilityKey) {
         // Magic Buff Abilities
+        case ABILITIES.SMOKE_CLOUD:
+            settings[SETTINGS.SMOKE_CLOUD] = true;
+            timers[SETTINGS.SMOKE_CLOUD] = 200; // 120 seconds = 200 ticks
+            break;
         case ABILITIES.INSTABILITY:
             settings[SETTINGS.INSTABILITY] = true; 
             timers[SETTINGS.INSTABILITY] = 50;

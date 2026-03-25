@@ -38,6 +38,7 @@ export const buffs = [
     SETTINGS.ANIMA_CHARGED,
     SETTINGS.BARRICADE,
     SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX,
+    SETTINGS.SMOKE_CLOUD,
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -259,6 +260,13 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.tumekens_asphyx
+            },
+            [SETTINGS.SMOKE_CLOUD]: {
+                title: 'Smoke Cloud',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#7B68EE'
             }
         }
     )
