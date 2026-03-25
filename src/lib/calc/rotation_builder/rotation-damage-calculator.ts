@@ -530,7 +530,7 @@ function processCurrentTick(state: RotationState, settingsCopy: any, BAR_SIZE: n
     }
 
     // Swap asphyxiate for Tumeken's variant if wearing 4+ pieces
-    // abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
+    abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
 
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
     settingsCopy['ability'] = abilityKey;
@@ -581,7 +581,7 @@ function processCurrentTickCore(
     }
 
     // Swap asphyxiate for Tumeken's variant if wearing 4+ pieces
-    // abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
+    abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
 
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
     settingsCopy['ability'] = abilityKey;
@@ -1615,6 +1615,18 @@ function processExtraActionByValue(value: string, settings: any, timers: Record<
     else if (value.includes("Adrenaline")) {
         const amount = parseInt(value.split(" ")[1]);
         settings[SETTINGS.ADRENALINE] += amount;
+    }
+    else if (value === ABILITIES.UNDEAD_SLAYER_ABILITY) {
+            settings[SETTINGS.UNDEAD_SLAYER_ABILITY] = true;
+            timers[SETTINGS.UNDEAD_SLAYER_ABILITY] = 17; // 15 seconds = 25 ticks
+    }
+    else if (value === ABILITIES.DRAGON_SLAYER_ABILITY) {
+        settings[SETTINGS.DRAGON_SLAYER_ABILITY] = true;
+        timers[SETTINGS.DRAGON_SLAYER_ABILITY] = 17; // 15 seconds = 25 ticks
+    }
+    else if (value === ABILITIES.DEMON_SLAYER_ABILITY) {
+        settings[SETTINGS.UNDEAD_SLAYER_ABILITY] = true;
+        timers[SETTINGS.DEMON_SLAYER_ABILITY] = 17; // 15 seconds = 25 ticks
     }
     else if (value === ABILITIES.RUNIC_CHARGE) {
         settings[SETTINGS.ANIMA_CHARGED] = true;

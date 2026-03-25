@@ -51,6 +51,10 @@
         return weapon?.['weapon type'] === 'two-hand';
     }
 
+    function isCustomWeapon(value) {
+        return value?.startsWith('custom');
+    }
+
     function onWeaponSelected(ws, value) {
         settings[ws.mh].value = value;
         openDropdown = null;
@@ -494,6 +498,31 @@
                 {/if}
             </div>
         {/if}
+        <!-- Custom tier inputs -->
+        {#if is2h && isCustomWeapon(currentValue) && settings[SETTINGS.TH_TIER_CUSTOM]}
+            <input type="number" class="custom-tier-input" min="1" max="120"
+                bind:value={settings[SETTINGS.TH_TIER_CUSTOM].value}
+                oninput={updateDamages}
+                title="Two-hand weapon tier"
+                placeholder="Tier"
+            />
+        {/if}
+        {#if !is2h && isCustomWeapon(currentValue) && settings[SETTINGS.MH_TIER_CUSTOM]}
+            <input type="number" class="custom-tier-input" min="1" max="120"
+                bind:value={settings[SETTINGS.MH_TIER_CUSTOM].value}
+                oninput={updateDamages}
+                title="Main-hand weapon tier"
+                placeholder="MH"
+            />
+        {/if}
+        {#if !is2h && isCustomWeapon(settings[ws.oh]?.value) && settings[SETTINGS.OH_TIER_CUSTOM]}
+            <input type="number" class="custom-tier-input" min="1" max="120"
+                bind:value={settings[SETTINGS.OH_TIER_CUSTOM].value}
+                oninput={updateDamages}
+                title="Off-hand weapon tier"
+                placeholder="OH"
+            />
+        {/if}
     {/each}
     {#if styleTab === SettingsCombatStyles.RANGED && settings[SETTINGS.QUIVER] != null}
         <button
@@ -619,4 +648,20 @@
     }
     .icon-dropdown-item:hover { background: rgba(255, 255, 255, 0.1); }
     .icon-dropdown-item.active { color: #4ade80; font-weight: bold; }
+    .custom-tier-input {
+        width: 42px;
+        background: rgba(0, 0, 0, 0.3);
+        color: #ddd;
+        border: 2px solid #4ade80;
+        border-radius: 6px;
+        padding: 4px 6px;
+        font-size: 0.75rem;
+        text-align: center;
+        height: 35px;
+        align-self: center;
+    }
+    .custom-tier-input:focus {
+        outline: none;
+        border-color: #6ee7b7;
+    }
 </style>

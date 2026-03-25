@@ -173,6 +173,7 @@
         // debugPreset2();
         settings[SETTINGS.UNDEAD_SLAYER_ABILITY]['value'] = false;
         settings[SETTINGS.BLACKHOLE]['value'] = false;
+        settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
 
     });
         
