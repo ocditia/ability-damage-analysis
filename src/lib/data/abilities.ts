@@ -2483,8 +2483,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         },
         cooldown: 0,
         hitTimings: [0, 3, 6, 9, 12, 15, 18],
-        adrenaline: 35
-    ,
+        adrenaline: 35,
         title: 'Soulfire',
         icon: '/ability_icons/magic/30x30/roar_of_awakening.png',
     },
@@ -2498,7 +2497,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'special attack',
         'main style': 'magic',
         'damage type': 'magic',
-        cooldown: 0
+        cooldown: 0,
+        adrenaline: 35,
+        title: 'The Last Command', 
+        icon: '/ability_icons/magic/30x30/Legatus\'s_Emberstaff.png',
     },
     [ABILITIES.TEMPEST_OF_ARMADYL_HIT_1]: {
         // ability name

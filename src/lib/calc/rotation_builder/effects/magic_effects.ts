@@ -78,7 +78,8 @@ function applyAbilitySpecificEffects(
     const { settings, abilityKey } = ctx;
 
     if (abilityKey === ABILITIES.THE_LAST_COMMAND) {
-        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + 0.01 * (100 - Math.max(settings[SETTINGS.TARGET_HP_PERCENT],25))));
+        const hpMissing = 100 - Math.min(settings[SETTINGS.TARGET_HP_PERCENT], 100)
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + 0.01 * (Math.min(hpMissing, 75))));
     }
 
     // Dragon Breath — 25% more damage if target is combusted
