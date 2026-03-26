@@ -2291,9 +2291,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 30},
+        'damage type': 'magic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        cooldown: 30
+    },
     [ABILITIES.OMNIPOWER_IGNEOUS_HIT]: {
         // ability name
         'min hit': 1.2, // min % of abil expressed as a decimal
@@ -2304,9 +2304,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 30},
+        'damage type': 'magic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        cooldown: 30
+    },
     [ABILITIES.OMNIPOWER]: {
         // ability name
         'min hit': 4.2, // min % of abil expressed as a decimal
@@ -2323,8 +2323,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             1: [ABILITIES.OMNIPOWER_IGNEOUS_HIT, "next hit", ABILITIES.OMNIPOWER_IGNEOUS_HIT, "next hit", ABILITIES.OMNIPOWER_IGNEOUS_HIT, "next hit", ABILITIES.OMNIPOWER_IGNEOUS_HIT]
         },
         cooldown: 30,
-        hitTimings: [0, 0, 0, 0]
-    ,
+        hitTimings: [0, 0, 0, 0],
         title: 'Omnipower',
         icon: '/ability_icons/magic/30x30/omnipower.png',
     },
@@ -2338,8 +2337,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'regular', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        'damage type': 'magic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         cooldown: 60,
         title: 'Tsunami',
         icon: '/ability_icons/magic/30x30/tsunami.png',
@@ -2354,9 +2352,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'dot', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
-        'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 60},
+        'damage type': 'magic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        cooldown: 60
+    },
     [ABILITIES.SUNSHINE]: {
         //TODO check number of dot hits
         // ability name
@@ -2373,8 +2371,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             1: new Array(17).fill(ABILITIES.SUNSHINE_DOT)
            },
         cooldown: 60,
-        hitTimings: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49]//TODO Find out what these actually are
-    ,
+        hitTimings: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49],//TODO Find out what these actually are
         title: 'Sunshine',
         icon: '/ability_icons/magic/Sunshine.png',
     },
@@ -2394,8 +2391,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             1: new Array(17).fill(ABILITIES.SUNSHINE_DOT)
         },
         cooldown: 60,
-        hitTimings: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49]//TODO Find out what these actually are
-    ,
+        hitTimings: [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49],//TODO Find out what these actually are
         title: 'Greater Sunshine',
         icon: '/ability_icons/magic/Greater_Sunshine.png',
     },
@@ -2411,8 +2407,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic',
-        adrenaline: 50
-    ,
+        adrenaline: 50,
         cooldown: 0,
         title: 'Instability',
         icon: '/ability_icons/magic/Fractured_Staff_of_Armadyl.webp',
@@ -3073,7 +3068,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': false,
         'damage potential effects': false,
         'ability classification': 'self cast',
-        'ability type': 'threshold',
+        'ability type': 'conjure',
         'main style': 'necromancy',
         'damage type': 'necrotic',
         adrenaline: 0,
@@ -3088,7 +3083,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': false,
         'damage potential effects': false,
         'ability classification': 'self cast',
-        'ability type': 'threshold',
+        'ability type': 'conjure',
         'main style': 'necromancy',
         'damage type': 'necrotic',
         adrenaline: 0,
@@ -3116,12 +3111,12 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': false,
         'damage potential effects': false,
         'ability classification': 'conjure',
-        'ability type': 'threshold',
+        'ability type': 'conjure',
         'main style': 'necromancy',
         'damage type': 'necrotic',
         cooldown: 15,
         title: 'Command Skeleton Warrior',
-        icon: '/ability_icons/necro/30x30/comm-skele.png',
+        icon: '/ability_icons/necro/Command_Skeleton_Warrior.png',
     },
     [ABILITIES.SKELETON_WARRIOR_AUTO_10]: {
         // ability name
@@ -3155,7 +3150,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': false,
         'damage potential effects': false,
         'ability classification': 'self cast',
-        'ability type': 'threshold',
+        'ability type': 'conjure',
         'main style': 'necromancy',
         'damage type': 'necrotic',
         cooldown: 60,
@@ -3182,7 +3177,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': false,
         'damage potential effects': false,
         'ability classification': 'self cast',
-        'ability type': 'threshold',
+        'ability type': 'conjure',
         'main style': 'necromancy',
         'damage type': 'necrotic',
         cooldown: 60,
@@ -3222,7 +3217,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': false,
         'damage potential effects': false,
         'ability classification': 'self cast',
-        'ability type': 'threshold',
+        'ability type': 'conjure',
         'main style': 'necromancy',
         'damage type': 'necrotic',
         cooldown: 60,
@@ -3237,12 +3232,12 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': false,
         'damage potential effects': false,
         'ability classification': 'self cast',
-        'ability type': 'threshold',
+        'ability type': 'conjure',
         'main style': 'necromancy',
         'damage type': 'spirit',
         cooldown: 15,
         title: 'Command Putrid Zombie',
-        icon: '/ability_icons/necro/30x30/comm-zom.png',
+        icon: '/ability_icons/necro/Command_Putrid_Zombie.png'
     },
     [ABILITIES.COMMAND_PHANTOM_GUARDIAN]: {
         // ability name
@@ -3275,38 +3270,6 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         title: 'Blood siphon',
         icon: '/ability_icons/necro/30x30/blood-siphon.png',
     },
-    [ABILITIES.LIFE_TRANSFER]: {
-        // Life Transfer: extends active conjure durations by 21s, costs 50% base LP
-        'min hit': 0.0,
-        'var hit': 0.0,
-        'on-hit effects': false,
-        'crit effects': false,
-        'damage potential effects': false,
-        'ability classification': 'self cast',
-        'ability type': 'spell',
-        'main style': 'necromancy',
-        'damage type': 'necrotic',
-        cooldown: 0
-    ,
-        title: 'Life Transfer',
-        icon: '/ability_icons/necro/incantations/Life_Transfer.png',
-    },
-    [ABILITIES.THREADS_OF_FATE]: {
-        // Threads of Fate: single-target necro attacks also hit up to 4 additional enemies, 6.6s
-        'min hit': 0.0,
-        'var hit': 0.0,
-        'on-hit effects': false,
-        'crit effects': false,
-        'damage potential effects': false,
-        'ability classification': 'self cast',
-        'ability type': 'spell',
-        'main style': 'necromancy',
-        'damage type': 'necrotic',
-        cooldown: 0
-    ,
-        title: 'Threads of Fate',
-        icon: '/ability_icons/necro/incantations/Threads_of_Fate_icon.png',
-    },
     [ABILITIES.INVOKE_DEATH]: {
         // Invoke Death: applies Death Mark on next necro attack, 12s duration
         'min hit': 0.0,
@@ -3318,27 +3281,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'spell',
         'main style': 'necromancy',
         'damage type': 'necrotic',
-        cooldown: 0
-    ,
+        cooldown: 0,
         title: 'Invoke Death',
         icon: '/ability_icons/necro/incantations/Invoke_Death_icon.png',
     },
-    [ABILITIES.SPLIT_SOUL_NECRO]: {
-        // Split Soul (Necromancy incantation): 20.4s duration, 60s cooldown
-        'min hit': 0.0,
-        'var hit': 0.0,
-        'on-hit effects': false,
-        'crit effects': false,
-        'damage potential effects': false,
-        'ability classification': 'self cast',
-        'ability type': 'spell',
-        'main style': 'necromancy',
-        'damage type': 'necrotic',
-        cooldown: 60
-    ,
-        title: 'Split Soul',
-        icon: '/ability_icons/necro/incantations/Split_Soul_icon.png',
-    },
+    
     [ABILITIES.COMMAND_VENGEFUL_GHOST]: {
         // Command Vengeful Ghost: applies Haunted debuff (10% bonus damage, capped at 20% necro AD)
         'min hit': 0.0,
@@ -3352,7 +3299,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'damage type': 'necrotic',
         cooldown: 15,
         title: 'Command Vengeful Ghost',
-        icon: '/ability_icons/necro/30x30/ghost.png',
+        icon: '/ability_icons/necro/Command_Vengeful_Ghost.png',
     },
     // Necro Ultimate Abilities
     [ABILITIES.DEATHSKULLS]: {
@@ -3484,6 +3431,54 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         title: 'Soul Crush',
         icon: '/gear_icons/necro/devourer\'s guard.png',
     },
+    //Necro Incantations
+    [ABILITIES.LIFE_TRANSFER]: {
+        // Life Transfer: extends active conjure durations by 21s, costs 50% base LP
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 0
+    ,
+        title: 'Life Transfer',
+        icon: '/ability_icons/necro/incantations/Life_Transfer.png',
+    },
+    [ABILITIES.THREADS_OF_FATE]: {
+        // Threads of Fate: single-target necro attacks also hit up to 4 additional enemies, 6.6s
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 0,
+        title: 'Threads of Fate',
+        icon: '/ability_icons/necro/incantations/Threads_of_Fate_icon.png',
+    },
+    [ABILITIES.SPLIT_SOUL_NECRO]: {
+        // Split Soul (Necromancy incantation): 20.4s duration, 60s cooldown
+        'min hit': 0.0,
+        'var hit': 0.0,
+        'on-hit effects': false,
+        'crit effects': false,
+        'damage potential effects': false,
+        'ability classification': 'self cast',
+        'ability type': 'spell',
+        'main style': 'necromancy',
+        'damage type': 'necrotic',
+        cooldown: 60,
+        title: 'Split Soul',
+        icon: '/ability_icons/necro/incantations/Split_Soul_icon.png',
+    },
+
     // Ranged Basic Abilities
     [ABILITIES.RANGED_AUTO]: {
         // ability name

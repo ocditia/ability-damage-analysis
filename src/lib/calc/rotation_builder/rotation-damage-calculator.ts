@@ -832,8 +832,6 @@ function processConjureTick(state: RotationState, settings: any) {
                 state.timers[SETTINGS.HAUNTED] = 8; // 4.8s = 8 ticks
             }
 
-
-
             const expectedDamage = Math.floor(baseDamage * rageMult * damageMultiplier);
             state.conjureDamage += expectedDamage;
             if (state.tick < state.conjurePerTick.length) {

@@ -5,8 +5,11 @@
  * Verifies that the rotation calculator handles each classification
  * correctly with verified in-game values.
  *
- * Classifications: auto, regular, bleed, burn, dot, channel, multihit,
+ * Classifications: regular, bleed, burn, dot, channel, multihit,
  *                  conjure, perk, proc, self cast
+ *
+ * Player stats: Lv101 Str/Atk, Lv113 Ranged, Lv115 Magic, Lv106 Necro
+ * Weapon: t80 2h (DW for necro), no perks/buffs
  */
 
 import { describe, it, expect } from 'vitest';
@@ -15,17 +18,50 @@ import { SETTINGS } from '../../settings_rb.js';
 import { ABILITIES } from '$lib/data/abilities';
 import { createBlankSettings } from '../test-helpers';
 
+// Per-style settings helpers using actual player levels
+function meleeSettings(overrides: Record<string, any> = {}) {
+    return createBlankSettings(101, 80, {
+        [SETTINGS.STRENGTH_LEVEL]: 101,
+        [SETTINGS.ATTACK_LEVEL]: 101,
+        [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
+        [SETTINGS.WEAPON_TYPE_MELEE]: SETTINGS.WEAPON_VALUES.TH,
+        ...overrides,
+    });
+}
+
+function rangedSettings(overrides: Record<string, any> = {}) {
+    return createBlankSettings(113, 80, {
+        [SETTINGS.RANGED_LEVEL]: 113,
+        [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
+        [SETTINGS.WEAPON_TYPE_RANGED]: SETTINGS.WEAPON_VALUES.TH,
+        ...overrides,
+    });
+}
+
+function magicSettings(overrides: Record<string, any> = {}) {
+    return createBlankSettings(115, 80, {
+        [SETTINGS.MAGIC_LEVEL]: 115,
+        [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
+        [SETTINGS.WEAPON_TYPE_MAGE]: SETTINGS.WEAPON_VALUES.TH,
+        ...overrides,
+    });
+}
+
+function necroSettings(overrides: Record<string, any> = {}) {
+    return createBlankSettings(106, 80, {
+        [SETTINGS.NECROMANCY_LEVEL]: 106,
+        [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.DW,
+        [SETTINGS.WEAPON_TYPE_NECRO]: SETTINGS.WEAPON_VALUES.DW,
+        ...overrides,
+    });
+}
+
 describe('Ability Classifications', () => {
     describe('regular', () => {
         // Single-hit non-channeled abilities
-        // All tests: Lv99, t80 2h, no perks/buffs
 
         it('Rend (melee): non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_MELEE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = meleeSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.REND });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -36,11 +72,7 @@ describe('Ability Classifications', () => {
         });
 
         it('Impact (magic): non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_MAGE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = magicSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.IMPACT });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -51,11 +83,7 @@ describe('Ability Classifications', () => {
         });
 
         it('Galeshot (ranged): non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_RANGED]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = rangedSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.GALESHOT });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -66,11 +94,7 @@ describe('Ability Classifications', () => {
         });
 
         it('Touch of Death (necro): non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.DW,
-                [SETTINGS.WEAPON_TYPE_NECRO]: SETTINGS.WEAPON_VALUES.DW,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = necroSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.TOUCH_OF_DEATH });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -83,14 +107,9 @@ describe('Ability Classifications', () => {
 
     describe('bleed', () => {
         // Bleed abilities: multiple identical hits over time
-        // All tests: Lv99, t80 2h, no perks/buffs
 
         it('Dismember (melee): total bleed damage non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_MELEE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = meleeSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.DISMEMBER });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -103,14 +122,9 @@ describe('Ability Classifications', () => {
 
     describe('burn', () => {
         // Burn DoTs: damage ticks that can be walked for double damage
-        // All tests: Lv99, t80 2h, no perks/buffs
 
         it('Combust (magic): total burn damage non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_MAGE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = magicSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.COMBUST });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -123,14 +137,9 @@ describe('Ability Classifications', () => {
 
     describe('dot', () => {
         // Generic DoT abilities: multi-tick damage with decreasing hits
-        // All tests: Lv99, t80 2h, no perks/buffs
 
         it('Corruption Shot (ranged): total dot damage non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_RANGED]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = rangedSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.CORRUPTION_SHOT });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -143,14 +152,9 @@ describe('Ability Classifications', () => {
 
     describe('channel', () => {
         // Channeled abilities: multiple hits over a duration, interruptible
-        // All tests: Lv99, t80 2h (DW for necro), no perks/buffs
 
         it('Assault (melee): total channel damage non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_MELEE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = meleeSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.ASSAULT });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -161,11 +165,7 @@ describe('Ability Classifications', () => {
         });
 
         it('Rapid Fire (ranged): total channel damage non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_RANGED]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = rangedSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.RAPID_FIRE });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -176,11 +176,7 @@ describe('Ability Classifications', () => {
         });
 
         it('Asphyxiate (magic): total channel damage non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_MAGE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = magicSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.ASPHYXIATE });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -193,11 +189,7 @@ describe('Ability Classifications', () => {
         it('Blood Siphon (necro): non-crit min/max', () => {
             // Note: Blood Siphon is classified as 'regular' in ability data,
             // but included here as the necro representative for channel-like testing
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.DW,
-                [SETTINGS.WEAPON_TYPE_NECRO]: SETTINGS.WEAPON_VALUES.DW,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = necroSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.BLOOD_SIPHON });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -210,14 +202,9 @@ describe('Ability Classifications', () => {
 
     describe('multihit', () => {
         // Multi-hit instant abilities: multiple hits landing at once
-        // All tests: Lv99, t80 2h (DW for necro), no perks/buffs
 
         it('Hurricane (melee): total multihit damage non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_MELEE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = meleeSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.HURRICANE });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -228,11 +215,7 @@ describe('Ability Classifications', () => {
         });
 
         it('Wild Magic (magic): total multihit damage non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_MAGE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = magicSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.WILD_MAGIC });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -243,11 +226,7 @@ describe('Ability Classifications', () => {
         });
 
         it('Greater Ricochet (ranged): total multihit damage non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.WEAPON_TYPE_RANGED]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
-            });
+            const settings = rangedSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.GREATER_RICOCHET });
 
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
@@ -258,9 +237,7 @@ describe('Ability Classifications', () => {
         });
 
         it('Volley of Souls (necro, 5 souls): total multihit damage non-crit min/max', () => {
-            const settings = createBlankSettings(99, 80, {
-                [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.DW,
-                [SETTINGS.WEAPON_TYPE_NECRO]: SETTINGS.WEAPON_VALUES.DW,
+            const settings = necroSettings({
                 [SETTINGS.RESIDUAL_SOULS]: 5,
                 [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
             });
@@ -275,18 +252,48 @@ describe('Ability Classifications', () => {
     });
 
     describe('conjure', () => {
-        // Necromancy conjure summons
-        it.todo('necro conjure');
+        // Conjure abilities: summoned minion auto-attacks
+
+        it('Skeleton Warrior Auto (necro): non-crit min/max', () => {
+            const settings = necroSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
+            const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.SKELETON_WARRIOR_AUTO });
+
+            settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
+            const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.SKELETON_WARRIOR_AUTO });
+
+            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value
+            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value
+        });
     });
 
     describe('perk', () => {
-        // Perk-triggered procs (Aftershock, etc.)
-        it.todo('perk proc');
+        // Perk-triggered damage procs
+
+        it('Aftershock (melee): non-crit min/max', () => {
+            const settings = meleeSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
+            const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.AFTERSHOCK_MELEE });
+
+            settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
+            const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.AFTERSHOCK_MELEE });
+
+            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value
+            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value
+        });
     });
 
     describe('proc', () => {
-        // Triggered proc abilities
-        it.todo('proc ability');
+        // Triggered proc abilities (e.g. from weapon passives)
+
+        it('Time Strike (magic): non-crit min/max', () => {
+            const settings = magicSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
+            const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.TIME_STRIKE });
+
+            settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
+            const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.TIME_STRIKE });
+
+            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value
+            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value
+        });
     });
 
     describe('self cast', () => {
