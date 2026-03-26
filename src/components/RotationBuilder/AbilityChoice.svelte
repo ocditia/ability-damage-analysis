@@ -3,10 +3,11 @@
     export let handleAbilityClick;
     export let handleDragStart;
     export let style = 'ranged';
-    export let showAll = true;
+    export let filter = 'popular'; // 'popular' | 'owned' | 'all'
 
     import { getStyleColor } from '$lib/utils/colors';
     import { groupAbilitiesByType } from '$lib/utils/abilityClassifier';
+    import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
 
     // Get a default icon path based on ability key and style
     function getDefaultIconPath(key) {
@@ -26,7 +27,11 @@
 
 <div class="ability-groups">
     {#each grouped as group}
-        {@const filteredAbilities = group.abilities.filter(([_, abil]) => showAll || abil.common !== false)}
+        {@const filteredAbilities = group.abilities.filter(([key, abil]) =>
+            filter === 'all' ||
+            (filter === 'owned' && ownedItemsStore.items.has(key)) ||
+            (filter === 'popular' && abil.common !== false)
+        )}
         {#if filteredAbilities.length > 0}
             <div class="ability-group" style="border-left: 2px solid {styleColor};">
                 <span class="group-label">{group.label}</span>

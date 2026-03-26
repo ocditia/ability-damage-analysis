@@ -1,6 +1,7 @@
 <script>
     import { keybindStore, keybindActions } from '$lib/stores/keybindStore.svelte.js';
     import { ownedItemsStore, ownedItemsActions } from '$lib/stores/ownedItemsStore.svelte.js';
+    import { notifActions } from '$lib/stores/notificationStore.svelte.js';
     import { allExtraActions } from '$lib/special/abilities';
 
     export let show = false;
@@ -93,6 +94,24 @@
         keybindActions.setBinding(abilityKey, event.target.value);
     }
 
+    function selectAllVisible() {
+        for (const abil of visibleAbilities) {
+            if (!ownedItemsStore.items.has(abil.key)) {
+                ownedItemsStore.items.add(abil.key);
+            }
+        }
+        ownedItemsStore.items = new Set(ownedItemsStore.items);
+        ownedItemsActions.saveOwned();
+    }
+
+    function deselectAllVisible() {
+        for (const abil of visibleAbilities) {
+            ownedItemsStore.items.delete(abil.key);
+        }
+        ownedItemsStore.items = new Set(ownedItemsStore.items);
+        ownedItemsActions.saveOwned();
+    }
+
     function close() {
         show = false;
     }
@@ -134,7 +153,7 @@
                 {/each}
             </div>
 
-            <!-- Search -->
+            <!-- Search + actions -->
             <div class="search-row">
                 <input
                     type="text"
@@ -142,8 +161,18 @@
                     placeholder="Filter abilities..."
                     bind:value={filter}
                 />
-                <button class="clear-all-btn" onclick={() => keybindActions.clearAllBindings()}>
-                    Clear All
+                <button class="owned-action-btn select-btn" onclick={selectAllVisible} title="Mark all visible items as owned">
+                    Own All
+                </button>
+                <button class="owned-action-btn deselect-btn" onclick={deselectAllVisible} title="Unmark all visible items as owned">
+                    Unown All
+                </button>
+                <button class="clear-all-btn" onclick={() => notifActions.showConfirmation(
+                    'Clear All Keybinds',
+                    'Are you sure you want to remove all keybinds?',
+                    () => { keybindActions.clearAllBindings(); notifActions.hideConfirmation(); }
+                )}>
+                    Clear Keybinds
                 </button>
             </div>
 
@@ -283,6 +312,25 @@
     }
     .search-input:focus { border-color: #c2ba9e; }
 
+    .owned-action-btn {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+        border-radius: 4px;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+    .select-btn {
+        color: #4ade80;
+        background: rgba(74, 222, 128, 0.08);
+        border: 1px solid rgba(74, 222, 128, 0.3);
+    }
+    .select-btn:hover { background: rgba(74, 222, 128, 0.15); }
+    .deselect-btn {
+        color: #f59e0b;
+        background: rgba(245, 158, 11, 0.08);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .deselect-btn:hover { background: rgba(245, 158, 11, 0.15); }
     .clear-all-btn {
         padding: 5px 10px;
         font-size: 0.7rem;

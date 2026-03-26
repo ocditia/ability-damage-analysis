@@ -1,13 +1,14 @@
 import { abils } from '$lib/data/abilities';
 // Group order for display
-const GROUP_ORDER = ['buff', 'basic', 'threshold', 'ultimate', 'special attack'];
+const GROUP_ORDER = ['buff', 'basic', 'threshold', 'ultimate', 'special attack', 'conjure'];
 
 const LABELS: Record<string, string> = {
-    'buff': 'B',
+    // 'buff': 'B',
     'basic': 'B',
     'threshold': 'T',
     'ultimate': 'U',
     'special attack': 'S',
+    'conjure': 'C',
     'other': '?'
 };
 
@@ -37,5 +38,6 @@ export function groupAbilitiesByType(abilities: Record<string, any>): Array<{ ty
             result.push({ type, label: LABELS[type] || type, abilities: groups[type] });
         }
     }
+    console.log(result)
     return result;
 }

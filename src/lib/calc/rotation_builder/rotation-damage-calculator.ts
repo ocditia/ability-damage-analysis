@@ -18,6 +18,8 @@ import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
 import { uiActions, uiStore } from '$lib/stores/uiStore.svelte';
 const logger = Logger.getInstance();
 
+type OnTickCallback = (tick: number, settings: any, timers: Record<string, number>) => void;
+
 /** Count equipped Tumeken's Resplendence pieces (uses per-style MAGIC_ keys) */
 function countTumekensResplendence(settings: Record<string, any>): number {
     let count = 0;
@@ -211,64 +213,20 @@ function recalcFulProbability(state: RotationState, settings: Record<string, any
  * @param BAR_SIZE - The number of ticks to process in the rotation
  * @returns DamageResult containing regularDamage, poisonDamage, familiarDamage, distributionStats
  */
-// TODO: Eliminate store/core function duplication. Build a RotationInput from stores here,
-// then delegate to calculateRotationDamageCore. Move copyStacks to a post-processing pass
-// so the core tick loop doesn't need store access. Functions to merge:
-// processCurrentTick/Core, processAbility/Core, processAbilityTicks/Core,
-// processChannelledTick/Core, processTickOperations/Core, handleExtraActions/Core
 export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
-    const state: RotationState = {
-        dmgs: [],
-        damageQueue: {},
-        timers: {},
-        tick: 0,
-        hit_delay: 1, // TODO implement hit delay properly (define min delay for each ability)
-        start_tick: 0,
-        cinderHitCount: 0,
-        poisonDamage: 0,
-        poisonPerTick: new Array(BAR_SIZE).fill(0),
-        lastAftershockProc: 0,
-        distributionStats: [],
-        combatStyle: uiStore.activeTab ?? "melee",
-        fulProcHistory: [],
-        scrollDamage: 0,
-        familiarPerTick: new Array(BAR_SIZE).fill(0),
-        dreadnipDamage: 0,
-        dreadnipPerTick: new Array(BAR_SIZE).fill(0),
-        dreadnipActiveTick: -1,
-        dreadnipAttacks: 0,
-        lastAbilityTick: -1,
-        firstAbilityTick: -1,
-        activeConjures: {},
-        conjureDamage: 0,
-        conjurePerTick: new Array(BAR_SIZE).fill(0),
-        bossPhases: null,
-        currentPhaseIdx: 0,
-        pauseTicksRemaining: 0,
-        phaseTransitions: []
+    // Snapshot rotation data from stores
+    const rotation: RotationInput = {
+        abilityBar: [...rotationStore.abilityBar],
+        extraActionBar: [...rotationStore.extraActionBar],
+        nulledTicks: [...rotationStore.nulledTicks],
+        stalledAbilities: [...rotationStore.stalledAbilities],
     };
-
-    // Find the last tick that has an ability (familiar/dreadnip stop after this)
-    for (let i = rotationStore.abilityBar.length - 1; i >= 0; i--) {
-        if (rotationStore.abilityBar[i] != null) {
-            state.lastAbilityTick = i;
-            break;
-        }
-    }
-
-    // Find the first tick with a non-nulled ability (familiar/dreadnip start here)
-    for (let i = 0; i < rotationStore.abilityBar.length; i++) {
-        if (rotationStore.abilityBar[i] != null && !rotationStore.nulledTicks[i]) {
-            state.firstAbilityTick = i;
-            break;
-        }
-    }
 
     // Get settings from the store
     const adaptedSettings = Object.fromEntries(
         Object.entries(settingsStore.settings).map(([key, value]: [string, { value: any }]) => [key, value.value])
     );
-    
+
     // Map per-style pocket to generic POCKET for calc engine
     const pocketByStyle: Record<string, string> = {
         'magic': SETTINGS.MAGIC_POCKET,
@@ -295,6 +253,7 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
 
     const settingsCopy = structuredClone(adaptedSettings);
     settingsCopy[SETTINGS.CALC_TYPE] = SETTINGS.CALC_TYPE_VALUES.ROTATION;
+    settingsCopy['_combatStyle'] = uiStore.activeTab ?? 'melee';
 
     logger.log(LogCategory.SETTINGS, 'Damage calculation settings', {
         abilityDamage: settingsCopy[SETTINGS.ABILITY_DAMAGE],
@@ -304,56 +263,10 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         strengthLevel: settingsCopy[SETTINGS.STRENGTH_LEVEL]
     });
 
-    // Resolve boss preset for soft cap and phase tracking
-    const bossKey = settingsCopy[SETTINGS.BOSS_PRESET];
-    const enrage = settingsCopy[SETTINGS.BOSS_ENRAGE] ?? 0;
-    if (bossKey && bossKey !== 'none') {
-        const boss = getBossPresetWithEnrage(bossKey, enrage);
-        if (boss?.softCap) {
-            settingsCopy['_softCap'] = boss.softCap;
-        }
-        if (boss?.phases?.length) {
-            state.bossPhases = boss.phases;
-        }
-    }
+    // UI callback: write per-tick buff/stack/cooldown state to stores for timeline rendering
+    const onTick: OnTickCallback = (tick, settings, timers) => copyStacks(tick, settings, timers);
 
-    // Check if rotation contains any melee abilities (for Vestments max adrenaline)
-    settingsCopy['_hasMeleeAbilities'] = rotationStore.abilityBar.some(
-        (abilKey: string | null) => abilKey && abils[abilKey as ABILITIES]?.['main style'] === 'melee'
-    );
-
-    // Initialize familiar spec points and regen accumulator
-    settingsCopy[SETTINGS.FAMILIAR_SPEC_POINTS] = 60;
-    settingsCopy[SETTINGS.FAMILIAR_SPEC_REGEN_ACCUMULATOR] = 0;
-    // Initialize conjure-related stacks (start fresh in rotation)
-    settingsCopy[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS] = 0;
-
-    // Process through each tick until we reach the end, +20 to finish handling bleeds
-    const extraTicks = 20;
-    while (state.tick < BAR_SIZE + extraTicks) {
-        processCurrentTick(state, settingsCopy, BAR_SIZE);
-    }
-
-    // Forward-fill cumulative per-tick arrays so ticks without new damage carry the previous cumulative value
-    forwardFillCumulative(state.poisonPerTick);
-    forwardFillCumulative(state.familiarPerTick);
-    forwardFillCumulative(state.dreadnipPerTick);
-    forwardFillCumulative(state.conjurePerTick);
-
-    const totalDamage = state.dmgs.reduce((acc, current) => acc + current, 0);
-    return {
-        regularDamage: totalDamage,
-        poisonDamage: state.poisonDamage,
-        familiarDamage: state.scrollDamage,
-        dreadnipDamage: state.dreadnipDamage,
-        conjureDamage: state.conjureDamage,
-        distributionStats: state.distributionStats,
-        poisonPerTick: state.poisonPerTick,
-        familiarPerTick: state.familiarPerTick,
-        dreadnipPerTick: state.dreadnipPerTick,
-        conjurePerTick: state.conjurePerTick,
-        phaseTransitions: state.phaseTransitions
-    };
+    return calculateRotationDamageCore(settingsCopy, rotation, BAR_SIZE, onTick);
 }
 
 /**
@@ -368,7 +281,8 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
 export function calculateRotationDamageCore(
     settings: Record<string, any>,
     rotation: RotationInput,
-    barSize: number
+    barSize: number,
+    onTick?: OnTickCallback
 ): DamageResult {
     const state: RotationState = {
         dmgs: [],
@@ -382,7 +296,7 @@ export function calculateRotationDamageCore(
         poisonPerTick: new Array(barSize).fill(0),
         lastAftershockProc: 0,
         distributionStats: [],
-        combatStyle: "melee",
+        combatStyle: settings['_combatStyle'] || "melee",
         fulProcHistory: [],
         scrollDamage: 0,
         familiarPerTick: new Array(barSize).fill(0),
@@ -454,7 +368,7 @@ export function calculateRotationDamageCore(
     // Process through each tick until we reach the end, +20 to finish handling bleeds
     const extraTicks = 20;
     while (state.tick < barSize + extraTicks) {
-        processCurrentTickCore(state, settingsCopy, barSize, rotation);
+        processCurrentTickCore(state, settingsCopy, barSize, rotation, onTick);
     }
 
     // Forward-fill cumulative per-tick arrays so ticks without new damage carry the previous cumulative value
@@ -498,60 +412,17 @@ export function calculateRotationDamageCore(
  * @param settingsCopy - A copy of the game settings that can be modified during processing
  * @param BAR_SIZE - The total size of the ability bar
  */
-function processCurrentTick(state: RotationState, settingsCopy: any, BAR_SIZE: number) {
-    // Store nulled state at the start
-    const isNulledTick = rotationStore.nulledTicks[state.tick];
-    settingsCopy.isNulledTick = isNulledTick;
-
-
-    // First process any stalled ability on this tick
-    const stalledAbility = rotationStore.stalledAbilities[state.tick];
-    if (stalledAbility) {
-        style_specific_unification(settingsCopy, abils[stalledAbility]['main style']); //Update gear/combat style
-        state.combatStyle = abils[stalledAbility]['main style'];
-        const abil_duration = typeof abils[stalledAbility]['duration'] === 'number' ? abils[stalledAbility]['duration'] : 3;
-        settingsCopy['ability'] = stalledAbility;
-        // Skip on_stall() call but do everything else
-
-        if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) {
-            settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
-        }
-
-        state.start_tick = state.tick;
-        const hit_tick = state.tick + state.hit_delay;
-        state.damageQueue[hit_tick] ??= [];
-        handleBuffs(settingsCopy, state.timers, stalledAbility);
-        if (stalledAbility in abils) {
-            processStalledAbility(state, settingsCopy, stalledAbility, hit_tick); //TODO fix / remove
-        }
-    }
-    // Then process any regular ability on this tick
-
-    // handle either afking or chanelling if no ability on this tick
-    let abilityKey = rotationStore.abilityBar[state.tick];
-    if (abilityKey == null) {
-        handleNullAbilityTick(state, settingsCopy);
-        return;
-    }
-
-    // Swap asphyxiate for Tumeken's variant if wearing 4+ pieces
-    abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
-
-    const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
-    settingsCopy['ability'] = abilityKey;
-
-    processAbility(state, settingsCopy, abilityKey as ABILITIES, abil_duration);
-}
-
 /**
- * Core version of processCurrentTick that uses rotation parameter instead of store.
- * Used for single-ability calculations and testing.
+ * Processes a tick of the rotation. Handles stalled abilities, regular abilities,
+ * channelled hits, damage queues, timers, and extra actions.
+ * When onTick is provided, it fires per-tick for UI state updates (e.g. copyStacks).
  */
 function processCurrentTickCore(
     state: RotationState,
     settingsCopy: any,
     barSize: number,
-    rotation: RotationInput
+    rotation: RotationInput,
+    onTick?: OnTickCallback
 ) {
     // Store nulled state at the start
     const isNulledTick = rotation.nulledTicks[state.tick] ?? false;
@@ -581,7 +452,7 @@ function processCurrentTickCore(
     // handle either afking or channelling if no ability on this tick
     let abilityKey = rotation.abilityBar[state.tick];
     if (abilityKey == null) {
-        handleNullAbilityTickCore(state, settingsCopy, rotation);
+        handleNullAbilityTickCore(state, settingsCopy, rotation, onTick);
         return;
     }
 
@@ -591,14 +462,14 @@ function processCurrentTickCore(
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
     settingsCopy['ability'] = abilityKey;
 
-    processAbilityCore(state, settingsCopy, abilityKey as ABILITIES, abil_duration, rotation);
+    processAbilityCore(state, settingsCopy, abilityKey as ABILITIES, abil_duration, rotation, onTick);
 }
 
 /**
  * Core version - handles null ability tick without store access
  */
-function handleNullAbilityTickCore(state: RotationState, settingsCopy: any, rotation: RotationInput) {
-    processTickOperationsCore(state.tick, state, settingsCopy, rotation);
+function handleNullAbilityTickCore(state: RotationState, settingsCopy: any, rotation: RotationInput, onTick?: OnTickCallback) {
+    processTickOperationsCore(state.tick, state, settingsCopy, rotation, onTick);
 }
 
 /**
@@ -608,18 +479,20 @@ function processTickOperationsCore(
     tickToProcess: number,
     state: RotationState,
     settingsCopy: any,
-    rotation: RotationInput
+    rotation: RotationInput,
+    onTick?: OnTickCallback
 ) {
     // During boss phase pause (invulnerable): still tick down buffs/timers, but skip damage
     if (state.pauseTicksRemaining > 0) {
         state.pauseTicksRemaining--;
         handleTimers(state.timers, settingsCopy);
+        onTick?.(state.tick, settingsCopy, state.timers);
         state.tick += 1;
         return;
     }
 
     handleExtraActionsCore(settingsCopy, state.timers, state.tick, rotation);
-    // Skip copyStacks - no UI updates needed for headless calculation
+    onTick?.(state.tick, settingsCopy, state.timers);
     recalcFulProbability(state, settingsCopy);
     handleTimers(state.timers, settingsCopy);
     processQueuedDamage(tickToProcess, state, settingsCopy);
@@ -832,8 +705,6 @@ function processConjureTick(state: RotationState, settings: any) {
                 state.timers[SETTINGS.HAUNTED] = 8; // 4.8s = 8 ticks
             }
 
-
-
             const expectedDamage = Math.floor(baseDamage * rageMult * damageMultiplier);
             state.conjureDamage += expectedDamage;
             if (state.tick < state.conjurePerTick.length) {
@@ -916,7 +787,7 @@ function processAbilityCore(
     abilityKey: ABILITIES,
     abil_duration: number,
     rotation: RotationInput,
-    onStall = true
+    onTick?: OnTickCallback
 ) {
     style_specific_unification(settingsCopy, abils[abilityKey]['main style']);
     rotationState.combatStyle = abils[abilityKey]['main style'];
@@ -926,6 +797,7 @@ function processAbilityCore(
     on_stall(settingsCopy, abilityKey, rotationState.timers);
     if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) {
         settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
+        console.log(`[processAbilityCore] ${abilityKey} AD=${settingsCopy[SETTINGS.ABILITY_DAMAGE]} TH=${settingsCopy[SETTINGS.TH]} tier=${settingsCopy[SETTINGS.TH_TIER_CUSTOM]}`);
     }
 
     rotationState.start_tick = rotationState.tick;
@@ -955,7 +827,7 @@ function processAbilityCore(
         delete settingsCopy['_pendingFlamebound'];
     }
 
-    processAbilityTicksCore(rotationState, settingsCopy, abilityKey, abil_duration, rotation);
+    processAbilityTicksCore(rotationState, settingsCopy, abilityKey, abil_duration, rotation, onTick);
 }
 
 /**
@@ -966,7 +838,8 @@ function processAbilityTicksCore(
     settingsCopy: any,
     abilityKey: ABILITIES,
     abil_duration: number,
-    rotation: RotationInput
+    rotation: RotationInput,
+    onTick?: OnTickCallback
 ) {
     let rota;
     const isChannel = isChannelled(settingsCopy, abilityKey);
@@ -980,7 +853,7 @@ function processAbilityTicksCore(
         if (isChannel && hasHits) {
             processChannelledTickCore(state, settingsCopy, abilityKey, i, rota, rotation);
         }
-        processTickOperationsCore(i, state, settingsCopy, rotation);
+        processTickOperationsCore(i, state, settingsCopy, rotation, onTick);
         if (rotation.abilityBar[i+1]) {
             break;
         }
@@ -1038,86 +911,6 @@ function processChannelledTickCore(
  * @param state - The rotation state tracking damage, queues, and timers
  * @param settingsCopy - A copy of the game settings that can be modified during processing
  */
-function processTickOperations(
-    tickToProcess: number,
-    state: RotationState,
-    settingsCopy: any
-) {
-    // During boss phase pause (invulnerable): still tick down buffs/timers, but skip damage
-    if (state.pauseTicksRemaining > 0) {
-        state.pauseTicksRemaining--;
-        handleTimers(state.timers, settingsCopy);
-        copyStacks(state.tick, settingsCopy, state.timers);
-        state.tick += 1;
-        return;
-    }
-
-    handleExtraActions(settingsCopy, state.timers, state.tick);
-    copyStacks(state.tick, settingsCopy, state.timers);
-    recalcFulProbability(state, settingsCopy);
-    handleTimers(state.timers, settingsCopy);
-    processQueuedDamage(tickToProcess, state, settingsCopy);
-    handleAftershock(state, settingsCopy);
-    processFamiliarTick(state, settingsCopy);
-    processDreadnipTick(state, settingsCopy);
-    processConjureTick(state, settingsCopy);
-    checkPhaseTransition(state, settingsCopy);
-
-    state.tick += 1;
-}
-
-function handleNullAbilityTick(state: RotationState, settingsCopy: any) {
-    processTickOperations(state.tick, state, settingsCopy);
-}
-
-function processAbility(
-    rotationState: RotationState,
-    settingsCopy: any,
-    abilityKey: ABILITIES,
-    abil_duration: number,
-    onStall = true
-) {
-    //TODO release stalled abilities here
-    style_specific_unification(settingsCopy, abils[abilityKey]['main style']); //Update gear/combat style
-    rotationState.combatStyle = abils[abilityKey]['main style'];
-    settingsCopy['ability'] = abilityKey;
-    updateFulProbability(rotationState, settingsCopy);
-
-    on_stall(settingsCopy, abilityKey, rotationState.timers);
-    if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) {
-        settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
-    }
-
-    rotationState.start_tick = rotationState.tick;
-    const hit_tick = rotationState.tick + rotationState.hit_delay;
-    rotationState.damageQueue[hit_tick] ??= [];
-
-    handleBuffs(settingsCopy, rotationState.timers, abilityKey);
-
-    // Cooldowns are now tracked via timers in on_stall (damage_calc_new.ts)
-
-    if (abilityKey in abils) {
-        const classification = abils[abilityKey]?.['ability classification'];
-        if (isChannelled(settingsCopy, abilityKey)) {
-            // Handled in processAbilityTicks
-        } else if (classification === 'multihit') {
-            processMultiHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
-        } else if (classification === 'bleed' || classification === 'burn' || classification === 'dot') {
-            processBleedAbility(rotationState, settingsCopy, abilityKey, hit_tick);
-        } else {
-            processSingleHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
-        }
-    }
-
-    // Apply pending flamebound rival after hits are processed
-    if (settingsCopy['_pendingFlamebound']) {
-        settingsCopy[SETTINGS.FLAMEBOUND_RIVAL] = true;
-        delete settingsCopy['_pendingFlamebound'];
-    }
-
-    processAbilityTicks(rotationState, settingsCopy, abilityKey, abil_duration);
-}
-
 function processStalledAbility(
     state: RotationState, 
     settingsCopy: any, 
@@ -1212,68 +1005,6 @@ function processBleedAbility(
             state.damageQueue[htick].push(hit);
         });
         i++;
-    });
-}
-
-function processAbilityTicks(
-    state: RotationState,
-    settingsCopy: any,
-    abilityKey: ABILITIES,
-    abil_duration: number
-) {
-    let rota;
-    const isChannel = isChannelled(settingsCopy, abilityKey);
-    const hasHits = abils[abilityKey]?.['hits'] !== undefined;
-    if (isChannel && hasHits) {
-        rota = get_hit_sequence(settingsCopy);
-    }
-
-    const end_tick = state.start_tick + abil_duration;
-    for (let i = state.start_tick; i < end_tick; i++) {
-        if (isChannel && hasHits) {
-            processChannelledTick(state, settingsCopy, abilityKey, i, rota);
-        }
-        processTickOperations(i, state, settingsCopy);
-        if (rotationStore.abilityBar[i+1]) {
-            break;
-        }
-    }
-}
-
-function processChannelledTick(
-    state: RotationState,
-    settingsCopy: any,
-    abilityKey: ABILITIES,
-    currentTick: number,
-    rotation: ABILITIES[][]
-) {
-    if (currentTick > state.start_tick && rotationStore.abilityBar[state.tick]) {
-        return; // Cancel channel if new ability
-    }
-    let hit_index = 1 + currentTick - state.start_tick;
-    let dmgObjects: DamageObject[] = [];
-    if (rotation[hit_index].length > 0) {
-        let hitKey = rotation[hit_index][0];
-        let dmgObject = create_damage_object(settingsCopy, hitKey);
-        let dmgObjs = on_cast(settingsCopy, dmgObject, state.timers, hitKey);
-        dmgObjs.forEach(dmgObj => {
-            let o = on_hit(settingsCopy, dmgObj, state.timers, dmgObj.ability);
-            for (let hit of o) {
-                dmgObjects.push(hit);
-            }
-        });
-            handle_edraco(settingsCopy, state.timers, hitKey);
-            handle_tumekens(settingsCopy, state.timers, hitKey);
-    }
-    dmgObjects.forEach(dmgObject => {
-        if (settingsCopy.isNulledTick) {
-            dmgObject = zeroDamageObject(dmgObject);
-        }
-
-        if (dmgObject.distributions['non_crit']['damage list'].length > 0) {
-            let hit_tick = currentTick + state.hit_delay;
-            (state.damageQueue[hit_tick] ??= []).push(dmgObject);
-        }
     });
 }
 
@@ -1530,22 +1261,6 @@ function copyStacks(tick: number, settings: any, timers?: Record<string, number>
         }
         uiActions.updateBarLastIndex(buffIndex);
     }
-}
-
-function handleExtraActions(settings: any, timers: Record<string, number>, tick: number) {
-    if (timers["Adrenaline renewal potion"] >= 0) {
-        settings[SETTINGS.ADRENALINE] += 4;
-    }
-    // Essence corruption adrenaline buff: +1% per tick while active
-    if (timers[SETTINGS.ESS_CORRUPTION_ADREN] > 0) {
-        settings[SETTINGS.ADRENALINE] += 1;
-    }
-    if (!rotationStore.extraActionBar[tick]) return;
-
-    rotationStore.extraActionBar[tick].forEach(element => {
-        if (!element) return;
-        processExtraAction(element, settings, timers);
-    });
 }
 
 /** Process a single extra action entry — handles both new ExtraAction and legacy formats */
