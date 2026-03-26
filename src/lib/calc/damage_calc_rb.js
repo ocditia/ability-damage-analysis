@@ -6,6 +6,8 @@ import { weapons } from '$lib/data/weapons'
 import { prayers } from '../data/prayers';
 import { create_object } from './rotation_builder/rota_object_helper';
 import { SETTINGS } from './settings_rb';
+import { Logger } from '$lib/utils/Logger';
+const logger = Logger.getInstance();
 
 function calc_level_damage(settings) {
     let style = abils[settings['ability']]['main style'];
@@ -13,43 +15,51 @@ function calc_level_damage(settings) {
         style = 'strength';
     }
     const level = settings[style + ' level'];
-    return Math.round(145 * 2.5 * (Math.log(1 + 0.6 * (level / 145)) / Math.log(1.6)));
+    const result = Math.round(145 * 2.5 * (Math.log(1 + 0.6 * (level / 145)) / Math.log(1.6)));
+    logger.trace('Level Damage', result, `${style} level ${level}: round(145 × 2.5 × ln(1 + 0.6 × ${level}/145) / ln(1.6))`);
+    return result;
 }
 
 function calc_base_ad(settings) {
     // see wiki page /ability_damage for more info
     let base_AD = 0;
+    const levelDmg = calc_level_damage(settings);
+    const bonus = calc_bonus(settings);
 
     if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) {
-        let AD_mh = Math.floor(calc_level_damage(settings)
-                                + 9.6 * calc_weapon_tier(settings, 'main-hand weapon')
-                                + calc_bonus(settings));
+        const mhTier = calc_weapon_tier(settings, 'main-hand weapon');
+        let AD_mh = Math.floor(levelDmg + 9.6 * mhTier + bonus);
+        logger.trace('AD (Main-Hand)', AD_mh, `floor(${levelDmg} + 9.6 × ${mhTier} + ${bonus})`);
 
         let AD_oh = 0;
         if (weapons[settings[SETTINGS.OH]]?.['weapon type'] === 'off-hand') {
-            AD_oh = Math.floor(0.5 * Math.floor(calc_level_damage(settings)
-                                    + 9.6 * calc_weapon_tier(settings, 'off-hand weapon')
-                                    + calc_bonus(settings)));
+            const ohTier = calc_weapon_tier(settings, 'off-hand weapon');
+            AD_oh = Math.floor(0.5 * Math.floor(levelDmg + 9.6 * ohTier + bonus));
+            logger.trace('AD (Off-Hand)', AD_oh, `floor(0.5 × floor(${levelDmg} + 9.6 × ${ohTier} + ${bonus}))`);
         }
         base_AD = AD_mh + AD_oh;
+        logger.trace('Raw Base AD (DW)', base_AD, `${AD_mh} + ${AD_oh}`);
     }
-    
+
     else if (settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) {
-        base_AD = Math.floor(Math.floor(calc_level_damage(settings)
-                                + 9.6 * calc_weapon_tier(settings, 'two-hand weapon')
-                                + calc_bonus(settings)) 
-                    +
-                    Math.floor(0.5 * Math.floor(calc_level_damage(settings)
-                                    + 9.6 * calc_weapon_tier(settings, 'two-hand weapon')
-                                    + calc_bonus(settings))));
+        const thTier = calc_weapon_tier(settings, 'two-hand weapon');
+        const mhComponent = Math.floor(levelDmg + 9.6 * thTier + bonus);
+        const ohComponent = Math.floor(0.5 * mhComponent);
+        base_AD = mhComponent + ohComponent;
+        logger.trace('AD (TH)', base_AD, `floor(${levelDmg} + 9.6 × ${thTier} + ${bonus}) = ${mhComponent}, + floor(0.5 × ${mhComponent}) = ${ohComponent}`);
     }
-    
+
     // base damage buffs (eruptive / equilibrium)
     let buff = 1 + settings[SETTINGS.ERUPTIVE] * 0.005;
     if (settings[SETTINGS.EQ_PERK] > 0) {
         buff += 0.1 + settings[SETTINGS.EQ_PERK] * 0.01;
     }
+    const rawAD = base_AD;
     base_AD = Math.floor(base_AD * buff);
+    if (buff !== 1) {
+        logger.trace('AD Buff', `×${buff}`, `Eruptive ${settings[SETTINGS.ERUPTIVE]}, EQ ${settings[SETTINGS.EQ_PERK]}`);
+    }
+    logger.trace('Base AD', base_AD, buff !== 1 ? `floor(${rawAD} × ${buff})` : 'No eruptive/equilibrium');
     return base_AD;
 
 }
@@ -76,7 +86,7 @@ function calc_weapon_tier(settings, hand) {
         weapon_tier = weapons[settings[hand]]['tier'];
     }
     let tier = Math.min(weapon_tier, ammo_tier);
-
+    logger.trace(`Weapon Tier (${hand})`, tier, `weapon: ${settings[hand]} (t${weapon_tier})${ammo_tier < 999 ? `, ammo capped to t${ammo_tier}` : ''}`);
     return tier;
 }
 
@@ -123,6 +133,7 @@ function calc_bonus(settings) {
         }
     }
 
+    logger.trace('Strength Bonus', bonus, `Gear slots${settings[SETTINGS.REAPER_CREW] ? ' + Reaper Crew (+12)' : ''}`);
     return bonus;
 }
 
@@ -1461,6 +1472,9 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.MAGIC_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.MAGIC_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.MAGIC_PRAYER];
+        settings[SETTINGS.NECKLACE] = settings[SETTINGS.MAGIC_NECKLACE];
+        settings[SETTINGS.CAPE] = settings[SETTINGS.MAGIC_CAPE];
+        settings[SETTINGS.RING] = settings[SETTINGS.MAGIC_RING];
     } else if (effectiveStyle == 'ranged') {
         settings[SETTINGS.MH] = settings[SETTINGS.RANGED_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.RANGED_OH];
@@ -1471,6 +1485,9 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.RANGED_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.RANGED_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.RANGED_PRAYER];
+        settings[SETTINGS.NECKLACE] = settings[SETTINGS.RANGED_NECKLACE];
+        settings[SETTINGS.CAPE] = settings[SETTINGS.RANGED_CAPE];
+        settings[SETTINGS.RING] = settings[SETTINGS.RANGED_RING];
     } else if (effectiveStyle == 'melee') {
         settings[SETTINGS.MH] = settings[SETTINGS.MELEE_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.MELEE_OH];
@@ -1481,6 +1498,9 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.MELEE_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.MELEE_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.MELEE_PRAYER];
+        settings[SETTINGS.NECKLACE] = settings[SETTINGS.MELEE_NECKLACE];
+        settings[SETTINGS.CAPE] = settings[SETTINGS.MELEE_CAPE];
+        settings[SETTINGS.RING] = settings[SETTINGS.MELEE_RING];
     } else if (effectiveStyle == 'necromancy') {
         settings[SETTINGS.MH] = settings[SETTINGS.NECRO_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.NECRO_OH];
@@ -1491,6 +1511,9 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.GLOVES] = settings[SETTINGS.NECRO_GLOVES];
         settings[SETTINGS.BOOTS] = settings[SETTINGS.NECRO_BOOTS];
         settings[SETTINGS.PRAYER] = settings[SETTINGS.NECRO_PRAYER];
+        settings[SETTINGS.NECKLACE] = settings[SETTINGS.NECRO_NECKLACE];
+        settings[SETTINGS.CAPE] = settings[SETTINGS.NECRO_CAPE];
+        settings[SETTINGS.RING] = settings[SETTINGS.NECRO_RING];
     }
 
     // Derive weapon type from the equipped MH weapon

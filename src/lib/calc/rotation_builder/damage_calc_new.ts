@@ -110,11 +110,13 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
     });
     logger.log(LogCategory.ABILITY_DAMAGE, 'BASE AD', settings[SETTINGS.ABILITY_DAMAGE]);
     const dmgObjects: DamageObject[] = [];
+    const hitChance = Math.min(settings[SETTINGS.HIT_CHANCE] / 100, 1);
     iterateDistributions(dmgObject, (distribution) => {
-        distribution['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] *
-            Math.min(settings[SETTINGS.HIT_CHANCE] / 100, 1));
+        distribution['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * hitChance);
         logger.log(LogCategory.ABILITY_DAMAGE, `Set boosted AD for ${abilityKey}`, distribution['boosted AD']);
     });
+    logger.trace('Hit Chance', `${settings[SETTINGS.HIT_CHANCE]}%`, `Damage potential: ${abils[abilityKey]?.['damage potential effects'] ? 'yes' : 'no'}`);
+    logger.trace('Boosted AD', Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * hitChance), `floor(${settings[SETTINGS.ABILITY_DAMAGE]} × ${hitChance})`);
 
     // Handle Wen buff consumption for ranged abilities
     handleWenBuffConsumption(settings, timers, abilityKey);
@@ -532,8 +534,13 @@ function set_min_var(settings: Record<string, any>, dmgObject: DamageObject) {
         }
 
         // 4. Convert percent values to actual damage using boosted AD
-        distribution['min hit'] = Math.floor(distribution['min hit'] * distribution['boosted AD']);
-        distribution['var hit'] = Math.floor(distribution['var hit'] * distribution['boosted AD']);
+        const minPct = distribution['min hit'];
+        const varPct = distribution['var hit'];
+        distribution['min hit'] = Math.floor(minPct * distribution['boosted AD']);
+        distribution['var hit'] = Math.floor(varPct * distribution['boosted AD']);
+        if (!distribution['crit']) {
+            logger.trace(`${abilityKey} non-crit`, `${distribution['min hit']}–${distribution['min hit'] + distribution['var hit']}`, `${(minPct * 100).toFixed(1)}%–${((minPct + varPct) * 100).toFixed(1)}% of ${distribution['boosted AD']} boosted AD`);
+        }
     });
 
     return dmgObject;
@@ -625,9 +632,16 @@ function applyDamageListModifiers(
 
             // Crit damage scaling
             if (distribution['crit'] === true && abils[abilityKey]['crit effects'] === true) {
+                const critMultiplier = 1 + calc_crit_damage(settings, dmgObject);
                 distribution['damage list'][i] = Math.floor(
-                    distribution['damage list'][i] * (1 + calc_crit_damage(settings, dmgObject))
+                    distribution['damage list'][i] * critMultiplier
                 );
+                // Trace crit range on first and last iteration only
+                if (i === 0) {
+                    logger.trace(`${abilityKey} crit min`, distribution['damage list'][i], `×${critMultiplier.toFixed(4)} crit multiplier`);
+                } else if (i === distribution['damage list'].length - 1) {
+                    logger.trace(`${abilityKey} crit max`, distribution['damage list'][i], `×${critMultiplier.toFixed(4)} crit multiplier`);
+                }
             }
         }
     });

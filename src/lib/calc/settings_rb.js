@@ -430,6 +430,58 @@ const SETTINGS = {
         AM_HEJ: 'am-hej',
         DRAGON_RIDER_NECKLACE: 'dragon rider necklace',
     },
+    MAGIC_NECKLACE: 'magic necklace',
+    MAGIC_NECKLACE_VALUES: {
+        NONE: 'none',
+        EOFOR: 'essence of finality amulet (or)',
+        EOF: 'essence of finality amulet',
+        AOSOR: 'amulet of souls (or)',
+        AOS: 'amulet of souls',
+        REAPEROR: 'reaper necklace (or)',
+        REAPER: 'reaper necklace',
+        ARCANE_BLOOD: 'arcane blood necklace',
+        ZEALOTS: 'amulet of zealots',
+        DRAGON_RIDER_NECKLACE: 'dragon rider necklace',
+    },
+    RANGED_NECKLACE: 'range necklace',
+    RANGED_NECKLACE_VALUES: {
+        NONE: 'none',
+        EOFOR: 'essence of finality amulet (or)',
+        EOF: 'essence of finality amulet',
+        AOSOR: 'amulet of souls (or)',
+        AOS: 'amulet of souls',
+        REAPEROR: 'reaper necklace (or)',
+        REAPER: 'reaper necklace',
+        FARSIGHT_BLOOD: 'farsight blood necklace',
+        ZEALOTS: 'amulet of zealots',
+    },
+    MELEE_NECKLACE: 'melee necklace',
+    MELEE_NECKLACE_VALUES: {
+        NONE: 'none',
+        EOFOR: 'essence of finality amulet (or)',
+        EOF: 'essence of finality amulet',
+        AOSOR: 'amulet of souls (or)',
+        AOS: 'amulet of souls',
+        REAPEROR: 'reaper necklace (or)',
+        REAPER: 'reaper necklace',
+        BRAWLER_BLOOD: "brawler's blood necklace",
+        AM_HEJ: 'am-hej',
+        AM_ZI: 'am-zi',
+        ZEALOTS: 'amulet of zealots',
+        BERSERKER: 'berserker necklace',
+    },
+    NECRO_NECKLACE: 'necro necklace',
+    NECRO_NECKLACE_VALUES: {
+        NONE: 'none',
+        EOFOR: 'essence of finality amulet (or)',
+        EOF: 'essence of finality amulet',
+        MOONSTONE: 'conjurers raising amulet',
+        AOSOR: 'amulet of souls (or)',
+        AOS: 'amulet of souls',
+        REAPEROR: 'reaper necklace (or)',
+        REAPER: 'reaper necklace',
+        ZEALOTS: 'amulet of zealots',
+    },
     CAPE: 'cape',
     CAPE_VALUES: {
         NONE: 'none',
@@ -441,6 +493,34 @@ const SETTINGS = {
         SKILL: 'skill cape',
         GHOST_HUNTER: 'ghost hunter backpack',
         TUSKA: 'warpriest of tuska cape',
+    },
+    MAGIC_CAPE: 'magic cape',
+    MAGIC_CAPE_VALUES: {
+        NONE: 'none',
+        ZUK: 'igneous kal-zuk',
+        KILN: 'tokhaar-kal-mor',
+        COMP: 'comp/max cape',
+        TUSKA: 'warpriest of tuska cape',
+    },
+    RANGED_CAPE: 'range cape',
+    RANGED_CAPE_VALUES: {
+        NONE: 'none',
+        ZUK: 'igneous kal-zuk',
+        KILN: 'tokhaar-kal-mor',
+        COMP: 'comp/max cape',
+    },
+    MELEE_CAPE: 'melee cape',
+    MELEE_CAPE_VALUES: {
+        NONE: 'none',
+        ZUK: 'igneous kal-zuk',
+        KILN: 'tokhaar-kal-mor',
+        COMP: 'comp/max cape',
+    },
+    NECRO_CAPE: 'necro cape',
+    NECRO_CAPE_VALUES: {
+        NONE: 'none',
+        ZUK: 'igneous kal-zuk',
+        COMP: 'comp/max cape',
     },
     RING: 'ring',
     RING_VALUES: {
@@ -463,7 +543,6 @@ const SETTINGS = {
         HSR_I: 'hazelmere\'s signet ring (i)',
         TOKKUL: 'tokkul-zo',
     },
-    /*
     MAGIC_RING: 'magic ring',
     MAGIC_RING_VALUES: {
         NONE: 'none',
@@ -507,7 +586,6 @@ const SETTINGS = {
         ASRI: 'asylum surgeons ring (i)',
         ASR: 'asylum surgeons ring'
     },
-    */
     MAGIC_POCKET: 'mage pocket',
     MAGIC_POCKET_VALUES: {
         NONE: 'none',
@@ -1737,63 +1815,54 @@ const settingsConfig = {
             { text: 'Tokkul-Zo', value: SETTINGS.RING_VALUES.TOKKUL },
         ]
     },
-    /*
     [SETTINGS.MAGIC_RING]: {
         label: 'Ring',
         default: SETTINGS.MAGIC_RING_VALUES.REAVERS,
-        options: [
-            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
-            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
-            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
-            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
-            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
-            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELLER },
-            { text: 'Channeller+', value: SETTINGS.RING_VALUES.CHANNELLER_E }
-        ]
     },
     [SETTINGS.RANGED_RING]: {
         label: 'Ring',
         default: SETTINGS.RANGED_RING_VALUES.REAVERS,
-        options: [
-            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
-            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
-            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
-            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
-            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
-            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Stalker', value: SETTINGS.RING_VALUES.STALKER },
-            { text: 'Stalker+', value: SETTINGS.RING_VALUES.STALKER_E }
-        ]
     },
     [SETTINGS.MELEE_RING]: {
         label: 'Ring',
         default: SETTINGS.MELEE_RING_VALUES.REAVERS,
-        options: [
-            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
-            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
-            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
-            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
-            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
-            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Champion', value: SETTINGS.RING_VALUES.CHAMPION },
-            { text: 'Champion+', value: SETTINGS.RING_VALUES.CHAMPION_E }
-        ]
     },
     [SETTINGS.NECRO_RING]: {
         label: 'Ring',
         default: SETTINGS.NECRO_RING_VALUES.REAVERS,
-        options: [
-            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
-            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
-            { text: "Zorg/Occ", value: SETTINGS.RING_VALUES.ZORGOTH },
-            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
-            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
-            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
-            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR }
-        ]
     },
-    */
+    [SETTINGS.MAGIC_NECKLACE]: {
+        label: 'Necklace',
+        default: SETTINGS.NECKLACE_VALUES.EOFOR,
+    },
+    [SETTINGS.RANGED_NECKLACE]: {
+        label: 'Necklace',
+        default: SETTINGS.NECKLACE_VALUES.EOFOR,
+    },
+    [SETTINGS.MELEE_NECKLACE]: {
+        label: 'Necklace',
+        default: SETTINGS.NECKLACE_VALUES.EOFOR,
+    },
+    [SETTINGS.NECRO_NECKLACE]: {
+        label: 'Necklace',
+        default: SETTINGS.NECKLACE_VALUES.EOFOR,
+    },
+    [SETTINGS.MAGIC_CAPE]: {
+        label: 'Cape',
+        default: SETTINGS.CAPE_VALUES.ZUK,
+    },
+    [SETTINGS.RANGED_CAPE]: {
+        label: 'Cape',
+        default: SETTINGS.CAPE_VALUES.ZUK,
+    },
+    [SETTINGS.MELEE_CAPE]: {
+        label: 'Cape',
+        default: SETTINGS.CAPE_VALUES.ZUK,
+    },
+    [SETTINGS.NECRO_CAPE]: {
+        label: 'Cape',
+        default: SETTINGS.CAPE_VALUES.ZUK,
+    },
     [SETTINGS.MAGIC_POCKET]: {
         label: 'Pocket',
         default: SETTINGS.POCKET_VALUES.GRIM,
@@ -1854,63 +1923,6 @@ const settingsConfig = {
             { text: 'Underworld grim', value: SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM }
         ]
     },
-    /*
-    [SETTINGS.MAGIC_RING]: {
-        label: 'Ring',
-        default: SETTINGS.MAGIC_RING_VALUES.REAVERS,
-        options: [
-            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
-            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
-            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
-            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
-            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
-            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Channeler', value: SETTINGS.RING_VALUES.CHANNELLER },
-            { text: 'Channeller+', value: SETTINGS.RING_VALUES.CHANNELLER_E }
-        ]
-    },
-    [SETTINGS.RANGED_RING]: {
-        label: 'Ring',
-        default: SETTINGS.RANGED_RING_VALUES.REAVERS,
-        options: [
-            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
-            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
-            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
-            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
-            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
-            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Stalker', value: SETTINGS.RING_VALUES.STALKER },
-            { text: 'Stalker+', value: SETTINGS.RING_VALUES.STALKER_E }
-        ]
-    },
-    [SETTINGS.MELEE_RING]: {
-        label: 'Ring',
-        default: SETTINGS.MELEE_RING_VALUES.REAVERS,
-        options: [
-            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
-            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
-            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
-            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
-            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
-            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR },
-            { text: 'Champion', value: SETTINGS.RING_VALUES.CHAMPION },
-            { text: 'Champion+', value: SETTINGS.RING_VALUES.CHAMPION_E }
-        ]
-    },
-    [SETTINGS.NECRO_RING]: {
-        label: 'Ring',
-        default: SETTINGS.NECRO_RING_VALUES.REAVERS,
-        options: [
-            { text: 'None', value: SETTINGS.RING_VALUES.NONE },
-            { text: "Reaver's", value: SETTINGS.RING_VALUES.REAVERS },
-            { text: "Zorg/Occ", value: SETTINGS.RING_VALUES.ZORGOTH },
-            { text: 'ROD (i)', value: SETTINGS.RING_VALUES.RODI },
-            { text: 'ROD', value: SETTINGS.RING_VALUES.ROD },
-            { text: 'ASR (i)', value: SETTINGS.RING_VALUES.ASRI },
-            { text: 'ASR', value: SETTINGS.RING_VALUES.ASR }
-        ]
-    },
-    */
     [SETTINGS.POCKET]: {
         label: 'Pocket',
         default: SETTINGS.POCKET_VALUES.GRIM,

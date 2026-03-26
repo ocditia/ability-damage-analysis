@@ -11,6 +11,9 @@ function create_damage_object(settings: Record<string, any>, ability: ABILITIES)
     if (abils[ability]['crit effects'] === true) {
         crit_chance = calc_crit_chance(settings, ability);
         logger.log(LogCategory.ABILITY_DAMAGE, `Crit chance for ${ability}`, crit_chance);
+        logger.trace('Crit Chance', `${(crit_chance * 100).toFixed(1)}%`, `${ability}`);
+    } else {
+        logger.trace('Crit Chance', 'N/A', `${ability} cannot crit`);
     }
     
     const nonCritDistribution: DamageDistribution = {

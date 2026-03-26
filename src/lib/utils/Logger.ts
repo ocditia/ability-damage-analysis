@@ -8,9 +8,17 @@ export enum LogCategory {
 
 type LoggerConfig = Record<LogCategory, boolean>;
 
+export interface TraceEntry {
+    label: string;
+    value: number | string;
+    explanation: string;
+}
+
 export class Logger {
     private static instance: Logger;
     private config: LoggerConfig;
+    private tracing: boolean = false;
+    private traceEntries: TraceEntry[] = [];
 
     private constructor() {
         // Initialize all categories as disabled by default
@@ -80,10 +88,37 @@ export class Logger {
     }
 
     /**
+     * Start capturing trace entries. Clears any previous trace.
+     */
+    public startTrace(): void {
+        this.traceEntries = [];
+        this.tracing = true;
+    }
+
+    /**
+     * Stop capturing and return the collected trace entries.
+     */
+    public endTrace(): TraceEntry[] {
+        this.tracing = false;
+        const entries = this.traceEntries;
+        this.traceEntries = [];
+        return entries;
+    }
+
+    /**
+     * Record a structured trace entry (no-op when not tracing).
+     */
+    public trace(label: string, value: number | string, explanation: string = ''): void {
+        if (this.tracing) {
+            this.traceEntries.push({ label, value, explanation });
+        }
+    }
+
+    /**
      * Get the current logger configuration
      */
     public getConfig(): LoggerConfig {
         return { ...this.config };
     }
-} 
+}
 

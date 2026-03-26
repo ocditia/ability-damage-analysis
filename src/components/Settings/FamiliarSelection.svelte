@@ -34,7 +34,7 @@
 <div class="flex flex-wrap gap-2 justify-center mb-3">
     <ToggleButton
         bind:setting={settings[SETTINGS.FAMILIAR]}
-        img={(v) => familiars[v].icon ?? '/effect_icons/familiar.png'}
+        img={(v) => familiars[v]?.icon ?? '/effect_icons/familiar.png'}
         title="Familiar"
         options={settings[SETTINGS.FAMILIAR]?.options ?? []}
         bind:openId={openDropdown}

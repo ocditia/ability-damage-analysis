@@ -2206,7 +2206,8 @@ function generateTelosEnrage(base: BossPreset, enrage: number): BossPreset {
 	const result = structuredClone(base);
 
 	result.health = Math.min(600000, 400000 + enrage * 1000);
-	const p5Hp = Math.min(300000, 100000 + enrage * 500);
+	const enrageOver100 = Math.max(enrage-100, 0)
+	const p5Hp = Math.min(200000, 100000 + enrageOver100 * 500);
 
 	// Defence scales: base 80, +1 per 20 enrage (capped at 99)
 	result.defenceLevel = Math.min(99, 80 + Math.floor(enrage / 20));
