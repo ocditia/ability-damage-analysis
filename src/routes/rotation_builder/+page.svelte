@@ -891,6 +891,7 @@
 						dreadnipPerTick={rotationStore.dreadnipPerTick}
 						conjurePerTick={rotationStore.conjurePerTick}
 						{allAbils}
+						familiarKey={settingsStore.settings[SETTINGS.FAMILIAR]?.value ?? 'none'}
 					/>
                     <RotationConfigManager
                         {refreshUI}
@@ -1164,6 +1165,7 @@
 		<h4>Credits & Resources</h4>
 		<ul>
 			<li>Game data and ability icons from <a href="https://runescape.wiki" target="_blank" rel="noopener">The RuneScape Wiki</a>, licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank" rel="noopener">CC BY-NC-SA 3.0</a></li>
+			<li>Familiar calculations courtesy of the PVME/RsMATH Familiar Damage sheet </li>
 			<li>RuneScape is a registered trademark of <a href="https://www.jagex.com" target="_blank" rel="noopener">Jagex Ltd</a></li>
 		</ul>
 	</div>

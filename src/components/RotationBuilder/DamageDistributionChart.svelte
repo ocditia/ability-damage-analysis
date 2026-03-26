@@ -10,6 +10,7 @@
     Chart.register(...registerables);
     
     import { abils } from '$lib/data/abilities.ts';
+    import { familiars } from '$lib/data/familiars';
     import { STYLE_COLORS, ABILITY_COLORS, DAMAGE_SOURCE_COLORS, getDamageColour } from '../../lib/utils/colors';
 
     export let distributionStats = [];
@@ -23,6 +24,7 @@
     export let dreadnipPerTick = [];
     export let conjurePerTick = [];
     export let allAbils = {};
+    export let familiarKey = 'none';
 
     // Which chart is expanded (null = all thumbnails, 'timeline' | 'breakdown' | 'distribution')
     let expandedChart = null;
@@ -81,11 +83,13 @@
             if (allAbils[key + suffix]?.icon) return allAbils[key + suffix].icon;
         }
         // Secondary source icons
+        const fam = (familiarKey && familiarKey !== 'none') ? familiars[familiarKey] : null;
+        const familiarIcon = fam?.scroll_icon || fam?.icon || '/effect_icons/familiar.png';
         const secondaryIcons = {
             '_poison': '/effect_icons/poison.png',
-            '_familiar': '/effect_icons/familiar.png',
+            '_familiar': familiarIcon,
             '_dreadnip': '/ability_icons/special/Dreadnip.png',
-            '_conjure': '/effect_icons/necrosis.png'
+            '_conjure': '/effect_icons/necromancy/conjure.png'
         };
         return secondaryIcons[key] || null;
     }
@@ -136,7 +140,9 @@
         const sorted = Object.entries(groups)
             .map(([key, val]) => ({
                 key,
-                label: key.startsWith('_') ? key.slice(1).replace(/\b\w/g, l => l.toUpperCase()) : getDisplayName(key),
+                label: key === '_familiar' && familiarKey && familiarKey !== 'none' && familiars[familiarKey]
+                    ? familiars[familiarKey].name
+                    : key.startsWith('_') ? key.slice(1).replace(/\b\w/g, l => l.toUpperCase()) : getDisplayName(key),
                 damage: Math.round(val.damage),
                 colour: ABILITY_COLORS[key] || STYLE_COLOURS[val.style] || STYLE_COLOURS.unknown,
                 icon: getIconPath(key)

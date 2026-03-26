@@ -3072,13 +3072,12 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false,
         'crit effects': false,
         'damage potential effects': false,
-        'ability classification': 'conjure',
+        'ability classification': 'self cast',
         'ability type': 'threshold',
         'main style': 'necromancy',
         'damage type': 'necrotic',
         adrenaline: 0,
-        cooldown: 60
-    ,
+        cooldown: 60,
         title: 'Conjure Undead Army',
         icon: '/ability_icons/necro/30x30/conj-undead-army.png',
     },
@@ -3088,13 +3087,12 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'on-hit effects': false,
         'crit effects': false,
         'damage potential effects': false,
-        'ability classification': 'conjure',
+        'ability classification': 'self cast',
         'ability type': 'threshold',
         'main style': 'necromancy',
         'damage type': 'necrotic',
         adrenaline: 0,
-        cooldown: 60
-    ,
+        cooldown: 60,
         title: 'Conjure Skeleton Warrior',
         icon: '/ability_icons/necro/30x30/conj-skele.png',
     },
@@ -3118,11 +3116,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': false,
         'damage potential effects': false,
         'ability classification': 'conjure',
-        'ability type': 'basic',
+        'ability type': 'threshold',
         'main style': 'necromancy',
         'damage type': 'necrotic',
-        cooldown: 15
-    ,
+        cooldown: 15,
         title: 'Command Skeleton Warrior',
         icon: '/ability_icons/necro/30x30/comm-skele.png',
     },
@@ -3161,8 +3158,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'threshold',
         'main style': 'necromancy',
         'damage type': 'necrotic',
-        cooldown: 60
-    ,
+        cooldown: 60,
         title: 'Conjure Vengeful Ghost',
         icon: '/ability_icons/necro/30x30/ghost.png',
     },
@@ -3176,9 +3172,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'conjure', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 0},
+        'damage type': 'spirit', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        cooldown: 0
+    },
     [ABILITIES.CONJURE_PUTRID_ZOMBIE]: {
         'min hit': 0.0,
         'var hit': 0.0,
@@ -3189,8 +3185,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'threshold',
         'main style': 'necromancy',
         'damage type': 'necrotic',
-        cooldown: 60
-    ,
+        cooldown: 60,
         title: 'Conjure Putrid Zombie',
         icon: '/ability_icons/necro/30x30/conj-zom.png',
     },
@@ -3204,9 +3199,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'conjure', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
-        cooldown: 0},
+        'damage type': 'spirit', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        cooldown: 0
+    },
     [ABILITIES.PUTRID_ZOMBIE_POISON]: {
         // Putrid Zombie fetid stench: 8-12% poison damage every 1.8s
         'min hit': 0.08,
@@ -3230,8 +3225,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'threshold',
         'main style': 'necromancy',
         'damage type': 'necrotic',
-        cooldown: 60
-    ,
+        cooldown: 60,
         title: 'Conjure Phantom Guardian',
         icon: '/ability_icons/necro/30x30/command_phantom_guardian.png',
     },
@@ -3243,11 +3237,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': false,
         'damage potential effects': false,
         'ability classification': 'self cast',
-        'ability type': 'basic',
+        'ability type': 'threshold',
         'main style': 'necromancy',
         'damage type': 'spirit',
-        cooldown: 15
-    ,
+        cooldown: 15,
         title: 'Command Putrid Zombie',
         icon: '/ability_icons/necro/30x30/comm-zom.png',
     },
@@ -3261,8 +3254,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability classification': 'self cast', // bleed, dot, burn, channel, regular, multihit
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
-        'damage type': 'spirit' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        'damage type': 'spirit', // basic, threshold, special attack, ability (necromancy classification), ultimate
         cooldown: 9,
         title: 'Command Phantom Guardian',
         icon: '/ability_icons/necro/30x30/command_phantom_guardian.png',
@@ -3358,8 +3350,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'conjure',
         'main style': 'necromancy',
         'damage type': 'necrotic',
-        cooldown: 15
-    ,
+        cooldown: 15,
         title: 'Command Vengeful Ghost',
         icon: '/ability_icons/necro/30x30/ghost.png',
     },

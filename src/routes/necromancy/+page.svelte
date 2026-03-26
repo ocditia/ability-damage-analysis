@@ -8,7 +8,7 @@
     const abilities = Object.fromEntries(
         Object.entries(abils).filter(([, a]) =>
             a.title && a['main style'] === 'necromancy' &&
-            a['ability classification'] !== 'conjure' &&
+            // a['ability classification'] !== 'conjure' &&
             a['ability classification'] !== 'self cast'
         )
     );

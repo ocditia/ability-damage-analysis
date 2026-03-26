@@ -825,6 +825,8 @@ function processConjureTick(state: RotationState, settings: any) {
                 settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS] = rageStacks + 1;
             }
 
+            
+
             const expectedDamage = Math.floor(baseDamage * rageMult * damageMultiplier);
             state.conjureDamage += expectedDamage;
             if (state.tick < state.conjurePerTick.length) {

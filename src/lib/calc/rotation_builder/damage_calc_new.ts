@@ -253,8 +253,17 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
         handleBolgProc(settings, dmgObject, timers, dmgObjects);
         handleFsoa(abilityKey, settings, dmgObject, timers, dmgObjects);
 
-        if (abilityKey === ABILITIES.BLOAT) {
-            settings[SETTINGS.BLOAT_DMG] = structuredClone(dmgObject);
+        // Add bloat bleed hits - TODO time them properly
+        if (abilityKey === ABILITIES.BLOAT) { 
+            const bloatBleedHit = structuredClone(dmgObject);
+            iterateDistributions(bloatBleedHit, (distribution) => {
+                for (let i = 0; i < distribution['damage list'].length; i++) {
+                    distribution['damage list'][i] = Math.floor(distribution['damage list'][i] * 0.25)
+                }
+            });
+            for (let i = 0; i < 10; i++) {
+                dmgObjects.push(structuredClone(bloatBleedHit))
+            }
         }
         if (abilityKey == ABILITIES.CRYSTAL_RAIN) {
             dmgObjects.push(...handle_sgb(settings, dmgObject));

@@ -142,7 +142,7 @@ const SETTINGS = {
         NONE: 'none',
         RIPPER_DEMON: 'ripper demon',
         KALGERION_DEMON: 'kalgerion demon',
-        STEEL_TITAN: 'steel titan'
+        STEEL_TITAN: 'steel titan',
     },
     FAMILIAR_ACCURACY: 'familiar accuracy',
     KALG_SPEC: 'kalg spec',
