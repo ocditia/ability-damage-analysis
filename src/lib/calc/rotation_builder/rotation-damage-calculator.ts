@@ -825,7 +825,14 @@ function processConjureTick(state: RotationState, settings: any) {
                 settings[SETTINGS.SKELETON_WARRIOR_RAGE_STACKS] = rageStacks + 1;
             }
 
-            
+            // Apply haunted for vengeful ghost
+            if (conjureKey === 'conjure_vengeful_ghost' && state.timers["command_vengeful_ghost"] >= 0) {
+                settings[SETTINGS.HAUNTED] = true;
+                settings[SETTINGS.HAUNTED_AD] = settings[SETTINGS.ABILITY_DAMAGE];
+                state.timers[SETTINGS.HAUNTED] = 8; // 4.8s = 8 ticks
+            }
+
+
 
             const expectedDamage = Math.floor(baseDamage * rageMult * damageMultiplier);
             state.conjureDamage += expectedDamage;
@@ -848,7 +855,8 @@ function processConjureTick(state: RotationState, settings: any) {
                         state.conjurePerTick[state.tick] = state.conjureDamage;
                     }
                 }
-            } else {
+            }           
+            else {
                 // Command Skeleton Warrior: 1 hit per tick during command (10 hits over 10 ticks)
                 const cmdAbilData = abils[def.autoAbility];
                 if (cmdAbilData) {

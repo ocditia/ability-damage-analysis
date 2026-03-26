@@ -252,9 +252,10 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             timers['command_putrid_zombie'] = 1; // single instant explosion
             break;
         case ABILITIES.COMMAND_VENGEFUL_GHOST:
-            settings[SETTINGS.HAUNTED] = true;
-            settings[SETTINGS.HAUNTED_AD] = settings[SETTINGS.ABILITY_DAMAGE];
-            timers[SETTINGS.HAUNTED] = 8; // 4.8s = 8 ticks
+            timers['command_vengeful_ghost'] = timers['conjure_vengeful_ghost'];
+            // settings[SETTINGS.HAUNTED] = true;
+            // settings[SETTINGS.HAUNTED_AD] = settings[SETTINGS.ABILITY_DAMAGE];
+            // timers[SETTINGS.HAUNTED] = 8; // 4.8s = 8 ticks
             break;
         case ABILITIES.LIFE_TRANSFER: {
             // Extend all active conjure durations by 21s (35 ticks)
