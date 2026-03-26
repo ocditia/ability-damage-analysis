@@ -6,6 +6,8 @@ import { ABILITIES, abils } from '$lib/data/abilities';
 import { weapons } from '$lib/data/weapons';
 import { prayers } from '$lib/data/prayers';
 import { SETTINGS } from './settings_rb';
+import { Logger } from '$lib/utils/Logger';
+const logger = Logger.getInstance();
 import { DamageObject } from './types';
 
 // =============================================================================
@@ -365,5 +367,6 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
         crit_buff += 0.5;
     }
 
+    logger.trace('Crit Damage Bonus', `+${(crit_buff * 100).toFixed(1)}%`, `Base 50%${crit_buff !== 0.5 ? ' + modifiers' : ''} → ×${(1 + crit_buff).toFixed(4)} multiplier`);
     return crit_buff;
 }

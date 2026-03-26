@@ -3132,7 +3132,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'spirit', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        cooldown: 0},
+        adrenaline: 0,
+        title: 'Skeleton Warrior Auto',
+        icon: '/ability_icons/necro/30x30/conj-skele.png',
+        cooldown: 0
+    },
     [ABILITIES.COMMAND_SKELETON_WARRIOR]: {
         // Command Skeleton Warrior: 10x 22-28% hits over 6s (2 hits every 1.2s)
         'min hit': 0.0,
@@ -3198,7 +3202,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'spirit', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        cooldown: 0
+        cooldown: 0,
+
+        title: 'Vengeful Ghost Auto',
+        icon: '/ability_icons/necro/30x30/ghost.png'
     },
     [ABILITIES.CONJURE_PUTRID_ZOMBIE]: {
         'min hit': 0.0,
@@ -3225,7 +3232,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'conjure', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'necromancy',
         'damage type': 'spirit', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        cooldown: 0
+        cooldown: 0,
+        title: 'Putrid Zombie Auto',
+        icon: '/ability_icons/necro/30x30/conj-zom.png'
     },
     [ABILITIES.PUTRID_ZOMBIE_POISON]: {
         // Putrid Zombie fetid stench: 8-12% poison damage every 1.8s

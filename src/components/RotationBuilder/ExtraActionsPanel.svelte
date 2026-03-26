@@ -90,14 +90,32 @@
     };
 
     const stylePrefix = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necro' };
-    const sharedSlots = ['necklace', 'ring', 'cape'];
+    const sharedSlots = [];
 
-    // Pocket keys are inconsistent ('range pocket', 'mage pocket', etc.) so handle separately
+    // These slots have inconsistent key prefixes, so map explicitly
     const pocketKeys = {
-        ranged: 'range pocket',
-        magic: 'mage pocket',
-        melee: 'melee pocket',
-        necro: 'necro pocket',
+        ranged: SETTINGS.RANGED_POCKET,
+        magic: SETTINGS.MAGIC_POCKET,
+        melee: SETTINGS.MELEE_POCKET,
+        necro: SETTINGS.NECRO_POCKET,
+    };
+    const necklaceKeys = {
+        ranged: SETTINGS.RANGED_NECKLACE,
+        magic: SETTINGS.MAGIC_NECKLACE,
+        melee: SETTINGS.MELEE_NECKLACE,
+        necro: SETTINGS.NECRO_NECKLACE,
+    };
+    const capeKeys = {
+        ranged: SETTINGS.RANGED_CAPE,
+        magic: SETTINGS.MAGIC_CAPE,
+        melee: SETTINGS.MELEE_CAPE,
+        necro: SETTINGS.NECRO_CAPE,
+    };
+    const ringKeys = {
+        ranged: SETTINGS.RANGED_RING,
+        magic: SETTINGS.MAGIC_RING,
+        melee: SETTINGS.MELEE_RING,
+        necro: SETTINGS.NECRO_RING,
     };
 
     const ammoKeys = {
@@ -117,10 +135,13 @@
         return `/gear_icons/ranged/${base}.png`;
     }
 
+    const slotKeyMaps = { pocket: pocketKeys, necklace: necklaceKeys, cape: capeKeys, ring: ringKeys };
+
     function getEquipIcon(slot) {
         let key;
-        if (slot === 'pocket') {
-            key = pocketKeys[uiState.activeTab] ?? 'pocket';
+        const keyMap = slotKeyMaps[slot];
+        if (keyMap) {
+            key = keyMap[uiState.activeTab] ?? slot;
         } else {
             const prefix = sharedSlots.includes(slot) ? '' : (stylePrefix[uiState.activeTab] ?? 'ranged') + ' ';
             key = prefix + slot;

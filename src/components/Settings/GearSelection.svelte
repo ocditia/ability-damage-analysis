@@ -108,6 +108,9 @@
             { key: SETTINGS.RANGED_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
             { key: SETTINGS.RANGED_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
             { key: SETTINGS.RANGED_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.RANGED_NECKLACE, fallback: '/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
+            { key: SETTINGS.RANGED_CAPE, fallback: '/armour_icons/Back_slot.png', gearSlot: 'cape' },
+            { key: SETTINGS.RANGED_RING, fallback: '/armour_icons/Ring_slot.png', gearSlot: 'ring' },
             { key: SETTINGS.RANGED_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
             { key: SETTINGS.RANGED_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
@@ -117,6 +120,9 @@
             { key: SETTINGS.MAGIC_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
             { key: SETTINGS.MAGIC_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
             { key: SETTINGS.MAGIC_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.MAGIC_NECKLACE, fallback: '/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
+            { key: SETTINGS.MAGIC_CAPE, fallback: '/armour_icons/Back_slot.png', gearSlot: 'cape' },
+            { key: SETTINGS.MAGIC_RING, fallback: '/armour_icons/Ring_slot.png', gearSlot: 'ring' },
             { key: SETTINGS.MAGIC_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
             { key: SETTINGS.MAGIC_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
@@ -126,6 +132,9 @@
             { key: SETTINGS.MELEE_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
             { key: SETTINGS.MELEE_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
             { key: SETTINGS.MELEE_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.MELEE_NECKLACE, fallback: '/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
+            { key: SETTINGS.MELEE_CAPE, fallback: '/armour_icons/Back_slot.png', gearSlot: 'cape' },
+            { key: SETTINGS.MELEE_RING, fallback: '/armour_icons/Ring_slot.png', gearSlot: 'ring' },
             { key: SETTINGS.MELEE_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
             { key: SETTINGS.MELEE_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
@@ -135,15 +144,13 @@
             { key: SETTINGS.NECRO_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
             { key: SETTINGS.NECRO_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
             { key: SETTINGS.NECRO_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.NECRO_NECKLACE, fallback: '/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
+            { key: SETTINGS.NECRO_CAPE, fallback: '/armour_icons/Back_slot.png', gearSlot: 'cape' },
+            { key: SETTINGS.NECRO_RING, fallback: '/armour_icons/Ring_slot.png', gearSlot: 'ring' },
             { key: SETTINGS.NECRO_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
             { key: SETTINGS.NECRO_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
     };
-    const sharedArmourSlots = [
-        { key: SETTINGS.NECKLACE, fallback: '/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
-        { key: SETTINGS.CAPE, fallback: '/armour_icons/Back_slot.png', gearSlot: 'cape' },
-        { key: SETTINGS.RING, fallback: '/armour_icons/Ring_slot.png', gearSlot: 'ring' },
-    ];
 
     const weaponSlotsByStyle = {
         [SettingsCombatStyles.RANGED]: {
@@ -172,10 +179,10 @@
                 [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.ELITE_DRACOLICH,
                 [SETTINGS.RANGED_GLOVES]: SETTINGS.RANGED_GLOVES_VALUES.ELITE_DRACOLICH,
                 [SETTINGS.RANGED_BOOTS]: SETTINGS.RANGED_BOOTS_VALUES.ELITE_DRACOLICH,
-                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.EOFOR,
-                [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.ZUK,
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.STALKER_E,
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.FUL,
+                [SETTINGS.RANGED_NECKLACE]: SETTINGS.NECKLACE_VALUES.EOFOR,
+                [SETTINGS.RANGED_CAPE]: SETTINGS.CAPE_VALUES.ZUK,
+                [SETTINGS.RANGED_RING]: SETTINGS.RING_VALUES.STALKER_E,
+                [SETTINGS.RANGED_POCKET]: SETTINGS.POCKET_VALUES.FUL,
                 [SETTINGS.RANGED_AMMO_SLOT]: SETTINGS.RANGED_AMMO_SLOT_VALUES.FUL_ARROWS,
                 [SETTINGS.RANGED_MH]: SETTINGS.RANGED_TH_VALUES.BOLG_IM,
             },
@@ -209,10 +216,10 @@
                 [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.NONE,
                 [SETTINGS.RANGED_GLOVES]: SETTINGS.RANGED_GLOVES_VALUES.NONE,
                 [SETTINGS.RANGED_BOOTS]: SETTINGS.RANGED_BOOTS_VALUES.NONE,
-                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.NONE,
-                [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.NONE,
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.NONE,
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.NONE,
+                [SETTINGS.RANGED_NECKLACE]: SETTINGS.NECKLACE_VALUES.NONE,
+                [SETTINGS.RANGED_CAPE]: SETTINGS.CAPE_VALUES.NONE,
+                [SETTINGS.RANGED_RING]: SETTINGS.RING_VALUES.NONE,
+                [SETTINGS.RANGED_POCKET]: SETTINGS.POCKET_VALUES.NONE,
             },
         },
         [SettingsCombatStyles.MAGIC]: {
@@ -222,10 +229,10 @@
                 [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE,
                 [SETTINGS.MAGIC_GLOVES]: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE,
                 [SETTINGS.MAGIC_BOOTS]: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE,
-                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.EOFOR,
-                [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.ZUK,
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHANNELLER_E,
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
+                [SETTINGS.MAGIC_NECKLACE]: SETTINGS.NECKLACE_VALUES.EOFOR,
+                [SETTINGS.MAGIC_CAPE]: SETTINGS.CAPE_VALUES.ZUK,
+                [SETTINGS.MAGIC_RING]: SETTINGS.RING_VALUES.CHANNELLER_E,
+                [SETTINGS.MAGIC_POCKET]: SETTINGS.POCKET_VALUES.GRIM,
                 [SETTINGS.MAGIC_MH]: SETTINGS.MAGIC_TH_VALUES.FSOA_IM
             },
             'Elite Tectonic': {
@@ -243,6 +250,17 @@
                 [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.VIRTUS,
                 [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.VIRTUS,
             },
+            'None': {
+                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.NONE,
+                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.NONE,
+                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.NONE,
+                [SETTINGS.MAGIC_GLOVES]: SETTINGS.MAGIC_GLOVES_VALUES.NONE,
+                [SETTINGS.MAGIC_BOOTS]: SETTINGS.MAGIC_BOOTS_VALUES.NONE,
+                [SETTINGS.MAGIC_NECKLACE]: SETTINGS.NECKLACE_VALUES.NONE,
+                [SETTINGS.MAGIC_CAPE]: SETTINGS.CAPE_VALUES.NONE,
+                [SETTINGS.MAGIC_RING]: SETTINGS.RING_VALUES.NONE,
+                [SETTINGS.MAGIC_POCKET]: SETTINGS.POCKET_VALUES.NONE,
+            },
         },
         [SettingsCombatStyles.MELEE]: {
             'BIS': {
@@ -251,10 +269,10 @@
                 [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
                 [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.GOP_E,
                 [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
-                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.AM_HEJ,
-                [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.ZUK,
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.REAVERS,
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.FUL,
+                [SETTINGS.MELEE_NECKLACE]: SETTINGS.NECKLACE_VALUES.AM_HEJ,
+                [SETTINGS.MELEE_CAPE]: SETTINGS.CAPE_VALUES.ZUK,
+                [SETTINGS.MELEE_RING]: SETTINGS.RING_VALUES.REAVERS,
+                [SETTINGS.MELEE_POCKET]: SETTINGS.POCKET_VALUES.FUL,
                 [SETTINGS.MELEE_MH]: SETTINGS.MELEE_TH_VALUES.EZK_IM
             },
             'Trimmed Masterwork': {
@@ -283,10 +301,10 @@
                 [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.NONE,
                 [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.NONE,
                 [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.NONE,
-                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.NONE,
-                [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.NONE,
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.NONE,
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.NONE,
+                [SETTINGS.MELEE_NECKLACE]: SETTINGS.NECKLACE_VALUES.NONE,
+                [SETTINGS.MELEE_CAPE]: SETTINGS.CAPE_VALUES.NONE,
+                [SETTINGS.MELEE_RING]: SETTINGS.RING_VALUES.NONE,
+                [SETTINGS.MELEE_POCKET]: SETTINGS.POCKET_VALUES.NONE,
             },
         },
         [SettingsCombatStyles.NECROMANCY]: {
@@ -296,10 +314,10 @@
                 [SETTINGS.NECRO_LEGS]: SETTINGS.NECRO_LEGS_VALUES.TFN,
                 [SETTINGS.NECRO_GLOVES]: SETTINGS.NECRO_GLOVES_VALUES.TFN,
                 [SETTINGS.NECRO_BOOTS]: SETTINGS.NECRO_BOOTS_VALUES.TFN,
-                [SETTINGS.NECKLACE]: SETTINGS.NECKLACE_VALUES.EOFOR,
-                [SETTINGS.CAPE]: SETTINGS.CAPE_VALUES.ZUK,
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.REAVERS,
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
+                [SETTINGS.NECRO_NECKLACE]: SETTINGS.NECKLACE_VALUES.EOFOR,
+                [SETTINGS.NECRO_CAPE]: SETTINGS.CAPE_VALUES.ZUK,
+                [SETTINGS.NECRO_RING]: SETTINGS.RING_VALUES.REAVERS,
+                [SETTINGS.NECRO_POCKET]: SETTINGS.POCKET_VALUES.GRIM,
                 [SETTINGS.NECRO_MH]: SETTINGS.NECRO_MH_VALUES.OMNI_GUARD_IM,
                 [SETTINGS.NECRO_OH]: SETTINGS.NECRO_OH_VALUES.SOULBOUND_LANTERN_IM,
             },
@@ -342,47 +360,6 @@
     {#each (armourSlotsByStyle[styleTab] ?? []) as slot}
         {@const slotOptions = getSlotOptions(slot)}
         {@const iconFolder = slot.gearSlot ? getIconFolder(settings[slot.key]?.value, styleFolder[styleTab]) : styleFolder[styleTab]}
-        <div class="relative">
-            <button
-                type="button"
-                class="stack-toggle"
-                class:stack-active={settings[slot.key]?.value && settings[slot.key]?.value !== 'none'}
-                title="{settings[slot.key]?.label ?? slot.key}: {slotOptions.find(o => o.value === settings[slot.key]?.value)?.text ?? 'None'}"
-                onclick={() => { openDropdown = openDropdown === slot.key ? null : slot.key; }}
-            >
-                <img
-                    src={gearIcon(slot.key, slot.fallback, iconFolder)}
-                    alt={settings[slot.key]?.label ?? ''}
-                    class="w-7 h-7 object-contain"
-                    onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback, iconFolder); e.target.src = icons.fallbackIcon; }}
-                />
-                {#if gearBadge(slot.key)}
-                    {#if gearBadge(slot.key).img}
-                        <img src={gearBadge(slot.key).img} alt="" class="gear-badge-img" />
-                    {:else}
-                        <span class="stack-count">{gearBadge(slot.key).text}</span>
-                    {/if}
-                {/if}
-            </button>
-            {#if openDropdown === slot.key}
-                <div class="icon-dropdown" style="min-width: 160px;">
-                    {#each slotOptions as option}
-                        <button
-                            type="button"
-                            class="icon-dropdown-item"
-                            class:active={settings[slot.key]?.value === option.value}
-                            onclick={() => { settings[slot.key].value = option.value; openDropdown = null; updateDamages(); }}
-                        >
-                            {option.text}
-                        </button>
-                    {/each}
-                </div>
-            {/if}
-        </div>
-    {/each}
-    {#each sharedArmourSlots as slot}
-        {@const slotOptions = getSlotOptions(slot)}
-        {@const iconFolder = slot.gearSlot ? getIconFolder(settings[slot.key]?.value, 'shared') : 'shared'}
         <div class="relative">
             <button
                 type="button"

@@ -5,10 +5,19 @@
         getCoreRowModel,
         getSortedRowModel
     } from '@tanstack/svelte-table';
+    import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
+    import PillToggle from '$components/UI/PillToggle.svelte';
 
     let { data, columns } = $props();
 
+    let abilityFilter = $state('popular');
     let sorting = $state([]);
+
+    let filteredData = $derived(
+        abilityFilter === 'all' ? data :
+        abilityFilter === 'owned' ? data.filter(d => ownedItemsStore.items.has(d.key)) :
+        data.filter(d => d.common !== false)
+    );
 
     const setSorting = updater => {
         if (updater instanceof Function) {
@@ -26,7 +35,7 @@
     };
 
     let options = $derived({
-        data,
+        data: filteredData,
         columns,
         state: {
             sorting
@@ -56,6 +65,10 @@
         }
     }
 </script>
+
+<div class="flex items-center justify-end mb-2 gap-2">
+    <PillToggle bind:value={abilityFilter} />
+</div>
 
 <table class="w-full">
     <thead>

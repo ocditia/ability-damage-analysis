@@ -693,7 +693,7 @@
                                     {/if}
                                     {#if boss.health}
                                         {@const totalHeal = (boss.phases ?? []).reduce((sum, p) => sum + (p.heal || 0), 0)}
-                                        <p>Health: {boss.health.toLocaleString()}{#if totalHeal > 0} (+ {totalHeal.toLocaleString()} heal = {(boss.health + totalHeal).toLocaleString()} total dmg){/if}</p>
+                                        <p>Health: {boss.health.toLocaleString()}{#if totalHeal > 0} (+{totalHeal.toLocaleString()} heal = {(boss.health + totalHeal).toLocaleString()} total dmg){/if}</p>
                                     {/if}
                                     {#if settings[SETTINGS.FAMILIAR]?.value && settings[SETTINGS.FAMILIAR].value !== 'none'}
                                         <p class="text-amber-400">Familiar hit chance: {settings[SETTINGS.FAMILIAR_ACCURACY]?.value ?? '?'}%</p>

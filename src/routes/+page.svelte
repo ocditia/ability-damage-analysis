@@ -282,6 +282,17 @@
                                 <div class="text-center text-gray-light">Legacy Sheet</div>
                             </div>
                         </div>
+                        <div class="flex flex-row flex-wrap xl:flex-nowrap xl:gap-12 w-full">
+                            <div class="w-1/2 pb-8 md:w-1/4 lg:w-1/6 xl:w-full">
+                                <div
+                                    class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3"
+                                >
+                                    <img src="/style_icons/rota_icon2.svg" alt="" />
+                                </div>
+                                <div class="text-center text-gray-light">Lo Sugar</div>
+                                <div class="text-center text-gray-light">Rotation Builder</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
