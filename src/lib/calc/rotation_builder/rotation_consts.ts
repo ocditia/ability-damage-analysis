@@ -385,7 +385,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Death Spark',
                 displaySetting: SETTINGS.SHOW_DEATH_SPARK_STACKS,
                 idx: -1,
-                image: '/effect_icons/necromancy/Death_Spark_max.png',
+                image: '/effect_icons/necromancy/death_spark2.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.death_spark,
                 combatStyle: SettingsCombatStyles.NECROMANCY
@@ -394,7 +394,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Soul Reave',
                 displaySetting: SETTINGS.SHOW_SOUL_REAVE_STACKS,
                 idx: -1,
-                image: '/effect_icons/necromancy/Soul_Reave.png',
+                image: '/effect_icons/necromancy/soul_reave2.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.soul_reave,
                 combatStyle: SettingsCombatStyles.NECROMANCY

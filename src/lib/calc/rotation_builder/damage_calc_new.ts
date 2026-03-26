@@ -254,7 +254,7 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
         handleFsoa(abilityKey, settings, dmgObject, timers, dmgObjects);
 
         if (abilityKey === ABILITIES.BLOAT) {
-            settings[SETTINGS.BLOAT] = structuredClone(dmgObject);
+            settings[SETTINGS.BLOAT_DMG] = structuredClone(dmgObject);
         }
         if (abilityKey == ABILITIES.CRYSTAL_RAIN) {
             dmgObjects.push(...handle_sgb(settings, dmgObject));

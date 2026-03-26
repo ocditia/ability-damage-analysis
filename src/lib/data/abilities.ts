@@ -4576,6 +4576,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
         'main style': 'defence',//TODO??
         'damage type': 'defence',//TODO??
+        adrenaline: 100,
         cooldown: 120,
         title: 'Natural Instinct',
         icon: '/ability_icons/defence/30px-Natural_Instinct.png'

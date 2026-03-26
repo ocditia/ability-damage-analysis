@@ -1,7 +1,7 @@
 import { abils, ABILITIES } from '$lib/data/abilities';
 import { style_specific_unification, calc_base_ad } from '../damage_calc_rb';
 import { get_hit_sequence, addAdrenaline } from './calculation_utils';
-import { calc_channelled_hit, handleBuffs, get_user_value, handle_edraco, handle_tumekens, getConjureDamageMultiplier } from './rotation_damage_helper';
+import { handleBuffs, get_user_value, handle_edraco, handle_tumekens, getConjureDamageMultiplier } from './rotation_damage_helper';
 import { SETTINGS } from '../settings_rb';
 import { on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
 import { create_damage_object } from './rota_object_helper';
@@ -63,7 +63,7 @@ interface RotationState {
     conjureDamage: number; // Accumulated conjure damage
     conjurePerTick: number[]; // Cumulative conjure damage at each tick
     // Boss phase tracking
-    bossPhases: import('$lib/familiars/boss_presets').BossPhase[] | null;
+    bossPhases: BossPhase[] | null;
     currentPhaseIdx: number;
     pauseTicksRemaining: number;
     phaseTransitions: PhaseTransitionRecord[];
@@ -211,6 +211,11 @@ function recalcFulProbability(state: RotationState, settings: Record<string, any
  * @param BAR_SIZE - The number of ticks to process in the rotation
  * @returns DamageResult containing regularDamage, poisonDamage, familiarDamage, distributionStats
  */
+// TODO: Eliminate store/core function duplication. Build a RotationInput from stores here,
+// then delegate to calculateRotationDamageCore. Move copyStacks to a post-processing pass
+// so the core tick loop doesn't need store access. Functions to merge:
+// processCurrentTick/Core, processAbility/Core, processAbilityTicks/Core,
+// processChannelledTick/Core, processTickOperations/Core, handleExtraActions/Core
 export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     const state: RotationState = {
         dmgs: [],
@@ -1454,43 +1459,6 @@ function calcPoisonDamagePerHit(hitScale: number, settingsCopy: any): number {
     return Math.floor(basePoisonDmg * hitScale);
 }
 
-/**
- * Calculates the poison damage for the rotation (flat approximation, no Bik scaling).
- * @deprecated Use per-hit accumulation via calcPoisonDamagePerHit instead
- */
-export function calcPoisonDamage(n_hits: number, settingsCopy: any) {
-    let poison_dmg = 0;
-    let poison_tier = Object.values(SETTINGS.POISON_VALUES).indexOf(settingsCopy[SETTINGS.POISON]);
-    if (settingsCopy[SETTINGS.GLOVES] === SETTINGS.RANGED_GLOVES_VALUES.CINDERS) {
-        poison_tier = Math.max(2, poison_tier+1);
-    }
-    if (poison_tier === 0) {
-        return 0;
-    }
-    const abilDmg = settingsCopy[SETTINGS.ABILITY_DAMAGE];
-    poison_dmg = Math.floor(abilDmg * 0.125 * (0.15 + 0.05 * poison_tier) * 0.975);
-    return Math.floor(poison_dmg * n_hits);
-}
-
-/**
- * Calculates the familiar damage for the rotation. //TODO properly implement
- * @param abilityBar - The ability bar array.
- * @param settingsCopy - The settings copy used for rotation damage calculation.
- * @returns The total familiar damage for the rotation.
- */
-export function calcFamiliarDamage(abilityBar: string[], settingsCopy: any) {
-    let familiar_dmg = 0;
-    let familiar = settingsCopy[SETTINGS.FAMILIAR];
-    let lastTick = findLastValueIndex(abilityBar);
-
-    if (Object.keys(familiars).includes(familiar)) {
-        let expDamage = (settingsCopy[SETTINGS.FAMILIAR_ACCURACY] / 100.0) * (familiars[familiar].max_hit*1.2) / 2; // rolls 20-100%
-        let n_hits = Math.floor(lastTick / familiars[familiar].attack_rate);
-        familiar_dmg = expDamage * n_hits;
-    }
-    return Math.floor(familiar_dmg);
-}
-
 /*
  * Copies stacks from the settings to the rotationStore.
  * @param tick - The current tick being processed
@@ -1618,15 +1586,15 @@ function processExtraActionByValue(value: string, settings: any, timers: Record<
     }
     else if (value === ABILITIES.UNDEAD_SLAYER_ABILITY) {
             settings[SETTINGS.UNDEAD_SLAYER_ABILITY] = true;
-            timers[SETTINGS.UNDEAD_SLAYER_ABILITY] = 17; // 15 seconds = 25 ticks
+            timers[SETTINGS.UNDEAD_SLAYER_ABILITY] = 17; 
     }
     else if (value === ABILITIES.DRAGON_SLAYER_ABILITY) {
         settings[SETTINGS.DRAGON_SLAYER_ABILITY] = true;
-        timers[SETTINGS.DRAGON_SLAYER_ABILITY] = 17; // 15 seconds = 25 ticks
+        timers[SETTINGS.DRAGON_SLAYER_ABILITY] = 17; 
     }
     else if (value === ABILITIES.DEMON_SLAYER_ABILITY) {
-        settings[SETTINGS.UNDEAD_SLAYER_ABILITY] = true;
-        timers[SETTINGS.DEMON_SLAYER_ABILITY] = 17; // 15 seconds = 25 ticks
+        settings[SETTINGS.DEMON_SLAYER_ABILITY] = true;
+        timers[SETTINGS.DEMON_SLAYER_ABILITY] = 17;
     }
     else if (value === ABILITIES.RUNIC_CHARGE) {
         settings[SETTINGS.ANIMA_CHARGED] = true;

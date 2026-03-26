@@ -616,7 +616,7 @@ const SETTINGS = {
         OMNI_GUARD: 'omni guard',
         OMNI_GUARD_IM: 'omni guard [IM]',
         DEVOURERS_GUARD: 'devourer\'s guard',
-        DEVOURERS_GUARD_IM: 'devourers guard [IM]'
+        DEVOURERS_GUARD_IM: 'devourer\'s guard [IM]'
     },
     OH: 'off-hand weapon',
     OH_TIER_CUSTOM: 'off-hand weapon custom tier',
@@ -758,22 +758,28 @@ const SETTINGS = {
     STONE_OF_JAS: 'stone of jas',
     INFERNAL_PUZZLE_BOX: 'Infernal puzzle box',
     // Stacks and Buffs
+    // Necro
     RESIDUAL_SOULS: 'residual souls',
     NECROSIS_STACKS: 'necrosis stacks',
     DEATH_SPARK_STACKS: 'death spark stacks',
     SOUL_REAVE_STACKS: 'soul reave stacks',
+    BLOAT_DMG: 'bloat damage',
+    // Ranged
     ICY_PRECISION: 'icy precision',
     ICY_CHILL_STACKS: 'icy chill stacks',
     PUNCTURE_STACKS: 'puncture stacks',
+    // Magic
     FLOW: 'flow',
     GREATER_FLOW: 'greater flow',
     FLOW_AC: 'flow ac',
     GREATER_FLOW_AC: 'greater flow ac',
-    BARRICADE: 'barricade',
-    MALLETOPS: 'malletops',
     COMBUSTED: 'combusted',
     CONFLAGRATE: 'conflagrate',
     GREATER_CHAIN: 'greater chain',
+
+    // Defence
+    BARRICADE: 'barricade',
+    MALLETOPS: 'malletops',
     KERAPACS_WRIST_WRAPS: 'kerapacs wrist wraps',
     KERAPACS_WRIST_WRAPS_VALUES: {
         NONE: 'none',
