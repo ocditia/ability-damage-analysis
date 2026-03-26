@@ -272,10 +272,10 @@ export function calculateHauntedBonus(
     damage: number
 ): number {
     const { settings } = ctx;
-    const hasNexus = settings[SETTINGS.DEVOURER_NEXUS] == true;
+    const hasNexus = settings[SETTINGS.DEVOURER_NEXUS] === true;
     return Math.min(
-        Math.floor(damage * (hasNexus? 0.15 : 0.1)),
-        Math.floor(settings[SETTINGS.HAUNTED_AD] * (hasNexus? 0.3 : 0.2))
+        Math.floor(damage * (hasNexus ? 0.15 : 0.1)),
+        Math.floor(settings[SETTINGS.HAUNTED_AD] * (hasNexus ? 0.3 : 0.2))
     );
 }
 
