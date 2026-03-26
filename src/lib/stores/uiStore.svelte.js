@@ -23,7 +23,7 @@ export const uiStore = $state({
     // Panel states
     settingsPanelCollapsed: false,
     configSectionCollapsed: true,
-    showAllAbilities: false,
+    abilityFilter: 'popular', // 'popular' | 'owned' | 'all'
     
     // Extra actions panel
     extraActions: {
@@ -80,8 +80,10 @@ export const uiActions = {
         uiStore.configSectionCollapsed = !uiStore.configSectionCollapsed;
     },
 
-    toggleShowAllAbilities() {
-        uiStore.showAllAbilities = !uiStore.showAllAbilities;
+    cycleAbilityFilter() {
+        const filters = ['popular', 'owned', 'all'];
+        const idx = filters.indexOf(uiStore.abilityFilter);
+        uiStore.abilityFilter = filters[(idx + 1) % filters.length];
     },
 
     // Extra actions panel

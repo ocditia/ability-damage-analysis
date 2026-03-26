@@ -1,4 +1,23 @@
+import { weapons } from '$lib/data/weapons';
+import { armour } from '$lib/data/armour';
+import { abils } from '$lib/data/abilities';
+
 const STORAGE_KEY = 'owned_items';
+
+/** Build default owned set from popular gear + common abilities */
+function buildPopularDefaults() {
+    const defaults = new Set();
+    for (const [key, item] of Object.entries(weapons)) {
+        if (item.popular) defaults.add(key);
+    }
+    for (const [key, item] of Object.entries(armour)) {
+        if (item.popular) defaults.add(key);
+    }
+    for (const [key, item] of Object.entries(abils)) {
+        if (item.title && item.common !== false) defaults.add(key);
+    }
+    return defaults;
+}
 
 export const ownedItemsStore = $state({
     /** Set of item value strings that the user owns */
@@ -11,6 +30,10 @@ export const ownedItemsActions = {
             const stored = localStorage.getItem(STORAGE_KEY);
             if (stored) {
                 ownedItemsStore.items = new Set(JSON.parse(stored));
+            } else {
+                // First visit: seed with popular items and common abilities
+                ownedItemsStore.items = buildPopularDefaults();
+                this.saveOwned();
             }
         } catch (e) {
             console.error('Failed to load owned items:', e);

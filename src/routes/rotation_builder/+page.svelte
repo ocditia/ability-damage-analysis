@@ -10,6 +10,7 @@
     import DamageDistributionChart from '../../components/RotationBuilder/DamageDistributionChart.svelte';
 	import TabButton from '../../components/UI/TabButton.svelte';
     import GradientSeparator from '../../components/UI/GradientSeparator.svelte';
+    import PillToggle from '../../components/UI/PillToggle.svelte';
     import Popup from '../../components/UI/Popup.svelte';
     import RotationConfigManager from '../../components/RotationBuilder/RotationConfigManager.svelte';
     import KeybindConfigModal from '../../components/RotationBuilder/KeybindConfigModal.svelte';
@@ -910,15 +911,10 @@
                             />
                         {/each}
                         <li class="ml-auto mr-2">
-                            <label class="flex items-center gap-1 text-xs text-gray-400 cursor-pointer select-none">
-                                <input
-                                    type="checkbox"
-                                    checked={uiStore.showAllAbilities}
-                                    onchange={() => uiActions.toggleShowAllAbilities()}
-                                    class="cursor-pointer"
-                                />
-                                Show all
-                            </label>
+                            <PillToggle
+                                value={uiStore.abilityFilter}
+                                onchange={() => uiActions.cycleAbilityFilter()}
+                            />
                         </li>
                     </ul>
 					<br>
@@ -929,7 +925,7 @@
                                 handleAbilityClick={handleAbilityClick}
 									handleDragStart={handleDragStart}
                                 style={tab.id}
-                                showAll={uiStore.showAllAbilities}
+                                filter={uiStore.abilityFilter}
 											/>
 										{/if}
 								{/each}
@@ -1164,8 +1160,9 @@
 	<div class="credits-content">
 		<h4>Credits & Resources</h4>
 		<ul>
+			<li>Created by <i>Lo Sugar</i> and <i>Akritia</i>.</li>
 			<li>Game data and ability icons from <a href="https://runescape.wiki" target="_blank" rel="noopener">The RuneScape Wiki</a>, licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank" rel="noopener">CC BY-NC-SA 3.0</a></li>
-			<li>Familiar calculations courtesy of the PVME/RsMATH Familiar Damage sheet </li>
+			<li>Familiar calculations courtesy of the PVME/RS MATH Familiar Damage sheet </li>
 			<li>RuneScape is a registered trademark of <a href="https://www.jagex.com" target="_blank" rel="noopener">Jagex Ltd</a></li>
 		</ul>
 	</div>

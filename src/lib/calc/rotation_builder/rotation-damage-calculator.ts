@@ -797,6 +797,7 @@ function processAbilityCore(
     on_stall(settingsCopy, abilityKey, rotationState.timers);
     if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) {
         settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
+        console.log(`[processAbilityCore] ${abilityKey} AD=${settingsCopy[SETTINGS.ABILITY_DAMAGE]} TH=${settingsCopy[SETTINGS.TH]} tier=${settingsCopy[SETTINGS.TH_TIER_CUSTOM]}`);
     }
 
     rotationState.start_tick = rotationState.tick;

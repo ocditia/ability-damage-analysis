@@ -3,10 +3,12 @@
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
     import { getItemsForSlot, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
     import { weapons } from '$lib/data/weapons';
+    import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
+    import PillToggle from '$components/UI/PillToggle.svelte';
 
     let { settings, styleTab, updateDamages, openDropdown = $bindable(null) } = $props();
 
-    let showAllGear = $state(false);
+    let gearFilter = $state('popular');
 
     const styleFolder = {
         [SettingsCombatStyles.MELEE]: 'melee',
@@ -25,8 +27,12 @@
     function getSlotOptions(slot) {
         if (slot.gearSlot) {
             const items = getItemsForSlot(slot.gearSlot, gearStyle[styleTab]);
-            if (showAllGear) return items;
-            return items.filter(i => i.popular || i.value === 'none' || i.value === settings[slot.key]?.value);
+            if (gearFilter === 'all') return items;
+            const currentValue = settings[slot.key]?.value;
+            if (gearFilter === 'owned') {
+                return items.filter(i => i.value === 'none' || i.value === currentValue || ownedItemsStore.items.has(i.value));
+            }
+            return items.filter(i => i.popular || i.value === 'none' || i.value === currentValue);
         }
         return settings[slot.key]?.options ?? [];
     }
@@ -37,10 +43,14 @@
         let filtered = weaponTypeFilter
             ? items.filter(i => i.weaponType === weaponTypeFilter || i.value === 'none')
             : items;
-        if (!showAllGear) {
+        if (gearFilter !== 'all') {
             const currentMh = settings[weaponSlotsByStyle[styleTab]?.mh]?.value;
             const currentOh = settings[weaponSlotsByStyle[styleTab]?.oh]?.value;
-            filtered = filtered.filter(i => i.popular || i.value === 'none' || i.value === currentMh || i.value === currentOh);
+            if (gearFilter === 'owned') {
+                filtered = filtered.filter(i => i.value === 'none' || i.value === currentMh || i.value === currentOh || ownedItemsStore.items.has(i.value));
+            } else {
+                filtered = filtered.filter(i => i.popular || i.value === 'none' || i.value === currentMh || i.value === currentOh);
+            }
         }
         return filtered;
     }
@@ -326,15 +336,7 @@
 
 <div class="flex items-center justify-center gap-2 mb-4">
     <h5 class="uppercase font-bold text-lg text-center">Armour</h5>
-    <button
-        type="button"
-        class="text-xs px-2 py-0.5 rounded border"
-        style="border-color: {showAllGear ? '#888' : '#555'}; color: {showAllGear ? '#fff' : '#888'}; background: {showAllGear ? 'rgba(255,255,255,0.1)' : 'transparent'};"
-        onclick={() => { showAllGear = !showAllGear; }}
-        title={showAllGear ? 'Showing all gear — click to show popular only' : 'Showing popular gear — click to show all'}
-    >
-        {showAllGear ? 'All' : 'Popular'}
-    </button>
+    <PillToggle bind:value={gearFilter} />
 </div>
 <div class="flex flex-wrap gap-2 justify-center mb-3">
     {#each (armourSlotsByStyle[styleTab] ?? []) as slot}

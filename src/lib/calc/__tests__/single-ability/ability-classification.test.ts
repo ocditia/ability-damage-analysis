@@ -9,7 +9,8 @@
  *                  conjure, perk, proc, self cast
  *
  * Player stats: Lv101 Str/Atk, Lv113 Ranged, Lv115 Magic, Lv106 Necro
- * Weapon: t80 2h (DW for necro), no perks/buffs
+ * Weapons: t75 melee 2h, t50 ranged 2h, t60 magic 2h, t80 necro DW
+ * No perks/buffs/prayers/armour
  */
 
 import { describe, it, expect } from 'vitest';
@@ -20,7 +21,7 @@ import { createBlankSettings } from '../test-helpers';
 
 // Per-style settings helpers using actual player levels
 function meleeSettings(overrides: Record<string, any> = {}) {
-    return createBlankSettings(101, 80, {
+    return createBlankSettings(101, 75, {
         [SETTINGS.STRENGTH_LEVEL]: 101,
         [SETTINGS.ATTACK_LEVEL]: 101,
         [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
@@ -30,7 +31,7 @@ function meleeSettings(overrides: Record<string, any> = {}) {
 }
 
 function rangedSettings(overrides: Record<string, any> = {}) {
-    return createBlankSettings(113, 80, {
+    return createBlankSettings(113, 50, {
         [SETTINGS.RANGED_LEVEL]: 113,
         [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
         [SETTINGS.WEAPON_TYPE_RANGED]: SETTINGS.WEAPON_VALUES.TH,
@@ -39,7 +40,7 @@ function rangedSettings(overrides: Record<string, any> = {}) {
 }
 
 function magicSettings(overrides: Record<string, any> = {}) {
-    return createBlankSettings(115, 80, {
+    return createBlankSettings(115, 60, {
         [SETTINGS.MAGIC_LEVEL]: 115,
         [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
         [SETTINGS.WEAPON_TYPE_MAGE]: SETTINGS.WEAPON_VALUES.TH,
@@ -67,8 +68,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.REND });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value
+            expect(minResult.expected).toBe(2002);
+            expect(maxResult.expected).toBe(2446);
         });
 
         it('Impact (magic): non-crit min/max', () => {
@@ -78,8 +79,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.IMPACT });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value
+            expect(minResult.expected).toBe(854);
+            expect(maxResult.expected).toBe(985);
         });
 
         it('Galeshot (ranged): non-crit min/max', () => {
@@ -89,8 +90,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.GALESHOT });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value
+            expect(minResult.expected).toBe(1047);
+            expect(maxResult.expected).toBe(1279);
         });
 
         it('Touch of Death (necro): non-crit min/max', () => {
@@ -115,8 +116,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.DISMEMBER });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value (per hit × 8)
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value (per hit × 8)
+            expect(minResult.expected).toBe(370 * 8);
+            expect(maxResult.expected).toBe(518 * 8);
         });
     });
 
@@ -130,8 +131,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.COMBUST });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value
+            expect(minResult.expected).toBe(3540);
+            expect(maxResult.expected).toBe(4320);
         });
     });
 
@@ -145,8 +146,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.CORRUPTION_SHOT });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value
+            expect(minResult.expected).toBe(1047);
+            expect(maxResult.expected).toBe(1279);
         });
     });
 
@@ -160,8 +161,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.ASSAULT });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value
+            expect(minResult.expected).toBe(1927 * 4);
+            expect(maxResult.expected).toBe(2223 * 4);
         });
 
         it('Rapid Fire (ranged): total channel damage non-crit min/max', () => {
@@ -171,8 +172,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.RAPID_FIRE });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value
+            expect(minResult.expected).toBe(873 * 8);
+            expect(maxResult.expected).toBe(989 * 8);
         });
 
         it('Asphyxiate (magic): total channel damage non-crit min/max', () => {
@@ -182,8 +183,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.ASPHYXIATE });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value
+            expect(minResult.expected).toBe(1445 * 4);
+            expect(maxResult.expected).toBe(1707 * 4);
         });
 
         it('Blood Siphon (necro): non-crit min/max', () => {
@@ -210,8 +211,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.HURRICANE });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value (hit1 + hit2)
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value (hit1 + hit2)
+            expect(minResult.expected).toBe(2002 + 2298);
+            expect(maxResult.expected).toBe(2446 + 2742);
         });
 
         it('Wild Magic (magic): total multihit damage non-crit min/max', () => {
@@ -221,8 +222,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.WILD_MAGIC });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value (2 hits)
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value (2 hits)
+            expect(minResult.expected).toBe(1642 * 2);
+            expect(maxResult.expected).toBe(2036 * 2);
         });
 
         it('Greater Ricochet (ranged): total multihit damage non-crit min/max', () => {
@@ -232,8 +233,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.GREATER_RICOCHET });
 
-            expect(minResult.expected).toBe(0);  // TODO: replace with in-game value (7 hits)
-            expect(maxResult.expected).toBe(0);  // TODO: replace with in-game value (7 hits)
+            expect(minResult.expected).toBe(873 + 174 * 2 + 46 * 4);
+            expect(maxResult.expected).toBe(989 + 232 * 2 + 69 * 4);
         });
 
         it('Volley of Souls (necro, 5 souls): total multihit damage non-crit min/max', () => {
