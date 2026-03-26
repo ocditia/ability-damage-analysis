@@ -12,27 +12,24 @@
         await initializeSettings();
     });
 
-    export let uiState;
-    export let gameState;
-    export let allAbils;
-    export let handleAbilityClickExtra;
-    export let handleDragStart;
-    export let handleBarRightClick;
-    export let handleDragStartBar;
-    export let extraActions;
-
-    // Quick action callbacks
-    export let onRemoveAbility = () => {};
-    export let onToggleNull = () => {};
-
-    export let onRefreshUI = () => {};
-
-    // Mutation functions to avoid prop mutation warnings
-    export let closeExtraActions = () => {};
-    export let setExtraActionsTab = (tab) => {};
+    let {
+        uiState,
+        gameState,
+        allAbils,
+        handleAbilityClickExtra,
+        handleDragStart,
+        handleBarRightClick,
+        handleDragStartBar,
+        extraActions,
+        onRemoveAbility = () => {},
+        onToggleNull = () => {},
+        onRefreshUI = () => {},
+        closeExtraActions = () => {},
+        setExtraActionsTab = (tab) => {},
+    } = $props();
 
     const EXTRA_BAR_SIZE = 12;
-    $: tick = uiState.extraActions.tick;
+    let tick = $derived(uiState.extraActions.tick);
 
     // Build gear state at the selected tick by applying gear swaps from tick 0 to tick
     function buildGearState(currentTick) {
@@ -189,10 +186,10 @@
             : '/armour_icons/Off-hand_slot.webp';
     }
 
-    $: currentAbility = tick !== undefined && tick >= 0 && rotationStore.abilityBar && rotationStore.abilityBar[tick] ? allAbils[rotationStore.abilityBar[tick]] : null;
-    $: currentAbilityKey = tick !== undefined && tick >= 0 && rotationStore.abilityBar ? rotationStore.abilityBar[tick] : null;
-    $: currentStalledAbility = tick !== undefined && tick >= 0 && gameState.stalledAbilities && gameState.stalledAbilities[tick] ? allAbils[gameState.stalledAbilities[tick]] : null;
-    $: isNulled = tick !== undefined && tick >= 0 && rotationStore.nulledTicks && rotationStore.nulledTicks[tick];
+    let currentAbility = $derived(tick !== undefined && tick >= 0 && rotationStore.abilityBar && rotationStore.abilityBar[tick] ? allAbils[rotationStore.abilityBar[tick]] : null);
+    let currentAbilityKey = $derived(tick !== undefined && tick >= 0 && rotationStore.abilityBar ? rotationStore.abilityBar[tick] : null);
+    let currentStalledAbility = $derived(tick !== undefined && tick >= 0 && gameState.stalledAbilities && gameState.stalledAbilities[tick] ? allAbils[gameState.stalledAbilities[tick]] : null);
+    let isNulled = $derived(tick !== undefined && tick >= 0 && rotationStore.nulledTicks && rotationStore.nulledTicks[tick]);
 
     // Per-tick damage breakdown
     function getTickDamage(tick) {

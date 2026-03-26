@@ -729,6 +729,36 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         title: 'Flurry',
         icon: '/ability_icons/melee/30x30/flurry.png',
     },
+    
+    [ABILITIES.DISMEMBER]: {
+        // ability name
+        'min hit': 0.8, // min % of abil expressed as a decimal
+        'var hit': 0.2,
+        'on-hit effects': false, // does the ability get on-hit effects
+        'crit effects': false, // can the ability crit
+        'damage potential effects': true, // is the ability affected by damage potential
+        'ability classification': 'bleed', // bleed, dot, burn, channel, regular, multihit
+        'ability type': 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'main style': 'melee',
+        'damage type': 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        hits: {
+            1: [
+                ABILITIES.DISMEMBER_HIT,
+                ABILITIES.DISMEMBER_HIT,
+                ABILITIES.DISMEMBER_HIT,
+                ABILITIES.DISMEMBER_HIT,
+                ABILITIES.DISMEMBER_HIT,
+                ABILITIES.DISMEMBER_HIT,
+                ABILITIES.DISMEMBER_HIT,
+                ABILITIES.DISMEMBER_HIT
+            ]}
+        ,
+        adrenaline: 0,
+        cooldown: 24,
+        hitTimings: [1, 3, 5, 7, 9, 11, 13, 15],
+        title: 'Dismember',
+        icon: '/ability_icons/melee/Dismember.png',
+    },
     [ABILITIES.SLAUGHTER]: {
         // ability name
         'min hit': 0.8, // min % of abil expressed as a decimal
@@ -3297,7 +3327,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'ability type': 'conjure',
         'main style': 'necromancy',
         'damage type': 'necrotic',
-        cooldown: 15,
+        cooldown: 0,
         title: 'Command Vengeful Ghost',
         icon: '/ability_icons/necro/Command_Vengeful_Ghost.png',
     },
@@ -3314,7 +3344,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'main style': 'necromancy',
         'damage type': 'necrotic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         adrenaline: 60,
-        cooldown: 60},
+        cooldown: 60
+    },
     [ABILITIES.DEATHSKULLS_4]: {
         // Death Skulls - single target, igneous (4 damaging hits: M→P→M→P→M→P→M)
         // Non-igneous swapped at calc time to 3 hits (M→P→M→P→M)
