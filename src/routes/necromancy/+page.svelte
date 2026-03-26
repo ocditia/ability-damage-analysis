@@ -8,7 +8,7 @@
     const abilities = Object.fromEntries(
         Object.entries(abils).filter(([, a]) =>
             a.title && a['main style'] === 'necromancy' &&
-            a['ability classification'] !== 'conjure' &&
+            // a['ability classification'] !== 'conjure' &&
             a['ability classification'] !== 'self cast'
         )
     );
@@ -475,7 +475,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.BALANCE_OF_POWER]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Balance_of_Power_Edict_(self_status).png"
+                                    img="/effect_icons/bosses/Balance_of_Power_Edict_(self_status).png"
                                     step="1"
                                     min="0"
                                     max="6"

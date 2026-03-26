@@ -1,14 +1,9 @@
 <script>
     import { SETTINGS } from '$lib/calc/settings_rb';
+    import { familiars } from '$lib/data/familiars';
     import ToggleButton from '../UI/ToggleButton.svelte';
 
     let { settings, updateDamages, openDropdown = $bindable(null), onFamiliarChange = null } = $props();
-
-    const familiarIcons = {
-        [SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON]: '/familiars/Ripper_Demon_chathead.png',
-        [SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON]: '/familiars/Kal\'gerion_demon_(familiar)_chathead.png',
-        [SETTINGS.FAMILIAR_VALUES.STEEL_TITAN]: '/familiars/Steel_titan_chathead.png',
-    };
 
     function onFamiliarChanged() {
         if (onFamiliarChange) onFamiliarChange();
@@ -39,7 +34,7 @@
 <div class="flex flex-wrap gap-2 justify-center mb-3">
     <ToggleButton
         bind:setting={settings[SETTINGS.FAMILIAR]}
-        img={(v) => familiarIcons[v] ?? '/effect_icons/familiar.png'}
+        img={(v) => familiars[v].icon ?? '/effect_icons/familiar.png'}
         title="Familiar"
         options={settings[SETTINGS.FAMILIAR]?.options ?? []}
         bind:openId={openDropdown}
