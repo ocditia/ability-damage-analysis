@@ -333,7 +333,7 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.HAUNTED]}
                                     onchange={() => updateDamages()}
-                                    img="https://imgur.com/9U5ghz2.png"
+                                    img="/effect_icons/haunted.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.HAUNTED_AD]}
