@@ -1,14 +1,13 @@
 <script>
-    import { SETTINGS } from '$lib/calc/settings_rb';
-    import { ABILITIES, abils } from '$lib/data/abilities';
     import { traceDamageCalculation } from '$lib/calc/damage-trace';
+    import { ABILITIES, abils } from '$lib/data/abilities';
 
     import Header from '$components/Layout/Header.svelte';
     import Navbar from '$components/Layout/Navbar.svelte';
     import RotationSettings from '$components/Settings/RotationSettings.svelte';
 
-    import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
+    import { initializeSettings, settingsStore } from '$lib/stores/settingsStore.svelte.js';
 
     initializeSettings();
 
@@ -69,7 +68,7 @@
                     <div class="flex items-center gap-4 flex-wrap">
                         <label class="text-gray-300 text-sm font-semibold">Ability</label>
                         <select
-                            class="bg-gray-700 text-white rounded px-3 py-2 text-sm flex-grow"
+                            class="bg-gray-700 text-white rounded px-3 py-2 text-sm grow"
                             bind:value={selectedAbility}
                             onchange={updateTrace}
                         >

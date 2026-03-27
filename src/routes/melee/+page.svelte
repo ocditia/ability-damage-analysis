@@ -2,8 +2,8 @@
     import { renderComponent } from '@tanstack/svelte-table';
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
-    import { ABILITIES, abils } from '$lib/data/abilities';
     import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
+    import { ABILITIES, abils } from '$lib/data/abilities';
 
     const excludedAbilities = new Set([ABILITIES.BLACKHOLE]);
 
@@ -20,13 +20,13 @@
 
     import AbilityDamageTable from '$components/AbilityDamageTable/AbilityDamageTable.svelte';
     import AbilityInfo from '$components/AbilityInfo/AbilityInfo.svelte';
-    import GearSelection from '$components/Settings/GearSelection.svelte';
-    import PerkSelection from '$components/Settings/PerkSelection.svelte';
-    import FamiliarSelection from '$components/Settings/FamiliarSelection.svelte';
-    import Checkbox from '$components/Settings/Checkbox.svelte';
     import Header from '$components/Layout/Header.svelte';
     import Navbar from '$components/Layout/Navbar.svelte';
+    import Checkbox from '$components/Settings/Checkbox.svelte';
+    import FamiliarSelection from '$components/Settings/FamiliarSelection.svelte';
+    import GearSelection from '$components/Settings/GearSelection.svelte';
     import Number from '$components/Settings/Number.svelte';
+    import PerkSelection from '$components/Settings/PerkSelection.svelte';
     import Select from '$components/Settings/Select.svelte';
 
     let openDropdown = $state(null);
@@ -164,7 +164,7 @@
 
             <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-melee">
                 <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
-                    <li class="flex-grow me-2">
+                    <li class="grow me-2">
                         <button
                             onclick={() => (tab = 'general')}
                             class:text-[#968A5C]={tab === 'general'}
@@ -173,7 +173,7 @@
                             General
                         </button>
                     </li>
-                    <li class="flex-grow me-2">
+                    <li class="grow me-2">
                         <button
                             onclick={() => (tab = 'equipment')}
                             class:text-[#968A5C]={tab === 'equipment'}
@@ -182,7 +182,7 @@
                             Equipment
                         </button>
                     </li>
-                    <li class="flex-grow me-2">
+                    <li class="grow me-2">
                         <button
                             onclick={() => (tab = 'bosses')}
                             class:text-[#968A5C]={tab === 'bosses'}

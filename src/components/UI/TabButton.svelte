@@ -59,7 +59,7 @@
     $: colors = colorMap[id] || colorMap['default'];
 </script>
 
-<li class="flex-grow me-2">
+<li class="grow me-2">
     <button
         on:click={onClick}
         class:text-green-500={isActive && id === 'ranged'}

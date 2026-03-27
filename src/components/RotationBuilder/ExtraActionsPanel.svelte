@@ -1,11 +1,11 @@
 <script>
+    import { getItemForValue, getSettingsKeyForItem } from '$lib/calc/rotation_builder/gear-registry';
+    import { SETTINGS } from '$lib/calc/settings_rb';
+    import { allExtraActions, gearSwaps } from '$lib/special/abilities';
+    import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
+    import { initializeSettings, settingsStore } from '$lib/stores/settingsStore.svelte.js';
     import { onMount } from 'svelte';
     import ActionChoice from './ActionChoice.svelte';
-    import { allExtraActions, gearSwaps } from '$lib/special/abilities';
-    import { getSettingsKeyForItem, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
-    import { SETTINGS } from '$lib/calc/settings_rb';
-    import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
-    import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
 
     // Initialize settings on component mount
     onMount(async () => {
@@ -334,7 +334,7 @@
     <div class="extra-action-section">
         <!-- Header -->
         <div class="flex justify-between items-center w-full">
-            <p class="flex-grow text-center font-bold">Tick {tick}</p>
+            <p class="grow text-center font-bold">Tick {tick}</p>
             <button
                 class="text-[#C2BA9E] font-bold text-xl hover:text-[#968A5C]"
                 onclick={closeExtraActions}
