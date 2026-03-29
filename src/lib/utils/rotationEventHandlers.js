@@ -24,17 +24,20 @@ const EXTRA_BAR_SIZE = 12;
 function toExtraAction(input) {
     if (isExtraAction(input)) return input;
 
-    // Gear object from GearChoice: { title, value?, icon, slot?, style?, weaponType? }
+    // Gear object from GearChoice: { title, value?, icon, slot?, style?, weaponType?, perks? }
     if (typeof input === 'object' && input.title) {
         const value = input.value || input.title;
-        // Resolve per-style settings key: try gear registry first, fall back to legacy gearSwaps
-        const slot = getSettingsKeyForItem(value) || gearSwaps[value] || gearSwaps[input.title];
+        // Resolve per-style settings key: try gear registry first (with active style for hybrid items), fall back to legacy gearSwaps
+        const slot = getSettingsKeyForItem(value, uiStore.activeTab) || gearSwaps[value] || gearSwaps[input.title];
+        // Carry inline perks if present (from owned gear instances)
+        const perks = input.perks?.length ? input.perks.map(p => ({ perkKey: p.perkKey, rank: p.rank })) : undefined;
         return {
             type: 'gear',
             value,
             title: input.title,
             icon: input.icon || '',
             ...(slot ? { slot } : {}),
+            ...(perks ? { perks } : {}),
         };
     }
 
@@ -66,7 +69,7 @@ export function handleAbilityClick(event, abilityKey, mainBar = true, stores, ca
     
     if (uiStore.activeTool === ToolMode.Stall) {
         // Check if ability is channeled
-        if (abils[abilityKey]['ability classification'] === 'channel') {
+        if (abils[abilityKey].abilityClassification === 'channel') {
             notifActions.showNotification('Sorry!','Channeled abilities cannot be stalled currently.', 'info');
             return;
         }

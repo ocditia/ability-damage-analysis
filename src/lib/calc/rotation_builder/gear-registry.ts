@@ -150,24 +150,28 @@ const STYLE_SLOT_TO_SETTINGS_KEY: Record<string, Record<string, string>> = {
     melee: {
         helmet: 'melee helmet', body: 'melee body', legs: 'melee legs',
         gloves: 'melee gloves', boots: 'melee boots', pocket: 'melee pocket',
+        ring: 'melee ring', necklace: 'melee necklace', cape: 'melee cape',
         mainhand: 'melee main-hand weapon', offhand: 'melee off-hand weapon',
         ammo: 'melee ammo slot',
     },
     ranged: {
         helmet: 'ranged helmet', body: 'ranged body', legs: 'ranged legs',
         gloves: 'ranged gloves', boots: 'ranged boots', pocket: 'range pocket',
+        ring: 'range ring', necklace: 'range necklace', cape: 'range cape',
         mainhand: 'ranged main-hand weapon', offhand: 'ranged off-hand weapon',
         ammo: 'ranged ammo slot',
     },
     magic: {
         helmet: 'magic helmet', body: 'magic body', legs: 'magic legs',
         gloves: 'magic gloves', boots: 'magic boots', pocket: 'mage pocket',
+        ring: 'magic ring', necklace: 'magic necklace', cape: 'magic cape',
         mainhand: 'magic main-hand weapon', offhand: 'magic off-hand weapon',
         ammo: 'magic ammo slot',
     },
     necromancy: {
         helmet: 'necro helmet', body: 'necro body', legs: 'necro legs',
         gloves: 'necro gloves', boots: 'necro boots', pocket: 'necro pocket',
+        ring: 'necro ring', necklace: 'necro necklace', cape: 'necro cape',
         mainhand: 'necro main-hand weapon', offhand: 'necro off-hand weapon',
         ammo: 'necro ammo slot',
     },
@@ -181,12 +185,20 @@ const SHARED_SLOT_KEYS: Record<string, string> = {
 /**
  * Get the settings key for a gear item — the key that gets written to settings
  * when this item is equipped (e.g., 'ranged helmet', 'necklace', 'melee main-hand weapon').
+ * @param value - The item key
+ * @param combatStyle - Optional combat style for hybrid items (e.g. 'ranged', 'melee')
  */
-export function getSettingsKeyForItem(value: string): string | undefined {
+export function getSettingsKeyForItem(value: string, combatStyle?: string): string | undefined {
     const item = itemByValue.get(value);
     if (!item) return undefined;
 
-    // Shared/hybrid slots (necklace, ring, cape) use the shared key
+    // Hybrid items: use style-specific key if combat style is provided
+    if (item.style === 'hybrid' && combatStyle) {
+        const styleMap = STYLE_SLOT_TO_SETTINGS_KEY[combatStyle];
+        if (styleMap?.[item.slot]) return styleMap[item.slot];
+    }
+
+    // Shared/hybrid slots without combat style context use the shared key
     if (item.style === 'hybrid' && SHARED_SLOT_KEYS[item.slot]) {
         return SHARED_SLOT_KEYS[item.slot];
     }

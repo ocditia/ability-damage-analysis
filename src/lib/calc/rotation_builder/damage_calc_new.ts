@@ -1,4 +1,6 @@
 import { ABILITIES, abils } from '$lib/data/abilities';
+import { WEAPONS } from '$lib/data/weapons';
+import { ARMOUR } from '$lib/data/armour';
 import { create_damage_object } from './rota_object_helper';
 import { SETTINGS } from '../settings_rb';
 import { calc_crit_damage, get_hit_sequence, calc_split_soul_hit, addAdrenaline } from './calculation_utils';
@@ -47,8 +49,8 @@ function on_stall(settings: Record<string, any>, abilityKey: string, timers?: Re
     // Essence corruption adrenaline: magic basic with >= 25 stacks starts/resets 6-tick buff
     if (
         timers &&
-        abils[abilityKey]?.['ability type'] === 'basic' &&
-        abils[abilityKey]?.['main style'] === 'magic' &&
+        abils[abilityKey]?.abilityType === 'basic' &&
+        abils[abilityKey]?.mainStyle === 'magic' &&
         settings[SETTINGS.ESSENCE_CORRUPTION] >= 25
     ) {
         timers[SETTINGS.ESS_CORRUPTION_ADREN] = 6;
@@ -96,7 +98,7 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
     settings['ability'] = abilityKey;
 
     // Self-cast abilities (e.g. Imbue Shadows, Split Soul) only apply buffs — no hits
-    if (abils[abilityKey]['ability classification'] === 'self cast') {
+    if (abils[abilityKey].abilityClassification === 'self cast') {
         return [];
     }
 
@@ -115,7 +117,7 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
         distribution['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * hitChance);
         logger.log(LogCategory.ABILITY_DAMAGE, `Set boosted AD for ${abilityKey}`, distribution['boosted AD']);
     });
-    logger.trace('Hit Chance', `${settings[SETTINGS.HIT_CHANCE]}%`, `Damage potential: ${abils[abilityKey]?.['damage potential effects'] ? 'yes' : 'no'}`);
+    logger.trace('Hit Chance', `${settings[SETTINGS.HIT_CHANCE]}%`, `Damage potential: ${abils[abilityKey]?.damagePotentialEffects ? 'yes' : 'no'}`);
     logger.trace('Boosted AD', Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * hitChance), `floor(${settings[SETTINGS.ABILITY_DAMAGE]} × ${hitChance})`);
 
     // Handle Wen buff consumption for ranged abilities
@@ -143,21 +145,12 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
         applyStyleAbilitySpecificEffects(effectCtx, distribution);
     });
 
+
     // Split single cast up into the different effects
     splitAbilityIntoHits(settings, abilityKey, dmgObject, dmgObjects, preability_AD);
     dmgObjects.forEach(dmgObject => {
         set_min_var(settings, dmgObject);
     });
-
-    // Bloodlust Hurricane: consuming 4 stacks spawns an extra 75-95% hit
-    if (
-        abilityKey === ABILITIES.HURRICANE &&
-        settings['_bloodlust_consumed'] === ABILITIES.HURRICANE
-    ) {
-        const bonusObj = create_damage_object(settings, ABILITIES.BLOODLUST_HURRICANE_HIT);
-        const bonusHits = on_cast(settings, bonusObj, timers, ABILITIES.BLOODLUST_HURRICANE_HIT);
-        dmgObjects.push(...bonusHits);
-    }
 
     // Clear conc stacks after the consuming ability's damage objects have been created
     // (crit chance was already calculated with the stacks included)
@@ -192,7 +185,7 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
     logger.log(LogCategory.ABILITY_DAMAGE, 'on_hit', abilityKey, dmgObject);
 
     // Apply on-hit damage modifiers (min/var scaling, boosts, prayer, PvE, bonus)
-    if (abils[abilityKey]['on-hit effects'] === true) {
+    if (abils[abilityKey].onHitEffects === true) {
         iterateDistributions(dmgObject, (distribution) => {
             applyStyleMinVarEffects(effectCtx, distribution);
             applyAdditiveBoosts(effectCtx, distribution);
@@ -200,8 +193,8 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
             let boost = 10000;
             boost = Math.floor(boost * calculatePrayerBoost(settings, abilityKey));
             boost = applyStyleMultiplicativeEffects(effectCtx, distribution, boost);
-            distribution['min hit'] = Math.floor((distribution['min hit'] * boost) / 10000);
-            distribution['var hit'] = Math.floor((distribution['var hit'] * boost) / 10000);
+            distribution.minHit = Math.floor((distribution.minHit * boost) / 10000);
+            distribution.varHit = Math.floor((distribution.varHit * boost) / 10000);
 
             applyPvEBoosts(effectCtx, distribution);
             applyStyleBonusDamageEffects(effectCtx, distribution);
@@ -212,10 +205,10 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
     rollDamageList(dmgObject);
 
     // Track BoLG perfect equilibrium stacks (on-hit, non-proc only)
-    if (abils[abilityKey]['on-hit effects'] === true &&
-        abils[abilityKey]['ability type'] != 'proc') {
-        if ((settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG ||
-            settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG_IM)
+    if (abils[abilityKey].onHitEffects === true &&
+        abils[abilityKey].abilityType != 'proc') {
+        if ((settings[SETTINGS.TH] === WEAPONS.BOW_OF_THE_LAST_GUARDIAN ||
+            settings[SETTINGS.TH] === WEAPONS.BOW_OF_THE_LAST_GUARDIAN_IM)
             &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) 
         {
@@ -234,10 +227,11 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
         timers[COOLDOWN_PREFIX + ABILITIES.SNIPE] = Math.max(0, timers[COOLDOWN_PREFIX + ABILITIES.SNIPE] - 4);
     }
 
-    // Glacial embrace proc: at 5 stacks, fire a magic hit (with its own cooldown)
+    // Glacial embrace proc: at 5 stacks, fire a magic hit (with its own cooldown, magic abilities only)
     if (
         settings[SETTINGS.GLACIAL_EMBRACE] >= 5 &&
         settings[SETTINGS.AUTO_CAST] === SETTINGS.AUTO_CAST_VALUES.INCITE_FEAR &&
+        abils[abilityKey]?.mainStyle === 'magic' &&
         (!timers[COOLDOWN_PREFIX + ABILITIES.GLACIAL_EMBRACE_HIT] || timers[COOLDOWN_PREFIX + ABILITIES.GLACIAL_EMBRACE_HIT] <= 0)
     ) {
         startCooldown(timers, ABILITIES.GLACIAL_EMBRACE_HIT);
@@ -250,8 +244,27 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
     }
 
     // Apply per-roll modifiers and handle procs
-    if (abils[abilityKey]['on-hit effects'] === true) {
+    if (abils[abilityKey].onHitEffects === true) {
         applyDamageListModifiers(settings, dmgObject, abilityKey);
+    } else {
+        // Trace hits that skip applyDamageListModifiers (bleeds, DOTs, burns)
+        const nonCrit = dmgObject.distributions['non_crit'];
+        const crit = dmgObject.distributions['crit'];
+        if (nonCrit && nonCrit['damage list'].length > 0) {
+            logger.traceHit({
+                ability: abilityKey,
+                boostedAD: nonCrit['boosted AD'] ?? 0,
+                min: nonCrit['damage list'][0],
+                max: nonCrit['damage list'][nonCrit['damage list'].length - 1],
+                critChance: crit?.['probability'] ?? 0,
+                critDamageBonus: 0,
+                critMin: crit?.['damage list']?.[0] ?? 0,
+                critMax: crit?.['damage list']?.[crit?.['damage list']?.length - 1] ?? 0,
+            });
+        }
+    }
+
+    if (abils[abilityKey].onHitEffects === true) {
         handleBolgProc(settings, dmgObject, timers, dmgObjects);
         handleFsoa(abilityKey, settings, dmgObject, timers, dmgObjects);
 
@@ -358,8 +371,8 @@ function consumeAnimaCharged(settings: Record<string, any>, timers: Record<strin
  * @returns true if the buff was consumed (skip normal adrenaline cost), false otherwise
  */
 function consumeDeathsporeBuff(settings: Record<string, any>, abilityKey: string, timers?: Record<string, number>): boolean {
-    const type = abils[abilityKey]['ability type'];
-    const isRanged = abils[abilityKey]?.['main style'] === 'ranged';
+    const type = abils[abilityKey].abilityType;
+    const isRanged = abils[abilityKey]?.mainStyle === 'ranged';
     const costsAdrenaline = ['threshold', 'ultimate', 'special attack'].includes(type);
 
     if (settings[SETTINGS.DEATHSPORE_BUFF] && isRanged && costsAdrenaline) {
@@ -377,8 +390,8 @@ function consumeDeathsporeBuff(settings: Record<string, any>, abilityKey: string
  * Returns the adrenaline cost reduction percentage (0 if no buff consumed).
  */
 function consumeFlowBuff(settings: Record<string, any>, abilityKey: string, timers?: Record<string, number>): number {
-    const isMagic = abils[abilityKey]?.['main style'] === 'magic';
-    const type = abils[abilityKey]?.['ability type'];
+    const isMagic = abils[abilityKey]?.mainStyle === 'magic';
+    const type = abils[abilityKey]?.abilityType;
     const costsAdrenaline = ['threshold', 'ultimate', 'special attack'].includes(type);
     if (!isMagic || !costsAdrenaline) return 0;
 
@@ -405,13 +418,13 @@ function consumeFlowBuff(settings: Record<string, any>, abilityKey: string, time
  * Basics gain adrenaline (with impatient), thresholds/ultimates/specs spend it.
  */
 function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string, timers?: Record<string, number>): void {
-    const type = abils[abilityKey]['ability type'];
+    const type = abils[abilityKey].abilityType;
     const flowReduction = consumeFlowBuff(settings, abilityKey, timers);
 
     if (type == 'basic') {
         let basicAdren = settings[SETTINGS.FURY_OF_THE_SMALL] ? 10 : 9;
         // Meteor Strike buff: melee basics generate 1.5x adrenaline
-        if (settings[SETTINGS.METEOR_STRIKE_BUFF] === true && abils[abilityKey]?.['main style'] === 'melee') {
+        if (settings[SETTINGS.METEOR_STRIKE_BUFF] === true && abils[abilityKey]?.mainStyle === 'melee') {
             basicAdren = Math.floor(basicAdren * 1.5);
         }
         addAdrenaline(settings, basicAdren);
@@ -501,11 +514,11 @@ function set_min_var(settings: Record<string, any>, dmgObject: DamageObject) {
 
     iterateDistributions(dmgObject, (distribution) => {
         // 1. Set base ability % values
-        distribution['min hit'] = abils[abilityKey]['min hit'];
-        distribution['var hit'] = abils[abilityKey]['var hit'];
+        distribution.minHit = abils[abilityKey].minHit;
+        distribution.varHit = abils[abilityKey].varHit;
         logger.log(LogCategory.ABILITY_DAMAGE, `set_min_var for ${abilityKey}`, {
-            minHit: distribution['min hit'],
-            varHit: distribution['var hit']
+            minHit: distribution.minHit,
+            varHit: distribution.varHit
         });
 
         // 2. Apply style-specific ability percent modifiers (detonate, flanking, greater barge, etc.)
@@ -516,31 +529,28 @@ function set_min_var(settings: Record<string, any>, dmgObject: DamageObject) {
 
         if (abilityKey === ABILITIES.AFTERSHOCK_MAGIC || abilityKey === ABILITIES.AFTERSHOCK_MELEE ||
             abilityKey === ABILITIES.AFTERSHOCK_RANGED || abilityKey === ABILITIES.AFTERSHOCK_NECRO) {
-            distribution['min hit'] = distribution['min hit'] * settings[SETTINGS.AFTERSHOCK];
-            distribution['var hit'] = distribution['var hit'] * settings[SETTINGS.AFTERSHOCK];
+            distribution.minHit = distribution.minHit * settings[SETTINGS.AFTERSHOCK];
+            distribution.varHit = distribution.varHit * settings[SETTINGS.AFTERSHOCK];
         }
 
         if (abilityKey === ABILITIES.POISON_DAMAGE) {
             let poison_tier = Object.values(SETTINGS.POISON_VALUES).indexOf(settings[SETTINGS.POISON]);
             if (poison_tier !== 0) {
-                if (settings[SETTINGS.GLOVES] === SETTINGS.RANGED_GLOVES_VALUES.CINDERS) {
+                if (settings[SETTINGS.GLOVES] === ARMOUR.CINDERBANE_GLOVES) {
                     poison_tier = Math.min(5, Math.max(2, poison_tier + 1));
                 }
                 let multi = 1 + 0.25 * (poison_tier - 1);
                 multi *= 1 + 0.03 * settings[SETTINGS.BIK_STACKS];
-                distribution['min hit'] = distribution['min hit'] * multi;
-                distribution['var hit'] = distribution['var hit'] * multi;
+                distribution.minHit = distribution.minHit * multi;
+                distribution.varHit = distribution.varHit * multi;
             }
         }
 
         // 4. Convert percent values to actual damage using boosted AD
-        const minPct = distribution['min hit'];
-        const varPct = distribution['var hit'];
-        distribution['min hit'] = Math.floor(minPct * distribution['boosted AD']);
-        distribution['var hit'] = Math.floor(varPct * distribution['boosted AD']);
-        if (!distribution['crit']) {
-            logger.trace(`${abilityKey} non-crit`, `${distribution['min hit']}–${distribution['min hit'] + distribution['var hit']}`, `${(minPct * 100).toFixed(1)}%–${((minPct + varPct) * 100).toFixed(1)}% of ${distribution['boosted AD']} boosted AD`);
-        }
+        const minPct = distribution.minHit;
+        const varPct = distribution.varHit;
+        distribution.minHit = Math.floor(minPct * distribution['boosted AD']);
+        distribution.varHit = Math.floor(varPct * distribution['boosted AD']);
     });
 
     return dmgObject;
@@ -558,7 +568,7 @@ function splitAbilityIntoHits(
     dmgObjects: DamageObject[],
     preability_AD: number
 ): void {
-    const classification = abils[abilityKey]['ability classification'];
+    const classification = abils[abilityKey].abilityClassification;
 
     if (classification == 'multihit') {
         let hits = get_hit_sequence(settings);
@@ -583,10 +593,11 @@ function splitAbilityIntoHits(
         // Residual soul consumption now handled by consumeStacks in necromancy_effects.ts
     }
     else if (['bleed', 'burn', 'dot'].includes(classification)) {
-        let n_hits = abils[abilityKey]['hits'][1].length;
+        const bleedHits = get_hit_sequence(settings);
+        let n_hits = bleedHits[1].length;
         for (let i = 0; i < n_hits; i++) {
             const clone = structuredClone(dmgObject);
-            const hitAbility = abils[abilityKey]['hits'][1][i];
+            const hitAbility = bleedHits[1][i];
             clone.ability = hitAbility as ABILITIES;
             if (clone.ability === ABILITIES.SOULFIRE_INITIAL) {
                 iterateDistributions(clone, (distribution) => {
@@ -609,8 +620,8 @@ function splitAbilityIntoHits(
  */
 function rollDamageList(dmgObject: DamageObject): void {
     iterateDistributions(dmgObject, (distribution) => {
-        for (let i = 0; i <= distribution['var hit']; i++) {
-            distribution['damage list'].push(distribution['min hit'] + i);
+        for (let i = 0; i <= distribution.varHit; i++) {
+            distribution['damage list'].push(distribution.minHit + i);
         }
     });
 }
@@ -623,7 +634,12 @@ function applyDamageListModifiers(
     dmgObject: DamageObject,
     abilityKey: ABILITIES
 ): void {
+    let critDamageBonus = 0;
     iterateDistributions(dmgObject, (distribution) => {
+        const isCrit = distribution['crit'] === true && abils[abilityKey].critEffects === true;
+        const critMultiplier = isCrit ? 1 + calc_crit_damage(settings, dmgObject) : 1;
+        if (isCrit) critDamageBonus = critMultiplier - 1;
+
         for (let i = 0; i < distribution['damage list'].length; i++) {
             // Berserker's fury
             distribution['damage list'][i] = Math.floor(
@@ -631,20 +647,29 @@ function applyDamageListModifiers(
             );
 
             // Crit damage scaling
-            if (distribution['crit'] === true && abils[abilityKey]['crit effects'] === true) {
-                const critMultiplier = 1 + calc_crit_damage(settings, dmgObject);
+            if (isCrit) {
                 distribution['damage list'][i] = Math.floor(
                     distribution['damage list'][i] * critMultiplier
                 );
-                // Trace crit range on first and last iteration only
-                if (i === 0) {
-                    logger.trace(`${abilityKey} crit min`, distribution['damage list'][i], `×${critMultiplier.toFixed(4)} crit multiplier`);
-                } else if (i === distribution['damage list'].length - 1) {
-                    logger.trace(`${abilityKey} crit max`, distribution['damage list'][i], `×${critMultiplier.toFixed(4)} crit multiplier`);
-                }
             }
         }
     });
+
+    // Emit structured per-hit trace
+    const nonCrit = dmgObject.distributions['non_crit'];
+    const crit = dmgObject.distributions['crit'];
+    if (nonCrit && nonCrit['damage list'].length > 0) {
+        logger.traceHit({
+            ability: abilityKey,
+            boostedAD: nonCrit['boosted AD'] ?? 0,
+            min: nonCrit['damage list'][0],
+            max: nonCrit['damage list'][nonCrit['damage list'].length - 1],
+            critChance: crit?.['probability'] ?? 0,
+            critDamageBonus,
+            critMin: crit?.['damage list']?.[0] ?? 0,
+            critMax: crit?.['damage list']?.[crit['damage list'].length - 1] ?? 0,
+        });
+    }
 }
 
 /**
@@ -656,7 +681,7 @@ function handleSplitSoul(
     results: DamageObject[]
 ): void {
     const abilityKey = dmgObject.ability;
-    const damageType = abils[abilityKey]['damage type'];
+    const damageType = abils[abilityKey].damageType;
     const hasSoulSplitData = settings['soul split']?.['damage list'];
 
     // ECB Split Soul: applies to all damage types while active
@@ -697,8 +722,8 @@ function handleSplitSoul(
 function handleCritBuffAdrenaline(settings: Record<string, any>, dmgObject: DamageObject): void {
     const abilityKey = dmgObject.ability;
     if (
-        abils[abilityKey]['crit effects'] === true &&
-        abils[abilityKey]['main style'] === 'magic' &&
+        abils[abilityKey].critEffects === true &&
+        abils[abilityKey].mainStyle === 'magic' &&
         settings[SETTINGS.CRIT_BUFF] &&
         settings[SETTINGS.EXPECTED_ADRENALINE]
     ) {
@@ -723,8 +748,8 @@ function handleBolgProc(
     timers: Record<string, number>,
     dmgObjects: DamageObject[]
 ): boolean {
-    const isBolg = (settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG ||
-        settings[SETTINGS.TH] === SETTINGS.RANGED_TH_VALUES.BOLG_IM)
+    const isBolg = (settings[SETTINGS.TH] === WEAPONS.BOW_OF_THE_LAST_GUARDIAN ||
+        settings[SETTINGS.TH] === WEAPONS.BOW_OF_THE_LAST_GUARDIAN_IM)
         &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH;
 
@@ -754,12 +779,12 @@ function handleBolgProc(
         const bolgNonCritDist = getDamageDistribution(bolgDmgObject, 'non_crit');
 
         if (bolgCritDist) {
-            bolgCritDist['min hit'] += minBonus;
-            bolgCritDist['var hit'] += varBonus;
+            bolgCritDist.minHit += minBonus;
+            bolgCritDist.varHit += varBonus;
         }
         if (bolgNonCritDist) {
-            bolgNonCritDist['min hit'] += minBonus;
-            bolgNonCritDist['var hit'] += varBonus;
+            bolgNonCritDist.minHit += minBonus;
+            bolgNonCritDist.varHit += varBonus;
         }
     }
 
@@ -780,9 +805,9 @@ function handleFsoa(
     timers: Record<string, number>,
     dmgObjects: DamageObject[]
 ): void {
-    if (abils[abilityKey]['crit effects'] === true
+    if (abils[abilityKey].critEffects === true
         && settings[SETTINGS.INSTABILITY] === true
-        && abils[abilityKey]['damage type'] === 'magic'
+        && abils[abilityKey].damageType === 'magic'
         && abilityKey != 'time strike') {
 
         let fsoaDmgObject = create_damage_object(settings, ABILITIES.TIME_STRIKE);

@@ -29,14 +29,14 @@ export const familiars: Record<string, Familiar> = {
         attack_rate: 6,
         max_hit: 1341,
         has_dps_spec: true,
-        spec_damage: 2.6 * 1341,
+        spec_damage: 3.2 * 1341, // max roll: 320% of max_hit
         spec_cost: 20,
         combat_style: 'melee',
         accuracy: 3724,
         melee_accuracy: 3724,
         ranged_accuracy: 0,
         magic_accuracy: 0,
-        spec_min_roll: 1.0,
+        spec_min_roll: 2.0 / 3.2, // min roll: 200% of max_hit → 200/320 = 0.625 of spec_damage
         icon: '/familiars/Ripper_Demon_chathead.png',
         scroll_icon: '/familiars/scrolls/Ripper_Demon_scroll_(Death_From_Above).png'
     },

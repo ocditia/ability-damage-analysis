@@ -19,6 +19,11 @@
 
     let activeView = $state('sequence');
 
+    // Style filters for keyboard view
+    const allStyles = ['melee', 'ranged', 'magic', 'necromancy', 'defence', 'shared'];
+    let selectedStyles = $state(new Set(allStyles));
+    let showHeatmap = $state(false);
+
     // Flatten gear tabs into a single lookup: title -> { title, icon }
     let gearLookup = $derived.by(() => {
         const map = {};
@@ -53,6 +58,43 @@
         )
         : { keys: [], ticks: [] });
 
+    // Alias map: maps user input (lowercased) to keyboard key ID
+    const keyAliases = {
+        'ins': 'insert', 'pgup': 'pageup', 'pgdn': 'pagedown', 'pgdown': 'pagedown',
+        'del': 'delete', 'esc': 'escape',
+        'backspace': 'backspace', 'tab': 'tab', 'caps': 'caps', 'enter': 'enter',
+        'shift': 'shift', 'ctrl': 'ctrl', 'alt': 'alt', 'space': 'space',
+    };
+    function resolveKey(rawKey) {
+        const k = rawKey.toLowerCase();
+        return keyAliases[k] || k;
+    }
+
+    // Count how many times each key is pressed in the rotation
+    let keyFrequency = $derived.by(() => {
+        const freq = {};
+        let max = 0;
+        for (const keyStr of sequence.keys) {
+            const parts = keyStr.split(/\s+/);
+            const mainKey = resolveKey(parts[parts.length - 1]);
+            freq[mainKey] = (freq[mainKey] || 0) + 1;
+            if (freq[mainKey] > max) max = freq[mainKey];
+        }
+        return { freq, max };
+    });
+
+    function heatmapColor(key) {
+        if (!showHeatmap || keyFrequency.max === 0) return '';
+        const count = keyFrequency.freq[key] || 0;
+        if (count === 0) return '';
+        const intensity = count / keyFrequency.max;
+        // Gradient from cool blue (low) to hot red (high)
+        const r = Math.round(255 * intensity);
+        const g = Math.round(80 * (1 - intensity));
+        const b = Math.round(200 * (1 - intensity));
+        return `background: rgba(${r}, ${g}, ${b}, ${0.15 + intensity * 0.35}); border-color: rgba(${r}, ${g}, ${b}, 0.7);`;
+    }
+
     let plainText = $derived.by(() => {
         const parts = [];
         for (let i = 0; i < sequence.keys.length; i++) {
@@ -72,15 +114,19 @@
             if (!keyStr) continue;
             const info = lookup[abilKey];
             if (!info) continue;
-            // Use the first key part as the keyboard key
+            const style = info.mainStyle || info.style || 'shared';
+            // Filter by selected styles
+            if (!selectedStyles.has(style)) continue;
+            // Use the last key part as the keyboard key, resolve aliases
             const parts = keyStr.split(/\s+/);
-            const mainKey = parts[parts.length - 1].toLowerCase();
+            const mainKey = resolveKey(parts[parts.length - 1]);
             if (!map[mainKey]) map[mainKey] = [];
             map[mainKey].push({
                 abilKey,
                 icon: info.icon,
                 title: info.title,
-                fullBind: keyStr
+                fullBind: keyStr,
+                style
             });
         }
         return map;
@@ -89,8 +135,8 @@
     // Keyboard layout rows
     const keyboardRows = [
         ['esc', '', 'f1', 'f2', 'f3', 'f4', '', 'f5', 'f6', 'f7', 'f8', '', 'f9', 'f10', 'f11', 'f12'],
-        ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'backspace'],
-        ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
+        ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'backspace', '', 'insert', 'home', 'pageup'],
+        ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', '', 'delete', 'end', 'pagedown'],
         ['caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", 'enter'],
         ['shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'rshift'],
         ['ctrl', 'alt', 'space', 'ralt', 'rctrl']
@@ -105,6 +151,8 @@
         'f1': 'F1', 'f2': 'F2', 'f3': 'F3', 'f4': 'F4',
         'f5': 'F5', 'f6': 'F6', 'f7': 'F7', 'f8': 'F8',
         'f9': 'F9', 'f10': 'F10', 'f11': 'F11', 'f12': 'F12',
+        'insert': 'Ins', 'home': 'Home', 'pageup': 'PgUp',
+        'delete': 'Del', 'end': 'End', 'pagedown': 'PgDn',
     };
 
     // Width classes for special keys
@@ -229,6 +277,31 @@
                     </div>
                 {/if}
             {:else}
+                <!-- Style filters -->
+                <div class="style-filters">
+                    {#each allStyles as style}
+                        <label class="style-filter" class:active={selectedStyles.has(style)}>
+                            <input
+                                type="checkbox"
+                                checked={selectedStyles.has(style)}
+                                onchange={() => {
+                                    const next = new Set(selectedStyles);
+                                    if (next.has(style)) next.delete(style);
+                                    else next.add(style);
+                                    selectedStyles = next;
+                                }}
+                            />
+                            <span class="style-name" style="color: var(--color-{style === 'necromancy' ? 'necro' : style}, #aaa)">
+                                {style.charAt(0).toUpperCase() + style.slice(1)}
+                            </span>
+                        </label>
+                    {/each}
+                </div>
+                <!-- Heatmap toggle -->
+                <label class="heatmap-toggle">
+                    <input type="checkbox" bind:checked={showHeatmap} />
+                    <span>Frequency heatmap</span>
+                </label>
                 <!-- Keyboard layout view -->
                 <div class="keyboard-container">
                     {#each keyboardRows as row}
@@ -238,15 +311,19 @@
                                     <div class="key-spacer"></div>
                                 {:else}
                                     {@const bound = keyToAbility[key]}
+                                    {@const freq = keyFrequency.freq[key] || 0}
                                     <div
                                         class="kb-key"
                                         class:wide={wideKeys.has(key)}
                                         class:extra-wide={extraWideKeys.has(key)}
                                         class:has-bind={bound && bound.length > 0}
-                                        title={bound ? bound.map(b => `${b.title} [${b.fullBind}]`).join('\n') : ''}
+                                        style={heatmapColor(key)}
+                                        title={bound ? bound.map(b => `${b.title} [${b.fullBind}]`).join('\n') + (freq ? `\n${freq} presses` : '') : (freq ? `${freq} presses` : '')}
                                     >
                                         <span class="kb-label">{keyLabels[key] || key.toUpperCase()}</span>
-                                        {#if bound && bound.length > 0}
+                                        {#if showHeatmap && freq > 0}
+                                            <span class="kb-freq">{freq}</span>
+                                        {:else if bound && bound.length > 0}
                                             <div class="kb-icons">
                                                 {#each bound.slice(0, 2) as b}
                                                     <img src={b.icon} alt={b.title} class="kb-abil-icon" />
@@ -471,6 +548,39 @@
         font-size: 0.9rem;
     }
 
+    .style-filters {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 0.5rem;
+        padding: 0.4rem 0.5rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid #333;
+        border-radius: 6px;
+    }
+
+    .style-filter {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        opacity: 0.5;
+        transition: opacity 0.15s;
+    }
+
+    .style-filter.active {
+        opacity: 1;
+    }
+
+    .style-filter input {
+        display: none;
+    }
+
+    .style-name {
+        font-weight: 600;
+    }
+
     /* Keyboard layout */
     .keyboard-container {
         padding: 14px;
@@ -562,6 +672,28 @@
         font-size: 0.7rem;
         margin-top: 8px;
         margin-bottom: 0;
+    }
+
+    .heatmap-toggle {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 0.4rem;
+        cursor: pointer;
+        font-size: 0.75rem;
+        color: #888;
+    }
+
+    .heatmap-toggle input {
+        accent-color: #fbd38d;
+        cursor: pointer;
+    }
+
+    .kb-freq {
+        font-size: 0.7rem;
+        font-weight: bold;
+        color: #fff;
+        line-height: 1;
     }
 
     @keyframes slideIn {

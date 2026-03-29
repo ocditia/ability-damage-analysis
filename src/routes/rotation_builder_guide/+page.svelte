@@ -13,6 +13,7 @@
             subheadings: [
                 { id: 'settings', title: 'Settings' },
                 { id: 'adding-abilities', title: 'Adding Abilities' },
+                { id: 'filtering', title: 'Filtering' },
                 { id: 'reading-results', title: 'Reading the Results' }
             ]
         },
@@ -81,7 +82,6 @@
                             The <strong>Settings</strong> panel on the right defines your starting state. Select your gear,
                              perks, prayers, stats, buffs, familiars, etc. 
                         </p>
-
                         <h3 id="adding-abilities" class="subsection-heading">Adding Abilities</h3>
                         <p class="mb-4">
                             Select a combat style tab
@@ -98,6 +98,26 @@
                             To remove an ability, <strong>right click</strong> it on the bar.
                         </p>
 
+                        <h3 id="filtering" class="subsection-heading">Filtering Abilities & Gear</h3>
+                        <p class="mb-4">
+                            Both the ability panel and gear dropdowns have a filter toggle that cycles between
+                            <strong>Popular</strong>, <strong>Owned</strong>, and <strong>All</strong>.
+                        </p>
+                        <ul class="list-disc pl-5 space-y-2 mb-4">
+                            <li><strong>Popular</strong> &mdash; shows commonly used abilities and gear (the default).</li>
+                            <li><strong>Owned</strong> &mdash; shows only the items you've marked as owned. This lets you quickly filter to just your gear.</li>
+                            <li><strong>All</strong> &mdash; shows everything in the game.</li>
+                        </ul>
+                        <p class="mb-4">
+                            To manage which items you own, open the <strong>Keybind Configuration</strong> modal.
+                            Each ability and gear item has a checkbox to mark it as owned.
+                            Use the <strong>Own All</strong> and <strong>Unown All</strong> buttons to bulk-select items in the current tab.
+                            Your owned items are saved to your browser and persist between sessions.
+                        </p>
+                        <p class="mb-4">
+                            For gear, you can also <strong>right click</strong> any equipped slot to quickly unequip it (set to None).
+                        </p>
+
                         <h3 id="reading-results" class="subsection-heading">Reading the Results</h3>
                         <p class="mb-4">
                             As you build your rotation, the calculator updates automatically.
@@ -106,12 +126,16 @@
                             <strong>Cooldowns</strong> are shown as small icons on the tick an ability comes off cooldown.
                             <strong>Adrenaline</strong> is tracked tick by tick.
                         </p>
+
+                        <img src="/guide_images/buffs_stacks_cds.svg" alt="Buffs, stacks and cooldowns on the rotation timeline" class="my-4 rounded-lg border border-gray-700" style="max-width: 100%;" />
+
+                        
                         <p class="mb-4">
                             The total damage is displayed at the top of the page, broken down by source:
                             ability damage,
                             <span style="color: var(--color-poison)">poison</span> damage (if using Cinderbane Gloves or weapon poison),
                             <span style="color: var(--color-familiar)">familiar</span> damage,
-                            and dreadnip damage.
+                            and  <span style="color: var(--color-dreadnip)">dreadnip</span> damage.
                             The <strong>damage plot</strong> below the bar shows cumulative damage over time with each source as a separate line.
                         </p>
                         <p class="mb-4">
@@ -129,24 +153,25 @@
                             There are four tool modes, switchable via the toolbar or keyboard shortcuts:
                         </p>
                         <p class="mb-4">
-                            <span class="tool-name">Regular</span> (<span class="keybind">r</span>) is the default mode.
-                            Left click to add abilities, right click to remove, and drag to reorder.
+                            <span class="tool-name">Regular</span> (<span class="keybind">r</span>)<br>
+                            Default mode. Left click to add abilities, right click to remove, and drag to reorder.
                         </p>
                         <p class="mb-4">
-                            <span class="tool-name">Stall</span> (<span class="keybind">s</span>) lets you stall an ability.
-                            Click an ability in the panel to select it, then click the tick on the bar where you want to release it.
+                            <span class="tool-name">Stall</span> (<span class="keybind">s</span>)<br>
+                            Left click an ability to select it, then left click a tick on the bar to place the ability.
                             Click an existing stall to remove it. Channelled abilities cannot be stalled.
                         </p>
                         <p class="mb-4">
-                            <span class="tool-name">Null</span> (<span class="keybind">n</span>) marks a tick as nulled.
+                            <span class="tool-name">Null</span> (<span class="keybind">n</span>) <br>
+                            Left click to mark a tick as nulled.
                             Nulled ticks deal 0 damage but still apply buffs, stacks, and adrenaline as normal &mdash;
                             useful for simulating boss phase transitions or prebuilding on dummies.
-                            Click a nulled tick again to un-null it.
+                            Left click a nulled tick again to un-null it.
                         </p>
                         <p class="mb-4">
-                            <span class="tool-name">Insert</span> (<span class="keybind">i</span>) left click to insert
-                            ticks into a rotation, moving everything afterwards to the right. Right click to delete ticks in a rotation,
-                            moving everything afterwards to the left.
+                            <span class="tool-name">Insert</span> (<span class="keybind">i</span>)<br>
+                            Left click to insert ticks into a rotation, moving everything afterwards to the right. 
+                            Right click to delete ticks in a rotation, moving everything afterwards to the left.
                         </p>
 
                         <h3 id="extra-actions" class="subsection-heading">Extra Actions</h3>
@@ -201,13 +226,11 @@
                         <h3 id="boss-presets" class="subsection-heading">Boss Presets</h3>
                         <p class="mb-4">
                             Select a boss preset in settings to apply its defence level, armour rating, and style affinities.
-                            This affects your hit chance, familiar accuracy, and dreadnip accuracy.
+                            This affects your familiar and dreadnip accuracy, but not <strong>your</strong> accuracy (yet).
                         </p>
                         <p class="mb-4">
                             Some bosses support <strong>enrage scaling</strong> (Telos, Araxxor, Arch-Glacor) &mdash;
                             use the enrage slider to adjust the boss's stats and HP accordingly.
-                            <strong>Phase markers</strong> appear on the damage plot showing boss HP thresholds,
-                            so you can see where phase transitions would occur.
                         </p>
 
                         <h3 id="keybinds" class="subsection-heading">Keybinds</h3>
@@ -259,16 +282,25 @@
 
                         <div class="mb-4">
                             <h3 class="text-xl font-semibold mb-2">Which combat styles are supported?</h3>
-                            <p>
-                                Ranged and Magic are the most complete. Melee is well supported.
-                                Necromancy is in beta &mdash; core abilities and stacks work, but some interactions are still being added.
+                            <p class="mb-4">
+                                <span class="text-style text-ranged">Ranged</span> is the most polished style with near-complete gear interactions and buff support.
+                                <span class="text-style text-magic">Magic</span>, <span class="text-style text-melee">Melee</span>, and
+                                <span class="text-style text-necro">Necromancy</span> all work for core rotations but are missing some gear interactions and niche buffs.
+                                If you find something that's not working or not implemented, please let us know in the Discord.
                             </p>
+                            <p class="mb-2"><strong>Known limitations:</strong></p>
+                            <ul class="list-disc pl-5 space-y-1 mb-4">
+                                <li>Player hit chance is not yet calculated from boss defence/armour &mdash; you set it manually. Familiar and dreadnip accuracy <em>are</em> calculated from boss presets.</li>
+                                <li>Multi-hit abilities (e.g. Greater Ricochet, Wild Magic) resolve all hits on the same tick rather than spreading them across their actual hit timings.</li>
+                                <li>Some necromancy interactions are still being refined.</li>
+                                <li>Off-style gear accuracy penalties (e.g. wearing melee armour while maging) are not modelled.</li>
+                            </ul>
                         </div>
 
                         <div>
                             <h3 class="text-xl font-semibold mb-2">How do I report bugs or suggest features?</h3>
                             <p>
-                                Join our Discord community or submit issues through our GitHub repository.
+                                Join the RSA Discord server or submit issues through our GitHub repository.
                             </p>
                         </div>
                     </div>

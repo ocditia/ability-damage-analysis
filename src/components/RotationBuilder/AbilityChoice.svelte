@@ -8,34 +8,24 @@
     import { getStyleColor } from '$lib/utils/colors';
     import { groupAbilitiesByType } from '$lib/utils/abilityClassifier';
     import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
-
-    // Get a default icon path based on ability key and style
-    function getDefaultIconPath(key) {
-        // Convert ability name to icon filename (simplified version)
-        const iconName = key.replace(/\s+/g, '').toLowerCase();
-        return `/ability_icons/${style}/30x30/${iconName}.png`;
-    }
-
-    // Special case for piercing shot which we know works
-    const specialCaseIcons = {
-        'piercing shot': '/ability_icons/ranged/30x30/piercing.png'
-    };
+    import { getAbilityClassification, getAbilityType } from '$lib/types/AbilityTypes';
 
     $: grouped = groupAbilitiesByType(abilities);
     $: styleColor = getStyleColor(style);
 </script>
 
-<div class="ability-groups">
+<div class="ability-clusters">
     {#each grouped as group}
         {@const filteredAbilities = group.abilities.filter(([key, abil]) =>
+            !["proc", "perk"].includes(getAbilityType(abil)) && (
             filter === 'all' ||
             (filter === 'owned' && ownedItemsStore.items.has(key)) ||
-            (filter === 'popular' && abil.common !== false)
+            (filter === 'popular' && abil.common !== false))
         )}
         {#if filteredAbilities.length > 0}
-            <div class="ability-group" style="border-left: 2px solid {styleColor};">
-                <span class="group-label">{group.label}</span>
-                <div class="grid grid-cols-7 md:grid-cols-12 lg:grid-cols-14 gap-x-0 gap-y-1 abilities">
+            <div class="ability-cluster" style="border-color: {styleColor};">
+                <span class="cluster-label">{group.label}</span>
+                <div class="cluster-icons">
                     {#each filteredAbilities as [key, ability]}
                         <div
                             role="button"
@@ -43,30 +33,9 @@
                             aria-label={ability.title}
                             on:click={(e) => handleAbilityClick(e, key)}
                             on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleAbilityClick(e, key); }}
-                            style="display: inline-block; overflow: hidden; width: 30px; height: 30px; "
+                            class="ability-slot"
                         >
-                        {#if key === 'piercing shot'}
-                            <!-- Special case for piercing shot -->
-                            <img
-                                src="/ability_icons/ranged/30x30/piercing.png"
-                                alt={ability.title || key}
-                                draggable="true"
-                                on:dragstart={(e) => handleDragStart(e, key)}
-                                title={ability.title || key}
-                                style="width: 30px; height: 30px; object-fit: contain; background-color: #333; border: 1px solid {styleColor};"
-                            />
-                        {:else if specialCaseIcons[key]}
-                            <!-- Other special cases -->
-                            <img
-                                src={specialCaseIcons[key]}
-                                alt={ability.title || key}
-                                draggable="true"
-                                on:dragstart={(e) => handleDragStart(e, key)}
-                                title={ability.title || key}
-                                style="width: 30px; height: 30px; object-fit: contain; background-color: #333; border: 1px solid {styleColor};"
-                            />
-                        {:else if ability.icon}
-                            <!-- Normal case with icon -->
+                        {#if ability.icon}
                             <img
                                 src={ability.icon}
                                 alt={ability.title || key}
@@ -76,7 +45,6 @@
                                 style="width: 30px; height: 30px; object-fit: contain; background-color: #333; border: 1px solid {styleColor};"
                             />
                         {:else}
-                            <!-- Fallback for missing icon -->
                             <div
                                 style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; background-color: #444; color: white; font-size: 10px; border: 1px solid {styleColor};"
                                 draggable="true"
@@ -95,26 +63,40 @@
 </div>
 
 <style>
-    .ability-groups {
+    .ability-clusters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: flex-start;
+    }
+
+    .ability-cluster {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        border-left: 2px solid;
+        padding-left: 4px;
     }
 
-    .ability-group {
-        padding-left: 5px;
-        display: flex;
-        align-items: flex-start;
-        gap: 6px;
-    }
-
-    .group-label {
-        font-size: 0.6rem;
-        color: rgba(255, 255, 255, 0.35);
-        line-height: 30px;
+    .cluster-label {
+        font-size: 0.5rem;
+        color: rgba(255, 255, 255, 0.4);
         user-select: none;
-        flex-shrink: 0;
-        width: 8px;
-        text-align: center;
+        letter-spacing: 0.05em;
+        line-height: 1;
+        margin-bottom: 2px;
+    }
+
+    .cluster-icons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1px;
+        max-width: 160px;
+    }
+
+    .ability-slot {
+        display: inline-block;
+        overflow: hidden;
+        width: 30px;
+        height: 30px;
     }
 </style>

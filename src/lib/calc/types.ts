@@ -35,6 +35,10 @@ export interface Equipment {
     classification?: string;
     /** Whether this item is commonly used / should appear prominently in dropdowns. Defaults to false. */
     popular?: boolean;
+    /** Display name */
+    title?: string;
+    /** Icon path */
+    icon?: string;
 }
 
 
@@ -69,6 +73,8 @@ export interface SingleAbilityInput {
         sunshine?: boolean;
         blackhole?: boolean;
         deathSwiftness?: boolean;
+        splitSoul?: boolean;
+        splitSoulNecro?: boolean;
     };
 }
 /**
@@ -76,8 +82,8 @@ export interface SingleAbilityInput {
  
  */
 interface DamageDistribution {
-    'min hit': number;
-    'var hit': number;
+    minHit: number;
+    varHit: number;
     'crit': boolean;
     'probability': number;
     'damage list': any[];

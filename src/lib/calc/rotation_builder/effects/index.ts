@@ -5,6 +5,7 @@
  * during damage calculation.
  */
 import { ABILITIES, abils } from '$lib/data/abilities';
+import { ARMOUR } from '$lib/data/armour';
 import { weapons } from '$lib/data/weapons'
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution, DamageObject } from '../../types';
@@ -74,7 +75,7 @@ const styleEffectsMap: Record<CombatStyle, StyleEffects> = {
  * Get the combat style for an ability
  */
 export function getAbilityStyle(abilityKey: ABILITIES): CombatStyle | null {
-    const style = abils[abilityKey]?.['main style'];
+    const style = abils[abilityKey]?.mainStyle;
     if (style && style in styleEffectsMap) {
         return style as CombatStyle;
     }
@@ -107,13 +108,13 @@ export function applyStyleBoostedADEffects(
     }
 
     // Scripture of Amascut (shared across all styles, +10% boosted AD)
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.AMASCUT) {
+    if (settings[SETTINGS.POCKET] === ARMOUR.AMASCUT_BOOK) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.1);
         result.applied = true;
     }
 
     // Ultimatums perk: ultimates gain (3 + 1 per rank)% boosted AD
-    if (settings[SETTINGS.ULTIMATUMS] > 0 && abils[ctx.abilityKey]?.['ability type'] === 'ultimate') {
+    if (settings[SETTINGS.ULTIMATUMS] > 0 && abils[ctx.abilityKey]?.abilityType === 'ultimate') {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] / 100 * (100 + 3 + settings[SETTINGS.ULTIMATUMS]));
         result.applied = true;
     }
@@ -166,9 +167,9 @@ export function applyStyleMinVarEffects(
 
     // Apply precise perk
     if (settings[SETTINGS.PRECISE] > 0) {
-        const max_hit = distribution['min hit'] + distribution['var hit'];
-        distribution['min hit'] = distribution['min hit'] + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
-        distribution['var hit'] = Math.max(0, distribution['var hit'] - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit));
+        const max_hit = distribution.minHit + distribution.varHit;
+        distribution.minHit = distribution.minHit + Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit);
+        distribution.varHit = Math.max(0, distribution.varHit - Math.floor(0.015 * settings[SETTINGS.PRECISE] * max_hit));
     }
 }
 

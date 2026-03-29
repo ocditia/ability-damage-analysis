@@ -7,9 +7,9 @@
 
     const abilities = Object.fromEntries(
         Object.entries(abils).filter(([, a]) =>
-            a.title && a['main style'] === 'necromancy' &&
-            // a['ability classification'] !== 'conjure' &&
-            a['ability classification'] !== 'self cast'
+            a.title && a.mainStyle === 'necromancy' &&
+            // a.abilityClassification !== 'conjure' &&
+            a.abilityClassification !== 'self cast'
         )
     );
 
@@ -238,6 +238,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.HIT_CHANCE]}
                                     onchange={() => updateDamages()}
+                                    img="/settings_icons/Zero_weakness_icon.png"
                                     step="1"
                                     max="100"
                                     min="0"

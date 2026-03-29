@@ -79,7 +79,7 @@ export function countVoidPieces(settings: Record<string, any>): number {
  * Returns 0 if no matching void helm is equipped
  */
 export function getVoidHelmBoost(settings: Record<string, any>, abilityKey: ABILITIES): number {
-    const style = abils[abilityKey]?.['main style'] as CombatStyle | undefined;
+    const style = abils[abilityKey]?.mainStyle as CombatStyle | undefined;
 
     if (!style || !VOID_HELMS[style]) {
         return 0;

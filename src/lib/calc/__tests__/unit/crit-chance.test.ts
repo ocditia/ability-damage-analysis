@@ -6,6 +6,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import { ARMOUR } from '$lib/data/armour';
 import { calc_crit_chance } from '../../crit';
 import { SETTINGS } from '../../settings_rb.js';
 import { ABILITIES } from '$lib/data/abilities';
@@ -56,14 +57,14 @@ describe('calc_crit_chance', () => {
     describe('Grimoire', () => {
         it('Grimoire should add 12%', () => {
             const settings = critSettings({
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
+                [SETTINGS.POCKET]: ARMOUR.ERETHDORS_GRIMOIRE,
             });
             expect(calc_crit_chance(settings, ABILITIES.REND)).toBeCloseTo(0.22, 4);
         });
 
         it('Grimoire + Biting 4 should stack', () => {
             const settings = critSettings({
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
+                [SETTINGS.POCKET]: ARMOUR.ERETHDORS_GRIMOIRE,
                 [SETTINGS.BITING]: 4,
             });
             expect(calc_crit_chance(settings, ABILITIES.REND)).toBeCloseTo(0.30, 4);
@@ -73,7 +74,7 @@ describe('calc_crit_chance', () => {
     describe("Reaver's Ring", () => {
         it("Reaver's ring should add 5%", () => {
             const settings = critSettings({
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.REAVERS,
+                [SETTINGS.RING]: ARMOUR.REAVERS_RING,
             });
             expect(calc_crit_chance(settings, ABILITIES.REND)).toBeCloseTo(0.15, 4);
         });
@@ -117,7 +118,7 @@ describe('calc_crit_chance', () => {
         it('Hit 3 + Biting 4 + Grim should stack to 80%', () => {
             const settings = critSettings({
                 [SETTINGS.BITING]: 4,
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
+                [SETTINGS.POCKET]: ARMOUR.ERETHDORS_GRIMOIRE,
             });
             expect(calc_crit_chance(settings, ABILITIES.THE_FINAL_FLURRY_2)).toBeCloseTo(0.80, 4);
         });
@@ -147,8 +148,8 @@ describe('calc_crit_chance', () => {
             const settings = critSettings({
                 [SETTINGS.BITING]: 4,
                 [SETTINGS.LVL20ARMOUR]: true,
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.REAVERS,
+                [SETTINGS.POCKET]: ARMOUR.ERETHDORS_GRIMOIRE,
+                [SETTINGS.RING]: ARMOUR.REAVERS_RING,
                 [SETTINGS.KALG_SPEC]: true,
                 [SETTINGS.FAMILIAR]: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON,
             });
@@ -165,8 +166,8 @@ describe('calc_crit_chance', () => {
             const settings = critSettings({
                 [SETTINGS.BITING]: 4,
                 [SETTINGS.LVL20ARMOUR]: true,
-                [SETTINGS.POCKET]: SETTINGS.POCKET_VALUES.GRIM,
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.REAVERS,
+                [SETTINGS.POCKET]: ARMOUR.ERETHDORS_GRIMOIRE,
+                [SETTINGS.RING]: ARMOUR.REAVERS_RING,
                 [SETTINGS.KALG_SPEC]: true,
                 [SETTINGS.FAMILIAR]: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON,
             });

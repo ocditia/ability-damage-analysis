@@ -34,4 +34,12 @@ vite.config.ts.timestamp-*
 # Build and cache
 .svelte-kit/
 .cache/
-dist/CLAUDE.md
+dist/
+
+# Wiki scrapes
+*RuneScape Wiki*
+*runescape wiki*
+
+# Misc
+*.md
+!README.md

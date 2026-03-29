@@ -1,14 +1,39 @@
 <script>
     import { SETTINGS } from '$lib/calc/settings_rb';
+import { ARMOUR } from '$lib/data/armour';
+import { WEAPONS } from '$lib/data/weapons';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
     import { getItemsForSlot, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
     import { weapons } from '$lib/data/weapons';
     import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
+    import { formatPerkAbbrev, itemDisplayText as _itemDisplayText, expandOptionsWithInstances as _expandOptions } from '$lib/data/perks';
+    import { stripVariantSuffix } from '$lib/utils/gearVariants';
+    import ActionIcon from '$components/UI/ActionIcon.svelte';
     import PillToggle from '$components/UI/PillToggle.svelte';
+    import { getStyleColor } from '$lib/utils/colors';
 
-    let { settings, styleTab, updateDamages, openDropdown = $bindable(null) } = $props();
+    let { settings, styleTab, updateDamages, openDropdown = $bindable(null), gearFilter = undefined, onFilterChange = undefined } = $props();
 
-    let gearFilter = $state('popular');
+    const styleColorMap = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necromancy' };
+    let activeStyleColor = $derived(getStyleColor(styleColorMap[styleTab] ?? 'ranged'));
+
+    // If no explicit gearFilter prop, read from settings (works for both store-based and local settings)
+    let effectiveFilter = $derived(gearFilter ?? settings[SETTINGS.GEAR_FILTER]?.value ?? 'popular');
+
+    function cycleFilter() {
+        const modes = ['popular', 'owned', 'all'];
+        const next = modes[(modes.indexOf(effectiveFilter) + 1) % modes.length];
+        if (onFilterChange) {
+            onFilterChange(next);
+        } else if (settings[SETTINGS.GEAR_FILTER]) {
+            // Update directly on the settings object (works for single-ability pages with local settings)
+            settings[SETTINGS.GEAR_FILTER].value = next;
+            if (settings[SETTINGS.USE_OWNED_GEAR]) {
+                settings[SETTINGS.USE_OWNED_GEAR].value = next === 'owned';
+            }
+            updateDamages();
+        }
+    }
 
     const styleFolder = {
         [SettingsCombatStyles.MELEE]: 'melee',
@@ -27,9 +52,9 @@
     function getSlotOptions(slot) {
         if (slot.gearSlot) {
             const items = getItemsForSlot(slot.gearSlot, gearStyle[styleTab]);
-            if (gearFilter === 'all') return items;
+            if (effectiveFilter === 'all') return items;
             const currentValue = settings[slot.key]?.value;
-            if (gearFilter === 'owned') {
+            if (effectiveFilter === 'owned') {
                 return items.filter(i => i.value === 'none' || i.value === currentValue || ownedItemsStore.items.has(i.value));
             }
             return items.filter(i => i.popular || i.value === 'none' || i.value === currentValue);
@@ -43,16 +68,46 @@
         let filtered = weaponTypeFilter
             ? items.filter(i => i.weaponType === weaponTypeFilter || i.value === 'none')
             : items;
-        if (gearFilter !== 'all') {
+        if (effectiveFilter !== 'all') {
             const currentMh = settings[weaponSlotsByStyle[styleTab]?.mh]?.value;
             const currentOh = settings[weaponSlotsByStyle[styleTab]?.oh]?.value;
-            if (gearFilter === 'owned') {
+            if (effectiveFilter === 'owned') {
                 filtered = filtered.filter(i => i.value === 'none' || i.value === currentMh || i.value === currentOh || ownedItemsStore.items.has(i.value));
             } else {
                 filtered = filtered.filter(i => i.popular || i.value === 'none' || i.value === currentMh || i.value === currentOh);
             }
         }
         return filtered;
+    }
+
+    /** Get display text for an item with perks */
+    function itemDisplayText(itemValue, baseText, instanceIndex = 0) {
+        return _itemDisplayText(itemValue, baseText, ownedItemsStore.ownedGear, instanceIndex);
+    }
+
+    /** Expand options with per-instance perk entries */
+    function expandOptionsWithInstances(options) {
+        return _expandOptions(options, ownedItemsStore.ownedGear);
+    }
+
+    /** Store the selected instance index for a settings key */
+    function selectGearInstance(settingsKey, itemValue, instanceIndex) {
+        settings[settingsKey].value = itemValue;
+        // Store instance index so perk resolution knows which copy to use
+        if (!settings['_gearInstances']) settings['_gearInstances'] = { value: {} };
+        settings['_gearInstances'].value[settingsKey] = { itemKey: itemValue, instanceIndex };
+    }
+
+    /** Check if a specific option+instance is the currently selected one for a slot */
+    function isActiveOption(settingsKey, itemValue, instanceIndex) {
+        if (settings[settingsKey]?.value !== itemValue) return false;
+        const gearInstances = settings['_gearInstances']?.value;
+        if (!gearInstances || !gearInstances[settingsKey]) {
+            // No instance tracking — default (index 0) is active
+            return instanceIndex === 0;
+        }
+        return gearInstances[settingsKey].itemKey === itemValue &&
+               gearInstances[settingsKey].instanceIndex === instanceIndex;
     }
 
     function isWeaponTwoHand(value) {
@@ -83,20 +138,14 @@
     function gearIcon(settingKey, fallback, folder = 'shared') {
         const val = settings[settingKey]?.value;
         if (!val || val === 'none') return fallback;
-        const base = val.replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '').replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
+        const base = stripVariantSuffix(val);
         if (base !== val) return `/gear_icons/${folder}/${base}.png`;
         return `/gear_icons/${folder}/${val}.png`;
     }
 
     function gearBadge(settingKey) {
         const val = settings[settingKey]?.value;
-        if (!val) return null;
-        if (val.endsWith(' [IM]')) return { img: '/effect_icons/shard_of_genesis.png' };
-        if (val.endsWith(' (i)')) return { text: 'i' };
-        if (val.endsWith('+')) return { text: '+' };
-        if (val.endsWith(' (or)')) return { text: 'or' };
-        if (val.endsWith(' (e)')) return { text: 'e' };
-        return null;
+        return getGearBadge(val);
     }
 
 
@@ -174,41 +223,41 @@
     const ARMOUR_PRESETS = {
         [SettingsCombatStyles.RANGED]: {
             'BIS': {
-                [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.ELITE_DRACOLICH,
-                [SETTINGS.RANGED_BODY]: SETTINGS.RANGED_BODY_VALUES.ELITE_DRACOLICH,
-                [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.ELITE_DRACOLICH,
-                [SETTINGS.RANGED_GLOVES]: SETTINGS.RANGED_GLOVES_VALUES.ELITE_DRACOLICH,
-                [SETTINGS.RANGED_BOOTS]: SETTINGS.RANGED_BOOTS_VALUES.ELITE_DRACOLICH,
-                [SETTINGS.RANGED_NECKLACE]: SETTINGS.NECKLACE_VALUES.EOFOR,
-                [SETTINGS.RANGED_CAPE]: SETTINGS.CAPE_VALUES.ZUK,
+                [SETTINGS.RANGED_HELMET]: ARMOUR.ELITE_DRACOLICH_COIF,
+                [SETTINGS.RANGED_BODY]: ARMOUR.ELITE_DRACOLICH_HAUBERK,
+                [SETTINGS.RANGED_LEGS]: ARMOUR.ELITE_DRACOLICH_CHAPS,
+                [SETTINGS.RANGED_GLOVES]: ARMOUR.ELITE_DRACOLICH_VAMBRACES,
+                [SETTINGS.RANGED_BOOTS]: ARMOUR.ELITE_DRACOLICH_BOOTS,
+                [SETTINGS.RANGED_NECKLACE]: ARMOUR.EOF_OR,
+                [SETTINGS.RANGED_CAPE]: ARMOUR.IGNEOUS_KAL_ZUK,
                 [SETTINGS.RANGED_RING]: SETTINGS.RING_VALUES.STALKER_E,
-                [SETTINGS.RANGED_POCKET]: SETTINGS.POCKET_VALUES.FUL,
-                [SETTINGS.RANGED_AMMO_SLOT]: SETTINGS.RANGED_AMMO_SLOT_VALUES.FUL_ARROWS,
-                [SETTINGS.RANGED_MH]: SETTINGS.RANGED_TH_VALUES.BOLG_IM,
+                [SETTINGS.RANGED_POCKET]: ARMOUR.FUL_BOOK,
+                [SETTINGS.RANGED_AMMO_SLOT]: ARMOUR.FUL_ARROWS,
+                [SETTINGS.RANGED_MH]: WEAPONS.BOW_OF_THE_LAST_GUARDIAN_IM,
             },
             'Elite Dracolich': {
-                [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.ELITE_DRACOLICH,
-                [SETTINGS.RANGED_BODY]: SETTINGS.RANGED_BODY_VALUES.ELITE_DRACOLICH,
-                [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.ELITE_DRACOLICH,
-                [SETTINGS.RANGED_GLOVES]: SETTINGS.RANGED_GLOVES_VALUES.ELITE_DRACOLICH,
-                [SETTINGS.RANGED_BOOTS]: SETTINGS.RANGED_BOOTS_VALUES.ELITE_DRACOLICH,
+                [SETTINGS.RANGED_HELMET]: ARMOUR.ELITE_DRACOLICH_COIF,
+                [SETTINGS.RANGED_BODY]: ARMOUR.ELITE_DRACOLICH_HAUBERK,
+                [SETTINGS.RANGED_LEGS]: ARMOUR.ELITE_DRACOLICH_CHAPS,
+                [SETTINGS.RANGED_GLOVES]: ARMOUR.ELITE_DRACOLICH_VAMBRACES,
+                [SETTINGS.RANGED_BOOTS]: ARMOUR.ELITE_DRACOLICH_BOOTS,
             },
             'Dracolich': {
-                [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.DRACOLICH,
-                [SETTINGS.RANGED_BODY]: SETTINGS.RANGED_BODY_VALUES.DRACOLICH,
-                [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.DRACOLICH,
-                [SETTINGS.RANGED_GLOVES]: SETTINGS.RANGED_GLOVES_VALUES.DRACOLICH,
-                [SETTINGS.RANGED_BOOTS]: SETTINGS.RANGED_BOOTS_VALUES.DRACOLICH,
+                [SETTINGS.RANGED_HELMET]: ARMOUR.DRACOLICH_COIF,
+                [SETTINGS.RANGED_BODY]: ARMOUR.DRACOLICH_HAUBERK,
+                [SETTINGS.RANGED_LEGS]: ARMOUR.DRACOLICH_CHAPS,
+                [SETTINGS.RANGED_GLOVES]: ARMOUR.DRACOLICH_VAMBRACES,
+                [SETTINGS.RANGED_BOOTS]: ARMOUR.DRACOLICH_BOOTS,
             },
             'Elite Sirenic': {
-                [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.ELITE_SIRENIC,
-                [SETTINGS.RANGED_BODY]: SETTINGS.RANGED_BODY_VALUES.ELITE_SIRENIC,
-                [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.ELITE_SIRENIC,
+                [SETTINGS.RANGED_HELMET]: ARMOUR.ELITE_SIRENIC_MASK,
+                [SETTINGS.RANGED_BODY]: ARMOUR.ELITE_SIRENIC_HAUBERK,
+                [SETTINGS.RANGED_LEGS]: ARMOUR.ELITE_SIRENIC_CHAPS,
             },
             'Sirenic': {
-                [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.SIRENIC,
-                [SETTINGS.RANGED_BODY]: SETTINGS.RANGED_BODY_VALUES.SIRENIC,
-                [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.SIRENIC,
+                [SETTINGS.RANGED_HELMET]: ARMOUR.SIRENIC_MASK,
+                [SETTINGS.RANGED_BODY]: ARMOUR.SIRENIC_HAUBERK,
+                [SETTINGS.RANGED_LEGS]: ARMOUR.SIRENIC_CHAPS,
             },
             'None': {
                 [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.NONE,
@@ -229,26 +278,26 @@
                 [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE,
                 [SETTINGS.MAGIC_GLOVES]: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE,
                 [SETTINGS.MAGIC_BOOTS]: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE,
-                [SETTINGS.MAGIC_NECKLACE]: SETTINGS.NECKLACE_VALUES.EOFOR,
-                [SETTINGS.MAGIC_CAPE]: SETTINGS.CAPE_VALUES.ZUK,
+                [SETTINGS.MAGIC_NECKLACE]: ARMOUR.EOF_OR,
+                [SETTINGS.MAGIC_CAPE]: ARMOUR.IGNEOUS_KAL_ZUK,
                 [SETTINGS.MAGIC_RING]: SETTINGS.RING_VALUES.CHANNELLER_E,
-                [SETTINGS.MAGIC_POCKET]: SETTINGS.POCKET_VALUES.GRIM,
-                [SETTINGS.MAGIC_MH]: SETTINGS.MAGIC_TH_VALUES.FSOA_IM
+                [SETTINGS.MAGIC_POCKET]: ARMOUR.ERETHDORS_GRIMOIRE,
+                [SETTINGS.MAGIC_MH]: WEAPONS.FRACTURED_STAFF_OF_ARMADYL_IM
             },
             'Elite Tectonic': {
-                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC,
-                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC,
-                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC,
+                [SETTINGS.MAGIC_HELMET]: ARMOUR.ELITE_TECTONIC_MASK,
+                [SETTINGS.MAGIC_BODY]: ARMOUR.ELITE_TECTONIC_ROBE_TOP,
+                [SETTINGS.MAGIC_LEGS]: ARMOUR.ELITE_TECTONIC_ROBE_BOTTOM,
             },
             'Tectonic': {
-                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.TECTONIC,
-                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.TECTONIC,
-                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.TECTONIC,
+                [SETTINGS.MAGIC_HELMET]: ARMOUR.TECTONIC_MASK,
+                [SETTINGS.MAGIC_BODY]: ARMOUR.TECTONIC_ROBE_TOP,
+                [SETTINGS.MAGIC_LEGS]: ARMOUR.TECTONIC_ROBE_BOTTOM,
             },
             'Virtus': {
-                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.VIRTUS,
-                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.VIRTUS,
-                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.VIRTUS,
+                [SETTINGS.MAGIC_HELMET]: ARMOUR.VIRTUS_MASK,
+                [SETTINGS.MAGIC_BODY]: ARMOUR.VIRTUS_ROBE_TOP,
+                [SETTINGS.MAGIC_LEGS]: ARMOUR.VIRTUS_ROBE_LEGS,
             },
             'None': {
                 [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.NONE,
@@ -264,36 +313,36 @@
         },
         [SettingsCombatStyles.MELEE]: {
             'BIS': {
-                [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
-                [SETTINGS.MELEE_BODY]: SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
-                [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
-                [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.GOP_E,
-                [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
-                [SETTINGS.MELEE_NECKLACE]: SETTINGS.NECKLACE_VALUES.AM_HEJ,
-                [SETTINGS.MELEE_CAPE]: SETTINGS.CAPE_VALUES.ZUK,
-                [SETTINGS.MELEE_RING]: SETTINGS.RING_VALUES.REAVERS,
-                [SETTINGS.MELEE_POCKET]: SETTINGS.POCKET_VALUES.FUL,
-                [SETTINGS.MELEE_MH]: SETTINGS.MELEE_TH_VALUES.EZK_IM
+                [SETTINGS.MELEE_HELMET]: ARMOUR.VESTMENTS_OF_HAVOC_HOOD,
+                [SETTINGS.MELEE_BODY]: ARMOUR.VESTMENTS_OF_HAVOC_ROBE_TOP,
+                [SETTINGS.MELEE_LEGS]: ARMOUR.VESTMENTS_OF_HAVOC_ROBE_BOTTOM,
+                [SETTINGS.MELEE_GLOVES]: ARMOUR.GLOVES_OF_PASSAGE_E,
+                [SETTINGS.MELEE_BOOTS]: ARMOUR.VESTMENTS_OF_HAVOC_BOOTS,
+                [SETTINGS.MELEE_NECKLACE]: ARMOUR.AM_HEJ,
+                [SETTINGS.MELEE_CAPE]: ARMOUR.IGNEOUS_KAL_ZUK,
+                [SETTINGS.MELEE_RING]: ARMOUR.REAVERS_RING,
+                [SETTINGS.MELEE_POCKET]: ARMOUR.FUL_BOOK,
+                [SETTINGS.MELEE_MH]: WEAPONS.EZK_IM
             },
             'Trimmed Masterwork': {
-                [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.TMW,
-                [SETTINGS.MELEE_BODY]: SETTINGS.MELEE_BODY_VALUES.TMW,
-                [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.TMW,
-                [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.TMW,
-                [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.TMW,
+                [SETTINGS.MELEE_HELMET]: ARMOUR.TMW_MELEE_HELM,
+                [SETTINGS.MELEE_BODY]: ARMOUR.TMW_MELEE_PLATEBODY,
+                [SETTINGS.MELEE_LEGS]: ARMOUR.TMW_MELEE_PLATELEGS,
+                [SETTINGS.MELEE_GLOVES]: ARMOUR.TMW_MELEE_GLOVES,
+                [SETTINGS.MELEE_BOOTS]: ARMOUR.TMW_MELEE_BOOTS,
             },
             'Masterwork': {
-                [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.MASTERWORK,
-                [SETTINGS.MELEE_BODY]: SETTINGS.MELEE_BODY_VALUES.MASTERWORK,
-                [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.MASTERWORK,
-                [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.MASTERWORK,
-                [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.MASTERWORK,
+                [SETTINGS.MELEE_HELMET]: ARMOUR.MASTERWORK_MELEE_HELM,
+                [SETTINGS.MELEE_BODY]: ARMOUR.MASTERWORK_MELEE_PLATEBODY,
+                [SETTINGS.MELEE_LEGS]: ARMOUR.MASTERWORK_MELEE_PLATELEGS,
+                [SETTINGS.MELEE_GLOVES]: ARMOUR.MASTERWORK_MELEE_GLOVES,
+                [SETTINGS.MELEE_BOOTS]: ARMOUR.MASTERWORK_MELEE_BOOTS,
             },
             'Vestments of Havoc': {
-                [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
-                [SETTINGS.MELEE_BODY]: SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
-                [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
-                [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
+                [SETTINGS.MELEE_HELMET]: ARMOUR.VESTMENTS_OF_HAVOC_HOOD,
+                [SETTINGS.MELEE_BODY]: ARMOUR.VESTMENTS_OF_HAVOC_ROBE_TOP,
+                [SETTINGS.MELEE_LEGS]: ARMOUR.VESTMENTS_OF_HAVOC_ROBE_BOTTOM,
+                [SETTINGS.MELEE_BOOTS]: ARMOUR.VESTMENTS_OF_HAVOC_BOOTS,
             },
             'None': {
                 [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.NONE,
@@ -309,31 +358,31 @@
         },
         [SettingsCombatStyles.NECROMANCY]: {
             'BIS': {
-                [SETTINGS.NECRO_HELMET]: SETTINGS.NECRO_HELMET_VALUES.TFN,
-                [SETTINGS.NECRO_BODY]: SETTINGS.NECRO_BODY_VALUES.TFN,
-                [SETTINGS.NECRO_LEGS]: SETTINGS.NECRO_LEGS_VALUES.TFN,
-                [SETTINGS.NECRO_GLOVES]: SETTINGS.NECRO_GLOVES_VALUES.TFN,
-                [SETTINGS.NECRO_BOOTS]: SETTINGS.NECRO_BOOTS_VALUES.TFN,
-                [SETTINGS.NECRO_NECKLACE]: SETTINGS.NECKLACE_VALUES.EOFOR,
-                [SETTINGS.NECRO_CAPE]: SETTINGS.CAPE_VALUES.ZUK,
-                [SETTINGS.NECRO_RING]: SETTINGS.RING_VALUES.REAVERS,
-                [SETTINGS.NECRO_POCKET]: SETTINGS.POCKET_VALUES.GRIM,
-                [SETTINGS.NECRO_MH]: SETTINGS.NECRO_MH_VALUES.OMNI_GUARD_IM,
-                [SETTINGS.NECRO_OH]: SETTINGS.NECRO_OH_VALUES.SOULBOUND_LANTERN_IM,
+                [SETTINGS.NECRO_HELMET]: ARMOUR.TFN_CROWN,
+                [SETTINGS.NECRO_BODY]: ARMOUR.TFN_ROBE_TOP,
+                [SETTINGS.NECRO_LEGS]: ARMOUR.TFN_ROBE_BOTTOM,
+                [SETTINGS.NECRO_GLOVES]: ARMOUR.TFN_HAND_WRAP,
+                [SETTINGS.NECRO_BOOTS]: ARMOUR.TFN_FOOT_WRAPS,
+                [SETTINGS.NECRO_NECKLACE]: ARMOUR.EOF_OR,
+                [SETTINGS.NECRO_CAPE]: ARMOUR.IGNEOUS_KAL_ZUK,
+                [SETTINGS.NECRO_RING]: ARMOUR.REAVERS_RING,
+                [SETTINGS.NECRO_POCKET]: ARMOUR.ERETHDORS_GRIMOIRE,
+                [SETTINGS.NECRO_MH]: WEAPONS.OMNI_GUARD_IM,
+                [SETTINGS.NECRO_OH]: WEAPONS.SOULBOUND_LANTERN_IM,
             },
             'First Necromancer (t110)': {
-                [SETTINGS.NECRO_HELMET]: SETTINGS.NECRO_HELMET_VALUES.TFN,
-                [SETTINGS.NECRO_BODY]: SETTINGS.NECRO_BODY_VALUES.TFN,
-                [SETTINGS.NECRO_LEGS]: SETTINGS.NECRO_LEGS_VALUES.TFN,
-                [SETTINGS.NECRO_GLOVES]: SETTINGS.NECRO_GLOVES_VALUES.TFN,
-                [SETTINGS.NECRO_BOOTS]: SETTINGS.NECRO_BOOTS_VALUES.TFN,
+                [SETTINGS.NECRO_HELMET]: ARMOUR.TFN_CROWN,
+                [SETTINGS.NECRO_BODY]: ARMOUR.TFN_ROBE_TOP,
+                [SETTINGS.NECRO_LEGS]: ARMOUR.TFN_ROBE_BOTTOM,
+                [SETTINGS.NECRO_GLOVES]: ARMOUR.TFN_HAND_WRAP,
+                [SETTINGS.NECRO_BOOTS]: ARMOUR.TFN_FOOT_WRAPS,
             },
             'Deathdealer (t90)': {
-                [SETTINGS.NECRO_HELMET]: SETTINGS.NECRO_HELMET_VALUES.T90DD,
-                [SETTINGS.NECRO_BODY]: SETTINGS.NECRO_BODY_VALUES.T90DD,
-                [SETTINGS.NECRO_LEGS]: SETTINGS.NECRO_LEGS_VALUES.T90DD,
-                [SETTINGS.NECRO_GLOVES]: SETTINGS.NECRO_GLOVES_VALUES.T90DD,
-                [SETTINGS.NECRO_BOOTS]: SETTINGS.NECRO_BOOTS_VALUES.T90DD,
+                [SETTINGS.NECRO_HELMET]: ARMOUR.DEATHDEALER_HOOD_T90,
+                [SETTINGS.NECRO_BODY]: ARMOUR.DEATHDEALER_ROBE_TOP_T90,
+                [SETTINGS.NECRO_LEGS]: ARMOUR.DEATHDEALER_ROBE_BOTTOM_T90,
+                [SETTINGS.NECRO_GLOVES]: ARMOUR.DEATHDEALER_GLOVES_T90,
+                [SETTINGS.NECRO_BOOTS]: ARMOUR.DEATHDEALER_BOOTS_T90,
             },
         },
     };
@@ -354,42 +403,33 @@
 
 <div class="flex items-center justify-center gap-2 mb-4">
     <h5 class="uppercase font-bold text-lg text-center">Armour</h5>
-    <PillToggle bind:value={gearFilter} />
+    <PillToggle value={effectiveFilter} onchange={cycleFilter} />
 </div>
-<div class="flex flex-wrap gap-2 justify-center mb-3">
+<div class="flex flex-wrap gap-2 justify-center mb-3" style="--style-color: {activeStyleColor}">
     {#each (armourSlotsByStyle[styleTab] ?? []) as slot}
         {@const slotOptions = getSlotOptions(slot)}
         {@const iconFolder = slot.gearSlot ? getIconFolder(settings[slot.key]?.value, styleFolder[styleTab]) : styleFolder[styleTab]}
         <div class="relative">
-            <button
-                type="button"
-                class="stack-toggle"
-                class:stack-active={settings[slot.key]?.value && settings[slot.key]?.value !== 'none'}
+            <ActionIcon
+                value={settings[slot.key]?.value ?? 'none'}
+                folder={iconFolder}
+                fallback={slot.fallback}
+                size="md"
+                active={settings[slot.key]?.value && settings[slot.key]?.value !== 'none'}
+                borderColor={activeStyleColor}
                 title="{settings[slot.key]?.label ?? slot.key}: {slotOptions.find(o => o.value === settings[slot.key]?.value)?.text ?? 'None'}"
                 onclick={() => { openDropdown = openDropdown === slot.key ? null : slot.key; }}
-            >
-                <img
-                    src={gearIcon(slot.key, slot.fallback, iconFolder)}
-                    alt={settings[slot.key]?.label ?? ''}
-                    class="w-7 h-7 object-contain"
-                    onerror={(e) => { e.target.onerror = () => { e.target.onerror = null; e.target.src = slot.fallback; }; const icons = gearIconWithFallback(slot.key, slot.fallback, iconFolder); e.target.src = icons.fallbackIcon; }}
-                />
-                {#if gearBadge(slot.key)}
-                    {#if gearBadge(slot.key).img}
-                        <img src={gearBadge(slot.key).img} alt="" class="gear-badge-img" />
-                    {:else}
-                        <span class="stack-count">{gearBadge(slot.key).text}</span>
-                    {/if}
-                {/if}
-            </button>
+                oncontextmenu={(e) => { e.preventDefault(); if (settings[slot.key]) { settings[slot.key].value = 'none'; updateDamages(); } }}
+            />
             {#if openDropdown === slot.key}
+                {@const expandedOptions = expandOptionsWithInstances(slotOptions)}
                 <div class="icon-dropdown" style="min-width: 160px;">
-                    {#each slotOptions as option}
+                    {#each expandedOptions as option}
                         <button
                             type="button"
                             class="icon-dropdown-item"
-                            class:active={settings[slot.key]?.value === option.value}
-                            onclick={() => { settings[slot.key].value = option.value; openDropdown = null; updateDamages(); }}
+                            class:active={isActiveOption(slot.key, option.value, option.instanceIndex ?? 0)}
+                            onclick={() => { selectGearInstance(slot.key, option.value, option.instanceIndex ?? 0); openDropdown = null; updateDamages(); }}
                         >
                             {option.text}
                         </button>
@@ -405,41 +445,39 @@
         {@const thItems = getWeaponOptions('mainhand', 'two-hand')}
         {@const ohItems = getWeaponOptions('offhand')}
         {@const currentValue = settings[ws.mh]?.value}
-        {@const weaponText = [...mhItems, ...thItems].find(o => o.value === currentValue)?.text ?? 'Custom'}
+        {@const weaponBaseText = [...mhItems, ...thItems].find(o => o.value === currentValue)?.text ?? 'Custom'}
+        {@const weaponText = itemDisplayText(currentValue, weaponBaseText)}
         <div class="relative">
-            <button type="button" class="stack-toggle"
-                class:stack-active={currentValue}
+            <ActionIcon
+                value={settings[ws.mh]?.value ?? 'none'}
+                folder={styleFolder[styleTab]}
+                fallback="/armour_icons/Main_hand_slot.webp"
+                size="md"
+                active={!!currentValue && currentValue !== 'none'}
+                borderColor={activeStyleColor}
                 title="Weapon: {weaponText}{is2h ? ' (2H)' : ''}"
                 onclick={() => { openDropdown = openDropdown === 'weapon_combined' ? null : 'weapon_combined'; }}
-            >
-                <img src={gearIcon(ws.mh, '/armour_icons/Main_hand_slot.webp', styleFolder[styleTab])} alt="Weapon" class="w-7 h-7 object-contain"
-                    onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Main_hand_slot.webp'; }}
-                />
-                {#if gearBadge(ws.mh)}
-                    {#if gearBadge(ws.mh).img}
-                        <img src={gearBadge(ws.mh).img} alt="" class="gear-badge-img" />
-                    {:else}
-                        <span class="stack-count">{gearBadge(ws.mh).text}</span>
-                    {/if}
-                {/if}
-            </button>
+                oncontextmenu={(e) => { e.preventDefault(); if (settings[ws.mh]) { settings[ws.mh].value = 'none'; updateDamages(); } }}
+            />
             {#if openDropdown === 'weapon_combined'}
+                {@const expandedMh = expandOptionsWithInstances(mhItems)}
+                {@const expandedTh = expandOptionsWithInstances(thItems)}
                 <div class="icon-dropdown" style="min-width: 180px;">
-                    {#if mhItems.length > 0}
+                    {#if expandedMh.length > 0}
                         <div style="padding: 0.2rem 0.5rem; font-size: 0.65rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em;">Main-hand</div>
-                        {#each mhItems as option}
+                        {#each expandedMh as option}
                             <button type="button" class="icon-dropdown-item"
-                                class:active={currentValue === option.value && !is2h}
-                                onclick={() => onWeaponSelected(ws, option.value)}
+                                class:active={isActiveOption(ws.mh, option.value, option.instanceIndex ?? 0) && !is2h}
+                                onclick={() => { selectGearInstance(ws.mh, option.value, option.instanceIndex ?? 0); openDropdown = null; updateDamages(); }}
                             >{option.text}</button>
                         {/each}
                     {/if}
-                    {#if thItems.length > 0}
+                    {#if expandedTh.length > 0}
                         <div style="padding: 0.2rem 0.5rem; font-size: 0.65rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 0.2rem;">Two-handed</div>
-                        {#each thItems as option}
+                        {#each expandedTh as option}
                             <button type="button" class="icon-dropdown-item"
-                                class:active={currentValue === option.value && is2h}
-                                onclick={() => onWeaponSelected(ws, option.value)}
+                                class:active={isActiveOption(ws.mh, option.value, option.instanceIndex ?? 0) && is2h}
+                                onclick={() => { selectGearInstance(ws.mh, option.value, option.instanceIndex ?? 0); openDropdown = null; updateDamages(); }}
                             >{option.text}</button>
                         {/each}
                     {/if}
@@ -449,28 +487,24 @@
         <!-- OH: only show when dual-wield -->
         {#if !is2h && ws.oh && settings[ws.oh]}
             <div class="relative">
-                <button type="button" class="stack-toggle"
-                    class:stack-active={settings[ws.oh]?.value && settings[ws.oh]?.value !== 'none'}
+                <ActionIcon
+                    value={settings[ws.oh]?.value ?? 'none'}
+                    folder={styleFolder[styleTab]}
+                    fallback="/armour_icons/Off-hand_slot.webp"
+                    size="md"
+                    active={settings[ws.oh]?.value && settings[ws.oh]?.value !== 'none'}
+                    borderColor={activeStyleColor}
                     title="Off-hand: {ohItems.find(o => o.value === settings[ws.oh]?.value)?.text ?? 'None'}"
                     onclick={() => { openDropdown = openDropdown === ws.oh ? null : ws.oh; }}
-                >
-                    <img src={gearIcon(ws.oh, '/armour_icons/Off-hand_slot.webp', styleFolder[styleTab])} alt="Off-hand" class="w-7 h-7 object-contain"
-                        onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Off-hand_slot.webp'; }}
-                    />
-                    {#if gearBadge(ws.oh)}
-                        {#if gearBadge(ws.oh).img}
-                            <img src={gearBadge(ws.oh).img} alt="" class="gear-badge-img" />
-                        {:else}
-                            <span class="stack-count">{gearBadge(ws.oh).text}</span>
-                        {/if}
-                    {/if}
-                </button>
+                    oncontextmenu={(e) => { e.preventDefault(); if (settings[ws.oh]) { settings[ws.oh].value = 'none'; updateDamages(); } }}
+                />
                 {#if openDropdown === ws.oh}
+                    {@const expandedOh = expandOptionsWithInstances(ohItems)}
                     <div class="icon-dropdown" style="min-width: 160px;">
-                        {#each ohItems as option}
+                        {#each expandedOh as option}
                             <button type="button" class="icon-dropdown-item"
-                                class:active={settings[ws.oh]?.value === option.value}
-                                onclick={() => { settings[ws.oh].value = option.value; openDropdown = null; updateDamages(); }}
+                                class:active={isActiveOption(ws.oh, option.value, option.instanceIndex ?? 0)}
+                                onclick={() => { selectGearInstance(ws.oh, option.value, option.instanceIndex ?? 0); openDropdown = null; updateDamages(); }}
                             >{option.text}</button>
                         {/each}
                     </div>
@@ -580,7 +614,7 @@
         background: none;
     }
     .stack-toggle:hover { opacity: 0.7; }
-    .stack-active { opacity: 1; border-color: #4ade80; }
+    .stack-active { opacity: 1; border-color: var(--style-color, var(--style-color, #4ade80)); }
     .stack-count {
         position: absolute;
         bottom: -2px;
@@ -593,14 +627,6 @@
         padding: 0 3px;
         line-height: 1.2;
     }
-    .gear-badge-img {
-        position: absolute;
-        bottom: -2px;
-        right: -2px;
-        width: 14px;
-        height: 14px;
-        border-radius: 3px;
-    }
     .icon-dropdown {
         position: absolute;
         top: 100%;
@@ -608,7 +634,7 @@
         right: 0;
         z-index: 20;
         background: #1e293b;
-        border: 1px solid #4ade80;
+        border: 1px solid var(--style-color, #4ade80);
         border-radius: 6px;
         max-height: 200px;
         overflow-y: auto;
@@ -626,12 +652,12 @@
         cursor: pointer;
     }
     .icon-dropdown-item:hover { background: rgba(255, 255, 255, 0.1); }
-    .icon-dropdown-item.active { color: #4ade80; font-weight: bold; }
+    .icon-dropdown-item.active { color: var(--style-color, #4ade80); font-weight: bold; }
     .custom-tier-input {
         width: 42px;
         background: rgba(0, 0, 0, 0.3);
         color: #ddd;
-        border: 2px solid #4ade80;
+        border: 2px solid var(--style-color, #4ade80);
         border-radius: 6px;
         padding: 4px 6px;
         font-size: 0.75rem;

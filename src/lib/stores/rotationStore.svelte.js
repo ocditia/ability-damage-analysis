@@ -37,8 +37,11 @@ export const rotationStore = $state({
     distributionStats: [],
     poisonPerTick: [],
     familiarPerTick: [],
+    familiarVariancePerTick: [],
     dreadnipPerTick: [],
+    dreadnipVariancePerTick: [],
     conjurePerTick: [],
+    conjureVariancePerTick: [],
     phaseTransitions: []
 });
 
@@ -371,8 +374,11 @@ export const rotationActions = {
         rotationStore.distributionStats = dmgResult.distributionStats;
         rotationStore.poisonPerTick = dmgResult.poisonPerTick || [];
         rotationStore.familiarPerTick = dmgResult.familiarPerTick || [];
+        rotationStore.familiarVariancePerTick = dmgResult.familiarVariancePerTick || [];
         rotationStore.dreadnipPerTick = dmgResult.dreadnipPerTick || [];
+        rotationStore.dreadnipVariancePerTick = dmgResult.dreadnipVariancePerTick || [];
         rotationStore.conjurePerTick = dmgResult.conjurePerTick || [];
+        rotationStore.conjureVariancePerTick = dmgResult.conjureVariancePerTick || [];
         rotationStore.phaseTransitions = dmgResult.phaseTransitions || [];
 
         // Calculate Gaussian parameters for more accurate damage modeling

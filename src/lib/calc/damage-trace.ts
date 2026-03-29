@@ -6,20 +6,20 @@
  * it IS the real calculation.
  */
 
-import { Logger, type TraceEntry } from '$lib/utils/Logger';
+import { Logger, type TraceEntry, type TraceHit } from '$lib/utils/Logger';
 import { calculateSingleAbilityDamage } from './unified-damage-calculator';
 
-export type { TraceEntry };
+export type { TraceEntry, TraceHit };
 
 export function traceDamageCalculation(
     settings: Record<string, any>,
     abilityKey: string
-): { steps: TraceEntry[], result: number } {
+): { steps: TraceEntry[], hits: TraceHit[], result: number } {
     const logger = Logger.getInstance();
     logger.startTrace();
 
     const calcResult = calculateSingleAbilityDamage(settings, { ability: abilityKey });
 
-    const steps = logger.endTrace();
-    return { steps, result: calcResult.expected };
+    const { entries, hits } = logger.endTrace();
+    return { steps: entries, hits, result: calcResult.expected };
 }

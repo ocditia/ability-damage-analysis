@@ -1,45 +1,273 @@
 import { SETTINGS } from "../calc/settings_rb";
 import type { Equipment } from "../calc/types";
 
+export enum ARMOUR {
 
-export const armour: Record<string, Equipment> = {
-    [SETTINGS.RING_VALUES.TOKKUL]: {
+    //Magic
+    TUMEKENS_MASK = 'mask of tumeken\'s resplendence',
+    TUMEKENS_ROBE_TOP = 'robe top of tumeken\'s resplendence',
+    TUMEKENS_ROBE_BOTTOM = 'robe bottom of tumeken\'s resplendence',
+    TUMEKENS_BOOTS = 'boots of tumeken\'s resplendence',
+    TUMEKENS_GLOVES = 'gloves of tumeken\'s resplendence',
+    
+    VIRTUS_MASK = 'virtus mask',
+    VIRTUS_ROBE_TOP = 'virtus robe top',
+    VIRTUS_ROBE_LEGS = 'virtus robe legs',
+
+    TECTONIC_MASK = 'tectonic mask',
+    TECTONIC_ROBE_TOP = 'tectonic robe top',
+    TECTONIC_ROBE_BOTTOM = 'tectonic robe bottom',
+    
+    ELITE_TECTONIC_MASK = 'elite tectonic mask',
+    ELITE_TECTONIC_ROBE_TOP = 'elite tectonic robe top',
+    ELITE_TECTONIC_ROBE_BOTTOM = 'elite tectonic robe bottom',
+
+    SLISKE_HELM = 'anima core helm of sliske',
+    SLISKE_BODY = 'anima core body of sliske',
+    SLISKE_LEGS = 'anima core legs of sliske',
+
+    GHOST_HUNTER_GOGGLES = 'ghost hunter goggles',
+    MASTERWORK_MAGIC_HAT = 'masterwork magic hat',
+    GHOST_HUNTER_BODY = 'ghost hunter body',
+    MASTERWORK_MAGIC_ROBE_TOP = 'masterwork magic robe top',
+    GHOST_HUNTER_LEGS = 'ghost hunter legs',
+    MASTERWORK_MAGIC_ROBE_BOTTOM = 'masterwork magic robe bottom',
+    BLAST_DIFFUSION_BOOTS = 'blast diffusion boots',
+    BLAST_DIFFUSION_BOOTS_E = 'enhanced blast diffusion boots',
+    SILVERHAWK_BOOTS = 'silverhawk boots',
+    MASTERWORK_MAGIC_BOOTS = 'masterwork magic boots',
+    TUSKA_BOOTS = 'warpriest of tuska boots',
+    KERAPACS_WRISTWRAPS = 'kerapacs wristwraps',
+    KERAPACS_WRISTWRAPS_E = 'enhanced kerapacs wristwraps',
+    MASTERWORK_MAGIC_GLOVES = 'masterwork magic gloves',
+    TUSKA_GAUNTLETS = 'warpriest of tuska gauntlets',
+
+
+    //Ranged
+    ELITE_DRACOLICH_COIF = 'elite dracolich coif',
+    ELITE_DRACOLICH_HAUBERK = 'elite dracolich hauberk',
+    ELITE_DRACOLICH_CHAPS = 'elite dracolich chaps',
+    ELITE_DRACOLICH_BOOTS = 'elite dracolich boots',
+    ELITE_DRACOLICH_VAMBRACES = 'elite dracolich vambraces',
+    
+    DRACOLICH_COIF = 'dracolich coif',
+    DRACOLICH_HAUBERK = 'dracolich hauberk',
+    DRACOLICH_CHAPS = 'dracolich chaps',
+    DRACOLICH_BOOTS = 'dracolich boots',
+    DRACOLICH_VAMBRACES = 'dracolich vambraces',
+    
+    ELITE_SIRENIC_MASK = 'elite sirenic mask',
+    ELITE_SIRENIC_HAUBERK = 'elite sirenic hauberk',
+    ELITE_SIRENIC_CHAPS = 'elite sirenic chaps',
+    
+    SIRENIC_MASK = 'sirenic mask',
+    SIRENIC_HAUBERK = 'sirenic hauberk',
+    SIRENIC_CHAPS = 'sirenic chaps',
+
+    NIGHTMARE_GAUNTLETS = 'nightmare gauntlets',
+    NIGHTMARE_GAUNTLETS_E = 'enhanced nightmare gauntlets',
+    FLEETING_BOOTS = 'fleeting boots',
+    FLEETING_BOOTS_E = 'enhanced fleeting boots',
+    SCRIMSHAW_OF_CRUELTY = 'scrimshaw of cruelty',
+    SUPERIOR_SCRIMSHAW_OF_CRUELTY = 'superior scrimshaw of cruelty',
+
+    FUL_ARROWS = 'ful arrows',
+    WEN_ARROWS = 'wen arrows',
+    DEATHSPORE_ARROWS = 'deathspore arrows',
+    JAS_ARROWS = 'jas arrows',
+    BIK_ARROWS = 'bik arrows',
+    HYDRIX_BAKRIMINEL_BOLTS_E = 'hydrix bakriminel bolts (e)',
+
+    
+    //Melee
+    VESTMENTS_OF_HAVOC_ROBE_TOP = 'vestments of havoc robe top',
+    VESTMENTS_OF_HAVOC_HOOD = 'vestments of havoc hood',
+    VESTMENTS_OF_HAVOC_BOOTS = 'vestments of havoc boots',
+
+    MASTERWORK_MELEE_HELM = 'masterwork melee helm',
+    TMW_MELEE_HELM = 'trimmed masterwork melee helm',
+    TMW_MELEE_PLATEBODY = 'trimmed masterwork melee platebody',
+    BANDOS_CHESTPLATE = 'bandos chestplate',
+    TORVA_PLATEBODY = 'torva platebody',
+    MASTERWORK_MELEE_PLATEBODY = 'masterwork melee platebody',
+    JAWS_OF_THE_ABYSS = 'jaws of the abyss',
+    TORVA_PLATELEGS = 'torva platelegs',
+    BANDOS_TASSETS = 'bandos tassets',
+    LACERATION_BOOTS = 'laceration boots',
+    MASTERWORK_MELEE_BOOTS = 'masterwork melee boots',
+    LACERATION_BOOTS_E = 'enhanced laceration boots',
+    TMW_MELEE_BOOTS = 'trimmed masterwork melee boots',
+
+    MASTERWORK_MELEE_PLATELEGS = 'masterwork melee platelegs',
+    TMW_MELEE_PLATELEGS = 'trimmed masterwork melee platelegs',
+    VESTMENTS_OF_HAVOC_ROBE_BOTTOM = 'vestments of havoc robe bottom',
+    MASTERWORK_MELEE_GLOVES = 'masterwork melee gloves',
+    TMW_MELEE_GLOVES = 'trimmed masterwork melee gloves',
+    GLOVES_OF_PASSAGE = 'gloves of passage',
+    GLOVES_OF_PASSAGE_E = 'enhanced gloves of passage',
+    
+    //Necromancy
+    TFN_CROWN = 'crown of the first necromancer',
+    TFN_CROWN_WITH_ADDON = 'crown of the first necromancer with addon',
+    TFN_ROBE_TOP = 'robe top of the first necromancer',
+    TFN_ROBE_BOTTOM = 'robe bottom of the first necromancer',
+    TFN_FOOT_WRAPS = 'foot wraps of the first necromancer',
+    
+    DEATHDEALER_HOOD_T90 = 'deathdealer hood (tier 90)',
+    DEATHDEALER_BOOTS_T90 = 'deathdealer boots (tier 90)',
+    DEATHDEALER_ROBE_TOP_T90 = 'deathdealer robe top (tier 90)',
+    DEATHDEALER_ROBE_BOTTOM_T90 = 'deathdealer robe bottom (tier 90)',
+
+
+
+   
+
+    // Hybrid
+    DEATHTOUCH_BRACELET = 'deathtouch bracelet',
+    CINDERBANE_GLOVES = 'cinderbane gloves',
+    
+    TFN_HAND_WRAP = 'hand wrap of the first necromancer',
+    DEATHDEALER_GLOVES_T90 = 'deathdealer gloves (tier 90)',
+    EOF_OR = 'essence of finality amulet (or)',
+    EOF = 'essence of finality amulet',
+    CONJURERS_RAISING_AMULET = 'conjurers raising amulet',
+    AOS_OR = 'amulet of souls (or)',
+    AOS = 'amulet of souls',
+    REAPER_NECKLACE_OR = 'reaper necklace (or)',
+    REAPER_NECKLACE = 'reaper necklace',
+    SALVE_AMULET_E = 'salve amulet (e)',
+    SALVE_AMULET = 'salve amulet',
+    AMULET_OF_ZEALOTS = 'amulet of zealots',
+    BERSERKER_NECKLACE = 'berserker necklace',
+    DESERT_AMULET_4 = 'desert amulet 4',
+    BLOOD_AMULET_OF_FURY = 'blood amulet of fury',
+    ARCANE_BLOOD_NECKLACE = 'arcane blood necklace',
+    BRAWLERS_BLOOD_NECKLACE = 'brawler\'s blood necklace',
+    FARSIGHT_BLOOD_NECKLACE = 'farsight blood necklace',
+    AM_ZI = 'am-zi',
+    AM_HEJ = 'am-hej',
+    DRAGON_RIDER_NECKLACE = 'dragon rider necklace',
+    IGNEOUS_KAL_ZUK = 'igneous kal-zuk',
+    IGNEOUS_KAL_MOR = 'igneous kal-mor',
+    IGNEOUS_KAL_MEJ = 'igneous kal-mej',
+    IGNEOUS_KAL_XIL = 'igneous kal-xil',
+    IGNEOUS_KAL_KET = 'igneous kal-ket',
+    TOKHAAR_KAL_MOR = 'tokhaar-kal-mor',
+    TOKHAAR_KAL_MEJ = 'tokhaar-kal-mej',
+    TOKHAAR_KAL_XIL = 'tokhaar-kal-xil',
+    TOKHAAR_KAL_KET = 'tokhaar-kal-ket',
+    COMP_MAX_CAPE = 'comp/max cape',
+    GOD_CAPE = 'god cape',
+    MAX_CAPE = 'max cape',
+    SKILL_CAPE = 'skill cape',
+    GHOST_HUNTER_BACKPACK = 'ghost hunter backpack',
+    TUSKA_CAPE = 'warpriest of tuska cape',
+    REAVERS_RING = 'reavers ring',
+    ZORGOTHS_SOUL_RING = 'zorgoth\'s soul ring',
+    OCCULTISTS_RING = 'occultist\'s ring',
+    RING_OF_DEATH_I = 'ring of death (i)',
+    RING_OF_DEATH = 'ring of death',
+    ASYLUM_SURGEONS_RING_I = 'asylum surgeons ring (i)',
+    ASYLUM_SURGEONS_RING = 'asylum surgeons ring',
+    CHANNELLERS_RING = 'channeller\'s ring',
+    CHANNELLERS_RING_E = 'channeller\'s ring+',
+    STALKERS_RING = 'stalker\'s ring',
+    STALKERS_RING_E = 'stalker\'s ring+',
+    CHAMPIONS_RING = 'champion\'s ring',
+    CHAMPIONS_RING_E = 'champion\'s ring+',
+    LUCK_OF_THE_DWARVES = 'luck of the dwarves',
+    LUCK_OF_THE_DWARVES_I = 'luck of the dwarves (i)',
+    HAZELMERES_SIGNET_RING = 'hazelmere\'s signet ring',
+    HAZELMERES_SIGNET_RING_I = 'hazelmere\'s signet ring (i)',
+    TOKKUL_ZO = 'tokkul-zo',
+    ERETHDORS_GRIMOIRE = 'erethdors grimoire',
+    FUL_BOOK = 'scripture of ful',
+    JAS_BOOK = 'scripture of jas',
+    AMASCUT_BOOK = 'scripture of amascut',
+    GWD3_SCRIPTURE = 'gwd3 scripture',
+    ILLUMINATED_GOD_BOOK = 'illuminated god book',
+    UNDERWORLD_GRIMOIRE_4 = 'underworld grimoire 4',
+    SCRIMSHAW_OF_ELEMENTS = 'scrimshaw of elements',
+    SUPERIOR_SCRIMSHAW_OF_ELEMENTS = 'superior scrimshaw of elements',
+
+    CUSTOM = 'custom',
+
+    NODON_SPIKE_HARNESS = 'nodon spike harness',
+
+    // Additional
+    NONE_TANK = 'none/tank',
+
+
+
+
+
+
+    UNDERWORLD_GRIMOIRE_3 = 'underworld grimoire 3',
+    LEAGUES_POCKET = 'leagues pocket',
+    SEREN_HELM = 'anima core of helm of seren',
+    SEREN_BODY = 'anima core body of seren',
+    SEREN_LEGS = 'anima core legs of seren',
+    REFINED_SEREN_HELM = 'refined anima core of helm of seren',
+    REFINED_SEREN_BODY = 'refined anima core body of seren',
+    REFINED_SEREN_LEGS = 'refined anima core legs of seren',
+    VIRTUS_ROBE_BOTTOM = 'virtus robe bottom',
+    VIRTUS_GLOVES = 'virtus gloves',
+    VIRTUS_BOOTS = 'virtus boots',
+    BANDOS_HELMET = 'bandos helmet',
+    BANDOS_GLOVES = 'bandos gloves',
+    BANDOS_BOOTS = 'bandos boots',
+    TORVA_HELMET = 'torva helmet',
+    TORVA_GLOVES = 'torva gloves',
+    TORVA_BOOTS = 'torva boots',
+}
+
+
+export const armour: Record<ARMOUR, Equipment> = {
+    [ARMOUR.TOKKUL_ZO]: {
         'necromancy strength': 2.4,
         'magic strength': 2.4,
         'melee strength': 2.4,
         'ranged strength': 2.4,
         offensiveTier: { melee: 10, ranged: 10, magic: 10, necro: 10 },
         slot: 'ring',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Tokkul-Zo',
+        icon: "/gear_icons/shared/tokkul-zo.png",
     },
-    [SETTINGS.MAGIC_GLOVES_VALUES.TUSKA]: {
+    [ARMOUR.TUSKA_GAUNTLETS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Warpriest of Tuska Gauntlets',
+        icon: "/gear_icons/shared/warpriest of tuska gauntlets.png", // TODO: icon missing
     },
-    [SETTINGS.MAGIC_BOOTS_VALUES.TUSKA]: {
+    [ARMOUR.TUSKA_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Warpriest of Tuska Boots',
+        icon: "/gear_icons/shared/warpriest of tuska boots.png", // TODO: icon missing
     },
-    [SETTINGS.CAPE_VALUES.TUSKA]: {
+    [ARMOUR.TUSKA_CAPE]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Warpriest of Tuska Cape',
+        icon: "/gear_icons/shared/warpriest of tuska cape.png", // TODO: icon missing
     },
-    [SETTINGS.RANGED_HELMET_VALUES.SIRENIC]: {
+    [ARMOUR.SIRENIC_MASK]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -47,9 +275,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged',
-        popular: false
+        popular: false,
+        title: 'Sirenic Mask',
+        icon: "/gear_icons/ranged/sirenic mask.png",
     },
-    [SETTINGS.RANGED_BODY_VALUES.SIRENIC]: {
+    [ARMOUR.SIRENIC_HAUBERK]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -57,9 +287,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged',
-        popular: false
+        popular: false,
+        title: 'Sirenic Hauberk',
+        icon: "/gear_icons/ranged/sirenic hauberk.png",
     },
-    [SETTINGS.RANGED_LEGS_VALUES.SIRENIC]: {
+    [ARMOUR.SIRENIC_CHAPS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -67,9 +299,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'hybrid',
-        popular: false
+        popular: false,
+        title: 'Sirenic Chaps',
+        icon: "/gear_icons/shared/sirenic chaps.png", // TODO: icon missing
     },
-    [SETTINGS.RANGED_HELMET_VALUES.ELITE_SIRENIC]: {
+    [ARMOUR.ELITE_SIRENIC_MASK]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -77,9 +311,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged',
-        popular: false
+        popular: false,
+        title: 'Elite Sirenic Mask',
+        icon: "/gear_icons/ranged/elite sirenic mask.png",
     },
-    [SETTINGS.RANGED_BODY_VALUES.ELITE_SIRENIC]: {
+    [ARMOUR.ELITE_SIRENIC_HAUBERK]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -87,9 +323,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged',
-        popular: false
+        popular: false,
+        title: 'Elite Sirenic Hauberk',
+        icon: "/gear_icons/ranged/elite sirenic hauberk.png",
     },
-    [SETTINGS.RANGED_LEGS_VALUES.ELITE_SIRENIC]: {
+    [ARMOUR.ELITE_SIRENIC_CHAPS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -97,9 +335,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'ranged',
-        popular: false
+        popular: false,
+        title: 'Elite Sirenic Chaps',
+        icon: "/gear_icons/ranged/elite sirenic chaps.png",
     },
-    [SETTINGS.RANGED_HELMET_VALUES.DRACOLICH]: {
+    [ARMOUR.DRACOLICH_COIF]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -107,9 +347,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged',
-        popular: false
+        popular: false,
+        title: 'Dracolich Coif',
+        icon: "/gear_icons/ranged/dracolich coif.png",
     },
-    [SETTINGS.RANGED_BODY_VALUES.DRACOLICH]: {
+    [ARMOUR.DRACOLICH_HAUBERK]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -117,9 +359,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged',
-        popular: false
+        popular: false,
+        title: 'Dracolich Hauberk',
+        icon: "/gear_icons/ranged/dracolich hauberk.png",
     },
-    [SETTINGS.RANGED_LEGS_VALUES.DRACOLICH]: {
+    [ARMOUR.DRACOLICH_CHAPS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -127,9 +371,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'ranged',
-        popular: false
+        popular: false,
+        title: 'Dracolich Chaps',
+        icon: "/gear_icons/ranged/dracolich chaps.png",
     },
-    [SETTINGS.RANGED_GLOVES_VALUES.DRACOLICH]: {
+    [ARMOUR.DRACOLICH_VAMBRACES]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -137,9 +383,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'ranged',
-        popular: false
+        popular: false,
+        title: 'Dracolich Vambraces',
+        icon: "/gear_icons/ranged/dracolich vambraces.png",
     },
-    [SETTINGS.RANGED_BOOTS_VALUES.DRACOLICH]: {
+    [ARMOUR.DRACOLICH_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -147,9 +395,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'ranged',
-        popular: false
+        popular: false,
+        title: 'Dracolich Boots',
+        icon: "/gear_icons/ranged/dracolich boots.png",
     },
-    [SETTINGS.RANGED_HELMET_VALUES.ELITE_DRACOLICH]: {
+    [ARMOUR.ELITE_DRACOLICH_COIF]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -157,9 +407,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'ranged',
-        popular: true
+        popular: true,
+        title: 'Elite Dracolich Coif',
+        icon: "/gear_icons/ranged/elite dracolich coif.png",
     },
-    [SETTINGS.RANGED_BODY_VALUES.ELITE_DRACOLICH]: {
+    [ARMOUR.ELITE_DRACOLICH_HAUBERK]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -167,9 +419,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'body',
         style: 'ranged',
-        popular: true
+        popular: true,
+        title: 'Elite Dracolich Hauberk',
+        icon: "/gear_icons/ranged/elite dracolich hauberk.png",
     },
-    [SETTINGS.RANGED_LEGS_VALUES.ELITE_DRACOLICH]: {
+    [ARMOUR.ELITE_DRACOLICH_CHAPS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -177,9 +431,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'ranged',
-        popular: true
+        popular: true,
+        title: 'Elite Dracolich Chaps',
+        icon: "/gear_icons/ranged/elite dracolich chaps.png",
     },
-    [SETTINGS.RANGED_GLOVES_VALUES.ELITE_DRACOLICH]: {
+    [ARMOUR.ELITE_DRACOLICH_VAMBRACES]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -187,9 +443,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'ranged',
-        popular: true
+        popular: true,
+        title: 'Elite Dracolich Vambraces',
+        icon: "/gear_icons/ranged/elite dracolich vambraces.png",
     },
-    [SETTINGS.RANGED_BOOTS_VALUES.ELITE_DRACOLICH]: {
+    [ARMOUR.ELITE_DRACOLICH_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -197,9 +455,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'ranged',
-        popular: true
+        popular: true,
+        title: 'Elite Dracolich Boots',
+        icon: "/gear_icons/ranged/elite dracolich boots.png",
     },
-    [SETTINGS.MAGIC_HELMET_VALUES.VIRTUS]: {
+    [ARMOUR.VIRTUS_MASK]: {
         'necromancy strength': 0,
         'magic strength': 20.3,
         'melee strength': 0,
@@ -207,9 +467,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'helmet',
         style: 'magic',
-        popular: false
+        popular: false,
+        title: 'Virtus Mask',
+        icon: "/gear_icons/magic/virtus mask.png",
     },
-    [SETTINGS.MAGIC_BODY_VALUES.VIRTUS]: {
+    [ARMOUR.VIRTUS_ROBE_TOP]: {
         'necromancy strength': 0,
         'magic strength': 30.5,
         'melee strength': 0,
@@ -217,9 +479,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'body',
         style: 'magic',
-        popular: false
+        popular: false,
+        title: 'Virtus Robe Top',
+        icon: "/gear_icons/magic/virtus robe top.png",
     },
-    [SETTINGS.MAGIC_LEGS_VALUES.VIRTUS]: {
+    [ARMOUR.VIRTUS_ROBE_LEGS]: {
         'necromancy strength': 0,
         'magic strength': 25.4,
         'melee strength': 0,
@@ -227,9 +491,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'legs',
         style: 'magic',
-        popular: false
+        popular: false,
+        title: 'Virtus Robe Legs',
+        icon: "/gear_icons/magic/virtus robe legs.png",
     },
-    [SETTINGS.MAGIC_HELMET_VALUES.TECTONIC]: {
+    [ARMOUR.TECTONIC_MASK]: {
         'necromancy strength': 0,
         'magic strength': 23.2,
         'melee strength': 0,
@@ -237,9 +503,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'helmet',
         style: 'magic',
-        popular: false
+        popular: false,
+        title: 'Tectonic Mask',
+        icon: "/gear_icons/magic/tectonic mask.png",
     },
-    [SETTINGS.MAGIC_BODY_VALUES.TECTONIC]: {
+    [ARMOUR.TECTONIC_ROBE_TOP]: {
         'necromancy strength': 0,
         'magic strength': 34.8,
         'melee strength': 0,
@@ -247,9 +515,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'body',
         style: 'magic',
-        popular: false
+        popular: false,
+        title: 'Tectonic Robe Top',
+        icon: "/gear_icons/magic/tectonic robe top.png",
     },
-    [SETTINGS.MAGIC_LEGS_VALUES.TECTONIC]: {
+    [ARMOUR.TECTONIC_ROBE_BOTTOM]: {
         'necromancy strength': 0,
         'magic strength': 29,
         'melee strength': 0,
@@ -257,9 +527,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'legs',
         style: 'magic',
-        popular: false
+        popular: false,
+        title: 'Tectonic Robe Bottom',
+        icon: "/gear_icons/magic/tectonic robe bottom.png",
     },
-    [SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC]: {
+    [ARMOUR.ELITE_TECTONIC_MASK]: {
         'necromancy strength': 0,
         'magic strength': 24,
         'melee strength': 0,
@@ -267,9 +539,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'helmet',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Elite Tectonic Mask',
+        icon: "/gear_icons/magic/elite tectonic mask.png",
     },
-    [SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC]: {
+    [ARMOUR.ELITE_TECTONIC_ROBE_TOP]: {
         'necromancy strength': 0,
         'magic strength': 36,
         'melee strength': 0,
@@ -277,9 +551,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'body',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Elite Tectonic Robe Top',
+        icon: "/gear_icons/magic/elite tectonic robe top.png",
     },
-    [SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC]: {
+    [ARMOUR.ELITE_TECTONIC_ROBE_BOTTOM]: {
         'necromancy strength': 0,
         'magic strength': 31,
         'melee strength': 0,
@@ -287,54 +563,66 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'legs',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Elite Tectonic Robe Bottom',
+        icon: "/gear_icons/magic/elite tectonic robe bottom.png",
     },
-    [SETTINGS.MAGIC_HELMET_VALUES.SLISKE]: {
+    [ARMOUR.SLISKE_HELM]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Anima Core Helm of Sliske',
+        icon: "/gear_icons/shared/anima core helm of sliske.png", // TODO: icon missing
     },
-    [SETTINGS.MAGIC_BODY_VALUES.SLISKE]: {
+    [ARMOUR.SLISKE_BODY]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Anima Core Body of Sliske',
+        icon: "/gear_icons/shared/anima core body of sliske.png", // TODO: icon missing
     },
-    [SETTINGS.MAGIC_LEGS_VALUES.SLISKE]: {
+    [ARMOUR.SLISKE_LEGS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Anima Core Legs of Sliske',
+        icon: "/gear_icons/shared/anima core legs of sliske.png", // TODO: icon missing
     },
-    [SETTINGS.MAGIC_GLOVES_VALUES.DTB]: {
+    [ARMOUR.DEATHTOUCH_BRACELET]: {
         'necromancy strength': 14.5,
         'magic strength': 14.5,
         'melee strength': 14.5,
         'ranged strength': 14.5,
         offensiveTier: { melee: 90, ranged: 90, magic: 90, necro: 90 },
         slot: 'helmet',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Deathtouch Bracelet',
+        icon: "/gear_icons/shared/deathtouch bracelet.png",
     },
-    'none/tank': {
+    [ARMOUR.NONE_TANK]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'None/Tank',
+        icon: "/gear_icons/shared/none/tank.png", // TODO: icon missing
     },
-    [SETTINGS.NECRO_HELMET_VALUES.TFN]: {
+    [ARMOUR.TFN_CROWN]: {
         'necromancy strength': 25,
         'magic strength': 0,
         'melee strength': 0,
@@ -342,18 +630,22 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'helmet',
         style: 'necromancy',
-        popular: true
+        popular: true,
+        title: 'Crown of the First Necromancer',
+        icon: "/gear_icons/necro/crown of the first necromancer.png",
     },
-    [SETTINGS.NECRO_HELMET_VALUES.TFN_ADDON]: {
+    [ARMOUR.TFN_CROWN_WITH_ADDON]: {
         'necromancy strength': 25,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'helmet',
-        style: 'necromancy'
+        style: 'necromancy',
+        title: 'Crown of the First Necromancer with Addon',
+        icon: "/gear_icons/necro/crown of the first necromancer with addon.png", // TODO: icon missing
     },
-    [SETTINGS.NECRO_BODY_VALUES.TFN]: {
+    [ARMOUR.TFN_ROBE_TOP]: {
         'necromancy strength': 37,
         'magic strength': 0,
         'melee strength': 0,
@@ -361,9 +653,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'body',
         style: 'necromancy',
-        popular: true
+        popular: true,
+        title: 'Robe Top of the First Necromancer',
+        icon: "/gear_icons/necro/robe top of the first necromancer.png",
     },
-    [SETTINGS.NECRO_LEGS_VALUES.TFN]: {
+    [ARMOUR.TFN_ROBE_BOTTOM]: {
         'necromancy strength': 32,
         'magic strength': 0,
         'melee strength': 0,
@@ -371,9 +665,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'legs',
         style: 'necromancy',
-        popular: true
+        popular: true,
+        title: 'Robe Bottom of the First Necromancer',
+        icon: "/gear_icons/necro/robe bottom of the first necromancer.png",
     },
-    [SETTINGS.NECRO_GLOVES_VALUES.TFN]: {
+    [ARMOUR.TFN_HAND_WRAP]: {
         'necromancy strength': 16,
         'magic strength': 0,
         'melee strength': 0,
@@ -381,9 +677,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'gloves',
         style: 'necromancy',
-        popular: true
+        popular: true,
+        title: 'Hand Wrap of the First Necromancer',
+        icon: "/gear_icons/necro/hand wrap of the first necromancer.png",
     },
-    [SETTINGS.NECRO_BOOTS_VALUES.TFN]: {
+    [ARMOUR.TFN_FOOT_WRAPS]: {
         'necromancy strength': 16,
         'magic strength': 0,
         'melee strength': 0,
@@ -391,9 +689,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 110 },
         slot: 'boots',
         style: 'necromancy',
-        popular: true
+        popular: true,
+        title: 'Foot Wraps of the First Necromancer',
+        icon: "/gear_icons/necro/foot wraps of the first necromancer.png",
     },
-    [SETTINGS.NECRO_HELMET_VALUES.T90DD]: {
+    [ARMOUR.DEATHDEALER_HOOD_T90]: {
         'necromancy strength': 23.2,
         'magic strength': 0,
         'melee strength': 0,
@@ -401,9 +701,9 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'helmet',
         style: 'necromancy',
-        popular: true
+        popular: true,
     },
-    [SETTINGS.NECRO_BODY_VALUES.T90DD]: {
+    [ARMOUR.DEATHDEALER_ROBE_TOP_T90]: {
         'necromancy strength': 34.8,
         'magic strength': 0,
         'melee strength': 0,
@@ -411,9 +711,9 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'body',
         style: 'necromancy',
-        popular: true
+        popular: true,
     },
-    [SETTINGS.NECRO_LEGS_VALUES.T90DD]: {
+    [ARMOUR.DEATHDEALER_ROBE_BOTTOM_T90]: {
         'necromancy strength': 29,
         'magic strength': 0,
         'melee strength': 0,
@@ -421,9 +721,9 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'legs',
         style: 'necromancy',
-        popular: true
+        popular: true,
     },
-    [SETTINGS.NECRO_GLOVES_VALUES.T90DD]: {
+    [ARMOUR.DEATHDEALER_GLOVES_T90]: {
         'necromancy strength': 14.5,
         'magic strength': 0,
         'melee strength': 0,
@@ -431,9 +731,9 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'gloves',
         style: 'necromancy',
-        popular: true
+        popular: true,
     },
-    [SETTINGS.NECRO_BOOTS_VALUES.T90DD]: {
+    [ARMOUR.DEATHDEALER_BOOTS_T90]: {
         'necromancy strength': 14.5,
         'magic strength': 0,
         'melee strength': 0,
@@ -441,9 +741,9 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 90 },
         slot: 'boots',
         style: 'necromancy',
-        popular: true
+        popular: true,
     },
-    [SETTINGS.MAGIC_GLOVES_VALUES.CINDERS]: {
+    [ARMOUR.CINDERBANE_GLOVES]: {
         'necromancy strength': 11,
         'magic strength': 11,
         'melee strength': 11,
@@ -451,54 +751,66 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 85, ranged: 85, magic: 85, necro: 85 },
         slot: 'gloves',
         style: 'hybrid',
-        popular: true
+        popular: true,
+        title: 'Cinderbane Gloves',
+        icon: "/gear_icons/shared/cinderbane gloves.png",
     },
-    [SETTINGS.MELEE_BOOTS_VALUES.LACERATION]: {
+    [ARMOUR.LACERATION_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 12.7,
         'ranged strength': 0,
         offensiveTier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
-        style: 'melee'
+        style: 'melee',
+        title: 'Laceration Boots',
+        icon: "/gear_icons/melee/laceration boots.png",
     },
-    [SETTINGS.MELEE_BOOTS_VALUES.ENHANCED_LACERATION]: {
+    [ARMOUR.LACERATION_BOOTS_E]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 14.5,
         'ranged strength': 0,
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
-        style: 'melee'
+        style: 'melee',
+        title: 'Enhanced Laceration Boots',
+        icon: "/gear_icons/melee/enhanced laceration boots.png",
     },
-    [SETTINGS.RANGED_BOOTS_VALUES.FLEETING]: {
+    [ARMOUR.FLEETING_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 12.7,
         offensiveTier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
         slot: 'boots',
-        style: 'ranged'
+        style: 'ranged',
+        title: 'Fleeting Boots',
+        icon: "/gear_icons/ranged/fleeting boots.png",
     },
-    [SETTINGS.RANGED_BOOTS_VALUES.ENHANCED_FLEETING]: {
+    [ARMOUR.FLEETING_BOOTS_E]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 14.5,
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'boots',
-        style: 'ranged'
+        style: 'ranged',
+        title: 'Enhanced Fleeting Boots',
+        icon: "/gear_icons/ranged/enhanced fleeting boots.png",
     },
-    [SETTINGS.MAGIC_BOOTS_VALUES.BLAST]: {
+    [ARMOUR.BLAST_DIFFUSION_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 12.7,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'boots',
-        style: 'magic'
+        style: 'magic',
+        title: 'Blast Diffusion Boots',
+        icon: "/gear_icons/magic/blast diffusion boots.png",
     },
-    [SETTINGS.MAGIC_BOOTS_VALUES.BLAST_E]: {
+    [ARMOUR.BLAST_DIFFUSION_BOOTS_E]: {
         'necromancy strength': 0,
         'magic strength': 14.5,
         'melee strength': 0,
@@ -506,18 +818,22 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'boots',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Enhanced Blast Diffusion Boots',
+        icon: "/gear_icons/magic/enhanced blast diffusion boots.png",
     },
-    [SETTINGS.RANGED_BOOTS_VALUES.SH]: {
+    [ARMOUR.SILVERHAWK_BOOTS]: {
         'necromancy strength': 6.9,
         'magic strength': 6.9,
         'melee strength': 6.9,
         'ranged strength': 6.9,
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'boots',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Silverhawk Boots',
+        icon: "/gear_icons/shared/silverhawk boots.png",
     },
-    [SETTINGS.MELEE_HELMET_VALUES.MASTERWORK]: {
+    [ARMOUR.MASTERWORK_MELEE_HELM]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 23.2,
@@ -525,9 +841,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee',
-        popular: false
+        popular: false,
+        title: 'Masterwork Melee Helm',
+        icon: "/gear_icons/melee/masterwork melee helm.png",
     },
-    [SETTINGS.MELEE_BODY_VALUES.MASTERWORK]: {
+    [ARMOUR.MASTERWORK_MELEE_PLATEBODY]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 34.8,
@@ -535,9 +853,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee',
-        popular: false
+        popular: false,
+        title: 'Masterwork Melee Platebody',
+        icon: "/gear_icons/melee/masterwork melee platebody.png",
     },
-    [SETTINGS.MELEE_LEGS_VALUES.MASTERWORK]: {
+    [ARMOUR.MASTERWORK_MELEE_PLATELEGS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 29,
@@ -545,9 +865,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee',
-        popular: false
+        popular: false,
+        title: 'Masterwork Melee Platelegs',
+        icon: "/gear_icons/melee/masterwork melee platelegs.png",
     },
-    [SETTINGS.MELEE_GLOVES_VALUES.MASTERWORK]: {
+    [ARMOUR.MASTERWORK_MELEE_GLOVES]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 14.5,
@@ -555,9 +877,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee',
-        popular: false
+        popular: false,
+        title: 'Masterwork Melee Gloves',
+        icon: "/gear_icons/melee/masterwork melee gloves.png",
     },
-    [SETTINGS.MELEE_BOOTS_VALUES.MASTERWORK]: {
+    [ARMOUR.MASTERWORK_MELEE_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 14.5,
@@ -565,9 +889,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee',
-        popular: false
+        popular: false,
+        title: 'Masterwork Melee Boots',
+        icon: "/gear_icons/melee/masterwork melee boots.png",
     },
-    [SETTINGS.MELEE_HELMET_VALUES.TMW]: {
+    [ARMOUR.TMW_MELEE_HELM]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 24,
@@ -575,9 +901,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee',
-        popular: false
+        popular: false,
+        title: 'Trimmed Masterwork Melee Helm',
+        icon: "/gear_icons/melee/trimmed masterwork melee helm.png",
     },
-    [SETTINGS.MELEE_BODY_VALUES.TMW]: {
+    [ARMOUR.TMW_MELEE_PLATEBODY]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 36,
@@ -585,9 +913,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee',
-        popular: false
+        popular: false,
+        title: 'Trimmed Masterwork Melee Platebody',
+        icon: "/gear_icons/melee/trimmed masterwork melee platebody.png",
     },
-    [SETTINGS.MELEE_LEGS_VALUES.TMW]: {
+    [ARMOUR.TMW_MELEE_PLATELEGS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 31,
@@ -595,9 +925,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee',
-        popular: false
+        popular: false,
+        title: 'Trimmed Masterwork Melee Platelegs',
+        icon: "/gear_icons/melee/trimmed masterwork melee platelegs.png",
     },
-    [SETTINGS.MELEE_BOOTS_VALUES.TMW]: {
+    [ARMOUR.TMW_MELEE_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 15,
@@ -605,9 +937,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee',
-        popular: false
+        popular: false,
+        title: 'Trimmed Masterwork Melee Boots',
+        icon: "/gear_icons/melee/trimmed masterwork melee boots.png",
     },
-    [SETTINGS.MELEE_GLOVES_VALUES.TMW]: {
+    [ARMOUR.TMW_MELEE_GLOVES]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 15,
@@ -615,18 +949,22 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee',
-        popular: false
+        popular: false,
+        title: 'Trimmed Masterwork Melee Gloves',
+        icon: "/gear_icons/melee/trimmed masterwork melee gloves.png",
     },
-    [SETTINGS.MELEE_GLOVES_VALUES.GOP]: {
+    [ARMOUR.GLOVES_OF_PASSAGE]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 13.5,
         'ranged strength': 0,
         offensiveTier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
-        style: 'melee'
+        style: 'melee',
+        title: 'Gloves of Passage',
+        icon: "/gear_icons/melee/gloves of passage.png",
     },
-    [SETTINGS.MELEE_GLOVES_VALUES.GOP_E]: {
+    [ARMOUR.GLOVES_OF_PASSAGE_E]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 14.5,
@@ -634,9 +972,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
         style: 'melee',
-        popular: true
+        popular: true,
+        title: 'Enhanced Gloves of Passage',
+        icon: "/gear_icons/melee/enhanced gloves of passage.png",
     },
-    [SETTINGS.MELEE_HELMET_VALUES.VESTMENTS]: {
+    [ARMOUR.VESTMENTS_OF_HAVOC_HOOD]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 28,
@@ -644,9 +984,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
         style: 'melee',
-        popular: true
+        popular: true,
+        title: 'Vestments of Havoc Hood',
+        icon: "/gear_icons/melee/vestments of havoc hood.png",
     },
-    [SETTINGS.MELEE_BODY_VALUES.VESTMENTS]: {
+    [ARMOUR.VESTMENTS_OF_HAVOC_ROBE_TOP]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 42,
@@ -654,9 +996,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
         style: 'melee',
-        popular: true
+        popular: true,
+        title: 'Vestments of Havoc Robe Top',
+        icon: "/gear_icons/melee/vestments of havoc robe top.png",
     },
-    [SETTINGS.MELEE_LEGS_VALUES.VESTMENTS]: {
+    [ARMOUR.VESTMENTS_OF_HAVOC_ROBE_BOTTOM]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 37,
@@ -664,9 +1008,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
         style: 'melee',
-        popular: true
+        popular: true,
+        title: 'Vestments of Havoc Robe Bottom',
+        icon: "/gear_icons/melee/vestments of havoc robe bottom.png",
     },
-    [SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS]: {
+    [ARMOUR.VESTMENTS_OF_HAVOC_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 19,
@@ -674,9 +1020,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 110, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
         style: 'melee',
-        popular: true
+        popular: true,
+        title: 'Vestments of Havoc Boots',
+        icon: "/gear_icons/melee/vestments of havoc boots.png",
     },
-    [SETTINGS.CAPE_VALUES.ZUK]: {
+    [ARMOUR.IGNEOUS_KAL_ZUK]: {
         'necromancy strength': 43,
         'magic strength': 43,
         'melee strength': 43,
@@ -684,45 +1032,55 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 99, ranged: 99, magic: 99, necro: 99 },
         slot: 'cape',
         style: 'hybrid',
-        popular: true
+        popular: true,
+        title: 'Igneous Kal-Zuk',
+        icon: "/gear_icons/shared/igneous kal-zuk.png",
     },
-    'igneous kal-mor': {
+    [ARMOUR.IGNEOUS_KAL_MOR]: {
         'necromancy strength': 43,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 99 },
         slot: 'cape',
-        style: 'necromancy'
+        style: 'necromancy',
+        title: 'Igneous Kal-Mor',
+        icon: "/gear_icons/necro/igneous kal-mor.png", // TODO: icon missing
     },
-    'igneous kal-xil': {
+    [ARMOUR.IGNEOUS_KAL_XIL]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 43,
         offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
         slot: 'cape',
-        style: 'ranged'
+        style: 'ranged',
+        title: 'Igneous Kal-Xil',
+        icon: "/gear_icons/ranged/igneous kal-xil.png", // TODO: icon missing
     },
-    'igneous kal-mej': {
+    [ARMOUR.IGNEOUS_KAL_MEJ]: {
         'necromancy strength': 0,
         'magic strength': 43,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 99, necro: 0 },
         slot: 'cape',
-        style: 'magic'
+        style: 'magic',
+        title: 'Igneous Kal-Mej',
+        icon: "/gear_icons/magic/igneous kal-mej.png", // TODO: icon missing
     },
-    'igneous kal-ket': {
+    [ARMOUR.IGNEOUS_KAL_KET]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 43,
         'ranged strength': 0,
         offensiveTier: { melee: 99, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
-        style: 'melee'
+        style: 'melee',
+        title: 'Igneous Kal-Ket',
+        icon: "/gear_icons/melee/igneous kal-ket.png", // TODO: icon missing
     },
-    [SETTINGS.NECKLACE_VALUES.EOF]: {
+    [ARMOUR.EOF]: {
         'necromancy strength': 56,
         'magic strength': 56,
         'melee strength': 56,
@@ -730,9 +1088,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 97, ranged: 97, magic: 97, necro: 97 },
         slot: 'necklace',
         style: 'hybrid',
-        popular: true
+        popular: true,
+        title: 'Essence of Finality Amulet',
+        icon: "/gear_icons/shared/essence of finality amulet.png",
     },
-    [SETTINGS.NECKLACE_VALUES.EOFOR]: {
+    [ARMOUR.EOF_OR]: {
         'necromancy strength': 59,
         'magic strength': 59,
         'melee strength': 59,
@@ -740,9 +1100,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 102, ranged: 102, magic: 102, necro: 102 },
         slot: 'necklace',
         style: 'hybrid',
-        popular: true
+        popular: true,
+        title: 'Essence of Finality Amulet (Or)',
+        icon: "/gear_icons/shared/essence of finality amulet.png",
     },
-    [SETTINGS.NECKLACE_VALUES.AOS]: {
+    [ARMOUR.AOS]: {
         'necromancy strength': 46.3,
         'magic strength': 46.3,
         'melee strength': 46.3,
@@ -750,9 +1112,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 84, ranged: 84, magic: 84, necro: 84 },
         slot: 'necklace',
         style: 'hybrid',
-        popular: true
+        popular: true,
+        title: 'Amulet of Souls',
+        icon: "/gear_icons/shared/amulet of souls.png",
     },
-    [SETTINGS.NECKLACE_VALUES.AOSOR]: {
+    [ARMOUR.AOS_OR]: {
         'necromancy strength': 48,
         'magic strength': 48,
         'melee strength': 48,
@@ -760,72 +1124,86 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 87, ranged: 87, magic: 87, necro: 87 },
         slot: 'necklace',
         style: 'hybrid',
-        popular: false
+        popular: false,
+        title: 'Amulet of Souls (Or)',
+        icon: "/gear_icons/shared/amulet of souls.png",
     },
-    [SETTINGS.NECKLACE_VALUES.BERSERKER]: {
+    [ARMOUR.BERSERKER_NECKLACE]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 30.2,
         'ranged strength': 0,
         offensiveTier: { melee: 60, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
-        style: 'melee'
+        style: 'melee',
+        title: 'Berserker Necklace',
+        icon: "/gear_icons/melee/berserker necklace.png", // TODO: icon missing
     },
-    [SETTINGS.NECKLACE_VALUES.DESERT]: {
+    [ARMOUR.DESERT_AMULET_4]: {
         'necromancy strength': 30.2,
         'magic strength': 30.2,
         'melee strength': 30.2,
         'ranged strength': 30.2,
         offensiveTier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'necklace',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Desert Amulet 4',
+        icon: "/gear_icons/shared/desert amulet 4.png", // TODO: icon missing
     },
-    [SETTINGS.NECKLACE_VALUES.DRAGON_RIDER_NECKLACE]: {
+    [ARMOUR.DRAGON_RIDER_NECKLACE]: {
         'necromancy strength': 30.2,
         'magic strength': 30.2,
         'melee strength': 30.2,
         'ranged strength': 30.2,
         offensiveTier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'necklace',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Dragon Rider Necklace',
+        icon: "/gear_icons/shared/dragon rider necklace.png", // TODO: icon missing
     },
-    'blood amulet of fury': {
+    [ARMOUR.BLOOD_AMULET_OF_FURY]: {
         'necromancy strength': 37.3,
         'magic strength': 37.3,
         'melee strength': 37.3,
         'ranged strength': 37.3,
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'necklace',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Blood Amulet of Fury',
+        icon: "/gear_icons/shared/blood amulet of fury.png", // TODO: icon missing
     },
-    'arcane blood necklace': {
+    [ARMOUR.ARCANE_BLOOD_NECKLACE]: {
         'necromancy strength': 0,
         'magic strength': 46,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'necklace',
-        style: 'magic'
+        style: 'magic',
+        title: 'Arcane Blood Necklace',
+        icon: "/gear_icons/magic/arcane blood necklace.png", // TODO: icon missing
     },
-    "brawler's blood necklace": {
+    [ARMOUR.BRAWLERS_BLOOD_NECKLACE]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 46,
         'ranged strength': 0,
         offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
-        style: 'melee'
+        style: 'melee',
     },
-    'farsight blood necklace': {
+    [ARMOUR.FARSIGHT_BLOOD_NECKLACE]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 46,
         offensiveTier: { melee: 0, ranged: 80, magic: 0, necro: 0 },
         slot: 'necklace',
-        style: 'ranged'
+        style: 'ranged',
+        title: 'Farsight Blood Necklace',
+        icon: "/gear_icons/ranged/farsight blood necklace.png", // TODO: icon missing
     },
-    [SETTINGS.POCKET_VALUES.GRIM]: {
+    [ARMOUR.ERETHDORS_GRIMOIRE]: {
         'necromancy strength': 7,
         'magic strength': 7,
         'melee strength': 7,
@@ -833,9 +1211,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid',
-        popular: true
+        popular: true,
+        title: 'Erethdors Grimoire',
+        icon: "/gear_icons/shared/erethdors grimoire.png",
     },
-    [SETTINGS.POCKET_VALUES.FUL]: {
+    [ARMOUR.FUL_BOOK]: {
         'necromancy strength': 8,
         'magic strength': 8,
         'melee strength': 8,
@@ -843,9 +1223,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid',
-        popular: true
+        popular: true,
+        title: 'Scripture of Ful',
+        icon: "/gear_icons/shared/scripture of ful.png",
     },
-    [SETTINGS.POCKET_VALUES.JAS]: {
+    [ARMOUR.JAS_BOOK]: {
         'necromancy strength': 8,
         'magic strength': 8,
         'melee strength': 8,
@@ -853,117 +1235,141 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
         style: 'hybrid',
-        popular: true
+        popular: true,
+        title: 'Scripture of Jas',
+        icon: "/gear_icons/shared/scripture of jas.png",
     },
-    [SETTINGS.POCKET_VALUES.AMASCUT]: {
+    [ARMOUR.AMASCUT_BOOK]: {
         'necromancy strength': 8,
         'magic strength': 8,
         'melee strength': 8,
         'ranged strength': 8,
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Scripture of Amascut',
+        icon: "/gear_icons/shared/scripture of amascut.png", // TODO: icon missing
     },
-    [SETTINGS.POCKET_VALUES.GWD3]: {
+    [ARMOUR.GWD3_SCRIPTURE]: {
         'necromancy strength': 8,
         'magic strength': 8,
         'melee strength': 8,
         'ranged strength': 8,
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
-        style: 'hybrid'
+        style: 'hybrid',
     },
-    [SETTINGS.POCKET_VALUES.IGOD]: {
+    [ARMOUR.ILLUMINATED_GOD_BOOK]: {
         'necromancy strength': 7,
         'magic strength': 7,
         'melee strength': 7,
         'ranged strength': 7,
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'pocket',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Illuminated God Book',
+        icon: "/gear_icons/shared/illuminated god book.png", // TODO: icon missing
     },
-    [SETTINGS.POCKET_VALUES.ELEMENTS]: {
+    [ARMOUR.SCRIMSHAW_OF_ELEMENTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
-        style: 'magic'
+        style: 'magic',
+        title: 'Scrimshaw of Elements',
+        icon: "/gear_icons/magic/scrimshaw of elements.png", // TODO: icon missing
     },
-    [SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS]: {
+    [ARMOUR.SUPERIOR_SCRIMSHAW_OF_ELEMENTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
-        style: 'magic'
+        style: 'magic',
+        title: 'Superior Scrimshaw of Elements',
+        icon: "/gear_icons/magic/superior scrimshaw of elements.png", // TODO: icon missing
     },
-    [SETTINGS.MAGIC_GLOVES_VALUES.KWW]: {
+    [ARMOUR.KERAPACS_WRISTWRAPS]: {
         'necromancy strength': 0,
         'magic strength': 13.5,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'gloves',
-        style: 'magic'
+        style: 'magic',
+        title: 'Kerapacs Wristwraps',
+        icon: "/gear_icons/magic/kerapacs wristwraps.png",
     },
-    [SETTINGS.MAGIC_GLOVES_VALUES.KWW_E]: {
+    [ARMOUR.KERAPACS_WRISTWRAPS_E]: {
         'necromancy strength': 0,
         'magic strength': 14.5,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 90, necro: 0 },
         slot: 'gloves',
-        style: 'magic'
+        style: 'magic',
+        title: 'Enhanced Kerapacs Wristwraps',
+        icon: "/gear_icons/magic/enhanced kerapacs wristwraps.png", // TODO: icon missing
     },
-    [SETTINGS.RANGED_GLOVES_VALUES.NIGHTMARES]: {
+    [ARMOUR.NIGHTMARE_GAUNTLETS]: {
         'necromancy strength': 13.5,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
         slot: 'gloves',
-        style: 'ranged'
+        style: 'ranged',
+        title: 'Nightmare Gauntlets',
+        icon: "/gear_icons/ranged/nightmare gauntlets.png",
     },
-    [SETTINGS.RANGED_GLOVES_VALUES.NIGHTMARES_E]: {
+    [ARMOUR.NIGHTMARE_GAUNTLETS_E]: {
         'necromancy strength': 14.5,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'gloves',
-        style: 'ranged'
+        style: 'ranged',
+        title: 'Enhanced Nightmare Gauntlets',
+        icon: "/gear_icons/ranged/enhanced nightmare gauntlets.png",
     },
-    [SETTINGS.MELEE_HELMET_VALUES.JAWS]: {
+    [ARMOUR.JAWS_OF_THE_ABYSS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 21.6,
         'ranged strength': 0,
         offensiveTier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
-        style: 'melee'
+        style: 'melee',
+        title: 'Jaws of the Abyss',
+        icon: "/gear_icons/melee/jaws of the abyss.png",
     },
-    [SETTINGS.NECKLACE_VALUES.SALVE]: {
+    [ARMOUR.SALVE_AMULET]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Salve Amulet',
+        icon: "/gear_icons/shared/salve amulet.png", // TODO: icon missing
     },
-    [SETTINGS.NECKLACE_VALUES.SALVEE]: {
+    [ARMOUR.SALVE_AMULET_E]: {
         'necromancy strength': 4.2,
         'magic strength': 4.2,
         'melee strength': 4.2,
         'ranged strength': 4.2,
         offensiveTier: { melee: 10, ranged: 10, magic: 10, necro: 10 },
         slot: 'necklace',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Salve Amulet (E)',
+        icon: "/gear_icons/shared/salve amulet.png", // TODO: icon missing
     },
-    [SETTINGS.RING_VALUES.REAVERS]: {
+    [ARMOUR.REAVERS_RING]: {
         'necromancy strength': 27.7,
         'magic strength': 27.7,
         'melee strength': 27.7,
@@ -971,9 +1377,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 88, ranged: 88, magic: 88, necro: 88 },
         slot: 'ring',
         style: 'hybrid',
-        popular: true
+        popular: true,
+        title: 'Reavers Ring',
+        icon: "/gear_icons/shared/reavers ring.png",
     },
-    [SETTINGS.RING_VALUES.CHANNELLER]: {
+    [ARMOUR.CHANNELLERS_RING]: {
         'necromancy strength': 0,
         'magic strength': 30.4,
         'melee strength': 0,
@@ -981,19 +1389,23 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'ring',
         style: 'magic',
-        popular: true
+        popular: true,
+            title: 'Channeller\'S Ring',
+            icon: "/gear_icons/magic/channeller's ring.png",
     },
-    [SETTINGS.RING_VALUES.CHANNELLER_E]: {
+    [ARMOUR.CHANNELLERS_RING_E]: {
         'necromancy strength': 0,
         'magic strength': 30.4,
         'melee strength': 0,
         'ranged strength': 0,
-        offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 0, magic: 92, necro: 0 },
         slot: 'ring',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Channeller\'S Ring+',
+        icon: "/gear_icons/magic/channeller's ring.png",
     },
-    [SETTINGS.RING_VALUES.STALKER]: {
+    [ARMOUR.STALKERS_RING]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -1001,9 +1413,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'ranged',
-        popular: false
+        popular: false,
+        title: 'Stalker\'S Ring',
+        icon: "/gear_icons/ranged/stalker's ring.png",
     },
-    [SETTINGS.RING_VALUES.STALKER_E]: {
+    [ARMOUR.STALKERS_RING_E]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -1011,9 +1425,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 92, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'ranged',
-        popular: true
+        popular: true,
+        title: 'Stalker\'S Ring+',
+        icon: "/gear_icons/ranged/stalker's ring.png",
     },
-    [SETTINGS.RING_VALUES.CHAMPION]: {
+    [ARMOUR.CHAMPIONS_RING]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 30.4,
@@ -1021,8 +1437,10 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'melee',
+        title: 'Champion\'S Ring',
+        icon: "/gear_icons/melee/champion's ring.png",
     },
-    [SETTINGS.RING_VALUES.CHAMPION_E]: {
+    [ARMOUR.CHAMPIONS_RING_E]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 30.4,
@@ -1030,45 +1448,55 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 92, ranged: 0, magic: 0, necro: 0 },
         slot: 'ring',
         style: 'melee',
-        popular: true
+        popular: true,
+        title: 'Champion\'S Ring+',
+        icon: "/gear_icons/melee/champion's ring.png",
     },
-    [SETTINGS.RING_VALUES.ASR]: {
+    [ARMOUR.ASYLUM_SURGEONS_RING]: {
         'necromancy strength': 21,
         'magic strength': 21,
         'melee strength': 21,
         'ranged strength': 21,
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'ring',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Asylum Surgeons Ring',
+        icon: "/gear_icons/shared/asylum surgeons ring.png", // TODO: icon missing
     },
-    [SETTINGS.RING_VALUES.ROD]: {
+    [ARMOUR.RING_OF_DEATH]: {
         'necromancy strength': 25.2,
         'magic strength': 25.2,
         'melee strength': 25.2,
         'ranged strength': 25.2,
         offensiveTier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
         slot: 'ring',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Ring of Death',
+        icon: "/gear_icons/shared/ring of death.png",
     },
-    [SETTINGS.RING_VALUES.RODI]: {
+    [ARMOUR.RING_OF_DEATH_I]: {
         'necromancy strength': 27.7,
         'magic strength': 27.7,
         'melee strength': 27.7,
         'ranged strength': 27.7,
         offensiveTier: { melee: 88, ranged: 88, magic: 88, necro: 88 },
         slot: 'ring',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Ring of Death (I)',
+        icon: "/gear_icons/shared/ring of death.png",
     },
-    [SETTINGS.RING_VALUES.ASRI]: {
+    [ARMOUR.ASYLUM_SURGEONS_RING_I]: {
         'necromancy strength': 23.4,
         'magic strength': 23.4,
         'melee strength': 23.4,
         'ranged strength': 23.4,
         offensiveTier: { melee: 78, ranged: 78, magic: 78, necro: 78 },
         slot: 'ring',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Asylum Surgeons Ring (I)',
+        icon: "/gear_icons/shared/asylum surgeons ring.png", // TODO: icon missing
     },
-    [SETTINGS.RING_VALUES.ZORGOTH]: {
+    [ARMOUR.ZORGOTHS_SOUL_RING]: {
         'necromancy strength': 30.4,
         'magic strength': 0,
         'melee strength': 0,
@@ -1076,55 +1504,67 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 92 },
         slot: 'ring',
         style: 'necromancy',
-        popular: true
+        popular: true,
+        title: 'Zorgoth\'S Soul Ring',
+        icon: "/gear_icons/necro/zorgoth's soul ring.png", // TODO: icon missing
     },
-    'occultists ring': {
+    [ARMOUR.OCCULTISTS_RING]: {
         'necromancy strength': 30.4,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 92 },
         slot: 'ring',
-        style: 'hybrid',
-        popular: true
+        style: 'necromancy',
+        popular: true,
+        title: 'Occultists Ring',
+        icon: "/gear_icons/necro/occultists ring.png", // TODO: icon missing
     },
-    [SETTINGS.RING_VALUES.LOTD]: {
+    [ARMOUR.LUCK_OF_THE_DWARVES]: {
         'necromancy strength': 17.3,
         'magic strength': 17.3,
         'melee strength': 17.3,
         'ranged strength': 17.3,
         offensiveTier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'ring',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Luck of the Dwarves',
+        icon: "/gear_icons/shared/luck of the dwarves.png",
     },
-    [SETTINGS.RING_VALUES.LOTD_I]: {
+    [ARMOUR.LUCK_OF_THE_DWARVES_I]: {
         'necromancy strength': 19.8,
         'magic strength': 19.8,
         'melee strength': 19.8,
         'ranged strength': 19.8,
         offensiveTier: { melee: 69, ranged: 69, magic: 69, necro: 69 },
         slot: 'ring',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Luck of the Dwarves (I)',
+        icon: "/gear_icons/shared/luck of the dwarves.png",
     },
-    [SETTINGS.RING_VALUES.HSR]: {
+    [ARMOUR.HAZELMERES_SIGNET_RING]: {
         'necromancy strength': 21.0,
         'magic strength': 21.0,
         'melee strength': 21.0,
         'ranged strength': 21.0,
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'ring',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Hazelmere\'S Signet Ring',
+        icon: "/gear_icons/shared/hazelmere's signet ring.png",
     },
-    [SETTINGS.RING_VALUES.HSR_I]: {
+    [ARMOUR.HAZELMERES_SIGNET_RING_I]: {
         'necromancy strength': 23.7,
         'magic strength': 23.7,
         'melee strength': 23.7,
         'ranged strength': 23.7,
         offensiveTier: { melee: 79, ranged: 79, magic: 79, necro: 79 },
         slot: 'ring',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Hazelmere\'S Signet Ring (I)',
+        icon: "/gear_icons/shared/hazelmere's signet ring.png",
     },
-    [SETTINGS.NECKLACE_VALUES.ZEALOTS]: {
+    [ARMOUR.AMULET_OF_ZEALOTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
@@ -1132,169 +1572,209 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'hybrid',
-        popular: false
+        popular: false,
+        title: 'Amulet of Zealots',
+        icon: "/gear_icons/shared/amulet of zealots.png", // TODO: icon missing
     },
-    'TokHaar-Kal-Ket': {
+    [ARMOUR.TOKHAAR_KAL_KET]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 33.5,
         'ranged strength': 0,
         offensiveTier: { melee: 85, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
-        style: 'melee'
+        style: 'melee',
+        title: 'TokHaar-Kal-Ket',
+        icon: "/gear_icons/melee/TokHaar-Kal-Ket.png", // TODO: icon missing
     },
-    'TokHaar-Kal-Xil': {
+    [ARMOUR.TOKHAAR_KAL_XIL]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 33.5,
         offensiveTier: { melee: 0, ranged: 85, magic: 0, necro: 0 },
         slot: 'cape',
-        style: 'ranged'
+        style: 'ranged',
+        title: 'TokHaar-Kal-Xil',
+        icon: "/gear_icons/ranged/TokHaar-Kal-Xil.png",
     },
-    'TokHaar-Kal-Mej': {
+    [ARMOUR.TOKHAAR_KAL_MEJ]: {
         'necromancy strength': 0,
         'magic strength': 33.5,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'cape',
-        style: 'magic'
+        style: 'magic',
+        title: 'TokHaar-Kal-Mej',
+        icon: "/gear_icons/magic/TokHaar-Kal-Mej.png", // TODO: icon missing
     },
-    [SETTINGS.CAPE_VALUES.KILN]: {
+    [ARMOUR.TOKHAAR_KAL_MOR]: {
         'necromancy strength': 0,
         'magic strength': 33.5,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 85 },
         slot: 'cape',
-        style: 'necromancy'
+        style: 'necromancy',
+        title: 'Tokhaar-Kal-Mor',
+        icon: "/gear_icons/necro/tokhaar-kal-mor.png", // TODO: icon missing
     },
-    [SETTINGS.CAPE_VALUES.COMP]: {
+    [ARMOUR.COMP_MAX_CAPE]: {
         'necromancy strength': 31.5,
         'magic strength': 31.5,
         'melee strength': 31.5,
         'ranged strength': 31.5,
         offensiveTier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
         slot: 'cape',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Comp/Max Cape',
+        icon: "/gear_icons/shared/comp/max cape.png", // TODO: icon missing
     },
-    [SETTINGS.CAPE_VALUES.MAX]: {
+    [ARMOUR.MAX_CAPE]: {
         'necromancy strength': 31.5,
         'magic strength': 31.5,
         'melee strength': 31.5,
         'ranged strength': 31.5,
         offensiveTier: { melee: 80, ranged: 80, magic: 80, necro: 80 },
         slot: 'cape',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Max Cape',
+        icon: "/gear_icons/shared/max cape.png", // TODO: icon missing
     },
-    [SETTINGS.CAPE_VALUES.GOD]: {
+    [ARMOUR.GOD_CAPE]: {
         'necromancy strength': 0,
         'magic strength': 31.5,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'cape',
-        style: 'magic'
+        style: 'magic',
+        title: 'God Cape',
+        icon: "/gear_icons/magic/god cape.png", // TODO: icon missing
     },
-    [SETTINGS.CAPE_VALUES.SKILL]: {
+    [ARMOUR.SKILL_CAPE]: {
         'necromancy strength': 21.6,
         'magic strength': 21.6,
         'melee strength': 21.6,
         'ranged strength': 21.6,
         offensiveTier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'cape',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Skill Cape',
+        icon: "/gear_icons/shared/skill cape.png", // TODO: icon missing
     },
-    [SETTINGS.POCKET_VALUES.UNDERWORLD_GRIM]: {
+    [ARMOUR.UNDERWORLD_GRIMOIRE_4]: {
         'necromancy strength': 15,
         'magic strength': 15,
         'melee strength': 15,
         'ranged strength': 15,
         offensiveTier: { melee: 95, ranged: 95, magic: 95, necro: 95 },
         slot: 'pocket',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Underworld Grimoire 4',
+        icon: "/gear_icons/shared/underworld grimoire 4.png", // TODO: icon missing
     },
-    [SETTINGS.POCKET_VALUES.CRUELTY]: {
+    [ARMOUR.SCRIMSHAW_OF_CRUELTY]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
-        style: 'ranged'
+        style: 'ranged',
+        title: 'Scrimshaw of Cruelty',
+        icon: "/gear_icons/ranged/scrimshaw of cruelty.png", // TODO: icon missing
     },
-    [SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY]: {
+    [ARMOUR.SUPERIOR_SCRIMSHAW_OF_CRUELTY]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
-        style: 'ranged'
+        style: 'ranged',
+        title: 'Superior Scrimshaw of Elements',
+        icon: "/gear_icons/ranged/superior scrimshaw of elements.png", // TODO: icon missing
     },
     // Ammo
-    [SETTINGS.AMMO_VALUES.FUL_ARROWS]: {
+    [ARMOUR.FUL_ARROWS]: {
         'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
-        offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 100, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'ranged',
-        popular: true
+        popular: true,
+        title: 'Ful Arrows',
+        icon: "/gear_icons/ranged/ful arrows.png",
     },
-    [SETTINGS.AMMO_VALUES.WEN_ARROWS]: {
+    [ARMOUR.WEN_ARROWS]: {
         'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
-        offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
+        offensiveTier: { melee: 0, ranged: 100, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'ranged',
-        popular: true
+        popular: true,
+        title: 'Wen Arrows',
+        icon: "/gear_icons/ranged/wen arrows.png",
     },
-    [SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS]: {
+    [ARMOUR.DEATHSPORE_ARROWS]: {
         'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 95, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'ranged',
-        popular: true
+        popular: true,
+        title: 'Deathspore Arrows',
+        icon: "/gear_icons/ranged/deathspore arrows.png",
     },
-    [SETTINGS.AMMO_VALUES.JAS_ARROWS]: {
+    [ARMOUR.JAS_ARROWS]: {
+        'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
+        offensiveTier: { melee: 0, ranged: 100, magic: 0, necro: 0 },
+        slot: 'ammo',
+        style: 'ranged',
+        popular: true,
+        title: 'Jas Arrows',
+        icon: "/gear_icons/ranged/jas arrows.png",
+    },
+    [ARMOUR.BIK_ARROWS]: {
         'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'ranged',
-        popular: true
+        popular: true,
+        title: 'Bik Arrows',
+        icon: "/gear_icons/ranged/bik arrows.png",
     },
-    [SETTINGS.AMMO_VALUES.BIK_ARROWS]: {
+    [ARMOUR.HYDRIX_BAKRIMINEL_BOLTS_E]: {
         'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'ranged',
-        popular: true
+        popular: true,
+        title: 'Hydrix Bakriminel Bolts (E)',
+        icon: "/gear_icons/ranged/hydrix bakriminel bolts.png", // TODO: icon missing
     },
-    [SETTINGS.AMMO_VALUES.HYDRIX_BOLTS]: {
-        'necromancy strength': 0, 'magic strength': 0, 'melee strength': 0, 'ranged strength': 0,
-        offensiveTier: { melee: 0, ranged: 99, magic: 0, necro: 0 },
-        slot: 'ammo',
-        style: 'ranged',
-        popular: true
-    },
-    'underworld grimoire 3': {
+    [ARMOUR.UNDERWORLD_GRIMOIRE_3]: {
         'necromancy strength': 10,
         'magic strength': 10,
         'melee strength': 10,
         'ranged strength': 10,
         offensiveTier: { melee: 65, ranged: 65, magic: 65, necro: 65 },
         slot: 'pocket',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Underworld Grimoire 3',
+        icon: "/gear_icons/shared/underworld grimoire 3.png", // TODO: icon missing
     },
-    'leagues pocket': {
+    [ARMOUR.LEAGUES_POCKET]: {
         'necromancy strength': 15.0,
         'magic strength': 15.0,
         'melee strength': 15.0,
         'ranged strength': 15.0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Leagues Pocket',
+        icon: "/gear_icons/shared/leagues pocket.png", // TODO: icon missing
     },
-    'reaper necklace': {
+    [ARMOUR.REAPER_NECKLACE]: {
         'necromancy strength': 36.8,
         'magic strength': 36.8,
         'melee strength': 36.8,
@@ -1302,9 +1782,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 70, ranged: 70, magic: 70, necro: 70 },
         slot: 'necklace',
         style: 'hybrid',
-        popular: false
+        popular: false,
+        title: 'Reaper Necklace',
+        icon: "/gear_icons/shared/reaper necklace.png",
     },
-    'reaper necklace (or)': {
+    [ARMOUR.REAPER_NECKLACE_OR]: {
         'necromancy strength': 38.4,
         'magic strength': 38.4,
         'melee strength': 38.4,
@@ -1312,270 +1794,308 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 73, ranged: 73, magic: 73, necro: 73 },
         slot: 'necklace',
         style: 'hybrid',
-        popular: false
+        popular: false,
+        title: 'Reaper Necklace (Or)',
+        icon: "/gear_icons/shared/reaper necklace.png",
     },
-    [SETTINGS.NECKLACE_VALUES.MOONSTONE]: {
+    [ARMOUR.CONJURERS_RAISING_AMULET]: {
         'necromancy strength': 44.1,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 80 },
         slot: 'necklace',
-        style: 'necromancy'
+        style: 'necromancy',
+        title: 'Conjurers Raising Amulet',
+        icon: "/gear_icons/necro/conjurers raising amulet.png", // TODO: icon missing
     },
-    [SETTINGS.NECKLACE_VALUES.AM_ZI]: {
-        'necromancy strength': 0,
-        'magic strength': 0,
-        'melee strength': 52,
-        'ranged strength': 0,
-        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
-        slot: 'necklace',
-        style: 'melee'
-    },
-    [SETTINGS.NECKLACE_VALUES.AM_HEJ]: {
-        'necromancy strength': 0,
-        'magic strength': 0,
-        'melee strength': 52,
-        'ranged strength': 0,
-        offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
-        slot: 'necklace',
-        style: 'melee'
-    },
-    'anima core of helm of seren': {
+    [ARMOUR.SEREN_HELM]: {
         'necromancy strength': 0,
         'magic strength': 20.3,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'helmet',
-        style: 'magic'
+        style: 'magic',
+        title: 'Anima Core of Helm of Seren',
+        icon: "/gear_icons/magic/anima core of helm of seren.png", // TODO: icon missing
     },
-    'anima core body of seren': {
+    [ARMOUR.SEREN_BODY]: {
         'necromancy strength': 0,
         'magic strength': 30.5,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'body',
-        style: 'magic'
+        style: 'magic',
+        title: 'Anima Core Body of Seren',
+        icon: "/gear_icons/magic/anima core body of seren.png", // TODO: icon missing
     },
-    'anima core legs of seren': {
+    [ARMOUR.SEREN_LEGS]: {
         'necromancy strength': 0,
         'magic strength': 25.4,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'legs',
-        style: 'magic'
+        style: 'magic',
+        title: 'Anima Core Legs of Seren',
+        icon: "/gear_icons/magic/anima core legs of seren.png", // TODO: icon missing
     },
-    'refined anima core of helm of seren': {
+    [ARMOUR.REFINED_SEREN_HELM]: {
         'necromancy strength': 0,
         'magic strength': 21.6,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'helmet',
-        style: 'magic'
+        style: 'magic',
+        title: 'Refined Anima Core of Helm of Seren',
+        icon: "/gear_icons/magic/refined anima core of helm of seren.png", // TODO: icon missing
     },
-    'refined anima core body of seren': {
+    [ARMOUR.REFINED_SEREN_BODY]: {
         'necromancy strength': 0,
         'magic strength': 32.5,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'body',
-        style: 'magic'
+        style: 'magic',
+        title: 'Refined Anima Core Body of Seren',
+        icon: "/gear_icons/magic/refined anima core body of seren.png", // TODO: icon missing
     },
-    'refined anima core legs of seren': {
+    [ARMOUR.REFINED_SEREN_LEGS]: {
         'necromancy strength': 0,
         'magic strength': 27.1,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 85, necro: 0 },
         slot: 'legs',
-        style: 'magic'
+        style: 'magic',
+        title: 'Refined Anima Core Legs of Seren',
+        icon: "/gear_icons/magic/refined anima core legs of seren.png", // TODO: icon missing
     },
-    'virtus robe bottom': {
+    [ARMOUR.VIRTUS_ROBE_BOTTOM]: {
         'necromancy strength': 0,
         'magic strength': 25.4,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'legs',
-        style: 'magic'
+        style: 'magic',
+        title: 'Virtus Robe Bottom',
+        icon: "/gear_icons/magic/virtus robe bottom.png", // TODO: icon missing
     },
-    'virtus gloves': {
+    [ARMOUR.VIRTUS_GLOVES]: {
         'necromancy strength': 0,
         'magic strength': 12.7,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'gloves',
-        style: 'magic'
+        style: 'magic',
+        title: 'Virtus Gloves',
+        icon: "/gear_icons/magic/virtus gloves.png",
     },
-    'virtus boots': {
+    [ARMOUR.VIRTUS_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 12.7,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 80, necro: 0 },
         slot: 'boots',
-        style: 'magic'
+        style: 'magic',
+        title: 'Virtus Boots',
+        icon: "/gear_icons/magic/virtus boots.png",
     },
-    'bandos helmet': {
+    [ARMOUR.BANDOS_HELMET]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 17.7,
         'ranged strength': 0,
         offensiveTier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
-        style: 'melee'
+        style: 'melee',
+        title: 'Bandos Helmet',
+        icon: "/gear_icons/melee/bandos helmet.png", // TODO: icon missing
     },
-    'bandos chestplate': {
+    [ARMOUR.BANDOS_CHESTPLATE]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 26.5,
         'ranged strength': 0,
         offensiveTier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
-        style: 'melee'
+        style: 'melee',
+        title: 'Bandos Chestplate',
+        icon: "/gear_icons/melee/bandos chestplate.png",
     },
-    'bandos tassets': {
+    [ARMOUR.BANDOS_TASSETS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 22.1,
         'ranged strength': 0,
         offensiveTier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
-        style: 'melee'
+        style: 'melee',
+        title: 'Bandos Tassets',
+        icon: "/gear_icons/melee/bandos tassets.png",
     },
-    'bandos gloves': {
+    [ARMOUR.BANDOS_GLOVES]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 11,
         'ranged strength': 0,
         offensiveTier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
-        style: 'melee'
+        style: 'melee',
+        title: 'Bandos Gloves',
+        icon: "/gear_icons/melee/bandos gloves.png", // TODO: icon missing
     },
-    'bandos boots': {
+    [ARMOUR.BANDOS_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 11,
         'ranged strength': 0,
         offensiveTier: { melee: 70, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
-        style: 'melee'
+        style: 'melee',
+        title: 'Bandos Boots',
+        icon: "/gear_icons/melee/bandos boots.png", // TODO: icon missing
     },
-    'torva helmet': {
+    [ARMOUR.TORVA_HELMET]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 20.3,
         'ranged strength': 0,
         offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
-        style: 'melee'
+        style: 'melee',
+        title: 'Torva Helmet',
+        icon: "/gear_icons/melee/torva helmet.png", // TODO: icon missing
     },
-    'torva platebody': {
+    [ARMOUR.TORVA_PLATEBODY]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 30.5,
         'ranged strength': 0,
         offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
-        style: 'melee'
+        style: 'melee',
+        title: 'Torva Platebody',
+        icon: "/gear_icons/melee/torva platebody.png",
     },
-    'torva platelegs': {
+    [ARMOUR.TORVA_PLATELEGS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 25.4,
         'ranged strength': 0,
         offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
-        style: 'melee'
+        style: 'melee',
+        title: 'Torva Platelegs',
+        icon: "/gear_icons/melee/torva platelegs.png",
     },
-    'torva gloves': {
+    [ARMOUR.TORVA_GLOVES]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 12.7,
         'ranged strength': 0,
         offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'gloves',
-        style: 'melee'
+        style: 'melee',
+        title: 'Torva Gloves',
+        icon: "/gear_icons/melee/torva gloves.png",
     },
-    'torva boots': {
+    [ARMOUR.TORVA_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 12.7,
         'ranged strength': 0,
         offensiveTier: { melee: 80, ranged: 0, magic: 0, necro: 0 },
         slot: 'boots',
-        style: 'melee'
+        style: 'melee',
+        title: 'Torva Boots',
+        icon: "/gear_icons/melee/torva boots.png",
     },
-    [SETTINGS.MAGIC_HELMET_VALUES.GHOST_HUNTER]: {
+    [ARMOUR.GHOST_HUNTER_GOGGLES]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'helmet',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Ghost Hunter Goggles',
+        icon: "/gear_icons/shared/ghost hunter goggles.png",
     },
-    [SETTINGS.MELEE_BODY_VALUES.GHOST_HUNTER]: {
+    [ARMOUR.GHOST_HUNTER_BODY]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'body',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Ghost Hunter Body',
+        icon: "/gear_icons/shared/ghost hunter body.png",
     },
-    [SETTINGS.MELEE_LEGS_VALUES.GHOST_HUNTER]: {
+    [ARMOUR.GHOST_HUNTER_LEGS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'legs',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Ghost Hunter Legs',
+        icon: "/gear_icons/shared/ghost hunter legs.png",
     },
-    [SETTINGS.CAPE_VALUES.GHOST_HUNTER]: {
+    [ARMOUR.GHOST_HUNTER_BACKPACK]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'cape',
-        style: 'hybrid'
+        style: 'hybrid',
+        title: 'Ghost Hunter Backpack',
+        icon: "/gear_icons/shared/ghost hunter backpack.png",
     },
-    [SETTINGS.MAGIC_HELMET_VALUES.MASTERWORK]: {
+    [ARMOUR.MASTERWORK_MAGIC_HAT]: {
         'necromancy strength': 0,
         'magic strength': 28,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'helmet',
-        style: 'magic'
+        style: 'magic',
+        title: 'Masterwork Magic Hat',
+        icon: "/gear_icons/magic/masterwork magic hat.png",
     },
-    [SETTINGS.MAGIC_BODY_VALUES.MASTERWORK]: {
+    [ARMOUR.MASTERWORK_MAGIC_ROBE_TOP]: {
         'necromancy strength': 0,
         'magic strength': 42,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'body',
-        style: 'magic'
+        style: 'magic',
+        title: 'Masterwork Magic Robe Top',
+        icon: "/gear_icons/magic/masterwork magic robe top.png",
     },
-    [SETTINGS.MAGIC_LEGS_VALUES.MASTERWORK]: {
+    [ARMOUR.MASTERWORK_MAGIC_ROBE_BOTTOM]: {
         'necromancy strength': 0,
         'magic strength': 37,
         'melee strength': 0,
         'ranged strength': 0,
         offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'legs',
-        style: 'magic'
+        style: 'magic',
+        title: 'Masterwork Magic Robe Bottom',
+        icon: "/gear_icons/magic/masterwork magic robe bottom.png",
     },
-    [SETTINGS.MAGIC_GLOVES_VALUES.MASTERWORK]: {
+    [ARMOUR.MASTERWORK_MAGIC_GLOVES]: {
         'necromancy strength': 0,
         'magic strength': 19,
         'melee strength': 0,
@@ -1583,9 +2103,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'gloves',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Masterwork Magic Gloves',
+        icon: "/gear_icons/magic/masterwork magic gloves.png",
     },
-    [SETTINGS.MAGIC_BOOTS_VALUES.MASTERWORK]: {
+    [ARMOUR.MASTERWORK_MAGIC_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 19,
         'melee strength': 0,
@@ -1593,9 +2115,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 110, necro: 0 },
         slot: 'boots',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Masterwork Magic Boots',
+        icon: "/gear_icons/magic/masterwork magic boots.png",
     },
-    [SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE]: {
+    [ARMOUR.TUMEKENS_MASK]: {
         'necromancy strength': 0,
         'magic strength': 25,
         'melee strength': 0,
@@ -1603,9 +2127,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
         slot: 'helmet',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Mask of Tumeken\'S Resplendence',
+        icon: "/gear_icons/magic/mask of tumeken's resplendence.png",
     },
-    [SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE]: {
+    [ARMOUR.TUMEKENS_ROBE_TOP]: {
         'necromancy strength': 0,
         'magic strength': 37,
         'melee strength': 0,
@@ -1613,9 +2139,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
         slot: 'body',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Robe Top of Tumeken\'S Resplendence',
+        icon: "/gear_icons/magic/robe top of tumeken's resplendence.png",
     },
-    [SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE]: {
+    [ARMOUR.TUMEKENS_ROBE_BOTTOM]: {
         'necromancy strength': 0,
         'magic strength': 32,
         'melee strength': 0,
@@ -1623,9 +2151,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
         slot: 'legs',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Robe Bottom of Tumeken\'S Resplendence',
+        icon: "/gear_icons/magic/robe bottom of tumeken's resplendence.png",
     },
-    [SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE]: {
+    [ARMOUR.TUMEKENS_GLOVES]: {
         'necromancy strength': 0,
         'magic strength': 16,
         'melee strength': 0,
@@ -1633,9 +2163,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
         slot: 'gloves',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Gloves of Tumeken\'S Resplendence',
+        icon: "/gear_icons/magic/gloves of tumeken's resplendence.png",
     },
-    [SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE]: {
+    [ARMOUR.TUMEKENS_BOOTS]: {
         'necromancy strength': 0,
         'magic strength': 16,
         'melee strength': 0,
@@ -1643,17 +2175,11 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 95, necro: 0 },
         slot: 'boots',
         style: 'magic',
-        popular: true
+        popular: true,
+        title: 'Boots of Tumeken\'S Resplendence',
+        icon: "/gear_icons/magic/boots of tumeken's resplendence.png",
     },
-    'am-zi': {
-        'necromancy strength': 0,
-        'magic strength': 0,
-        'melee strength': 52,
-        'ranged strength': 0,
-        slot: 'necklace',
-        style: 'melee'
-    },
-    'am-hej': {
+    [ARMOUR.AM_ZI]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 52,
@@ -1661,9 +2187,22 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'necklace',
         style: 'melee',
-        popular: true
+        title: 'Am-Zi',
+        icon: "/gear_icons/melee/am-zi.png",
     },
-    [SETTINGS.MELEE_AMMO_SLOT_VALUES.NODON_SPIKE_HARNESS]: {
+    [ARMOUR.AM_HEJ]: {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 52,
+        'ranged strength': 0,
+        offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        slot: 'necklace',
+        style: 'melee',
+        popular: true,
+        title: 'Am-Hej',
+        icon: "/gear_icons/melee/am-hej.png",
+    },
+    [ARMOUR.NODON_SPIKE_HARNESS]: {
         'necromancy strength': 0,
         'magic strength': 0,
         'melee strength': 24,
@@ -1671,6 +2210,20 @@ export const armour: Record<string, Equipment> = {
         offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
         slot: 'ammo',
         style: 'melee',
-        popular: true
+        popular: true,
+        title: 'Nodon Spike Harness',
+        icon: "/gear_icons/melee/nodon spike harness.png",
+    },
+    [ARMOUR.CUSTOM]: {
+        'necromancy strength': 0,
+        'magic strength': 0,
+        'melee strength': 24,
+        'ranged strength': 0,
+        offensiveTier: { melee: 90, ranged: 0, magic: 0, necro: 0 },
+        slot: 'ammo',
+        style: 'melee',
+        popular: true,
+        title: 'Nodon Spike Harness',
+        icon: "/gear_icons/melee/nodon spike harness.png",
     },
 };

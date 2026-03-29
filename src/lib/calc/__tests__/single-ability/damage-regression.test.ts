@@ -7,6 +7,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import { WEAPONS } from '$lib/data/weapons';
 import { calculateSingleAbilityDamage } from '../../unified-damage-calculator';
 import { SETTINGS } from '../../settings_rb.js';
 import { ABILITIES } from '$lib/data/abilities';
@@ -269,8 +270,8 @@ describe('Verified In-Game Values', () => {
             const settings = createBlankSettings(120, 100, {
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
                 [SETTINGS.WEAPON_TYPE_MELEE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MELEE_TH]: SETTINGS.MELEE_TH_VALUES.EZK_IM,
-                [SETTINGS.TH]: SETTINGS.MELEE_TH_VALUES.EZK_IM,
+                [SETTINGS.MELEE_TH]: WEAPONS.EZK_IM,
+                [SETTINGS.TH]: WEAPONS.EZK_IM,
                 [SETTINGS.REAPER_CREW]: true,
                 [SETTINGS.FLAMEBOUND_RIVAL]: false,
                 [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
@@ -288,8 +289,8 @@ describe('Verified In-Game Values', () => {
             const settings = createBlankSettings(120, 100, {
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
                 [SETTINGS.WEAPON_TYPE_MELEE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MELEE_TH]: SETTINGS.MELEE_TH_VALUES.EZK_IM,
-                [SETTINGS.TH]: SETTINGS.MELEE_TH_VALUES.EZK_IM,
+                [SETTINGS.MELEE_TH]: WEAPONS.EZK_IM,
+                [SETTINGS.TH]: WEAPONS.EZK_IM,
                 [SETTINGS.REAPER_CREW]: true,
                 [SETTINGS.FLAMEBOUND_RIVAL]: true,
                 [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT,
@@ -309,8 +310,8 @@ describe('Verified In-Game Values', () => {
             const settings = createBlankSettings(120, 100, {
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
                 [SETTINGS.WEAPON_TYPE_MELEE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MELEE_TH]: SETTINGS.MELEE_TH_VALUES.EZK_IM,
-                [SETTINGS.TH]: SETTINGS.MELEE_TH_VALUES.EZK_IM,
+                [SETTINGS.MELEE_TH]: WEAPONS.EZK_IM,
+                [SETTINGS.TH]: WEAPONS.EZK_IM,
                 [SETTINGS.REAPER_CREW]: true,
                 [SETTINGS.PRECISE]: 6,
                 [SETTINGS.FLAMEBOUND_RIVAL]: false,
@@ -330,8 +331,8 @@ describe('Verified In-Game Values', () => {
             const settings = createBlankSettings(120, 100, {
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
                 [SETTINGS.WEAPON_TYPE_MELEE]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.MELEE_TH]: SETTINGS.MELEE_TH_VALUES.EZK_IM,
-                [SETTINGS.TH]: SETTINGS.MELEE_TH_VALUES.EZK_IM,
+                [SETTINGS.MELEE_TH]: WEAPONS.EZK_IM,
+                [SETTINGS.TH]: WEAPONS.EZK_IM,
                 [SETTINGS.REAPER_CREW]: true,
                 [SETTINGS.PRECISE]: 6,
                 [SETTINGS.FLAMEBOUND_RIVAL]: true,

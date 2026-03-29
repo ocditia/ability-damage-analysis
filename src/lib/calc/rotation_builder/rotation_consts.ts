@@ -42,6 +42,9 @@ export const buffs = [
     SETTINGS.UNDEAD_SLAYER_ABILITY,
     SETTINGS.DRAGON_SLAYER_ABILITY,
     SETTINGS.DEMON_SLAYER_ABILITY,
+    SETTINGS.CONFLAGRATE,
+    SETTINGS.KERAPACS_WRIST_WRAPS,
+    SETTINGS.BLAST_INFUSED,
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -291,6 +294,27 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#F97316'
+            },
+            [SETTINGS.CONFLAGRATE]: {
+                title: 'Conflagrate',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#FF4500'
+            },
+            [SETTINGS.KERAPACS_WRIST_WRAPS]: {
+                title: "Kerapac's Wristwraps",
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#C0392B'
+            },
+            [SETTINGS.BLAST_INFUSED]: {
+                title: 'Blast Infused',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#E67E22'
             }
         }
     )

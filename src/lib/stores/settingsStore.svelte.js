@@ -24,7 +24,7 @@ export function initializeSettings() {
                 {
                     ...value,
                     key,
-                    value: value.default?.rotation ?? value.default//storedSettings[key]?.value ?? value.default?.rotation ?? value.default
+                    value: storedSettings[key]?.value ?? value.default?.rotation ?? value.default
                 }
             ])
         );
@@ -34,7 +34,10 @@ export function initializeSettings() {
     settingsStore.settings[SETTINGS.GREATER_DRACOLICH_INFUSION].value = false;
     settingsStore.settings[SETTINGS.ICY_PRECISION].value = 0;
     settingsStore.settings[SETTINGS.NATURAL_INSTINCT].value = false;
-
+    settingsStore.settings[SETTINGS.SMOKE_CLOUD].value = false;
+    settingsStore.settings[SETTINGS.CHAIN_MODIFIER].value = SETTINGS.CHAIN_MODIFIER_VALUES.NONE;
+    // settingsStore.settings[SETTINGS.KERAPACS_WRIST_WRAPS].value = false;
+    
     settingsStore.initialized = true;
 }
 
@@ -61,6 +64,19 @@ export const settingsActions = {
         return settingsStore.settings;
     },
 
+    // Save settings to localStorage
+    saveSettings() {
+        if (!settingsStore.initialized || typeof localStorage === 'undefined') return;
+        try {
+            const toSave = Object.fromEntries(
+                Object.entries(settingsStore.settings).map(([key, val]) => [key, { value: val.value }])
+            );
+            localStorage.setItem('rotation_settings', JSON.stringify(toSave));
+        } catch (e) {
+            console.error('Failed to save settings:', e);
+        }
+    },
+
     // Reset all settings to defaults
     resetToDefaults() {
         if (!settingsStore.initialized) return;
@@ -71,4 +87,4 @@ export const settingsActions = {
             ])
         );
     }
-}; 
+};

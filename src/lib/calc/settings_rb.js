@@ -527,6 +527,7 @@ const SETTINGS = {
         NONE: 'none',
         REAVERS: 'reavers ring',
         ZORGOTH: 'zorgoth\'s soul ring',
+        OCCULTIST: 'occultist\'s ring',
         RODI: 'ring of death (i)',
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
@@ -581,6 +582,7 @@ const SETTINGS = {
         NONE: 'none',
         REAVERS: 'reavers ring',
         ZORGOTH: 'zorgoths soul ring',
+        OCCULTIST: 'occultist\'s ring',
         RODI: 'ring of death (i)',
         ROD: 'ring of death',
         ASRI: 'asylum surgeons ring (i)',
@@ -701,6 +703,7 @@ const SETTINGS = {
     MAGIC_OH: 'magic off-hand weapon',
     MAGIC_OH_VALUES: {
         CUSTOM: 'custom oh',
+        IMPERIUM_CORE: 'imperium core',
         ODE_TO_DECEIT: 'ode to deceit',
         ODE_TO_DECEIT_IM: 'ode to deceit [IM]',
         CUSTOM_SHIELD: 'custom shield'
@@ -829,6 +832,7 @@ const SETTINGS = {
     BOSS_PRESET: 'boss preset',
     BOSS_ENRAGE: 'boss enrage',
     BOSS_PATTERN_START: 'boss pattern start tick',
+    BOSS_HP: 'boss hp',
     GUARDIANS_TRIUMPH: 'Zamorak guardians triumph',
     BALANCE_OF_POWER: 'Zamorak balance of power',
     ZAMORAK_CHOKE_STACKS: 'zamorak choke stacks',
@@ -858,12 +862,8 @@ const SETTINGS = {
     // Defence
     BARRICADE: 'barricade',
     MALLETOPS: 'malletops',
-    KERAPACS_WRIST_WRAPS: 'kerapacs wrist wraps',
-    KERAPACS_WRIST_WRAPS_VALUES: {
-        NONE: 'none',
-        REGULAR: 'regular',
-        ENCHANTED: 'enchanted'
-    },
+    KERAPACS_WRIST_WRAPS: 'kerapacs wrist wraps', // buff flag, set by casting Dragon Breath with KWW/KWW_E
+    ENCHANTMENT_OF_FLAMES: 'enchantment of flames', // toggle: KWW_E with enchantment unlocks 1.4x instead of 1.25x
     TARGET_DISABILITY: 'target disability',
     TARGET_DISABILITY_VALUES: {
         NONE: 'none',
@@ -979,6 +979,13 @@ const SETTINGS = {
     RUIN: 'ruin',
     VALOUR_STACKS: 'valour stacks',
     HITCAP: 'hit cap',
+    USE_OWNED_GEAR: 'use owned gear',
+    GEAR_FILTER: 'gear filter',
+    GEAR_FILTER_VALUES: {
+        POPULAR: 'popular',
+        OWNED: 'owned',
+        ALL: 'all',
+    },
     QUIVER: 'quiver',
     DAMAGE_QUALIFIER: 'damage qualifier',
     DAMAGE_QUALIFIER_VALUES: {
@@ -1821,7 +1828,7 @@ const settingsConfig = {
     },
     [SETTINGS.RANGED_RING]: {
         label: 'Ring',
-        default: SETTINGS.RANGED_RING_VALUES.REAVERS,
+        default: SETTINGS.RANGED_RING_VALUES.STALKER_E,
     },
     [SETTINGS.MELEE_RING]: {
         label: 'Ring',
@@ -2199,7 +2206,11 @@ const settingsConfig = {
         default: 0
     },
     [SETTINGS.BOSS_PATTERN_START]: {
-        label: 'Pattern Start Tick',
+        label: 'Start Tick',
+        default: -1
+    },
+    [SETTINGS.BOSS_HP]: {
+        label: 'Boss HP',
         default: 0
     },
     [SETTINGS.GUARDIANS_TRIUMPH]: {
@@ -2301,12 +2312,11 @@ const settingsConfig = {
     },
     [SETTINGS.KERAPACS_WRIST_WRAPS]: {
         label: "Kerapac's wristwraps",
-        default: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.NONE,
-        options: [
-            { text: 'None', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.NONE },
-            { text: 'Regular', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR },
-            { text: 'Enchanted', value: SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED }
-        ]
+        default: false
+    },
+    [SETTINGS.ENCHANTMENT_OF_FLAMES]: {
+        label: "Enchantment of Flames",
+        default: false
     },
     [SETTINGS.TARGET_DISABILITY]: {
         label: 'Stun/bound state',
@@ -2667,6 +2677,14 @@ const settingsConfig = {
     [SETTINGS.HITCAP]: {
         label: 'Apply hitcap',
         default: true
+    },
+    [SETTINGS.USE_OWNED_GEAR]: {
+        label: 'Use owned gear perks',
+        default: false
+    },
+    [SETTINGS.GEAR_FILTER]: {
+        label: 'Gear filter',
+        default: SETTINGS.GEAR_FILTER_VALUES.POPULAR,
     },
     [SETTINGS.QUIVER]: {
         label: 'Pernix quiver',

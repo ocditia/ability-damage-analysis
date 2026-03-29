@@ -5,6 +5,8 @@
 
 import { SETTINGS } from '../settings_rb';
 import { ABILITIES, abils } from '$lib/data/abilities';
+import { WEAPONS } from '$lib/data/weapons';
+import { ARMOUR } from '$lib/data/armour';
 
 // Re-export calc_crit_damage from its new home for any transitive consumers
 export { calc_crit_damage } from '../crit';
@@ -39,10 +41,10 @@ function calc_soul_split_hit(hit: number, settings: Record<string, any>): number
 
     // Amulet of souls bonus healing (+18.75%)
     const aos_amulets = [
-        SETTINGS.NECKLACE_VALUES.AOS,
-        SETTINGS.NECKLACE_VALUES.AOSOR,
-        SETTINGS.NECKLACE_VALUES.EOF,
-        SETTINGS.NECKLACE_VALUES.EOFOR
+        ARMOUR.AOS,
+        ARMOUR.AOS_OR,
+        ARMOUR.EOF,
+        ARMOUR.EOF_OR
     ];
     if (aos_amulets.includes(settings['amulet'])) {
         heal = heal * 1.1875;
@@ -90,7 +92,7 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
 
     // Masterwork Spear of Annihilation bleed extensions
     if (
-        settings[SETTINGS.MELEE_TH] === SETTINGS.MELEE_TH_VALUES.MW_SPEAR &&
+        settings[SETTINGS.TH] === WEAPONS.MASTERWORK_SPEAR_OF_ANNIHILATION &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         if (abilityKey === ABILITIES.DISMEMBER) {
@@ -111,7 +113,7 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
 
     // Igneous cape auto-swap: default hit sequences are igneous.
     // When not wearing an igneous cape, swap to non-igneous hit sequences.
-    const hasIgneousCape = settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.ZUK;
+    const hasIgneousCape = settings[SETTINGS.CAPE] === ARMOUR.IGNEOUS_KAL_ZUK;
     if (!hasIgneousCape) {
         if (abilityKey === ABILITIES.OVERPOWER) {
             // Non-igneous: single 550-600% hit (uses OVERPOWER's own min/var)
@@ -143,10 +145,15 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
     }
 
 
+    // Bloodlust Hurricane: consuming 4 stacks adds a bonus hit
+    if (abilityKey === ABILITIES.HURRICANE && settings['_bloodlust_consumed'] === ABILITIES.HURRICANE) {
+        rotation[1].push(ABILITIES.BLOODLUST_HURRICANE_HIT);
+    }
+
     settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 1;
     if (settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) {
         settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 3;
-        if (abils[settings['ability']]['ability classification'] === 'channel') {
+        if (abils[settings['ability']].abilityClassification === 'channel') {
             if (settings[SETTINGS.HIT_COUNTER_END] != null && settings[SETTINGS.HIT_COUNTER_END] > 0) {
                 settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = settings[SETTINGS.HIT_COUNTER_END] - settings[SETTINGS.HIT_COUNTER_START];
             } else {
@@ -175,10 +182,10 @@ export function addAdrenaline(settings: Record<string, any>, amount: number) {
 
     // Vestments of Havoc: full set (4 pieces) + melee abilities in rotation = +20 max adrenaline
     const hasFullVestments = settings['_hasMeleeAbilities'] &&
-        settings[SETTINGS.MELEE_HELMET] === SETTINGS.MELEE_HELMET_VALUES.VESTMENTS &&
-        settings[SETTINGS.MELEE_BODY] === SETTINGS.MELEE_BODY_VALUES.VESTMENTS &&
-        settings[SETTINGS.MELEE_LEGS] === SETTINGS.MELEE_LEGS_VALUES.VESTMENTS &&
-        settings[SETTINGS.MELEE_BOOTS] === SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS;
+        settings[SETTINGS.MELEE_HELMET] === ARMOUR.VESTMENTS_OF_HAVOC_HOOD &&
+        settings[SETTINGS.MELEE_BODY] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_TOP &&
+        settings[SETTINGS.MELEE_LEGS] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_BOTTOM &&
+        settings[SETTINGS.MELEE_BOOTS] === ARMOUR.VESTMENTS_OF_HAVOC_BOOTS;
 
     let max_adren = 100 + (hasFullVestments ? 20 : 0);
     if (settings[SETTINGS.HEIGHTENED_SENSES]) max_adren += 10;

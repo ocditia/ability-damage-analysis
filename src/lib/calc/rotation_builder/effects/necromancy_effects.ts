@@ -3,6 +3,8 @@
  */
 
 import { ABILITIES, abils } from '$lib/data/abilities';
+import { ARMOUR } from '$lib/data/armour';
+import { WEAPONS } from '$lib/data/weapons';
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
 import { countTFNPieces } from '../rotation_damage_helper';
@@ -20,13 +22,13 @@ function applyBoostedADEffects(
     const { settings, abilityKey } = ctx;
 
     // Conjure abilities: TFN set effect + Conjurer's Raising Amulet, then early return
-    if (abils[abilityKey]?.['ability type'] === 'conjure') {
+    if (abils[abilityKey]?.abilityType === 'conjure') {
         let conjBoost = 0;
         const tfnPieces = countTFNPieces(settings);
         if (tfnPieces >= 2) {
             conjBoost += 0.07 * tfnPieces;
         }
-        if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.MOONSTONE) {
+        if (settings[SETTINGS.NECKLACE] === ARMOUR.CONJURERS_RAISING_AMULET) {
             conjBoost += 0.05;
         }
         if (conjBoost > 0) {
@@ -49,7 +51,7 @@ function applyAbilitySpecificEffects(
 
     // Death Spark empowered auto (Omni Guard) - at 5 stacks the auto does 2x damage
     if (abilityKey === ABILITIES.NECRO_AUTO &&
-        (settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD || settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD_IM) &&
+        (settings[SETTINGS.NECRO_MH] === WEAPONS.OMNI_GUARD || settings[SETTINGS.NECRO_MH] === WEAPONS.OMNI_GUARD_IM) &&
         (settings[SETTINGS.DEATH_SPARK_STACKS] || 0) >= 5) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 2);
     }
@@ -82,19 +84,19 @@ function applyAbilityPercentModifiers(
 
     // Death Grasp (Death Guard spec)
     if (abilityKey === ABILITIES.DEATH_GRASP) {
-        distribution['min hit'] = distribution['min hit'] + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
+        distribution.minHit = distribution.minHit + 0.4 * settings[SETTINGS.NECROSIS_STACKS];
     }
 
     // soul crush
     if (settings['ability'] === ABILITIES.SOUL_CRUSH) {
-        distribution['min hit'] += distribution['min hit'] * 1.35 * settings[SETTINGS.RESIDUAL_SOULS];
-        distribution['var hit'] += distribution['var hit'] * 0.3 * settings[SETTINGS.RESIDUAL_SOULS];
+        distribution.minHit += distribution.minHit * 1.35 * settings[SETTINGS.RESIDUAL_SOULS];
+        distribution.varHit += distribution.varHit * 0.3 * settings[SETTINGS.RESIDUAL_SOULS];
     }
 
     // Flanking - Soul Strike (basic stun)
     if (abilityKey === ABILITIES.SOUL_STRIKE) {
-        distribution['min hit'] += distribution['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
-        distribution['var hit'] += distribution['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
+        distribution.minHit += distribution.minHit * 0.4 * settings[SETTINGS.FLANKING];
+        distribution.varHit += distribution.varHit * 0.4 * settings[SETTINGS.FLANKING];
     }
 }
 
@@ -158,7 +160,7 @@ function applyStackEffects(ctx: EffectContext): void {
     // Omni Guard - Death Spark: each auto generates 1 stack (max 5).
     // Empowered auto at 5 stacks resets to 0 (damage applied in applyAbilitySpecificEffects).
     if (abilityKey === ABILITIES.NECRO_AUTO &&
-        (settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD || settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.OMNI_GUARD_IM)) {
+        (settings[SETTINGS.NECRO_MH] === WEAPONS.OMNI_GUARD || settings[SETTINGS.NECRO_MH] === WEAPONS.OMNI_GUARD_IM)) {
         const currentStacks = settings[SETTINGS.DEATH_SPARK_STACKS] || 0;
         if (currentStacks >= 5) {
             // Empowered auto was fired — reset stacks
@@ -183,8 +185,8 @@ function applyStackEffects(ctx: EffectContext): void {
         }
     }
 
-    // Essence Corruption
-    // (Add generation logic when abilities are confirmed)
+    // Essence Corruption — implemented in magic_effects.ts applyStackEffects
+    // (stacks per hitsplat from Combust, Corruption Blast, Soulfire with RoA/OtD equipped)
 }
 
 /**

@@ -22,6 +22,7 @@ export const STYLE_COLORS = {
     // UI element categories
     abilities:  '#FF4DB8',
     gear:       '#949494',
+    perks:      '#73D4DB',
     default:    '#ffffff',
 } as const;
 

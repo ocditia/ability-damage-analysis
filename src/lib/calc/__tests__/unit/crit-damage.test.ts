@@ -7,6 +7,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import { WEAPONS } from '$lib/data/weapons';
 import { calc_crit_damage } from '../../rotation_builder/calculation_utils';
 import { SETTINGS } from '../../settings_rb.js';
 import { ABILITIES } from '$lib/data/abilities';
@@ -50,7 +51,7 @@ describe('calc_crit_damage', () => {
     describe('FSOA', () => {
         it('should add +20% average crit damage', () => {
             const settings = critDmgSettings({
-                [SETTINGS.TH]: SETTINGS.MAGIC_TH_VALUES.FSOA,
+                [SETTINGS.TH]: WEAPONS.FRACTURED_STAFF_OF_ARMADYL,
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
                 [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MEAN,
             });
@@ -61,7 +62,7 @@ describe('calc_crit_damage', () => {
 
         it('should add +25% max crit damage', () => {
             const settings = critDmgSettings({
-                [SETTINGS.TH]: SETTINGS.MAGIC_TH_VALUES.FSOA,
+                [SETTINGS.TH]: WEAPONS.FRACTURED_STAFF_OF_ARMADYL,
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
                 [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MAX_CRIT,
             });
@@ -72,7 +73,7 @@ describe('calc_crit_damage', () => {
 
         it('should add +15% min crit damage', () => {
             const settings = critDmgSettings({
-                [SETTINGS.TH]: SETTINGS.MAGIC_TH_VALUES.FSOA,
+                [SETTINGS.TH]: WEAPONS.FRACTURED_STAFF_OF_ARMADYL,
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
                 [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_CRIT,
             });
@@ -83,7 +84,7 @@ describe('calc_crit_damage', () => {
 
         it('FSOA IM should also work', () => {
             const settings = critDmgSettings({
-                [SETTINGS.TH]: SETTINGS.MAGIC_TH_VALUES.FSOA_IM,
+                [SETTINGS.TH]: WEAPONS.FRACTURED_STAFF_OF_ARMADYL_IM,
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
                 [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MEAN,
             });
@@ -94,13 +95,13 @@ describe('calc_crit_damage', () => {
     });
 
     describe("Channeler's Ring", () => {
-        it('should add crit damage for magic channels (0 stacks)', () => {
+        it('should add crit damage for magic channel hits (0 stacks)', () => {
             const settings = critDmgSettings({
                 [SETTINGS.RING]: SETTINGS.RING_VALUES.CHANNELLER_E,
                 [SETTINGS.CHANNELLER_RING_STACKS]: 0,
             });
-            settings['ability'] = ABILITIES.ASPHYXIATE;
-            const dmgObj = create_damage_object(settings, ABILITIES.ASPHYXIATE);
+            settings['ability'] = ABILITIES.ASPHYXIATE_HIT;
+            const dmgObj = create_damage_object(settings, ABILITIES.ASPHYXIATE_HIT);
             // 0.025 * (1 + 0) = 0.025
             expect(calc_crit_damage(settings, dmgObj)).toBeCloseTo(0.525, 4);
         });
@@ -110,8 +111,8 @@ describe('calc_crit_damage', () => {
                 [SETTINGS.RING]: SETTINGS.RING_VALUES.CHANNELLER_E,
                 [SETTINGS.CHANNELLER_RING_STACKS]: 4,
             });
-            settings['ability'] = ABILITIES.ASPHYXIATE;
-            const dmgObj = create_damage_object(settings, ABILITIES.ASPHYXIATE);
+            settings['ability'] = ABILITIES.ASPHYXIATE_HIT;
+            const dmgObj = create_damage_object(settings, ABILITIES.ASPHYXIATE_HIT);
             // 0.025 * (1 + 4) = 0.125
             expect(calc_crit_damage(settings, dmgObj)).toBeCloseTo(0.625, 4);
         });
@@ -131,8 +132,8 @@ describe('calc_crit_damage', () => {
                 [SETTINGS.RING]: SETTINGS.RING_VALUES.CHANNELLER_E,
                 [SETTINGS.CHANNELLER_RING_STACKS]: 4,
             });
-            settings['ability'] = ABILITIES.FURY;
-            const dmgObj = create_damage_object(settings, ABILITIES.FURY);
+            settings['ability'] = ABILITIES.ASSAULT_HIT;
+            const dmgObj = create_damage_object(settings, ABILITIES.ASSAULT_HIT);
             expect(calc_crit_damage(settings, dmgObj)).toBe(0.5);
         });
     });
@@ -165,7 +166,7 @@ describe('calc_crit_damage', () => {
             const settings = critDmgSettings({
                 [SETTINGS.RING]: SETTINGS.RING_VALUES.STALKER_E,
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.TH]: SETTINGS.RANGED_TH_VALUES.BOLG,
+                [SETTINGS.TH]: WEAPONS.BOW_OF_THE_LAST_GUARDIAN,
             });
             settings['ability'] = ABILITIES.PIERCING_SHOT;
             const dmgObj = create_damage_object(settings, ABILITIES.PIERCING_SHOT);
@@ -176,7 +177,7 @@ describe('calc_crit_damage', () => {
             const settings = critDmgSettings({
                 [SETTINGS.RING]: SETTINGS.RING_VALUES.STALKER_E,
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
-                [SETTINGS.TH]: SETTINGS.RANGED_TH_VALUES.BOLG,
+                [SETTINGS.TH]: WEAPONS.BOW_OF_THE_LAST_GUARDIAN,
             });
             settings['ability'] = ABILITIES.REND;
             const dmgObj = create_damage_object(settings, ABILITIES.REND);
@@ -224,7 +225,7 @@ describe('calc_crit_damage', () => {
         it('Smoke Cloud + FSOA (mean) = 0.5 + 0.15 + 0.20 = 0.85', () => {
             const settings = critDmgSettings({
                 [SETTINGS.SMOKE_CLOUD]: true,
-                [SETTINGS.TH]: SETTINGS.MAGIC_TH_VALUES.FSOA,
+                [SETTINGS.TH]: WEAPONS.FRACTURED_STAFF_OF_ARMADYL,
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
                 [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MEAN,
             });

@@ -4,6 +4,8 @@
  */
 
 import { gear } from '$lib/data/slayer-helmets';
+import { ARMOUR } from '$lib/data/armour';
+import { WEAPONS } from '$lib/data/weapons';
 import { ABILITIES, abils } from '$lib/data/abilities';
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
@@ -28,8 +30,8 @@ export function calculateAdditiveBoost(ctx: EffectContext): number {
     boost += settings[SETTINGS.DRACONIC_FRUIT] === true ? 0.02 : 0;
 
     // berserker necklace
-    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.BERSERKER &&
-        (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM) && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
+    if (settings[SETTINGS.NECKLACE] === ARMOUR.BERSERKER_NECKLACE &&
+        (settings[SETTINGS.TH] === WEAPONS.EZK || settings[SETTINGS.TH] === WEAPONS.EZK_IM) && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         boost += 0.05;
     }
@@ -38,7 +40,7 @@ export function calculateAdditiveBoost(ctx: EffectContext): number {
     if (
         (settings[SETTINGS.FLAMEBOUND_RIVAL] === true || abilityKey === ABILITIES.IGNEOUS_SHOWDOWN ||
          abilityKey === ABILITIES.IGNEOUS_SHOWDOWN_HIT || abilityKey === ABILITIES.IGNEOUS_SHOWDOWN_BONUS) &&
-        (settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK || settings[SETTINGS.TH] === SETTINGS.MELEE_TH_VALUES.EZK_IM) &&
+        (settings[SETTINGS.TH] === WEAPONS.EZK || settings[SETTINGS.TH] === WEAPONS.EZK_IM) &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         boost += 0.12;
@@ -46,14 +48,14 @@ export function calculateAdditiveBoost(ctx: EffectContext): number {
 
 
     // Enduring ruin (melee only)
-    if (abils[abilityKey]?.['main style'] === 'melee') {
+    if (abils[abilityKey]?.mainStyle === 'melee') {
         boost += settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.REGULAR ? 0.1 : 0;
         boost += settings[SETTINGS.ENDURING_RUIN_HIT] === SETTINGS.ENDURING_RUIN_HIT_VALUES.ENCHANTED ? 0.16 : 0;
     }
 
      // Am-hej necklace 5% of str level
-     if (abils[abilityKey]?.['main style'] === 'melee' &&
-        settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.AM_HEJ) {
+     if (abils[abilityKey]?.mainStyle === 'melee' &&
+        settings[SETTINGS.NECKLACE] === ARMOUR.AM_HEJ) {
         boost += Math.floor(0.05 * settings[SETTINGS.STRENGTH_LEVEL])/100;
     }
 
@@ -61,7 +63,7 @@ export function calculateAdditiveBoost(ctx: EffectContext): number {
     boost += settings[SETTINGS.RUBY_AURORA] * 0.01;
 
     // Scripture of Ful (20% * probability buff is active)
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.FUL) {
+    if (settings[SETTINGS.POCKET] === ARMOUR.FUL_BOOK) {
         // TODO - expected vs max
         if (settings[SETTINGS.CALC_TYPE] === SETTINGS.CALC_TYPE_VALUES.ROTATION) {
             const fulProb = settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] || 0;
@@ -75,12 +77,12 @@ export function calculateAdditiveBoost(ctx: EffectContext): number {
     boost += settings[SETTINGS.GORAJAN_TRAILBLAZER] ? 0.07 : 0;
 
     // Gravitate - annihilation spec (melee only)
-    if (abils[abilityKey]?.['main style'] === 'melee') {
+    if (abils[abilityKey]?.mainStyle === 'melee') {
         boost += settings[SETTINGS.GRAVITATE] / 100;
     }
 
     // Desperado - ring of kinship ranged boost
-    if (settings[SETTINGS.DESPERADO] > 0 && abils[abilityKey]?.['main style'] === 'ranged') {
+    if (settings[SETTINGS.DESPERADO] > 0 && abils[abilityKey]?.mainStyle === 'ranged') {
         boost += 0.1;
         boost += 0.01 * settings[SETTINGS.DESPERADO];
     }
@@ -96,8 +98,8 @@ export function applyAdditiveBoosts(
     distribution: DamageDistribution
 ): void {
     const boost = calculateAdditiveBoost(ctx);
-    distribution['min hit'] = Math.floor(distribution['min hit'] * (1 + boost));
-    distribution['var hit'] = Math.floor(distribution['var hit'] * (1 + boost));
+    distribution.minHit = Math.floor(distribution.minHit * (1 + boost));
+    distribution.varHit = Math.floor(distribution.varHit * (1 + boost));
 }
 
 // =============================================================================
@@ -169,7 +171,7 @@ export function calculatePvEBoost(ctx: EffectContext): number {
     }
 
     // Dragon rider necklace (10% boost to Dragon Breath)
-    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.DRAGON_RIDER_NECKLACE &&
+    if (settings[SETTINGS.NECKLACE] === ARMOUR.DRAGON_RIDER_NECKLACE &&
         abilityKey === ABILITIES.DRAGON_BREATH) {
         boost = Math.floor(boost * 1.1);
     }
@@ -200,6 +202,6 @@ export function applyPvEBoosts(
     distribution: DamageDistribution
 ): void {
     const boost = calculatePvEBoost(ctx);
-    distribution['min hit'] = Math.floor((distribution['min hit'] * boost) / 10000);
-    distribution['var hit'] = Math.floor((distribution['var hit'] * boost) / 10000);
+    distribution.minHit = Math.floor((distribution.minHit * boost) / 10000);
+    distribution.varHit = Math.floor((distribution.varHit * boost) / 10000);
 }

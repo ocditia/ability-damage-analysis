@@ -83,6 +83,17 @@ describe('Ability Classifications', () => {
             expect(maxResult.expected).toBe(985);
         });
 
+        it('Ranged Auto (ranged): non-crit min/max', () => {
+            const settings = rangedSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
+            const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.RANGED_AUTO });
+
+            settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
+            const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.RANGED_AUTO });
+
+            expect(minResult.expected).toBe(1047);
+            expect(maxResult.expected).toBe(1279);
+        });
+
         it('Galeshot (ranged): non-crit min/max', () => {
             const settings = rangedSettings({ [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MIN_NO_CRIT });
             const minResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.GALESHOT });
@@ -146,8 +157,10 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.CORRUPTION_SHOT });
 
-            expect(minResult.expected).toBe(1047);
-            expect(maxResult.expected).toBe(1279);
+            // 5 hits with 0.8× decay per hit (percentages baked into sub-ability data)
+            // TODO: verify totals in-game
+            expect(minResult.expected).toBe(3520);
+            expect(maxResult.expected).toBe(4216);
         });
     });
 

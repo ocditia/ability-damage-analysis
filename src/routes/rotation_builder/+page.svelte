@@ -25,7 +25,7 @@
 
 
     const filterByStyle = (style) => Object.fromEntries(
-        Object.entries(abils).filter(([, a]) => a.title && a['main style'] === style)
+        Object.entries(abils).filter(([, a]) => a.title && a.mainStyle === style)
     );
     const rangedAbils = filterByStyle('ranged');
     const magicAbils = filterByStyle('magic');
@@ -49,11 +49,6 @@
 	const BASE_ROW_HEIGHT = 40;
 	const ROW_GAP = 20; // Constant gap between all rows
 
-	let bossName = $derived.by(() => {
-		const val = settingsStore.settings[SETTINGS.BOSS_PRESET]?.value;
-		return val && val !== 'none' ? val : 'ROTATION';
-	});
-
 	// Phase/kill markers from calc engine (single source of truth)
 	let phaseMarkers = $derived(rotationStore.phaseTransitions.map(pt => ({
 		tick: pt.tick,
@@ -76,6 +71,21 @@
 
 	// Boss pattern start tick
 	let patternStartTick = $derived(settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? -1);
+
+	let bossName = $derived.by(() => {
+		const val = settingsStore.settings[SETTINGS.BOSS_PRESET]?.value;
+		return val && val !== 'none' ? val : 'ROTATION';
+	});
+	let killTime = $derived.by(() => {
+		const killMarker = phaseMarkers.find(m => m.label === 'Kill');
+		if (!killMarker) return null;
+		const startTick = patternStartTick >= 0 ? patternStartTick : 0;
+		const ticks = killMarker.tick - startTick;
+		const totalSeconds = ticks * 0.6;
+		const mins = Math.floor(totalSeconds / 60);
+		const secs = (totalSeconds % 60).toFixed(1);
+		return mins > 0 ? `${mins}:${secs.padStart(4, '0')}` : `${secs}s`;
+	});
 
 	// Dynamic row layout state
 	let abilityBarElement: HTMLElement | null = null;
@@ -524,8 +534,8 @@
 	.responsive-container {
 		margin-left: 0% !important;
 		margin-right: 0% !important;
-		padding-left: 3% !important;
-		padding-right: 3% !important;
+		padding-left: 1.5% !important;
+		padding-right: 1.5% !important;
 		max-width: 100% !important;
 	}
 
@@ -868,7 +878,7 @@
 						</button>
 					{/if}
 					<div class="rotation-title-row">
-						<h1 class="rotation-header">{bossName}</h1>
+						<h1 class="rotation-header">{bossName}{#if killTime} <em>{killTime}</em>{/if}</h1>
 						<button class="reset-btn" onclick={clearRotation} title="Reset rotation">Reset</button>
 						<div class="damage-summary">
 								<span class="dmg-total">{(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage + rotationStore.conjureDamage).toLocaleString()}</span>
@@ -889,10 +899,17 @@
 						conjureDamage={rotationStore.conjureDamage}
 						poisonPerTick={rotationStore.poisonPerTick}
 						familiarPerTick={rotationStore.familiarPerTick}
+						familiarVariancePerTick={rotationStore.familiarVariancePerTick}
 						dreadnipPerTick={rotationStore.dreadnipPerTick}
+						dreadnipVariancePerTick={rotationStore.dreadnipVariancePerTick}
 						conjurePerTick={rotationStore.conjurePerTick}
+						conjureVariancePerTick={rotationStore.conjureVariancePerTick}
 						{allAbils}
 						familiarKey={settingsStore.settings[SETTINGS.FAMILIAR]?.value ?? 'none'}
+						phaseTransitions={rotationStore.phaseTransitions}
+						barSize={uiStore.bar.size}
+						patternStartTick={settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? -1}
+						hasBossPreset={settingsStore.settings[SETTINGS.BOSS_PRESET]?.value && settingsStore.settings[SETTINGS.BOSS_PRESET]?.value !== 'none'}
 					/>
                     <RotationConfigManager
                         {refreshUI}
@@ -996,8 +1013,8 @@
                                         <span class="phase-label">{marker.label}</span>
                                     </div>
                                 {/if}
-                                {#if hasAttackPattern && index === patternStartTick}
-                                    <div class="pattern-start-marker" title="Boss pattern starts (tick {index})">
+                                {#if index === patternStartTick}
+                                    <div class="pattern-start-marker" title="Start (tick {index})">
                                         <span class="pattern-start-label">Start</span>
                                     </div>
                                 {/if}

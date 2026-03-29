@@ -4,6 +4,7 @@
  */
 
 import { ABILITIES, abils } from '$lib/data/abilities';
+import { ARMOUR } from '$lib/data/armour';
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
 
@@ -139,15 +140,15 @@ export function applyElementsScrimshawEffect(
     damage: number
 ): number {
     const { settings, abilityKey } = ctx;
-    const style = abils[abilityKey]?.['main style'];
+    const style = abils[abilityKey]?.mainStyle;
 
     if (style !== 'magic') {
         return damage;
     }
 
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.ELEMENTS) {
+    if (settings[SETTINGS.POCKET] === ARMOUR.SCRIMSHAW_OF_ELEMENTS) {
         return Math.floor(damage * 1.05);
-    } else if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.SUPERIOR_ELEMENTS) {
+    } else if (settings[SETTINGS.POCKET] === ARMOUR.SUPERIOR_SCRIMSHAW_OF_ELEMENTS) {
         return Math.floor(damage * 1.0666);
     }
 
@@ -162,15 +163,15 @@ export function applyCrueltyScrimshawEffect(
     damage: number
 ): number {
     const { settings, abilityKey } = ctx;
-    const style = abils[abilityKey]?.['main style'];
+    const style = abils[abilityKey]?.mainStyle;
 
     if (style !== 'ranged') {
         return damage;
     }
 
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.CRUELTY) {
+    if (settings[SETTINGS.POCKET] === ARMOUR.SCRIMSHAW_OF_CRUELTY) {
         return Math.floor(damage * 1.05);
-    } else if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.SUPERIOR_CRUELTY) {
+    } else if (settings[SETTINGS.POCKET] === ARMOUR.SUPERIOR_SCRIMSHAW_OF_ELEMENTS) {
         return Math.floor(damage * 1.0666);
     }
 
@@ -355,7 +356,7 @@ export function applyEssenceCorruptionEffect(
     damage: number
 ): number {
     const { settings, abilityKey } = ctx;
-    const damageType = abils[abilityKey]?.['damage type'];
+    const damageType = abils[abilityKey]?.damageType;
 
     if (
         damageType === 'magic' &&
@@ -372,7 +373,7 @@ export function applyEssenceCorruptionEffect(
  * +20% (regular) or +25% (enchanted) to bleed abilities
  */
 function applyEnduringRuinBleedEffect(ctx: DamageModifierContext, damage: number): number {
-    const classification = abils[ctx.abilityKey]?.['ability classification'];
+    const classification = abils[ctx.abilityKey]?.abilityClassification;
     if (classification !== 'bleed') return damage;
 
     if (ctx.settings[SETTINGS.ENDURING_RUIN_BLEED] === SETTINGS.ENDURING_RUIN_BLEED_VALUES.REGULAR) {
@@ -441,7 +442,7 @@ export function applyAllDamageModifiers(
     damage = applyEssenceCorruptionEffect(ctx, damage);
 
     // Tokkul-zo ring (+10%)
-    if (ctx.settings[SETTINGS.RING] === SETTINGS.RING_VALUES.TOKKUL) {
+    if (ctx.settings[SETTINGS.RING] === ARMOUR.TOKKUL_ZO) {
         damage = Math.floor(damage * 1.1);
     }
 

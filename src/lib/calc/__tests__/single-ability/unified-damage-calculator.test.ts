@@ -185,12 +185,12 @@ describe('calculateSingleAbilityDamage', () => {
                 const settings = createMeleeSettings();
 
                 const withoutBerserk = calculateSingleAbilityDamage(settings, {
-                    ability: MELEE_ABILITIES.DISMEMBER,
+                    ability: MELEE_ABILITIES.METEOR_STRIKE,
                     buffs: {}
                 });
 
                 const withBerserk = calculateSingleAbilityDamage(settings, {
-                    ability: MELEE_ABILITIES.DISMEMBER,
+                    ability: MELEE_ABILITIES.METEOR_STRIKE,
                     buffs: { berserk: true }
                 });
 
@@ -277,10 +277,10 @@ describe('calculateSingleAbilityDamage', () => {
             const withPrecise = createMeleeSettings({ [SETTINGS.PRECISE]: 6 });
 
             const resultWithout = calculateSingleAbilityDamage(withoutPrecise, {
-                ability: MELEE_ABILITIES.DISMEMBER
+                ability: MELEE_ABILITIES.METEOR_STRIKE
             });
             const resultWith = calculateSingleAbilityDamage(withPrecise, {
-                ability: MELEE_ABILITIES.DISMEMBER
+                ability: MELEE_ABILITIES.METEOR_STRIKE
             });
 
             // Precise increases average damage
@@ -338,10 +338,10 @@ describe('calculateSingleAbilityDamage', () => {
             const withHelm = createMeleeSettings({ [SETTINGS.SLAYER_HELM]: SETTINGS.SLAYER_HELM_VALUES.FULL });
 
             const resultWithout = calculateSingleAbilityDamage(withoutHelm, {
-                ability: MELEE_ABILITIES.DISMEMBER
+                ability: MELEE_ABILITIES.METEOR_STRIKE
             });
             const resultWith = calculateSingleAbilityDamage(withHelm, {
-                ability: MELEE_ABILITIES.DISMEMBER
+                ability: MELEE_ABILITIES.METEOR_STRIKE
             });
 
             expect(resultWith.expected).toBeGreaterThan(resultWithout.expected);
@@ -393,7 +393,7 @@ describe('calculateMultipleAbilities', () => {
 
     it('should apply buffs to all abilities', () => {
         const settings = createMeleeSettings();
-        const abilities = [MELEE_ABILITIES.DISMEMBER, MELEE_ABILITIES.FURY];
+        const abilities = [MELEE_ABILITIES.METEOR_STRIKE, MELEE_ABILITIES.FURY];
 
         const withoutBuffs = calculateMultipleAbilities(settings, abilities, {});
         const withBerserk = calculateMultipleAbilities(settings, abilities, { berserk: true });

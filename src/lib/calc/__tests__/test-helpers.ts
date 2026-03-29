@@ -6,6 +6,7 @@
  */
 
 import { SETTINGS } from '../settings_rb.js';
+import { ARMOUR } from '$lib/data/armour';
 
 /**
  * Creates a base settings object with sensible defaults for testing.
@@ -125,6 +126,7 @@ export function createBaseSettings(overrides: Record<string, any> = {}): Record<
         [SETTINGS.RUTHLESS_RANK]: 0,
         [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MEAN,
         [SETTINGS.DAMAGE_PER_UNIT_DIVIDER]: 1,
+        [SETTINGS.CHAIN_MODIFIER]: SETTINGS.CHAIN_MODIFIER_VALUES.NONE,
 
         // Additional settings that damage calc expects
         [SETTINGS.REVENGE]: 0,
@@ -433,16 +435,17 @@ export function createBlankSettings(
         [SETTINGS.OH_TIER_CUSTOM]: weaponTier,
 
         // Style-specific weapons (for style_specific_unification)
+        // When style uses TH, set MH to the TH weapon so unification detects 'two-hand'
         [SETTINGS.MELEE_TH]: 'custom th',
-        [SETTINGS.MELEE_MH]: 'custom',
+        [SETTINGS.MELEE_MH]: 'custom th',
         [SETTINGS.MELEE_OH]: 'custom oh',
         [SETTINGS.RANGED_TH]: 'custom th',
-        [SETTINGS.RANGED_MH]: 'custom',
+        [SETTINGS.RANGED_MH]: 'custom th',
         [SETTINGS.RANGED_OH]: 'custom oh',
         [SETTINGS.MAGIC_TH]: 'custom th',
-        [SETTINGS.MAGIC_MH]: 'custom',
+        [SETTINGS.MAGIC_MH]: 'custom th',
         [SETTINGS.MAGIC_OH]: 'custom oh',
-        [SETTINGS.NECRO_MH]: 'custom',
+        [SETTINGS.NECRO_MH]: 'custom main-hand weapon',
         [SETTINGS.NECRO_OH]: 'custom oh',
 
         // All armour slots set to 'none' (0 strength bonus)
@@ -479,7 +482,7 @@ export function createBlankSettings(
         [SETTINGS.NECRO_GLOVES]: 'none',
 
         // No ammo (for ranged - use custom with high tier so it doesn't limit)
-        [SETTINGS.AMMO]: SETTINGS.AMMO_VALUES.CUSTOM,
+        [SETTINGS.AMMO]: ARMOUR.CUSTOM,
         [SETTINGS.AMMO_TIER]: 999, // Won't limit weapon tier
 
         // All perks disabled
@@ -536,6 +539,7 @@ export function createBlankSettings(
         // Other required settings
         [SETTINGS.MODE]: SETTINGS.MODE_VALUES.MEAN,
         [SETTINGS.DAMAGE_PER_UNIT_DIVIDER]: 1,
+        [SETTINGS.CHAIN_MODIFIER]: SETTINGS.CHAIN_MODIFIER_VALUES.NONE,
         [SETTINGS.REVENGE]: 0,
         [SETTINGS.RUTHLESS_STACKS]: 0,
         [SETTINGS.RUTHLESS_RANK]: 0,

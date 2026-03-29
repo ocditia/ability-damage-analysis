@@ -8,7 +8,7 @@ const logger = Logger.getInstance();
 
 function create_damage_object(settings: Record<string, any>, ability: ABILITIES): DamageObject {
     let crit_chance = 0
-    if (abils[ability]['crit effects'] === true) {
+    if (abils[ability].critEffects === true) {
         crit_chance = calc_crit_chance(settings, ability);
         logger.log(LogCategory.ABILITY_DAMAGE, `Crit chance for ${ability}`, crit_chance);
         logger.trace('Crit Chance', `${(crit_chance * 100).toFixed(1)}%`, `${ability}`);
@@ -17,16 +17,16 @@ function create_damage_object(settings: Record<string, any>, ability: ABILITIES)
     }
     
     const nonCritDistribution: DamageDistribution = {
-        'min hit': 0,
-        'var hit': 0,
+        minHit: 0,
+        varHit: 0,
         'crit': false,
         'probability': 1 - crit_chance,
         'damage list': []
     };
     
     const critDistribution: DamageDistribution = {
-        'min hit': 0,
-        'var hit': 0,
+        minHit: 0,
+        varHit: 0,
         'crit': true,
         'probability': crit_chance,
         'damage list': []
