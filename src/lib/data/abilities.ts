@@ -2450,7 +2450,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'crit effects': true, // can the ability crit
         'damage potential effects': true, // is the ability affected by damage potential
         'ability classification': 'proc', // bleed, dot, burn, channel, regular, multihit
-        'ability type': 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        'ability type': 'combatv2_passive_ability', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'main style': 'magic',
         'damage type': 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
     ,
