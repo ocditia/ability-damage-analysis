@@ -42,7 +42,7 @@ function applyBoostedADEffects(
             distribution['boosted AD'] = Math.floor(1.333 * distribution['boosted AD']);
         }
         else if ([SETTINGS.MELEE_MH_VALUES.KERIS_PROC, SETTINGS.MELEE_MH_VALUES.PRIMED_KERIS_PROC, SETTINGS.MELEE_MH_VALUES.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
-            distribution['boosted AD'] = 2 * distribution['boosted AD'];
+            distribution['boosted AD'] = 3 * distribution['boosted AD'];
         }
     }
 
