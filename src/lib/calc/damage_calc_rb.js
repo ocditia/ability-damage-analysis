@@ -52,7 +52,8 @@ function calc_base_ad(settings) {
     // base damage buffs (eruptive / equilibrium)
     let buff = 1 + settings[SETTINGS.ERUPTIVE] * 0.005;
     if (settings[SETTINGS.EQ_PERK] > 0) {
-        buff += 0.1 + settings[SETTINGS.EQ_PERK] * 0.01;
+        buff += 0.06 + settings[SETTINGS.EQ_PERK] * 0.02;
+        console.log(buff)
     }
     const rawAD = base_AD;
     base_AD = Math.floor(base_AD * buff);
