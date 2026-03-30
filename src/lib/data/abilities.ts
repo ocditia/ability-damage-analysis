@@ -1772,8 +1772,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             2: [ABILITIES.GREATER_CONCENTRATED_BLAST_2],
             3: [ABILITIES.GREATER_CONCENTRATED_BLAST_3]
         },
-        cooldown: 5.4
-    ,
+        cooldown: 5.4,
         title: 'Gconc',
         icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png',
     },
@@ -2059,7 +2058,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             6: [],
             7: [ABILITIES.ASPHYXIATE_LAST_HIT]
         },
-        cooldown: 5.4,
+        cooldown: 20.4,
 
         title: 'Asphyxiate',
         icon: '/ability_icons/magic/30x30/asphyxiate.png',
@@ -2112,7 +2111,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             7: [ABILITIES.TUMEKEN_ASPHYXIATE_HIT],
             8: [ABILITIES.TUMEKEN_ASPHYXIATE_LAST_HIT]
         },
-        cooldown: 5.4,
+        cooldown: 20.4,
         // title: 'Asphyxiate (Tumeken)',
         // icon: '/ability_icons/magic/30x30/asphyxiate.png',
     },
