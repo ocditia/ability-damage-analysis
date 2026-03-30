@@ -1975,7 +1975,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     // Mage Enhanced Abilities
     [ABILITIES.ASPHYXIATE_HIT]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.2, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit
@@ -1986,7 +1986,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         'damage type': 'magic',
         cooldown: 5.4},
     [ABILITIES.ASPHYXIATE_LAST_HIT]: {
-        'min hit': 1.1,
+        'min hit': 1.2,
         'var hit': 0.2,
         'on-hit effects': true,
         'crit effects': true,
@@ -1998,7 +1998,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.ASPHYXIATE]: {
         // ability name
-        'min hit': 1.1, // min % of abil expressed as a decimal
+        'min hit': 1.2, // min % of abil expressed as a decimal
         'var hit': 0.2,
         'on-hit effects': true, // does the ability get on-hit effects
         'crit effects': true, // can the ability crit

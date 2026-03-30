@@ -872,7 +872,7 @@ const SETTINGS = {
         BOUND_STUNNED: 'bound and stunned'
     },
     DEVOURER_NEXUS: 'devourer nexus',
-    TUMEKENS_RESPLENDENCE_ASPHYX: 'tumeken\'s resplendence asphyxiate',
+    FULLY_CHANNELED_ASPHYX: 'fully channeled asphyxiate',
     DRACONIC_FRUIT: 'draconic fruit',
     ENDURING_RUIN_HIT: 'enduring ruin hit',
     ENDURING_RUIN_HIT_VALUES: {
@@ -1414,8 +1414,8 @@ const settingsConfig = {
             { text: 'None', value: SETTINGS.NECRO_AMMO_SLOT_VALUES.NONE },
         ]
     },
-    [SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX]: {
-        label: 'Tumekens asphyx',
+    [SETTINGS.FULLY_CHANNELED_ASPHYX]: {
+        label: 'Fully channeled asphyx',
         default: false
     },
     [SETTINGS.SLAYER_PERK]: {

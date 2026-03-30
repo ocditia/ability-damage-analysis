@@ -95,7 +95,7 @@ function calc_channelled_hit(settings: Record<string, any>, hit_index: number, r
             for (let hit of o) {
                 hits.push(hit);
                 handle_edraco(settings, timers, hit.ability);
-                handle_tumekens(settings, timers, hit.ability);
+                handle_channeled_asphyx(settings, timers, hit.ability);
             }
         }
     }
@@ -356,8 +356,10 @@ export function handle_edraco(settings: Record<string, any>, timers: Record<stri
  * Activates Tumeken's Resplendence buff after the last hit of Asphyxiate (5pc set effect).
  * 9 second buff (15 ticks) that enhances the next Asphyxiate.
  */
-export function handle_tumekens(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
+export function handle_channeled_asphyx(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
     if (abilityKey !== ABILITIES.ASPHYXIATE_LAST_HIT) return;
+
+    settings[SETTINGS.FULLY_CHANNELED_ASPHYX] = true;
 
     let tumekensCount = 0;
     if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
@@ -366,8 +368,9 @@ export function handle_tumekens(settings: Record<string, any>, timers: Record<st
     if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
     if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
     if (tumekensCount >= 5) {
-        settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] = true;
-        timers[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] = 15; // 9s = 15 ticks
+        timers[SETTINGS.FULLY_CHANNELED_ASPHYX] = 15; // 9s = 15 ticks
+    } else {
+        timers[SETTINGS.FULLY_CHANNELED_ASPHYX] = 6; // 3.6s = 6 ticks (base duration without full set)
     }
 }
 

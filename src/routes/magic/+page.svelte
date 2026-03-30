@@ -426,7 +426,7 @@
                                     img="/effect_icons/smoke_cloud.png"
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX]}
+                                    bind:setting={settings[SETTINGS.FULLY_CHANNELED_ASPHYX]}
                                     onchange={() => updateDamages()}
                                     img="/ability_icons/magic/30x30/asphyxiate.png"
                                 />
