@@ -352,9 +352,20 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
 
     // tumeken's resplendence pc
     if (abils[settings['ability']]['main style'] === 'magic' &&
-        settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] === true
+        settings[SETTINGS.FULLY_CHANNELED_ASPHYX] === true
     ) {
-        crit_buff += 0.35;
+
+        let tumekensCount = 0;
+        if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+        if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+        if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+        if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+        if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+        if (tumekensCount >= 5) {
+            crit_buff += 0.35;
+        } else {
+            crit_buff += 0.15;
+        }
     }
 
     // magic leagues relic
