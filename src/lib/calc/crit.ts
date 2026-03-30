@@ -187,6 +187,10 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
         if (abilityKey === ABILITIES.MAGMA_TEMPEST) {
             crit_chance = 0;
         }
+
+        if (abilityKey === ABILITIES.WILD_MAGIC_HIT) {
+            crit_chance += 0.1;
+        }
     }
 
     if (abils[abilityKey]['main style'] === 'melee') {
@@ -365,6 +369,10 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
 
     if (dmgObj.ability === ABILITIES.THE_FINAL_FLURRY_2) {
         crit_buff += 0.5;
+    }
+
+    if (dmgObj.ability === ABILITIES.WILD_MAGIC_HIT) {
+        crit_buff += 0.2;
     }
 
     logger.trace('Crit Damage Bonus', `+${(crit_buff * 100).toFixed(1)}%`, `Base 50%${crit_buff !== 0.5 ? ' + modifiers' : ''} → ×${(1 + crit_buff).toFixed(4)} multiplier`);
