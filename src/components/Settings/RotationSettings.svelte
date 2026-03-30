@@ -1,24 +1,105 @@
 <script>
     import { onMount } from 'svelte';
+import { ARMOUR } from '$lib/data/armour';
+import { WEAPONS } from '$lib/data/weapons';
     import Checkbox from '../../components/Settings/Checkbox.svelte';
     import Number from '../../components/Settings/Number.svelte';
     import Select from '../../components/Settings/Select.svelte';
     import GearSelection from '../../components/Settings/GearSelection.svelte';
     import PerkSelection from '../../components/Settings/PerkSelection.svelte';
     import FamiliarSelection from '../../components/Settings/FamiliarSelection.svelte';
+    import GearManager from '../../components/Settings/GearManager.svelte';
+    import ActionIcon from '../UI/ActionIcon.svelte';
     import TabButton from '../UI/TabButton.svelte';
     import GradientSeparator from '../UI/GradientSeparator.svelte';
     import ToggleButton from '../UI/ToggleButton.svelte';
+    import PillToggle from '../UI/PillToggle.svelte';
     import { SETTINGS } from '$lib/calc/settings_rb';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
-    import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
+    import { settingsStore, settingsActions, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { bossPresets, getBossPresetWithEnrage } from '$lib/data/bosses/boss_presets';
     import { familiars, calculateFamiliarHitChance } from '$lib/data/familiars';
+    import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
+    import { getStyleColor } from '$lib/utils/colors';
+    import { perks as perkDefs, formatPerkAbbrev } from '$lib/data/perks';
+    import { STYLE_COLORS } from '$lib/utils/colors';
+    import { weapons } from '$lib/data/weapons';
     import '../../css/style.css';
     let { tab = 'general', styleTab = SettingsCombatStyles.RANGED, stacks, updateDamages, refreshUI, uiState } = $props();
 
     // Local reference to settings store
     let settings = $derived(settingsStore.settings);
+    const styleColorMap = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necromancy' };
+    let activeStyleColor = $derived(getStyleColor(styleColorMap[styleTab] ?? 'ranged'));
+    let showGearManager = $state(false);
+    let gearFilter = $derived(settings[SETTINGS.GEAR_FILTER]?.value ?? 'popular');
+    let useOwnedGearPerks = $derived(gearFilter === 'owned');
+
+    function setGearFilter(value) {
+        if (settings[SETTINGS.GEAR_FILTER]) {
+            settings[SETTINGS.GEAR_FILTER].value = value;
+        }
+        if (settings[SETTINGS.USE_OWNED_GEAR]) {
+            settings[SETTINGS.USE_OWNED_GEAR].value = value === 'owned';
+        }
+        settingsActions.saveSettings();
+        updateDamages();
+    }
+
+    // Weapon slot keys by style
+    const weaponKeysByStyle = {
+        [SettingsCombatStyles.MELEE]: { mh: SETTINGS.MELEE_MH, oh: SETTINGS.MELEE_OH },
+        [SettingsCombatStyles.RANGED]: { mh: SETTINGS.RANGED_MH, oh: SETTINGS.RANGED_OH },
+        [SettingsCombatStyles.MAGIC]: { mh: SETTINGS.MAGIC_MH, oh: SETTINGS.MAGIC_OH },
+        [SettingsCombatStyles.NECROMANCY]: { mh: SETTINGS.NECRO_MH, oh: SETTINGS.NECRO_OH },
+    };
+    const bodyKeysByStyle = {
+        [SettingsCombatStyles.MELEE]: SETTINGS.MELEE_BODY,
+        [SettingsCombatStyles.RANGED]: SETTINGS.RANGED_BODY,
+        [SettingsCombatStyles.MAGIC]: SETTINGS.MAGIC_BODY,
+        [SettingsCombatStyles.NECROMANCY]: SETTINGS.NECRO_BODY,
+    };
+    const legsKeysByStyle = {
+        [SettingsCombatStyles.MELEE]: SETTINGS.MELEE_LEGS,
+        [SettingsCombatStyles.RANGED]: SETTINGS.RANGED_LEGS,
+        [SettingsCombatStyles.MAGIC]: SETTINGS.MAGIC_LEGS,
+        [SettingsCombatStyles.NECROMANCY]: SETTINGS.NECRO_LEGS,
+    };
+
+    // Get perks for an equipped item
+    function getEquippedPerks(settingsKey) {
+        const itemKey = settings[settingsKey]?.value;
+        if (!itemKey || itemKey === 'none' || itemKey.startsWith('custom')) return [];
+        const instances = ownedItemsStore.ownedGear.get(itemKey);
+        if (!instances || instances.length === 0) return [];
+        // Use first instance (or selected instance if tracked)
+        const gearInstances = settings['_gearInstances']?.value;
+        const instanceInfo = gearInstances?.[settingsKey];
+        const idx = (instanceInfo?.itemKey === itemKey) ? instanceInfo.instanceIndex : 0;
+        return instances[idx]?.perks ?? [];
+    }
+
+    // Active perks display grouped by slot
+    let weaponPerks = $derived.by(() => {
+        if (!useOwnedGearPerks) return [];
+        const wk = weaponKeysByStyle[styleTab];
+        if (!wk) return [];
+        const mhVal = settings[wk.mh]?.value;
+        const is2h = mhVal && weapons[mhVal]?.['weapon type'] === 'two-hand';
+        const mhPerks = getEquippedPerks(wk.mh);
+        const ohPerks = is2h ? [] : getEquippedPerks(wk.oh);
+        return [...mhPerks, ...ohPerks];
+    });
+    let bodyPerks = $derived.by(() => {
+        if (!useOwnedGearPerks) return [];
+        const key = bodyKeysByStyle[styleTab];
+        return key ? getEquippedPerks(key) : [];
+    });
+    let legsPerks = $derived.by(() => {
+        if (!useOwnedGearPerks) return [];
+        const key = legsKeysByStyle[styleTab];
+        return key ? getEquippedPerks(key) : [];
+    });
 
     let editingStack = $state(null);
     let openDropdown = $state(null);
@@ -27,10 +108,10 @@
     let maxAdrenaline = $derived.by(() => {
         let max = 100;
         const hasFullVestments =
-            settings[SETTINGS.MELEE_HELMET]?.value === SETTINGS.MELEE_HELMET_VALUES.VESTMENTS &&
-            settings[SETTINGS.MELEE_BODY]?.value === SETTINGS.MELEE_BODY_VALUES.VESTMENTS &&
-            settings[SETTINGS.MELEE_LEGS]?.value === SETTINGS.MELEE_LEGS_VALUES.VESTMENTS &&
-            settings[SETTINGS.MELEE_BOOTS]?.value === SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS;
+            settings[SETTINGS.MELEE_HELMET]?.value === ARMOUR.VESTMENTS_OF_HAVOC_HOOD &&
+            settings[SETTINGS.MELEE_BODY]?.value === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_TOP &&
+            settings[SETTINGS.MELEE_LEGS]?.value === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_BOTTOM &&
+            settings[SETTINGS.MELEE_BOOTS]?.value === ARMOUR.VESTMENTS_OF_HAVOC_BOOTS;
         if (hasFullVestments) max += 20;
         if (settings[SETTINGS.HEIGHTENED_SENSES]?.value) max += 10;
         return max;
@@ -76,15 +157,26 @@
         [SETTINGS.FAMILIAR_VALUES.STEEL_TITAN]: '/familiars/Steel_titan_chathead.png',
     };
 
-    const BOLT_AMMO = [SETTINGS.AMMO_VALUES.HYDRIX_BOLTS];
+    const BOLT_AMMO = [ARMOUR.HYDRIX_BAKRIMINEL_BOLTS_E];
     const ARROW_AMMO = [
-        SETTINGS.AMMO_VALUES.FUL_ARROWS, SETTINGS.AMMO_VALUES.WEN_ARROWS,
-        SETTINGS.AMMO_VALUES.JAS_ARROWS, SETTINGS.AMMO_VALUES.DEATHSPORE_ARROWS,
-        SETTINGS.AMMO_VALUES.BIK_ARROWS
+        ARMOUR.FUL_ARROWS, ARMOUR.WEN_ARROWS,
+        ARMOUR.JAS_ARROWS, ARMOUR.DEATHSPORE_ARROWS,
+        ARMOUR.BIK_ARROWS
     ];
 
     // Sorted boss names for dropdown
     const bossNames = Object.keys(bossPresets).sort((a, b) => a.localeCompare(b));
+    let bossFilter = $state('popular');
+
+    function updateBossOptions() {
+        const filtered = bossFilter === 'popular'
+            ? bossNames.filter(key => bossPresets[key].popular)
+            : bossNames;
+        settings[SETTINGS.BOSS_PRESET].options = [
+            { value: 'none', text: 'None' },
+            ...filtered.map(key => ({ value: key, text: bossPresets[key].name }))
+        ];
+    }
 
     // Enrage tracking
     let enrageValue = $state(0);
@@ -110,7 +202,14 @@
     function recalcFamiliarAccuracy() {
         const bossKey = settings[SETTINGS.BOSS_PRESET]?.value;
         const familiarKey = settings[SETTINGS.FAMILIAR]?.value;
-        if (!bossKey || bossKey === 'none' || !familiarKey || familiarKey === 'none') return;
+        if (!bossKey || bossKey === 'none') {
+            if (settings[SETTINGS.FAMILIAR_ACCURACY]) {
+                settings[SETTINGS.FAMILIAR_ACCURACY].value = 100;
+                updateDamages();
+            }
+            return;
+        }
+        if (!familiarKey || familiarKey === 'none') return;
 
         const boss = getEffectiveBoss(bossKey);
         const familiar = familiars[familiarKey];
@@ -165,15 +264,13 @@
         await initializeSettings();
 
         // Populate boss preset options from boss_presets data
-        settings[SETTINGS.BOSS_PRESET].options = [
-            { value: 'none', text: 'None' },
-            ...bossNames.map(key => ({ value: key, text: bossPresets[key].name }))
-        ];
+        updateBossOptions();
 
         // debugPreset2();
         settings[SETTINGS.UNDEAD_SLAYER_ABILITY]['value'] = false;
         settings[SETTINGS.BLACKHOLE]['value'] = false;
         settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
+        // settings[SETTINGS.KERAPACS_WRIST_WRAPS]['value'] = false;
 
     });
         
@@ -205,7 +302,7 @@
     //     armour.forEach(armour => {
     //         settings[armour]['value'] = 'none';
     //     });
-    //     settings[SETTINGS.MAGIC_TH]['value'] = SETTINGS.MAGIC_TH_VALUES.CUSTOM;
+    //     settings[SETTINGS.MAGIC_TH]['value'] = WEAPONS.CUSTOM_TH_LEGACY;
     //     settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 90;
     //     settings[SETTINGS.MAGIC_PRAYER]['value'] = SETTINGS.MAGIC_PRAYER_VALUES.NONE;
     //     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.DW;
@@ -227,14 +324,14 @@
     //     settings[SETTINGS.RANGED_PRAYER]['value'] = SETTINGS.RANGED_PRAYER_VALUES.NONE;
     //     settings[SETTINGS.MELEE_PRAYER]['value'] = SETTINGS.MELEE_PRAYER_VALUES.NONE;
     //     settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-    //     settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+    //     settings[SETTINGS.AMMO]['value'] = ARMOUR.WEN_ARROWS;
 
     //     settings[SETTINGS.INNATE_MASTERY]['value'] = true;
     //     settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MIN_NO_CRIT;
     //     settings[SETTINGS.KALG_SPEC]['value'] = false;
-    //     settings[SETTINGS.RANGED_TH]['value'] = SETTINGS.RANGED_TH_VALUES.CUSTOM;
+    //     settings[SETTINGS.RANGED_TH]['value'] = WEAPONS.CUSTOM_TH_LEGACY;
 
-    //     settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
+    //     settings[SETTINGS.MELEE_TH]['value'] = WEAPONS.CUSTOM_TH_LEGACY;
     //     settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 80;
     //     settings[SETTINGS.WEAPON_TYPE_MELEE]['value'] = SETTINGS.WEAPON_VALUES.TH;
     // }
@@ -266,7 +363,7 @@
     //     armour.forEach(armour => {
     //         settings[armour]['value'] = 'none';
     //     });
-    //     settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
+    //     settings[SETTINGS.MELEE_TH]['value'] = WEAPONS.CUSTOM_TH_LEGACY;
     //     settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 85;
     //     settings[SETTINGS.MELEE_PRAYER]['value'] = SETTINGS.MELEE_PRAYER_VALUES.NONE;
     //     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH;
@@ -286,13 +383,13 @@
     //     settings[SETTINGS.STRENGTH_LEVEL]['value'] = 99;
     //     settings[SETTINGS.REAPER_CREW]['value'] = false;
     //     settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-    //     settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+    //     settings[SETTINGS.AMMO]['value'] = ARMOUR.WEN_ARROWS;
 
     //     settings[SETTINGS.INNATE_MASTERY]['value'] = false;
     //     settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MEAN;
     //     settings[SETTINGS.KALG_SPEC]['value'] = false;
 
-    //     settings[SETTINGS.MELEE_TH]['value'] = SETTINGS.MELEE_TH_VALUES.CUSTOM;
+    //     settings[SETTINGS.MELEE_TH]['value'] = WEAPONS.CUSTOM_TH_LEGACY;
     //     settings[SETTINGS.WEAPON_TYPE_MELEE]['value'] = SETTINGS.WEAPON_VALUES.TH;
     //     settings[SETTINGS.NATURAL_INSTINCT]['value'] = true;
 
@@ -300,9 +397,9 @@
     // }
 
     // function testPreset() {
-    //     settings[SETTINGS.RANGED_GLOVES]['value'] = SETTINGS.RANGED_GLOVES_VALUES.CINDERS;
-    //     settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
-    //     settings[SETTINGS.POCKET]['value'] = SETTINGS.POCKET_VALUES.JAS;
+    //     settings[SETTINGS.RANGED_GLOVES]['value'] = ARMOUR.CINDERBANE_GLOVES;
+    //     settings[SETTINGS.NECKLACE]['value'] = ARMOUR.EOF;
+    //     settings[SETTINGS.POCKET]['value'] = ARMOUR.JAS_BOOK;
 
     //     settings[SETTINGS.LVL20ARMOUR]['value'] = false;
     //     settings[SETTINGS.BITING]['value'] = 3;
@@ -312,27 +409,27 @@
     //     settings[SETTINGS.REAPER_CREW]['value'] = false;
     //     settings[SETTINGS.RANGED_PRAYER]['value'] = SETTINGS.RANGED_PRAYER_VALUES.ANGUISH;
     //     settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-    //     settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+    //     settings[SETTINGS.AMMO]['value'] = ARMOUR.WEN_ARROWS;
     // }
 
     // function testPresetR() {
-    //     settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
+    //     settings[SETTINGS.NECKLACE]['value'] = ARMOUR.EOF;
 
     //     //settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
     //     settings[SETTINGS.REAPER_CREW]['value'] = false;
     //     settings[SETTINGS.RING]['value'] = SETTINGS.RING_VALUES.STALKER_E;
-    //     settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+    //     settings[SETTINGS.AMMO]['value'] = ARMOUR.WEN_ARROWS;
     // }
     // function testPreset2() {
-    //     settings[SETTINGS.MAGIC_HELMET]['value'] = SETTINGS.MAGIC_HELMET_VALUES.TECTONIC;
-    //     settings[SETTINGS.MAGIC_BODY]['value'] = SETTINGS.MAGIC_BODY_VALUES.TECTONIC;
-    //     settings[SETTINGS.MAGIC_LEGS]['value'] = SETTINGS.MAGIC_LEGS_VALUES.TECTONIC;
-    //     settings[SETTINGS.MAGIC_GLOVES]['value'] = SETTINGS.MAGIC_GLOVES_VALUES.KWW;
-    //     settings[SETTINGS.MAGIC_BOOTS]['value'] = SETTINGS.MAGIC_BOOTS_VALUES.BLAST;
+    //     settings[SETTINGS.MAGIC_HELMET]['value'] = ARMOUR.TECTONIC_MASK;
+    //     settings[SETTINGS.MAGIC_BODY]['value'] = ARMOUR.TECTONIC_ROBE_TOP;
+    //     settings[SETTINGS.MAGIC_LEGS]['value'] = ARMOUR.TECTONIC_ROBE_BOTTOM;
+    //     settings[SETTINGS.MAGIC_GLOVES]['value'] = ARMOUR.KERAPACS_WRISTWRAPS;
+    //     settings[SETTINGS.MAGIC_BOOTS]['value'] = ARMOUR.BLAST_DIFFUSION_BOOTS;
 
-    //     settings[SETTINGS.NECKLACE]['value'] = SETTINGS.NECKLACE_VALUES.EOF;
+    //     settings[SETTINGS.NECKLACE]['value'] = ARMOUR.EOF;
     //     settings[SETTINGS.REAPER_CREW]['value'] = false;
-    //     settings[SETTINGS.AMMO]['value'] = SETTINGS.AMMO_VALUES.WEN_ARROWS;
+    //     settings[SETTINGS.AMMO]['value'] = ARMOUR.WEN_ARROWS;
     // }
     //makeNaked();
     //testPresetR();
@@ -404,7 +501,7 @@
         <p>Loading settings...</p>
     </div>
     {:else}
-    <form class="w-full">
+    <form class="w-full" style="--style-color: {activeStyleColor}">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
             {#if tab === 'general'}
                 <div class="md:col-span-1 space-y-2">
@@ -440,6 +537,11 @@
                             max="150"
                             min="1"
                         />
+                        <Checkbox
+                            bind:setting={settings[SETTINGS.STRENGTH_CAPE]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/strength_cape.png"
+                        />
                     {:else if styleTab == SettingsCombatStyles.NECROMANCY}
                         <Number
                             bind:setting={settings[SETTINGS.NECROMANCY_LEVEL]}
@@ -454,6 +556,8 @@
                     <Number
                         bind:setting={settings[SETTINGS.HIT_CHANCE]}
                         onchange={() => updateDamages()}
+
+                        img="/settings_icons/Zero_weakness_icon.png"
                         step="1"
                         max="100"
                         min="0"
@@ -541,7 +645,8 @@
                             { key: SETTINGS.STONE_OF_JAS, img: '/effect_icons/stone_of_jas.png', title: 'Stone of Jas', step: 1, max: 6 },
                             { key: SETTINGS.INFERNAL_PUZZLE_BOX, img: '/effect_icons/infernal_puzzlebox.png', title: 'Infernal Puzzle Box', step: 1, max: 6 },
                             { key: SETTINGS.DIVINE_RAGE, img: '/ability_icons/special/Divine_Rage.png', title: 'Divine Rage', toggle: true },
-                            { key: SETTINGS.ECLIPSED_SOUL, img: '/ability_icons/special/Eclipsed_Soul.png', title: 'Eclipsed Soul', toggle: true }
+                            { key: SETTINGS.ECLIPSED_SOUL, img: '/ability_icons/special/Eclipsed_Soul.png', title: 'Eclipsed Soul', toggle: true },
+                            { key: SETTINGS.ENCHANTMENT_OF_FLAMES, img: '/effect_icons/Enchantment_of_flames_detail.png', title: 'Enchantment of Flames', toggle: true }
                         ] as buff}
                             <ToggleButton
                                 bind:setting={settings[buff.key]}
@@ -550,6 +655,7 @@
                                 toggle={buff.toggle ?? false}
                                 step={buff.step ?? 1}
                                 max={buff.max}
+                                borderColor={activeStyleColor}
                                 onchange={updateDamages}
                             />
                         {/each}
@@ -561,6 +667,7 @@
                             title="Vulnerability (click to cycle)"
                             cycle={[SETTINGS.VULN_VALUES.NONE, SETTINGS.VULN_VALUES.CURSE, SETTINGS.VULN_VALUES.VULNERABILITY]}
                             badgeFn={(v) => v === SETTINGS.VULN_VALUES.CURSE ? 'C' : v === SETTINGS.VULN_VALUES.VULNERABILITY ? 'V' : null}
+                            borderColor={activeStyleColor}
                             onchange={updateDamages}
                         />
                         <ToggleButton
@@ -574,6 +681,7 @@
                                 const idx = levels.indexOf(v);
                                 return idx >= 0 ? '+'.repeat(idx) || '0' : null;
                             }}
+                            borderColor={activeStyleColor}
                             onchange={updateDamages}
                         />
                         <ToggleButton
@@ -581,6 +689,7 @@
                             img="/effect_icons/nopenopenope.png"
                             title="Nope nope nope"
                             max={2}
+                            borderColor={activeStyleColor}
                             onchange={updateDamages}
                         />
                     </div>
@@ -636,6 +745,7 @@
                                 img={toggle.img}
                                 title={toggle.title}
                                 toggle={true}
+                                borderColor={activeStyleColor}
                                 onchange={updateDamages}
                             />
                         {/each}
@@ -643,11 +753,49 @@
                 </div>
             {:else if tab === 'equipment'}
                 <div class="md:col-span-1">
-                    <GearSelection {settings} {styleTab} {updateDamages} bind:openDropdown />
+                    <GearSelection {settings} {styleTab} {updateDamages} bind:openDropdown {gearFilter} onFilterChange={setGearFilter} />
                 </div>
-                <div class="md:col-span-1">
-                    <PerkSelection bind:settings {updateDamages} />
-                </div>
+                {#if !useOwnedGearPerks}
+                    <div class="md:col-span-1">
+                        <PerkSelection bind:settings {updateDamages} />
+                    </div>
+                {:else}
+                    <div class="md:col-span-1">
+                        <h5 class="uppercase font-bold text-lg text-center mb-4">Active Perks</h5>
+                        <div class="space-y-2">
+                            <div class="flex gap-1 flex-wrap justify-center">
+                                {#each weaponPerks as perk}
+                                    {@const def = perkDefs[perk.perkKey]}
+                                    {#if def}
+                                        <ActionIcon type="perk" src={def.icon} size="md" badgeText="{perk.rank}" borderColor={STYLE_COLORS.perks} title="{def.name} {perk.rank}" />
+                                    {/if}
+                                {/each}
+                            </div>
+                            <div class="flex gap-1 flex-wrap justify-center">
+                                {#each bodyPerks as perk}
+                                    {@const def = perkDefs[perk.perkKey]}
+                                    {#if def}
+                                        <ActionIcon type="perk" src={def.icon} size="md" badgeText="{perk.rank}" borderColor={STYLE_COLORS.perks} title="{def.name} {perk.rank}" />
+                                    {/if}
+                                {/each}
+                            </div>
+                            <div class="flex gap-1 flex-wrap justify-center">
+                                {#each legsPerks as perk}
+                                    {@const def = perkDefs[perk.perkKey]}
+                                    {#if def}
+                                        <ActionIcon type="perk" src={def.icon} size="md" badgeText="{perk.rank}" borderColor={STYLE_COLORS.perks} title="{def.name} {perk.rank}" />
+                                    {/if}
+                                {/each}
+                            </div>
+                            <button
+                                class="w-full text-xs text-sky-300 hover:text-white border border-sky-300/30 hover:border-sky-300 rounded px-2 py-1.5 mt-2 transition-colors"
+                                onclick={() => showGearManager = true}
+                            >
+                                Manage Perks
+                            </button>
+                        </div>
+                    </div>
+                {/if}
                 <div class="md:col-span-1">
                     <FamiliarSelection bind:settings {updateDamages} bind:openDropdown onFamiliarChange={recalcFamiliarAccuracy} />
                 </div>
@@ -655,6 +803,9 @@
             {:else if tab === 'bosses'}
                 <div class="md:col-span-1 space-y-4">
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Boss Preset</h5>
+                    <div class="flex justify-center mb-3">
+                        <PillToggle bind:value={bossFilter} options={['popular', 'all']} labels={{ popular: 'Popular', all: 'All' }} onchange={updateBossOptions} />
+                    </div>
                     <div class="space-y-4">
                         <Select
                             bind:setting={settings[SETTINGS.BOSS_PRESET]}
@@ -699,15 +850,6 @@
                                         <p class="text-amber-400">Familiar hit chance: {settings[SETTINGS.FAMILIAR_ACCURACY]?.value ?? '?'}%</p>
                                     {/if}
                                     {#if boss?.phases?.some(p => p.attackPattern)}
-                                        <div class="flex items-center gap-2 mt-2">
-                                            <label class="text-xs text-gray-400 whitespace-nowrap">Pattern start tick:</label>
-                                            <input type="number"
-                                                min="0"
-                                                step="1"
-                                                bind:value={settings[SETTINGS.BOSS_PATTERN_START].value}
-                                                class="w-16 text-xs text-center bg-gray-800 border border-gray-600 rounded px-1 py-0.5 text-white"
-                                            />
-                                        </div>
                                         {#each boss.phases as phase, i}
                                             {#if phase.attackPattern}
                                                 <p class="text-purple-400 text-xs">P{i + 1}: {phase.attackPattern.cycle.map(a => a.label ?? a.name).join(' → ')}</p>
@@ -717,6 +859,23 @@
                                 </div>
                             {/if}
                         {/if}
+                        <!-- Always-visible boss fields -->
+                        <Number
+                            bind:setting={settings[SETTINGS.BOSS_PATTERN_START]}
+                            onchange={() => updateDamages()}
+                            img="/settings_icons/Time.png"
+                            step="1"
+                            min="-1"
+                        />
+                        <Number
+                            bind:setting={settings[SETTINGS.BOSS_HP]}
+                            onchange={() => updateDamages()}
+                            img="/effect_icons/target_hp.png"
+                            step="1000"
+                            min="0"
+                            width="90px"
+                            compact={true}
+                        />
                     </div>
                 </div>
                 <div class="md:col-span-1 space-y-4">
@@ -736,6 +895,8 @@
     </form>
     {/if}
 </div>
+
+<GearManager bind:show={showGearManager} />
 
 <style>
     .stack-toggle {
@@ -771,7 +932,7 @@
         text-align: center;
         background: #1e293b;
         color: white;
-        border: 1px solid #4ade80;
+        border: 1px solid var(--style-color, #4ade80);
         border-radius: 4px;
         z-index: 10;
         -moz-appearance: textfield;
@@ -784,7 +945,7 @@
     }
     .stack-active {
         opacity: 1;
-        border-color: #4ade80;
+        border-color: var(--style-color, #4ade80);
     }
     .icon-dropdown {
         position: absolute;
@@ -793,7 +954,7 @@
         right: 0;
         z-index: 20;
         background: #1e293b;
-        border: 1px solid #4ade80;
+        border: 1px solid var(--style-color, #4ade80);
         border-radius: 6px;
         max-height: 200px;
         overflow-y: auto;
@@ -814,7 +975,7 @@
         background: rgba(255, 255, 255, 0.1);
     }
     .icon-dropdown-item.active {
-        color: #4ade80;
+        color: var(--style-color, #4ade80);
         font-weight: bold;
     }
 </style>

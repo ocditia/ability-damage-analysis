@@ -1,11 +1,18 @@
 <script>
-    import { getItemForValue, getSettingsKeyForItem } from '$lib/calc/rotation_builder/gear-registry';
-    import { SETTINGS } from '$lib/calc/settings_rb';
-    import { allExtraActions, gearSwaps } from '$lib/special/abilities';
-    import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
-    import { initializeSettings, settingsStore } from '$lib/stores/settingsStore.svelte.js';
     import { onMount } from 'svelte';
     import ActionChoice from './ActionChoice.svelte';
+    import { allExtraActions, gearSwaps } from '$lib/special/abilities';
+    import { getSettingsKeyForItem, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
+    import { SETTINGS } from '$lib/calc/settings_rb';
+    import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
+    import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
+    import { stripVariantSuffix } from '$lib/utils/gearVariants';
+    import ActionIcon from '$components/UI/ActionIcon.svelte';
+    import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
+    import { perks as perkDefs } from '$lib/data/perks';
+    import { bossPresets, getBossPresetWithEnrage } from '$lib/data/bosses/boss_presets';
+    import { weapons } from '$lib/data/weapons';
+    import { STYLE_COLORS } from '$lib/utils/colors';
 
     // Initialize settings on component mount
     onMount(async () => {
@@ -49,7 +56,7 @@
                     // New ExtraAction format — has .type and .slot
                     if (action.type === 'gear' && action.slot) {
                         state[action.slot] = action.value;
-                        if (action.slot === SETTINGS.AMMO) {
+                        if (action.slot.includes('ammo')) {
                             const styleAmmo = ammoKeys[uiState.activeTab];
                             if (styleAmmo) state[styleAmmo] = action.value;
                         }
@@ -131,11 +138,11 @@
         const key = ammoKeys[uiState.activeTab];
         const val = (key && gs[key]) || gs[SETTINGS.AMMO];
         if (!val || val === 'none' || val === 'custom') return slotFallbacks.ammo;
-        const base = val.replace(/ \(e\)$/, '');
+        const base = stripVariantSuffix(val);
         return `/gear_icons/ranged/${base}.png`;
     }
 
-    const slotKeyMaps = { pocket: pocketKeys, necklace: necklaceKeys, cape: capeKeys, ring: ringKeys };
+    const slotKeyMaps = { pocket: pocketKeys, necklace: necklaceKeys, cape: capeKeys, ring: ringKeys, ammo: ammoKeys };
 
     function getEquipIcon(slot) {
         let key;
@@ -175,30 +182,37 @@
 
     // Can't use $: here as it doesn't track rune state - computed in template via {#key tick}
 
-    function getWeaponIcon(hand) {
-        const st = uiState.activeTab;
-        const wk = weaponKeys[st];
-        if (!wk) return '/armour_icons/Main_hand_slot.webp';
-
+    function getWeaponValue(hand) {
+        const wk = weaponKeys[uiState.activeTab];
+        if (!wk) return 'none';
         const key = hand === 'th' ? wk.th : hand === 'oh' ? wk.oh : wk.mh;
-        if (!key) return getWeaponFallback(hand);
+        if (!key) return 'none';
         const val = getGearState()[key];
-        if (!val || val === 'none' || val === 'custom' || val === 'custom oh' || val === 'custom th') {
-            return getWeaponFallback(hand);
-        }
-        const base = val.replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '').replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
-        return `/gear_icons/${st}/${base}.png`;
+        if (!val || val === 'custom' || val === 'custom oh' || val === 'custom th') return 'none';
+        return val;
     }
 
-    function getWeaponBadge(hand) {
-        const wk = weaponKeys[uiState.activeTab];
-        if (!wk) return null;
-        const key = hand === 'th' ? wk.th : hand === 'oh' ? wk.oh : wk.mh;
-        if (!key) return null;
+    function getEquipValue(slot) {
+        let key;
+        const keyMap = slotKeyMaps[slot];
+        if (keyMap) {
+            key = keyMap[uiState.activeTab] ?? slot;
+        } else {
+            const prefix = sharedSlots.includes(slot) ? '' : (stylePrefix[uiState.activeTab] ?? 'ranged') + ' ';
+            key = prefix + slot;
+        }
         const val = getGearState()[key];
-        if (!val) return null;
-        if (val.endsWith(' [IM]')) return '/effect_icons/shard_of_genesis.png';
-        return null;
+        if (!val || val === 'none' || val === 'custom' || val === 'custom oh' || val === 'custom th') return 'none';
+        return val;
+    }
+
+    function getEquipFolder(slot) {
+        const val = getEquipValue(slot);
+        if (val === 'none') return stylePrefix[uiState.activeTab] ?? 'shared';
+        const item = getItemForValue(val);
+        if (item?.style === 'hybrid') return 'shared';
+        const map = { melee: 'melee', ranged: 'ranged', magic: 'magic', necromancy: 'necro' };
+        return item ? (map[item.style] ?? stylePrefix[uiState.activeTab] ?? 'shared') : (stylePrefix[uiState.activeTab] ?? 'shared');
     }
 
     function getWeaponFallback(hand) {
@@ -207,33 +221,64 @@
             : '/armour_icons/Off-hand_slot.webp';
     }
 
+    // Get perks for an equipped item by value
+    function getPerksForItem(itemValue) {
+        if (!itemValue || itemValue === 'none' || itemValue.startsWith('custom')) return [];
+        const instances = ownedItemsStore.ownedGear.get(itemValue);
+        return instances?.[0]?.perks ?? [];
+    }
+
     let currentAbility = $derived(tick !== undefined && tick >= 0 && rotationStore.abilityBar && rotationStore.abilityBar[tick] ? allAbils[rotationStore.abilityBar[tick]] : null);
     let currentAbilityKey = $derived(tick !== undefined && tick >= 0 && rotationStore.abilityBar ? rotationStore.abilityBar[tick] : null);
     let currentStalledAbility = $derived(tick !== undefined && tick >= 0 && gameState.stalledAbilities && gameState.stalledAbilities[tick] ? allAbils[gameState.stalledAbilities[tick]] : null);
     let isNulled = $derived(tick !== undefined && tick >= 0 && rotationStore.nulledTicks && rotationStore.nulledTicks[tick]);
 
-    // Per-tick damage breakdown
+    // Boss HP: from preset or custom setting
+    let bossHp = $derived.by(() => {
+        const bossKey = settingsStore.settings[SETTINGS.BOSS_PRESET]?.value;
+        if (bossKey && bossKey !== 'none') {
+            const enrage = settingsStore.settings[SETTINGS.BOSS_ENRAGE]?.value ?? 0;
+            const boss = getBossPresetWithEnrage(bossKey, enrage);
+            if (boss?.health) {
+                const totalHeal = (boss.phases ?? []).reduce((sum, p) => sum + (p.heal || 0), 0);
+                return boss.health + totalHeal;
+            }
+        }
+        const customHp = settingsStore.settings[SETTINGS.BOSS_HP]?.value;
+        return customHp > 0 ? customHp : 0;
+    });
+
+    // Per-tick damage breakdown, grouped by ability
     function getTickDamage(tick) {
         if (!rotationStore.distributionStats || rotationStore.distributionStats.length === 0 || tick === undefined || tick < 0) {
             return [];
         }
-        return rotationStore.distributionStats
-            .filter(stat => stat.tick === tick)
-            .map(stat => {
-                let expected;
-                if (stat.distributionType === 'combined' && stat.critProbability !== undefined) {
-                    expected = stat.critProbability * stat.critMean + (1 - stat.critProbability) * stat.nonCritMean;
-                } else {
-                    expected = (stat.minDamage + stat.maxDamage) / 2;
-                }
-                return {
+        const grouped = new Map();
+        for (const stat of rotationStore.distributionStats) {
+            if (stat.tick !== tick) continue;
+            let expected;
+            if (stat.distributionType === 'combined' && stat.critProbability !== undefined) {
+                expected = stat.critProbability * stat.critMean + (1 - stat.critProbability) * stat.nonCritMean;
+            } else {
+                expected = (stat.minDamage + stat.maxDamage) / 2;
+            }
+            const entry = grouped.get(stat.ability);
+            if (entry) {
+                entry.expected += Math.round(expected * stat.likelihood);
+                entry.min += Math.round(stat.minDamage * stat.likelihood);
+                entry.max += Math.round(stat.maxDamage * stat.likelihood);
+                entry.hits++;
+            } else {
+                grouped.set(stat.ability, {
                     ability: stat.ability,
                     expected: Math.round(expected * stat.likelihood),
                     min: Math.round(stat.minDamage * stat.likelihood),
                     max: Math.round(stat.maxDamage * stat.likelihood),
-                    likelihood: stat.likelihood
-                };
-            });
+                    hits: 1
+                });
+            }
+        }
+        return [...grouped.values()];
     }
 
     // Active buffs at this tick
@@ -364,7 +409,7 @@
                 {#if isNulled}
                     <span class="nulled-badge">Nulled</span>
                 {/if}
-                <!-- Cumulative damage inline -->
+                <!-- Cumulative damage + boss HP inline -->
                 {#if rotationStore.distributionStats && rotationStore.distributionStats.length > 0}
                     {@const cumDmgInline = calculateCumulativeDamage()}
                     {#if cumDmgInline.total > 0}
@@ -372,6 +417,18 @@
                             <span class="cumulative-inline-val">{formatDamage(cumDmgInline.total)}</span>
                             {#if cumDmgInline.min !== cumDmgInline.max}
                                 <span class="text-xs text-gray-500">({formatDamage(cumDmgInline.min)}-{formatDamage(cumDmgInline.max)})</span>
+                            {/if}
+                            {#if bossHp > 0}
+                                {@const remaining = bossHp - cumDmgInline.total}
+                                <span class="boss-hp-line">
+                                    <img src="/effect_icons/target_hp.png" alt="HP" style="width: 12px; height: 12px;" />
+                                    <span class="text-xs text-gray-400">{formatDamage(cumDmgInline.total)}/{formatDamage(bossHp)}</span>
+                                    {#if remaining > 0}
+                                        <span class="text-xs text-red-400">{formatDamage(remaining)} left</span>
+                                    {:else}
+                                        <span class="text-xs text-green-400">dead</span>
+                                    {/if}
+                                </span>
                             {/if}
                         </span>
                     {/if}
@@ -444,6 +501,7 @@
                                         {:else}
                                             {hit.ability.replace(/\b\w/g, l => l.toUpperCase())}
                                         {/if}
+                                        {#if hit.hits > 1}<span class="text-xs text-gray-500">&times;{hit.hits}</span>{/if}
                                     </span>
                                     <span class="damage-val">{formatDamage(hit.expected)}</span>
                                     <span class="text-xs text-gray-500">({formatDamage(hit.min)}-{formatDamage(hit.max)})</span>
@@ -477,7 +535,7 @@
                                         <div class="stack-item">
                                             <img src={stack.image} alt={stack.title} style="width: 16px; height: 16px;" />
                                             <span class="text-xs">{stack.title}</span>
-                                            <span class="stack-val" style="color: {stack.colour};">{stack.value?.toFixed ? stack.value.toFixed(1) : stack.value}</span>
+                                            <span class="stack-val" style="color: {stack.colour};">{Number.isInteger(stack.value) ? stack.value : stack.value?.toFixed?.(1) ?? stack.value}</span>
                                         </div>
                                     {/each}
                                 </div>
@@ -493,57 +551,80 @@
                 <div class="equipped-panel">
                     {#key uiState.extraActions.tick}
                     {@const gs = buildGearState(uiState.extraActions.tick)}
-                    {@const isTwoHanded = weaponTypeKeys[uiState.activeTab] && gs[weaponTypeKeys[uiState.activeTab]] === SETTINGS.WEAPON_VALUES.TH}
+                    {@const mhValue = getWeaponValue('mh')}
+                    {@const isTwoHanded = mhValue !== 'none' && weapons[mhValue]?.['weapon type'] === 'two-hand'}
+                    <!-- Weapon perks -->
+                    {@const wpnPerks = [...getPerksForItem(getWeaponValue('mh')), ...getPerksForItem(getWeaponValue('oh'))]}
+                    {#if wpnPerks.length > 0}
+                        <div class="flex gap-1 flex-wrap justify-center mb-1">
+                            {#each wpnPerks as perk}
+                                {@const def = perkDefs[perk.perkKey]}
+                                {#if def}
+                                    <ActionIcon type="perk" src={def.icon} size="xsm" badgeText="{perk.rank}" borderColor={STYLE_COLORS.perks} title="{def.name} {perk.rank}" />
+                                {/if}
+                            {/each}
+                        </div>
+                    {/if}
                     <div class="equip-grid">
                         <!--        Col1    Col2    Col3    -->
                         <!-- Row1:          Head    Pocket  -->
                         <div></div>
-                        <div class="equip-cell"><img src={getEquipIcon('helmet')} alt='Head' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.helmet; }} /></div>
-                        <div class="equip-cell"><img src={getEquipIcon('pocket')} alt='Pocket' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.pocket; }} /></div>
+                        <div class="equip-cell"><ActionIcon value={getEquipValue('helmet')} folder={getEquipFolder('helmet')} fallback={slotFallbacks.helmet} size="lg" bare={true} title="Head" /></div>
+                        <div class="equip-cell"><ActionIcon value={getEquipValue('pocket')} folder={getEquipFolder('pocket')} fallback={slotFallbacks.pocket} size="lg" bare={true} title="Pocket" /></div>
                         <!-- Row2:  Cape    Neck    Ammo    -->
-                        <div class="equip-cell"><img src={getEquipIcon('cape')} alt='Cape' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.cape; }} /></div>
-                        <div class="equip-cell"><img src={getEquipIcon('necklace')} alt='Neck' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.necklace; }} /></div>
-                        <div class="equip-cell"><img src={getAmmoIcon()} alt='Ammo' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.ammo; }} /></div>
+                        <div class="equip-cell"><ActionIcon value={getEquipValue('cape')} folder={getEquipFolder('cape')} fallback={slotFallbacks.cape} size="lg" bare={true} title="Cape" /></div>
+                        <div class="equip-cell"><ActionIcon value={getEquipValue('necklace')} folder={getEquipFolder('necklace')} fallback={slotFallbacks.necklace} size="lg" bare={true} title="Neck" /></div>
+                        <div class="equip-cell"><ActionIcon value={getEquipValue('ammo')} folder="ranged" fallback={slotFallbacks.ammo} size="lg" bare={true} title="Ammo" /></div>
                         <!-- Row3:  MH/2H   Body    OH/empty -->
                         {#if isTwoHanded}
-                            <div class="equip-cell equip-badgeable">
-                                <img src={getWeaponIcon('th')} alt='2H' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = getWeaponFallback('th'); }} />
-                                {#if getWeaponBadge('th')}<img src={getWeaponBadge('th')} alt="" class="equip-badge" />{/if}
-                            </div>
-                            <div class="equip-cell"><img src={getEquipIcon('body')} alt='Body' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.body; }} /></div>
+                            <div class="equip-cell"><ActionIcon value={getWeaponValue('th')} folder={stylePrefix[uiState.activeTab]} fallback={getWeaponFallback('th')} size="lg" bare={true} title="2H" /></div>
+                            <div class="equip-cell"><ActionIcon value={getEquipValue('body')} folder={getEquipFolder('body')} fallback={slotFallbacks.body} size="lg" bare={true} title="Body" /></div>
                             <div></div>
                         {:else}
-                            <div class="equip-cell equip-badgeable">
-                                <img src={getWeaponIcon('mh')} alt='MH' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = getWeaponFallback('mh'); }} />
-                                {#if getWeaponBadge('mh')}<img src={getWeaponBadge('mh')} alt="" class="equip-badge" />{/if}
-                            </div>
-                            <div class="equip-cell"><img src={getEquipIcon('body')} alt='Body' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.body; }} /></div>
-                            <div class="equip-cell equip-badgeable">
-                                <img src={getWeaponIcon('oh')} alt='OH' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = getWeaponFallback('oh'); }} />
-                                {#if getWeaponBadge('oh')}<img src={getWeaponBadge('oh')} alt="" class="equip-badge" />{/if}
-                            </div>
+                            <div class="equip-cell"><ActionIcon value={getWeaponValue('mh')} folder={stylePrefix[uiState.activeTab]} fallback={getWeaponFallback('mh')} size="lg" bare={true} title="MH" /></div>
+                            <div class="equip-cell"><ActionIcon value={getEquipValue('body')} folder={getEquipFolder('body')} fallback={slotFallbacks.body} size="lg" bare={true} title="Body" /></div>
+                            <div class="equip-cell"><ActionIcon value={getWeaponValue('oh')} folder={stylePrefix[uiState.activeTab]} fallback={getWeaponFallback('oh')} size="lg" bare={true} title="OH" /></div>
                         {/if}
                         <!-- Row4:          Legs            -->
                         <div></div>
-                        <div class="equip-cell"><img src={getEquipIcon('legs')} alt='Legs' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.legs; }} /></div>
+                        <div class="equip-cell"><ActionIcon value={getEquipValue('legs')} folder={getEquipFolder('legs')} fallback={slotFallbacks.legs} size="lg" bare={true} title="Legs" /></div>
                         <div></div>
                         <!-- Row5:  Gloves  Boots   Ring    -->
-                        <div class="equip-cell"><img src={getEquipIcon('gloves')} alt='Gloves' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.gloves; }} /></div>
-                        <div class="equip-cell"><img src={getEquipIcon('boots')} alt='Boots' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.boots; }} /></div>
-                        <div class="equip-cell"><img src={getEquipIcon('ring')} alt='Ring' class="equip-icon" onerror={(e) => { e.target.onerror = null; e.target.src = slotFallbacks.ring; }} /></div>
+                        <div class="equip-cell"><ActionIcon value={getEquipValue('gloves')} folder={getEquipFolder('gloves')} fallback={slotFallbacks.gloves} size="lg" bare={true} title="Gloves" /></div>
+                        <div class="equip-cell"><ActionIcon value={getEquipValue('boots')} folder={getEquipFolder('boots')} fallback={slotFallbacks.boots} size="lg" bare={true} title="Boots" /></div>
+                        <div class="equip-cell"><ActionIcon value={getEquipValue('ring')} folder={getEquipFolder('ring')} fallback={slotFallbacks.ring} size="lg" bare={true} title="Ring" /></div>
                     </div>
+                    <!-- Body + Legs perks -->
+                    {@const armourPerks = [...getPerksForItem(getEquipValue('body')), ...getPerksForItem(getEquipValue('legs'))]}
+                    {#if armourPerks.length > 0}
+                        <div class="flex gap-1 flex-wrap justify-center mt-1">
+                            {#each armourPerks as perk}
+                                {@const def = perkDefs[perk.perkKey]}
+                                {#if def}
+                                    <ActionIcon type="perk" src={def.icon} size="xsm" badgeText="{perk.rank}" borderColor={STYLE_COLORS.perks} title="{def.name} {perk.rank}" />
+                                {/if}
+                            {/each}
+                        </div>
+                    {/if}
                     {/key}
                 </div>
-                <!-- Right: actions -->
+                <!-- Right: gear choices -->
                 <div class="actions-panel">
                     <ActionChoice
                         handleAbilityClick={handleAbilityClickExtra}
                         {handleDragStart}
                         style={uiState.activeTab}
+                        showOnly="gear"
                     />
                 </div>
             </div>
-
+            <!-- Bottom: other actions -->
+            <ActionChoice
+                handleAbilityClick={handleAbilityClickExtra}
+                {handleDragStart}
+                style={uiState.activeTab}
+                showOnly="actions"
+            />
     </div>
 
 <style>
@@ -552,7 +633,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 1rem;
+        padding: 0.5rem;
         background: #171d21;
         max-width: 100%;
     }
@@ -567,8 +648,8 @@
     .cumulative-inline {
         margin-left: auto;
         display: flex;
-        align-items: center;
-        gap: 4px;
+        flex-direction: column;
+        align-items: flex-end;
         flex-shrink: 0;
     }
 
@@ -576,6 +657,12 @@
         font-size: 1rem;
         font-weight: bold;
         color: #4CAF50;
+    }
+
+    .boss-hp-line {
+        display: flex;
+        align-items: center;
+        gap: 3px;
     }
 
     .nulled-badge {
@@ -746,10 +833,11 @@
         width: 100%;
     }
     .equipped-panel {
-        flex: 0 0 25%;
+        flex: 0 0 30%;
         min-width: 0;
         text-align: center;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
     }
@@ -765,29 +853,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-    .equip-icon {
-        width: 33px;
-        height: 33px;
-        object-fit: contain;
-        border: 1px solid #555;
+        border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 3px;
-        background: rgba(0,0,0,0.3);
-    }
-    .equip-badgeable {
-        position: relative;
-    }
-    .equip-badge {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 14px;
-        height: 14px;
-        border-radius: 2px;
+        background: rgba(0, 0, 0, 0.2);
     }
     .actions-panel {
-        flex: 0 0 75%;
+        flex: 1 1 0;
         min-width: 0;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
         gap: 4px;

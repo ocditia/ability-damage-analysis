@@ -45,11 +45,7 @@
         getSortedRowModel: getSortedRowModel()
     });
 
-    let table = $state(createTable(options));
-
-    $effect(() => {
-        table = createTable(options);
-    })
+    let table = $derived(createTable(options));
 
     async function copyCSV() {
         let csv = '';

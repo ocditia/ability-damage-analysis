@@ -12,9 +12,9 @@
 
     const abilities = Object.fromEntries(
         Object.entries(abils).filter(([key, a]) =>
-            a.title && a['main style'] === 'magic' &&
-            a['ability classification'] !== 'conjure' &&
-            a['ability classification'] !== 'self cast' &&
+            a.title && a.mainStyle === 'magic' &&
+            a.abilityClassification !== 'conjure' &&
+            a.abilityClassification !== 'self cast' &&
             !excludedAbilities.has(key)
         )
     );
@@ -249,6 +249,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.HIT_CHANCE]}
                                     onchange={() => updateDamages()}
+                                    img="/settings_icons/Zero_weakness_icon.png"
                                     step="1"
                                     max="100"
                                     min="0"
@@ -319,10 +320,15 @@
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/conflagrate.png"
                                 />
-                                <Select
+                                <Checkbox
                                     bind:setting={settings[SETTINGS.KERAPACS_WRIST_WRAPS]}
                                     onchange={() => updateDamages()}
                                     img="/effect_icons/kerapac_wristwraps.png"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.ENCHANTMENT_OF_FLAMES]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/Enchantment_of_flames_detail.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.CONCENTRATED_BLAST_STACKS]}

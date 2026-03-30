@@ -3,6 +3,8 @@
  */
 
 import { ABILITIES, abils } from '$lib/data/abilities';
+import { WEAPONS } from '$lib/data/weapons';
+import { ARMOUR } from '$lib/data/armour';
 import { SETTINGS } from '../../settings_rb';
 import { DamageDistribution } from '../../types';
 import { EffectContext, BoostedADResult, StyleEffects } from './types';
@@ -21,7 +23,7 @@ function applyBoostedADEffects(
     // Inquisitor staff
     if (
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-        settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.INQ_STAFF
+        settings[SETTINGS.TH] === WEAPONS.INQUISITOR_STAFF
     ) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.125);
         applied = true;
@@ -29,7 +31,7 @@ function applyBoostedADEffects(
     // Inquisitor staff upgraded
     else if (
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-        settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.INQ_STAFF_E
+        settings[SETTINGS.TH] === WEAPONS.INQUISITOR_STAFF_PLUS
     ) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.175);
         applied = true;
@@ -41,15 +43,15 @@ function applyBoostedADEffects(
     }
 
     // blast infused — magic basics get +8% of base AD added to boosted AD
-    if (abils[abilityKey]?.['main style'] === 'magic' &&
-        abils[abilityKey]?.['ability type'] === 'basic' &&
+    if (abils[abilityKey]?.mainStyle === 'magic' &&
+        abils[abilityKey]?.abilityType === 'basic' &&
         settings[SETTINGS.BLAST_INFUSED] === true
     ) {
         distribution['boosted AD'] += Math.floor(baseDamage * 80 / 1000);
     }
 
     // blood tithe (exsanguinate) — basics get +1% of base AD per stack
-    if (abils[abilityKey]?.['ability type'] === 'basic' && settings[SETTINGS.BLOOD_TITHE] > 0) {
+    if (abils[abilityKey]?.abilityType === 'basic' && settings[SETTINGS.BLOOD_TITHE] > 0) {
         distribution['boosted AD'] += Math.floor(baseDamage / 1000 * settings[SETTINGS.BLOOD_TITHE] * 10);
     }
 
@@ -94,21 +96,20 @@ function applyAbilitySpecificEffects(
 
     // Song of Destruction 2-piece set effect (RoA + OtD)
     if (
-        ['bleed', 'burn', 'dot'].includes(abils[abilityKey]?.['ability classification']) &&
-        (settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING || settings[SETTINGS.MH] === SETTINGS.MAGIC_MH_VALUES.ROAR_OF_AWAKENING_IM) &&
-        (settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT || settings[SETTINGS.OH] === SETTINGS.MAGIC_OH_VALUES.ODE_TO_DECEIT_IM) &&
+        ['bleed', 'burn', 'dot'].includes(abils[abilityKey]?.abilityClassification) &&
+        (settings[SETTINGS.MH] === WEAPONS.ROAR_OF_AWAKENING || settings[SETTINGS.MH] === WEAPONS.ROAR_OF_AWAKENING_IM) &&
+        (settings[SETTINGS.OH] === WEAPONS.ODE_TO_DECEIT || settings[SETTINGS.OH] === WEAPONS.ODE_TO_DECEIT_IM) &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW
     ) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.3);
     }
 
-    // Kerapac's wristwraps (Combust)
-    if (abilityKey === ABILITIES.COMBUST) {
-        if (settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.REGULAR) {
-            distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.25);
-        } else if (settings[SETTINGS.KERAPACS_WRIST_WRAPS] === SETTINGS.KERAPACS_WRIST_WRAPS_VALUES.ENCHANTED) {
-            distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 1.4);
-        }
+    // Kerapac's wristwraps (Combust) — buff active when Dragon Breath was cast with KWW/KWW_E
+    if (abilityKey === ABILITIES.COMBUST && settings[SETTINGS.KERAPACS_WRIST_WRAPS] === true) {
+        const hasEnchantment = settings[SETTINGS.GLOVES] === ARMOUR.KERAPACS_WRISTWRAPS_E &&
+            settings[SETTINGS.ENCHANTMENT_OF_FLAMES] === true;
+        const multiplier = hasEnchantment ? 1.4 : 1.25;
+        distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * multiplier);
     }
 
     // Combust lunging - (10 + 3 per rank)% more damage
@@ -119,7 +120,7 @@ function applyAbilitySpecificEffects(
     // Greater chain — non-bleed/burn/dot abilities deal half damage
     if (
         settings[SETTINGS.GREATER_CHAIN] === true &&
-        !['bleed', 'burn', 'dot'].includes(abils[abilityKey]?.['ability classification'])
+        !['bleed', 'burn', 'dot'].includes(abils[abilityKey]?.abilityClassification)
     ) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 0.5);
     }
@@ -137,14 +138,14 @@ function applyAbilityPercentModifiers(
 
     // Anima Charged Dragon Breath: 260-310% instead of 110-130%
     if (abilityKey === ABILITIES.DRAGON_BREATH && settings['anima charged cast'] === true) {
-        distribution['min hit'] = 2.6;
-        distribution['var hit'] = 0.5;
+        distribution.minHit = 2.6;
+        distribution.varHit = 0.5;
     }
 
     // Flanking - Impact
     if (abilityKey === ABILITIES.IMPACT) {
-        distribution['min hit'] += distribution['min hit'] * 0.4 * settings[SETTINGS.FLANKING];
-        distribution['var hit'] += distribution['var hit'] * 0.4 * settings[SETTINGS.FLANKING];
+        distribution.minHit += distribution.minHit * 0.4 * settings[SETTINGS.FLANKING];
+        distribution.varHit += distribution.varHit * 0.4 * settings[SETTINGS.FLANKING];
     }
 
 }
@@ -161,11 +162,11 @@ function applyMinVarEffects(
 
     // Channeler's ring
     if (
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLERS_RING &&
-        abils[abilityKey]?.['ability classification'] === 'channel'
+        settings[SETTINGS.RING] === ARMOUR.CHANNELLERS_RING &&
+        abils[abilityKey]?.abilityClassification === 'channel'
     ) {
-        distribution['min hit'] = Math.floor(distribution['min hit'] * 1.04);
-        distribution['var hit'] = Math.floor(distribution['var hit'] * 1.04);
+        distribution.minHit = Math.floor(distribution.minHit * 1.04);
+        distribution.varHit = Math.floor(distribution.varHit * 1.04);
     }
 }
 
@@ -203,9 +204,8 @@ function applyMultiplicativeEffects(
 function applyStackEffects(ctx: EffectContext): void {
     const { settings, abilityKey } = ctx;
 
-    // Only increment on magic damage abilities with on-hit effects
-    if (abils[abilityKey]?.['main style'] !== 'magic') return;
-    if (abils[abilityKey]?.['on-hit effects'] !== true) return;
+    if (abils[abilityKey]?.mainStyle !== 'magic') return;
+    if (abils[abilityKey]?.onHitEffects !== true) return;
 
     // Deduplicate: multihit sub-hits share the same key (e.g. 'wild magic hit')
     // and fire multiple on_hit calls in the same cast. Use settings['ability']

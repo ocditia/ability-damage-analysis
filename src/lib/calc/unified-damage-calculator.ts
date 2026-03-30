@@ -8,6 +8,8 @@
 import { abils, ABILITIES } from '$lib/data/abilities';
 import { SETTINGS } from './settings_rb';
 import { calculateRotationDamageCore } from './rotation_builder/rotation-damage-calculator';
+import { attachGearPerks } from '$lib/data/perks';
+import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
 import type { RotationInput, SingleAbilityInput } from './types';
 
 interface SingleAbilityResult {
@@ -49,12 +51,22 @@ export function calculateSingleAbilityDamage(
     // Map per-style pocket and ammo to generic keys based on ability style
     const settingsWithBuffs = { ...settings };
 
+    // Attach gear perks if "use owned gear" mode is enabled
+    if (settingsWithBuffs[SETTINGS.USE_OWNED_GEAR] && !settingsWithBuffs['_gearPerks'] && ownedItemsStore?.ownedGear?.size > 0) {
+        attachGearPerks(settingsWithBuffs, ownedItemsStore.ownedGear);
+    }
+
+    // Strip any Svelte proxies from internal keys before they reach structuredClone
+    if (settingsWithBuffs['_gearInstances'] && typeof settingsWithBuffs['_gearInstances'] === 'object') {
+        settingsWithBuffs['_gearInstances'] = JSON.parse(JSON.stringify(settingsWithBuffs['_gearInstances']));
+    }
+
     // Disable aftershock for single-ability calculations — it distorts per-ability comparisons
     settingsWithBuffs[SETTINGS.AFTERSHOCK] = 0;
 
     // Disable rotation builder buff booleans — single-ability pages use dropdown settings instead
     settingsWithBuffs[SETTINGS.GREATER_DRACOLICH_INFUSION] = false;
-    const style = abilityData?.['main style'];
+    const style = abilityData?.mainStyle;
     const pocketByStyle: Record<string, string> = {
         'magic': SETTINGS.MAGIC_POCKET,
         'ranged': SETTINGS.RANGED_POCKET,
@@ -98,8 +110,10 @@ export function calculateSingleAbilityDamage(
     }
 
     // Calculate damage without UI callbacks (headless mode)
+    // JSON round-trip strips Svelte proxies that structuredClone can't handle
+    const cleanSettings = JSON.parse(JSON.stringify(settingsWithBuffs));
     try {
-        const result = calculateRotationDamageCore(settingsWithBuffs, rotation, barSize);
+        const result = calculateRotationDamageCore(cleanSettings, rotation, barSize);
         return {
             expected: result.regularDamage,
             distributionStats: result.distributionStats

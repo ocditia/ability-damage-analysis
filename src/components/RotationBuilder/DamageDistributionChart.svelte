@@ -25,19 +25,48 @@
     export let conjurePerTick = [];
     export let allAbils = {};
     export let familiarKey = 'none';
+    export let familiarVariancePerTick = [];
+    export let dreadnipVariancePerTick = [];
+    export let conjureVariancePerTick = [];
+    export let phaseTransitions = [];
+    export let barSize = 0;
+    export let patternStartTick = -1;
+    export let hasBossPreset = false;
 
     // Which chart is expanded (null = all thumbnails, 'timeline' | 'breakdown' | 'distribution')
     let expandedChart = null;
 
+    // Calculate DPM reactively for thumbnail display
+    $: thumbnailDpm = (() => {
+        const allDmg = totalDamage + poisonDamage + familiarDamage + dreadnipDamage + conjureDamage;
+        if (allDmg <= 0 || !distributionStats?.length) return 0;
+        // Use the last tick that has a damage event, matching the in-chart calculation
+        const lastTick = Math.max(...distributionStats.map(s => s.tick), 1);
+        const startTick = patternStartTick > 0 ? patternStartTick : 0;
+        const pauseTicks = (phaseTransitions || [])
+            .filter(pt => pt.tick >= startTick && pt.tick <= lastTick)
+            .reduce((sum, pt) => sum + (pt.pause || 0), 0);
+        const activeTicks = lastTick - startTick - pauseTicks;
+        const seconds = activeTicks * 0.6;
+        return seconds > 0 ? Math.round(allDmg / seconds * 60) : 0;
+    })();
+
     // Calculate confidence intervals
-    $: gaussianParams = calculateGaussianParameters(distributionStats);
-    $: confidence68 = gaussianParams.stdDev > 0 ? {
-        lower: Math.round(gaussianParams.mean - gaussianParams.stdDev),
-        upper: Math.round(gaussianParams.mean + gaussianParams.stdDev)
-    } : null;
+    // Depend on all damage sources so Gaussian params recalculate when any change
+    let gaussianParams = { mean: 0, stdDev: 0 };
+    $: {
+        // Touch reactive dependencies
+        poisonDamage; familiarDamage; dreadnipDamage; conjureDamage;
+        familiarVariancePerTick; dreadnipVariancePerTick; conjureVariancePerTick;
+        gaussianParams = calculateGaussianParameters(distributionStats);
+    }
     $: confidence95 = gaussianParams.stdDev > 0 ? {
         lower: Math.round(gaussianParams.mean - 2 * gaussianParams.stdDev),
         upper: Math.round(gaussianParams.mean + 2 * gaussianParams.stdDev)
+    } : null;
+    $: confidence997 = gaussianParams.stdDev > 0 ? {
+        lower: Math.round(gaussianParams.mean - 3 * gaussianParams.stdDev),
+        upper: Math.round(gaussianParams.mean + 3 * gaussianParams.stdDev)
     } : null;
     
     let chartCanvas;
@@ -105,11 +134,11 @@
     }
 
     function getAbilityStyle(hitKey) {
-        const style = abils[hitKey]?.['main style'];
+        const style = abils[hitKey]?.mainStyle;
         if (style) return style;
         // Try parent key
         const parent = getParentKey(hitKey);
-        return abils[parent]?.['main style'] || 'unknown';
+        return abils[parent]?.mainStyle || 'unknown';
     }
 
     function buildBreakdownData() {
@@ -308,6 +337,15 @@
                 totalVariance += variance * stat.likelihood;
             }
         });
+
+        // Add other damage sources' mean (expected value) and variance
+        totalMean += poisonDamage + familiarDamage + dreadnipDamage + conjureDamage;
+
+        // Add variance from other sources (last element of cumulative variance arrays)
+        const lastFamiliarVar = familiarVariancePerTick.length > 0 ? familiarVariancePerTick[familiarVariancePerTick.length - 1] : 0;
+        const lastDreadnipVar = dreadnipVariancePerTick.length > 0 ? dreadnipVariancePerTick[dreadnipVariancePerTick.length - 1] : 0;
+        const lastConjureVar = conjureVariancePerTick.length > 0 ? conjureVariancePerTick[conjureVariancePerTick.length - 1] : 0;
+        totalVariance += lastFamiliarVar + lastDreadnipVar + lastConjureVar;
 
         const stdDev = Math.sqrt(totalVariance);
 
@@ -631,17 +669,17 @@
                         },
                         ticks: {
                             color: '#fff',
+                            stepSize: tickSpacing,
                             callback: function(value) {
-                                const formatNumber = (num) => {
-                                    if (num >= 1000000) {
-                                        return (num / 1000000).toFixed(1) + 'M';
-                                    } else if (num >= 100000) {
-                                        return (num / 1000).toFixed(0) + 'K';
-                                    } else {
-                                        return num.toLocaleString();
-                                    }
-                                };
-                                return formatNumber(value);
+                                if (value >= 1000000) {
+                                    const m = value / 1000000;
+                                    return m === Math.floor(m) ? m.toFixed(0) + 'M' : m.toFixed(2) + 'M';
+                                }
+                                if (value >= 1000) {
+                                    const k = value / 1000;
+                                    return k === Math.floor(k) ? k.toFixed(0) + 'K' : k.toFixed(2) + 'K';
+                                }
+                                return value.toLocaleString();
                             }
                         },
                         grid: {
@@ -731,14 +769,29 @@
                     cumVariance += variance * stat.likelihood;
                 }
             }
-            const stdDev = Math.sqrt(cumVariance);
+            // Add other damage sources' mean and variance at this tick
+            const extraMean =
+                (poisonPerTick[tick] || 0) +
+                (familiarPerTick[tick] || 0) +
+                (dreadnipPerTick[tick] || 0) +
+                (conjurePerTick[tick] || 0);
+            const extraVariance =
+                (familiarVariancePerTick[tick] || 0) +
+                (dreadnipVariancePerTick[tick] || 0) +
+                (conjureVariancePerTick[tick] || 0);
+            // Note: poison variance not yet tracked
+
+            const totalMean = cumMean + extraMean;
+            const totalVariance = cumVariance + extraVariance;
+            const stdDev = Math.sqrt(totalVariance);
             series.push({
                 tick,
                 mean: cumMean,
-                sigma1Upper: cumMean + stdDev,
-                sigma1Lower: cumMean - stdDev,
-                sigma2Upper: cumMean + 2 * stdDev,
-                sigma2Lower: Math.max(0, cumMean - 2 * stdDev)
+                totalMean,
+                sigma2Upper: totalMean + 2 * stdDev,    // 95% CI
+                sigma2Lower: Math.max(0, totalMean - 2 * stdDev),
+                sigma3Upper: totalMean + 3 * stdDev,    // 99.7% CI
+                sigma3Lower: Math.max(0, totalMean - 3 * stdDev)
             });
         }
         return series;
@@ -777,53 +830,56 @@
             ? series.map(s => (s.tick < conjurePerTick.length ? conjurePerTick[s.tick] : conjurePerTick[conjurePerTick.length - 1]) || 0)
             : [];
 
+        // Helper to build {x, y} points for linear x-axis
+        const toPoints = (yFn) => series.map(s => ({ x: s.tick, y: yFn(s) }));
+
         const datasets = [
-            // 2σ upper bound (fill down to 2σ lower)
+            // 3σ upper bound (fill down to 3σ lower) — 99.7% CI
             {
-                label: '95% CI Upper',
-                data: series.map(s => s.sigma2Upper),
+                label: '99.7% CI',
+                data: toPoints(s => s.sigma3Upper),
                 borderColor: 'transparent',
-                backgroundColor: 'rgba(54, 162, 235, 0.08)',
-                fill: '+4', // fill to 2σ lower dataset
+                backgroundColor: 'rgba(120, 190, 255, 0.10)',
+                fill: '+4', // fill to 3σ lower dataset
                 pointRadius: 0,
                 tension: 0.3
             },
-            // 1σ upper bound (fill down to 1σ lower)
+            // 2σ upper bound (fill down to 2σ lower) — 95% CI
             {
-                label: '68% CI Upper',
-                data: series.map(s => s.sigma1Upper),
+                label: '95% CI',
+                data: toPoints(s => s.sigma2Upper),
                 borderColor: 'transparent',
-                backgroundColor: 'rgba(54, 162, 235, 0.15)',
-                fill: '+2', // fill to 1σ lower dataset
+                backgroundColor: 'rgba(120, 190, 255, 0.18)',
+                fill: '+2', // fill to 2σ lower dataset
                 pointRadius: 0,
                 tension: 0.3
             },
             // Mean line (ability damage only)
             {
                 label: 'Ability Damage',
-                data: series.map(s => s.mean),
+                data: toPoints(s => s.mean),
                 borderColor: 'rgba(54, 162, 235, 1)',
                 backgroundColor: 'transparent',
-                borderWidth: 2,
+                borderWidth: 2.5,
                 fill: false,
                 pointRadius: 0,
                 hitRadius: 10,
                 tension: 0.3
             },
-            // 1σ lower bound
+            // 2σ lower bound
             {
-                label: '68% CI Lower',
-                data: series.map(s => s.sigma1Lower),
+                label: '95% CI Lower',
+                data: toPoints(s => s.sigma2Lower),
                 borderColor: 'transparent',
                 backgroundColor: 'transparent',
                 fill: false,
                 pointRadius: 0,
                 tension: 0.3
             },
-            // 2σ lower bound
+            // 3σ lower bound
             {
-                label: '95% CI Lower',
-                data: series.map(s => s.sigma2Lower),
+                label: '99.7% CI Lower',
+                data: toPoints(s => s.sigma3Lower),
                 borderColor: 'transparent',
                 backgroundColor: 'transparent',
                 fill: false,
@@ -836,10 +892,10 @@
         if (hasPoisonData) {
             datasets.push({
                 label: 'Poison Damage',
-                data: poisonData,
+                data: series.map((s, i) => ({ x: s.tick, y: poisonData[i] || 0 })),
                 borderColor: '#4CAF50',
                 backgroundColor: 'transparent',
-                borderWidth: 2,
+                borderWidth: 2.5,
                 fill: false,
                 pointRadius: 0,
                 hitRadius: 10,
@@ -851,10 +907,10 @@
         if (hasFamiliarData) {
             datasets.push({
                 label: 'Familiar Damage',
-                data: familiarData,
+                data: series.map((s, i) => ({ x: s.tick, y: familiarData[i] || 0 })),
                 borderColor: '#00eeee',
                 backgroundColor: 'transparent',
-                borderWidth: 2,
+                borderWidth: 2.5,
                 fill: false,
                 pointRadius: 0,
                 hitRadius: 10,
@@ -866,10 +922,10 @@
         if (hasDreadnipData) {
             datasets.push({
                 label: 'Dreadnip Damage',
-                data: dreadnipData,
+                data: series.map((s, i) => ({ x: s.tick, y: dreadnipData[i] || 0 })),
                 borderColor: '#ff8c00',
                 backgroundColor: 'transparent',
-                borderWidth: 2,
+                borderWidth: 2.5,
                 fill: false,
                 pointRadius: 0,
                 hitRadius: 10,
@@ -881,10 +937,10 @@
         if (hasConjureData) {
             datasets.push({
                 label: 'Conjure Damage',
-                data: conjureData,
+                data: series.map((s, i) => ({ x: s.tick, y: conjureData[i] || 0 })),
                 borderColor: '#d694ff',
                 backgroundColor: 'transparent',
-                borderWidth: 2,
+                borderWidth: 2.5,
                 fill: false,
                 pointRadius: 0,
                 hitRadius: 10,
@@ -895,35 +951,129 @@
         // Add total damage line if there are any extra damage sources
         const hasExtraSources = hasPoisonData || hasFamiliarData || hasDreadnipData || hasConjureData;
         if (hasExtraSources) {
-            const totalData = series.map((s, i) => {
-                let total = s.mean;
-                if (hasPoisonData) total += (poisonData[i] || 0);
-                if (hasFamiliarData) total += (familiarData[i] || 0);
-                if (hasDreadnipData) total += (dreadnipData[i] || 0);
-                if (hasConjureData) total += (conjureData[i] || 0);
-                return total;
-            });
             datasets.push({
                 label: 'Total Damage',
-                data: totalData,
-                borderColor: '#fff',
+                data: series.map((s, i) => {
+                    let total = s.mean;
+                    if (hasPoisonData) total += (poisonData[i] || 0);
+                    if (hasFamiliarData) total += (familiarData[i] || 0);
+                    if (hasDreadnipData) total += (dreadnipData[i] || 0);
+                    if (hasConjureData) total += (conjureData[i] || 0);
+                    return { x: s.tick, y: total };
+                }),
+                borderColor: '#ffd700',
                 backgroundColor: 'transparent',
-                borderWidth: 2.5,
+                borderWidth: 3,
                 fill: false,
                 pointRadius: 0,
                 hitRadius: 10,
-                tension: 0.3,
-                borderDash: [6, 3]
+                tension: 0.3
             });
         }
 
         // Build legend filter list dynamically
-        const visibleLabels = ['Ability Damage', '68% CI Upper', '95% CI Upper'];
+        const visibleLabels = ['Ability Damage', '95% CI', '99.7% CI'];
         if (hasPoisonData) visibleLabels.push('Poison Damage');
         if (hasFamiliarData) visibleLabels.push('Familiar Damage');
         if (hasDreadnipData) visibleLabels.push('Dreadnip Damage');
         if (hasConjureData) visibleLabels.push('Conjure Damage');
         if (hasExtraSources) visibleLabels.push('Total Damage');
+
+        // Calculate DPM — only use patternStartTick when a boss preset is selected
+        const startTick = patternStartTick > 0 ? patternStartTick : 0;
+        const lastTick = series[series.length - 1]?.tick || 1;
+        // Subtract pause ticks (boss invulnerable) that fall within the measured range
+        const pauseTicks = (phaseTransitions || [])
+            .filter(pt => pt.tick >= startTick && pt.tick <= lastTick)
+            .reduce((sum, pt) => sum + (pt.pause || 0), 0);
+        const dpmTicks = lastTick - startTick - pauseTicks;
+
+        // Find cumulative damage at start tick to subtract pre-build damage
+        const startIdx = series.findIndex(s => s.tick >= startTick);
+        const startMean = startIdx > 0 ? series[startIdx - 1].mean : 0;
+        const startPoison = startIdx > 0 && hasPoisonData ? (poisonData[startIdx - 1] || 0) : 0;
+        const startFamiliar = startIdx > 0 && hasFamiliarData ? (familiarData[startIdx - 1] || 0) : 0;
+        const startDreadnip = startIdx > 0 && hasDreadnipData ? (dreadnipData[startIdx - 1] || 0) : 0;
+        const startConjure = startIdx > 0 && hasConjureData ? (conjureData[startIdx - 1] || 0) : 0;
+
+        const endMean = series[series.length - 1]?.mean || 0;
+        const endPoison = hasPoisonData ? (poisonData[poisonData.length - 1] || 0) : 0;
+        const endFamiliar = hasFamiliarData ? (familiarData[familiarData.length - 1] || 0) : 0;
+        const endDreadnip = hasDreadnipData ? (dreadnipData[dreadnipData.length - 1] || 0) : 0;
+        const endConjure = hasConjureData ? (conjureData[conjureData.length - 1] || 0) : 0;
+
+        const totalAllDamage = (endMean - startMean) + (endPoison - startPoison) + (endFamiliar - startFamiliar) + (endDreadnip - startDreadnip) + (endConjure - startConjure);
+        const rotationSeconds = dpmTicks * 0.6;
+        const dpm = rotationSeconds > 0 ? Math.round(totalAllDamage / rotationSeconds * 60) : 0;
+
+        // Plugin: draw phase transition lines and DPM annotation
+        const phaseAndDpmPlugin = {
+            id: 'phaseAndDpm',
+            afterDraw(chart) {
+                const { ctx, chartArea, scales } = chart;
+                if (!chartArea) return;
+
+                // Draw pattern start tick line when set above 0
+                if (patternStartTick > 0) {
+                    const x = scales.x.getPixelForValue(patternStartTick);
+                    if (x >= chartArea.left && x <= chartArea.right) {
+                        ctx.save();
+                        ctx.strokeStyle = 'rgba(74, 222, 128, 0.5)';
+                        ctx.lineWidth = 1.5;
+                        ctx.setLineDash([4, 3]);
+                        ctx.beginPath();
+                        ctx.moveTo(x, chartArea.top);
+                        ctx.lineTo(x, chartArea.bottom);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+
+                        ctx.fillStyle = 'rgba(74, 222, 128, 0.7)';
+                        ctx.font = 'bold 11px sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('Start', x, chartArea.top - 4);
+                        ctx.restore();
+                    }
+                }
+
+                // Draw phase transition vertical lines
+                if (phaseTransitions?.length > 0) {
+                    for (const pt of phaseTransitions) {
+                        const x = scales.x.getPixelForValue(pt.tick);
+                        if (x < chartArea.left || x > chartArea.right) continue;
+
+                        ctx.save();
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+                        ctx.lineWidth = 1.5;
+                        ctx.setLineDash([6, 4]);
+                        ctx.beginPath();
+                        ctx.moveTo(x, chartArea.top);
+                        ctx.lineTo(x, chartArea.bottom);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+
+                        // Label
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                        ctx.font = 'bold 11px sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(pt.label, x, chartArea.top - 4);
+                        ctx.restore();
+                    }
+                }
+
+                // Draw DPM annotation (top-left)
+                if (dpm > 0) {
+                    ctx.save();
+                    ctx.fillStyle = 'rgba(255, 215, 0, 0.95)';
+                    ctx.font = 'bold 16px sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(`${formatDmg(dpm)} DPM`, chartArea.left + 8, chartArea.top + 20);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.font = '12px sans-serif';
+                    ctx.fillText(`${rotationSeconds.toFixed(1)}s rotation`, chartArea.left + 8, chartArea.top + 36);
+                    ctx.restore();
+                }
+            }
+        };
 
         timeSeriesChart = new Chart(ctx, {
             type: 'line',
@@ -931,6 +1081,7 @@
                 labels,
                 datasets
             },
+            plugins: [phaseAndDpmPlugin],
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -944,12 +1095,14 @@
                     legend: {
                         labels: {
                             color: '#fff',
-                            filter: (item) => visibleLabels.includes(item.text)
-                        }
+                            filter: (item) => visibleLabels.includes(item.text),
+                            padding: 16
+                        },
+                        position: 'bottom'
                     },
                     tooltip: {
                         callbacks: {
-                            title: (ctx) => `Tick ${ctx[0].label}`,
+                            title: (ctx) => `Tick ${ctx[0].parsed.x}`,
                             label: (ctx) => {
                                 if (ctx.dataset.label === 'Ability Damage') {
                                     return `Ability: ${formatDmg(ctx.parsed.y)}`;
@@ -972,11 +1125,11 @@
                                 // For CI bounds, show the range
                                 const tick = ctx.dataIndex;
                                 const s = series[tick];
-                                if (ctx.dataset.label === '68% CI Upper') {
-                                    return `68% CI: ${formatDmg(s.sigma1Lower)} – ${formatDmg(s.sigma1Upper)}`;
-                                }
-                                if (ctx.dataset.label === '95% CI Upper') {
+                                if (ctx.dataset.label === '95% CI') {
                                     return `95% CI: ${formatDmg(s.sigma2Lower)} – ${formatDmg(s.sigma2Upper)}`;
+                                }
+                                if (ctx.dataset.label === '99.7% CI') {
+                                    return `99.7% CI: ${formatDmg(s.sigma3Lower)} – ${formatDmg(s.sigma3Upper)}`;
                                 }
                                 return null;
                             }
@@ -985,9 +1138,14 @@
                 },
                 scales: {
                     x: {
+                        type: 'linear',
                         title: { display: true, text: 'Tick', color: '#fff' },
-                        ticks: { color: '#fff' },
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        ticks: {
+                            color: '#fff',
+                            stepSize: labels.length > 50 ? 25 : labels.length > 25 ? 10 : 5,
+                            callback: (value) => Number.isInteger(value) ? value : null
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.2)' }
                     },
                     y: {
                         title: { display: true, text: 'Cumulative Damage', color: '#fff' },
@@ -995,7 +1153,7 @@
                             color: '#fff',
                             callback: (value) => formatDmg(value)
                         },
-                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        grid: { color: 'rgba(255, 255, 255, 0.2)' }
                     }
                 }
             }
@@ -1008,11 +1166,12 @@
         updateChart();
     }
     $: if (distributionStats && timeSeriesCanvas) {
-        // Depend on all per-tick arrays to re-render when they change
+        // Depend on all per-tick arrays and phase transitions to re-render when they change
         poisonPerTick;
         familiarPerTick;
         dreadnipPerTick;
         conjurePerTick;
+        phaseTransitions;
         updateTimeSeriesChart();
     }
     $: if (distributionStats && breakdownCanvas) {
@@ -1047,7 +1206,7 @@
                     <line x1="4" y1="4" x2="4" y2="20"></line>
                 </svg>
                 <span class="thumbnail-title">Cumulative Damage</span>
-                <span class="thumbnail-stat">{totalDamage > 0 ? formatDmg(totalDamage) : '0'}</span>
+                <span class="thumbnail-stat">{thumbnailDpm > 0 ? `${formatDmg(thumbnailDpm)} DPM` : '0'}</span>
             </button>
             <button class="thumbnail-card" on:click={() => toggleChart('breakdown')}>
                 <svg class="thumbnail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1100,12 +1259,12 @@
                             <span class="confidence-value">{Math.round(gaussianParams.stdDev).toLocaleString()}</span>
                         </div>
                         <div class="confidence-item">
-                            <span class="confidence-label">68% CI:</span>
-                            <span class="confidence-value">{confidence68.lower.toLocaleString()} - {confidence68.upper.toLocaleString()}</span>
-                        </div>
-                        <div class="confidence-item">
                             <span class="confidence-label">95% CI:</span>
                             <span class="confidence-value">{confidence95.lower.toLocaleString()} - {confidence95.upper.toLocaleString()}</span>
+                        </div>
+                        <div class="confidence-item">
+                            <span class="confidence-label">99.7% CI:</span>
+                            <span class="confidence-value">{confidence997.lower.toLocaleString()} - {confidence997.upper.toLocaleString()}</span>
                         </div>
                     </div>
                 </div>
@@ -1177,7 +1336,7 @@
         display: flex;
         align-items: center;
         gap: 0.35rem;
-        padding: 0.4rem 0.75rem;
+        padding: 0.4rem 0.75rem 0.0rem 0.75rem;
         background: none;
         border: none;
         color: #aaa;
@@ -1191,7 +1350,7 @@
 
     .chart-wrapper {
         position: relative;
-        height: 400px;
+        height: 500px;
         padding: 0 0.75rem;
         margin: 0 0 0.5rem;
     }

@@ -2,6 +2,8 @@
  * Type definitions for ability information
  */
 
+import { ABILITIES, abils } from "$lib/data/abilities";
+
 // Ability classification types
 export type AbilityClassification = 
     'bleed' | 'dot' | 'burn' | 'channel' | 'self cast' |
@@ -25,17 +27,17 @@ export interface AbilityHits {
 // Core ability information structure
 export interface AbilityInfo {
     // Damage calculation properties
-    'min hit': number; // minimum % of ability damage expressed as decimal (e.g., 0.3 = 30%)
-    'var hit': number; // variance in damage as decimal
-    'on-hit effects': boolean; // whether ability gets on-hit effects
-    'crit effects': boolean; // whether ability can crit
-    'damage potential effects': boolean; // whether ability is affected by damage potential
+    minHit: number; // minimum % of ability damage expressed as decimal (e.g., 0.3 = 30%)
+    varHit: number; // variance in damage as decimal
+    onHitEffects: boolean; // whether ability gets on-hit effects
+    critEffects: boolean; // whether ability can crit
+    damagePotentialEffects: boolean; // whether ability is affected by damage potential
     
     // Classification properties
-    'ability classification': AbilityClassification; // type of ability (bleed, channel, etc.)
-    'ability type': AbilityType; // category of ability (basic, threshold, etc.)
-    'main style': CombatStyle; // primary combat style
-    'damage type': DamageType; // type of damage dealt
+    abilityClassification: AbilityClassification; // type of ability (bleed, channel, etc.)
+    abilityType: AbilityType; // category of ability (basic, threshold, etc.)
+    mainStyle: CombatStyle; // primary combat style
+    damageType: DamageType; // type of damage dealt
     
     // Optional properties
     hits?: AbilityHits; // for channeled abilities, defines hits per tick
@@ -43,6 +45,7 @@ export interface AbilityInfo {
     duration?: number; // ability duration in ticks (if not standard 3t)
     cooldown?: number; // ability cooldown in seconds
     adrenaline?: number; // adrenaline cost/gain - +25 means the ability costs 25 adrenaline
+    parent?: ABILITIES; // parent ability for multihit, channel or bleed ability hit entries
     
     // UI properties (if applicable)
     title?: string; // display name
@@ -64,84 +67,93 @@ export type AbilitiesObject = {
 
 // Utility types for specific ability categories
 export type ChanneledAbility = AbilityInfo & {
-    'ability classification': 'channel';
+    abilityClassification: 'channel';
     hits: AbilityHits; // Required for channeled abilities
 };
 
 export type BleedAbility = AbilityInfo & {
-    'ability classification': 'bleed';
+    abilityClassification: 'bleed';
 };
 
 export type DotAbility = AbilityInfo & {
-    'ability classification': 'dot';
+    abilityClassification: 'dot';
 };
 
 export type BurnAbility = AbilityInfo & {
-    'ability classification': 'burn';
+    abilityClassification: 'burn';
 };
 
 export type RegularAbility = AbilityInfo & {
-    'ability classification': 'regular';
+    abilityClassification: 'regular';
 };
 
 export type MultihitAbility = AbilityInfo & {
-    'ability classification': 'multihit';
+    abilityClassification: 'multihit';
 };
 
 // Type guards for checking ability types
 export function isChanneledAbility(ability: AbilityInfo): ability is ChanneledAbility {
-    return ability['ability classification'] === 'channel';
+    return ability.abilityClassification === 'channel';
 }
 
 export function isBleedAbility(ability: AbilityInfo): ability is BleedAbility {
-    return ability['ability classification'] === 'bleed';
+    return ability.abilityClassification === 'bleed';
 }
 
 export function isDotAbility(ability: AbilityInfo): ability is DotAbility {
-    return ability['ability classification'] === 'dot';
+    return ability.abilityClassification === 'dot';
 }
 
 export function isBurnAbility(ability: AbilityInfo): ability is BurnAbility {
-    return ability['ability classification'] === 'burn';
+    return ability.abilityClassification === 'burn';
 }
 
 export function isRegularAbility(ability: AbilityInfo): ability is RegularAbility {
-    return ability['ability classification'] === 'regular';
+    return ability.abilityClassification === 'regular';
 }
 
 export function isMultihitAbility(ability: AbilityInfo): ability is MultihitAbility {
-    return ability['ability classification'] === 'multihit';
+    return ability.abilityClassification === 'multihit';
 }
 
 // Utility functions for working with abilities
 export function canAbilityCrit(ability: AbilityInfo): boolean {
-    return ability['crit effects'];
+    return ability.critEffects;
 }
 
 export function hasOnHitEffects(ability: AbilityInfo): boolean {
-    return ability['on-hit effects'];
+    return ability.onHitEffects;
 }
 
 export function isAffectedByDamagePotential(ability: AbilityInfo): boolean {
-    return ability['damage potential effects'];
+    return ability.damagePotentialEffects;
 }
 
 export function getMinHit(ability: AbilityInfo): number {
-    return ability['min hit'];
+    return ability.minHit;
 }
 
 export function getVarHit(ability: AbilityInfo): number {
-    return ability['var hit'];
+    return ability.varHit;
 }
 
 export function getAbilityStyle(ability: AbilityInfo): CombatStyle {
-    return ability['main style'];
+    return ability.mainStyle;
 }
 
 export function getAbilityType(ability: AbilityInfo): AbilityType {
-    return ability['ability type'];
+    return ability.abilityType;
 }
 
 export function getAbilityClassification(ability: AbilityInfo): AbilityClassification {
-    return ability['ability classification'];
+    return ability.abilityClassification;
 } 
+
+export function isChannelledHit(ability: AbilityInfo): boolean {
+    const parent = ability.parent;
+    if (parent && getAbilityClassification(abils[parent]) === 'channel') {
+        return true;
+    }
+    return false;
+}
+

@@ -44,9 +44,9 @@ const DEFAULT_BINDINGS = {
     'ode to deceit': '9',
     'soulfire': '0',
 
-    'eof (blue)' : 'f3',
-    'eof (black)': 'f4',
-    'eof (purple)' : 'f5',
+    'EoF (blue)' : 'f3',
+    'EoF (black)': 'f4',
+    'EoF (purple)' : 'f5',
     
     
     

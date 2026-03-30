@@ -14,7 +14,7 @@ export function calculatePrayerBoost(
     settings: Record<string, any>,
     abilityKey: ABILITIES
 ): number {
-    const abilityStyle = abils[abilityKey]?.['main style'];
+    const abilityStyle = abils[abilityKey]?.mainStyle;
     const prayerStyle = prayers[settings[SETTINGS.PRAYER]]?.['style'];
 
     // Prayer only applies if ability style matches prayer style

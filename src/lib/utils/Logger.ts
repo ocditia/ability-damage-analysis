@@ -14,11 +14,23 @@ export interface TraceEntry {
     explanation: string;
 }
 
+export interface TraceHit {
+    ability: string;
+    boostedAD: number;
+    min: number;
+    max: number;
+    critChance: number;
+    critDamageBonus: number;
+    critMin: number;
+    critMax: number;
+}
+
 export class Logger {
     private static instance: Logger;
     private config: LoggerConfig;
     private tracing: boolean = false;
     private traceEntries: TraceEntry[] = [];
+    private traceHits: TraceHit[] = [];
 
     private constructor() {
         // Initialize all categories as disabled by default
@@ -92,17 +104,20 @@ export class Logger {
      */
     public startTrace(): void {
         this.traceEntries = [];
+        this.traceHits = [];
         this.tracing = true;
     }
 
     /**
-     * Stop capturing and return the collected trace entries.
+     * Stop capturing and return the collected trace entries and hits.
      */
-    public endTrace(): TraceEntry[] {
+    public endTrace(): { entries: TraceEntry[], hits: TraceHit[] } {
         this.tracing = false;
         const entries = this.traceEntries;
+        const hits = this.traceHits;
         this.traceEntries = [];
-        return entries;
+        this.traceHits = [];
+        return { entries, hits };
     }
 
     /**
@@ -111,6 +126,15 @@ export class Logger {
     public trace(label: string, value: number | string, explanation: string = ''): void {
         if (this.tracing) {
             this.traceEntries.push({ label, value, explanation });
+        }
+    }
+
+    /**
+     * Record a per-hit trace entry (no-op when not tracing).
+     */
+    public traceHit(hit: TraceHit): void {
+        if (this.tracing) {
+            this.traceHits.push(hit);
         }
     }
 

@@ -1,4 +1,5 @@
 import { create_damage_object } from './rota_object_helper';
+import { ARMOUR } from '$lib/data/armour';
 import { SETTINGS } from '../settings_rb';
 import { ABILITIES, abils } from '$lib/data/abilities';
 import { on_cast, on_hit, COOLDOWN_PREFIX } from './damage_calc_new';
@@ -6,6 +7,7 @@ import { DamageObject, DamageKind, DamageDistribution } from '../types';
 
 // Import and re-export from calculation_utils
 import { addAdrenaline } from './calculation_utils';
+import { armour } from '$lib/data/armour';
 export { addAdrenaline as add_adrenaline };
 
 /**
@@ -32,12 +34,12 @@ export function getConjureDuration(settings: Record<string, any>): number {
  */
 export function countTFNPieces(settings: Record<string, any>): number {
     let count = 0;
-    if (settings[SETTINGS.NECRO_HELMET] === SETTINGS.NECRO_HELMET_VALUES.TFN) count++;
-    else if (settings[SETTINGS.NECRO_HELMET] === SETTINGS.NECRO_HELMET_VALUES.TFN_ADDON) count += 2;
-    if (settings[SETTINGS.NECRO_BODY] === SETTINGS.NECRO_BODY_VALUES.TFN) count++;
-    if (settings[SETTINGS.NECRO_LEGS] === SETTINGS.NECRO_LEGS_VALUES.TFN) count++;
-    if (settings[SETTINGS.NECRO_GLOVES] === SETTINGS.NECRO_GLOVES_VALUES.TFN) count++;
-    if (settings[SETTINGS.NECRO_BOOTS] === SETTINGS.NECRO_BOOTS_VALUES.TFN) count++;
+    if (settings[SETTINGS.NECRO_HELMET] === ARMOUR.TFN_CROWN) count++;
+    else if (settings[SETTINGS.NECRO_HELMET] === ARMOUR.TFN_CROWN_WITH_ADDON) count += 2;
+    if (settings[SETTINGS.NECRO_BODY] === ARMOUR.TFN_ROBE_TOP) count++;
+    if (settings[SETTINGS.NECRO_LEGS] === ARMOUR.TFN_ROBE_BOTTOM) count++;
+    if (settings[SETTINGS.NECRO_GLOVES] === ARMOUR.TFN_HAND_WRAP) count++;
+    if (settings[SETTINGS.NECRO_BOOTS] === ARMOUR.TFN_FOOT_WRAPS) count++;
     return Math.min(count, 5);
 }
 
@@ -49,7 +51,7 @@ export function getConjureDamageMultiplier(settings: Record<string, any>): numbe
     let mult = 1.0;
 
     // Conjurer's Raising Amulet
-    if (settings[SETTINGS.NECKLACE] === SETTINGS.NECKLACE_VALUES.MOONSTONE) {
+    if (settings[SETTINGS.NECKLACE] === ARMOUR.CONJURERS_RAISING_AMULET) {
         mult *= 1.05;
     }
 
@@ -116,6 +118,26 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
         case ABILITIES.SMOKE_CLOUD:
             settings[SETTINGS.SMOKE_CLOUD] = true;
             timers[SETTINGS.SMOKE_CLOUD] = 200; // 120 seconds = 200 ticks
+            break;
+        case ABILITIES.SOULFIRE:
+            settings[SETTINGS.CONFLAGRATE] = true;
+            timers[SETTINGS.CONFLAGRATE] = 25; // 15 seconds = 25 ticks
+            break;
+        case ABILITIES.WILD_MAGIC:
+            // Blast diffusion boots: Wild Magic activates Blast Infused buff
+            if (settings[SETTINGS.BOOTS] === ARMOUR.BLAST_DIFFUSION_BOOTS ||
+                settings[SETTINGS.BOOTS] === ARMOUR.BLAST_DIFFUSION_BOOTS_E) {
+                settings[SETTINGS.BLAST_INFUSED] = true;
+                timers[SETTINGS.BLAST_INFUSED] = 10; // 6 seconds = 10 ticks
+            }
+            break;
+        case ABILITIES.DRAGON_BREATH:
+            // Kerapac's wristwraps: Dragon Breath activates the buff if wearing KWW or KWW_E
+            if (settings[SETTINGS.GLOVES] === ARMOUR.KERAPACS_WRISTWRAPS ||
+                settings[SETTINGS.GLOVES] === ARMOUR.KERAPACS_WRISTWRAPS_E) {
+                settings[SETTINGS.KERAPACS_WRIST_WRAPS] = true;
+                timers[SETTINGS.KERAPACS_WRIST_WRAPS] = 10; // 6 seconds = 10 ticks
+            }
             break;
         case ABILITIES.INSTABILITY:
             settings[SETTINGS.INSTABILITY] = true; 
@@ -190,10 +212,10 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             settings[SETTINGS.BERSERK] = true;
             // Vestments of Havoc: 3+ pieces extends Berserk by 10 ticks
             const vestPieces = [
-                settings[SETTINGS.MELEE_HELMET] === SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
-                settings[SETTINGS.MELEE_BODY] === SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
-                settings[SETTINGS.MELEE_LEGS] === SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
-                settings[SETTINGS.MELEE_BOOTS] === SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
+                settings[SETTINGS.MELEE_HELMET] === ARMOUR.VESTMENTS_OF_HAVOC_HOOD,
+                settings[SETTINGS.MELEE_BODY] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_TOP,
+                settings[SETTINGS.MELEE_LEGS] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_BOTTOM,
+                settings[SETTINGS.MELEE_BOOTS] === ARMOUR.VESTMENTS_OF_HAVOC_BOOTS,
             ].filter(Boolean).length;
             timers[SETTINGS.BERSERK] = vestPieces >= 3 ? 43 : 33;
             break;
@@ -290,14 +312,14 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
 
     // Vestments of Havoc 2-piece: melee ultimate triggers adrenaline regen
     if (
-        abils[abilityKey]?.['main style'] === 'melee' &&
-        abils[abilityKey]?.['ability type'] === 'ultimate'
+        abils[abilityKey]?.mainStyle === 'melee' &&
+        abils[abilityKey]?.abilityType === 'ultimate'
     ) {
         const vestCount = [
-            settings[SETTINGS.MELEE_HELMET] === SETTINGS.MELEE_HELMET_VALUES.VESTMENTS,
-            settings[SETTINGS.MELEE_BODY] === SETTINGS.MELEE_BODY_VALUES.VESTMENTS,
-            settings[SETTINGS.MELEE_LEGS] === SETTINGS.MELEE_LEGS_VALUES.VESTMENTS,
-            settings[SETTINGS.MELEE_BOOTS] === SETTINGS.MELEE_BOOTS_VALUES.VESTMENTS,
+            settings[SETTINGS.MELEE_HELMET] === ARMOUR.VESTMENTS_OF_HAVOC_HOOD,
+            settings[SETTINGS.MELEE_BODY] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_TOP,
+            settings[SETTINGS.MELEE_LEGS] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_BOTTOM,
+            settings[SETTINGS.MELEE_BOOTS] === ARMOUR.VESTMENTS_OF_HAVOC_BOOTS,
         ].filter(Boolean).length;
 
         if (vestCount >= 2) {
@@ -372,6 +394,15 @@ export function handle_channeled_asphyx(settings: Record<string, any>, timers: R
     } else {
         timers[SETTINGS.FULLY_CHANNELED_ASPHYX] = 6; // 3.6s = 6 ticks (base duration without full set)
     }
+}
+
+/**
+ * Activates Tumeken's Resplendence buff after the last hit of Asphyxiate (5pc set effect).
+ * 9 second buff (15 ticks) that enhances the next Asphyxiate.
+ */
+export function handleChannellers(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
+    if (![SETTINGS.RING_VALUES.CHANNELLER, SETTINGS.RING_VALUES.CHANNELLER_E].includes(settings[SETTINGS.RING])) return;
+    settings[SETTINGS.CHANNELLER_RING_STACKS] += 1;
 }
 
 /**
@@ -474,7 +505,7 @@ function get_mean_no_crit(settings: Record<string, any>, dmgObject: DamageObject
 
 function get_mean_crit(settings: Record<string, any>, dmgObject: DamageObject) {
     const critDist = getDamageDistribution(dmgObject, 'crit');
-    if (abils[dmgObject.ability]['crit effects'] === false ||
+    if (abils[dmgObject.ability].critEffects === false ||
         !critDist || critDist['probability'] === 0
     ) {
         return get_mean_damage(settings, dmgObject);
@@ -504,7 +535,7 @@ function get_min_no_crit(settings: Record<string, any>, dmgObject: DamageObject)
 
 function get_min_crit(settings: Record<string, any>, dmgObject: DamageObject) {
     const critDist = getDamageDistribution(dmgObject, 'crit');
-    if (abils[dmgObject.ability]['crit effects'] === false ||
+    if (abils[dmgObject.ability].critEffects === false ||
         !critDist || critDist['probability'] === 0) {
         return get_min_no_crit(settings, dmgObject);
     }
@@ -533,7 +564,7 @@ function get_max_no_crit(settings: Record<string, any>, dmgObject: DamageObject)
 
 function get_max_crit(settings: Record<string, any>, dmgObject: DamageObject) {
     const critDist = getDamageDistribution(dmgObject, 'crit');
-    if (abils[dmgObject.ability]['crit effects'] === false ||
+    if (abils[dmgObject.ability].critEffects === false ||
         !critDist || critDist['probability'] === 0) {
         return get_max_no_crit(settings, dmgObject);
     }

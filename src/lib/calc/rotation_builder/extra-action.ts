@@ -17,6 +17,8 @@ export interface ExtraAction {
     icon: string;
     /** Settings key to update (gear swaps only, e.g. 'ranged helmet') */
     slot?: string;
+    /** Perks on this gear piece (gear swaps only, inline for self-contained rotations) */
+    perks?: { perkKey: string; rank: number }[];
 }
 
 /**
@@ -26,8 +28,8 @@ export interface ExtraAction {
  * @param icon - Icon path
  * @param slot - The settings key this gear writes to (e.g. 'ranged helmet')
  */
-export function gearAction(value: string, title: string, icon: string, slot: string): ExtraAction {
-    return { type: 'gear', value, title, icon, slot };
+export function gearAction(value: string, title: string, icon: string, slot: string, perks?: { perkKey: string; rank: number }[]): ExtraAction {
+    return { type: 'gear', value, title, icon, slot, ...(perks?.length ? { perks } : {}) };
 }
 
 /**

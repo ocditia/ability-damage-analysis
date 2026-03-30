@@ -24,17 +24,20 @@ const EXTRA_BAR_SIZE = 12;
 function toExtraAction(input) {
     if (isExtraAction(input)) return input;
 
-    // Gear object from GearChoice: { title, value?, icon, slot?, style?, weaponType? }
+    // Gear object from GearChoice: { title, value?, icon, slot?, style?, weaponType?, perks? }
     if (typeof input === 'object' && input.title) {
         const value = input.value || input.title;
-        // Resolve per-style settings key: try gear registry first, fall back to legacy gearSwaps
-        const slot = getSettingsKeyForItem(value) || gearSwaps[value] || gearSwaps[input.title];
+        // Resolve per-style settings key: try gear registry first (with active style for hybrid items), fall back to legacy gearSwaps
+        const slot = getSettingsKeyForItem(value, uiStore.activeTab) || gearSwaps[value] || gearSwaps[input.title];
+        // Carry inline perks if present (from owned gear instances)
+        const perks = input.perks?.length ? input.perks.map(p => ({ perkKey: p.perkKey, rank: p.rank })) : undefined;
         return {
             type: 'gear',
             value,
             title: input.title,
             icon: input.icon || '',
             ...(slot ? { slot } : {}),
+            ...(perks ? { perks } : {}),
         };
     }
 
@@ -66,7 +69,7 @@ export function handleAbilityClick(event, abilityKey, mainBar = true, stores, ca
     
     if (uiStore.activeTool === ToolMode.Stall) {
         // Check if ability is channeled
-        if (abils[abilityKey]['ability classification'] === 'channel') {
+        if (abils[abilityKey].abilityClassification === 'channel') {
             notifActions.showNotification('Sorry!','Channeled abilities cannot be stalled currently.', 'info');
             return;
         }
@@ -394,9 +397,15 @@ export function refreshUI(calcDmg = true, stores, calculateTotalDamageNew) {
         }
     }
     uiActions.updateBarIndex(uiStore.bar.lastIndex);
-    let abilToAdd = abils[rotationStore.abilityBar[uiStore.bar.lastIndex]];
-    if (abilToAdd) {
-        uiActions.updateBarIndex(uiStore.bar.lastIndex + (abilToAdd['duration'] || 3));
+    const lastIdx = uiStore.bar.lastIndex;
+    const meta = rotationStore.tickMetadata?.[lastIdx];
+    if (meta) {
+        // Use pipeline-resolved duration (accounts for gear swaps, Tumeken's, etc.)
+        uiActions.updateBarIndex(lastIdx + meta.duration);
+    } else if (rotationStore.abilityBar[lastIdx]) {
+        // Fallback: read duration from static ability data
+        const abilToAdd = abils[rotationStore.abilityBar[lastIdx]];
+        uiActions.updateBarIndex(lastIdx + (abilToAdd?.['duration'] || 3));
     }
 
     //Update extra action bar pointer
@@ -477,6 +486,9 @@ export function calculateTotalDamageNew() {
     rotationStore.dreadnipPerTick = dmgResult.dreadnipPerTick || [];
     rotationStore.conjurePerTick = dmgResult.conjurePerTick || [];
     rotationStore.phaseTransitions = dmgResult.phaseTransitions || [];
+    rotationStore._finalState = dmgResult._finalState;
+    rotationStore._finalSettings = dmgResult._finalSettings;
+    rotationStore.tickMetadata = dmgResult.tickMetadata || {};
 
     // Calculate Gaussian parameters for more accurate damage modeling
     const gaussianParams = calculateGaussianParameters(rotationStore.distributionStats);

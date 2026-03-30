@@ -8,8 +8,10 @@
      * - Cycling   (cycle=[...]):     Click cycles through values in order
      * - Dropdown  (options=[...]):   Click opens/closes dropdown menu
      *
-     * All modes share the same visual shell: icon + optional badge + optional label + active border.
+     * Uses ActionIcon internally for the visual shell.
      */
+
+    import ActionIcon from './ActionIcon.svelte';
 
     let {
         setting = $bindable(),          // { value, ... } — the settings store entry
@@ -28,6 +30,7 @@
         fallback = undefined,           // Fallback icon path on error
         onchange = () => {},            // Callback after value changes
         activeWhen = undefined,         // Override active state: function(value) => boolean
+        borderColor = '',               // Custom active border colour (e.g. style colour)
     } = $props();
 
     let editing = $state(false);
@@ -64,16 +67,13 @@
     let resolvedBadge = $derived.by(() => {
         if (badgeFn) return badgeFn(setting?.value);
         if (badge !== undefined) return badge;
-        if (isRanked) return setting?.value ?? 0;
+        if (isRanked) return String(setting?.value ?? 0);
         if (isCycle && isActive) {
             const idx = cycle.indexOf(setting?.value);
-            return idx > 0 ? idx : undefined;
+            return idx > 0 ? String(idx) : '';
         }
-        return undefined;
+        return '';
     });
-
-    // Is badge an image?
-    let badgeIsImg = $derived(resolvedBadge && typeof resolvedBadge === 'object' && resolvedBadge.img);
 
     function handleClick() {
         if (longPressFired) return;
@@ -134,32 +134,27 @@
     }
 </script>
 
-<div class="toggle-wrapper">
-    <button
-        type="button"
-        class="toggle-btn"
-        class:toggle-active={isActive}
-        title="{title}{isRanked ? ' (right-click to set, scroll to adjust)' : ''}"
-        onclick={handleClick}
-        oncontextmenu={handleContextMenu}
-        onwheel={handleWheel}
-        ontouchstart={handleTouchStart}
-        ontouchend={handleTouchEnd}
-        ontouchcancel={handleTouchEnd}
-    >
+<div class="toggle-wrapper"
+    onwheel={handleWheel}
+    ontouchstart={handleTouchStart}
+    ontouchend={handleTouchEnd}
+    ontouchcancel={handleTouchEnd}
+>
+    <div class="toggle-opacity" class:inactive={!isActive}>
         {#if label}
             <span class="toggle-label">{label}</span>
         {/if}
-        <img src={resolvedImg} alt={title} class="w-7 h-7 object-contain"
-            onerror={(e) => { if (fallback) { e.target.onerror = null; e.target.src = fallback; } }}
+        <ActionIcon
+            src={resolvedImg}
+            {fallback}
+            title="{title}{isRanked ? ' (right-click to set, scroll to adjust)' : ''}"
+            active={isActive}
+            borderColor={isActive ? borderColor : ''}
+            badgeText={resolvedBadge}
+            type="action"
+            onclick={handleClick}
+            oncontextmenu={handleContextMenu}
         />
-        {#if resolvedBadge !== undefined && resolvedBadge !== null}
-            {#if badgeIsImg}
-                <img src={resolvedBadge.img} alt="" class="toggle-badge-img" />
-            {:else}
-                <span class="toggle-badge">{resolvedBadge}</span>
-            {/if}
-        {/if}
         {#if isRanked && editing}
             <input
                 type="number"
@@ -175,7 +170,7 @@
                 use:focusOnMount
             />
         {/if}
-    </button>
+    </div>
     {#if isOpen}
         <div class="toggle-dropdown">
             {#each options as option}
@@ -197,37 +192,15 @@
         position: relative;
         display: inline-block;
     }
-    .toggle-btn {
+    .toggle-opacity {
         position: relative;
-        padding: 4px;
-        border: 2px solid transparent;
-        border-radius: 6px;
-        opacity: 0.4;
-        cursor: pointer;
-        transition: all 0.15s ease;
-        background: none;
+        display: inline-block;
     }
-    .toggle-btn:hover { opacity: 0.7; }
-    .toggle-active { opacity: 1; border-color: #4ade80; }
-    .toggle-badge {
-        position: absolute;
-        bottom: -2px;
-        right: -2px;
-        font-size: 0.6rem;
-        font-weight: bold;
-        color: white;
-        background: rgba(0, 0, 0, 0.7);
-        border-radius: 3px;
-        padding: 0 3px;
-        line-height: 1.2;
+    .toggle-opacity.inactive {
+        opacity: 0.8;
     }
-    .toggle-badge-img {
-        position: absolute;
-        bottom: -2px;
-        right: -2px;
-        width: 14px;
-        height: 14px;
-        border-radius: 3px;
+    .toggle-opacity.inactive:hover {
+        opacity: 1.0;
     }
     .toggle-label {
         position: absolute;
@@ -240,6 +213,8 @@
         border-radius: 3px;
         padding: 0 3px;
         line-height: 1.2;
+        z-index: 1;
+        pointer-events: none;
     }
     .toggle-edit {
         position: absolute;

@@ -3,12 +3,15 @@
  */
 
 import { ABILITIES, abils } from '$lib/data/abilities';
+import { ARMOUR } from '$lib/data/armour';
+import { WEAPONS } from '$lib/data/weapons';
 import { weapons } from '$lib/data/weapons';
 import { prayers } from '$lib/data/prayers';
 import { SETTINGS } from './settings_rb';
 import { Logger } from '$lib/utils/Logger';
 const logger = Logger.getInstance();
 import { DamageObject } from './types';
+import { getAbilityClassification, getAbilityStyle, isChannelledHit } from '$lib/types/AbilityTypes';
 
 // =============================================================================
 // Crit Chance
@@ -58,15 +61,15 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
 
     // sliske tuska
     if (
-        settings[SETTINGS.HELMET] === SETTINGS.MAGIC_HELMET_VALUES.SLISKE &&
-        settings[SETTINGS.BODY] === SETTINGS.MAGIC_BODY_VALUES.SLISKE &&
-        settings[SETTINGS.LEGS] === SETTINGS.MAGIC_LEGS_VALUES.SLISKE
+        settings[SETTINGS.HELMET] === ARMOUR.SLISKE_HELM &&
+        settings[SETTINGS.BODY] === ARMOUR.SLISKE_BODY &&
+        settings[SETTINGS.LEGS] === ARMOUR.SLISKE_LEGS
     ) {
         crit_chance += 0.06;
     }
 
     // erethdor's grimoire
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.GRIM) {
+    if (settings[SETTINGS.POCKET] === ARMOUR.ERETHDORS_GRIMOIRE) {
         crit_chance += 0.12;
     }
 
@@ -76,7 +79,7 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
     }
 
     // reaver's ring
-    if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.REAVERS) {
+    if (settings[SETTINGS.RING] === ARMOUR.REAVERS_RING) {
         crit_chance += 0.05;
     }
 
@@ -90,26 +93,26 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
         crit_chance += 0.05;
     }
 
-    if (abils[abilityKey]['main style'] === 'magic') {
+    if (abils[abilityKey].mainStyle === 'magic') {
         // tectonic armour
-        if (settings[SETTINGS.HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TECTONIC) {
+        if (settings[SETTINGS.HELMET] === ARMOUR.TECTONIC_MASK) {
             crit_chance += 0.01;
         }
-        if (settings[SETTINGS.BODY] === SETTINGS.MAGIC_BODY_VALUES.TECTONIC) {
+        if (settings[SETTINGS.BODY] === ARMOUR.TECTONIC_ROBE_TOP) {
             crit_chance += 0.01;
         }
-        if (settings[SETTINGS.LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TECTONIC) {
+        if (settings[SETTINGS.LEGS] === ARMOUR.TECTONIC_ROBE_BOTTOM) {
             crit_chance += 0.01
         }
 
         // elite tectonic armour'
-        if (settings[SETTINGS.HELMET] === SETTINGS.MAGIC_HELMET_VALUES.ELITE_TECTONIC) {
+        if (settings[SETTINGS.HELMET] === ARMOUR.ELITE_TECTONIC_MASK) {
             crit_chance += 0.02;
         }
-        if (settings[SETTINGS.BODY] === SETTINGS.MAGIC_BODY_VALUES.ELITE_TECTONIC) {
+        if (settings[SETTINGS.BODY] === ARMOUR.ELITE_TECTONIC_ROBE_TOP) {
             crit_chance += 0.02;
         }
-        if (settings[SETTINGS.LEGS] === SETTINGS.MAGIC_LEGS_VALUES.ELITE_TECTONIC) {
+        if (settings[SETTINGS.LEGS] === ARMOUR.ELITE_TECTONIC_ROBE_BOTTOM) {
             crit_chance += 0.02;
         }
 
@@ -134,9 +137,9 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
             crit_chance += 0.015 * tumekens_resplendence;
         }
 
-        if (settings[SETTINGS.CAPE] === SETTINGS.CAPE_VALUES.TUSKA &&
-            settings[SETTINGS.GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUSKA &&
-            settings[SETTINGS.BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUSKA
+        if (settings[SETTINGS.CAPE] === ARMOUR.TUSKA_CAPE &&
+            settings[SETTINGS.GLOVES] === ARMOUR.TUSKA_GAUNTLETS &&
+            settings[SETTINGS.BOOTS] === ARMOUR.TUSKA_BOOTS
         ) {
             crit_chance += 0.03;
         }
@@ -146,11 +149,13 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
             (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER ||
                 settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E)
             &&
-            abils[abilityKey]['ability classification'] === 'channel'
+            abils[abilityKey].parent && abils[abils[abilityKey].parent].abilityClassification === 'channel'
         ) {
             crit_chance += 0.04;
             crit_chance += 0.04 * (1 + settings[SETTINGS.CHANNELLER_RING_STACKS]);
         }
+        else if (!["proc", "perk"].includes(getAbilityClassification(abils[abilityKey])))
+            {settings[SETTINGS.CHANNELLER_RING_STACKS] = 0}
 
         // (g)conc stacks: +5% (conc), +7% (gconc), +15% (conc+AC), +17% (gconc+AC) per stack
         const isGreater = settings['_conc_is_greater'];
@@ -174,6 +179,7 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
         } else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) {
             crit_chance += 0.14;
             if (settings[SETTINGS.ANIMA_CHARGED] === true) {
+                console.log('Are we winning? : Yes'); // TODO fix this  
                 crit_chance += 0.2;
             }
         }
@@ -193,7 +199,7 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
         }
     }
 
-    if (abils[abilityKey]['main style'] === 'melee') {
+    if (abils[abilityKey].mainStyle === 'melee') {
         // champion's ring
         if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E) {
             crit_chance += 0.03;
@@ -201,7 +207,7 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
                 crit_chance += 0.01;
             }
         }
-        if (!(abils[abilityKey]['ability classification'] === 'multihit' &&
+        if (!(abils[abilityKey].abilityClassification === 'multihit' &&
             abils[abilityKey]['hits'] &&
             Object.keys(abils[abilityKey]['hits'])))
         {
@@ -235,7 +241,7 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
         }
     }
 
-    if (abils[abilityKey]['main style'] === 'ranged') {
+    if (abils[abilityKey].mainStyle === 'ranged') {
         // stalker's ring
         if (
             (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E) &&
@@ -298,21 +304,20 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
  */
 export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageObject): number {
     let crit_buff = 0.5; // base crit damage
-
+    const abilityKey = dmgObj.ability;
     // Smoke cloud (+15% magic, +6% other)
     if (settings[SETTINGS.SMOKE_CLOUD] === true) {
-        if (abils[settings['ability']]?.['main style'] === 'magic') {
+        if (abils[settings['ability']]?.mainStyle === 'magic') {
             crit_buff += 0.15;
         } else {
             crit_buff += 0.06;
         }
     }
-
-    // Channeler's ring (magic channels only)
+    
     if (
         settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E &&
-        abils[settings['ability']]?.['ability classification'] === 'channel' &&
-        abils[settings['ability']]?.['main style'] === 'magic'
+        isChannelledHit(abils[abilityKey]) &&
+        getAbilityStyle(abils[abilityKey]) === 'magic'
     ) {
         crit_buff += 0.025 * (1 + settings[SETTINGS.CHANNELLER_RING_STACKS]);
     }
@@ -320,14 +325,13 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
     // Champion's ring (melee, based on bleeds)
     if (
         settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E &&
-        abils[settings['ability']]?.['main style'] === 'melee'
+        abils[settings['ability']]?.mainStyle === 'melee'
     ) {
         crit_buff += 0.015 * settings[SETTINGS.NUMBER_OF_BLEEDS];
     }
-
     // Stalker's ring (ranged with bow)
     if (
-        abils[settings['ability']]?.['main style'] === 'ranged' &&
+        abils[settings['ability']]?.mainStyle === 'ranged' &&
         settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
         (weapons[settings[SETTINGS.TH]]?.['type'] === 'bow' ||
@@ -338,7 +342,7 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
 
     // FSOA crit bonus (15-25%, avg 20%)
     if (
-        (settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA || settings[SETTINGS.TH] === SETTINGS.MAGIC_TH_VALUES.FSOA_IM) &&
+        (settings[SETTINGS.TH] === WEAPONS.FRACTURED_STAFF_OF_ARMADYL || settings[SETTINGS.TH] === WEAPONS.FRACTURED_STAFF_OF_ARMADYL_IM) &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH
     ) {
         if (settings[SETTINGS.MODE] === SETTINGS.MODE_VALUES.MAX_CRIT) {
@@ -350,8 +354,9 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
         }
     }
 
-    // tumeken's resplendence pc
-    if (abils[settings['ability']]['main style'] === 'magic' &&
+    
+    // fully channeled asphyxiate crit buff
+    if (abils[settings['ability']].mainStyle === 'magic' &&
         settings[SETTINGS.FULLY_CHANNELED_ASPHYX] === true
     ) {
 
@@ -368,11 +373,6 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
         }
     }
 
-    // magic leagues relic
-    if (abils[settings['ability']]['main style'] === 'magic' &&
-        settings[SETTINGS.MAGIC_LEAGUES_RELIC] === true) {
-        crit_buff += 0.5;
-    }
 
     if (dmgObj.ability === ABILITIES.THE_FINAL_FLURRY_1) {
         crit_buff += 0.25;

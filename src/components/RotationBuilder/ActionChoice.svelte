@@ -5,12 +5,18 @@
     import { GearSlots } from '$lib/calc/rotation_builder/gear';
     import { offGcdAbilities, prayers, spells, consumables } from '$lib/special/abilities';
     import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
+    import { PERKABLE_SLOTS, formatPerkAbbrev } from '$lib/data/perks';
+    import { stripVariantSuffix } from '$lib/utils/gearVariants';
+    import ActionIcon from '$components/UI/ActionIcon.svelte';
+    import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
 
     export let handleAbilityClick;
     export let handleDragStart;
+    export let showOnly = 'all'; // 'all', 'gear', 'actions'
     export let style = 'ranged';
 
     $: styleColor = getStyleColor(style);
+    $: gearFilterSetting = settingsStore.settings?.[SETTINGS.GEAR_FILTER]?.value ?? 'popular';
 
     const gearStyleMap = {
         ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necromancy',
@@ -18,6 +24,8 @@
     const iconFolderMap = {
         ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necro',
     };
+
+    const iconSize = "md"; // String for ActionIcon - 'sm', 'md' or 'lg'
 
     // Gear row definitions
     const gearRows = [
@@ -27,7 +35,6 @@
         { label: 'E', slots: [GearSlots.HELMET, GearSlots.BODY, GearSlots.LEGS, GearSlots.GLOVES, GearSlots.BOOTS] },
     ];
 
-    let showAllGear = false;
 
     function getIconFolder(item) {
         if (item.style === 'hybrid') return 'shared';
@@ -43,20 +50,8 @@
 
     function resolveIconFallback(item) {
         const folder = getIconFolder(item);
-        const base = item.value
-            .replace(/ \[IM\]$/, '').replace(/ \(i\)$/, '')
-            .replace(/\+$/, '').replace(/ \(or\)$/, '').replace(/ \(e\)$/, '');
+        const base = stripVariantSuffix(item.value);
         return `/gear_icons/${folder}/${base}.png`;
-    }
-
-    function getBadge(value) {
-        if (!value) return null;
-        if (value.endsWith(' [IM]')) return { img: '/effect_icons/shard_of_genesis.png' };
-        if (value.endsWith(' (i)')) return { text: 'i' };
-        if (value.endsWith('+')) return { text: '+' };
-        if (value.endsWith(' (or)')) return { text: 'or' };
-        if (value.endsWith(' (e)')) return { text: 'e' };
-        return null;
     }
 
     function getGearRowItems(slots) {
@@ -66,17 +61,44 @@
             const items = getItemsForSlot(slot, gearStyle);
             for (const item of items) {
                 if (item.value === 'none') continue;
-                if (!showAllGear && !item.popular && !ownedItemsStore.items.has(item.value)) continue;
-                result.push({
-                    title: item.text,
-                    value: item.value,
-                    icon: resolveIcon(item),
-                    iconFallback: resolveIconFallback(item),
-                    slot: item.slot,
-                    style: item.style,
-                    weaponType: item.weaponType,
-                    isGear: true,
-                });
+                if (gearFilterSetting === 'owned' && !ownedItemsStore.items.has(item.value)) continue;
+                if (gearFilterSetting === 'popular' && !item.popular && !ownedItemsStore.items.has(item.value)) continue;
+
+                // For perkable slots, expand into per-instance entries
+                const instances = PERKABLE_SLOTS.has(slot) ? ownedItemsStore.ownedGear.get(item.value) : null;
+                if (instances && instances.length > 1) {
+                    for (let i = 0; i < instances.length; i++) {
+                        const perkStr = formatPerkAbbrev(instances[i].perks);
+                        const label = instances[i].label || perkStr || `#${i + 1}`;
+                        result.push({
+                            title: `${item.text} (${label})`,
+                            value: item.value,
+                            icon: resolveIcon(item),
+                            iconFallback: resolveIconFallback(item),
+                            slot: item.slot,
+                            style: item.style,
+                            weaponType: item.weaponType,
+                            isGear: true,
+                            perks: instances[i].perks,
+                            instanceIndex: i,
+                        });
+                    }
+                } else {
+                    const perks = instances?.[0]?.perks ?? [];
+                    const perkStr = formatPerkAbbrev(perks);
+                    result.push({
+                        title: perkStr ? `${item.text} (${perkStr})` : item.text,
+                        value: item.value,
+                        icon: resolveIcon(item),
+                        iconFallback: resolveIconFallback(item),
+                        slot: item.slot,
+                        style: item.style,
+                        weaponType: item.weaponType,
+                        isGear: true,
+                        perks,
+                        instanceIndex: 0,
+                    });
+                }
             }
         }
         return result;
@@ -92,7 +114,7 @@
     }
 
     // Force reactivity on showAllGear, style, and owned items by referencing them
-    $: _gearDeps = [showAllGear, style, ownedItemsStore.items.size];
+    $: _gearDeps = [gearFilterSetting, style, ownedItemsStore.items.size];
     $: gearRowData = _gearDeps && gearRows.map(r => ({ label: r.label, items: getGearRowItems(r.slots) })).filter(r => r.items.length > 0);
     $: abilityItems = recordToItems(offGcdAbilities);
     $: prayerItems = recordToItems(prayers);
@@ -101,39 +123,35 @@
 </script>
 
 <div class="action-choice">
+    {#if showOnly === 'all' || showOnly === 'gear'}
     <!-- Gear section -->
     <div class="section-header">
         <span class="section-title">Gear</span>
-        <button class="filter-btn" class:active={!showAllGear} onclick={() => { showAllGear = !showAllGear; }}>
-            {showAllGear ? 'All' : 'Popular'}
-        </button>
+        <span class="text-xs text-gray-500 capitalize">{gearFilterSetting}</span>
     </div>
     {#each gearRowData as row}
         <div class="item-row" style="border-left: 2px solid {styleColor};">
             <span class="row-label">{row.label}</span>
             <div class="item-grid">
                 {#each row.items as item}
-                    {@const badge = getBadge(item.value)}
-                    <button class="item-btn" title={item.title}
+                    <ActionIcon
+                        value={item.value}
+                        folder={getIconFolder(item)}
+                        fallback={item.iconFallback}
+                        size={iconSize}
+                        borderColor={styleColor}
+                        title={item.title}
                         onclick={(e) => handleAbilityClick(e, item)}
-                        style="border-color: {styleColor};"
-                    >
-                        <img src={item.icon} alt={item.title} draggable="true"
-                            ondragstart={(e) => handleDragStart(e, item)}
-                            onerror={(e) => { if (!e.target.dataset.tried && item.iconFallback) { e.target.dataset.tried = '1'; e.target.src = item.iconFallback; } }} />
-                        {#if badge}
-                            {#if badge.img}
-                                <img src={badge.img} alt="" class="item-badge-img" />
-                            {:else}
-                                <span class="item-badge-text">{badge.text}</span>
-                            {/if}
-                        {/if}
-                    </button>
+                        draggable={true}
+                        ondragstart={(e) => handleDragStart(e, item)}
+                    />
                 {/each}
             </div>
         </div>
     {/each}
+    {/if}
 
+    {#if showOnly === 'all' || showOnly === 'actions'}
     <!-- Abilities -->
     {#if abilityItems.length > 0}
         <div class="section-header"><span class="section-title">Abilities</span></div>
@@ -141,13 +159,16 @@
             <span class="row-label">A</span>
             <div class="item-grid">
                 {#each abilityItems as item}
-                    <button class="item-btn" title={item.title}
+                    <ActionIcon
+                        type="ability"
+                        src={item.icon}
+                        size={iconSize}
+                        borderColor="#8888ff"
+                        title={item.title}
                         onclick={(e) => handleAbilityClick(e, item.key)}
-                        style="border-color: #8888ff;"
-                    >
-                        <img src={item.icon} alt={item.title} draggable="true"
-                            ondragstart={(e) => handleDragStart(e, item.key)} />
-                    </button>
+                        draggable={true}
+                        ondragstart={(e) => handleDragStart(e, item.key)}
+                    />
                 {/each}
             </div>
         </div>
@@ -159,13 +180,16 @@
             <span class="row-label">P</span>
             <div class="item-grid">
                 {#each prayerItems as item}
-                    <button class="item-btn" title={item.title}
+                    <ActionIcon
+                        type="prayer"
+                        src={item.icon}
+                        size={iconSize}
+                        borderColor="#ffdd57"
+                        title={item.title}
                         onclick={(e) => handleAbilityClick(e, item.key)}
-                        style="border-color: #ffdd57;"
-                    >
-                        <img src={item.icon} alt={item.title} draggable="true"
-                            ondragstart={(e) => handleDragStart(e, item.key)} />
-                    </button>
+                        draggable={true}
+                        ondragstart={(e) => handleDragStart(e, item.key)}
+                    />
                 {/each}
             </div>
         </div>
@@ -177,13 +201,16 @@
             <span class="row-label">S</span>
             <div class="item-grid">
                 {#each spellItems as item}
-                    <button class="item-btn" title={item.title}
+                    <ActionIcon
+                        type="spell"
+                        src={item.icon}
+                        size={iconSize}
+                        borderColor="#44ccff"
+                        title={item.title}
                         onclick={(e) => handleAbilityClick(e, item.key)}
-                        style="border-color: #44ccff;"
-                    >
-                        <img src={item.icon} alt={item.title} draggable="true"
-                            ondragstart={(e) => handleDragStart(e, item.key)} />
-                    </button>
+                        draggable={true}
+                        ondragstart={(e) => handleDragStart(e, item.key)}
+                    />
                 {/each}
             </div>
         </div>
@@ -195,16 +222,20 @@
             <span class="row-label">C</span>
             <div class="item-grid">
                 {#each consumableItems as item}
-                    <button class="item-btn" title={item.title}
+                    <ActionIcon
+                        type="consumable"
+                        src={item.icon}
+                        size={iconSize}
+                        borderColor="#ff8844"
+                        title={item.title}
                         onclick={(e) => handleAbilityClick(e, item.key)}
-                        style="border-color: #ff8844;"
-                    >
-                        <img src={item.icon} alt={item.title} draggable="true"
-                            ondragstart={(e) => handleDragStart(e, item.key)} />
-                    </button>
+                        draggable={true}
+                        ondragstart={(e) => handleDragStart(e, item.key)}
+                    />
                 {/each}
             </div>
         </div>
+    {/if}
     {/if}
 </div>
 
@@ -266,49 +297,5 @@
         gap: 1px;
     }
 
-    .item-btn {
-        position: relative;
-        padding: 2px;
-        border: 2px solid transparent;
-        border-radius: 6px;
-        opacity: 0.6;
-        cursor: pointer;
-        transition: all 0.15s ease;
-        background: none;
-    }
-
-    .item-btn:hover {
-        opacity: 0.85;
-    }
-
-    .item-btn img {
-        width: 28px;
-        height: 28px;
-        object-fit: contain;
-    }
-
-    .item-badge-img {
-        position: absolute;
-        bottom: -2px;
-        right: -2px;
-        width: 14px;
-        height: 14px;
-        border-radius: 3px;
-        pointer-events: none;
-    }
-
-    .item-badge-text {
-        position: absolute;
-        bottom: -2px;
-        right: -2px;
-        font-size: 0.6rem;
-        font-weight: bold;
-        color: white;
-        background: rgba(0, 0, 0, 0.7);
-        border-radius: 3px;
-        padding: 0 3px;
-        line-height: 1.2;
-        pointer-events: none;
-    }
 
 </style>

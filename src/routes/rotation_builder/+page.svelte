@@ -22,10 +22,11 @@
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
     import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
     import { getBossPresetWithEnrage, type BossAttack, type BossAttackPattern } from '$lib/data/bosses/boss_presets';
+    import { suggestNextAbility, type AbilitySuggestion } from '$lib/calc/rotation_builder/rotation-damage-calculator';
 
 
     const filterByStyle = (style) => Object.fromEntries(
-        Object.entries(abils).filter(([, a]) => a.title && a['main style'] === style)
+        Object.entries(abils).filter(([, a]) => a.title && a.mainStyle === style)
     );
     const rangedAbils = filterByStyle('ranged');
     const magicAbils = filterByStyle('magic');
@@ -49,11 +50,6 @@
 	const BASE_ROW_HEIGHT = 40;
 	const ROW_GAP = 20; // Constant gap between all rows
 
-	let bossName = $derived.by(() => {
-		const val = settingsStore.settings[SETTINGS.BOSS_PRESET]?.value;
-		return val && val !== 'none' ? val : 'ROTATION';
-	});
-
 	// Phase/kill markers from calc engine (single source of truth)
 	let phaseMarkers = $derived(rotationStore.phaseTransitions.map(pt => ({
 		tick: pt.tick,
@@ -76,6 +72,21 @@
 
 	// Boss pattern start tick
 	let patternStartTick = $derived(settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? -1);
+
+	let bossName = $derived.by(() => {
+		const val = settingsStore.settings[SETTINGS.BOSS_PRESET]?.value;
+		return val && val !== 'none' ? val : 'ROTATION';
+	});
+	let killTime = $derived.by(() => {
+		const killMarker = phaseMarkers.find(m => m.label === 'Kill');
+		if (!killMarker) return null;
+		const startTick = patternStartTick >= 0 ? patternStartTick : 0;
+		const ticks = killMarker.tick - startTick;
+		const totalSeconds = ticks * 0.6;
+		const mins = Math.floor(totalSeconds / 60);
+		const secs = (totalSeconds % 60).toFixed(1);
+		return mins > 0 ? `${mins}:${secs.padStart(4, '0')}` : `${secs}s`;
+	});
 
 	// Dynamic row layout state
 	let abilityBarElement: HTMLElement | null = null;
@@ -350,7 +361,7 @@
 
 	const tabs = [
 		{ id: 'ranged', label: 'Ranged', abilities: rangedAbils },
-		{ id: 'magic', label: 'Magic', abilities: magicAbils, badge: 'beta' },
+		{ id: 'magic', label: 'Magic', abilities: magicAbils },
 		{ id: 'melee', label: 'Melee', abilities: meleeAbils, badge: 'beta' },
 		{ id: 'necro', label: 'Necro', abilities: necroAbils, badge: 'beta' },
 		{ id: 'defence', label: 'Defence', abilities: defAbils, badge: 'beta'}
@@ -365,9 +376,29 @@
 		notifActions
 	};
 
+	// Ability suggestions
+	let suggestions: AbilitySuggestion[] = $state([]);
+	let suggestionsCollapsed = $state(false);
+
 	// Wrapper functions for event handlers
 	function calculateTotalDamageNew() {
 		eventHandlers.calculateTotalDamageNew();
+
+		// Compute ability suggestions from captured final state
+		if (rotationStore._finalState && rotationStore._finalSettings) {
+			const style = uiStore.activeTab ?? 'melee';
+			const styleMap = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necromancy' };
+			const candidates = Object.entries(abils)
+				.filter(([, a]) => a.title && a.mainStyle === styleMap[style])
+				.map(([key]) => key);
+			const newSuggestions = suggestNextAbility(
+				rotationStore._finalState,
+				rotationStore._finalSettings,
+				candidates
+			);
+			// Force reactivity by creating a new array reference
+			suggestions = [...newSuggestions];
+		}
 	}
 
 	function refreshUI(calcDmg = true) {
@@ -482,6 +513,89 @@
 		background: rgba(255, 0, 0, 0.08);
 	}
 
+	.suggestions-floating {
+		position: fixed;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 50;
+		pointer-events: auto;
+	}
+	.suggestions-floating.collapsed {
+		bottom: 0;
+	}
+	.suggestions-bar {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		padding: 6px 12px;
+		background: rgba(23, 29, 33, 0.95);
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		border-bottom: none;
+		border-radius: 10px 10px 0 0;
+		backdrop-filter: blur(8px);
+		box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+	}
+	.suggestions-label {
+		font-size: 0.7rem;
+		color: #888;
+		margin-right: 2px;
+		white-space: nowrap;
+	}
+	.suggestions-tab {
+		padding: 4px 14px;
+		font-size: 0.7rem;
+		color: #888;
+		background: rgba(23, 29, 33, 0.95);
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		border-bottom: none;
+		border-radius: 8px 8px 0 0;
+		cursor: pointer;
+		backdrop-filter: blur(8px);
+	}
+	.suggestions-tab:hover {
+		color: #ccc;
+	}
+	.suggestions-collapse {
+		padding: 2px 6px;
+		font-size: 0.6rem;
+		color: #666;
+		background: none;
+		border: none;
+		cursor: pointer;
+		margin-left: 4px;
+	}
+	.suggestions-collapse:hover {
+		color: #ccc;
+	}
+	.suggestion-btn {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1px;
+		padding: 3px;
+		border-radius: 4px;
+		cursor: pointer;
+		background: none;
+		border: 1px solid transparent;
+		transition: all 0.15s;
+	}
+	.suggestion-btn:hover {
+		background: rgba(255, 255, 255, 0.1);
+		border-color: rgba(255, 255, 255, 0.2);
+	}
+	.suggestion-icon {
+		width: 28px;
+		height: 28px;
+		border-radius: 3px;
+	}
+	.suggestion-dmg {
+		font-size: 0.55rem;
+		color: #4CAF50;
+		font-weight: bold;
+		line-height: 1;
+	}
+
 
 	.damage-summary {
 		display: flex;
@@ -524,8 +638,8 @@
 	.responsive-container {
 		margin-left: 0% !important;
 		margin-right: 0% !important;
-		padding-left: 3% !important;
-		padding-right: 3% !important;
+		padding-left: 1.5% !important;
+		padding-right: 1.5% !important;
 		max-width: 100% !important;
 	}
 
@@ -868,7 +982,7 @@
 						</button>
 					{/if}
 					<div class="rotation-title-row">
-						<h1 class="rotation-header">{bossName}</h1>
+						<h1 class="rotation-header">{bossName}{#if killTime} <em>{killTime}</em>{/if}</h1>
 						<button class="reset-btn" onclick={clearRotation} title="Reset rotation">Reset</button>
 						<div class="damage-summary">
 								<span class="dmg-total">{(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage + rotationStore.conjureDamage).toLocaleString()}</span>
@@ -877,6 +991,7 @@
 								{/if}
 							</div>
 					</div>
+
 					<GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
 
 					<!-- Damage Distribution Chart -->
@@ -889,10 +1004,17 @@
 						conjureDamage={rotationStore.conjureDamage}
 						poisonPerTick={rotationStore.poisonPerTick}
 						familiarPerTick={rotationStore.familiarPerTick}
+						familiarVariancePerTick={rotationStore.familiarVariancePerTick}
 						dreadnipPerTick={rotationStore.dreadnipPerTick}
+						dreadnipVariancePerTick={rotationStore.dreadnipVariancePerTick}
 						conjurePerTick={rotationStore.conjurePerTick}
+						conjureVariancePerTick={rotationStore.conjureVariancePerTick}
 						{allAbils}
 						familiarKey={settingsStore.settings[SETTINGS.FAMILIAR]?.value ?? 'none'}
+						phaseTransitions={rotationStore.phaseTransitions}
+						barSize={uiStore.bar.size}
+						patternStartTick={settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? -1}
+						hasBossPreset={settingsStore.settings[SETTINGS.BOSS_PRESET]?.value && settingsStore.settings[SETTINGS.BOSS_PRESET]?.value !== 'none'}
 					/>
                     <RotationConfigManager
                         {refreshUI}
@@ -996,8 +1118,8 @@
                                         <span class="phase-label">{marker.label}</span>
                                     </div>
                                 {/if}
-                                {#if hasAttackPattern && index === patternStartTick}
-                                    <div class="pattern-start-marker" title="Boss pattern starts (tick {index})">
+                                {#if index === patternStartTick}
+                                    <div class="pattern-start-marker" title="Start (tick {index})">
                                         <span class="pattern-start-label">Start</span>
                                     </div>
                                 {/if}
@@ -1247,3 +1369,29 @@
     ]}
     phaseBreaks={phaseMarkers.map(m => ({ tick: (m.pauseEnd ?? m.tick) + 1, label: m.label }))}
 />
+
+<!-- Floating Ability Suggestions Bar -->
+{#if suggestions.length > 0}
+	<div class="suggestions-floating" class:collapsed={suggestionsCollapsed}>
+		{#if suggestionsCollapsed}
+			<button class="suggestions-tab" onclick={() => suggestionsCollapsed = false}>
+				▲ Suggestions
+			</button>
+		{:else}
+			<div class="suggestions-bar">
+				<span class="suggestions-label">Next:</span>
+				{#each suggestions.slice(0, 10) as suggestion}
+					<button
+						class="suggestion-btn"
+						title="{suggestion.title}: +{suggestion.damage.toLocaleString()} damage"
+						onclick={(e) => handleAbilityClick(e, suggestion.key)}
+					>
+						<img src={suggestion.icon} alt={suggestion.title} class="suggestion-icon" />
+						<span class="suggestion-dmg">+{suggestion.damage >= 1000 ? Math.round(suggestion.damage / 1000) + 'K' : suggestion.damage}</span>
+					</button>
+				{/each}
+				<button class="suggestions-collapse" onclick={() => suggestionsCollapsed = true} title="Collapse">▼</button>
+			</div>
+		{/if}
+	</div>
+{/if}

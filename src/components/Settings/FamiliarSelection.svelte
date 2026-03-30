@@ -1,9 +1,11 @@
 <script>
     import { SETTINGS } from '$lib/calc/settings_rb';
     import { familiars } from '$lib/data/familiars';
+    import { DAMAGE_SOURCE_COLORS } from '$lib/utils/colors';
     import ToggleButton from '../UI/ToggleButton.svelte';
 
     let { settings, updateDamages, openDropdown = $bindable(null), onFamiliarChange = null } = $props();
+    const familiarColor = DAMAGE_SOURCE_COLORS.familiar;
 
     function onFamiliarChanged() {
         if (onFamiliarChange) onFamiliarChange();
@@ -39,6 +41,7 @@
         options={settings[SETTINGS.FAMILIAR]?.options ?? []}
         bind:openId={openDropdown}
         id={SETTINGS.FAMILIAR}
+        borderColor={familiarColor}
         onchange={onFamiliarChanged}
     />
     <ToggleButton
@@ -46,6 +49,7 @@
         img="/effect_icons/crit_i_kal.png"
         title="Kal'gerion Spec"
         toggle={true}
+        borderColor={familiarColor}
         onchange={updateDamages}
     />
     {#if showScrollOptions}
@@ -54,6 +58,7 @@
             img={scrollIcon}
             title="Use Familiar Scrolls"
             toggle={true}
+            borderColor={familiarColor}
             onchange={updateDamages}
         />
         <ToggleButton
@@ -61,6 +66,7 @@
             img="/effect_icons/Spirit_cape.png"
             title="Spirit Cape"
             toggle={true}
+            borderColor={familiarColor}
             onchange={updateDamages}
         />
         <ToggleButton
@@ -68,6 +74,7 @@
             img="/effect_icons/Summoning_renewal_(4).png"
             title="Summoning Renewal"
             toggle={true}
+            borderColor={familiarColor}
             onchange={updateDamages}
         />
         <ToggleButton
@@ -75,6 +82,7 @@
             img="/effect_icons/Spirit_weed_incense_sticks.png"
             title="Spirit Weed Incense (click to cycle)"
             cycle={spiritWeedCycle}
+            borderColor={familiarColor}
             onchange={updateDamages}
         />
         <ToggleButton
@@ -82,6 +90,7 @@
             img="/effect_icons/Prism_of_Restoration_icon.png"
             title="Prism of Restoration"
             toggle={true}
+            borderColor={familiarColor}
             onchange={updateDamages}
         />
     {/if}

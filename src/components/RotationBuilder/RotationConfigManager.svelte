@@ -168,8 +168,8 @@
                 <button class="action-btn" onclick={copyDiscordFormat} title="Copy rotation as Discord text (pvme format)">
                     Discord
                 </button>
-                <button class="action-btn" onclick={onOpenKeybinds} title="Configure ability keybinds">
-                    Keybinds
+                <button class="action-btn" onclick={onOpenKeybinds} title="Manage owned actions and keybinds">
+                    Actions
                 </button>
                 <button class="action-btn" onclick={onShowKeypresses} title="Show keypress sequence for rotation">
                     Keys

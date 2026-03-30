@@ -27,6 +27,8 @@ export interface BossPhase {
 	stats?: PhaseStats;
 	/** Attack pattern that plays during this phase (repeating cycle) */
 	attackPattern?: BossAttackPattern;
+	/** If true, damage cannot exceed this phase's HP threshold (excess is wasted) */
+	capped?: boolean;
 }
 
 /** Configuration for bosses with enrage scaling */
@@ -77,6 +79,8 @@ export interface BossPreset {
 	enrage?: EnrageConfig;
 	/** Damage soft cap: hits above threshold are reduced by reduction % on the excess */
 	softCap?: { threshold: number; reduction: number };
+
+	popular?: boolean;
 }
 
 // --- Bosses ---
@@ -125,7 +129,8 @@ const araxxorMagic: BossPreset = {
 			affinities: { weakness: 0.55, melee: 0.6, ranged: 0.55, magic: 0.45 }
 		}},
 		{ hp: 400000 }
-	]
+	],
+	popular: true
 };
 
 const araxxorMelee: BossPreset = {
@@ -147,7 +152,8 @@ const araxxorMelee: BossPreset = {
 			affinities: { weakness: 0.55, melee: 0.6, ranged: 0.55, magic: 0.45 }
 		}},
 		{ hp: 400000 }
-	]
+	],
+	popular: true
 };
 
 const araxxorRanged: BossPreset = {
@@ -169,7 +175,8 @@ const araxxorRanged: BossPreset = {
 			affinities: { weakness: 0.55, melee: 0.6, ranged: 0.55, magic: 0.45 }
 		}},
 		{ hp: 400000 }
-	]
+	],
+	popular: true
 };
 
 // Arch-Glacor
@@ -182,7 +189,9 @@ const archGlacor: BossPreset = {
 	affinities: { weakness: 0.9, melee: 0.55, ranged: 0.55, magic: 0.55 },
 	taggable: false,
 	curseImmune: false,
-	enrage: { label: 'Enrage %', min: 0, max: 4000, default: 0, step: 5 }
+	enrage: { label: 'Enrage %', min: 0, max: 4000, default: 0, step: 5 },
+
+	popular: true
 };
 
 // Barrows
@@ -1045,12 +1054,13 @@ const raksha: BossPreset = {
 			{ name: 'Shadow bomb', type: 'special', ticks: 6, label: 'Bomb', color: '#e67e22' },
 			{ name: 'Auto', type: 'auto', ticks: 5, count: 4, style: 'melee' },
 			{ name: 'Energy waves', type: 'mechanic', ticks: 8, label: 'Waves', color: '#2ecc71' },
-		]}},
-		{ hp: 400000 },
-		{ hp: 600000, heal: 200000, pause: 12 }, // heals from 200k to 400k
+		]}, capped: true},
+		{ hp: 400000, capped: true },
+		{ hp: 600000, heal: 200000, pause: 12, capped: true }, // heals from 200k to 400k
 		{ hp: 1000000 } // kill (600k + 400k total damage)
 		// TODO rocks last ~16 ticks (from popup to next auto after rocks)
-	]
+	],
+	popular: true
 };
 
 // Rex Matriarchs
@@ -1229,7 +1239,8 @@ const telos: BossPreset = {
 	affinities: { weakness: 0.4, melee: 0.4, ranged: 0.4, magic: 0.4 },
 	taggable: false,
 	curseImmune: false,
-	enrage: { label: 'Enrage %', min: 0, max: 4000, default: 100, step: 5 }
+	enrage: { label: 'Enrage %', min: 0, max: 4000, default: 100, step: 5 },
+	popular: true,
 };
 
 const telosAnimaGolemP3: BossPreset = {
