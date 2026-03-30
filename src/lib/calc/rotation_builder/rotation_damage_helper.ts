@@ -362,8 +362,8 @@ export function handle_tumekens(settings: Record<string, any>, timers: Record<st
     if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
     if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
     if (tumekensCount >= 5) {
-        settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] = true;
-        timers[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] = 15; // 9s = 15 ticks
+        settings[SETTINGS.EMBODIMENT_OF_LIGHT] = true;
+        timers[SETTINGS.EMBODIMENT_OF_LIGHT] = 15; // 9s = 15 ticks
     }
 }
 

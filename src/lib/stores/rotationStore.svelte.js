@@ -42,7 +42,8 @@ export const rotationStore = $state({
     dreadnipVariancePerTick: [],
     conjurePerTick: [],
     conjureVariancePerTick: [],
-    phaseTransitions: []
+    phaseTransitions: [],
+    tickMetadata: {}
 });
 
 // Helper: snapshot current settings values as a plain object

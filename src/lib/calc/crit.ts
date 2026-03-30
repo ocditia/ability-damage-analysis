@@ -179,6 +179,7 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
         } else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) {
             crit_chance += 0.14;
             if (settings[SETTINGS.ANIMA_CHARGED] === true) {
+                console.log('Are we winning? : Yes')
                 crit_chance += 0.2;
             }
         }
@@ -308,7 +309,7 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
             crit_buff += 0.06;
         }
     }
-
+    
     if (
         settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E &&
         isChannelledHit(abils[abilityKey]) &&
@@ -324,7 +325,6 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
     ) {
         crit_buff += 0.015 * settings[SETTINGS.NUMBER_OF_BLEEDS];
     }
-
     // Stalker's ring (ranged with bow)
     if (
         abils[settings['ability']]?.mainStyle === 'ranged' &&
@@ -350,18 +350,14 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
         }
     }
 
+    
     // tumeken's resplendence pc
     if (abils[settings['ability']].mainStyle === 'magic' &&
-        settings[SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX] === true
+        settings[SETTINGS.EMBODIMENT_OF_LIGHT] === true
     ) {
         crit_buff += 0.35;
     }
 
-    // magic leagues relic
-    if (abils[settings['ability']].mainStyle === 'magic' &&
-        settings[SETTINGS.MAGIC_LEAGUES_RELIC] === true) {
-        crit_buff += 0.5;
-    }
 
     if (dmgObj.ability === ABILITIES.THE_FINAL_FLURRY_1) {
         crit_buff += 0.25;

@@ -872,7 +872,7 @@ const SETTINGS = {
         BOUND_STUNNED: 'bound and stunned'
     },
     DEVOURER_NEXUS: 'devourer nexus',
-    TUMEKENS_RESPLENDENCE_ASPHYX: 'tumeken\'s resplendence asphyxiate',
+    EMBODIMENT_OF_LIGHT: 'tumeken\'s resplendence asphyxiate',
     DRACONIC_FRUIT: 'draconic fruit',
     ENDURING_RUIN_HIT: 'enduring ruin hit',
     ENDURING_RUIN_HIT_VALUES: {
@@ -1421,7 +1421,7 @@ const settingsConfig = {
             { text: 'None', value: SETTINGS.NECRO_AMMO_SLOT_VALUES.NONE },
         ]
     },
-    [SETTINGS.TUMEKENS_RESPLENDENCE_ASPHYX]: {
+    [SETTINGS.EMBODIMENT_OF_LIGHT]: {
         label: 'Tumekens asphyx',
         default: false
     },

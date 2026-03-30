@@ -63,16 +63,17 @@
         type === 'gear' ? getGearBadge(value) : null
     );
 
+    let errorAttempt = $state(0);
+    $effect(() => { iconSrc; errorAttempt = 0; });
+
     function handleError(e) {
-        const currentSrc = e.target.src;
-        // Try variant-stripped fallback first
-        if (fallbackSrc && !currentSrc.endsWith(fallbackSrc.split('/').pop())) {
+        errorAttempt++;
+        if (errorAttempt === 1 && fallbackSrc && fallbackSrc !== iconSrc) {
             e.target.src = fallbackSrc;
-        }
-        // Then try the generic fallback
-        else if (fallback && !currentSrc.endsWith(fallback.split('/').pop())) {
+        } else if (errorAttempt <= 2 && fallback && fallback !== fallbackSrc && fallback !== iconSrc) {
             e.target.src = fallback;
         }
+        // else: give up, leave broken image — no more retries
     }
 </script>
 

@@ -243,7 +243,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'gloves',
         style: 'hybrid',
         title: 'Warpriest of Tuska Gauntlets',
-        icon: "/gear_icons/shared/warpriest of tuska gauntlets.png", // TODO: icon missing
+        icon: "/gear_icons/shared/warpriest of tuska gauntlets.png",
     },
     [ARMOUR.TUSKA_BOOTS]: {
         'necromancy strength': 0,
@@ -254,7 +254,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'boots',
         style: 'hybrid',
         title: 'Warpriest of Tuska Boots',
-        icon: "/gear_icons/shared/warpriest of tuska boots.png", // TODO: icon missing
+        icon: "/gear_icons/shared/warpriest of tuska boots.png",
     },
     [ARMOUR.TUSKA_CAPE]: {
         'necromancy strength': 0,
@@ -265,7 +265,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'cape',
         style: 'hybrid',
         title: 'Warpriest of Tuska Cape',
-        icon: "/gear_icons/shared/warpriest of tuska cape.png", // TODO: icon missing
+        icon: "/gear_icons/shared/warpriest of tuska cape.png",
     },
     [ARMOUR.SIRENIC_MASK]: {
         'necromancy strength': 0,
@@ -298,7 +298,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         'ranged strength': 29,
         offensiveTier: { melee: 0, ranged: 90, magic: 0, necro: 0 },
         slot: 'legs',
-        style: 'hybrid',
+        style: 'ranged',
         popular: false,
         title: 'Sirenic Chaps',
         icon: "/gear_icons/shared/sirenic chaps.png", // TODO: icon missing
@@ -576,7 +576,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'helmet',
         style: 'hybrid',
         title: 'Anima Core Helm of Sliske',
-        icon: "/gear_icons/shared/anima core helm of sliske.png", // TODO: icon missing
+        icon: "/gear_icons/shared/anima core helm of sliske.png",
     },
     [ARMOUR.SLISKE_BODY]: {
         'necromancy strength': 0,
@@ -1279,7 +1279,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'pocket',
         style: 'magic',
         title: 'Scrimshaw of Elements',
-        icon: "/gear_icons/magic/scrimshaw of elements.png", // TODO: icon missing
+        icon: "/gear_icons/magic/scrimshaw of the elements.png", // TODO: icon missing
     },
     [ARMOUR.SUPERIOR_SCRIMSHAW_OF_ELEMENTS]: {
         'necromancy strength': 0,
@@ -1290,7 +1290,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'pocket',
         style: 'magic',
         title: 'Superior Scrimshaw of Elements',
-        icon: "/gear_icons/magic/superior scrimshaw of elements.png", // TODO: icon missing
+        icon: "/gear_icons/magic/superior scrimshaw of the elements.png", // TODO: icon missing
     },
     [ARMOUR.KERAPACS_WRISTWRAPS]: {
         'necromancy strength': 0,
@@ -1750,7 +1750,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         style: 'ranged',
         popular: true,
         title: 'Hydrix Bakriminel Bolts (E)',
-        icon: "/gear_icons/ranged/hydrix bakriminel bolts.png", // TODO: icon missing
+        icon: "/gear_icons/ranged/hydrix bakriminel bolts (e).png", 
     },
     [ARMOUR.UNDERWORLD_GRIMOIRE_3]: {
         'necromancy strength': 10,

@@ -2113,8 +2113,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             8: [ABILITIES.TUMEKEN_ASPHYXIATE_LAST_HIT]
         },
         cooldown: 5.4,
-        title: 'Asphyxiate (Tumeken)',
-        icon: '/ability_icons/magic/30x30/asphyxiate.png',
+        // title: 'Asphyxiate (Tumeken)',
+        // icon: '/ability_icons/magic/30x30/asphyxiate.png',
     },
     [ABILITIES.WILD_MAGIC_HIT]: {
         // ability name
@@ -2496,7 +2496,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         mainStyle: 'magic',
         damageType: 'magic',
         adrenaline: 50,
-        cooldown: 0,
+        cooldown: 60,
         title: 'Instability',
         icon: '/ability_icons/magic/Fractured_Staff_of_Armadyl.webp',
     },
@@ -2800,8 +2800,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'magic',
-        damageType: 'magic'
-    ,
+        damageType: 'magic',
         cooldown: 0},
     [ABILITIES.FROM_THE_SHADOWS]: {
         // ability name
@@ -2823,7 +2822,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
                 ABILITIES.FROM_THE_SHADOWS_HIT
             ]
         },
-        cooldown: 0,
+        cooldown: 10,
         hitTimings: [2, 4, 6, 8, 10],
         adrenaline: 50
     ,
@@ -4139,7 +4138,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     ,
         cooldown: 30},
     [ABILITIES.IGNEOUS_DEADSHOT]: {
-        // ability name
+        title: 'Igneous Deadshot',
+        icon: '/ability_icons/ranged/30x30/deadshot.png',
         minHit: 1.15, // min % of abil expressed as a decimal
         varHit: 0.2,
         onHitEffects: true, // does the ability get on-hit effects

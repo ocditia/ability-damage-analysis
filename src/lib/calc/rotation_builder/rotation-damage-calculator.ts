@@ -22,7 +22,7 @@ import { uiActions, uiStore } from '$lib/stores/uiStore.svelte';
 import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
 const logger = Logger.getInstance();
 
-type OnTickCallback = (tick: number, settings: any, timers: Record<string, number>) => void;
+type OnTickCallback = (tick: number, settings: any, timers: Record<string, number>, rotation?: RotationInput, state?: RotationState) => void;
 
 /** Count equipped Tumeken's Resplendence pieces (uses per-style MAGIC_ keys) */
 function countTumekensResplendence(settings: Record<string, any>): number {
@@ -36,7 +36,7 @@ function countTumekensResplendence(settings: Record<string, any>): number {
 }
 
 /** Swap asphyxiate for Tumeken's variant if 4+ pieces equipped */
-function resolveTumekensAsphyxiate(abilityKey: string, settings: Record<string, any>): string {
+export function resolveTumekensAsphyxiate(abilityKey: string, settings: Record<string, any>): string {
     if (abilityKey === ABILITIES.ASPHYXIATE && countTumekensResplendence(settings) >= 4) {
         return ABILITIES.TUMEKEN_ASPHYXIATE;
     }
@@ -86,6 +86,8 @@ interface RotationState {
     currentPhaseIdx: number;
     pauseTicksRemaining: number;
     phaseTransitions: PhaseTransitionRecord[];
+    // Per-tick resolved ability info
+    tickMetadata: Record<number, TickMeta>;
 }
 
 interface DamageDistributionStat {
@@ -116,6 +118,11 @@ interface PhaseTransitionRecord {
     pause: number;
 }
 
+interface TickMeta {
+    resolvedAbility: string;
+    duration: number;
+}
+
 interface DamageResult {
     regularDamage: number;
     poisonDamage: number;
@@ -131,6 +138,11 @@ interface DamageResult {
     conjurePerTick: number[];
     conjureVariancePerTick: number[];
     phaseTransitions: PhaseTransitionRecord[];
+    /** Per-tick metadata: resolved ability key and effective duration */
+    tickMetadata: Record<number, TickMeta>;
+    /** Captured final state for ability suggestions (only when requested) */
+    _finalState?: any;
+    _finalSettings?: any;
 }
 
 
@@ -293,10 +305,62 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         strengthLevel: settingsCopy[SETTINGS.STRENGTH_LEVEL]
     });
 
-    // UI callback: write per-tick buff/stack/cooldown state to stores for timeline rendering
-    const onTick: OnTickCallback = (tick, settings, timers) => copyStacks(tick, settings, timers);
+    // Capture state at the next ability placement tick for suggestions
+    const captureTick = uiStore.bar?.index ?? BAR_SIZE;
+    let capturedSuggestState: any = undefined;
+    let capturedSuggestSettings: any = undefined;
 
-    return calculateRotationDamageCore(settingsCopy, rotation, BAR_SIZE, onTick);
+    // UI callback: write per-tick buff/stack/cooldown state to stores for timeline rendering
+    const onTick: OnTickCallback = (tick, settings, timers) => {
+        copyStacks(tick, settings, timers);
+        // Keep capturing until we pass the placement tick
+        if (tick <= captureTick) {
+            capturedSuggestState = {
+                dmgs: [],
+                damageQueue: {},
+                timers: JSON.parse(JSON.stringify(timers)),
+                tick: 0,
+                hit_delay: 1,
+                start_tick: 0,
+                cinderHitCount: 0,
+                poisonDamage: 0,
+                poisonPerTick: new Array(30).fill(0),
+                lastAftershockProc: 0,
+                distributionStats: [],
+                combatStyle: settings['_combatStyle'] || 'melee',
+                fulProcHistory: [],
+                scrollDamage: 0,
+                familiarPerTick: new Array(30).fill(0),
+                familiarVariance: 0,
+                familiarVariancePerTick: new Array(30).fill(0),
+                dreadnipDamage: 0,
+                dreadnipPerTick: new Array(30).fill(0),
+                dreadnipVariance: 0,
+                dreadnipVariancePerTick: new Array(30).fill(0),
+                dreadnipActiveTick: -1,
+                dreadnipAttacks: 0,
+                lastAbilityTick: 29,
+                firstAbilityTick: 0,
+                activeConjures: {},
+                conjureDamage: 0,
+                conjurePerTick: new Array(30).fill(0),
+                conjureVariance: 0,
+                conjureVariancePerTick: new Array(30).fill(0),
+                bossPhases: null,
+                currentPhaseIdx: 0,
+                pauseTicksRemaining: 0,
+                phaseTransitions: [],
+                tickMetadata: {}
+            };
+            capturedSuggestSettings = JSON.parse(JSON.stringify(settings));
+        }
+    };
+
+    const result = calculateRotationDamageCore(settingsCopy, rotation, BAR_SIZE, onTick);
+    result._finalState = capturedSuggestState;
+    result._finalSettings = capturedSuggestSettings;
+    console.log(`[suggest-capture] captureTick=${captureTick}, captured=${!!capturedSuggestState}, sunshine=${capturedSuggestSettings?.[SETTINGS.SUNSHINE]}`);
+    return result;
 }
 
 /**
@@ -348,7 +412,8 @@ export function calculateRotationDamageCore(
         bossPhases: null,
         currentPhaseIdx: 0,
         pauseTicksRemaining: 0,
-        phaseTransitions: []
+        phaseTransitions: [],
+        tickMetadata: {}
     };
 
     // Find the last tick that has an ability (familiar/dreadnip stop after this)
@@ -438,8 +503,101 @@ export function calculateRotationDamageCore(
         dreadnipVariancePerTick: state.dreadnipVariancePerTick,
         conjurePerTick: state.conjurePerTick,
         conjureVariancePerTick: state.conjureVariancePerTick,
-        phaseTransitions: state.phaseTransitions
+        phaseTransitions: state.phaseTransitions,
+        tickMetadata: state.tickMetadata
     };
+}
+
+export interface AbilitySuggestion {
+    key: string;
+    title: string;
+    icon: string;
+    damage: number;
+    style: string;
+}
+
+/**
+ * Given the final state from a rotation calc, trial each candidate ability
+ * and return them ranked by damage contribution.
+ *
+ * @param finalState - Captured RotationState from calculateRotationDamageCore
+ * @param finalSettings - Captured settingsCopy
+ * @param candidateAbilities - Ability keys to try (pre-filtered by style etc.)
+ * @param simTicks - How many ticks to simulate after placing the ability (default 30)
+ * @returns Sorted array of suggestions, highest damage first
+ */
+export function suggestNextAbility(
+    finalState: any,
+    finalSettings: any,
+    candidateAbilities: string[],
+    simTicks: number = 30
+): AbilitySuggestion[] {
+    const suggestions: AbilitySuggestion[] = [];
+
+    for (const abilKey of candidateAbilities) {
+        const abilData = abils[abilKey];
+        if (!abilData?.title) continue;
+
+        // Skip if on cooldown
+        if (finalState.timers[COOLDOWN_PREFIX + abilKey] > 0) continue;
+
+        // Skip if not enough adrenaline
+        const adrenalineCost = abilData.adrenaline ?? 0;
+        if (adrenalineCost > 0 && (finalSettings[SETTINGS.ADRENALINE] ?? 0) < adrenalineCost) continue;
+
+        // Skip self-cast, conjure, proc, perk abilities
+        const classification = abilData.abilityClassification;
+        if (classification === 'self cast' || classification === 'conjure' || classification === 'proc' || classification === 'perk') continue;
+
+        // Clone state and settings for trial (JSON clone to strip Svelte Proxies)
+        const trialState = JSON.parse(JSON.stringify(finalState));
+        const trialSettings = JSON.parse(JSON.stringify(finalSettings));
+        const abil_duration = typeof abilData.duration === 'number' ? abilData.duration : 3;
+
+        // Reset tick to 0 for the mini rotation, clear stale damage queue
+        trialState.tick = 0;
+        trialState.start_tick = 0;
+        trialState.damageQueue = {};
+
+        // Build a mini rotation with just this ability
+        const miniBarSize = simTicks;
+        const miniRotation: RotationInput = {
+            abilityBar: Array(miniBarSize).fill(null),
+            extraActionBar: Array(miniBarSize).fill(null),
+            nulledTicks: Array(miniBarSize).fill(false),
+            stalledAbilities: Array(miniBarSize).fill(null)
+        };
+        miniRotation.abilityBar[0] = abilKey;
+
+        // Resolve Tumeken's asphyxiate swap
+        const resolvedKey = resolveTumekensAsphyxiate(abilKey, trialSettings);
+
+        // Run the ability through the pipeline
+        try {
+            processAbilityCore(trialState, trialSettings, resolvedKey as ABILITIES, abil_duration, miniRotation);
+
+            // Run remaining ticks to resolve queued damage
+            while (trialState.tick < miniBarSize) {
+                processTickOperationsCore(trialState.tick, trialState, trialSettings, miniRotation);
+            }
+
+            const trialDamage = trialState.dmgs.reduce((a: number, b: number) => a + b, 0);
+
+            suggestions.push({
+                key: abilKey,
+                title: abilData.title,
+                icon: abilData.icon ?? '',
+                damage: trialDamage,
+                style: abilData.mainStyle ?? 'unknown'
+            });
+        } catch (e) {
+            console.warn(`[suggest] Error simulating ${abilKey}:`, e);
+        }
+    }
+
+    // Sort by damage, highest first
+    suggestions.sort((a, b) => b.damage - a.damage);
+    return suggestions;
 }
 
 /**
@@ -497,6 +655,11 @@ function processCurrentTickCore(
         }
     }
 
+    // Let callback set the next ability before we read it
+    if (onTick && state.tick < barSize) {
+        onTick(state.tick, settingsCopy, state.timers, rotation, state);
+    }
+
     // handle either afking or channelling if no ability on this tick
     let abilityKey = rotation.abilityBar[state.tick];
     if (abilityKey == null) {
@@ -508,6 +671,7 @@ function processCurrentTickCore(
     abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
 
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
+    state.tickMetadata[state.tick] = { resolvedAbility: abilityKey, duration: abil_duration };
     settingsCopy['ability'] = abilityKey;
 
     processAbilityCore(state, settingsCopy, abilityKey as ABILITIES, abil_duration, rotation, onTick);

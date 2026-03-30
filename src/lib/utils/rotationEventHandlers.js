@@ -397,9 +397,15 @@ export function refreshUI(calcDmg = true, stores, calculateTotalDamageNew) {
         }
     }
     uiActions.updateBarIndex(uiStore.bar.lastIndex);
-    let abilToAdd = abils[rotationStore.abilityBar[uiStore.bar.lastIndex]];
-    if (abilToAdd) {
-        uiActions.updateBarIndex(uiStore.bar.lastIndex + (abilToAdd['duration'] || 3));
+    const lastIdx = uiStore.bar.lastIndex;
+    const meta = rotationStore.tickMetadata?.[lastIdx];
+    if (meta) {
+        // Use pipeline-resolved duration (accounts for gear swaps, Tumeken's, etc.)
+        uiActions.updateBarIndex(lastIdx + meta.duration);
+    } else if (rotationStore.abilityBar[lastIdx]) {
+        // Fallback: read duration from static ability data
+        const abilToAdd = abils[rotationStore.abilityBar[lastIdx]];
+        uiActions.updateBarIndex(lastIdx + (abilToAdd?.['duration'] || 3));
     }
 
     //Update extra action bar pointer
@@ -480,6 +486,9 @@ export function calculateTotalDamageNew() {
     rotationStore.dreadnipPerTick = dmgResult.dreadnipPerTick || [];
     rotationStore.conjurePerTick = dmgResult.conjurePerTick || [];
     rotationStore.phaseTransitions = dmgResult.phaseTransitions || [];
+    rotationStore._finalState = dmgResult._finalState;
+    rotationStore._finalSettings = dmgResult._finalSettings;
+    rotationStore.tickMetadata = dmgResult.tickMetadata || {};
 
     // Calculate Gaussian parameters for more accurate damage modeling
     const gaussianParams = calculateGaussianParameters(rotationStore.distributionStats);
