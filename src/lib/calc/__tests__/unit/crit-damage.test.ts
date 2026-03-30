@@ -202,9 +202,14 @@ describe('calc_crit_damage', () => {
     });
 
     describe("Tumeken's Resplendence Asphyxiate", () => {
-        it('should add +35% for magic abilities', () => {
+        it('should add +35% for magic abilities (5pc Tumekens)', () => {
             const settings = critDmgSettings({
-                [SETTINGS.EMBODIMENT_OF_LIGHT]: true,
+                [SETTINGS.FULLY_CHANNELED_ASPHYX]: true,
+                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE,
+                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE,
+                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE,
+                [SETTINGS.MAGIC_GLOVES]: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE,
+                [SETTINGS.MAGIC_BOOTS]: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE,
             });
             settings['ability'] = ABILITIES.ASPHYXIATE;
             const dmgObj = create_damage_object(settings, ABILITIES.ASPHYXIATE);
@@ -213,7 +218,7 @@ describe('calc_crit_damage', () => {
 
         it('should NOT apply to melee', () => {
             const settings = critDmgSettings({
-                [SETTINGS.EMBODIMENT_OF_LIGHT]: true,
+                [SETTINGS.FULLY_CHANNELED_ASPHYX]: true,
             });
             settings['ability'] = ABILITIES.REND;
             const dmgObj = create_damage_object(settings, ABILITIES.REND);

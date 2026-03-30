@@ -55,7 +55,7 @@ function calc_base_ad(settings) {
     // base damage buffs (eruptive / equilibrium)
     let buff = 1 + settings[SETTINGS.ERUPTIVE] * 0.005;
     if (settings[SETTINGS.EQ_PERK] > 0) {
-        buff += 0.1 + settings[SETTINGS.EQ_PERK] * 0.01;
+        buff += 0.06 + settings[SETTINGS.EQ_PERK] * 0.02;
     }
     const rawAD = base_AD;
     base_AD = Math.floor(base_AD * buff);
@@ -204,7 +204,7 @@ function calc_boosted_ad(settings, dmgObject) {
                 base_ad_boost += 0.333;
             }
             else if ([WEAPONS.KERIS_PROC, WEAPONS.PRIMED_KERIS_PROC, WEAPONS.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
-                base_ad_boost += 1;
+                base_ad_boost += 2;
             }
         }
 

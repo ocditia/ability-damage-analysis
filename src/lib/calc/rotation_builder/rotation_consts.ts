@@ -37,7 +37,7 @@ export const buffs = [
     SETTINGS.GREATER_FLOW_AC,
     SETTINGS.ANIMA_CHARGED,
     SETTINGS.BARRICADE,
-    SETTINGS.EMBODIMENT_OF_LIGHT,
+    SETTINGS.FULLY_CHANNELED_ASPHYX,
     SETTINGS.SMOKE_CLOUD,
     SETTINGS.UNDEAD_SLAYER_ABILITY,
     SETTINGS.DRAGON_SLAYER_ABILITY,
@@ -260,7 +260,7 @@ export function createBuffTimings(barSize: number) {
                 activeRows: [],
                 colour: BUFF_COLORS.barricade
             },
-            [SETTINGS.EMBODIMENT_OF_LIGHT]: {
+            [SETTINGS.FULLY_CHANNELED_ASPHYX]: {
                 title: "Tumeken's Resplendence",
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),

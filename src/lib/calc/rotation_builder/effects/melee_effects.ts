@@ -44,7 +44,7 @@ function applyBoostedADEffects(
             distribution['boosted AD'] = Math.floor(1.333 * distribution['boosted AD']);
         }
         else if ([WEAPONS.KERIS_PROC, WEAPONS.PRIMED_KERIS_PROC, WEAPONS.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
-            distribution['boosted AD'] = 2 * distribution['boosted AD'];
+            distribution['boosted AD'] = 3 * distribution['boosted AD'];
         }
     }
 

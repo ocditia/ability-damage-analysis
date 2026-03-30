@@ -193,6 +193,10 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
         if (abilityKey === ABILITIES.MAGMA_TEMPEST) {
             crit_chance = 0;
         }
+
+        if (abilityKey === ABILITIES.WILD_MAGIC_HIT) {
+            crit_chance += 0.1;
+        }
     }
 
     if (abils[abilityKey].mainStyle === 'melee') {
@@ -351,11 +355,22 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
     }
 
     
-    // tumeken's resplendence pc
+    // fully channeled asphyxiate crit buff
     if (abils[settings['ability']].mainStyle === 'magic' &&
-        settings[SETTINGS.EMBODIMENT_OF_LIGHT] === true
+        settings[SETTINGS.FULLY_CHANNELED_ASPHYX] === true
     ) {
-        crit_buff += 0.35;
+
+        let tumekensCount = 0;
+        if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+        if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+        if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+        if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+        if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+        if (tumekensCount >= 5) {
+            crit_buff += 0.35;
+        } else {
+            crit_buff += 0.15;
+        }
     }
 
 
@@ -367,5 +382,10 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
         crit_buff += 0.5;
     }
 
+    if (dmgObj.ability === ABILITIES.WILD_MAGIC_HIT) {
+        crit_buff += 0.2;
+    }
+
+    logger.trace('Crit Damage Bonus', `+${(crit_buff * 100).toFixed(1)}%`, `Base 50%${crit_buff !== 0.5 ? ' + modifiers' : ''} → ×${(1 + crit_buff).toFixed(4)} multiplier`);
     return crit_buff;
 }

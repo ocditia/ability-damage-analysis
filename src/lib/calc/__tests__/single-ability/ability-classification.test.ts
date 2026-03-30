@@ -196,8 +196,8 @@ describe('Ability Classifications', () => {
             settings[SETTINGS.MODE] = SETTINGS.MODE_VALUES.MAX_NO_CRIT;
             const maxResult = calculateSingleAbilityDamage(settings, { ability: ABILITIES.ASPHYXIATE });
 
-            expect(minResult.expected).toBe(1445 * 4);
-            expect(maxResult.expected).toBe(1707 * 4);
+            expect(minResult.expected).toBe(1576 * 4);
+            expect(maxResult.expected).toBe(1838 * 4);
         });
 
         it('Blood Siphon (necro): non-crit min/max', () => {

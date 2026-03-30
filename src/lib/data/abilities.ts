@@ -2012,7 +2012,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     // Mage Enhanced Abilities
     [ABILITIES.ASPHYXIATE_HIT]: {
         // ability name
-        minHit: 1.1, // min % of abil expressed as a decimal
+        minHit: 1.2, // min % of abil expressed as a decimal
         varHit: 0.2,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
@@ -2025,7 +2025,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         parent: ABILITIES.ASPHYXIATE
     },
     [ABILITIES.ASPHYXIATE_LAST_HIT]: {
-        minHit: 1.1,
+        minHit: 1.2,
         varHit: 0.2,
         onHitEffects: true,
         critEffects: true,
@@ -2038,7 +2038,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.ASPHYXIATE]: {
         // ability name
-        minHit: 1.1, // min % of abil expressed as a decimal
+        minHit: 1.2, // min % of abil expressed as a decimal
         varHit: 0.2,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
@@ -2507,9 +2507,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
         abilityClassification: 'proc', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        abilityType: 'proc', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'magic',
-        damageType: 'magic' // basic, threshold, special attack, ability (necromancy classification), ultimate
+        damageType: 'magic'
     ,
         cooldown: 0,
         title: 'Timestrike',

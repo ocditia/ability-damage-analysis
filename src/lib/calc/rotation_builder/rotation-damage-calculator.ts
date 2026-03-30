@@ -3,7 +3,7 @@ import { ARMOUR } from '$lib/data/armour';
 import { WEAPONS } from '$lib/data/weapons';
 import { style_specific_unification, calc_base_ad } from '../damage_calc_rb';
 import { get_hit_sequence, addAdrenaline } from './calculation_utils';
-import { handleBuffs, get_user_value, handle_edraco, handle_tumekens, handleChannellers, getConjureDamageMultiplier } from './rotation_damage_helper';
+import { handleBuffs, get_user_value, handle_edraco, handle_channeled_asphyx, handleChannellers, getConjureDamageMultiplier } from './rotation_damage_helper';
 import { SETTINGS } from '../settings_rb';
 import { on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
 import { create_damage_object } from './rota_object_helper';
@@ -1170,7 +1170,7 @@ function processChannelledTickCore(
             }
         });
         handle_edraco(settingsCopy, state.timers, hitKey);
-        handle_tumekens(settingsCopy, state.timers, hitKey);
+        handle_channeled_asphyx(settingsCopy, state.timers, hitKey);
         handleChannellers(settingsCopy, state.timers, hitKey);
     }
     dmgObjects.forEach(dmgObject => {
