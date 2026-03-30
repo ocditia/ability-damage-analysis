@@ -322,7 +322,7 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.DEATH_SPARK]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/death_spark.png"
+                                    img="/effect_icons/necromancy/death_spark2.png"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.RESIDUAL_SOULS]}
