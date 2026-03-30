@@ -401,12 +401,8 @@ export function handle_channeled_asphyx(settings: Record<string, any>, timers: R
  * 9 second buff (15 ticks) that enhances the next Asphyxiate.
  */
 export function handleChannellers(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
-    console.log('Magic ring: ', settings[SETTINGS.MAGIC_RING], ' -- Ring: ', settings[SETTINGS.RING])
-
     if (![SETTINGS.RING_VALUES.CHANNELLER, SETTINGS.RING_VALUES.CHANNELLER_E].includes(settings[SETTINGS.RING])) return;
-
     settings[SETTINGS.CHANNELLER_RING_STACKS] += 1;
-    console.log('Channeller\'s ring stacks: ', settings[SETTINGS.CHANNELLER_RING_STACKS]);
 }
 
 /**

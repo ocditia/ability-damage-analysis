@@ -179,7 +179,7 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
         } else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) {
             crit_chance += 0.14;
             if (settings[SETTINGS.ANIMA_CHARGED] === true) {
-                console.log('Are we winning? : Yes')
+                console.log('Are we winning? : Yes'); // TODO fix this  
                 crit_chance += 0.2;
             }
         }

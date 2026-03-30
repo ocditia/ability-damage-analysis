@@ -495,7 +495,7 @@ function startCooldown(timers: Record<string, number>, abilityKey: string, setti
             cdSeconds = 9.0;
         }
 
-        timers[COOLDOWN_PREFIX + abilityKey] = 1 + Math.ceil(cdSeconds / 0.6);
+        timers[COOLDOWN_PREFIX + abilityKey] = 1 + Math.round(cdSeconds / 0.6);
     }
 }
 

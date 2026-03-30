@@ -398,7 +398,6 @@
 			);
 			// Force reactivity by creating a new array reference
 			suggestions = [...newSuggestions];
-			console.log(`[suggestions] ${suggestions.length} suggestions, top: ${suggestions.slice(0, 3).map(s => `${s.title}:${s.damage}`).join(', ')}`);
 		}
 	}
 

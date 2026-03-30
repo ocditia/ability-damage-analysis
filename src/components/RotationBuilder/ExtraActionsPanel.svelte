@@ -1,9 +1,4 @@
 <script>
-    import { getItemForValue, getSettingsKeyForItem } from '$lib/calc/rotation_builder/gear-registry';
-    import { SETTINGS } from '$lib/calc/settings_rb';
-    import { allExtraActions, gearSwaps } from '$lib/special/abilities';
-    import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
-    import { initializeSettings, settingsStore } from '$lib/stores/settingsStore.svelte.js';
     import { onMount } from 'svelte';
     import ActionChoice from './ActionChoice.svelte';
     import { allExtraActions, gearSwaps } from '$lib/special/abilities';

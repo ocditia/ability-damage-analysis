@@ -359,7 +359,6 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     const result = calculateRotationDamageCore(settingsCopy, rotation, BAR_SIZE, onTick);
     result._finalState = capturedSuggestState;
     result._finalSettings = capturedSuggestSettings;
-    console.log(`[suggest-capture] captureTick=${captureTick}, captured=${!!capturedSuggestState}, sunshine=${capturedSuggestSettings?.[SETTINGS.SUNSHINE]}`);
     return result;
 }
 

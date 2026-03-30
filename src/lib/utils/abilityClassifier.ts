@@ -43,6 +43,5 @@ export function groupAbilitiesByType(abilities: Record<string, any>): Array<{ ty
             result.push({ type, label: LABELS[type], title: TITLES[type], abilities: groups[type] });
         }
     }
-    console.log(result)
     return result;
 }
