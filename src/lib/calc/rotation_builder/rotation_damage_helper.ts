@@ -379,9 +379,10 @@ export function handle_edraco(settings: Record<string, any>, timers: Record<stri
  * 9 second buff (15 ticks) that enhances the next Asphyxiate.
  */
 export function handle_channeled_asphyx(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
-    if (abilityKey !== ABILITIES.ASPHYXIATE_LAST_HIT) return;
+    if (abilityKey !== ABILITIES.ASPHYXIATE_LAST_HIT && abilityKey !== ABILITIES.TUMEKEN_ASPHYXIATE_LAST_HIT) return;
 
-    settings[SETTINGS.FULLY_CHANNELED_ASPHYX] = true;
+    // Defer activation to next tick so the buff bar doesn't show on the last hit's tick
+    settings['_pendingFullyChanneledAsphyx'] = true;
 
     let tumekensCount = 0;
     if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;

@@ -2059,7 +2059,6 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             7: [ABILITIES.ASPHYXIATE_LAST_HIT]
         },
         cooldown: 20.4,
-
         title: 'Asphyxiate',
         icon: '/ability_icons/magic/30x30/asphyxiate.png',
     },

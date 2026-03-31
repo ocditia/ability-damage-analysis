@@ -261,7 +261,7 @@ export function createBuffTimings(barSize: number) {
                 colour: BUFF_COLORS.barricade
             },
             [SETTINGS.FULLY_CHANNELED_ASPHYX]: {
-                title: "Tumeken's Resplendence",
+                title: "Fully Channeled Asphyx",
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],

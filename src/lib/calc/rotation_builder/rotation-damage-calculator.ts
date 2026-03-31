@@ -702,6 +702,14 @@ function processTickOperationsCore(
         return;
     }
 
+    // Apply deferred fully-channeled asphyxiate buff (so it shows on the tick after the last hit)
+    if (settingsCopy['_pendingFullyChanneledAsphyx'] === 'apply') {
+        settingsCopy[SETTINGS.FULLY_CHANNELED_ASPHYX] = true;
+        delete settingsCopy['_pendingFullyChanneledAsphyx'];
+    } else if (settingsCopy['_pendingFullyChanneledAsphyx'] === true) {
+        settingsCopy['_pendingFullyChanneledAsphyx'] = 'apply';
+    }
+
     handleExtraActionsCore(settingsCopy, state.timers, state.tick, rotation);
     onTick?.(state.tick, settingsCopy, state.timers);
     recalcFulProbability(state, settingsCopy);
