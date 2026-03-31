@@ -95,6 +95,14 @@ export function createBaseSettings(overrides: Record<string, any> = {}): Record<
         [SETTINGS.POCKET]: 'none',
         [SETTINGS.RING]: 'none',
         [SETTINGS.AMMO]: 'none',
+        [SETTINGS.MELEE_POCKET]: 'none',
+        [SETTINGS.RANGED_POCKET]: 'none',
+        [SETTINGS.MAGIC_POCKET]: 'none',
+        [SETTINGS.NECRO_POCKET]: 'none',
+        [SETTINGS.MELEE_AMMO_SLOT]: 'none',
+        [SETTINGS.RANGED_AMMO_SLOT]: 'none',
+        [SETTINGS.MAGIC_AMMO_SLOT]: 'none',
+        [SETTINGS.NECRO_AMMO_SLOT]: 'none',
         // Style-specific equipment (for style_specific_unification)
         [SETTINGS.MELEE_HELMET]: 'none',
         [SETTINGS.MELEE_BODY]: 'none',
@@ -458,6 +466,10 @@ export function createBlankSettings(
         [SETTINGS.NECKLACE]: 'none',
         [SETTINGS.RING]: 'none',
         [SETTINGS.POCKET]: 'none',
+        [SETTINGS.MELEE_POCKET]: 'none',
+        [SETTINGS.RANGED_POCKET]: 'none',
+        [SETTINGS.MAGIC_POCKET]: 'none',
+        [SETTINGS.NECRO_POCKET]: 'none',
 
         // Style-specific armour (all 'none')
         [SETTINGS.MELEE_HELMET]: 'none',
@@ -483,6 +495,10 @@ export function createBlankSettings(
 
         // No ammo (for ranged - use custom with high tier so it doesn't limit)
         [SETTINGS.AMMO]: ARMOUR.CUSTOM,
+        [SETTINGS.MELEE_AMMO_SLOT]: 'none',
+        [SETTINGS.RANGED_AMMO_SLOT]: ARMOUR.CUSTOM,
+        [SETTINGS.MAGIC_AMMO_SLOT]: 'none',
+        [SETTINGS.NECRO_AMMO_SLOT]: 'none',
         [SETTINGS.AMMO_TIER]: 999, // Won't limit weapon tier
 
         // All perks disabled

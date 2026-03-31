@@ -58,7 +58,7 @@ describe('applyStyleBoostedADEffects', () => {
     describe('Shared effects', () => {
         it('Scripture of Amascut adds +10%', () => {
             const settings = effectSettings(ABILITIES.REND, 99, 75, {
-                [SETTINGS.POCKET]: ARMOUR.AMASCUT_BOOK,
+                [SETTINGS.MELEE_POCKET]: ARMOUR.AMASCUT_BOOK,
             });
             const dist = makeDistribution(BOOSTED_AD);
             applyStyleBoostedADEffects({ settings, abilityKey: ABILITIES.REND }, dist, BASE_AD);
@@ -194,7 +194,7 @@ describe('applyStyleBoostedADEffects', () => {
     describe('Stacking', () => {
         it('Amascut + Chaos Roar stack multiplicatively', () => {
             const settings = effectSettings(ABILITIES.REND, 99, 75, {
-                [SETTINGS.POCKET]: ARMOUR.AMASCUT_BOOK,
+                [SETTINGS.MELEE_POCKET]: ARMOUR.AMASCUT_BOOK,
                 [SETTINGS.CHAOS_ROAR]: true,
             });
             const dist = makeDistribution(BOOSTED_AD);

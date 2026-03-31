@@ -17,7 +17,7 @@ function rangedAmmoSettings(ammo: string, mode: string, overrides: Record<string
         [SETTINGS.RANGED_LEVEL]: 113,
         [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
         [SETTINGS.WEAPON_TYPE_RANGED]: SETTINGS.WEAPON_VALUES.TH,
-        [SETTINGS.AMMO]: ammo,
+        [SETTINGS.RANGED_AMMO_SLOT]: ammo,
         [SETTINGS.MODE]: mode,
         ...overrides,
     });

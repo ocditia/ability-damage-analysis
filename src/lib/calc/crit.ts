@@ -158,10 +158,13 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
             {settings[SETTINGS.CHANNELLER_RING_STACKS] = 0}
 
         // (g)conc stacks: +5% (conc), +7% (gconc), +15% (conc+AC), +17% (gconc+AC) per stack
-        const isGreater = settings['_conc_is_greater'];
-        const isAC = settings['_conc_anima_charged'];
-        const concPerStack = isGreater ? (isAC ? 0.17 : 0.07) : (isAC ? 0.15 : 0.05);
-        crit_chance += concPerStack * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
+        // Procs and perks should not benefit from conc stacks
+        if (!["proc", "perk"].includes(getAbilityClassification(abils[abilityKey]))) {
+            const isGreater = settings['_conc_is_greater'];
+            const isAC = settings['_conc_anima_charged'];
+            const concPerStack = isGreater ? (isAC ? 0.17 : 0.07) : (isAC ? 0.15 : 0.05);
+            crit_chance += concPerStack * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
+        }
 
         // conc self boost
         if (abilityKey === ABILITIES.CONCENTRATED_BLAST_2) {
@@ -355,22 +358,14 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
     }
 
     
-    // fully channeled asphyxiate crit buff
-    if (abils[settings['ability']].mainStyle === 'magic' &&
-        settings[SETTINGS.FULLY_CHANNELED_ASPHYX] === true
-    ) {
+    // Channelled Might: +15% crit damage after fully channelling asphyxiate
+    if (abils[settings['ability']].mainStyle === 'magic' && settings[SETTINGS.CHANNELLED_MIGHT] === true) {
+        crit_buff += 0.15;
+    }
 
-        let tumekensCount = 0;
-        if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
-        if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
-        if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
-        if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
-        if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
-        if (tumekensCount >= 5) {
-            crit_buff += 0.35;
-        } else {
-            crit_buff += 0.15;
-        }
+    // Greater Channelled Might: +35% crit damage (5pc Tumeken's Resplendence)
+    if (abils[settings['ability']].mainStyle === 'magic' && settings[SETTINGS.GREATER_CHANNELLED_MIGHT] === true) {
+        crit_buff += 0.35;
     }
 
 

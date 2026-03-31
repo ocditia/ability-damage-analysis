@@ -37,7 +37,8 @@ export const buffs = [
     SETTINGS.GREATER_FLOW_AC,
     SETTINGS.ANIMA_CHARGED,
     SETTINGS.BARRICADE,
-    SETTINGS.FULLY_CHANNELED_ASPHYX,
+    SETTINGS.CHANNELLED_MIGHT,
+    SETTINGS.GREATER_CHANNELLED_MIGHT,
     SETTINGS.SMOKE_CLOUD,
     SETTINGS.UNDEAD_SLAYER_ABILITY,
     SETTINGS.DRAGON_SLAYER_ABILITY,
@@ -260,8 +261,15 @@ export function createBuffTimings(barSize: number) {
                 activeRows: [],
                 colour: BUFF_COLORS.barricade
             },
-            [SETTINGS.FULLY_CHANNELED_ASPHYX]: {
-                title: "Fully Channeled Asphyx",
+            [SETTINGS.CHANNELLED_MIGHT]: {
+                title: "Channelled Might",
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: BUFF_COLORS.tumekens_asphyx
+            },
+            [SETTINGS.GREATER_CHANNELLED_MIGHT]: {
+                title: "Greater Channelled Might",
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],

@@ -1,4 +1,5 @@
 import { ABILITIES, abils } from '$lib/data/abilities';
+import { getAbilityClassification } from '$lib/types/AbilityTypes';
 import { WEAPONS } from '$lib/data/weapons';
 import { ARMOUR } from '$lib/data/armour';
 import { create_damage_object } from './rota_object_helper';
@@ -158,7 +159,10 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
         ABILITIES.CONCENTRATED_BLAST, ABILITIES.CONCENTRATED_BLAST_1, ABILITIES.CONCENTRATED_BLAST_2, ABILITIES.CONCENTRATED_BLAST_3,
         ABILITIES.GREATER_CONCENTRATED_BLAST, ABILITIES.GREATER_CONCENTRATED_BLAST_1, ABILITIES.GREATER_CONCENTRATED_BLAST_2, ABILITIES.GREATER_CONCENTRATED_BLAST_3,
     ]);
-    if (!concAbilities.has(abilityKey) && settings[SETTINGS.CONCENTRATED_BLAST_STACKS] > 0) {
+    // Procs and perks should not consume conc stacks
+    const abilClassification = getAbilityClassification(abils[abilityKey]);
+    if (!concAbilities.has(abilityKey) && settings[SETTINGS.CONCENTRATED_BLAST_STACKS] > 0
+        && !["proc", "perk"].includes(abilClassification)) {
         settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 0;
         delete settings['_conc_is_greater'];
         delete settings['_conc_anima_charged'];

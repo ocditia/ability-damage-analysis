@@ -259,29 +259,7 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         Object.entries(settingsStore.settings).map(([key, value]: [string, { value: any }]) => [key, value.value])
     );
 
-    // Map per-style pocket to generic POCKET for calc engine
-    const pocketByStyle: Record<string, string> = {
-        'magic': SETTINGS.MAGIC_POCKET,
-        'ranged': SETTINGS.RANGED_POCKET,
-        'melee': SETTINGS.MELEE_POCKET,
-        'necro': SETTINGS.NECRO_POCKET,
-    };
-    const stylePocketKey = pocketByStyle[uiStore.activeTab];
-    if (stylePocketKey && adaptedSettings[stylePocketKey] != null) {
-        adaptedSettings[SETTINGS.POCKET] = adaptedSettings[stylePocketKey];
-    }
-
-    // Map per-style ammo slot to generic AMMO for calc engine
-    const ammoByStyle: Record<string, string> = {
-        'ranged': SETTINGS.RANGED_AMMO_SLOT,
-        'magic': SETTINGS.MAGIC_AMMO_SLOT,
-        'melee': SETTINGS.MELEE_AMMO_SLOT,
-        'necro': SETTINGS.NECRO_AMMO_SLOT,
-    };
-    const styleAmmoKey = ammoByStyle[uiStore.activeTab];
-    if (styleAmmoKey && adaptedSettings[styleAmmoKey] != null) {
-        adaptedSettings[SETTINGS.AMMO] = adaptedSettings[styleAmmoKey];
-    }
+    // Pocket and ammo are now resolved per-ability in style_specific_unification
 
     // Attach gear perks if "use owned gear" mode is enabled
     if (adaptedSettings[SETTINGS.USE_OWNED_GEAR]) {
@@ -702,20 +680,13 @@ function processTickOperationsCore(
         return;
     }
 
-    // Apply deferred fully-channeled asphyxiate buff (so it shows on the tick after the last hit)
-    if (settingsCopy['_pendingFullyChanneledAsphyx'] === 'apply') {
-        settingsCopy[SETTINGS.FULLY_CHANNELED_ASPHYX] = true;
-        delete settingsCopy['_pendingFullyChanneledAsphyx'];
-    } else if (settingsCopy['_pendingFullyChanneledAsphyx'] === true) {
-        settingsCopy['_pendingFullyChanneledAsphyx'] = 'apply';
-    }
-
     handleExtraActionsCore(settingsCopy, state.timers, state.tick, rotation);
     onTick?.(state.tick, settingsCopy, state.timers);
     recalcFulProbability(state, settingsCopy);
     handleTimers(state.timers, settingsCopy);
     processQueuedDamage(tickToProcess, state, settingsCopy);
     handleAftershock(state, settingsCopy);
+    handleCrackling(state, settingsCopy);
     processFamiliarTick(state, settingsCopy);
     processDreadnipTick(state, settingsCopy);
     processConjureTick(state, settingsCopy);
@@ -1568,15 +1539,14 @@ function copyStacks(tick: number, settings: any, timers?: Record<string, number>
         const value = typeof settings[key] === 'number' ? settings[key] : Number(settings[key]) || 0;
         rotationStore.stacks[key].stackTicks[tick] = value;
     }
+    const justActivated = settings['_channelBuffJustActivated'];
     buffs.forEach(buffTitle => {
-        if (buffTitle === SETTINGS.GREATER_DRACOLICH_INFUSION) {
-            rotationStore.buffs[buffTitle].buffTicks[tick] = settings[SETTINGS.GREATER_DRACOLICH_INFUSION];
-            logger.log(LogCategory.BUFFS, `Tick ${tick} - rotationStore.buffs['greater'].buffTicks[${tick}] = ${settings[SETTINGS.GREATER_DRACOLICH_INFUSION]}`);
-        }
-        else {
-            rotationStore.buffs[buffTitle].buffTicks[tick] = settings[buffTitle];
-        }
+        // Skip writing on the activation tick for channel-activated buffs
+        // (they fire on the last hit but shouldn't visually appear until next tick)
+        if (justActivated === buffTitle) return;
+        rotationStore.buffs[buffTitle].buffTicks[tick] = settings[buffTitle];
     });
+    delete settings['_channelBuffJustActivated'];
     //Only calc indices on last tick
     if (tick === uiStore.bar.size - 1) {
 
@@ -1755,6 +1725,30 @@ function handleAftershock(state: RotationState, settingsCopy: any) {
                 processSingleHitAbility(state, settingsCopy, aftershockAbility, state.tick+2);
             }
         }
+}
+
+function getCracklingVariant(combatStyle: string): ABILITIES {
+    switch (combatStyle) {
+        case 'melee': return ABILITIES.CRACKLING_MELEE;
+        case 'ranged': return ABILITIES.CRACKLING_RANGED;
+        case 'necromancy':
+        case 'necro': return ABILITIES.CRACKLING_NECRO;
+        case 'magic':
+        default: return ABILITIES.CRACKLING_MAGIC;
+    }
+}
+
+function handleCrackling(state: RotationState, settingsCopy: any) {
+    // Crackling procs every 60 seconds (100 ticks), dealing 50% * rank of ability damage
+    const rank = settingsCopy[SETTINGS.CRACKLING];
+    if (state.tick > 0 && state.tick % 100 === 0 && rank > 0) {
+        const cracklingAbility = getCracklingVariant(state.combatStyle);
+        // Temporarily scale ability damage by rank (ability data has 0.5 = 50% per rank)
+        const savedAD = settingsCopy[SETTINGS.ABILITY_DAMAGE];
+        settingsCopy[SETTINGS.ABILITY_DAMAGE] = savedAD * rank;
+        processSingleHitAbility(state, settingsCopy, cracklingAbility, state.tick + 2);
+        settingsCopy[SETTINGS.ABILITY_DAMAGE] = savedAD;
+    }
 }
 
 function findLastValueIndex(arr) {

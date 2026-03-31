@@ -136,6 +136,7 @@ const SETTINGS = {
     GENOCIDAL: 'genocidal',
     IMPATIENT: 'impatient',
     AFTERSHOCK: 'aftershock',
+    CRACKLING: 'crackling',
     // Familiars
     FAMILIAR: 'familiar',
     FAMILIAR_VALUES: {
@@ -872,7 +873,8 @@ const SETTINGS = {
         BOUND_STUNNED: 'bound and stunned'
     },
     DEVOURER_NEXUS: 'devourer nexus',
-    FULLY_CHANNELED_ASPHYX: 'fully channeled asphyxiate',
+    CHANNELLED_MIGHT: 'channelled might',
+    GREATER_CHANNELLED_MIGHT: 'greater channelled might',
     DRACONIC_FRUIT: 'draconic fruit',
     ENDURING_RUIN_HIT: 'enduring ruin hit',
     ENDURING_RUIN_HIT_VALUES: {
@@ -1294,6 +1296,10 @@ const settingsConfig = {
         label: 'Aftershock',
         default: 4
     },
+    [SETTINGS.CRACKLING]: {
+        label: 'Crackling',
+        default: 4
+    },
     [SETTINGS.FAMILIAR]: {
         label: 'Familiar',
         default: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON,
@@ -1421,8 +1427,12 @@ const settingsConfig = {
             { text: 'None', value: SETTINGS.NECRO_AMMO_SLOT_VALUES.NONE },
         ]
     },
-    [SETTINGS.FULLY_CHANNELED_ASPHYX]: {
-        label: 'Fully channeled asphyx',
+    [SETTINGS.CHANNELLED_MIGHT]: {
+        label: 'Channelled Might',
+        default: false
+    },
+    [SETTINGS.GREATER_CHANNELLED_MIGHT]: {
+        label: 'Greater Channelled Might',
         default: false
     },
     [SETTINGS.SLAYER_PERK]: {

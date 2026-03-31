@@ -1,7 +1,6 @@
 import { AbilityInfo } from "$lib/types/AbilityTypes";
 
 export enum ABILITIES {
-    NECRO_AD = 'necro base damage',
     NECRO_AUTO = 'necromancy auto',
     TOUCH_OF_DEATH = 'touch of death',
     SOUL_SAP = 'soul sap',
@@ -55,7 +54,6 @@ export enum ABILITIES {
     GREATER_RICOCHET_3 = 'greater ricochet 3',
     GREATER_RICOCHET = 'greater ricochet',
     GALESHOT = 'galeshot',
-    GALESHOT_BONUS = 'galeshot bonus',
     PIERCING_SHOT_HIT = 'piercing shot hit',
     PIERCING_SHOT = 'piercing shot',
     BINDING_SHOT = 'binding shot',
@@ -85,7 +83,6 @@ export enum ABILITIES {
     DEADSHOT = 'deadshot',
     IGNEOUS_DEADSHOT_HIT = 'igneous_deadshot_hit',
     IGNEOUS_DEADSHOT = 'igneous_deadshot',
-    DEATHS_SWIFTNESS_DOT = 'death\'s swiftness dot',
     DEATHS_SWIFTNESS = 'death\'s swiftness',
     GREATER_DEATHS_SWIFTNESS = 'greater death\'s swiftness',
     
@@ -263,7 +260,7 @@ export enum ABILITIES {
     DRACONIC_CLEAVE = 'draconic cleave',
     ARMADYLS_JUDGEMENT = 'armadyls judgement',
     DRACONIC_BLOW = 'draconic blow',
-    VINE_CALL_INTIAL = 'vine call initial',
+    VINE_CALL_INITIAL = 'vine call initial',
     VINE_CALL_AOE = 'vine call aoe',
     VINE_CALL = 'vine call',
     ENERGY_DRAIN = 'energy drain',
@@ -298,6 +295,10 @@ export enum ABILITIES {
     AFTERSHOCK_MELEE = 'aftershock melee',
     AFTERSHOCK_MAGIC = 'aftershock magic',
     AFTERSHOCK_NECRO = 'aftershock necro',
+    CRACKLING_RANGED = 'crackling ranged',
+    CRACKLING_MELEE = 'crackling melee',
+    CRACKLING_MAGIC = 'crackling magic',
+    CRACKLING_NECRO = 'crackling necro',
 
     // Defensives
     FREEDOM = 'freedom',
@@ -1372,6 +1373,62 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         icon: '/ability_icons/melee/dmace.png',
         common: false
     },
+    [ABILITIES.VINE_CALL_INITIAL]: {
+        // ability name
+        minHit: 1.0, // min % of abil expressed as a decimal
+        varHit: 0.2,
+        onHitEffects: true, // does the ability get on-hit effects
+        critEffects: true, // can the ability crit
+        damagePotentialEffects: true, // is the ability affected by damage potential
+        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
+        abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        mainStyle: 'melee',
+        damageType: 'melee',
+        adrenaline: 50,
+        cooldown: 0,
+        title: 'Warstrike',
+        icon: '/ability_icons/melee/30x30/bandos_godsword.png',
+        common: false
+    },
+    [ABILITIES.VINE_CALL_AOE]: {
+        // ability name
+        minHit: 0.2, // min % of abil expressed as a decimal
+        varHit: 0.05,
+        onHitEffects: true, // does the ability get on-hit effects
+        critEffects: true, // can the ability crit
+        damagePotentialEffects: true, // is the ability affected by damage potential
+        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
+        abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        mainStyle: 'melee',
+        damageType: 'melee',
+        adrenaline: 0,
+        cooldown: 0,
+        title: 'Warstrike',
+        icon: '/ability_icons/melee/30x30/bandos_godsword.png',
+        common: false
+    },
+    [ABILITIES.VINE_CALL]: {
+        // ability name
+        minHit: 2.25, // min % of abil expressed as a decimal
+        varHit: 0.4,
+        onHitEffects: true, // does the ability get on-hit effects
+        critEffects: true, // can the ability crit
+        damagePotentialEffects: true, // is the ability affected by damage potential
+        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
+        abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        mainStyle: 'melee',
+        damageType: 'melee',
+        adrenaline: 50,
+        hits: {
+            1: [ABILITIES.VINE_CALL_INITIAL, ...Array(10).fill(ABILITIES.VINE_CALL_AOE)]
+        },
+        cooldown: 19.8,
+        hitTimings: [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30],
+
+        title: 'Vine Call',
+        icon: '/gear_icons/melee/abilities/abyssal_vine_whip.png',
+        common: false
+    },
     [ABILITIES.WARSTRIKE]: {
         // ability name
         minHit: 2.25, // min % of abil expressed as a decimal
@@ -2064,8 +2121,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     // Tumeken's Resplendence Asphyxiate (4+ pieces): 8 hits, 71-84% per hit
     [ABILITIES.TUMEKEN_ASPHYXIATE_HIT]: {
-        minHit: 0.71,
-        varHit: 0.13,
+        minHit: 0.72,
+        varHit: 0.12,
         onHitEffects: true,
         critEffects: true,
         damagePotentialEffects: true,
@@ -2077,8 +2134,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         parent: ABILITIES.TUMEKEN_ASPHYXIATE
     },
     [ABILITIES.TUMEKEN_ASPHYXIATE_LAST_HIT]: {
-        minHit: 0.71,
-        varHit: 0.13,
+        minHit: 0.72,
+        varHit: 0.12,
         onHitEffects: true,
         critEffects: true,
         damagePotentialEffects: true,
@@ -2089,8 +2146,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         parent: ABILITIES.TUMEKEN_ASPHYXIATE
     },
     [ABILITIES.TUMEKEN_ASPHYXIATE]: {
-        minHit: 0.71,
-        varHit: 0.13,
+        minHit: 0.72,
+        varHit: 0.12,
         onHitEffects: true,
         critEffects: true,
         damagePotentialEffects: true,
@@ -2111,8 +2168,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             8: [ABILITIES.TUMEKEN_ASPHYXIATE_LAST_HIT]
         },
         cooldown: 20.4,
-        // title: 'Asphyxiate (Tumeken)',
-        // icon: '/ability_icons/magic/30x30/asphyxiate.png',
+        icon: '/ability_icons/magic/30x30/asphyxiate.png',
     },
     [ABILITIES.WILD_MAGIC_HIT]: {
         // ability name
@@ -2799,7 +2855,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'magic',
         damageType: 'magic',
-        cooldown: 0},
+        cooldown: 0
+    },
     [ABILITIES.FROM_THE_SHADOWS]: {
         // ability name
         minHit: 1.3, // min % of abil expressed as a decimal
@@ -2822,8 +2879,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         },
         cooldown: 10,
         hitTimings: [2, 4, 6, 8, 10],
-        adrenaline: 50
-    ,
+        adrenaline: 50,
         title: 'From the shadows',
         icon: '/ability_icons/magic/30x30/staff_of_sliske.png',
     },
@@ -2838,8 +2894,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'magic',
         damageType: 'magic',
-        adrenaline: 25
-    ,
+        adrenaline: 25,
         cooldown: 0,
         title: 'Flames of Zamorak',
         icon: '/ability_icons/magic/30x30/zamorak_staff.png',
@@ -2856,16 +2911,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'magic',
         damageType: 'magic',
-        adrenaline: 50
-    ,
+        adrenaline: 50,
         cooldown: 0,
         title: 'Miasmic barrage',
         icon: '/ability_icons/magic/30x30/zuriels_staff.png',
         common: false
-    },
-
-    [ABILITIES.NECRO_AD]: {
-        mainStyle: 'necromancy'
     },
     // Necro Basic Abilities
     [ABILITIES.NECRO_AUTO]: {
@@ -2894,8 +2944,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'necromancy',
-        damageType: 'necrotic' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        damageType: 'necrotic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         cooldown: 14.4,
         title: 'Touch of Death',
         icon: '/ability_icons/necro/30x30/tod.png',
@@ -3123,7 +3172,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
                 ABILITIES.VOLLEY_OF_SOULS
             ]
         },
-        adrenalien: 0,
+        adrenaline: 0,
         cooldown: 0
     },
     [ABILITIES.VOLLEY_OF_SOULS_5]: {
@@ -3704,9 +3753,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
                 ABILITIES.GREATER_RICOCHET_3
             ]
         },
-        cooldown: 10.2
-    ,
-        title: 'Greater ricochet',
+        cooldown: 10.2,
+        title: 'Greater Ricochet',
         icon: '/ability_icons/ranged/30x30/grico.png',
     },
     [ABILITIES.GALESHOT]: {
@@ -3722,18 +3770,6 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 20.4,
         title: 'Galeshot',
         icon: '/ability_icons/ranged/30x30/galeshot.png',
-    },
-    [ABILITIES.GALESHOT_BONUS]: {
-        minHit: 0.0,
-        varHit: 0.0,
-        onHitEffects: true,
-        critEffects: true,
-        damagePotentialEffects: true,
-        abilityClassification: 'regular',
-        abilityType: 'something that doesnt exist',
-        mainStyle: 'ranged',
-        damageType: 'ranged',
-        'adren cost': 0,
     },
     [ABILITIES.PIERCING_SHOT_HIT]: {
         // ability name
@@ -3763,8 +3799,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hits: {
             1: [ABILITIES.PIERCING_SHOT, 'next cast', ABILITIES.PIERCING_SHOT]
         },
-        cooldown: 3
-    ,
+        cooldown: 3,
         title: 'Piercing shot',
         icon: '/ability_icons/ranged/30x30/piercing.png',
     },
@@ -3803,8 +3838,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'ranged',
-        damageType: 'ranged'
-    ,
+        damageType: 'ranged',
         cooldown: 15,
         title: 'Binding shot',
         icon: '/ability_icons/ranged/30x30/binding.png',
@@ -3893,7 +3927,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 20.4,
         hitTimings: [0, 1, 2, 3, 4, 5, 6, 7]
     ,
-        title: 'Rapid fire',
+        title: 'Rapid Fire',
         icon: '/ability_icons/ranged/30x30/rapid.png',
     },
     [ABILITIES.SNIPE_HIT]: {
@@ -3959,7 +3993,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         damageType: 'ranged',
         adrenaline: 0,
         cooldown: 45,
-        title: 'Shadow tendrils',
+        title: 'Shadow Tendrils',
         icon: '/ability_icons/ranged/30x30/tendril.png',
     },
     [ABILITIES.IMBUE_SHADOWS]: {
@@ -4132,11 +4166,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'ranged',
-        damageType: 'ranged'
-    ,
+        damageType: 'ranged',
         cooldown: 30},
     [ABILITIES.IGNEOUS_DEADSHOT]: {
-        title: 'Igneous Deadshot',
         icon: '/ability_icons/ranged/30x30/deadshot.png',
         minHit: 1.15, // min % of abil expressed as a decimal
         varHit: 0.2,
@@ -4156,19 +4188,6 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hitTimings: [1, 1, 1, 1, 1, 1, 1, 1],
         adrenaline: 60
     },
-    [ABILITIES.DEATHS_SWIFTNESS_DOT]: {
-        // ability name
-        minHit: 0.0,// 0.1, // min % of abil expressed as a decimal
-        varHit: 0.0, // 0.1 TODO change back
-        onHitEffects: false, // does the ability get on-hit effects
-        critEffects: false, // can the ability crit
-        damagePotentialEffects: false, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
-        mainStyle: 'ranged',
-        damageType: 'ranged',
-    
-        cooldown: 0,},
     [ABILITIES.DEATHS_SWIFTNESS]: {
         //TODO check number of dot hits
         // ability name
@@ -4216,7 +4235,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hitTimings: [3, 4, 4, 4, 4], //TODO check these are correct
         adrenaline: 30,
         cooldown: 30,
-        title: 'Crystal rain',
+        title: 'Crystal Rain',
         icon: '/ability_icons/ranged/30x30/sgb.png',
     },
     [ABILITIES.SHADOWFALL_1]: {
@@ -5097,10 +5116,43 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         minHit: 0.24, varHit: 0.156,
         onHitEffects: false, critEffects: true,
         damagePotentialEffects: false, abilityClassification: 'perk',
-        abilityType: 'perk', mainStyle: 'necromancy', damageType: 'necromancy'
+        abilityType: 'perk', mainStyle: 'necromancy', damageType: 'necrotic'
     ,
         title: 'Aftershock',
         icon: '/effect_icons/perks/Aftershock.png',
+    },
+    [ABILITIES.CRACKLING_RANGED]: {
+        minHit: 0.5, varHit: 0,
+        onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'perk',
+        abilityType: 'perk', mainStyle: 'ranged', damageType: 'ranged',
+        title: 'Crackling',
+        icon: '/effect_icons/perks/Crackling.webp',
+    },
+    [ABILITIES.CRACKLING_MAGIC]: {
+        minHit: 0.5, varHit: 0,
+        onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'perk',
+        abilityType: 'perk', mainStyle: 'magic', damageType: 'magic',
+        title: 'Crackling',
+        icon: '/effect_icons/perks/Crackling.webp',
+        common: false
+    },
+    [ABILITIES.CRACKLING_MELEE]: {
+        minHit: 0.5, varHit: 0,
+        onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'perk',
+        abilityType: 'perk', mainStyle: 'melee', damageType: 'melee',
+        title: 'Crackling',
+        icon: '/effect_icons/perks/Crackling.webp',
+    },
+    [ABILITIES.CRACKLING_NECRO]: {
+        minHit: 0.5, varHit: 0,
+        onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'perk',
+        abilityType: 'perk', mainStyle: 'necromancy', damageType: 'necrotic',
+        title: 'Crackling',
+        icon: '/effect_icons/perks/Crackling.webp',
     },
     [ABILITIES.RUNIC_CHARGE]: {
         minHit: 0,

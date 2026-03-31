@@ -365,7 +365,8 @@ export function handle_edraco(settings: Record<string, any>, timers: Record<stri
             if (nDracoPieces >= 3) {
                 let buff_duration = 5 + (3 * Math.max(nDracoPieces - 3, 0)); // 5 tick base duration
                 settings[SETTINGS.GREATER_DRACOLICH_INFUSION] = true;
-                timers[SETTINGS.GREATER_DRACOLICH_INFUSION] = buff_duration; 
+                settings['_channelBuffJustActivated'] = SETTINGS.GREATER_DRACOLICH_INFUSION;
+                timers[SETTINGS.GREATER_DRACOLICH_INFUSION] = buff_duration;
             }
         }
     }
@@ -381,19 +382,21 @@ export function handle_edraco(settings: Record<string, any>, timers: Record<stri
 export function handle_channeled_asphyx(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
     if (abilityKey !== ABILITIES.ASPHYXIATE_LAST_HIT && abilityKey !== ABILITIES.TUMEKEN_ASPHYXIATE_LAST_HIT) return;
 
-    // Defer activation to next tick so the buff bar doesn't show on the last hit's tick
-    settings['_pendingFullyChanneledAsphyx'] = true;
-
     let tumekensCount = 0;
     if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
     if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
     if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
     if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
     if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+
     if (tumekensCount >= 5) {
-        timers[SETTINGS.FULLY_CHANNELED_ASPHYX] = 15; // 9s = 15 ticks
+        settings[SETTINGS.GREATER_CHANNELLED_MIGHT] = true;
+        settings['_channelBuffJustActivated'] = SETTINGS.GREATER_CHANNELLED_MIGHT;
+        timers[SETTINGS.GREATER_CHANNELLED_MIGHT] = 15; // 9s = 15 ticks
     } else {
-        timers[SETTINGS.FULLY_CHANNELED_ASPHYX] = 6; // 3.6s = 6 ticks (base duration without full set)
+        settings[SETTINGS.CHANNELLED_MIGHT] = true;
+        settings['_channelBuffJustActivated'] = SETTINGS.CHANNELLED_MIGHT;
+        timers[SETTINGS.CHANNELLED_MIGHT] = 6; // 3.6s = 6 ticks
     }
 }
 
