@@ -104,6 +104,10 @@ export const prayers: Record<string, { title: string; icon: string }> = {
         title: 'Deflect Melee',
         icon: '/ability_icons/special/Deflect_Melee.png'
     },
+    [ABILITIES.DEFLECT_NECROMANCY]: {
+        title: 'Deflect Melee',
+        icon: '/ability_icons/special/Deflect_Necromancy.png'
+    },
     [ABILITIES.SOUL_SPLIT]: {
         title: 'Soul Split',
         icon: '/ability_icons/special/Soul_Split.png'

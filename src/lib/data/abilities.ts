@@ -338,6 +338,7 @@ export enum ABILITIES {
     DEFLECT_MAGIC = 'deflect magic',
     DEFLECT_MELEE = 'deflect melee',
     DEFLECT_RANGED = 'deflect ranged',
+    DEFLECT_NECROMANCY = 'deflect necromancy',
     SOUL_SPLIT = 'soul split',
 
     // Misc
@@ -5140,6 +5141,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         damagePotentialEffects: false, abilityClassification: 'self cast',
         abilityType: 'spell', mainStyle: 'magic', damageType: 'magic', cooldown: 0},
     [ABILITIES.DEFLECT_RANGED]: {
+        minHit: 0, varHit: 0, onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'self cast',
+        abilityType: 'spell', mainStyle: 'magic', damageType: 'magic', cooldown: 0},
+    [ABILITIES.DEFLECT_NECROMANCY]: {
         minHit: 0, varHit: 0, onHitEffects: false, critEffects: false,
         damagePotentialEffects: false, abilityClassification: 'self cast',
         abilityType: 'spell', mainStyle: 'magic', damageType: 'magic', cooldown: 0},
