@@ -399,11 +399,11 @@ export function handle_channeled_asphyx(settings: Record<string, any>, timers: R
     if (tumekensCount >= 5) {
         settings[SETTINGS.GREATER_CHANNELLED_MIGHT] = true;
         settings['_channelBuffJustActivated'] = SETTINGS.GREATER_CHANNELLED_MIGHT;
-        timers[SETTINGS.GREATER_CHANNELLED_MIGHT] = 15; // 9s = 15 ticks
+        timers[SETTINGS.GREATER_CHANNELLED_MIGHT] = 16; // 9s = 15 ticks
     } else {
         settings[SETTINGS.CHANNELLED_MIGHT] = true;
         settings['_channelBuffJustActivated'] = SETTINGS.CHANNELLED_MIGHT;
-        timers[SETTINGS.CHANNELLED_MIGHT] = 6; // 3.6s = 6 ticks
+        timers[SETTINGS.CHANNELLED_MIGHT] = 7; // 3.6s = 6 ticks
     }
 }
 
