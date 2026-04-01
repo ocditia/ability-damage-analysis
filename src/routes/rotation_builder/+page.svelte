@@ -536,7 +536,7 @@
             // Update cooldown expiry (use original key so same-ability checks work)
             const cdSeconds = abil.cooldown ?? 0;
             if (cdSeconds > 0) {
-                const cdTicks = 1 + Math.round(cdSeconds / 0.6);
+                const cdTicks = Math.round(cdSeconds / 0.6);
                 cooldownExpiry[abilKey] = i + cdTicks;
             }
         }

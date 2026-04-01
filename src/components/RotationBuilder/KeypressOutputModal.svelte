@@ -253,7 +253,7 @@
                             {/if}
                             <div class="key-item">
                                 {#if getIcon(i)}
-                                    <img src={getIcon(i)} alt="" class="key-icon" width="30" height="30" />
+                                    <img src={getIcon(i)} alt="" class="key-icon" width="40" height="40" />
                                 {/if}
                                 {#each splitKeybind(key) as part, j}
                                     {#if j > 0}
@@ -470,40 +470,40 @@
     .key-item {
         display: inline-flex;
         align-items: center;
-        gap: 3px;
-        padding: 2px 4px;
+        gap: 5px;
+        padding: 4px 6px;
         border-radius: 4px;
     }
 
     .key-icon {
-        border-radius: 2px;
+        border-radius: 3px;
         flex-shrink: 0;
     }
 
     .keybind {
         display: inline-block;
         font-family: monospace;
-        font-weight: 500;
+        font-weight: 600;
         color: #fbd38d;
         background-color: rgba(45, 45, 45, 0.3);
-        padding: 0.1rem 0.4rem;
-        border-radius: 0.2rem;
-        border-bottom: 1px solid rgba(251, 211, 141, 0.3);
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.25rem;
+        border-bottom: 2px solid rgba(251, 211, 141, 0.3);
         letter-spacing: 0.03em;
-        font-size: 0.85rem;
+        font-size: 1.1rem;
         white-space: nowrap;
     }
 
     .key-combo-sep {
         color: #666;
-        font-size: 0.7rem;
-        margin: 0 1px;
+        font-size: 0.9rem;
+        margin: 0 2px;
     }
 
     .arrow {
         color: #666;
-        font-size: 0.8rem;
-        margin: 0 2px;
+        font-size: 1rem;
+        margin: 0 4px;
     }
 
     .plain-text-row {
