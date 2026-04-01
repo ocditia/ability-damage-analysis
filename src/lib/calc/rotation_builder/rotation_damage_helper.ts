@@ -371,6 +371,7 @@ export function handle_edraco(settings: Record<string, any>, timers: Record<stri
         if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
             if (nDracoPieces >= 3) {
                 let buff_duration = 5 + (3 * Math.max(nDracoPieces - 3, 0)); // 5 tick base duration
+                buff_duration += 1; // include current tick
                 settings[SETTINGS.GREATER_DRACOLICH_INFUSION] = true;
                 settings['_channelBuffJustActivated'] = SETTINGS.GREATER_DRACOLICH_INFUSION;
                 timers[SETTINGS.GREATER_DRACOLICH_INFUSION] = buff_duration;
@@ -399,11 +400,11 @@ export function handle_channeled_asphyx(settings: Record<string, any>, timers: R
     if (tumekensCount >= 5) {
         settings[SETTINGS.GREATER_CHANNELLED_MIGHT] = true;
         settings['_channelBuffJustActivated'] = SETTINGS.GREATER_CHANNELLED_MIGHT;
-        timers[SETTINGS.GREATER_CHANNELLED_MIGHT] = 15; // 9s = 15 ticks
+        timers[SETTINGS.GREATER_CHANNELLED_MIGHT] = 16; // 9s = 15 ticks, +1 to include current tick
     } else {
         settings[SETTINGS.CHANNELLED_MIGHT] = true;
         settings['_channelBuffJustActivated'] = SETTINGS.CHANNELLED_MIGHT;
-        timers[SETTINGS.CHANNELLED_MIGHT] = 6; // 3.6s = 6 ticks
+        timers[SETTINGS.CHANNELLED_MIGHT] = 7; // 3.6s = 6 ticks, +1 to include current tick
     }
 }
 
