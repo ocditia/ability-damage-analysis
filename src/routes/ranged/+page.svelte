@@ -12,7 +12,8 @@
             a.title && a.mainStyle === 'ranged' &&
             a.abilityClassification !== 'conjure' &&
             a.abilityClassification !== 'self cast' &&
-            !excludedAbilities.has(key)
+            !excludedAbilities.has(key) &&
+            a.icon
         )
     );
 

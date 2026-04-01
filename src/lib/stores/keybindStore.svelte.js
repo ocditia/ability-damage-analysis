@@ -66,7 +66,8 @@ export const keybindActions = {
         try {
             const stored = localStorage.getItem(STORAGE_KEY);
             if (stored) {
-                keybindStore.bindings = { ...DEFAULT_BINDINGS, ...JSON.parse(stored) };
+                // Use stored bindings as-is (don't merge defaults, so clearing stays cleared)
+                keybindStore.bindings = JSON.parse(stored);
             }
         } catch (e) {
             console.error('Failed to load keybinds:', e);

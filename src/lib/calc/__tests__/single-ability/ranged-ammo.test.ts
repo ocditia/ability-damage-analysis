@@ -8,7 +8,7 @@ import { describe, it, expect } from 'vitest';
 import { ARMOUR } from '$lib/data/armour';
 import { WEAPONS } from '$lib/data/weapons';
 import { calculateSingleAbilityDamage } from '../../unified-damage-calculator';
-import { SETTINGS } from '../../settings_rb.js';
+import { SETTINGS } from '../../settings_rb';
 import { ABILITIES } from '$lib/data/abilities';
 import { createBlankSettings } from '../test-helpers';
 
@@ -17,7 +17,7 @@ function rangedAmmoSettings(ammo: string, mode: string, overrides: Record<string
         [SETTINGS.RANGED_LEVEL]: 113,
         [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
         [SETTINGS.WEAPON_TYPE_RANGED]: SETTINGS.WEAPON_VALUES.TH,
-        [SETTINGS.AMMO]: ammo,
+        [SETTINGS.RANGED_AMMO_SLOT]: ammo,
         [SETTINGS.MODE]: mode,
         ...overrides,
     });

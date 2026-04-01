@@ -1,16 +1,17 @@
 <script>
     import { SETTINGS } from '$lib/calc/settings_rb';
-import { ARMOUR } from '$lib/data/armour';
-import { WEAPONS } from '$lib/data/weapons';
+    import { ARMOUR } from '$lib/data/armour';
+    import { WEAPONS, weapons } from '$lib/data/weapons';
     import { SettingsCombatStyles } from '$lib/calc/rotation_builder/types/SettingsCombatStyles.ts';
     import { getItemsForSlot, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
-    import { weapons } from '$lib/data/weapons';
     import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
     import { formatPerkAbbrev, itemDisplayText as _itemDisplayText, expandOptionsWithInstances as _expandOptions } from '$lib/data/perks';
     import { stripVariantSuffix } from '$lib/utils/gearVariants';
     import ActionIcon from '$components/UI/ActionIcon.svelte';
     import PillToggle from '$components/UI/PillToggle.svelte';
+    import InfoTip from '$components/UI/InfoTip.svelte';
     import { getStyleColor } from '$lib/utils/colors';
+    import { GearSlots } from '$lib/calc/rotation_builder/gear';
 
     let { settings, styleTab, updateDamages, openDropdown = $bindable(null), gearFilter = undefined, onFilterChange = undefined } = $props();
 
@@ -152,7 +153,7 @@ import { WEAPONS } from '$lib/data/weapons';
 
     const armourSlotsByStyle = {
         [SettingsCombatStyles.RANGED]: [
-            { key: SETTINGS.RANGED_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
+            { key: SETTINGS.RANGED_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: GearSlots.HELMET },
             { key: SETTINGS.RANGED_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
             { key: SETTINGS.RANGED_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
             { key: SETTINGS.RANGED_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
@@ -230,7 +231,7 @@ import { WEAPONS } from '$lib/data/weapons';
                 [SETTINGS.RANGED_BOOTS]: ARMOUR.ELITE_DRACOLICH_BOOTS,
                 [SETTINGS.RANGED_NECKLACE]: ARMOUR.EOF_OR,
                 [SETTINGS.RANGED_CAPE]: ARMOUR.IGNEOUS_KAL_ZUK,
-                [SETTINGS.RANGED_RING]: SETTINGS.RING_VALUES.STALKER_E,
+                [SETTINGS.RANGED_RING]: ARMOUR.STALKERS_RING_E,
                 [SETTINGS.RANGED_POCKET]: ARMOUR.FUL_BOOK,
                 [SETTINGS.RANGED_AMMO_SLOT]: ARMOUR.FUL_ARROWS,
                 [SETTINGS.RANGED_MH]: WEAPONS.BOW_OF_THE_LAST_GUARDIAN_IM,
@@ -260,27 +261,27 @@ import { WEAPONS } from '$lib/data/weapons';
                 [SETTINGS.RANGED_LEGS]: ARMOUR.SIRENIC_CHAPS,
             },
             'None': {
-                [SETTINGS.RANGED_HELMET]: SETTINGS.RANGED_HELMET_VALUES.NONE,
-                [SETTINGS.RANGED_BODY]: SETTINGS.RANGED_BODY_VALUES.NONE,
-                [SETTINGS.RANGED_LEGS]: SETTINGS.RANGED_LEGS_VALUES.NONE,
-                [SETTINGS.RANGED_GLOVES]: SETTINGS.RANGED_GLOVES_VALUES.NONE,
-                [SETTINGS.RANGED_BOOTS]: SETTINGS.RANGED_BOOTS_VALUES.NONE,
-                [SETTINGS.RANGED_NECKLACE]: SETTINGS.NECKLACE_VALUES.NONE,
-                [SETTINGS.RANGED_CAPE]: SETTINGS.CAPE_VALUES.NONE,
-                [SETTINGS.RANGED_RING]: SETTINGS.RING_VALUES.NONE,
-                [SETTINGS.RANGED_POCKET]: SETTINGS.POCKET_VALUES.NONE,
+                [SETTINGS.RANGED_HELMET]: ARMOUR.NONE,
+                [SETTINGS.RANGED_BODY]: ARMOUR.NONE,
+                [SETTINGS.RANGED_LEGS]: ARMOUR.NONE,
+                [SETTINGS.RANGED_GLOVES]: ARMOUR.NONE,
+                [SETTINGS.RANGED_BOOTS]: ARMOUR.NONE,
+                [SETTINGS.RANGED_NECKLACE]: ARMOUR.NONE,
+                [SETTINGS.RANGED_CAPE]: ARMOUR.NONE,
+                [SETTINGS.RANGED_RING]: ARMOUR.NONE,
+                [SETTINGS.RANGED_POCKET]: ARMOUR.NONE,
             },
         },
         [SettingsCombatStyles.MAGIC]: {
             'BIS': {
-                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE,
-                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE,
-                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE,
-                [SETTINGS.MAGIC_GLOVES]: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE,
-                [SETTINGS.MAGIC_BOOTS]: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE,
+                [SETTINGS.MAGIC_HELMET]: ARMOUR.TUMEKENS_MASK,
+                [SETTINGS.MAGIC_BODY]: ARMOUR.TUMEKENS_ROBE_TOP,
+                [SETTINGS.MAGIC_LEGS]: ARMOUR.TUMEKENS_ROBE_BOTTOM,
+                [SETTINGS.MAGIC_GLOVES]: ARMOUR.TUMEKENS_GLOVES,
+                [SETTINGS.MAGIC_BOOTS]: ARMOUR.TUMEKENS_BOOTS,
                 [SETTINGS.MAGIC_NECKLACE]: ARMOUR.EOF_OR,
                 [SETTINGS.MAGIC_CAPE]: ARMOUR.IGNEOUS_KAL_ZUK,
-                [SETTINGS.MAGIC_RING]: SETTINGS.RING_VALUES.CHANNELLER_E,
+                [SETTINGS.MAGIC_RING]: ARMOUR.CHANNELLERS_RING_E,
                 [SETTINGS.MAGIC_POCKET]: ARMOUR.ERETHDORS_GRIMOIRE,
                 [SETTINGS.MAGIC_MH]: WEAPONS.FRACTURED_STAFF_OF_ARMADYL_IM
             },
@@ -300,15 +301,15 @@ import { WEAPONS } from '$lib/data/weapons';
                 [SETTINGS.MAGIC_LEGS]: ARMOUR.VIRTUS_ROBE_LEGS,
             },
             'None': {
-                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.NONE,
-                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.NONE,
-                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.NONE,
-                [SETTINGS.MAGIC_GLOVES]: SETTINGS.MAGIC_GLOVES_VALUES.NONE,
-                [SETTINGS.MAGIC_BOOTS]: SETTINGS.MAGIC_BOOTS_VALUES.NONE,
-                [SETTINGS.MAGIC_NECKLACE]: SETTINGS.NECKLACE_VALUES.NONE,
-                [SETTINGS.MAGIC_CAPE]: SETTINGS.CAPE_VALUES.NONE,
-                [SETTINGS.MAGIC_RING]: SETTINGS.RING_VALUES.NONE,
-                [SETTINGS.MAGIC_POCKET]: SETTINGS.POCKET_VALUES.NONE,
+                [SETTINGS.MAGIC_HELMET]: ARMOUR.NONE,
+                [SETTINGS.MAGIC_BODY]: ARMOUR.NONE,
+                [SETTINGS.MAGIC_LEGS]: ARMOUR.NONE,
+                [SETTINGS.MAGIC_GLOVES]: ARMOUR.NONE,
+                [SETTINGS.MAGIC_BOOTS]: ARMOUR.NONE,
+                [SETTINGS.MAGIC_NECKLACE]: ARMOUR.NONE,
+                [SETTINGS.MAGIC_CAPE]: ARMOUR.NONE,
+                [SETTINGS.MAGIC_RING]: ARMOUR.NONE,
+                [SETTINGS.MAGIC_POCKET]: ARMOUR.NONE,
             },
         },
         [SettingsCombatStyles.MELEE]: {
@@ -345,15 +346,15 @@ import { WEAPONS } from '$lib/data/weapons';
                 [SETTINGS.MELEE_BOOTS]: ARMOUR.VESTMENTS_OF_HAVOC_BOOTS,
             },
             'None': {
-                [SETTINGS.MELEE_HELMET]: SETTINGS.MELEE_HELMET_VALUES.NONE,
-                [SETTINGS.MELEE_BODY]: SETTINGS.MELEE_BODY_VALUES.NONE,
-                [SETTINGS.MELEE_LEGS]: SETTINGS.MELEE_LEGS_VALUES.NONE,
-                [SETTINGS.MELEE_GLOVES]: SETTINGS.MELEE_GLOVES_VALUES.NONE,
-                [SETTINGS.MELEE_BOOTS]: SETTINGS.MELEE_BOOTS_VALUES.NONE,
-                [SETTINGS.MELEE_NECKLACE]: SETTINGS.NECKLACE_VALUES.NONE,
-                [SETTINGS.MELEE_CAPE]: SETTINGS.CAPE_VALUES.NONE,
-                [SETTINGS.MELEE_RING]: SETTINGS.RING_VALUES.NONE,
-                [SETTINGS.MELEE_POCKET]: SETTINGS.POCKET_VALUES.NONE,
+                [SETTINGS.MELEE_HELMET]: ARMOUR.NONE,
+                [SETTINGS.MELEE_BODY]: ARMOUR.NONE,
+                [SETTINGS.MELEE_LEGS]: ARMOUR.NONE,
+                [SETTINGS.MELEE_GLOVES]: ARMOUR.NONE,
+                [SETTINGS.MELEE_BOOTS]: ARMOUR.NONE,
+                [SETTINGS.MELEE_NECKLACE]: ARMOUR.NONE,
+                [SETTINGS.MELEE_CAPE]: ARMOUR.NONE,
+                [SETTINGS.MELEE_RING]: ARMOUR.NONE,
+                [SETTINGS.MELEE_POCKET]: ARMOUR.NONE,
             },
         },
         [SettingsCombatStyles.NECROMANCY]: {
@@ -402,7 +403,12 @@ import { WEAPONS } from '$lib/data/weapons';
 </script>
 
 <div class="flex items-center justify-center gap-2 mb-4">
-    <h5 class="uppercase font-bold text-lg text-center">Armour</h5>
+    <h5 class="uppercase font-bold text-lg text-center">
+        <InfoTip text="The default setting for gear is [b:All]. [b:Popular] shows only meta gear. [b:Owned] shows the gear you own, which
+        can be configured in the [b:Actions] interface. When using owned gear, [pe:perks] are applied item by item, not globally.">
+            Armour
+        </InfoTip>
+    </h5>
     <PillToggle value={effectiveFilter} onchange={cycleFilter} />
 </div>
 <div class="flex flex-wrap gap-2 justify-center mb-3" style="--style-color: {activeStyleColor}">

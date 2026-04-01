@@ -17,6 +17,7 @@
         { key: SETTINGS.ULTIMATUMS, img: '/effect_icons/perks/ultimatums.png', title: 'Ultimatums', step: 1, max: 4 },
         { key: SETTINGS.LVL20ARMOUR, img: '/effect_icons/perks/level-20.png', title: 'Level 20 Armour', toggle: true },
         { key: SETTINGS.IMPATIENT, img: '/effect_icons/perks/Impatient.png', title: 'Impatient', step: 1, max: 4 },
+        { key: SETTINGS.CRACKLING, img: '/effect_icons/perks/Crackling.png', title: 'Crackling', step: 1, max: 4 },
         { key: SETTINGS.SLAYER_PERK_UNDEAD, img: '/effect_icons/perks/25px-Undead_Slayer.webp', title: 'Undead Slayer', toggle: true },
         { key: SETTINGS.SLAYER_PERK_DRAGON, img: '/effect_icons/perks/dragon_slayer_perk.png', title: 'Dragon Slayer', toggle: true },
         { key: SETTINGS.SLAYER_PERK_DEMON, img: '/effect_icons/perks/demon_slayer_perk.webp', title: 'Demon Slayer', toggle: true },

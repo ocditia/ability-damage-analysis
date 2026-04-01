@@ -8,6 +8,8 @@ import { WEAPONS } from '$lib/data/weapons';
     import GearSelection from '../../components/Settings/GearSelection.svelte';
     import PerkSelection from '../../components/Settings/PerkSelection.svelte';
     import FamiliarSelection from '../../components/Settings/FamiliarSelection.svelte';
+    import BuffSelection from '../../components/Settings/BuffSelection.svelte';
+    import InfoTip from '../UI/InfoTip.svelte';
     import GearManager from '../../components/Settings/GearManager.svelte';
     import ActionIcon from '../UI/ActionIcon.svelte';
     import TabButton from '../UI/TabButton.svelte';
@@ -274,166 +276,6 @@ import { WEAPONS } from '$lib/data/weapons';
 
     });
         
-
-    // function debugPreset() {
-    //     const armour = [
-    //         SETTINGS.RANGED_HELMET,
-    //         SETTINGS.RANGED_BODY,
-    //         SETTINGS.RANGED_LEGS,
-    //         SETTINGS.RANGED_GLOVES,
-    //         SETTINGS.RANGED_BOOTS,
-    //         SETTINGS.MAGIC_HELMET,
-    //         SETTINGS.MAGIC_BODY,
-    //         SETTINGS.MAGIC_LEGS,
-    //         SETTINGS.MAGIC_GLOVES,
-    //         SETTINGS.MAGIC_BOOTS,
-    //         SETTINGS.MELEE_HELMET,
-    //         SETTINGS.MELEE_BODY,
-    //         SETTINGS.MELEE_LEGS,
-    //         SETTINGS.MELEE_GLOVES,
-    //         SETTINGS.MELEE_BOOTS,
-    //         SETTINGS.NECKLACE,
-    //         SETTINGS.CAPE,
-    //         SETTINGS.RING,
-    //         SETTINGS.POCKET,
-    //         SETTINGS.AURA,
-    //         SETTINGS.FAMILIAR,
-    //     ]
-    //     armour.forEach(armour => {
-    //         settings[armour]['value'] = 'none';
-    //     });
-    //     settings[SETTINGS.MAGIC_TH]['value'] = WEAPONS.CUSTOM_TH_LEGACY;
-    //     settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 90;
-    //     settings[SETTINGS.MAGIC_PRAYER]['value'] = SETTINGS.MAGIC_PRAYER_VALUES.NONE;
-    //     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.DW;
-
-    //     settings[SETTINGS.LVL20ARMOUR]['value'] = false;
-    //     settings[SETTINGS.BITING]['value'] = 0;
-    //     settings[SETTINGS.ERUPTIVE]['value'] = 0;
-    //     settings[SETTINGS.PRECISE]['value'] = 0;
-    //     settings[SETTINGS.AFTERSHOCK]['value'] = 0;
-    //     settings[SETTINGS.CAROMING]['value'] = 0;
-        
-        
-    //     settings[SETTINGS.VULN]['value'] = SETTINGS.VULN_VALUES.NONE;
-
-    //     settings[SETTINGS.MAGIC_LEVEL]['value'] = 99;
-    //     settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
-    //     settings[SETTINGS.STRENGTH_LEVEL]['value'] = 99;
-    //     settings[SETTINGS.REAPER_CREW]['value'] = false;
-    //     settings[SETTINGS.RANGED_PRAYER]['value'] = SETTINGS.RANGED_PRAYER_VALUES.NONE;
-    //     settings[SETTINGS.MELEE_PRAYER]['value'] = SETTINGS.MELEE_PRAYER_VALUES.NONE;
-    //     settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-    //     settings[SETTINGS.AMMO]['value'] = ARMOUR.WEN_ARROWS;
-
-    //     settings[SETTINGS.INNATE_MASTERY]['value'] = true;
-    //     settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MIN_NO_CRIT;
-    //     settings[SETTINGS.KALG_SPEC]['value'] = false;
-    //     settings[SETTINGS.RANGED_TH]['value'] = WEAPONS.CUSTOM_TH_LEGACY;
-
-    //     settings[SETTINGS.MELEE_TH]['value'] = WEAPONS.CUSTOM_TH_LEGACY;
-    //     settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 80;
-    //     settings[SETTINGS.WEAPON_TYPE_MELEE]['value'] = SETTINGS.WEAPON_VALUES.TH;
-    // }
-
-    // function debugPreset2() {
-    //     const armour = [
-    //         SETTINGS.RANGED_HELMET,
-    //         SETTINGS.RANGED_BODY,
-    //         SETTINGS.RANGED_LEGS,
-    //         SETTINGS.RANGED_GLOVES,
-    //         SETTINGS.RANGED_BOOTS,
-    //         SETTINGS.MAGIC_HELMET,
-    //         SETTINGS.MAGIC_BODY,
-    //         SETTINGS.MAGIC_LEGS,
-    //         SETTINGS.MAGIC_GLOVES,
-    //         SETTINGS.MAGIC_BOOTS,
-    //         SETTINGS.MELEE_HELMET,
-    //         SETTINGS.MELEE_BODY,
-    //         SETTINGS.MELEE_LEGS,
-    //         SETTINGS.MELEE_GLOVES,
-    //         SETTINGS.MELEE_BOOTS,
-    //         SETTINGS.NECKLACE,
-    //         SETTINGS.CAPE,
-    //         SETTINGS.RING,
-    //         SETTINGS.POCKET,
-    //         SETTINGS.AURA,
-    //         SETTINGS.FAMILIAR,
-    //     ]
-    //     armour.forEach(armour => {
-    //         settings[armour]['value'] = 'none';
-    //     });
-    //     settings[SETTINGS.MELEE_TH]['value'] = WEAPONS.CUSTOM_TH_LEGACY;
-    //     settings[SETTINGS.TH_TIER_CUSTOM]['value'] = 85;
-    //     settings[SETTINGS.MELEE_PRAYER]['value'] = SETTINGS.MELEE_PRAYER_VALUES.NONE;
-    //     settings[SETTINGS.WEAPON]['value'] = SETTINGS.WEAPON_VALUES.TH;
-
-    //     settings[SETTINGS.LVL20ARMOUR]['value'] = true;
-    //     settings[SETTINGS.BITING]['value'] = 4;
-    //     settings[SETTINGS.ERUPTIVE]['value'] = 0;
-    //     settings[SETTINGS.PRECISE]['value'] = 0;
-    //     settings[SETTINGS.AFTERSHOCK]['value'] = 0;
-    //     settings[SETTINGS.CAROMING]['value'] = 0;
-        
-        
-    //     settings[SETTINGS.VULN]['value'] = SETTINGS.VULN_VALUES.NONE;
-
-    //     settings[SETTINGS.MAGIC_LEVEL]['value'] = 99;
-    //     settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
-    //     settings[SETTINGS.STRENGTH_LEVEL]['value'] = 99;
-    //     settings[SETTINGS.REAPER_CREW]['value'] = false;
-    //     settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-    //     settings[SETTINGS.AMMO]['value'] = ARMOUR.WEN_ARROWS;
-
-    //     settings[SETTINGS.INNATE_MASTERY]['value'] = false;
-    //     settings[SETTINGS.MODE]['value'] = SETTINGS.MODE_VALUES.MEAN;
-    //     settings[SETTINGS.KALG_SPEC]['value'] = false;
-
-    //     settings[SETTINGS.MELEE_TH]['value'] = WEAPONS.CUSTOM_TH_LEGACY;
-    //     settings[SETTINGS.WEAPON_TYPE_MELEE]['value'] = SETTINGS.WEAPON_VALUES.TH;
-    //     settings[SETTINGS.NATURAL_INSTINCT]['value'] = true;
-
-    //     // settings[SETTINGS.CHAOS_ROAR]['value'] = true;
-    // }
-
-    // function testPreset() {
-    //     settings[SETTINGS.RANGED_GLOVES]['value'] = ARMOUR.CINDERBANE_GLOVES;
-    //     settings[SETTINGS.NECKLACE]['value'] = ARMOUR.EOF;
-    //     settings[SETTINGS.POCKET]['value'] = ARMOUR.JAS_BOOK;
-
-    //     settings[SETTINGS.LVL20ARMOUR]['value'] = false;
-    //     settings[SETTINGS.BITING]['value'] = 3;
-    //     settings[SETTINGS.ERUPTIVE]['value'] = 0;
-
-    //     //settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
-    //     settings[SETTINGS.REAPER_CREW]['value'] = false;
-    //     settings[SETTINGS.RANGED_PRAYER]['value'] = SETTINGS.RANGED_PRAYER_VALUES.ANGUISH;
-    //     settings[SETTINGS.SMOKE_CLOUD]['value'] = false;
-    //     settings[SETTINGS.AMMO]['value'] = ARMOUR.WEN_ARROWS;
-    // }
-
-    // function testPresetR() {
-    //     settings[SETTINGS.NECKLACE]['value'] = ARMOUR.EOF;
-
-    //     //settings[SETTINGS.RANGED_LEVEL]['value'] = 99;
-    //     settings[SETTINGS.REAPER_CREW]['value'] = false;
-    //     settings[SETTINGS.RING]['value'] = SETTINGS.RING_VALUES.STALKER_E;
-    //     settings[SETTINGS.AMMO]['value'] = ARMOUR.WEN_ARROWS;
-    // }
-    // function testPreset2() {
-    //     settings[SETTINGS.MAGIC_HELMET]['value'] = ARMOUR.TECTONIC_MASK;
-    //     settings[SETTINGS.MAGIC_BODY]['value'] = ARMOUR.TECTONIC_ROBE_TOP;
-    //     settings[SETTINGS.MAGIC_LEGS]['value'] = ARMOUR.TECTONIC_ROBE_BOTTOM;
-    //     settings[SETTINGS.MAGIC_GLOVES]['value'] = ARMOUR.KERAPACS_WRISTWRAPS;
-    //     settings[SETTINGS.MAGIC_BOOTS]['value'] = ARMOUR.BLAST_DIFFUSION_BOOTS;
-
-    //     settings[SETTINGS.NECKLACE]['value'] = ARMOUR.EOF;
-    //     settings[SETTINGS.REAPER_CREW]['value'] = false;
-    //     settings[SETTINGS.AMMO]['value'] = ARMOUR.WEN_ARROWS;
-    // }
-    //makeNaked();
-    //testPresetR();
-    //settings[SETTINGS.ICY_CHILL_STACKS].value = 10;
     updateDamages();
 
 
@@ -488,9 +330,9 @@ import { WEAPONS } from '$lib/data/weapons';
             isActive={tab === 'equipment'}
             onClick={() => (tab = 'equipment')}
         />
-        <TabButton 
+        <TabButton
             id="bosses"
-            label="Bosses"
+            label="Advanced"
             isActive={tab === 'bosses'}
             onClick={() => (tab = 'bosses')}
         />
@@ -542,6 +384,14 @@ import { WEAPONS } from '$lib/data/weapons';
                             onchange={() => updateDamages()}
                             img="/effect_icons/strength_cape.png"
                         />
+                        <Number
+                        bind:setting={settings[SETTINGS.TIME_SINCE_ATTACK]}
+                        onchange={() => updateDamages()}
+                        img="/effect_icons/cease.png"
+                        step="1"
+                        max="10"
+                        min="0"
+                    />
                     {:else if styleTab == SettingsCombatStyles.NECROMANCY}
                         <Number
                             bind:setting={settings[SETTINGS.NECROMANCY_LEVEL]}
@@ -695,7 +545,10 @@ import { WEAPONS } from '$lib/data/weapons';
                     </div>
                 </div>
                 <div class="md:col-span-1" space-y-2>
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">Stacks</h5>
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">
+                        <InfoTip text="Starting stack values for the rotation. Unselected stacks will be hidden.">
+                            Stacks
+                        </InfoTip></h5>
                     <div class="flex flex-wrap gap-2 justify-center mb-3">
                     {#each Object.keys(stacks) as key}
                         {#if stacks[key].combatStyle === styleTab || stacks[key].combatStyle === SettingsCombatStyles.ALL}
@@ -731,7 +584,13 @@ import { WEAPONS } from '$lib/data/weapons';
                     </div>
                 </div>
                 <div class="md:col-span-1" space-y-2>
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">Adrenaline</h5>
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">
+                        <InfoTip 
+                            text="If expected adrenaline is enabled, the rotation will show the expected adrenaline value. This accounts for the Impatient perk and
+                            [bma:Tsunami Crit Buff].">
+                            Adrenaline
+                        </InfoTip>
+                    </h5>
                     <div class="flex flex-wrap gap-2 justify-center">
                         {#each [
                             { key: SETTINGS.VIGOUR, img: '/gear_icons/shared/ring of vigour.png', title: 'Ring of Vigour' },
@@ -801,6 +660,9 @@ import { WEAPONS } from '$lib/data/weapons';
                 </div>
                 
             {:else if tab === 'bosses'}
+                <div class="md:col-span-1 space-y-4">
+                    <BuffSelection settings={settings} updateDamages={updateDamages} styleFilter={styleTab} />
+                </div>
                 <div class="md:col-span-1 space-y-4">
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Boss Preset</h5>
                     <div class="flex justify-center mb-3">
@@ -876,11 +738,6 @@ import { WEAPONS } from '$lib/data/weapons';
                             width="90px"
                             compact={true}
                         />
-                    </div>
-                </div>
-                <div class="md:col-span-1 space-y-4">
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">Boss Settings</h5>
-                    <div class="space-y-4">
                         <Number
                             bind:setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
                             onchange={() => updateDamages()}

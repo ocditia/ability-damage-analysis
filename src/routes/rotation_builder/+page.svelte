@@ -15,14 +15,14 @@
     import RotationConfigManager from '../../components/RotationBuilder/RotationConfigManager.svelte';
     import KeybindConfigModal from '../../components/RotationBuilder/KeybindConfigModal.svelte';
     import KeypressOutputModal from '../../components/RotationBuilder/KeypressOutputModal.svelte';
-    import { rangedGear, meleeGear, magicGear, necroGear, sharedGear, allExtraActions } from '$lib/special/abilities';
+    import { allExtraActions } from '$lib/special/abilities';
     import * as eventHandlers from '$lib/utils/rotationEventHandlers';
     import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
     import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
     import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
     import { getBossPresetWithEnrage, type BossAttack, type BossAttackPattern } from '$lib/data/bosses/boss_presets';
-    import { suggestNextAbility, type AbilitySuggestion } from '$lib/calc/rotation_builder/rotation-damage-calculator';
+    import { suggestNextAbility, resolveTumekensAsphyxiate, type AbilitySuggestion } from '$lib/calc/rotation_builder/rotation-damage-calculator';
 
 
     const filterByStyle = (style) => Object.fromEntries(
@@ -479,7 +479,92 @@
      */
     function buffActive(key: string, tick: number) {
         return rotationStore.buffs[key]?.activeRows.includes(tick) ?? false;
-    }   
+    }
+
+    // Resolve ability key, handling Tumeken's Asphyxiate swap etc.
+    function resolveAbility(abilKey: string): string {
+        const s = settingsStore.settings;
+        const flat: Record<string, any> = {};
+        for (const k of [SETTINGS.MAGIC_HELMET, SETTINGS.MAGIC_BODY, SETTINGS.MAGIC_LEGS, SETTINGS.MAGIC_BOOTS, SETTINGS.MAGIC_GLOVES]) {
+            flat[k] = s[k]?.value;
+        }
+        return resolveTumekensAsphyxiate(abilKey, flat);
+    }
+
+    // Get effective duration for an ability (explicit duration, or inferred from hits keys for channels)
+    function getAbilityDuration(abil: any): number {
+        if (typeof abil.duration === 'number') return abil.duration;
+        if (abil.abilityClassification === 'channel' && abil.hits) {
+            return Math.max(...Object.keys(abil.hits).map(Number));
+        }
+        return 3;
+    }
+
+    // Derive invalid ability placements: GCD violations and cooldown violations
+    // Maps tick index → reason string
+    let invalidTicks: Record<number, string> = $derived.by(() => {
+        const map: Record<number, string> = {};
+        const bar = rotationStore.abilityBar;
+        let nextGcdTick = 0; // earliest tick the next ability can be placed
+        const cooldownExpiry: Record<string, number> = {}; // abilKey → tick when off cooldown
+
+        for (let i = 0; i < bar.length; i++) {
+            const abilKey = bar[i];
+            if (!abilKey) continue;
+            // Use resolved ability from tickMetadata if available (accounts for runtime swaps)
+            const meta = rotationStore.tickMetadata?.[i];
+            const resolved = meta?.resolvedAbility ?? resolveAbility(abilKey);
+            const abil = abils[resolved];
+            if (!abil) continue;
+
+            // Check GCD violation
+            if (i < nextGcdTick) {
+                map[i] = 'GCD active';
+            }
+
+            // Check cooldown violation (use original key for cooldown tracking)
+            if (cooldownExpiry[abilKey] && i < cooldownExpiry[abilKey]) {
+                const existing = map[i];
+                map[i] = existing ? `${existing} + On cooldown` : 'On cooldown';
+            }
+
+            // Update GCD: minimum 3 ticks, or ability duration if channelled
+            const duration = meta?.duration ?? getAbilityDuration(abil);
+            const gcd = Math.max(3, duration);
+            nextGcdTick = i + gcd;
+
+            // Update cooldown expiry (use original key so same-ability checks work)
+            const cdSeconds = abil.cooldown ?? 0;
+            if (cdSeconds > 0) {
+                const cdTicks = 1 + Math.round(cdSeconds / 0.6);
+                cooldownExpiry[abilKey] = i + cdTicks;
+            }
+        }
+        return map;
+    });
+
+    // Derive which ticks are channel continuation ticks (not the cast tick itself)
+    // Maps tick index → { ability key, icon } of the ability being channelled
+    let channelTicks: Record<number, { key: string; icon: string }> = $derived.by(() => {
+        const map: Record<number, { key: string; icon: string }> = {};
+        const bar = rotationStore.abilityBar;
+        for (let i = 0; i < bar.length; i++) {
+            const abilKey = bar[i];
+            if (!abilKey) continue;
+            // Use the resolved ability from tickMetadata if available (accounts for runtime swaps like Endless Assault)
+            const meta = rotationStore.tickMetadata?.[i];
+            const resolved = meta?.resolvedAbility ?? resolveAbility(abilKey);
+            const abil = abils[resolved];
+            if (!abil || abil.abilityClassification !== 'channel') continue;
+            const duration = meta?.duration ?? getAbilityDuration(abil);
+            // Mark ticks after the cast tick as channel ticks (up to duration or next ability)
+            for (let t = i + 1; t < i + duration && t < bar.length; t++) {
+                if (bar[t] != null) break; // Channel cancelled by next ability
+                map[t] = { key: resolved, icon: abil.icon ?? '' };
+            }
+        }
+        return map;
+    });
 </script>
 
 <style>
@@ -516,54 +601,53 @@
 	.suggestions-floating {
 		position: fixed;
 		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
+		left: 0;
+		width: 58.333%;
 		z-index: 50;
 		pointer-events: auto;
-	}
-	.suggestions-floating.collapsed {
-		bottom: 0;
+		display: flex;
+		justify-content: center;
 	}
 	.suggestions-bar {
 		display: flex;
 		align-items: center;
-		gap: 4px;
-		padding: 6px 12px;
-		background: rgba(23, 29, 33, 0.95);
-		border: 1px solid rgba(255, 255, 255, 0.12);
+		gap: 6px;
+		padding: 8px 16px;
+		background: rgba(23, 29, 33, 0.97);
+		border: 2px solid rgba(255, 255, 255, 0.2);
 		border-bottom: none;
-		border-radius: 10px 10px 0 0;
-		backdrop-filter: blur(8px);
-		box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+		border-radius: 12px 12px 0 0;
+		backdrop-filter: blur(10px);
+		box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
 	}
 	.suggestions-label {
-		font-size: 0.7rem;
+		font-size: 0.85rem;
 		color: #888;
-		margin-right: 2px;
+		margin-right: 4px;
 		white-space: nowrap;
 	}
 	.suggestions-tab {
-		padding: 4px 14px;
-		font-size: 0.7rem;
+		padding: 5px 18px;
+		font-size: 0.8rem;
 		color: #888;
-		background: rgba(23, 29, 33, 0.95);
-		border: 1px solid rgba(255, 255, 255, 0.12);
+		background: rgba(23, 29, 33, 0.97);
+		border: 2px solid rgba(255, 255, 255, 0.2);
 		border-bottom: none;
-		border-radius: 8px 8px 0 0;
+		border-radius: 10px 10px 0 0;
 		cursor: pointer;
-		backdrop-filter: blur(8px);
+		backdrop-filter: blur(10px);
 	}
 	.suggestions-tab:hover {
 		color: #ccc;
 	}
 	.suggestions-collapse {
-		padding: 2px 6px;
-		font-size: 0.6rem;
+		padding: 3px 8px;
+		font-size: 0.7rem;
 		color: #666;
 		background: none;
 		border: none;
 		cursor: pointer;
-		margin-left: 4px;
+		margin-left: 6px;
 	}
 	.suggestions-collapse:hover {
 		color: #ccc;
@@ -572,25 +656,25 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 1px;
-		padding: 3px;
-		border-radius: 4px;
+		gap: 2px;
+		padding: 4px;
+		border-radius: 5px;
 		cursor: pointer;
 		background: none;
 		border: 1px solid transparent;
 		transition: all 0.15s;
 	}
 	.suggestion-btn:hover {
-		background: rgba(255, 255, 255, 0.1);
-		border-color: rgba(255, 255, 255, 0.2);
+		background: rgba(255, 255, 255, 0.12);
+		border-color: rgba(255, 255, 255, 0.25);
 	}
 	.suggestion-icon {
-		width: 28px;
-		height: 28px;
-		border-radius: 3px;
+		width: 34px;
+		height: 34px;
+		border-radius: 4px;
 	}
 	.suggestion-dmg {
-		font-size: 0.55rem;
+		font-size: 0.65rem;
 		color: #4CAF50;
 		font-weight: bold;
 		line-height: 1;
@@ -707,6 +791,23 @@
 		border: 1px solid #c5c5c5;
 		box-shadow: 0 0 3px rgba(255, 255, 255, 0.572);
 		z-index: 3;
+	}
+
+	.ability-slot.invalid-placement {
+		border: 1px solid #ef4444;
+		box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.4);
+	}
+
+	.ability-slot.invalid-placement > img:first-of-type {
+		opacity: 0.5;
+	}
+
+	.ability-slot .channel-ghost {
+		width: 100%;
+		height: 100%;
+		opacity: 0.3;
+		filter: grayscale(50%);
+		pointer-events: none;
 	}
 
 	.ability-slot.nulled::before {
@@ -1064,6 +1165,7 @@
                                 class:nulled={rotationStore.nulledTicks[index]}
                                 class:selected-tick={uiStore.extraActions.show && uiStore.extraActions.tick === index}
                                 class:has-extra-actions={rotationStore.extraActionBar[index]?.some(action => action !== null)}
+                                class:invalid-placement={invalidTicks[index] && ability}
                                 class:phase-pause={pauseTickSet.has(index)}
                                 tabindex="0"
                                 aria-label="Ability slot"
@@ -1079,12 +1181,18 @@
                                     <img src={allAbils[ability].icon}
                                         alt={allAbils[ability].title}
                                         style="width: 100%; height: 100%;"
-                                        title="{allAbils[ability].title}"
+                                        title="{allAbils[ability].title}{invalidTicks[index] ? ` (${invalidTicks[index]})` : ''}"
                                         draggable="true"
                                         ondragstart={(e) => handleDragStartBar(e, ability, index)}
                                     />
                                 {:else if ability}
                                     <span class="cell-number" title="Unknown: {ability}" style="font-size: 0.5rem; color: #f66;">?</span>
+                                {:else if channelTicks[index]}
+                                    <img src={channelTicks[index].icon}
+                                        alt="Channelling"
+                                        class="channel-ghost"
+                                        title="Channelling: {allAbils[channelTicks[index].key]?.title}"
+                                    />
                                 {/if}
                                 {#if rotationStore.stalledAbilities[index] && allAbils[rotationStore.stalledAbilities[index]]}
                                     <img
@@ -1208,9 +1316,10 @@
                             onToggleNull={() => refreshUI()}
                             onRefreshUI={() => refreshUI()}
                         />
-                    {:else}
-                        <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
                     {/if}
+                    <div class:hidden={uiStore.extraActions.show}>
+                        <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
+                    </div>
                 </div>
             </div>
             <div class="col-span-12 mt-8">
@@ -1349,24 +1458,10 @@
 
 <KeybindConfigModal
     bind:show={showKeybindModal}
-    abilityTabs={tabs}
-    gearTabs={[
-        { id: 'ranged', label: 'Ranged', gear: { ...rangedGear, ...sharedGear } },
-        { id: 'melee', label: 'Melee', gear: { ...meleeGear, ...sharedGear } },
-        { id: 'magic', label: 'Magic', gear: { ...magicGear, ...sharedGear } },
-        { id: 'necro', label: 'Necro', gear: { ...necroGear, ...sharedGear } },
-    ]}
 />
 
 <KeypressOutputModal
     bind:show={showKeypressModal}
-    {allAbils}
-    gearTabs={[
-        { id: 'ranged', label: 'Ranged', gear: { ...rangedGear, ...sharedGear } },
-        { id: 'melee', label: 'Melee', gear: { ...meleeGear, ...sharedGear } },
-        { id: 'magic', label: 'Magic', gear: { ...magicGear, ...sharedGear } },
-        { id: 'necro', label: 'Necro', gear: { ...necroGear, ...sharedGear } },
-    ]}
     phaseBreaks={phaseMarkers.map(m => ({ tick: (m.pauseEnd ?? m.tick) + 1, label: m.label }))}
 />
 

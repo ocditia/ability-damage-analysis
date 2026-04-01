@@ -36,6 +36,8 @@
     let editing = $state(false);
     let longPressTimer = null;
     let longPressFired = false;
+    let wrapperEl = $state(null);
+    let dropdownStyle = $state('');
 
     function focusOnMount(node) { node.focus(); node.select(); }
 
@@ -98,7 +100,29 @@
         onchange();
     }
 
+    // Position the dropdown using fixed positioning to escape overflow containers
+    $effect(() => {
+        if (isOpen && wrapperEl) {
+            const rect = wrapperEl.getBoundingClientRect();
+            const dropdownMaxHeight = 200;
+            const spaceBelow = window.innerHeight - rect.bottom;
+            if (spaceBelow < dropdownMaxHeight) {
+                // Flip above
+                dropdownStyle = `position:fixed; bottom:${window.innerHeight - rect.top}px; left:${rect.left}px; min-width:${Math.max(140, rect.width)}px;`;
+            } else {
+                dropdownStyle = `position:fixed; top:${rect.bottom + 2}px; left:${rect.left}px; min-width:${Math.max(140, rect.width)}px;`;
+            }
+        }
+    });
+
     function handleContextMenu(e) {
+        if (isDropdown && options?.length > 0) {
+            e.preventDefault();
+            setting.value = options[0].value;
+            openId = null;
+            onchange();
+            return;
+        }
         if (!isRanked) return;
         e.preventDefault();
         editing = !editing;
@@ -135,6 +159,7 @@
 </script>
 
 <div class="toggle-wrapper"
+    bind:this={wrapperEl}
     onwheel={handleWheel}
     ontouchstart={handleTouchStart}
     ontouchend={handleTouchEnd}
@@ -172,7 +197,7 @@
         {/if}
     </div>
     {#if isOpen}
-        <div class="toggle-dropdown">
+        <div class="toggle-dropdown" style={dropdownStyle}>
             {#each options as option}
                 <button
                     type="button"
@@ -234,16 +259,12 @@
     }
     .toggle-edit::-webkit-inner-spin-button { display: none; }
     .toggle-dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        z-index: 20;
+        z-index: 100;
         background: #1e293b;
         border: 1px solid #4ade80;
         border-radius: 6px;
         max-height: 200px;
         overflow-y: auto;
-        margin-top: 2px;
         min-width: 140px;
     }
     .toggle-dropdown-item {

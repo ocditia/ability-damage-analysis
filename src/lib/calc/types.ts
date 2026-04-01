@@ -76,6 +76,8 @@ export interface SingleAbilityInput {
         splitSoul?: boolean;
         splitSoulNecro?: boolean;
     };
+    /** When true, skip resetting buff flags — use whatever is already in settings */
+    rawBuffs?: boolean;
 }
 /**
  * Represents a uniform distribution of possible damage rolls (either critical or non-critical)

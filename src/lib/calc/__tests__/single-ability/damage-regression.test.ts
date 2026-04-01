@@ -9,7 +9,7 @@
 import { describe, it, expect } from 'vitest';
 import { WEAPONS } from '$lib/data/weapons';
 import { calculateSingleAbilityDamage } from '../../unified-damage-calculator';
-import { SETTINGS } from '../../settings_rb.js';
+import { SETTINGS } from '../../settings_rb';
 import { ABILITIES } from '$lib/data/abilities';
 import {
     createBaseSettings,

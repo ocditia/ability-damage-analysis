@@ -1,4 +1,4 @@
-import { settingsConfig, SETTINGS } from '../settings_rb.js';
+import { settingsConfig, SETTINGS } from '../settings_rb';
 import { SettingsCombatStyles } from './types/SettingsCombatStyles';
 import { BUFF_COLORS, STACK_COLORS } from '../../utils/colors';
 
@@ -37,7 +37,8 @@ export const buffs = [
     SETTINGS.GREATER_FLOW_AC,
     SETTINGS.ANIMA_CHARGED,
     SETTINGS.BARRICADE,
-    SETTINGS.FULLY_CHANNELED_ASPHYX,
+    SETTINGS.CHANNELLED_MIGHT,
+    SETTINGS.GREATER_CHANNELLED_MIGHT,
     SETTINGS.SMOKE_CLOUD,
     SETTINGS.UNDEAD_SLAYER_ABILITY,
     SETTINGS.DRAGON_SLAYER_ABILITY,
@@ -45,6 +46,7 @@ export const buffs = [
     SETTINGS.CONFLAGRATE,
     SETTINGS.KERAPACS_WRIST_WRAPS,
     SETTINGS.BLAST_INFUSED,
+    SETTINGS.ENDLESS_ASSAULT,
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -55,266 +57,360 @@ export function createBuffTimings(barSize: number) {
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.crit_buff
+                colour: BUFF_COLORS.crit_buff,
+                icon: '/effect_icons/magic/Crit_buff.png',
+                combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.DEATH_SWIFTNESS]: {
                 title: 'Death\'s Swiftness',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.death_swiftness
+                colour: BUFF_COLORS.death_swiftness,
+                icon: '/ability_icons/ranged/Greater_Death\'s_Swiftness.png',
+                combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.SUNSHINE]: {
                 title: 'Sunshine',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.sunshine
+                colour: BUFF_COLORS.sunshine,
+                icon: '/ability_icons/magic/Greater_Sunshine.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.BERSERK]: {
                 title: 'Berserk',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.berserk
+                colour: BUFF_COLORS.berserk,
+                icon: '/ability_icons/melee/berserk.webp',
+                combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.NATURAL_INSTINCT]: {
                 title: 'Natural Instinct',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.natural_instinct
+                colour: BUFF_COLORS.natural_instinct,
+                icon: '/ability_icons/defence/30px-Natural_Instinct.png',
+                combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.SPLIT_SOUL]: {
                 title: 'Split Soul',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.split_soul
+                colour: BUFF_COLORS.split_soul,
+                icon: '/effect_icons/Split_Soul_icon.png',
+                combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.GREATER_DRACOLICH_INFUSION]: {
                 title: 'Dracolich Infusion (Greater)',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.greater_dracolich
+                colour: BUFF_COLORS.greater_dracolich,
+                icon: '/effect_icons/dracolich_infusion.png',
+                combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.ICY_PRECISION]: {
                 title: 'Icy Precision',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.icy_precision
+                colour: BUFF_COLORS.icy_precision,
+                icon: '/effect_icons/icy_precision.png',
+                combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.BALANCE_BY_FORCE]: {
                 title: 'Balance By Force',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.balance_by_force
+                colour: BUFF_COLORS.balance_by_force,
+                icon: '/effect_icons/balance_by_force.png',
+                combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.INSTABILITY]: {
                 title: 'Instability',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.instability
+                colour: BUFF_COLORS.instability,
+                icon: '/effect_icons/instability.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.CHAOS_ROAR]: {
                 title: 'Chaos Roar',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.chaos_roar
+                colour: BUFF_COLORS.chaos_roar,
+                icon: '/effect_icons/Chaos_Roar.webp',
+                combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.BLACKHOLE]: {
                 title: 'Blackhole',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.blackhole
+                colour: BUFF_COLORS.blackhole,
+                icon: '/effect_icons/melee/Blackhole_(self_status).png',
+                combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.SEARING_WINDS]: {
                 title: 'Searing Winds',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.searing_winds
+                colour: BUFF_COLORS.searing_winds,
+                icon: '/effect_icons/ranged/Searing_Winds.png',
+                combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.SHADOW_IMBUED]: {
                 title: 'Shadow Imbued',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.shadow_imbued
+                colour: BUFF_COLORS.shadow_imbued,
+                icon: '/ability_icons/ranged/30x30/imbue_shadows.png',
+                combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.DEATHSPORE_BUFF]: {
                 title: 'Feasting Spores',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.deathspore_buff
+                colour: BUFF_COLORS.deathspore_buff,
+                icon: '/gear_icons/ranged/deathspore arrows.png',
+                combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.ESS_CORRUPTION_ADREN]: {
                 title: 'Essence Corruption Adrenaline',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.essence_corruption_adren
+                colour: BUFF_COLORS.essence_corruption_adren,
+                icon: '/effect_icons/Essence_Corruption_Adrenaline.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.LIVING_DEATH]: {
                 title: 'Living Death',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.living_death
+                colour: BUFF_COLORS.living_death,
+                icon: '/effect_icons/living_death.png',
+                combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.HAUNTED]: {
                 title: 'Haunted',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.haunted
+                colour: BUFF_COLORS.haunted,
+                icon: '/effect_icons/haunted.png',
+                combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.THREADS_OF_FATE]: {
                 title: 'Threads of Fate',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.threads_of_fate
+                colour: BUFF_COLORS.threads_of_fate,
+                icon: '/ability_icons/necro/incantations/Threads_of_Fate_icon.png',
+                combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.INVOKE_DEATH]: {
                 title: 'Invoke Death',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.invoke_death
+                colour: BUFF_COLORS.invoke_death,
+                icon: '/ability_icons/necro/incantations/Invoke_Death_icon.png',
+                combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.SPLIT_SOUL_NECRO]: {
                 title: 'Split Soul (Necro)',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.split_soul_necro
+                colour: BUFF_COLORS.split_soul_necro,
+                icon: '/effect_icons/Split_Soul_icon.png',
+                combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.METEOR_STRIKE_BUFF]: {
                 title: 'Meteor Strike',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.meteor_strike_buff
+                colour: BUFF_COLORS.meteor_strike_buff,
+                icon: '/effect_icons/melee/Meteor_Strike_(status).png',
+                combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.VESTMENTS_REGEN]: {
                 title: 'Vestments Regen',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.vestments_regen
+                colour: BUFF_COLORS.vestments_regen,
+                icon: '/effect_icons/melee/Havoc_(status).png',
+                combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.RAMPAGE]: {
                 title: 'Rampage',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.rampage
+                colour: BUFF_COLORS.rampage,
+                icon: '/effect_icons/rampage.png',
+                combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.FLOW]: {
                 title: 'Flow',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#0ce6ff'
+                colour: '#0ce6ff',
+                icon: '/effect_icons/magic/Flow.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.GREATER_FLOW]: {
                 title: 'Greater Flow',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#0ce6ff'
+                colour: '#0ce6ff',
+                icon: '/effect_icons/magic/Greater_Flow.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.FLOW_AC]: {
                 title: 'Flow (Anima Charged)',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#0ce6ff'
+                colour: '#0ce6ff',
+                icon: '/effect_icons/magic/Flow.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.GREATER_FLOW_AC]: {
                 title: 'Greater Flow (Anima Charged)',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#0ce6ff'
+                colour: '#0ce6ff',
+                icon: '/effect_icons/magic/Greater_Flow.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.ANIMA_CHARGED]: {
                 title: 'Anima Charged',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#a855f7'
+                colour: '#a855f7',
+                icon: '/effect_icons/magic/Anima_Charged.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.BARRICADE]: {
                 title: 'Barricade',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.barricade
+                colour: BUFF_COLORS.barricade,
+                icon: '/ability_icons/defence/30px-Barricade.png',
+                combatStyle: SettingsCombatStyles.ALL
             },
-            [SETTINGS.FULLY_CHANNELED_ASPHYX]: {
-                title: "Tumeken's Resplendence",
+            [SETTINGS.CHANNELLED_MIGHT]: {
+                title: "Channelled Might",
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: BUFF_COLORS.tumekens_asphyx
+                colour: BUFF_COLORS.tumekens_asphyx,
+                icon: '/effect_icons/magic/Channelled_Might.png',
+                combatStyle: SettingsCombatStyles.MAGIC
+            },
+            [SETTINGS.GREATER_CHANNELLED_MIGHT]: {
+                title: "Greater Channelled Might",
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: BUFF_COLORS.tumekens_asphyx,
+                icon: '/effect_icons/magic/Channelled_Might.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.SMOKE_CLOUD]: {
                 title: 'Smoke Cloud',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#7B68EE'
+                colour: '#7B68EE',
+                icon: '/effect_icons/Smoke_Cloud_icon.webp',
+                combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.UNDEAD_SLAYER_ABILITY]: {
                 title: 'Undead Slayer',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#8B5CF6'
+                colour: '#8B5CF6',
+                icon: '/ability_icons/special/Undead_Slayer_(ability).png',
+                combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.DRAGON_SLAYER_ABILITY]: {
                 title: 'Dragon Slayer',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#EF4444'
+                colour: '#EF4444',
+                icon: '/ability_icons/special/Dragon_Slayer_(ability).png',
+                combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.DEMON_SLAYER_ABILITY]: {
                 title: 'Demon Slayer',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#F97316'
+                colour: '#F97316',
+                icon: '/ability_icons/special/Demon_Slayer_(ability).png',
+                combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.CONFLAGRATE]: {
                 title: 'Conflagrate',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#FF4500'
+                colour: '#FF4500',
+                icon: '/effect_icons/conflagrate.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.KERAPACS_WRIST_WRAPS]: {
                 title: "Kerapac's Wristwraps",
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#C0392B'
+                colour: '#C0392B',
+                icon: '/effect_icons/Kerapac\'s_wrist_wraps.webp',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.BLAST_INFUSED]: {
                 title: 'Blast Infused',
                 idx: -1,
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
-                colour: '#E67E22'
+                colour: '#E67E22',
+                icon: '/effect_icons/magic/Blast_Infused.png',
+                combatStyle: SettingsCombatStyles.MAGIC
+            },
+            [SETTINGS.ENDLESS_ASSAULT]: {
+                title: 'Endless Assault',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: '#c78d68',
+                icon: '/effect_icons/melee/Endless_Assault.png',
+                combatStyle: SettingsCombatStyles.MELEE
             }
         }
     )
@@ -327,7 +423,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Adrenaline',
                 displaySetting: SETTINGS.SHOW_ADRENALINE,
                 idx: -1,
-                image: '/effect_icons/Crit_buff.png',
+                image: '/effect_icons/magic/Crit_buff.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.adrenaline,
                 number: 'true',

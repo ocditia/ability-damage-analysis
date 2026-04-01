@@ -7,7 +7,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { calculateSingleAbilityDamage, calculateMultipleAbilities } from '../../unified-damage-calculator';
-import { SETTINGS } from '../../settings_rb.js';
+import { SETTINGS } from '../../settings_rb';
 import {
     createBaseSettings,
     createMeleeSettings,

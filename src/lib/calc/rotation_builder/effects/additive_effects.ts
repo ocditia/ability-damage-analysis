@@ -171,7 +171,7 @@ export function calculatePvEBoost(ctx: EffectContext): number {
     }
 
     // Dragon rider necklace (10% boost to Dragon Breath)
-    if (settings[SETTINGS.NECKLACE] === ARMOUR.DRAGON_RIDER_NECKLACE &&
+    if (settings[SETTINGS.NECKLACE] === ARMOUR.DRAGON_RIDER_AMULET &&
         abilityKey === ABILITIES.DRAGON_BREATH) {
         boost = Math.floor(boost * 1.1);
     }

@@ -14,7 +14,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { calc_base_ad, style_specific_unification } from '../../damage_calc_rb';
-import { SETTINGS } from '../../settings_rb.js';
+import { SETTINGS } from '../../settings_rb';
 import { ABILITIES } from '$lib/data/abilities';
 import { createBlankSettings } from '../test-helpers';
 

@@ -61,52 +61,32 @@ export function calculateSingleAbilityDamage(
         settingsWithBuffs['_gearInstances'] = JSON.parse(JSON.stringify(settingsWithBuffs['_gearInstances']));
     }
 
-    // Disable aftershock for single-ability calculations — it distorts per-ability comparisons
-    settingsWithBuffs[SETTINGS.AFTERSHOCK] = 0;
+    if (!input.rawBuffs) {
+        // Disable aftershock for single-ability calculations — it distorts per-ability comparisons
+        settingsWithBuffs[SETTINGS.AFTERSHOCK] = 0;
 
-    // Disable rotation builder buff booleans — single-ability pages use dropdown settings instead
-    settingsWithBuffs[SETTINGS.GREATER_DRACOLICH_INFUSION] = false;
-    const style = abilityData?.mainStyle;
-    const pocketByStyle: Record<string, string> = {
-        'magic': SETTINGS.MAGIC_POCKET,
-        'ranged': SETTINGS.RANGED_POCKET,
-        'melee': SETTINGS.MELEE_POCKET,
-        'necromancy': SETTINGS.NECRO_POCKET,
-    };
-    const ammoByStyle: Record<string, string> = {
-        'ranged': SETTINGS.RANGED_AMMO_SLOT,
-        'magic': SETTINGS.MAGIC_AMMO_SLOT,
-        'melee': SETTINGS.MELEE_AMMO_SLOT,
-        'necromancy': SETTINGS.NECRO_AMMO_SLOT,
-    };
-    if (style) {
-        const pocketKey = pocketByStyle[style];
-        if (pocketKey && settingsWithBuffs[pocketKey] != null) {
-            settingsWithBuffs[SETTINGS.POCKET] = settingsWithBuffs[pocketKey];
-        }
-        const ammoKey = ammoByStyle[style];
-        if (ammoKey && settingsWithBuffs[ammoKey] != null) {
-            settingsWithBuffs[SETTINGS.AMMO] = settingsWithBuffs[ammoKey];
-        }
-    }
+        // Disable rotation builder buff booleans — single-ability pages use dropdown settings instead
+        settingsWithBuffs[SETTINGS.GREATER_DRACOLICH_INFUSION] = false;
+        // Pocket and ammo are now resolved per-ability in style_specific_unification
 
-    if (input.buffs?.berserk) {
-        settingsWithBuffs[SETTINGS.BERSERK] = true;
-    }
-    if (input.buffs?.sunshine) {
-        settingsWithBuffs[SETTINGS.SUNSHINE] = true;
-    }
-    if (input.buffs?.blackhole) {
-        settingsWithBuffs[SETTINGS.BLACKHOLE] = true;
-    }
-    if (input.buffs?.deathSwiftness) {
-        settingsWithBuffs[SETTINGS.DEATH_SWIFTNESS] = true;
-    }
-    if (input.buffs?.splitSoul) {
-        settingsWithBuffs[SETTINGS.SPLIT_SOUL] = true;
-    }
-    if (input.buffs?.splitSoulNecro) {
-        settingsWithBuffs[SETTINGS.SPLIT_SOUL_NECRO] = true;
+        if (input.buffs?.berserk) {
+            settingsWithBuffs[SETTINGS.BERSERK] = true;
+        }
+        if (input.buffs?.sunshine) {
+            settingsWithBuffs[SETTINGS.SUNSHINE] = true;
+        }
+        if (input.buffs?.blackhole) {
+            settingsWithBuffs[SETTINGS.BLACKHOLE] = true;
+        }
+        if (input.buffs?.deathSwiftness) {
+            settingsWithBuffs[SETTINGS.DEATH_SWIFTNESS] = true;
+        }
+        if (input.buffs?.splitSoul) {
+            settingsWithBuffs[SETTINGS.SPLIT_SOUL] = true;
+        }
+        if (input.buffs?.splitSoulNecro) {
+            settingsWithBuffs[SETTINGS.SPLIT_SOUL_NECRO] = true;
+        }
     }
 
     // Calculate damage without UI callbacks (headless mode)

@@ -11,13 +11,13 @@ export type AbilityClassification =
     'conjure' | 'proc' | 'perk';
 
 // Ability type categories - 'ability' is used for necro abils
-export type AbilityType = 'basic' | 'threshold' | 'special attack' | 'ability' | 'spell' | 'ultimate' | 'auto'| 'conjure' | 'proc' | 'perk' | 'combatv2_passive_ability';
+export type AbilityType = 'basic' | 'threshold' | 'special attack' | 'ability' | 'spell' | 'ultimate' | 'auto'| 'conjure' | 'proc' | 'perk';
 
 // Combat styles
 export type CombatStyle = 'melee' | 'ranged' | 'magic' | 'necromancy' | 'defence' | 'poison';
 
-// Damage types
-export type DamageType = 'melee' | 'ranged' | 'magic' | 'necrotic' | 'spirit' | 'defence' | 'poison';
+// Damage types (what does the hitsplat look like?)
+export type DamageType = 'melee' | 'ranged' | 'magic' | 'necrotic' | 'spirit' | 'defence' | 'poison' | 'split soul';
 
 // Hit information for channeled abilities
 export interface AbilityHits {

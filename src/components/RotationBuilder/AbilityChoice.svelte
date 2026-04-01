@@ -17,7 +17,8 @@
 <div class="ability-clusters">
     {#each grouped as group}
         {@const filteredAbilities = group.abilities.filter(([key, abil]) =>
-            !["proc", "perk"].includes(getAbilityType(abil)) && (
+            !["proc", "perk"].includes(getAbilityType(abil)) && 
+            (abil.title && abil.icon) && (
             filter === 'all' ||
             (filter === 'owned' && ownedItemsStore.items.has(key)) ||
             (filter === 'popular' && abil.common !== false))

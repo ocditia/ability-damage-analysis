@@ -8,8 +8,9 @@
 
 import { describe, it, expect } from 'vitest';
 import { WEAPONS } from '$lib/data/weapons';
+import { ARMOUR } from '$lib/data/armour';
 import { calc_crit_damage } from '../../rotation_builder/calculation_utils';
-import { SETTINGS } from '../../settings_rb.js';
+import { SETTINGS } from '../../settings_rb';
 import { ABILITIES } from '$lib/data/abilities';
 import { createBlankSettings } from '../test-helpers';
 import { create_damage_object } from '../../rotation_builder/rota_object_helper';
@@ -97,7 +98,7 @@ describe('calc_crit_damage', () => {
     describe("Channeler's Ring", () => {
         it('should add crit damage for magic channel hits (0 stacks)', () => {
             const settings = critDmgSettings({
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHANNELLER_E,
+                [SETTINGS.RING]: ARMOUR.CHANNELLERS_RING_E,
                 [SETTINGS.CHANNELLER_RING_STACKS]: 0,
             });
             settings['ability'] = ABILITIES.ASPHYXIATE_HIT;
@@ -108,7 +109,7 @@ describe('calc_crit_damage', () => {
 
         it('should scale with stacks (4 stacks)', () => {
             const settings = critDmgSettings({
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHANNELLER_E,
+                [SETTINGS.RING]: ARMOUR.CHANNELLERS_RING_E,
                 [SETTINGS.CHANNELLER_RING_STACKS]: 4,
             });
             settings['ability'] = ABILITIES.ASPHYXIATE_HIT;
@@ -119,7 +120,7 @@ describe('calc_crit_damage', () => {
 
         it('should NOT apply to non-channel magic abilities', () => {
             const settings = critDmgSettings({
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHANNELLER_E,
+                [SETTINGS.RING]: ARMOUR.CHANNELLERS_RING_E,
                 [SETTINGS.CHANNELLER_RING_STACKS]: 4,
             });
             settings['ability'] = ABILITIES.DRAGON_BREATH;
@@ -129,7 +130,7 @@ describe('calc_crit_damage', () => {
 
         it('should NOT apply to melee channels', () => {
             const settings = critDmgSettings({
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHANNELLER_E,
+                [SETTINGS.RING]: ARMOUR.CHANNELLERS_RING_E,
                 [SETTINGS.CHANNELLER_RING_STACKS]: 4,
             });
             settings['ability'] = ABILITIES.ASSAULT_HIT;
@@ -141,7 +142,7 @@ describe('calc_crit_damage', () => {
     describe("Champion's Ring", () => {
         it('should add crit damage based on active bleeds (3 bleeds)', () => {
             const settings = critDmgSettings({
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHAMPION_E,
+                [SETTINGS.RING]: ARMOUR.CHAMPIONS_RING_E,
                 [SETTINGS.NUMBER_OF_BLEEDS]: 3,
             });
             settings['ability'] = ABILITIES.REND;
@@ -152,7 +153,7 @@ describe('calc_crit_damage', () => {
 
         it('should NOT apply to non-melee abilities', () => {
             const settings = critDmgSettings({
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHAMPION_E,
+                [SETTINGS.RING]: ARMOUR.CHAMPIONS_RING_E,
                 [SETTINGS.NUMBER_OF_BLEEDS]: 3,
             });
             settings['ability'] = ABILITIES.DRAGON_BREATH;
@@ -164,7 +165,7 @@ describe('calc_crit_damage', () => {
     describe("Stalker's Ring", () => {
         it('should add +3% for ranged with bow', () => {
             const settings = critDmgSettings({
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.STALKER_E,
+                [SETTINGS.RING]: ARMOUR.STALKERS_RING_E,
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
                 [SETTINGS.TH]: WEAPONS.BOW_OF_THE_LAST_GUARDIAN,
             });
@@ -175,7 +176,7 @@ describe('calc_crit_damage', () => {
 
         it('should NOT apply to melee', () => {
             const settings = critDmgSettings({
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.STALKER_E,
+                [SETTINGS.RING]: ARMOUR.STALKERS_RING_E,
                 [SETTINGS.WEAPON]: SETTINGS.WEAPON_VALUES.TH,
                 [SETTINGS.TH]: WEAPONS.BOW_OF_THE_LAST_GUARDIAN,
             });
@@ -201,15 +202,19 @@ describe('calc_crit_damage', () => {
         });
     });
 
-    describe("Tumeken's Resplendence Asphyxiate", () => {
-        it('should add +35% for magic abilities (5pc Tumekens)', () => {
+    describe("Channelled Might", () => {
+        it('Channelled Might should add +15% for magic abilities', () => {
             const settings = critDmgSettings({
-                [SETTINGS.FULLY_CHANNELED_ASPHYX]: true,
-                [SETTINGS.MAGIC_HELMET]: SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE,
-                [SETTINGS.MAGIC_BODY]: SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE,
-                [SETTINGS.MAGIC_LEGS]: SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE,
-                [SETTINGS.MAGIC_GLOVES]: SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE,
-                [SETTINGS.MAGIC_BOOTS]: SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE,
+                [SETTINGS.CHANNELLED_MIGHT]: true,
+            });
+            settings['ability'] = ABILITIES.ASPHYXIATE;
+            const dmgObj = create_damage_object(settings, ABILITIES.ASPHYXIATE);
+            expect(calc_crit_damage(settings, dmgObj)).toBeCloseTo(0.65, 4);
+        });
+
+        it('Greater Channelled Might should add +35% for magic abilities', () => {
+            const settings = critDmgSettings({
+                [SETTINGS.GREATER_CHANNELLED_MIGHT]: true,
             });
             settings['ability'] = ABILITIES.ASPHYXIATE;
             const dmgObj = create_damage_object(settings, ABILITIES.ASPHYXIATE);
@@ -218,7 +223,7 @@ describe('calc_crit_damage', () => {
 
         it('should NOT apply to melee', () => {
             const settings = critDmgSettings({
-                [SETTINGS.FULLY_CHANNELED_ASPHYX]: true,
+                [SETTINGS.CHANNELLED_MIGHT]: true,
             });
             settings['ability'] = ABILITIES.REND;
             const dmgObj = create_damage_object(settings, ABILITIES.REND);
@@ -242,7 +247,7 @@ describe('calc_crit_damage', () => {
         it('Smoke Cloud (melee) + Champion ring (3 bleeds) = 0.5 + 0.06 + 0.045 = 0.605', () => {
             const settings = critDmgSettings({
                 [SETTINGS.SMOKE_CLOUD]: true,
-                [SETTINGS.RING]: SETTINGS.RING_VALUES.CHAMPION_E,
+                [SETTINGS.RING]: ARMOUR.CHAMPIONS_RING_E,
                 [SETTINGS.NUMBER_OF_BLEEDS]: 3,
             });
             settings['ability'] = ABILITIES.REND;

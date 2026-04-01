@@ -6,7 +6,6 @@
     import { offGcdAbilities, prayers, spells, consumables } from '$lib/special/abilities';
     import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
     import { PERKABLE_SLOTS, formatPerkAbbrev } from '$lib/data/perks';
-    import { stripVariantSuffix } from '$lib/utils/gearVariants';
     import ActionIcon from '$components/UI/ActionIcon.svelte';
     import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
 
@@ -21,11 +20,8 @@
     const gearStyleMap = {
         ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necromancy',
     };
-    const iconFolderMap = {
-        ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necro',
-    };
 
-    const iconSize = "md"; // String for ActionIcon - 'sm', 'md' or 'lg'
+    const iconSize = "md";
 
     // Gear row definitions
     const gearRows = [
@@ -34,25 +30,6 @@
         { label: 'J', slots: [GearSlots.RING, GearSlots.NECKLACE, GearSlots.CAPE] },
         { label: 'E', slots: [GearSlots.HELMET, GearSlots.BODY, GearSlots.LEGS, GearSlots.GLOVES, GearSlots.BOOTS] },
     ];
-
-
-    function getIconFolder(item) {
-        if (item.style === 'hybrid') return 'shared';
-        const map = { melee: 'melee', ranged: 'ranged', magic: 'magic', necromancy: 'necro' };
-        return map[item.style] ?? iconFolderMap[style] ?? 'shared';
-    }
-
-    function resolveIcon(item) {
-        const folder = getIconFolder(item);
-        // Try full name first — variants like (or) and (e) often have their own icons
-        return `/gear_icons/${folder}/${item.value}.png`;
-    }
-
-    function resolveIconFallback(item) {
-        const folder = getIconFolder(item);
-        const base = stripVariantSuffix(item.value);
-        return `/gear_icons/${folder}/${base}.png`;
-    }
 
     function getGearRowItems(slots) {
         const gearStyle = gearStyleMap[style] ?? 'ranged';
@@ -73,8 +50,7 @@
                         result.push({
                             title: `${item.text} (${label})`,
                             value: item.value,
-                            icon: resolveIcon(item),
-                            iconFallback: resolveIconFallback(item),
+                            icon: item.icon,
                             slot: item.slot,
                             style: item.style,
                             weaponType: item.weaponType,
@@ -89,8 +65,7 @@
                     result.push({
                         title: perkStr ? `${item.text} (${perkStr})` : item.text,
                         value: item.value,
-                        icon: resolveIcon(item),
-                        iconFallback: resolveIconFallback(item),
+                        icon: item.icon,
                         slot: item.slot,
                         style: item.style,
                         weaponType: item.weaponType,
@@ -135,9 +110,9 @@
             <div class="item-grid">
                 {#each row.items as item}
                     <ActionIcon
+                        type="gear"
                         value={item.value}
-                        folder={getIconFolder(item)}
-                        fallback={item.iconFallback}
+                        src={item.icon}
                         size={iconSize}
                         borderColor={styleColor}
                         title={item.title}

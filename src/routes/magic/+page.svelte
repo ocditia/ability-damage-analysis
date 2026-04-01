@@ -432,21 +432,29 @@
                                     img="/effect_icons/smoke_cloud.png"
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.FULLY_CHANNELED_ASPHYX]}
+                                    bind:setting={settings[SETTINGS.CHANNELLED_MIGHT]}
                                     onchange={() => updateDamages()}
-                                    img="/ability_icons/magic/30x30/asphyxiate.png"
+                                    img="/effect_icons/magic/Channelled_Might.png"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.GREATER_CHANNELLED_MIGHT]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/magic/Channelled_Might.png"
                                 />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.ANIMA_CHARGED]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/magic/Anima_Charged.png"
                                 />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.BLAST_INFUSED]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/magic/Blast_Infused.png"
                                 />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.COMBUSTED]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/magic/Combusted_(status).png"
                                 />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.TELOS_RED_BEAM]}

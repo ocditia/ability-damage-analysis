@@ -87,6 +87,13 @@ export const perks: Record<string, PerkDefinition> = {
         maxRank: 4,
         icon: '/effect_icons/perks/Lunging.webp',
     },
+    crackling: {
+        name: 'Crackling',
+        settingsKey: SETTINGS.CRACKLING,
+        slotType: 'armour',
+        maxRank: 4,
+        icon: '/effect_icons/perks/Crackling.webp',
+    },
     biting: {
         name: 'Biting',
         settingsKey: SETTINGS.BITING,

@@ -2,8 +2,11 @@
     import { keybindStore, keybindActions } from '$lib/stores/keybindStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
     import { allExtraActions } from '$lib/special/abilities';
+    import { abils } from '$lib/data/abilities';
+    import { armour } from '$lib/data/armour';
+    import { weapons } from '$lib/data/weapons';
 
-    let { show = $bindable(false), allAbils = {}, gearTabs = [], phaseBreaks = [] } = $props();
+    let { show = $bindable(false), phaseBreaks = [] } = $props();
 
     // For each sequence index, check if a phase break falls between the previous and current tick
     function getPhaseBreakBefore(i) {
@@ -24,23 +27,17 @@
     let selectedStyles = $state(new Set(allStyles));
     let showHeatmap = $state(false);
 
-    // Flatten gear tabs into a single lookup: title -> { title, icon }
-    let gearLookup = $derived.by(() => {
-        const map = {};
-        for (const tab of gearTabs) {
-            for (const slot of Object.values(tab.gear)) {
-                for (const item of Object.values(slot)) {
-                    if (item?.title) map[item.title] = item;
-                }
-            }
-        }
-        return map;
-    });
-
     // Combined lookup for titles/icons (abilities + extra actions + gear)
     // Include lowercase aliases so keybind keys (often lowercase) resolve correctly
     let lookup = $derived.by(() => {
-        const base = { ...allAbils, ...allExtraActions, ...gearLookup };
+        const base = { ...abils, ...allExtraActions };
+        // Add armour and weapons by key
+        for (const [key, item] of Object.entries(armour)) {
+            if (item?.title && !(key in base)) base[key] = item;
+        }
+        for (const [key, item] of Object.entries(weapons)) {
+            if (item?.title && !(key in base)) base[key] = item;
+        }
         const result = { ...base };
         for (const [key, val] of Object.entries(base)) {
             const lower = key.toLowerCase();
@@ -53,7 +50,7 @@
         ? keybindActions.generateKeypressSequence(
             rotationStore.abilityBar,
             rotationStore.extraActionBar,
-            allAbils,
+            abils,
             allExtraActions
         )
         : { keys: [], ticks: [] });

@@ -172,7 +172,7 @@ function applyStackEffects(ctx: EffectContext): void {
 
     // Devourer's Guard - Soul Reave: each auto generates 1 stack, at 4 generates 1 Residual Soul (resets)
     if (abilityKey === ABILITIES.NECRO_AUTO &&
-        (settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD || settings[SETTINGS.NECRO_MH] === SETTINGS.NECRO_MH_VALUES.DEVOURERS_GUARD_IM)) {
+        (settings[SETTINGS.NECRO_MH] === WEAPONS.DEVOURERS_GUARD || settings[SETTINGS.NECRO_MH] === WEAPONS.DEVOURERS_GUARD_IM)) {
         const currentStacks = settings[SETTINGS.SOUL_REAVE_STACKS] || 0;
         if (currentStacks >= 4) {
             settings[SETTINGS.SOUL_REAVE_STACKS] = 0;

@@ -898,7 +898,7 @@ function calc_crit_damage(settings) {
 
     // channellers ring
     if (
-        (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E) &&
+        (settings[SETTINGS.RING] === ARMOUR.CHANNELLERS_RING_E) &&
         abils[settings['ability']]['parent'] &&
         abils[settings['ability']]['parent'].abilityClassification === 'channel'
     ) {
@@ -906,7 +906,7 @@ function calc_crit_damage(settings) {
     }
 
     // champions ring
-    if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E &&
+    if (settings[SETTINGS.RING] === ARMOUR.CHAMPIONS_RING_E &&
         abils[settings['ability']].mainStyle === 'melee'
     ) {
         crit_buff += 0.015 * settings[SETTINGS.NUMBER_OF_BLEEDS];
@@ -914,7 +914,7 @@ function calc_crit_damage(settings) {
 
     // stalkers ring
     if (abils[settings['ability']].mainStyle === 'ranged' &&
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E &&
+        settings[SETTINGS.RING] === ARMOUR.STALKERS_RING_E &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
         (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)) {
             crit_buff += 0.03;
@@ -1471,6 +1471,8 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.NECKLACE] = settings[SETTINGS.MAGIC_NECKLACE];
         settings[SETTINGS.CAPE] = settings[SETTINGS.MAGIC_CAPE];
         settings[SETTINGS.RING] = settings[SETTINGS.MAGIC_RING];
+        settings[SETTINGS.POCKET] = settings[SETTINGS.MAGIC_POCKET];
+        settings[SETTINGS.AMMO] = settings[SETTINGS.MAGIC_AMMO_SLOT];
     } else if (effectiveStyle == 'ranged') {
         settings[SETTINGS.MH] = settings[SETTINGS.RANGED_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.RANGED_OH];
@@ -1484,6 +1486,8 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.NECKLACE] = settings[SETTINGS.RANGED_NECKLACE];
         settings[SETTINGS.CAPE] = settings[SETTINGS.RANGED_CAPE];
         settings[SETTINGS.RING] = settings[SETTINGS.RANGED_RING];
+        settings[SETTINGS.POCKET] = settings[SETTINGS.RANGED_POCKET];
+        settings[SETTINGS.AMMO] = settings[SETTINGS.RANGED_AMMO_SLOT];
     } else if (effectiveStyle == 'melee') {
         settings[SETTINGS.MH] = settings[SETTINGS.MELEE_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.MELEE_OH];
@@ -1497,6 +1501,8 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.NECKLACE] = settings[SETTINGS.MELEE_NECKLACE];
         settings[SETTINGS.CAPE] = settings[SETTINGS.MELEE_CAPE];
         settings[SETTINGS.RING] = settings[SETTINGS.MELEE_RING];
+        settings[SETTINGS.POCKET] = settings[SETTINGS.MELEE_POCKET];
+        settings[SETTINGS.AMMO] = settings[SETTINGS.MELEE_AMMO_SLOT];
     } else if (effectiveStyle == 'necromancy') {
         settings[SETTINGS.MH] = settings[SETTINGS.NECRO_MH];
         settings[SETTINGS.OH] = settings[SETTINGS.NECRO_OH];
@@ -1510,6 +1516,8 @@ function style_specific_unification(settings, style = null) {
         settings[SETTINGS.NECKLACE] = settings[SETTINGS.NECRO_NECKLACE];
         settings[SETTINGS.CAPE] = settings[SETTINGS.NECRO_CAPE];
         settings[SETTINGS.RING] = settings[SETTINGS.NECRO_RING];
+        settings[SETTINGS.POCKET] = settings[SETTINGS.NECRO_POCKET];
+        settings[SETTINGS.AMMO] = settings[SETTINGS.NECRO_AMMO_SLOT];
     }
 
     // Derive weapon type from the equipped MH weapon

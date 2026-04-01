@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { findBestRotation } from '../rotation-agent';
-import { SETTINGS } from '../settings_rb.js';
+import { SETTINGS } from '../settings_rb';
 import { createBlankSettings } from './test-helpers';
 
 describe('Rotation Agent', () => {
