@@ -22,6 +22,8 @@ export interface GearItem {
     style: EquipmentStyle;
     /** Whether this item is commonly used */
     popular: boolean;
+    /** Icon path from the data file */
+    icon?: string;
     /** Weapon type — only present on weapons */
     weaponType?: string;
 }
@@ -50,12 +52,14 @@ function indexCollection(collection: Record<string, any>) {
         if (!Object.values(GearSlots).includes(slot)) continue;
 
         const weaponType = (piece as any)['weapon type'];
+        const icon = (piece as any).icon as string | undefined;
         const item: GearItem = {
             value: key,
-            text: toDisplayName(key),
+            text: (piece as any).title || toDisplayName(key),
             slot,
             style,
             popular: !!(piece as any).popular,
+            ...(icon ? { icon } : {}),
             ...(weaponType ? { weaponType } : {}),
         };
 

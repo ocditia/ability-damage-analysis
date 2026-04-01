@@ -38,7 +38,6 @@ export function handleWenBuffActivation(
     const excludedAbilities: ABILITIES[] = [
         ABILITIES.GREATER_DEATHS_SWIFTNESS,
         ABILITIES.SPLIT_SOUL_ECB,
-        ABILITIES.DEATHS_SWIFTNESS_DOT,
         ABILITIES.DEATHS_SWIFTNESS,
         ABILITIES.IMBUE_SHADOWS
     ];

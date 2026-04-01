@@ -8,6 +8,8 @@ import { WEAPONS } from '$lib/data/weapons';
     import GearSelection from '../../components/Settings/GearSelection.svelte';
     import PerkSelection from '../../components/Settings/PerkSelection.svelte';
     import FamiliarSelection from '../../components/Settings/FamiliarSelection.svelte';
+    import BuffSelection from '../../components/Settings/BuffSelection.svelte';
+    import InfoTip from '../UI/InfoTip.svelte';
     import GearManager from '../../components/Settings/GearManager.svelte';
     import ActionIcon from '../UI/ActionIcon.svelte';
     import TabButton from '../UI/TabButton.svelte';
@@ -328,9 +330,9 @@ import { WEAPONS } from '$lib/data/weapons';
             isActive={tab === 'equipment'}
             onClick={() => (tab = 'equipment')}
         />
-        <TabButton 
+        <TabButton
             id="bosses"
-            label="Bosses"
+            label="Advanced"
             isActive={tab === 'bosses'}
             onClick={() => (tab = 'bosses')}
         />
@@ -382,6 +384,14 @@ import { WEAPONS } from '$lib/data/weapons';
                             onchange={() => updateDamages()}
                             img="/effect_icons/strength_cape.png"
                         />
+                        <Number
+                        bind:setting={settings[SETTINGS.TIME_SINCE_ATTACK]}
+                        onchange={() => updateDamages()}
+                        img="/effect_icons/cease.png"
+                        step="1"
+                        max="10"
+                        min="0"
+                    />
                     {:else if styleTab == SettingsCombatStyles.NECROMANCY}
                         <Number
                             bind:setting={settings[SETTINGS.NECROMANCY_LEVEL]}
@@ -535,7 +545,10 @@ import { WEAPONS } from '$lib/data/weapons';
                     </div>
                 </div>
                 <div class="md:col-span-1" space-y-2>
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">Stacks</h5>
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">
+                        <InfoTip text="Starting stack values for the rotation. Unselected stacks will be hidden.">
+                            Stacks
+                        </InfoTip></h5>
                     <div class="flex flex-wrap gap-2 justify-center mb-3">
                     {#each Object.keys(stacks) as key}
                         {#if stacks[key].combatStyle === styleTab || stacks[key].combatStyle === SettingsCombatStyles.ALL}
@@ -571,7 +584,13 @@ import { WEAPONS } from '$lib/data/weapons';
                     </div>
                 </div>
                 <div class="md:col-span-1" space-y-2>
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">Adrenaline</h5>
+                    <h5 class="uppercase font-bold text-lg text-center mb-4">
+                        <InfoTip 
+                            text="If expected adrenaline is enabled, the rotation will show the expected adrenaline value. This accounts for the Impatient perk and
+                            [bma:Tsunami Crit Buff].">
+                            Adrenaline
+                        </InfoTip>
+                    </h5>
                     <div class="flex flex-wrap gap-2 justify-center">
                         {#each [
                             { key: SETTINGS.VIGOUR, img: '/gear_icons/shared/ring of vigour.png', title: 'Ring of Vigour' },
@@ -641,6 +660,9 @@ import { WEAPONS } from '$lib/data/weapons';
                 </div>
                 
             {:else if tab === 'bosses'}
+                <div class="md:col-span-1 space-y-4">
+                    <BuffSelection settings={settings} updateDamages={updateDamages} styleFilter={styleTab} />
+                </div>
                 <div class="md:col-span-1 space-y-4">
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Boss Preset</h5>
                     <div class="flex justify-center mb-3">
@@ -716,11 +738,6 @@ import { WEAPONS } from '$lib/data/weapons';
                             width="90px"
                             compact={true}
                         />
-                    </div>
-                </div>
-                <div class="md:col-span-1 space-y-4">
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">Boss Settings</h5>
-                    <div class="space-y-4">
                         <Number
                             bind:setting={settings[SETTINGS.GUARDIANS_TRIUMPH]}
                             onchange={() => updateDamages()}

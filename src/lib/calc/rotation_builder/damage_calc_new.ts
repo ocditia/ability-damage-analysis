@@ -299,7 +299,7 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
  * split portion, and grants adrenaline from critical hits when Tsunami crit buff
  * is active.
  */
-function on_damage(settings: Record<string, any>, dmgObject: DamageObject): DamageObject[] {
+function on_damage(settings: Record<string, any>, dmgObject: DamageObject): { results: DamageObject[], delayed: DamageObject[] } {
     const abilityKey = dmgObject.ability;
     const modifierCtx: DamageModifierContext = { settings, abilityKey };
 
@@ -315,10 +315,11 @@ function on_damage(settings: Record<string, any>, dmgObject: DamageObject): Dama
     });
 
     const results: DamageObject[] = [dmgObject];
-    handleSplitSoul(settings, dmgObject, results);
+    const delayed: DamageObject[] = [];
+    handleSplitSoul(settings, dmgObject, delayed);
     handleCritBuffAdrenaline(settings, dmgObject);
 
-    return results;
+    return { results, delayed };
 }
 
 // ============================================================
@@ -696,7 +697,7 @@ function handleSplitSoul(
     if (
         (!ecbActive && !necroActive) ||
         !['magic', 'melee', 'ranged', 'necrotic'].includes(damageType) ||
-        !hasSoulSplitData
+        !hasSoulSplitData || damageType === 'split soul'
     ) {
         return;
     }

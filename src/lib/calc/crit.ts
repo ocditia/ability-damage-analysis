@@ -74,7 +74,7 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
     }
 
     // leagues pocket
-    if (settings[SETTINGS.POCKET] === SETTINGS.POCKET_VALUES.LEAGUES_POCKET) {
+    if (settings[SETTINGS.POCKET] === ARMOUR.LEAGUES_POCKET) {
         crit_chance += 0.12;
     }
 
@@ -118,19 +118,19 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
 
         //tumeken armour
         let tumekens_resplendence = 0;
-        if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) {
+        if (settings[SETTINGS.MAGIC_HELMET] === ARMOUR.TUMEKENS_MASK) {
             tumekens_resplendence += 1;
         }
-        if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) {
+        if (settings[SETTINGS.MAGIC_BODY] === ARMOUR.TUMEKENS_ROBE_TOP) {
             tumekens_resplendence += 1;
         }
-        if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) {
+        if (settings[SETTINGS.MAGIC_LEGS] === ARMOUR.TUMEKENS_ROBE_BOTTOM) {
             tumekens_resplendence += 1;
         }
-        if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) {
+        if (settings[SETTINGS.MAGIC_BOOTS] === ARMOUR.TUMEKENS_BOOTS) {
             tumekens_resplendence += 1;
         }
-        if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) {
+        if (settings[SETTINGS.MAGIC_GLOVES] === ARMOUR.TUMEKENS_GLOVES) {
             tumekens_resplendence += 1;
         }
         if (settings[SETTINGS.SUNSHINE] === true && tumekens_resplendence >= 3) {
@@ -146,8 +146,8 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
 
         // channeller's ring
         if (
-            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER ||
-                settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E)
+            (settings[SETTINGS.RING] === ARMOUR.CHANNELLERS_RING ||
+                settings[SETTINGS.RING] === ARMOUR.CHANNELLERS_RING_E)
             &&
             abils[abilityKey].parent && abils[abils[abilityKey].parent].abilityClassification === 'channel'
         ) {
@@ -204,9 +204,9 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
 
     if (abils[abilityKey].mainStyle === 'melee') {
         // champion's ring
-        if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E) {
+        if (settings[SETTINGS.RING] === ARMOUR.CHAMPIONS_RING || settings[SETTINGS.RING] === ARMOUR.CHAMPIONS_RING_E) {
             crit_chance += 0.03;
-            if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E) {
+            if (settings[SETTINGS.RING] === ARMOUR.CHAMPIONS_RING_E) {
                 crit_chance += 0.01;
             }
         }
@@ -247,12 +247,12 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
     if (abils[abilityKey].mainStyle === 'ranged') {
         // stalker's ring
         if (
-            (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER || settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E) &&
+            (settings[SETTINGS.RING] === ARMOUR.STALKERS_RING || settings[SETTINGS.RING] === ARMOUR.STALKERS_RING_E) &&
             settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-            (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)
+            (weapons[settings[SETTINGS.TH]].type === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)
         ) {
             crit_chance += 0.03;
-            if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E &&
+            if (settings[SETTINGS.RING] === ARMOUR.STALKERS_RING_E &&
                 (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)) {
                 crit_chance+= 0.01;
             }
@@ -318,7 +318,7 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
     }
     
     if (
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E &&
+        settings[SETTINGS.RING] === ARMOUR.CHANNELLERS_RING_E &&
         isChannelledHit(abils[abilityKey]) &&
         getAbilityStyle(abils[abilityKey]) === 'magic'
     ) {
@@ -327,7 +327,7 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
 
     // Champion's ring (melee, based on bleeds)
     if (
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E &&
+        settings[SETTINGS.RING] === ARMOUR.CHAMPIONS_RING_E &&
         abils[settings['ability']]?.mainStyle === 'melee'
     ) {
         crit_buff += 0.015 * settings[SETTINGS.NUMBER_OF_BLEEDS];
@@ -335,9 +335,9 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
     // Stalker's ring (ranged with bow)
     if (
         abils[settings['ability']]?.mainStyle === 'ranged' &&
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E &&
+        settings[SETTINGS.RING] === ARMOUR.STALKERS_RING_E &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
-        (weapons[settings[SETTINGS.TH]]?.['type'] === 'bow' ||
+        (weapons[settings[SETTINGS.TH]]?.type === 'bow' ||
             settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)
     ) {
         crit_buff += 0.03;

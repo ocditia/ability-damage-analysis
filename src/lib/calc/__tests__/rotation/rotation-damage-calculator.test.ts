@@ -7,7 +7,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { calculateRotationDamageCore } from '../../rotation_builder/rotation-damage-calculator';
-import { SETTINGS } from '../../settings_rb.js';
+import { SETTINGS } from '../../settings_rb';
 import {
     createBaseSettings,
     createMeleeSettings,

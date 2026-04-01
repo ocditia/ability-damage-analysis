@@ -16,7 +16,7 @@ import { describe, it, expect } from 'vitest';
 import { ARMOUR } from '$lib/data/armour';
 import { WEAPONS } from '$lib/data/weapons';
 import { applyStyleBoostedADEffects } from '../../rotation_builder/effects';
-import { SETTINGS } from '../../settings_rb.js';
+import { SETTINGS } from '../../settings_rb';
 import { ABILITIES } from '$lib/data/abilities';
 import { DamageDistribution } from '../../types';
 import { createBlankSettings } from '../test-helpers';

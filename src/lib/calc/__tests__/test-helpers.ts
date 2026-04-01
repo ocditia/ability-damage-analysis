@@ -5,7 +5,7 @@
  * for testing damage calculations across different scenarios.
  */
 
-import { SETTINGS } from '../settings_rb.js';
+import { SETTINGS } from '../settings_rb';
 import { ARMOUR } from '$lib/data/armour';
 
 /**

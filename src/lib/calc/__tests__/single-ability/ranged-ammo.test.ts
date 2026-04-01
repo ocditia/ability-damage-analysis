@@ -8,7 +8,7 @@ import { describe, it, expect } from 'vitest';
 import { ARMOUR } from '$lib/data/armour';
 import { WEAPONS } from '$lib/data/weapons';
 import { calculateSingleAbilityDamage } from '../../unified-damage-calculator';
-import { SETTINGS } from '../../settings_rb.js';
+import { SETTINGS } from '../../settings_rb';
 import { ABILITIES } from '$lib/data/abilities';
 import { createBlankSettings } from '../test-helpers';
 

@@ -36,7 +36,7 @@ export function initializeSettings() {
     settingsStore.settings[SETTINGS.NATURAL_INSTINCT].value = false;
     settingsStore.settings[SETTINGS.SMOKE_CLOUD].value = false;
     settingsStore.settings[SETTINGS.CHAIN_MODIFIER].value = SETTINGS.CHAIN_MODIFIER_VALUES.NONE;
-    // settingsStore.settings[SETTINGS.KERAPACS_WRIST_WRAPS].value = false;
+    settingsStore.settings[SETTINGS.KERAPACS_WRIST_WRAPS].value = false;
     
     settingsStore.initialized = true;
 }

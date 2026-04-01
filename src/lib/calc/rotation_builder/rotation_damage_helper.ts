@@ -139,8 +139,15 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
                 timers[SETTINGS.KERAPACS_WRIST_WRAPS] = 10; // 6 seconds = 10 ticks
             }
             break;
+        case ABILITIES.GREATER_BARGE:
+            // Endless Assault: activates when 8+ ticks since last attack
+            if (settings[SETTINGS.TIME_SINCE_ATTACK] >= 8) {
+                settings[SETTINGS.ENDLESS_ASSAULT] = true;
+                timers[SETTINGS.ENDLESS_ASSAULT] = 10; // 6 seconds = 10 ticks
+            }
+            break;
         case ABILITIES.INSTABILITY:
-            settings[SETTINGS.INSTABILITY] = true; 
+            settings[SETTINGS.INSTABILITY] = true;
             timers[SETTINGS.INSTABILITY] = 50;
             break;
         case ABILITIES.TSUNAMI:
@@ -383,11 +390,11 @@ export function handle_channeled_asphyx(settings: Record<string, any>, timers: R
     if (abilityKey !== ABILITIES.ASPHYXIATE_LAST_HIT && abilityKey !== ABILITIES.TUMEKEN_ASPHYXIATE_LAST_HIT) return;
 
     let tumekensCount = 0;
-    if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
-    if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
-    if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
-    if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
-    if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) tumekensCount++;
+    if (settings[SETTINGS.MAGIC_HELMET] === ARMOUR.TUMEKENS_MASK) tumekensCount++;
+    if (settings[SETTINGS.MAGIC_BODY] === ARMOUR.TUMEKENS_ROBE_TOP) tumekensCount++;
+    if (settings[SETTINGS.MAGIC_LEGS] === ARMOUR.TUMEKENS_ROBE_BOTTOM) tumekensCount++;
+    if (settings[SETTINGS.MAGIC_GLOVES] === ARMOUR.TUMEKENS_GLOVES) tumekensCount++;
+    if (settings[SETTINGS.MAGIC_BOOTS] === ARMOUR.TUMEKENS_BOOTS) tumekensCount++;
 
     if (tumekensCount >= 5) {
         settings[SETTINGS.GREATER_CHANNELLED_MIGHT] = true;
@@ -405,7 +412,7 @@ export function handle_channeled_asphyx(settings: Record<string, any>, timers: R
  * 9 second buff (15 ticks) that enhances the next Asphyxiate.
  */
 export function handleChannellers(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
-    if (![SETTINGS.RING_VALUES.CHANNELLER, SETTINGS.RING_VALUES.CHANNELLER_E].includes(settings[SETTINGS.RING])) return;
+    if (![ARMOUR.CHANNELLERS_RING, ARMOUR.CHANNELLERS_RING_E].includes(settings[SETTINGS.RING])) return;
     settings[SETTINGS.CHANNELLER_RING_STACKS] += 1;
 }
 

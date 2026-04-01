@@ -15,7 +15,7 @@
     import RotationConfigManager from '../../components/RotationBuilder/RotationConfigManager.svelte';
     import KeybindConfigModal from '../../components/RotationBuilder/KeybindConfigModal.svelte';
     import KeypressOutputModal from '../../components/RotationBuilder/KeypressOutputModal.svelte';
-    import { rangedGear, meleeGear, magicGear, necroGear, sharedGear, allExtraActions } from '$lib/special/abilities';
+    import { allExtraActions } from '$lib/special/abilities';
     import * as eventHandlers from '$lib/utils/rotationEventHandlers';
     import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
     import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
@@ -511,7 +511,9 @@
         for (let i = 0; i < bar.length; i++) {
             const abilKey = bar[i];
             if (!abilKey) continue;
-            const resolved = resolveAbility(abilKey);
+            // Use resolved ability from tickMetadata if available (accounts for runtime swaps)
+            const meta = rotationStore.tickMetadata?.[i];
+            const resolved = meta?.resolvedAbility ?? resolveAbility(abilKey);
             const abil = abils[resolved];
             if (!abil) continue;
 
@@ -527,7 +529,7 @@
             }
 
             // Update GCD: minimum 3 ticks, or ability duration if channelled
-            const duration = getAbilityDuration(abil);
+            const duration = meta?.duration ?? getAbilityDuration(abil);
             const gcd = Math.max(3, duration);
             nextGcdTick = i + gcd;
 
@@ -549,10 +551,12 @@
         for (let i = 0; i < bar.length; i++) {
             const abilKey = bar[i];
             if (!abilKey) continue;
-            const resolved = resolveAbility(abilKey);
+            // Use the resolved ability from tickMetadata if available (accounts for runtime swaps like Endless Assault)
+            const meta = rotationStore.tickMetadata?.[i];
+            const resolved = meta?.resolvedAbility ?? resolveAbility(abilKey);
             const abil = abils[resolved];
             if (!abil || abil.abilityClassification !== 'channel') continue;
-            const duration = getAbilityDuration(abil);
+            const duration = meta?.duration ?? getAbilityDuration(abil);
             // Mark ticks after the cast tick as channel ticks (up to duration or next ability)
             for (let t = i + 1; t < i + duration && t < bar.length; t++) {
                 if (bar[t] != null) break; // Channel cancelled by next ability
@@ -1454,24 +1458,10 @@
 
 <KeybindConfigModal
     bind:show={showKeybindModal}
-    abilityTabs={tabs}
-    gearTabs={[
-        { id: 'ranged', label: 'Ranged', gear: { ...rangedGear, ...sharedGear } },
-        { id: 'melee', label: 'Melee', gear: { ...meleeGear, ...sharedGear } },
-        { id: 'magic', label: 'Magic', gear: { ...magicGear, ...sharedGear } },
-        { id: 'necro', label: 'Necro', gear: { ...necroGear, ...sharedGear } },
-    ]}
 />
 
 <KeypressOutputModal
     bind:show={showKeypressModal}
-    {allAbils}
-    gearTabs={[
-        { id: 'ranged', label: 'Ranged', gear: { ...rangedGear, ...sharedGear } },
-        { id: 'melee', label: 'Melee', gear: { ...meleeGear, ...sharedGear } },
-        { id: 'magic', label: 'Magic', gear: { ...magicGear, ...sharedGear } },
-        { id: 'necro', label: 'Necro', gear: { ...necroGear, ...sharedGear } },
-    ]}
     phaseBreaks={phaseMarkers.map(m => ({ tick: (m.pauseEnd ?? m.tick) + 1, label: m.label }))}
 />
 

@@ -27,11 +27,11 @@ type OnTickCallback = (tick: number, settings: any, timers: Record<string, numbe
 /** Count equipped Tumeken's Resplendence pieces (uses per-style MAGIC_ keys) */
 function countTumekensResplendence(settings: Record<string, any>): number {
     let count = 0;
-    if (settings[SETTINGS.MAGIC_HELMET] === SETTINGS.MAGIC_HELMET_VALUES.TUMEKENS_RESPLENDENCE) count++;
-    if (settings[SETTINGS.MAGIC_BODY] === SETTINGS.MAGIC_BODY_VALUES.TUMEKENS_RESPLENDENCE) count++;
-    if (settings[SETTINGS.MAGIC_LEGS] === SETTINGS.MAGIC_LEGS_VALUES.TUMEKENS_RESPLENDENCE) count++;
-    if (settings[SETTINGS.MAGIC_BOOTS] === SETTINGS.MAGIC_BOOTS_VALUES.TUMEKENS_RESPLENDENCE) count++;
-    if (settings[SETTINGS.MAGIC_GLOVES] === SETTINGS.MAGIC_GLOVES_VALUES.TUMEKENS_RESPLENDENCE) count++;
+    if (settings[SETTINGS.MAGIC_HELMET] === ARMOUR.TUMEKENS_MASK) count++;
+    if (settings[SETTINGS.MAGIC_BODY] === ARMOUR.TUMEKENS_ROBE_TOP) count++;
+    if (settings[SETTINGS.MAGIC_LEGS] === ARMOUR.TUMEKENS_ROBE_BOTTOM) count++;
+    if (settings[SETTINGS.MAGIC_BOOTS] === ARMOUR.TUMEKENS_BOOTS) count++;
+    if (settings[SETTINGS.MAGIC_GLOVES] === ARMOUR.TUMEKENS_GLOVES) count++;
     return count;
 }
 
@@ -647,11 +647,33 @@ function processCurrentTickCore(
     // Swap asphyxiate for Tumeken's variant if wearing 4+ pieces
     abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
 
+    // Endless Assault: convert melee channels to multihit when Greater Barge buff is active
+    if (settingsCopy[SETTINGS.ENDLESS_ASSAULT] === true) {
+        if (abilityKey === ABILITIES.ASSAULT) {
+            abilityKey = ABILITIES.ASSAULT_BARGE;
+            settingsCopy[SETTINGS.ENDLESS_ASSAULT] = false;
+            delete state.timers[SETTINGS.ENDLESS_ASSAULT];
+        } else if (abilityKey === ABILITIES.GREATER_FLURRY) {
+            abilityKey = ABILITIES.GREATER_FLURRY_BARGE;
+            settingsCopy[SETTINGS.ENDLESS_ASSAULT] = false;
+            delete state.timers[SETTINGS.ENDLESS_ASSAULT];
+        } else if (abilityKey === ABILITIES.FLURRY) {
+            abilityKey = ABILITIES.FLURRY_BARGE;
+            settingsCopy[SETTINGS.ENDLESS_ASSAULT] = false;
+            delete state.timers[SETTINGS.ENDLESS_ASSAULT];
+        }
+    }
+
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
     state.tickMetadata[state.tick] = { resolvedAbility: abilityKey, duration: abil_duration };
     settingsCopy['ability'] = abilityKey;
 
     processAbilityCore(state, settingsCopy, abilityKey as ABILITIES, abil_duration, rotation, onTick);
+
+    // Reset time since last attack after the ability has been processed
+    // (Greater Barge reads this value in handleBuffs before we reset it)
+    // Set to -1 because processTickOperationsCore will increment it to 0 on this same tick
+    settingsCopy[SETTINGS.TIME_SINCE_ATTACK] = -1;
 }
 
 /**
@@ -694,6 +716,9 @@ function processTickOperationsCore(
     // Ability hits are already checked per-hit inside processQueuedDamage
     checkPhaseTransition(state, settingsCopy);
     updateBossHpPercent(state, settingsCopy);
+
+    // Track time since last attack (increments every tick, reset by ability casts)
+    settingsCopy[SETTINGS.TIME_SINCE_ATTACK] = (settingsCopy[SETTINGS.TIME_SINCE_ATTACK] ?? 0) + 1;
 
     state.tick += 1;
 }
@@ -1232,15 +1257,25 @@ function processMultiHitAbility(
     abilityKey: string,
     hit_tick: number
 ) {
+    const hitTimings: number[] = abils[abilityKey as ABILITIES]?.hitTimings ?? [];
+    let subHitIndex = 0;
 
     let dmgObject = create_damage_object(settingsCopy, abilityKey);
     let dmgObjects = on_cast(settingsCopy, dmgObject, state.timers, abilityKey);
     dmgObjects.forEach(element => {
+        // Determine tick offset: sub-hits of the parent ability use hitTimings, procs land with the previous sub-hit
+        const parentAbil = abils[abilityKey as ABILITIES]?.parent;
+        const hitParent = abils[element.ability as ABILITIES]?.parent;
+        const isSubHit = hitParent === abilityKey || hitParent === parentAbil || element.ability === abilityKey;
+        const tickOffset = hitTimings[isSubHit ? subHitIndex : Math.max(0, subHitIndex - 1)] ?? 0;
+        if (isSubHit) subHitIndex++;
+
+        const targetTick = hit_tick + tickOffset;
         let namedDmgObjects = on_hit(settingsCopy, element, state.timers, element.ability);
         namedDmgObjects.forEach(namedDmgObject => {
             namedDmgObject = settingsCopy.isNulledTick ? zeroDamageObject(namedDmgObject) : namedDmgObject;
-            state.damageQueue[hit_tick] ??= [];
-            state.damageQueue[hit_tick].push(namedDmgObject);
+            state.damageQueue[targetTick] ??= [];
+            state.damageQueue[targetTick].push(namedDmgObject);
         });
     });
 }
@@ -1396,7 +1431,11 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
         // when Roar of Awakening or Ode to Deceit equipped
         handleEssenceCorruptionStack(namedDmgObject.ability, settingsCopy);
 
-        const damageObjects = on_damage(settingsCopy, namedDmgObject);
+        const { results: damageObjects, delayed } = on_damage(settingsCopy, namedDmgObject);
+        // Queue delayed hits (e.g. Split Soul) for the next tick
+        for (const delayedObj of delayed) {
+            (state.damageQueue[tick + 1] ??= []).push(delayedObj);
+        }
         for (const dmgObj of damageObjects) {
             const softCap = settingsCopy['_softCap'];
             let dmg = applySoftCap(get_user_value(settingsCopy, dmgObj), softCap);
@@ -1740,6 +1779,11 @@ function getCracklingVariant(combatStyle: string): ABILITIES {
 
 function handleCrackling(state: RotationState, settingsCopy: any) {
     // Crackling procs every 60 seconds (100 ticks), dealing 50% * rank of ability damage
+
+    // Crackling doesn't proc before the first non-nulled ability or after the last ability
+    if (state.firstAbilityTick < 0 || state.tick < state.firstAbilityTick) return;
+    if (state.lastAbilityTick < 0 || state.tick > state.lastAbilityTick) return;
+
     const rank = settingsCopy[SETTINGS.CRACKLING];
     if (state.tick > 0 && state.tick % 100 === 0 && rank > 0) {
         const cracklingAbility = getCracklingVariant(state.combatStyle);

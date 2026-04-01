@@ -5,7 +5,6 @@
     import Header from '$components/Layout/Header.svelte';
     import Navbar from '$components/Layout/Navbar.svelte';
     import RotationSettings from '$components/Settings/RotationSettings.svelte';
-    import BuffSelection from '$components/Settings/BuffSelection.svelte';
     import GearManager from '$components/Settings/GearManager.svelte';
 
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
@@ -305,12 +304,6 @@
                     >
                         Manage Gear
                     </button>
-                </div>
-                <div class="card mb-4">
-                    <BuffSelection
-                        settings={settingsStore.settings}
-                        updateDamages={updateTrace}
-                    />
                 </div>
                 <div class="card">
                     <RotationSettings

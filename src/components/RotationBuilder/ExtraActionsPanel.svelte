@@ -285,7 +285,7 @@
     function getTickBuffs(tick) {
         if (!rotationStore.buffs || tick === undefined || tick < 0) return [];
         return Object.entries(rotationStore.buffs)
-            .filter(([_, buff]) => buff.buffTicks && buff.buffTicks[tick])
+            .filter(([_, buff]) => buff.buffTicks && buff.buffTicks[tick] && buff.buffTicks[tick] !== 'none')
             .map(([key, buff]) => ({ key, title: buff.title, colour: buff.colour }));
     }
 
@@ -345,7 +345,11 @@
         return { total: 0, mean: 0, min: 0, max: 0 };
     }
 
-    function formatDamage(damage) {
+    function formatDamage(damage, full = false) {
+        if (full) {
+            // View full number, not abbreviated
+            return damage.toLocaleString();
+        }
         if (damage >= 1000000) {
             return (damage / 1000000).toFixed(1) + 'M';
         } else if (damage >= 1000) {
@@ -503,8 +507,8 @@
                                         {/if}
                                         {#if hit.hits > 1}<span class="text-xs text-gray-500">&times;{hit.hits}</span>{/if}
                                     </span>
-                                    <span class="damage-val">{formatDamage(hit.expected)}</span>
-                                    <span class="text-xs text-gray-500">({formatDamage(hit.min)}-{formatDamage(hit.max)})</span>
+                                    <span class="damage-val">{formatDamage(hit.expected, true)}</span>
+                                    <span class="text-xs text-gray-500">({formatDamage(hit.min, true)} - {formatDamage(hit.max, true)})</span>
                                 </div>
                             {/each}
                         </div>

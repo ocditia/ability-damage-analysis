@@ -3,80 +3,114 @@
     import { ownedItemsStore, ownedItemsActions } from '$lib/stores/ownedItemsStore.svelte.js';
     import { notifActions } from '$lib/stores/notificationStore.svelte.js';
     import { allExtraActions } from '$lib/special/abilities';
+    import { abils } from '$lib/data/abilities';
+    import { armour } from '$lib/data/armour';
+    import { weapons } from '$lib/data/weapons';
 
     export let show = false;
-    export let abilityTabs = []; // [{ id, label, abilities: { key: { title, icon } } }]
-    export let gearTabs = [];   // [{ id, label, gear: { [slot]: { [KEY]: { title, icon } } } }]
 
     let filter = '';
     let activeTab = 'all';
 
-    // Flatten gear data from nested slot structure into entries
-    function flattenGear(gearBySlot) {
+    const STYLES = [
+        { id: 'melee', label: 'Melee' },
+        { id: 'ranged', label: 'Ranged' },
+        { id: 'magic', label: 'Magic' },
+        { id: 'necromancy', label: 'Necro' },
+        { id: 'defence', label: 'Defence' },
+    ];
+
+    // Build ability entries from abils data, grouped by style
+    function getAbilityEntries(styleId) {
         const entries = [];
-        const seen = new Set();
-        for (const slot of Object.values(gearBySlot)) {
-            for (const item of Object.values(slot)) {
-                if (!seen.has(item.title)) {
-                    seen.add(item.title);
-                    entries.push({ key: item.title, title: item.title, icon: item.icon });
-                }
-            }
+        for (const [key, abil] of Object.entries(abils)) {
+            if (!abil.icon || !abil.title) continue;
+            if (abil.mainStyle !== styleId) continue;
+            entries.push({ key, title: abil.title, icon: abil.icon, group: styleId });
         }
         return entries;
     }
 
-    // Build sections: style tabs + gear + extras
+    // Build gear entries from armour + weapons data, grouped by style
+    // Hybrid items are collected once under 'Shared Gear', not per-style
+    function getGearEntries(styleId, seen = new Set()) {
+        const entries = [];
+
+        for (const [key, item] of Object.entries(armour)) {
+            if (!item.title || key === 'none') continue;
+            if (item.style !== styleId) continue;
+            if (seen.has(key)) continue;
+            seen.add(key);
+            entries.push({ key, title: item.title, icon: item.icon, group: styleId + ' Gear' });
+        }
+        for (const [key, item] of Object.entries(weapons)) {
+            if (!item.title || key === 'none') continue;
+            if (item.style !== styleId) continue;
+            if (seen.has(key)) continue;
+            seen.add(key);
+            entries.push({ key, title: item.title, icon: item.icon, group: styleId + ' Gear' });
+        }
+        return entries;
+    }
+
+    function getSharedGearEntries(seen = new Set()) {
+        const entries = [];
+        for (const [key, item] of Object.entries(armour)) {
+            if (!item.title || key === 'none') continue;
+            if (item.style !== 'hybrid') continue;
+            if (seen.has(key)) continue;
+            seen.add(key);
+            entries.push({ key, title: item.title, icon: item.icon, group: 'Shared Gear' });
+        }
+        for (const [key, item] of Object.entries(weapons)) {
+            if (!item.title || key === 'none') continue;
+            if (item.style !== 'hybrid') continue;
+            if (seen.has(key)) continue;
+            seen.add(key);
+            entries.push({ key, title: item.title, icon: item.icon, group: 'Shared Gear' });
+        }
+        return entries;
+    }
+
+    // Build sections
     $: sections = [
         { id: 'all', label: 'All' },
-        ...abilityTabs.map(t => ({ id: t.id, label: t.label })),
+        ...STYLES.map(s => ({ id: s.id, label: s.label })),
         { id: 'gear', label: 'Gear' },
         { id: 'extra', label: 'Off-GCD / Items' }
     ];
 
-    // Get abilities for current tab
+    // Get entries for current tab
     $: visibleAbilities = getVisibleAbilities(activeTab, filter);
 
     function getVisibleAbilities(tab, filterText) {
         let entries = [];
         const f = filterText.toLowerCase();
-        const seenGear = new Set();
-
-        function addGearItems(gearTab, groupSuffix = '') {
-            for (const item of flattenGear(gearTab.gear)) {
-                if (seenGear.has(item.key)) continue;
-                seenGear.add(item.key);
-                entries.push({ ...item, group: gearTab.label + groupSuffix });
-            }
-        }
 
         if (tab === 'all') {
-            for (const t of abilityTabs) {
-                for (const [key, abil] of Object.entries(t.abilities)) {
-                    if (abil.icon) entries.push({ key, ...abil, group: t.label });
-                }
+            for (const s of STYLES) {
+                entries.push(...getAbilityEntries(s.id));
             }
-            for (const gt of gearTabs) {
-                addGearItems(gt, ' Gear');
+            const seen = new Set();
+            for (const s of STYLES) {
+                entries.push(...getGearEntries(s.id, seen));
             }
+            entries.push(...getSharedGearEntries(seen));
             for (const [key, abil] of Object.entries(allExtraActions)) {
                 entries.push({ key, ...abil, group: 'Off-GCD / Items' });
             }
         } else if (tab === 'gear') {
-            for (const gt of gearTabs) {
-                addGearItems(gt);
+            const seen = new Set();
+            for (const s of STYLES) {
+                entries.push(...getGearEntries(s.id, seen));
             }
+            entries.push(...getSharedGearEntries(seen));
         } else if (tab === 'extra') {
             for (const [key, abil] of Object.entries(allExtraActions)) {
                 entries.push({ key, ...abil, group: 'Off-GCD / Items' });
             }
         } else {
-            const tabData = abilityTabs.find(t => t.id === tab);
-            if (tabData) {
-                for (const [key, abil] of Object.entries(tabData.abilities)) {
-                    if (abil.icon) entries.push({ key, ...abil, group: tabData.label });
-                }
-            }
+            entries.push(...getAbilityEntries(tab));
         }
 
         if (f) {
@@ -136,7 +170,7 @@
     >
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Configure Keybinds</h2>
+                <h2 class="modal-title">Configure Ownership & Keybinds</h2>
                 <button class="close-btn" onclick={close}>x</button>
             </div>
 

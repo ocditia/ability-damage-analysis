@@ -79,7 +79,7 @@ export enum ABILITIES {
     IMBUE_SHADOWS = 'imbue shadows',
     
     // Range Ults
-    DEADSHOT_INITIAL = 'deadshot initial',
+    DEADSHOT_HIT = 'deadshot initial',
     DEADSHOT = 'deadshot',
     IGNEOUS_DEADSHOT_HIT = 'igneous_deadshot_hit',
     IGNEOUS_DEADSHOT = 'igneous_deadshot',
@@ -216,8 +216,10 @@ export enum ABILITIES {
     // Melee Enhanced
     ASSAULT_HIT = 'assault hit',
     ASSAULT = 'assault',
+    ASSAULT_BARGE = 'assault barge',
     GREATER_FLURRY_HIT = 'greater flurry hit',
     GREATER_FLURRY = 'greater flurry',
+    GREATER_FLURRY_BARGE = 'greater flurry barge',
     HURRICANE_1 = 'hurricane 1',
     HURRICANE_2 = 'hurricane 2',
     HURRICANE = 'hurricane',
@@ -229,6 +231,7 @@ export enum ABILITIES {
     MASSACRE = 'massacre',
     FLURRY_HIT = 'flurry hit',
     FLURRY = 'flurry',
+    FLURRY_BARGE = 'flurry barge',
     
     // Melee Ults
     OVERPOWER_HIT = 'overpower hit',
@@ -585,6 +588,27 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         title: 'Greater flurry',
         icon: '/ability_icons/melee/30x30/gflurry.png',
     },
+    // Greater Barge → Greater Flurry (Endless Assault): channel converted to multihit
+    [ABILITIES.GREATER_FLURRY_BARGE]: {
+        minHit: 0.6,
+        varHit: 0.1,
+        onHitEffects: true,
+        critEffects: true,
+        damagePotentialEffects: true,
+        abilityClassification: 'multihit',
+        abilityType: 'threshold',
+        mainStyle: 'melee',
+        damageType: 'melee',
+        duration: 3,
+        hits: {
+            1: [ABILITIES.GREATER_FLURRY_HIT, ABILITIES.GREATER_FLURRY_HIT, ABILITIES.GREATER_FLURRY_HIT, ABILITIES.GREATER_FLURRY_HIT,
+                ABILITIES.GREATER_FLURRY_HIT, ABILITIES.GREATER_FLURRY_HIT, ABILITIES.GREATER_FLURRY_HIT, ABILITIES.GREATER_FLURRY_HIT]
+        },
+        adrenaline: 25,
+        cooldown: 20.4,
+        hitTimings: [0, 1, 2, 3, 4, 5, 6, 7],
+        parent: ABILITIES.GREATER_FLURRY,
+    },
     [ABILITIES.ASSAULT_HIT]: {
         // ability name
         minHit: 1.3, // min % of abil expressed as a decimal
@@ -625,6 +649,26 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hitTimings: [0, 2, 4, 6],
         title: 'Assault',
         icon: '/ability_icons/melee/30x30/assault.png',
+    },
+    // Greater Barge → Assault (Endless Assault): channel converted to multihit, player free to act
+    [ABILITIES.ASSAULT_BARGE]: {
+        minHit: 1.3,
+        varHit: 0.2,
+        onHitEffects: true,
+        critEffects: true,
+        damagePotentialEffects: true,
+        abilityClassification: 'multihit',
+        abilityType: 'threshold',
+        mainStyle: 'melee',
+        damageType: 'melee',
+        duration: 3,
+        hits: {
+            1: [ABILITIES.ASSAULT_HIT, ABILITIES.ASSAULT_HIT, ABILITIES.ASSAULT_HIT, ABILITIES.ASSAULT_HIT],
+        },
+        adrenaline: 25,
+        cooldown: 6,
+        hitTimings: [0, 2, 4, 6],
+        parent: ABILITIES.ASSAULT,
     },
     [ABILITIES.HURRICANE_1]: {
         // ability name
@@ -744,6 +788,27 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         title: 'Flurry',
         icon: '/ability_icons/melee/30x30/flurry.png',
     },
+    // Greater Barge → Flurry (Endless Assault): channel converted to multihit
+    [ABILITIES.FLURRY_BARGE]: {
+        minHit: 0.6,
+        varHit: 0.1,
+        onHitEffects: true,
+        critEffects: true,
+        damagePotentialEffects: true,
+        abilityClassification: 'multihit',
+        abilityType: 'threshold',
+        mainStyle: 'melee',
+        damageType: 'melee',
+        duration: 3,
+        hits: {
+            1: [ABILITIES.FLURRY_HIT, ABILITIES.FLURRY_HIT, ABILITIES.FLURRY_HIT, ABILITIES.FLURRY_HIT,
+                ABILITIES.FLURRY_HIT, ABILITIES.FLURRY_HIT, ABILITIES.FLURRY_HIT, ABILITIES.FLURRY_HIT],
+        },
+        adrenaline: 25,
+        cooldown: 20.4,
+        hitTimings: [0, 1, 2, 3, 4, 5, 6, 7],
+        parent: ABILITIES.FLURRY,
+    },
     [ABILITIES.DISMEMBER_HIT]: {
         // ability name
         minHit: 0.25, // min % of abil expressed as a decimal
@@ -837,8 +902,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'bleed', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee' // basic, threshold, special attack, ability (necromancy classification), ultimate
-    ,
+        damageType: 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
         cooldown: 60},
     [ABILITIES.MASSACRE]: {
         // ability name
@@ -848,7 +912,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         critEffects: false, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
         abilityClassification: 'bleed', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        abilityType: 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee', // basic, threshold, special attack, ability (necromancy classification), ultimate
         hits: {
@@ -863,8 +927,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             ]
         },
         hitTimings: [1, 2, 6, 10, 14, 18, 22],
-        cooldown: 60
-    ,
+        adrenaline: 25,
+        cooldown: 60,
         title: 'Massacre',
         icon: '/ability_icons/melee/Massacre.png',
     },
@@ -3667,7 +3731,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'self cast',
         abilityType: 'spell',
         mainStyle: 'necromancy',
-        damageType: 'necrotic',
+        damageType: 'split soul',
         cooldown: 60,
         title: 'Split Soul',
         icon: '/ability_icons/necro/incantations/Split_Soul_icon.png',
@@ -3735,7 +3799,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'basic',
         mainStyle: 'ranged',
         damageType: 'ranged',
-        hitTimings: [0, 0, 0, 0, 0, 0, 0],
+        hitTimings: [1, 2, 2, 2, 2, 2, 2, 2],
         hits: {
             1: [
                 ABILITIES.GREATER_RICOCHET_1,
@@ -3854,27 +3918,25 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'ranged',
-        damageType: 'ranged'
-    ,
+        damageType: 'ranged',
         cooldown: 20.4},
     [ABILITIES.SNAP_SHOT]: {
-            // ability name
-            minHit: 0.45, // min % of abil expressed as a decimal
-            varHit: 0.1,
-            onHitEffects: true, // does the ability get on-hit effects
-            critEffects: true, // can the ability crit
-            damagePotentialEffects: true, // is the ability affected by damage potential
-            abilityClassification: 'multihit', // bleed, dot, burn, channel, regular, multihit
-            abilityType: 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
-            mainStyle: 'ranged',
-            damageType: 'ranged',
-            hitTimings: [0, 0], 
-            hits: {
-                1: [ABILITIES.SNAP_SHOT_HIT, 'next hit', ABILITIES.SNAP_SHOT_HIT]
-            },
-            adrenaline: 25,
-            cooldown: 0
-        ,
+        // ability name
+        minHit: 0.45, // min % of abil expressed as a decimal
+        varHit: 0.1,
+        onHitEffects: true, // does the ability get on-hit effects
+        critEffects: true, // can the ability crit
+        damagePotentialEffects: true, // is the ability affected by damage potential
+        abilityClassification: 'multihit', // bleed, dot, burn, channel, regular, multihit
+        abilityType: 'threshold', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        mainStyle: 'ranged',
+        damageType: 'ranged',
+        hitTimings: [1, 1], 
+        hits: {
+            1: [ABILITIES.SNAP_SHOT_HIT, 'next hit', ABILITIES.SNAP_SHOT_HIT]
+        },
+        adrenaline: 25,
+        cooldown: 0,
         title: 'Snap shot',
         icon: '/ability_icons/ranged/30x30/snapshot.png',
     },
@@ -4120,7 +4182,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         icon: '/ability_icons/ranged/30x30/bombard.png',
     },
     // Ranged Ultimate Abilities
-    [ABILITIES.DEADSHOT_INITIAL]: {
+    [ABILITIES.DEADSHOT_HIT]: {
         // ability name
         minHit: 1.05, // min % of abil expressed as a decimal
         varHit: 0.2,
@@ -4130,9 +4192,10 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'ultimate', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'ranged',
-        damageType: 'ranged'
-    ,
-        cooldown: 30},
+        damageType: 'ranged',
+        cooldown: 30,
+        title: 'Deadshot',
+    },
     [ABILITIES.DEADSHOT]: {
         // Non-igneous: 4x 105-125%. Igneous: 8x 55-75%.
         // Default hit sequence is igneous (swapped at calc time if no cape)
@@ -4652,7 +4715,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'self cast',
         abilityType: 'special attack',
         mainStyle: 'ranged',
-        damageType: 'ranged',
+        damageType: 'split soul',
         adrenaline: 25,
         cooldown: 0,
         title: 'Split soul (ECB)',
@@ -4707,7 +4770,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         adrenaline: 35,
         cooldown: 0,
         title: 'Locate',
-        icon: '/ability_icons/ranged/decimation.png',
+        icon: '/ability_icons/ranged/Decimation.png',
         common: false
     },
     [ABILITIES.BOLG_PROC]: {

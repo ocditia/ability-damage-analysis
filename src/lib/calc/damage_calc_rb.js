@@ -898,7 +898,7 @@ function calc_crit_damage(settings) {
 
     // channellers ring
     if (
-        (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHANNELLER_E) &&
+        (settings[SETTINGS.RING] === ARMOUR.CHANNELLERS_RING_E) &&
         abils[settings['ability']]['parent'] &&
         abils[settings['ability']]['parent'].abilityClassification === 'channel'
     ) {
@@ -906,7 +906,7 @@ function calc_crit_damage(settings) {
     }
 
     // champions ring
-    if (settings[SETTINGS.RING] === SETTINGS.RING_VALUES.CHAMPION_E &&
+    if (settings[SETTINGS.RING] === ARMOUR.CHAMPIONS_RING_E &&
         abils[settings['ability']].mainStyle === 'melee'
     ) {
         crit_buff += 0.015 * settings[SETTINGS.NUMBER_OF_BLEEDS];
@@ -914,7 +914,7 @@ function calc_crit_damage(settings) {
 
     // stalkers ring
     if (abils[settings['ability']].mainStyle === 'ranged' &&
-        settings[SETTINGS.RING] === SETTINGS.RING_VALUES.STALKER_E &&
+        settings[SETTINGS.RING] === ARMOUR.STALKERS_RING_E &&
         settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH &&
         (weapons[settings[SETTINGS.TH]]['type'] === 'bow' || settings[SETTINGS.TH_TYPE_CUSTOM] === SETTINGS.TH_TYPE_CUSTOM_VALUES.BOW)) {
             crit_buff += 0.03;

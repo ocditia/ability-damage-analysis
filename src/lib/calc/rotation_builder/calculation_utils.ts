@@ -125,7 +125,7 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         }
         else if (abilityKey === ABILITIES.DEADSHOT) {
             // Non-igneous: 4x 105-125% hits
-            rotation = { 1: [ABILITIES.DEADSHOT_INITIAL, ABILITIES.DEADSHOT_INITIAL, ABILITIES.DEADSHOT_INITIAL, ABILITIES.DEADSHOT_INITIAL] };
+            rotation = { 1: [ABILITIES.DEADSHOT_HIT, ABILITIES.DEADSHOT_HIT, ABILITIES.DEADSHOT_HIT, ABILITIES.DEADSHOT_HIT] };
         }
         else if (abilityKey === ABILITIES.DEATHSKULLS_4) {
             // Non-igneous single target: 3 damaging hits (M→P→M→P→M, player bounces deal no damage)

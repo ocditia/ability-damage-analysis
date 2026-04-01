@@ -146,7 +146,7 @@ export enum ARMOUR {
     FARSIGHT_BLOOD_NECKLACE = 'farsight blood necklace',
     AM_ZI = 'am-zi',
     AM_HEJ = 'am-hej',
-    DRAGON_RIDER_NECKLACE = 'dragon rider necklace',
+    DRAGON_RIDER_AMULET = 'dragon rider necklace',
     IGNEOUS_KAL_ZUK = 'igneous kal-zuk',
     IGNEOUS_KAL_MOR = 'igneous kal-mor',
     IGNEOUS_KAL_MEJ = 'igneous kal-mej',
@@ -188,7 +188,7 @@ export enum ARMOUR {
     ILLUMINATED_GOD_BOOK = 'illuminated god book',
     UNDERWORLD_GRIMOIRE_4 = 'underworld grimoire 4',
     SCRIMSHAW_OF_ELEMENTS = 'scrimshaw of elements',
-    SUPERIOR_SCRIMSHAW_OF_ELEMENTS = 'superior scrimshaw of elements',
+    SUPERIOR_SCRIMSHAW_OF_ELEMENTS = 'superior scrimshaw of the elements',
 
     CUSTOM = 'custom',
 
@@ -301,7 +301,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         style: 'ranged',
         popular: false,
         title: 'Sirenic Chaps',
-        icon: "/gear_icons/shared/sirenic chaps.png", // TODO: icon missing
+        icon: "/gear_icons/ranged/sirenic chaps.png", // TODO: icon missing
     },
     [ARMOUR.ELITE_SIRENIC_MASK]: {
         'necromancy strength': 0,
@@ -1150,7 +1150,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         title: 'Desert Amulet 4',
         icon: "/gear_icons/shared/desert amulet 4.png", // TODO: icon missing
     },
-    [ARMOUR.DRAGON_RIDER_NECKLACE]: {
+    [ARMOUR.DRAGON_RIDER_AMULET]: {
         'necromancy strength': 30.2,
         'magic strength': 30.2,
         'melee strength': 30.2,
@@ -1158,8 +1158,8 @@ export const armour: Record<ARMOUR, Equipment> = {
         offensiveTier: { melee: 60, ranged: 60, magic: 60, necro: 60 },
         slot: 'necklace',
         style: 'hybrid',
-        title: 'Dragon Rider Necklace',
-        icon: "/gear_icons/shared/dragon rider necklace.png", // TODO: icon missing
+        title: 'Dragon Rider Amulet',
+        icon: "/gear_icons/shared/dragon rider amulet.png", // TODO: icon missing
     },
     [ARMOUR.BLOOD_AMULET_OF_FURY]: {
         'necromancy strength': 37.3,
@@ -1268,7 +1268,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'pocket',
         style: 'hybrid',
         title: 'Illuminated God Book',
-        icon: "/gear_icons/shared/illuminated god book.png", // TODO: icon missing
+        icon: "/gear_icons/shared/illuminated book of law.png", // TODO: icon missing
     },
     [ARMOUR.SCRIMSHAW_OF_ELEMENTS]: {
         'necromancy strength': 0,
@@ -1585,7 +1585,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'cape',
         style: 'melee',
         title: 'TokHaar-Kal-Ket',
-        icon: "/gear_icons/melee/TokHaar-Kal-Ket.png", // TODO: icon missing
+        icon: "/gear_icons/melee/tokhaar-kal-ket.png", // TODO: icon missing
     },
     [ARMOUR.TOKHAAR_KAL_XIL]: {
         'necromancy strength': 0,
@@ -1596,7 +1596,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'cape',
         style: 'ranged',
         title: 'TokHaar-Kal-Xil',
-        icon: "/gear_icons/ranged/TokHaar-Kal-Xil.png",
+        icon: "/gear_icons/ranged/tokhaar-kal-xil.png",
     },
     [ARMOUR.TOKHAAR_KAL_MEJ]: {
         'necromancy strength': 0,
@@ -1607,7 +1607,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'cape',
         style: 'magic',
         title: 'TokHaar-Kal-Mej',
-        icon: "/gear_icons/magic/TokHaar-Kal-Mej.png", // TODO: icon missing
+        icon: "/gear_icons/magic/tokhaar-kal-mej.png", // TODO: icon missing
     },
     [ARMOUR.TOKHAAR_KAL_MOR]: {
         'necromancy strength': 0,
@@ -1629,7 +1629,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'cape',
         style: 'hybrid',
         title: 'Comp/Max Cape',
-        icon: "/gear_icons/shared/comp/max cape.png", // TODO: icon missing
+        icon: "/gear_icons/shared/completionist cape.png", // TODO: icon missing
     },
     [ARMOUR.MAX_CAPE]: {
         'necromancy strength': 31.5,
@@ -1695,7 +1695,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'pocket',
         style: 'ranged',
         title: 'Superior Scrimshaw of Elements',
-        icon: "/gear_icons/ranged/superior scrimshaw of elements.png", // TODO: icon missing
+        icon: "/gear_icons/ranged/superior scrimshaw of cruelty.png", // TODO: icon missing
     },
     // Ammo
     [ARMOUR.FUL_ARROWS]: {
@@ -2223,7 +2223,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'ammo',
         style: 'melee',
         popular: true,
-        title: 'Nodon Spike Harness',
-        icon: "/gear_icons/melee/nodon spike harness.png",
+        title: 'Custom',
+        icon: "/gear_icons/shared/custom.png",
     },
 };

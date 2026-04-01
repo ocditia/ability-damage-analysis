@@ -12,7 +12,8 @@
 
 import { describe, it, expect } from 'vitest';
 import { applyStyleAbilityPercentModifiers, applyStyleMinVarEffects } from '../../rotation_builder/effects';
-import { SETTINGS } from '../../settings_rb.js';
+import { SETTINGS } from '../../settings_rb';
+import { ARMOUR } from '$lib/data/armour';
 import { ABILITIES } from '$lib/data/abilities';
 import { DamageDistribution } from '../../types';
 import { createBlankSettings } from '../test-helpers';
@@ -148,8 +149,8 @@ describe('Flanking perk (applyStyleAbilityPercentModifiers)', () => {
 describe("Channeller's Ring (applyStyleMinVarEffects)", () => {
     it('increases magic channel min/var by 4%', () => {
         const settings = effectSettings(ABILITIES.ASPHYXIATE, {
-            [SETTINGS.RING]: SETTINGS.RING_VALUES.CHANNELLER,
-            [SETTINGS.MAGIC_RING]: SETTINGS.RING_VALUES.CHANNELLER,
+            [SETTINGS.RING]: ARMOUR.CHANNELLERS_RING,
+            [SETTINGS.MAGIC_RING]: ARMOUR.CHANNELLERS_RING,
         });
         const dist = makeDamageDistribution(1000, 200);
         applyStyleMinVarEffects({ settings, abilityKey: ABILITIES.ASPHYXIATE }, dist);
@@ -159,8 +160,8 @@ describe("Channeller's Ring (applyStyleMinVarEffects)", () => {
 
     it('does not affect non-channel magic abilities', () => {
         const settings = effectSettings(ABILITIES.IMPACT, {
-            [SETTINGS.RING]: SETTINGS.RING_VALUES.CHANNELLER,
-            [SETTINGS.MAGIC_RING]: SETTINGS.RING_VALUES.CHANNELLER,
+            [SETTINGS.RING]: ARMOUR.CHANNELLERS_RING,
+            [SETTINGS.MAGIC_RING]: ARMOUR.CHANNELLERS_RING,
         });
         const dist = makeDamageDistribution(1000, 200);
         applyStyleMinVarEffects({ settings, abilityKey: ABILITIES.IMPACT }, dist);
