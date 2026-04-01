@@ -2265,7 +2265,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             1: [ABILITIES.WILD_MAGIC_HIT, 'next hit', ABILITIES.WILD_MAGIC_HIT]
         },
         cooldown: 5.4,
-        hitTimings: [2, 2],
+        hitTimings: [1, 1],
         title: 'Wild magic',
         icon: '/ability_icons/magic/30x30/wild_magic.png',
     },
@@ -2797,8 +2797,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0,
         hitTimings: [0, 1, 2, 3, 4],
         duration: 5,
-        adrenaline: 50
-    ,
+        adrenaline: 50,
         title: 'Tempest of Armadyl',
         icon: '/ability_icons/magic/30x30/armadyl_battlestaff-bg.png',
     },
@@ -2813,12 +2812,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'magic',
         damageType: 'magic',
-        adrenaline: 50
-    ,
+        adrenaline: 50,
         cooldown: 0,
         title: 'Iban blast',
         icon: '/ability_icons/magic/30x30/iban_staff.png',
-        common: false
+        common: true
     },
     [ABILITIES.CLAWS_OF_GUTHIX]: {
         // ability name
@@ -2947,6 +2945,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         adrenaline: 50,
         title: 'From the shadows',
         icon: '/ability_icons/magic/30x30/staff_of_sliske.png',
+        common: false
     },
     [ABILITIES.FLAMES_OF_ZAMORAK]: {
         // ability name
