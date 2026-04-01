@@ -2945,6 +2945,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         adrenaline: 50,
         title: 'From the shadows',
         icon: '/ability_icons/magic/30x30/staff_of_sliske.png',
+        common: false
     },
     [ABILITIES.FLAMES_OF_ZAMORAK]: {
         // ability name
