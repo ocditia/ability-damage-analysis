@@ -171,7 +171,7 @@ export function applyCrueltyScrimshawEffect(
 
     if (settings[SETTINGS.POCKET] === ARMOUR.SCRIMSHAW_OF_CRUELTY) {
         return Math.floor(damage * 1.05);
-    } else if (settings[SETTINGS.POCKET] === ARMOUR.SUPERIOR_SCRIMSHAW_OF_ELEMENTS) {
+    } else if (settings[SETTINGS.POCKET] === ARMOUR.SUPERIOR_SCRIMSHAW_OF_CRUELTY) {
         return Math.floor(damage * 1.0666);
     }
 

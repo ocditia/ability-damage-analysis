@@ -97,6 +97,8 @@ interface DamageDistributionStat {
     maxDamage: number;
     ability: string;
     distributionType: 'crit' | 'non_crit' | 'combined';
+    /** Secondary damage source type. Absent for regular ability hits. */
+    source?: 'familiar' | 'dreadnip' | 'conjure' | 'poison' | 'perk';
     // For combined distributions, store the mixture components
     critProbability?: number;
     critMean?: number;
@@ -807,7 +809,8 @@ function processFamiliarTick(state: RotationState, settings: any) {
                     minDamage: specMin,
                     maxDamage: specMax,
                     ability: familiarData.name + ' scroll',
-                    distributionType: 'non_crit'
+                    distributionType: 'non_crit',
+                    source: 'familiar'
                 });
                 return; // Used scroll instead of auto-attack
             }
@@ -830,7 +833,8 @@ function processFamiliarTick(state: RotationState, settings: any) {
             minDamage: minAutoHit,
             maxDamage: maxAutoHit,
             ability: familiarData.name + ' auto',
-            distributionType: 'non_crit'
+            distributionType: 'non_crit',
+            source: 'familiar'
         });
     }
 }
@@ -905,7 +909,8 @@ function processDreadnipTick(state: RotationState, settings: any) {
             minDamage: dnMin,
             maxDamage: dnMax,
             ability: 'Dreadnip',
-            distributionType: 'non_crit'
+            distributionType: 'non_crit',
+            source: 'dreadnip'
         });
     }
 }
@@ -977,7 +982,8 @@ function processConjureTick(state: RotationState, settings: any) {
                 minDamage: cjMin,
                 maxDamage: cjMax,
                 ability: abilData.title || def.autoAbility,
-                distributionType: 'non_crit'
+                distributionType: 'non_crit',
+                source: 'conjure'
             });
         }
 
@@ -1001,7 +1007,8 @@ function processConjureTick(state: RotationState, settings: any) {
                         tick: state.tick, likelihood: 1,
                         minDamage: czMin, maxDamage: czMax,
                         ability: cmdAbilData.title || 'Command Putrid Zombie',
-                        distributionType: 'non_crit'
+                        distributionType: 'non_crit',
+                        source: 'conjure'
                     });
                 }
             }
@@ -1027,7 +1034,8 @@ function processConjureTick(state: RotationState, settings: any) {
                         tick: state.tick, likelihood: 1,
                         minDamage: csMin, maxDamage: csMax,
                         ability: cmdAbilData.title || 'Command Skeleton Warrior',
-                        distributionType: 'non_crit'
+                        distributionType: 'non_crit',
+                        source: 'conjure'
                     });
                 }
             }
