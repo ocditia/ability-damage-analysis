@@ -606,7 +606,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         'melee strength': 14.5,
         'ranged strength': 14.5,
         offensiveTier: { melee: 90, ranged: 90, magic: 90, necro: 90 },
-        slot: 'helmet',
+        slot: 'gloves',
         style: 'hybrid',
         title: 'Deathtouch Bracelet',
         icon: "/gear_icons/shared/deathtouch bracelet.png",
@@ -1684,7 +1684,7 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'pocket',
         style: 'ranged',
         title: 'Scrimshaw of Cruelty',
-        icon: "/gear_icons/ranged/scrimshaw of cruelty.png", // TODO: icon missing
+        icon: "/gear_icons/ranged/scrimshaw of cruelty.png",
     },
     [ARMOUR.SUPERIOR_SCRIMSHAW_OF_CRUELTY]: {
         'necromancy strength': 0,
@@ -1694,8 +1694,8 @@ export const armour: Record<ARMOUR, Equipment> = {
         offensiveTier: { melee: 0, ranged: 0, magic: 0, necro: 0 },
         slot: 'pocket',
         style: 'ranged',
-        title: 'Superior Scrimshaw of Elements',
-        icon: "/gear_icons/ranged/superior scrimshaw of cruelty.png", // TODO: icon missing
+        title: 'Superior Scrimshaw of Cruelty',
+        icon: "/gear_icons/ranged/superior scrimshaw of cruelty.png",
     },
     // Ammo
     [ARMOUR.FUL_ARROWS]: {

@@ -90,7 +90,7 @@
      * e.g. 'assault hit' -> 'assault', 'rapid fire last hit' -> 'rapid fire'
      */
     function getParentKey(hitKey) {
-        for (const suffix of [' last hit', ' hit']) {
+        for (const suffix of [' last hit', ' hit', ' scroll', ' auto']) {
             if (hitKey.endsWith(suffix)) return hitKey.slice(0, -suffix.length);
         }
         // Numeric suffixes like 'snap shot 1'
@@ -101,26 +101,27 @@
 
     function getDisplayName(parentKey) {
         if (allAbils[parentKey]?.title) return allAbils[parentKey].title;
+        if (allAbils[parentKey.toLowerCase()]?.title) return allAbils[parentKey.toLowerCase()].title;
         // Capitalise each word as fallback
         return parentKey.replace(/\b\w/g, l => l.toUpperCase());
     }
 
     function getIconPath(key) {
         if (allAbils[key]?.icon) return allAbils[key].icon;
+        // Ability keys are lowercase — try that too
+        const lower = key.toLowerCase();
+        if (allAbils[lower]?.icon) return allAbils[lower].icon;
         // getParentKey may have stripped a suffix — try common hit-key variants
         for (const suffix of [' hit', ' last hit']) {
             if (allAbils[key + suffix]?.icon) return allAbils[key + suffix].icon;
+            if (allAbils[lower + suffix]?.icon) return allAbils[lower + suffix].icon;
         }
-        // Secondary source icons
+        // Familiar icon — match by familiar name
         const fam = (familiarKey && familiarKey !== 'none') ? familiars[familiarKey] : null;
-        const familiarIcon = fam?.scroll_icon || fam?.icon || '/effect_icons/familiar.png';
-        const secondaryIcons = {
-            '_poison': '/effect_icons/poison.png',
-            '_familiar': familiarIcon,
-            '_dreadnip': '/ability_icons/special/Dreadnip.png',
-            '_conjure': '/effect_icons/necromancy/conjure.png'
-        };
-        return secondaryIcons[key] || null;
+        if (fam && fam.name === key) return fam.scroll_icon || fam.icon;
+        // Poison (not yet in distributionStats)
+        if (key === '_poison') return '/effect_icons/poison.png';
+        return null;
     }
 
     // Cache loaded images for the breakdown chart icons
@@ -134,11 +135,11 @@
     }
 
     function getAbilityStyle(hitKey) {
-        const style = abils[hitKey]?.mainStyle;
+        const style = abils[hitKey]?.mainStyle || abils[hitKey.toLowerCase()]?.mainStyle;
         if (style) return style;
         // Try parent key
         const parent = getParentKey(hitKey);
-        return abils[parent]?.mainStyle || 'unknown';
+        return abils[parent]?.mainStyle || abils[parent.toLowerCase()]?.mainStyle || 'unknown';
     }
 
     function buildBreakdownData() {
@@ -148,7 +149,7 @@
         for (const stat of distributionStats) {
             const parent = getParentKey(stat.ability);
             if (!groups[parent]) {
-                groups[parent] = { damage: 0, style: getAbilityStyle(stat.ability) };
+                groups[parent] = { damage: 0, style: stat.source || getAbilityStyle(stat.ability) };
             }
             let expected;
             if (stat.distributionType === 'combined' && stat.critProbability !== undefined) {
@@ -159,19 +160,14 @@
             groups[parent].damage += expected * stat.likelihood;
         }
 
-        // Add secondary damage sources
-        if (poisonDamage > 0) groups['_poison'] = { damage: poisonDamage, style: 'poison' };
-        if (familiarDamage > 0) groups['_familiar'] = { damage: familiarDamage, style: 'familiar' };
-        if (dreadnipDamage > 0) groups['_dreadnip'] = { damage: dreadnipDamage, style: 'dreadnip' };
-        if (conjureDamage > 0) groups['_conjure'] = { damage: conjureDamage, style: 'conjure' };
+        // Add secondary damage sources not yet in distributionStats
+        if (poisonDamage > 0) groups['_poison'] = { damage: poisonDamage, style: 'poison' }; //TODO migrate
 
         // Sort by damage descending
         const sorted = Object.entries(groups)
             .map(([key, val]) => ({
                 key,
-                label: key === '_familiar' && familiarKey && familiarKey !== 'none' && familiars[familiarKey]
-                    ? familiars[familiarKey].name
-                    : key.startsWith('_') ? key.slice(1).replace(/\b\w/g, l => l.toUpperCase()) : getDisplayName(key),
+                label: key.startsWith('_') ? key.slice(1).replace(/\b\w/g, l => l.toUpperCase()) : getDisplayName(key),
                 damage: Math.round(val.damage),
                 colour: ABILITY_COLORS[key] || STYLE_COLOURS[val.style] || STYLE_COLOURS.unknown,
                 icon: getIconPath(key)
@@ -338,14 +334,8 @@
             }
         });
 
-        // Add other damage sources' mean (expected value) and variance
-        totalMean += poisonDamage + familiarDamage + dreadnipDamage + conjureDamage;
-
-        // Add variance from other sources (last element of cumulative variance arrays)
-        const lastFamiliarVar = familiarVariancePerTick.length > 0 ? familiarVariancePerTick[familiarVariancePerTick.length - 1] : 0;
-        const lastDreadnipVar = dreadnipVariancePerTick.length > 0 ? dreadnipVariancePerTick[dreadnipVariancePerTick.length - 1] : 0;
-        const lastConjureVar = conjureVariancePerTick.length > 0 ? conjureVariancePerTick[conjureVariancePerTick.length - 1] : 0;
-        totalVariance += lastFamiliarVar + lastDreadnipVar + lastConjureVar;
+        // Add poison mean (expected value) TODO poisonvariance?
+        totalMean += poisonDamage;
 
         const stdDev = Math.sqrt(totalVariance);
 
