@@ -198,7 +198,7 @@ function updateFulProbability(state: RotationState, settings: Record<string, any
     }
 
     // Probability we're in the "can proc" state (not in buff or lockout)
-    const canProcProb = Math.max(0, 1 - buffProb - lockoutProb);
+    const canProcProb = Math.max(0, 1);// - buffProb - lockoutProb);
 
     // New proc probability mass this tick
     const newProcMass = canProcProb * FUL_PROC_CHANCE;
