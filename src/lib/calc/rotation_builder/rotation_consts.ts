@@ -423,7 +423,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Adrenaline',
                 displaySetting: SETTINGS.SHOW_ADRENALINE,
                 idx: -1,
-                image: '/effect_icons/magic/Crit_buff.png',
+                image: '/effect_icons/Adrenaline.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.adrenaline,
                 number: 'true',
