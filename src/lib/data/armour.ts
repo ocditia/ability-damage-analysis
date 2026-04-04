@@ -42,6 +42,9 @@ export enum ARMOUR {
     MASTERWORK_MAGIC_GLOVES = 'masterwork magic gloves',
     TUSKA_GAUNTLETS = 'warpriest of tuska gauntlets',
 
+    CHANNELLERS_RING = 'channeller\'s ring',
+    CHANNELLERS_RING_E = 'channeller\'s ring+',
+
 
     //Ranged
     ELITE_DRACOLICH_COIF = 'elite dracolich coif',
@@ -70,6 +73,9 @@ export enum ARMOUR {
     FLEETING_BOOTS_E = 'enhanced fleeting boots',
     SCRIMSHAW_OF_CRUELTY = 'scrimshaw of cruelty',
     SUPERIOR_SCRIMSHAW_OF_CRUELTY = 'superior scrimshaw of cruelty',
+
+    IGNEOUS_KAL_XIL = 'igneous kal-xil',
+    TOKHAAR_KAL_XIL = 'tokhaar-kal-xil',
 
     FUL_ARROWS = 'ful arrows',
     WEN_ARROWS = 'wen arrows',
@@ -150,11 +156,9 @@ export enum ARMOUR {
     IGNEOUS_KAL_ZUK = 'igneous kal-zuk',
     IGNEOUS_KAL_MOR = 'igneous kal-mor',
     IGNEOUS_KAL_MEJ = 'igneous kal-mej',
-    IGNEOUS_KAL_XIL = 'igneous kal-xil',
     IGNEOUS_KAL_KET = 'igneous kal-ket',
     TOKHAAR_KAL_MOR = 'tokhaar-kal-mor',
     TOKHAAR_KAL_MEJ = 'tokhaar-kal-mej',
-    TOKHAAR_KAL_XIL = 'tokhaar-kal-xil',
     TOKHAAR_KAL_KET = 'tokhaar-kal-ket',
     COMP_MAX_CAPE = 'comp/max cape',
     GOD_CAPE = 'god cape',
@@ -169,12 +173,13 @@ export enum ARMOUR {
     RING_OF_DEATH = 'ring of death',
     ASYLUM_SURGEONS_RING_I = 'asylum surgeons ring (i)',
     ASYLUM_SURGEONS_RING = 'asylum surgeons ring',
-    CHANNELLERS_RING = 'channeller\'s ring',
-    CHANNELLERS_RING_E = 'channeller\'s ring+',
+    
     STALKERS_RING = 'stalker\'s ring',
     STALKERS_RING_E = 'stalker\'s ring+',
     CHAMPIONS_RING = 'champion\'s ring',
     CHAMPIONS_RING_E = 'champion\'s ring+',
+
+    RING_OF_RETRIBUTION = 'ring of retribution',
     LUCK_OF_THE_DWARVES = 'luck of the dwarves',
     LUCK_OF_THE_DWARVES_I = 'luck of the dwarves (i)',
     HAZELMERES_SIGNET_RING = 'hazelmere\'s signet ring',
@@ -1529,6 +1534,13 @@ export const armour: Record<ARMOUR, Equipment> = {
         popular: true,
         title: 'Occultists Ring',
         icon: "/gear_icons/necro/occultists ring.png", // TODO: icon missing
+    },
+    [ARMOUR.RING_OF_RETRIBUTION]: {
+        offensiveTier: { melee: 79, ranged: 79, magic: 79, necro: 79 },
+        slot: 'ring',
+        style: 'hybrid',
+        title: 'Luck of the Dwarves',
+        icon: "/gear_icons/shared/ring of retribution.png",
     },
     [ARMOUR.LUCK_OF_THE_DWARVES]: {
         'necromancy strength': 17.3,

@@ -166,26 +166,26 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
             crit_chance += concPerStack * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
         }
 
-        // conc self boost
-        if (abilityKey === ABILITIES.CONCENTRATED_BLAST_2) {
-            crit_chance += 0.05;
-        } else if (abilityKey === ABILITIES.CONCENTRATED_BLAST_3) {
-            crit_chance += 0.1;
-        }
+        // // conc self boost
+        // if (abilityKey === ABILITIES.CONCENTRATED_BLAST_2) {
+        //     crit_chance += 0.05;
+        // } else if (abilityKey === ABILITIES.CONCENTRATED_BLAST_3) {
+        //     crit_chance += 0.1;
+        // }
 
-        // gconc self boost (higher base + anima charged bonus)
-        if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_2) {
-            crit_chance += 0.07;
-            if (settings[SETTINGS.ANIMA_CHARGED] === true) {
-                crit_chance += 0.1;
-            }
-        } else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) {
-            crit_chance += 0.14;
-            if (settings[SETTINGS.ANIMA_CHARGED] === true) {
-                console.log('Are we winning? : Yes'); // TODO fix this  
-                crit_chance += 0.2;
-            }
-        }
+        // // gconc self boost (higher base + anima charged bonus)
+        // if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_2) {
+        //     crit_chance += 0.07;
+        //     if (settings[SETTINGS.ANIMA_CHARGED] === true) {
+        //         crit_chance += 0.1;
+        //     }
+        // } else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) {
+        //     crit_chance += 0.14;
+        //     if (settings[SETTINGS.ANIMA_CHARGED] === true) {
+        //         console.log('Are we winning? : Yes'); // TODO fix this  
+        //         crit_chance += 0.2;
+        //     }
+        // }
 
         // smoke tendrils
         if ([ABILITIES.SMOKE_TENDRILS_1, ABILITIES.SMOKE_TENDRILS_2, ABILITIES.SMOKE_TENDRILS_3, ABILITIES.SMOKE_TENDRILS_4].includes(abilityKey)) {
