@@ -1744,8 +1744,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee'
-    ,
+        damageType: 'melee',
+        adrenaline: 50,
         cooldown: 0,
         title: 'Spear Wall',
         icon: '/ability_icons/melee/30x30/vestas_spear.png',
@@ -1762,6 +1762,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
+        adrenaline: 60,
         cooldown: 7.2,
         title: 'Ice Cleave',
         icon: '/ability_icons/melee/30x30/zamorak_godsword.png',
@@ -1807,8 +1808,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
-        adrenaline: 50
-    ,
+        adrenaline: 50,
         cooldown: 0,
         title: 'Blackhole',
         icon: '/ability_icons/melee/blackhole.webp',
