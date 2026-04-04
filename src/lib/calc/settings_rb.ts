@@ -486,6 +486,10 @@ const SETTINGS = {
     ESSENCE_CORRUPTION: 'essence corruption',
     ESS_CORRUPTION_ADREN: 'essence corruption adrenaline',
     CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
+    CONC_CRIT: 'conc crit',
+    GCONC_CRIT: 'gconc crit',
+    CONC_CRIT_AC: 'conc crit ac',
+    GCONC_CRIT_AC: 'gconc crit ac',
     CHAOS_ROAR: 'chaos roar',
     FURY_BUFF: 'fury buff',
     FURY_BUFF_VALUES: {
@@ -586,17 +590,7 @@ const SETTINGS = {
     },
     MAX_CHANNEL_DURATION: 'max channel duration',
     FLAMEBOUND_RIVAL: 'flamebound rival',
-    DAMAGE_PER_UNIT: 'damage per unit',
-    DAMAGE_PER_UNIT_VALUES: {
-        ABIL: 'abil',
-        TICK: 'tick',
-    },
-    DAMAGE_UNITS: 'damage units',
-    DAMAGE_UNITS_VALUES: {
-        RAW: 'raw',
-        PERCENT: 'percent',
-    },
-    DAMAGE_PER_UNIT_DIVIDER: 'damage per time unit divider',
+
 
     AUTO_SPEED: 'auto speed',
     AUTO_SPEED_VALUES: {
@@ -1998,6 +1992,22 @@ const settingsConfig = {
     [SETTINGS.CONCENTRATED_BLAST_STACKS]: {
         label: 'Conc stacks',
         default: 0
+    },
+    [SETTINGS.CONC_CRIT]: {
+        label: 'Conc Crit',
+        default: false
+    },
+    [SETTINGS.GCONC_CRIT]: {
+        label: 'GConc Crit',
+        default: false
+    },
+    [SETTINGS.CONC_CRIT_AC]: {
+        label: 'Conc Crit (AC)',
+        default: false
+    },
+    [SETTINGS.GCONC_CRIT_AC]: {
+        label: 'GConc Crit (AC)',
+        default: false
     },
     [SETTINGS.CHAOS_ROAR]: {
         label: 'Chaos roar',

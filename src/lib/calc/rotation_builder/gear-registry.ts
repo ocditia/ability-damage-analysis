@@ -120,33 +120,6 @@ export function getItemForValue(value: string): GearItem | undefined {
     return itemByValue.get(value);
 }
 
-/**
- * Count how many set pieces are currently equipped.
- * @param settings - flattened settings object
- * @param setValues - map of generic slot key -> expected value string
- *   e.g. { 'helmet': 'vestments of havoc hood', 'body': 'vestments of havoc top', ... }
- */
-export function countSetPieces(
-    settings: Record<string, any>,
-    setValues: Record<string, string>
-): number {
-    let count = 0;
-    for (const [slotKey, expectedValue] of Object.entries(setValues)) {
-        if (settings[slotKey] === expectedValue) count++;
-    }
-    return count;
-}
-
-/**
- * Check if a full set is equipped.
- */
-export function hasFullSet(
-    settings: Record<string, any>,
-    setValues: Record<string, string>
-): boolean {
-    return countSetPieces(settings, setValues) === Object.keys(setValues).length;
-}
-
 // ---- Settings key resolution ----
 // Maps (style, genericSlot) → per-style settings key string
 
@@ -185,6 +158,53 @@ const SHARED_SLOT_KEYS: Record<string, string> = {
     necklace: 'necklace', ring: 'ring', cape: 'cape',
     pocket: 'pocket', ammo: 'ammo',
 };
+
+// Generic (non-style-prefixed) gear slot keys, set by style_specific_unification
+const GENERIC_SLOT_KEYS = [
+    'helmet', 'body', 'legs', 'gloves', 'boots',
+    'necklace', 'cape', 'ring', 'pocket', 'ammo',
+    'main-hand weapon', 'off-hand weapon',
+];
+
+// Pre-built list of all settings keys that hold gear values
+// Includes style-prefixed keys (e.g. 'melee helmet') and generic keys (e.g. 'helmet')
+const GEAR_SETTINGS_KEYS: string[] = [...GENERIC_SLOT_KEYS];
+const gearKeySet = new Set<string>(GENERIC_SLOT_KEYS);
+for (const styleMap of Object.values(STYLE_SLOT_TO_SETTINGS_KEY)) {
+    for (const key of Object.values(styleMap)) {
+        if (!gearKeySet.has(key)) { gearKeySet.add(key); GEAR_SETTINGS_KEYS.push(key); }
+    }
+}
+for (const key of Object.values(SHARED_SLOT_KEYS)) {
+    if (!gearKeySet.has(key)) { gearKeySet.add(key); GEAR_SETTINGS_KEYS.push(key); }
+}
+
+/**
+ * Count how many pieces from an armour set are currently equipped.
+ * Only checks gear slot settings keys for performance.
+ */
+export function countSetPieces(
+    settings: Record<string, any>,
+    setPieces: string[]
+): number {
+    const pieceSet = new Set(setPieces);
+    let count = 0;
+    for (const key of GEAR_SETTINGS_KEYS) {
+        const value = settings[key];
+        if (typeof value === 'string' && pieceSet.has(value)) count++;
+    }
+    return count;
+}
+
+/**
+ * Check if a full set is equipped.
+ */
+export function hasFullSet(
+    settings: Record<string, any>,
+    setPieces: string[]
+): boolean {
+    return countSetPieces(settings, setPieces) === setPieces.length;
+}
 
 /**
  * Get the settings key for a gear item — the key that gets written to settings

@@ -47,6 +47,10 @@ export const buffs = [
     SETTINGS.KERAPACS_WRIST_WRAPS,
     SETTINGS.BLAST_INFUSED,
     SETTINGS.ENDLESS_ASSAULT,
+    SETTINGS.CONC_CRIT,
+    SETTINGS.GCONC_CRIT,
+    SETTINGS.CONC_CRIT_AC,
+    SETTINGS.GCONC_CRIT_AC,
 ];
 
 export function createBuffTimings(barSize: number) {
@@ -411,7 +415,43 @@ export function createBuffTimings(barSize: number) {
                 colour: '#c78d68',
                 icon: '/effect_icons/melee/Endless_Assault.png',
                 combatStyle: SettingsCombatStyles.MELEE
-            }
+            },
+            [SETTINGS.CONC_CRIT]: {
+                title: 'Conc Crit',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: BUFF_COLORS.conc_crit,
+                icon: '/ability_icons/magic/30x30/concentrated_blast.png',
+                combatStyle: SettingsCombatStyles.MAGIC
+            },
+            [SETTINGS.GCONC_CRIT]: {
+                title: 'GConc Crit',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: BUFF_COLORS.gconc_crit,
+                icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png',
+                combatStyle: SettingsCombatStyles.MAGIC
+            },
+            [SETTINGS.CONC_CRIT_AC]: {
+                title: 'Conc Crit (AC)',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: BUFF_COLORS.conc_crit_ac,
+                icon: '/effect_icons/magic/Conc_AC.png',
+                combatStyle: SettingsCombatStyles.MAGIC
+            },
+            [SETTINGS.GCONC_CRIT_AC]: {
+                title: 'GConc Crit (AC)',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: BUFF_COLORS.gconc_crit_ac,
+                icon: '/ability_icons/magic/GConc_AC.png',
+                combatStyle: SettingsCombatStyles.MAGIC
+            },
         }
     )
 }

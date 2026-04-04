@@ -1,5 +1,4 @@
 import { ABILITIES, abils } from '$lib/data/abilities';
-import { getAbilityClassification } from '$lib/types/AbilityTypes';
 import { WEAPONS } from '$lib/data/weapons';
 import { ARMOUR } from '$lib/data/armour';
 import { create_damage_object } from './rota_object_helper';
@@ -68,8 +67,9 @@ function on_stall(settings: Record<string, any>, abilityKey: string, timers?: Re
     // Bloodlust consumption: Assault, Hurricane, Flurry/Greater Flurry consume 4 stacks
     if (
         (settings[SETTINGS.BLOODLUST_STACKS] || 0) >= 4 &&
-        (abilityKey === ABILITIES.ASSAULT || abilityKey === ABILITIES.HURRICANE ||
-         abilityKey === ABILITIES.FLURRY || abilityKey === ABILITIES.GREATER_FLURRY)
+        (abilityKey === ABILITIES.ASSAULT || abilityKey === ABILITIES.ASSAULT_BARGE || 
+        abilityKey === ABILITIES.HURRICANE || abilityKey === ABILITIES.FLURRY || abilityKey === ABILITIES.GREATER_FLURRY ||
+        abilityKey === ABILITIES.FLURRY_BARGE || abilityKey === ABILITIES.GREATER_FLURRY_BARGE)
     ) {
         settings[SETTINGS.BLOODLUST_STACKS] -= 4;
         settings['_bloodlust_consumed'] = abilityKey;
@@ -157,19 +157,13 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
     // Track time since last attack (increments every tick, reset by ability casts)
     settings[SETTINGS.TIME_SINCE_ATTACK] = 0;
 
-    // Clear conc stacks after the consuming ability's damage objects have been created
-    // (crit chance was already calculated with the stacks included)
-    const concAbilities = new Set([
-        ABILITIES.CONCENTRATED_BLAST, ABILITIES.CONCENTRATED_BLAST_1, ABILITIES.CONCENTRATED_BLAST_2, ABILITIES.CONCENTRATED_BLAST_3,
-        ABILITIES.GREATER_CONCENTRATED_BLAST, ABILITIES.GREATER_CONCENTRATED_BLAST_1, ABILITIES.GREATER_CONCENTRATED_BLAST_2, ABILITIES.GREATER_CONCENTRATED_BLAST_3,
-    ]);
-    // Procs and perks should not consume conc stacks
-    const abilClassification = getAbilityClassification(abils[abilityKey]);
-    if (!concAbilities.has(abilityKey) && settings[SETTINGS.CONCENTRATED_BLAST_STACKS] > 0
-        && !["proc", "perk"].includes(abilClassification)) {
-        settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 0;
-        delete settings[SETTINGS.GCONC_UNLOCK];
-        delete settings['_conc_anima_charged'];
+    // Consume (G)Conc crit buff after all hits have been processed
+    const classification = abils[abilityKey]?.abilityClassification;
+    if (classification !== 'channel' && classification !== 'proc' && classification !== 'perk') {
+        if (settings[SETTINGS.CONC_CRIT] === true) settings[SETTINGS.CONC_CRIT] = false;
+        else if (settings[SETTINGS.GCONC_CRIT] === true) settings[SETTINGS.GCONC_CRIT] = false;
+        else if (settings[SETTINGS.CONC_CRIT_AC] === true) settings[SETTINGS.CONC_CRIT_AC] = false;
+        else if (settings[SETTINGS.GCONC_CRIT_AC] === true) settings[SETTINGS.GCONC_CRIT_AC] = false;
     }
 
     return dmgObjects;

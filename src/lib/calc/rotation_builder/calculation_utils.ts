@@ -7,6 +7,8 @@ import { SETTINGS } from '../settings_rb';
 import { ABILITIES, abils } from '$lib/data/abilities';
 import { WEAPONS } from '$lib/data/weapons';
 import { ARMOUR } from '$lib/data/armour';
+import { gearSets, GEAR_SET } from '$lib/data/gear-sets';
+import { countSetPieces } from './gear-registry';
 
 // Re-export calc_crit_damage from its new home for any transitive consumers
 export { calc_crit_damage } from '../crit';
@@ -151,12 +153,9 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
     }
 
     // Nightmare gauntlet snipe
-    console.log("Nightmare gauntlet snipe", abilityKey, settings[SETTINGS.GLOVES], settings[SETTINGS.ENCHANTMENT_OF_DREAD]);
     if (abilityKey === ABILITIES.SNIPE && settings[SETTINGS.GLOVES] === ARMOUR.NIGHTMARE_GAUNTLETS_E &&
         settings[SETTINGS.ENCHANTMENT_OF_DREAD] === true) {
         rotation[3].push(ABILITIES.SNIPE_HIT_2);
-        console.log("Adding second snipe hit");
-        console.log(rotation);
     }
 
     settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 1;
@@ -191,10 +190,7 @@ export function addAdrenaline(settings: Record<string, any>, amount: number) {
 
     // Vestments of Havoc: full set (4 pieces) + melee abilities in rotation = +20 max adrenaline
     const hasFullVestments = settings['_hasMeleeAbilities'] &&
-        settings[SETTINGS.MELEE_HELMET] === ARMOUR.VESTMENTS_OF_HAVOC_HOOD &&
-        settings[SETTINGS.MELEE_BODY] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_TOP &&
-        settings[SETTINGS.MELEE_LEGS] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_BOTTOM &&
-        settings[SETTINGS.MELEE_BOOTS] === ARMOUR.VESTMENTS_OF_HAVOC_BOOTS;
+        countSetPieces(settings, gearSets[GEAR_SET.VESTMENTS_OF_HAVOC]) >= 4;
 
     let max_adren = 100 + (hasFullVestments ? 20 : 0);
     if (settings[SETTINGS.HEIGHTENED_SENSES]) max_adren += 10;

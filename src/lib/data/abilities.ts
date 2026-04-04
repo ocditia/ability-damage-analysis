@@ -1084,6 +1084,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         mainStyle: 'melee',
         damageType: 'melee',
         adrenaline: 50,
+        hitTimings: [0, 1, 2],
         hits: {
             1: [ABILITIES.THE_FINAL_FLURRY_1, 'next hit', ABILITIES.THE_FINAL_FLURRY_1,
                 'next hit', ABILITIES.THE_FINAL_FLURRY_2
@@ -1885,7 +1886,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             3: [ABILITIES.GREATER_CONCENTRATED_BLAST_3]
         },
         cooldown: 5.4,
-        title: 'Gconc',
+        title: 'Greater Concentrated Blast',
         icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png',
     },
     [ABILITIES.GREATER_SONIC_WAVE]: {

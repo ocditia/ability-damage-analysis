@@ -161,6 +161,53 @@ describe('calc_crit_chance', () => {
         });
     });
 
+    describe('Greater Concentrated Blast crit bonuses', () => {
+        it('GConc hit 1 should add 0% (base 10% only)', () => {
+            const settings = critSettings();
+            expect(calc_crit_chance(settings, ABILITIES.GREATER_CONCENTRATED_BLAST_1)).toBeCloseTo(0.10, 4);
+        });
+
+        it('GConc hit 2 should add 7%', () => {
+            const settings = critSettings();
+            expect(calc_crit_chance(settings, ABILITIES.GREATER_CONCENTRATED_BLAST_2)).toBeCloseTo(0.17, 4);
+        });
+
+        it('GConc hit 3 should add 14%', () => {
+            const settings = critSettings();
+            expect(calc_crit_chance(settings, ABILITIES.GREATER_CONCENTRATED_BLAST_3)).toBeCloseTo(0.24, 4);
+        });
+
+        it('Next ability should get +21% from GConc Crit buff', () => {
+            const settings = critSettings({ [SETTINGS.GCONC_CRIT]: true });
+            expect(calc_crit_chance(settings, ABILITIES.DRAGON_BREATH)).toBeCloseTo(0.31, 4);
+            // Buff is not consumed in calc_crit_chance — consumption happens in on_cast
+            expect(settings[SETTINGS.GCONC_CRIT]).toBe(true);
+        });
+    });
+
+    describe('Greater Concentrated Blast with Anima Charged', () => {
+        it('GConc hit 1 (AC) should add 0%', () => {
+            const settings = critSettings({ '_conc_anima_charged': true });
+            expect(calc_crit_chance(settings, ABILITIES.GREATER_CONCENTRATED_BLAST_1)).toBeCloseTo(0.10, 4);
+        });
+
+        it('GConc hit 2 (AC) should add 17%', () => {
+            const settings = critSettings({ '_conc_anima_charged': true });
+            expect(calc_crit_chance(settings, ABILITIES.GREATER_CONCENTRATED_BLAST_2)).toBeCloseTo(0.27, 4);
+        });
+
+        it('GConc hit 3 (AC) should add 34%', () => {
+            const settings = critSettings({ '_conc_anima_charged': true });
+            expect(calc_crit_chance(settings, ABILITIES.GREATER_CONCENTRATED_BLAST_3)).toBeCloseTo(0.44, 4);
+        });
+
+        it('Next ability should get +51% from GConc Crit AC buff', () => {
+            const settings = critSettings({ [SETTINGS.GCONC_CRIT_AC]: true });
+            expect(calc_crit_chance(settings, ABILITIES.DRAGON_BREATH)).toBeCloseTo(0.61, 4);
+            expect(settings[SETTINGS.GCONC_CRIT_AC]).toBe(true);
+        });
+    });
+
     describe('Full BIS stacking', () => {
         it('Biting 4 + Lv20 + Grim + Reavers + Kalg + Kalg spec = 41.8%', () => {
             const settings = critSettings({

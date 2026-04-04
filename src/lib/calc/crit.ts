@@ -157,35 +157,19 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
         else if (!["proc", "perk"].includes(getAbilityClassification(abils[abilityKey])))
             {settings[SETTINGS.CHANNELLER_RING_STACKS] = 0}
 
-        // (g)conc stacks: +5% (conc), +7% (gconc), +15% (conc+AC), +17% (gconc+AC) per stack
-        // Procs and perks should not benefit from conc stacks
+        // (G)Conc blast: hardcoded crit bonuses on hits 2 and 3
+        if (abilityKey === ABILITIES.CONCENTRATED_BLAST_2) crit_chance += settings['_conc_anima_charged'] ? 0.15 : 0.05;
+        else if (abilityKey === ABILITIES.CONCENTRATED_BLAST_3) crit_chance += settings['_conc_anima_charged'] ? 0.30 : 0.10;
+        else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_2) crit_chance += settings['_conc_anima_charged'] ? 0.17 : 0.07;
+        else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) crit_chance += settings['_conc_anima_charged'] ? 0.34 : 0.14;
+
+        // (G)Conc crit buff: apply crit bonus (consumption handled in on_cast)
         if (!["proc", "perk"].includes(getAbilityClassification(abils[abilityKey]))) {
-            const isGreater = settings['_conc_is_greater'];
-            const isAC = settings['_conc_anima_charged'];
-            const concPerStack = isGreater ? (isAC ? 0.17 : 0.07) : (isAC ? 0.15 : 0.05);
-            crit_chance += concPerStack * settings[SETTINGS.CONCENTRATED_BLAST_STACKS];
+            if (settings[SETTINGS.CONC_CRIT] === true) crit_chance += 0.15;
+            else if (settings[SETTINGS.GCONC_CRIT] === true) crit_chance += 0.21;
+            else if (settings[SETTINGS.CONC_CRIT_AC] === true) crit_chance += 0.45;
+            else if (settings[SETTINGS.GCONC_CRIT_AC] === true) crit_chance += 0.51;
         }
-
-        // // conc self boost
-        // if (abilityKey === ABILITIES.CONCENTRATED_BLAST_2) {
-        //     crit_chance += 0.05;
-        // } else if (abilityKey === ABILITIES.CONCENTRATED_BLAST_3) {
-        //     crit_chance += 0.1;
-        // }
-
-        // // gconc self boost (higher base + anima charged bonus)
-        // if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_2) {
-        //     crit_chance += 0.07;
-        //     if (settings[SETTINGS.ANIMA_CHARGED] === true) {
-        //         crit_chance += 0.1;
-        //     }
-        // } else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) {
-        //     crit_chance += 0.14;
-        //     if (settings[SETTINGS.ANIMA_CHARGED] === true) {
-        //         console.log('Are we winning? : Yes'); // TODO fix this  
-        //         crit_chance += 0.2;
-        //     }
-        // }
 
         // smoke tendrils
         if ([ABILITIES.SMOKE_TENDRILS_1, ABILITIES.SMOKE_TENDRILS_2, ABILITIES.SMOKE_TENDRILS_3, ABILITIES.SMOKE_TENDRILS_4].includes(abilityKey)) {

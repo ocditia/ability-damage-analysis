@@ -236,32 +236,22 @@ function applyStackEffects(ctx: EffectContext): void {
             ctx.timers['_glacial_embrace_decay'] = 34;
         }
     }
-    // Concentrated blast / Greater concentrated blast stacks
-    // Each sub-hit sets stacks to its hit number. The next non-conc ability
-    // gets +5% crit per stack (applied in rota_object_helper calc_crit_chance).
-    // Stacks are cleared when consumed (see below).
-    const concAbilities = new Set([
-        ABILITIES.CONCENTRATED_BLAST_1, ABILITIES.CONCENTRATED_BLAST_2, ABILITIES.CONCENTRATED_BLAST_3,
-        ABILITIES.GREATER_CONCENTRATED_BLAST_1, ABILITIES.GREATER_CONCENTRATED_BLAST_2, ABILITIES.GREATER_CONCENTRATED_BLAST_3,
-    ]);
+    // Concentrated blast / Greater concentrated blast
+    // Hit 3 activates a crit buff for the next ability.
+    // Snapshot whether anima charged was active on hit 1 (AC gets consumed on cast).
+    if (abilityKey === ABILITIES.CONCENTRATED_BLAST_1 || abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_1) {
+        settings['_conc_anima_charged'] = settings['anima charged cast'] === true;
+    }
 
-    if (concAbilities.has(abilityKey as ABILITIES)) {
-        const isGreater = [ABILITIES.GREATER_CONCENTRATED_BLAST_1, ABILITIES.GREATER_CONCENTRATED_BLAST_2, ABILITIES.GREATER_CONCENTRATED_BLAST_3].includes(abilityKey as ABILITIES);
-        settings['_conc_is_greater'] = isGreater;
-        // Track whether anima charged was active when this gconc was cast
-        // (AC gets consumed on cast, but the stacks should carry the enhanced rate)
-        if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_1 || abilityKey === ABILITIES.CONCENTRATED_BLAST_1) {
-            settings['_conc_anima_charged'] = settings['anima charged cast'] === true;
-        }
-
-        // Determine which hit number this is (1, 2, or 3)
-        if (abilityKey === ABILITIES.CONCENTRATED_BLAST_1 || abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_1) {
-            settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 1;
-        } else if (abilityKey === ABILITIES.CONCENTRATED_BLAST_2 || abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_2) {
-            settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 2;
-        } else if (abilityKey === ABILITIES.CONCENTRATED_BLAST_3 || abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) {
-            settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 3;
-        }
+    if (abilityKey === ABILITIES.CONCENTRATED_BLAST_3) {
+        const buffKey = settings['_conc_anima_charged'] ? SETTINGS.CONC_CRIT_AC : SETTINGS.CONC_CRIT;
+        settings[buffKey] = true;
+        settings['_channelBuffJustActivated'] = buffKey;
+    } else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) {
+        const buffKey = settings['_conc_anima_charged'] ? SETTINGS.GCONC_CRIT_AC : SETTINGS.GCONC_CRIT;
+        settings[buffKey] = true;
+        ctx.timers[buffKey] = 100;
+        settings['_channelBuffJustActivated'] = buffKey;
     }
 }
 

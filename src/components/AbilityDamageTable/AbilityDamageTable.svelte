@@ -7,15 +7,17 @@
     } from '@tanstack/svelte-table';
     import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
     import PillToggle from '$components/UI/PillToggle.svelte';
+    import AbilityOwnershipModal from './AbilityOwnershipModal.svelte';
 
-    let { data, columns } = $props();
+    let { data, columns, style = 'magic' } = $props();
+    let showOwnershipModal = $state(false);
 
     let abilityFilter = $state('popular');
     let sorting = $state([]);
 
     let filteredData = $derived(
         abilityFilter === 'all' ? data :
-        abilityFilter === 'owned' ? data.filter(d => ownedItemsStore.items.has(d.key)) :
+        abilityFilter === 'owned' ? data.filter(d => ownedItemsStore.ownedAbilities.has(d.key)) :
         data.filter(d => d.common !== false)
     );
 
@@ -63,8 +65,20 @@
 </script>
 
 <div class="flex items-center justify-end mb-2 gap-2">
+    <button
+        class="edit-owned-btn"
+        onclick={() => showOwnershipModal = true}
+        title="Edit owned abilities"
+    >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+    </button>
     <PillToggle bind:value={abilityFilter} />
 </div>
+
+<AbilityOwnershipModal bind:show={showOwnershipModal} {style} />
 
 <table class="w-full">
     <thead>
@@ -120,3 +134,23 @@
 <button onclick={copyCSV}>
     <img class="w-auto h-[64px]" src="/csv.png" alt="copy-to-csv" />
 </button>
+
+<style>
+    .edit-owned-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        color: #888;
+        background: transparent;
+        border: 1px solid #555;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+    .edit-owned-btn:hover {
+        color: #ccc;
+        border-color: #777;
+    }
+</style>

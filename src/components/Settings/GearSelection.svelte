@@ -56,7 +56,7 @@
             if (effectiveFilter === 'all') return items;
             const currentValue = settings[slot.key]?.value;
             if (effectiveFilter === 'owned') {
-                return items.filter(i => i.value === 'none' || i.value === currentValue || ownedItemsStore.items.has(i.value));
+                return items.filter(i => i.value === 'none' || i.value === currentValue || ownedItemsStore.ownedGear.has(i.value));
             }
             return items.filter(i => i.popular || i.value === 'none' || i.value === currentValue);
         }
@@ -73,7 +73,7 @@
             const currentMh = settings[weaponSlotsByStyle[styleTab]?.mh]?.value;
             const currentOh = settings[weaponSlotsByStyle[styleTab]?.oh]?.value;
             if (effectiveFilter === 'owned') {
-                filtered = filtered.filter(i => i.value === 'none' || i.value === currentMh || i.value === currentOh || ownedItemsStore.items.has(i.value));
+                filtered = filtered.filter(i => i.value === 'none' || i.value === currentMh || i.value === currentOh || ownedItemsStore.ownedGear.has(i.value));
             } else {
                 filtered = filtered.filter(i => i.popular || i.value === 'none' || i.value === currentMh || i.value === currentOh);
             }
