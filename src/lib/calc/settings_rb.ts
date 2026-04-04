@@ -2100,7 +2100,7 @@ const settingsConfig = {
     },
     [SETTINGS.TIME_SINCE_ATTACK]: {
         label: 'Time since last attack',
-        default: 9
+        default: 10
     },
     [SETTINGS.CHANNELLER_RING_STACKS]: {
         label: 'Channelers ring stacks',

@@ -105,6 +105,8 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
 
     // Consume Anima Charged buff for empowered magic abilities
     consumeAnimaCharged(settings, timers, abilityKey);
+    
+
 
     // scale to hit chance / damage potential
     logger.log(LogCategory.ABILITY_DAMAGE, `on_cast called for ${abilityKey}`, {
@@ -152,6 +154,8 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
     dmgObjects.forEach(dmgObject => {
         set_min_var(settings, dmgObject);
     });
+    // Track time since last attack (increments every tick, reset by ability casts)
+    settings[SETTINGS.TIME_SINCE_ATTACK] = 0;
 
     // Clear conc stacks after the consuming ability's damage objects have been created
     // (crit chance was already calculated with the stacks included)

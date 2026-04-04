@@ -376,6 +376,7 @@ function set_min_var(settings, dmgObject) {
 
     if (abils[settings['ability']].mainStyle === 'melee') {
         // greater barge tick bonus
+        console.log('TIME_SINCE_ATTACK', settings[SETTINGS.TIME_SINCE_ATTACK]);
         if (settings['ability'] === ABILITIES.GREATER_BARGE) {
             min_percent = min_percent + Math.min(0.05 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.5);
             var_percent = var_percent + Math.min(0.07 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
