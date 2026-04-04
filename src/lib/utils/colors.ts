@@ -68,6 +68,10 @@ export const BUFF_COLORS = {
     rampage:                  '#410c00',
     barricade:                '#C0C0C0',
     tumekens_asphyx:          '#FFB347',
+    conc_crit:                '#4682B4',
+    gconc_crit:               '#2E5A88',
+    conc_crit_ac:             '#6A9FD4',
+    gconc_crit_ac:            '#3B7CC0',
 } as const;
 
 // ─── Stack colours (rotation bar indicators) ────────────────────────────────

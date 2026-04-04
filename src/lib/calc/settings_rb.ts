@@ -486,6 +486,10 @@ const SETTINGS = {
     ESSENCE_CORRUPTION: 'essence corruption',
     ESS_CORRUPTION_ADREN: 'essence corruption adrenaline',
     CONCENTRATED_BLAST_STACKS: 'concentrated blast stacks',
+    CONC_CRIT: 'conc crit',
+    GCONC_CRIT: 'gconc crit',
+    CONC_CRIT_AC: 'conc crit ac',
+    GCONC_CRIT_AC: 'gconc crit ac',
     CHAOS_ROAR: 'chaos roar',
     FURY_BUFF: 'fury buff',
     FURY_BUFF_VALUES: {

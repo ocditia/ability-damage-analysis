@@ -121,7 +121,7 @@ function applyAbilityPercentModifiers(
     // Bloodlust: Flurry/Greater Flurry +1% per 1% HP missing, max 65%
     if (
         (abilityKey === ABILITIES.FLURRY_HIT || abilityKey === ABILITIES.GREATER_FLURRY_HIT) &&
-        (settings['_bloodlust_consumed'] === ABILITIES.FLURRY || settings['_bloodlust_consumed'] === ABILITIES.GREATER_FLURRY)
+        [ABILITIES.FLURRY, ABILITIES.GREATER_FLURRY, ABILITIES.FLURRY_BARGE, ABILITIES.GREATER_FLURRY_BARGE].includes(settings['_bloodlust_consumed'])
     ) {
         const hpMissing = 100 - (settings[SETTINGS.TARGET_HP_PERCENT] || 100);
         const bonusMult = Math.min(hpMissing, 65) / 100;
@@ -192,12 +192,12 @@ function applyStackEffects(ctx: EffectContext): void {
 
     if (abils[abilityKey]?.mainStyle !== 'melee') return;
     if (abils[abilityKey]?.onHitEffects !== true) return;
+    const parent = abils[abilityKey]?.parent;
 
     // Gflurry berserk extension
     const isBerserk = settings[SETTINGS.BERSERK] === true;
     if (
-        (abilityKey === ABILITIES.GREATER_FLURRY_HIT) &&
-        (settings['_bloodlust_consumed'] === ABILITIES.GREATER_FLURRY) &&
+        (parent === ABILITIES.GREATER_FLURRY) &&
         isBerserk && ctx.timers
     ) {
         ctx.timers[SETTINGS.BERSERK] += 1;

@@ -121,18 +121,17 @@ export function getItemForValue(value: string): GearItem | undefined {
 }
 
 /**
- * Count how many set pieces are currently equipped.
- * @param settings - flattened settings object
- * @param setValues - map of generic slot key -> expected value string
- *   e.g. { 'helmet': 'vestments of havoc hood', 'body': 'vestments of havoc top', ... }
+ * Count how many pieces from an armour set are currently equipped.
+ * Scans all settings values for matches against the set pieces.
  */
 export function countSetPieces(
     settings: Record<string, any>,
-    setValues: Record<string, string>
+    setPieces: string[]
 ): number {
+    const pieceSet = new Set(setPieces);
     let count = 0;
-    for (const [slotKey, expectedValue] of Object.entries(setValues)) {
-        if (settings[slotKey] === expectedValue) count++;
+    for (const value of Object.values(settings)) {
+        if (typeof value === 'string' && pieceSet.has(value)) count++;
     }
     return count;
 }
@@ -142,9 +141,9 @@ export function countSetPieces(
  */
 export function hasFullSet(
     settings: Record<string, any>,
-    setValues: Record<string, string>
+    setPieces: string[]
 ): boolean {
-    return countSetPieces(settings, setValues) === Object.keys(setValues).length;
+    return countSetPieces(settings, setPieces) === setPieces.length;
 }
 
 // ---- Settings key resolution ----

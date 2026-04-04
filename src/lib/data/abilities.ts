@@ -1084,6 +1084,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         mainStyle: 'melee',
         damageType: 'melee',
         adrenaline: 50,
+        hitTimings: [0, 1, 2],
         hits: {
             1: [ABILITIES.THE_FINAL_FLURRY_1, 'next hit', ABILITIES.THE_FINAL_FLURRY_1,
                 'next hit', ABILITIES.THE_FINAL_FLURRY_2

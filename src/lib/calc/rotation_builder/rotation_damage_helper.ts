@@ -8,6 +8,8 @@ import { DamageObject, DamageKind, DamageDistribution } from '../types';
 // Import and re-export from calculation_utils
 import { addAdrenaline } from './calculation_utils';
 import { armour } from '$lib/data/armour';
+import { gearSets, GEAR_SET } from '$lib/data/gear-sets';
+import { countSetPieces } from './gear-registry';
 
 /**
  * Calculate conjure spirit duration in ticks based on Spirit Pact level
@@ -95,8 +97,8 @@ function calc_channelled_hit(settings: Record<string, any>, hit_index: number, r
             let o = on_hit(settings, obj, timers, obj.ability);
             for (let hit of o) {
                 hits.push(hit);
-                handle_edraco(settings, timers, hit.ability);
-                handle_channeled_asphyx(settings, timers, hit.ability);
+                handleDracolichInfusion(settings, timers, hit.ability);
+                handleChanneledAsphyx(settings, timers, hit.ability);
             }
         }
     }
@@ -217,12 +219,7 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
         case ABILITIES.BERSERK:
             settings[SETTINGS.BERSERK] = true;
             // Vestments of Havoc: 3+ pieces extends Berserk by 10 ticks
-            const vestPieces = [
-                settings[SETTINGS.MELEE_HELMET] === ARMOUR.VESTMENTS_OF_HAVOC_HOOD,
-                settings[SETTINGS.MELEE_BODY] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_TOP,
-                settings[SETTINGS.MELEE_LEGS] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_BOTTOM,
-                settings[SETTINGS.MELEE_BOOTS] === ARMOUR.VESTMENTS_OF_HAVOC_BOOTS,
-            ].filter(Boolean).length;
+            const vestPieces = countSetPieces(settings, gearSets[GEAR_SET.VESTMENTS_OF_HAVOC]);
             timers[SETTINGS.BERSERK] = vestPieces >= 3 ? 43 : 33;
             break;
         case ABILITIES.BLACKHOLE:
@@ -321,12 +318,7 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
         abils[abilityKey]?.mainStyle === 'melee' &&
         abils[abilityKey]?.abilityType === 'ultimate'
     ) {
-        const vestCount = [
-            settings[SETTINGS.MELEE_HELMET] === ARMOUR.VESTMENTS_OF_HAVOC_HOOD,
-            settings[SETTINGS.MELEE_BODY] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_TOP,
-            settings[SETTINGS.MELEE_LEGS] === ARMOUR.VESTMENTS_OF_HAVOC_ROBE_BOTTOM,
-            settings[SETTINGS.MELEE_BOOTS] === ARMOUR.VESTMENTS_OF_HAVOC_BOOTS,
-        ].filter(Boolean).length;
+        const vestCount = countSetPieces(settings, gearSets[GEAR_SET.VESTMENTS_OF_HAVOC]);
 
         if (vestCount >= 2) {
             if (settings[SETTINGS.VESTMENTS_REGEN] === true) {
@@ -352,48 +344,33 @@ export function handle_wen_buff(settings: Record<string, any>, timers: Record<st
 /**
  * Sets (greater) dracolich infusion buff to active if applicable
  */
-export function handle_edraco(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
-    let body = settings['body'];
-    let helmet = settings['helmet'];
-    let gloves = settings['gloves'];
-    let legs = settings['legs'];
-    let boots = settings['boots'];
+export function handleDracolichInfusion(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
+    const nEDracoPieces = countSetPieces(settings, gearSets[GEAR_SET.ELITE_DRACOLICH]);
+    const nDracoPieces = countSetPieces(settings, gearSets[GEAR_SET.DRACOLICH]);
+    const nPieces = Math.max(nEDracoPieces, nDracoPieces);
 
-    let items = [body, helmet, gloves, legs, boots];
-    function dracoBuff(startString: string, adrenGain: number) {
-        let nDracoPieces = items.filter(item => item && item.startsWith(startString)).length;
-        if (abilityKey == ABILITIES.RAPID_FIRE_HIT || abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
-
-            addAdrenaline(settings, nDracoPieces * adrenGain);
-        }
-        //Handle crit chance buff
-        if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
-            if (nDracoPieces >= 3) {
-                let buff_duration = 5 + (3 * Math.max(nDracoPieces - 3, 0)); // 5 tick base duration
-                settings[SETTINGS.GREATER_DRACOLICH_INFUSION] = true;
-                settings['_channelBuffJustActivated'] = SETTINGS.GREATER_DRACOLICH_INFUSION;
-                timers[SETTINGS.GREATER_DRACOLICH_INFUSION] = buff_duration;
-            }
-        }
+    if (abilityKey == ABILITIES.RAPID_FIRE_HIT || abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
+        addAdrenaline(settings, nEDracoPieces * 0.5);
+        addAdrenaline(settings, nDracoPieces * 0.2);
     }
-    dracoBuff('elite dracolich', 0.5);
-    //dracoBuff('dracolich', 0.2, 'regular'); 
-    //TOOD solve the floating point error for regular draco
+
+    if (abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT && nPieces >= 3) {
+        const buff_duration = 5 + (3 * Math.max(nPieces - 3, 0));
+        const buff = nEDracoPieces >= 3 ? SETTINGS.GREATER_DRACOLICH_INFUSION : SETTINGS.DRACOLICH_INFUSION;
+        settings[buff] = true;
+        settings['_channelBuffJustActivated'] = buff;
+        timers[buff] = buff_duration;
+    }
 }
 
 /**
  * Activates Tumeken's Resplendence buff after the last hit of Asphyxiate (5pc set effect).
  * 9 second buff (15 ticks) that enhances the next Asphyxiate.
  */
-export function handle_channeled_asphyx(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
+export function handleChanneledAsphyx(settings: Record<string, any>, timers: Record<string, number>, abilityKey: string) {
     if (abilityKey !== ABILITIES.ASPHYXIATE_LAST_HIT && abilityKey !== ABILITIES.TUMEKEN_ASPHYXIATE_LAST_HIT) return;
 
-    let tumekensCount = 0;
-    if (settings[SETTINGS.MAGIC_HELMET] === ARMOUR.TUMEKENS_MASK) tumekensCount++;
-    if (settings[SETTINGS.MAGIC_BODY] === ARMOUR.TUMEKENS_ROBE_TOP) tumekensCount++;
-    if (settings[SETTINGS.MAGIC_LEGS] === ARMOUR.TUMEKENS_ROBE_BOTTOM) tumekensCount++;
-    if (settings[SETTINGS.MAGIC_GLOVES] === ARMOUR.TUMEKENS_GLOVES) tumekensCount++;
-    if (settings[SETTINGS.MAGIC_BOOTS] === ARMOUR.TUMEKENS_BOOTS) tumekensCount++;
+    const tumekensCount = countSetPieces(settings, gearSets[GEAR_SET.TUMEKENS_RESPLENDENCE]);
 
     if (tumekensCount >= 5) {
         settings[SETTINGS.GREATER_CHANNELLED_MIGHT] = true;
