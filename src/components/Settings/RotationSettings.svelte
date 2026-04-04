@@ -496,7 +496,8 @@ import { WEAPONS } from '$lib/data/weapons';
                             { key: SETTINGS.INFERNAL_PUZZLE_BOX, img: '/effect_icons/infernal_puzzlebox.png', title: 'Infernal Puzzle Box', step: 1, max: 6 },
                             { key: SETTINGS.DIVINE_RAGE, img: '/ability_icons/special/Divine_Rage.png', title: 'Divine Rage', toggle: true },
                             { key: SETTINGS.ECLIPSED_SOUL, img: '/ability_icons/special/Eclipsed_Soul.png', title: 'Eclipsed Soul', toggle: true },
-                            { key: SETTINGS.ENCHANTMENT_OF_FLAMES, img: '/effect_icons/Enchantment_of_flames_detail.png', title: 'Enchantment of Flames', toggle: true }
+                            { key: SETTINGS.ENCHANTMENT_OF_FLAMES, img: '/effect_icons/magic/Enchantment_of_flames_detail.png', title: 'Enchantment of Flames', toggle: true },
+                            { key: SETTINGS.ENCHANTMENT_OF_DREAD, img: '/effect_icons/ranged/Enchantment_of_dread.png', title: 'Enchantment of Dread', toggle: true }
                         ] as buff}
                             <ToggleButton
                                 bind:setting={settings[buff.key]}

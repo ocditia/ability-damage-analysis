@@ -691,9 +691,6 @@ function processTickOperationsCore(
     rotation: RotationInput,
     onTick?: OnTickCallback
 ) {
-    if (tickToProcess < 50) {
-        console.log('TICK:', tickToProcess, ' - TIME_SINCE_ATTACK: ', settingsCopy[SETTINGS.TIME_SINCE_ATTACK]);
-    }
     settingsCopy[SETTINGS.TIME_SINCE_ATTACK] = (settingsCopy[SETTINGS.TIME_SINCE_ATTACK] ?? 0) + 1;
     // During boss phase pause (invulnerable): still tick down buffs/timers, but skip damage
     if (state.pauseTicksRemaining > 0) {
@@ -1169,18 +1166,19 @@ function processChannelledTickCore(
     let dmgObjects: DamageObject[] = [];
 
     if (hitSequence[hit_index].length > 0) {
-        let hitKey = hitSequence[hit_index][0];
-        let dmgObject = create_damage_object(settingsCopy, hitKey);
-        let dmgObjs = on_cast(settingsCopy, dmgObject, state.timers, hitKey);
-        dmgObjs.forEach(dmgObj => {
-            let o = on_hit(settingsCopy, dmgObj, state.timers, dmgObj.ability);
-            for (let hit of o) {
-                dmgObjects.push(hit);
-            }
-        });
-        handle_edraco(settingsCopy, state.timers, hitKey);
-        handle_channeled_asphyx(settingsCopy, state.timers, hitKey);
-        handleChannellers(settingsCopy, state.timers, hitKey);
+        for (let hitKey of hitSequence[hit_index]) {
+            let dmgObject = create_damage_object(settingsCopy, hitKey);
+            let dmgObjs = on_cast(settingsCopy, dmgObject, state.timers, hitKey);
+            dmgObjs.forEach(dmgObj => {
+                let o = on_hit(settingsCopy, dmgObj, state.timers, dmgObj.ability);
+                for (let hit of o) {
+                    dmgObjects.push(hit);
+                }
+            });
+            handle_edraco(settingsCopy, state.timers, hitKey);
+            handle_channeled_asphyx(settingsCopy, state.timers, hitKey);
+            handleChannellers(settingsCopy, state.timers, hitKey);
+        }
     }
     dmgObjects.forEach(dmgObject => {
         if (settingsCopy.isNulledTick) {
