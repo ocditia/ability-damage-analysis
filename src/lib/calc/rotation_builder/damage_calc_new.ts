@@ -436,10 +436,24 @@ function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string,
         if (settings[SETTINGS.METEOR_STRIKE_BUFF] === true && abils[abilityKey]?.mainStyle === 'melee') {
             basicAdren = Math.floor(basicAdren * 1.5);
         }
-        addAdrenaline(settings, basicAdren);
-        if (settings[SETTINGS.EXPECTED_ADRENALINE]) {
-            addAdrenaline(settings, settings[SETTINGS.IMPATIENT] * 0.09 * 3);
+        // Invigorating: +5% adrenaline per rank on autos
+        let invigBoost = 1
+        const autoAbilityKeys = [
+            ABILITIES.RANGED_AUTO,
+            ABILITIES.MELEE_AUTO,
+            ABILITIES.MAGIC_AUTO,
+            ABILITIES.NECRO_AUTO,
+        ].map(key => String(key));
+        if (autoAbilityKeys.includes(abilityKey)) {
+            invigBoost += settings[SETTINGS.INVIGORATING] * 0.05;
         }
+
+        addAdrenaline(settings, basicAdren * invigBoost);
+        if (settings[SETTINGS.EXPECTED_ADRENALINE]) {
+            const impAdren = settings[SETTINGS.IMPATIENT] * 0.09 * 3 * invigBoost;
+            addAdrenaline(settings, impAdren);
+        }
+
         // Deathmark (hydrix bolts): +1% adrenaline from basic abilities
         if (settings[SETTINGS.DEATHMARK]) {
             addAdrenaline(settings, 1);

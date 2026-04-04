@@ -19,7 +19,7 @@
         { key: SETTINGS.LVL20ARMOUR, img: '/effect_icons/perks/level-20.png', title: 'Level 20 Armour', toggle: true },
         { key: PERKS.IMPATIENT, img: '/effect_icons/perks/Impatient.png', title: 'Impatient', step: 1, max: 4 },
         { key: PERKS.CRACKLING, img: '/effect_icons/perks/Crackling.png', title: 'Crackling', step: 1, max: 4 },
-        { key: PERKS.INVIGORATING, img: '/effect_icons/perks/Ruthless.webp', title: 'Ruthless', step: 1, max: 3 },
+        { key: PERKS.INVIGORATING, img: '/effect_icons/perks/Invigorating.png', title: 'Invigorating', step: 1, max: 4 },
         { key: PERKS.SLAYER_PERK_UNDEAD, img: '/effect_icons/perks/25px-Undead_Slayer.webp', title: 'Undead Slayer', toggle: true },
         { key: PERKS.SLAYER_PERK_DRAGON, img: '/effect_icons/perks/dragon_slayer_perk.png', title: 'Dragon Slayer', toggle: true },
         { key: PERKS.SLAYER_PERK_DEMON, img: '/effect_icons/perks/demon_slayer_perk.webp', title: 'Demon Slayer', toggle: true },

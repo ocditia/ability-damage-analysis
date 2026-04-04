@@ -8,7 +8,6 @@ import { DamageObject, DamageKind, DamageDistribution } from '../types';
 // Import and re-export from calculation_utils
 import { addAdrenaline } from './calculation_utils';
 import { armour } from '$lib/data/armour';
-export { addAdrenaline as add_adrenaline };
 
 /**
  * Calculate conjure spirit duration in ticks based on Spirit Pact level

@@ -138,6 +138,7 @@ const SETTINGS = {
     PLAYER_HP_PERCENT: 'player hp percent',
     GENOCIDAL: PERKS.GENOCIDAL,
     IMPATIENT: PERKS.IMPATIENT,
+    INVIGORATING: PERKS.INVIGORATING,
     AFTERSHOCK: PERKS.AFTERSHOCK,
     CRACKLING: PERKS.CRACKLING,
     // Familiars
@@ -875,6 +876,10 @@ const settingsConfig = {
     [SETTINGS.IMPATIENT]: {
         label: 'Impatient',
         default: 4
+    },
+    [SETTINGS.INVIGORATING]: {
+        label: 'Invigorating',
+        default: 0
     },
     [SETTINGS.AFTERSHOCK]: {
         label: 'Aftershock',
