@@ -150,6 +150,15 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
         rotation[1].push(ABILITIES.BLOODLUST_HURRICANE_HIT);
     }
 
+    // Nightmare gauntlet snipe
+    console.log("Nightmare gauntlet snipe", abilityKey, settings[SETTINGS.GLOVES], settings[SETTINGS.ENCHANTMENT_OF_DREAD]);
+    if (abilityKey === ABILITIES.SNIPE && settings[SETTINGS.GLOVES] === ARMOUR.NIGHTMARE_GAUNTLETS_E &&
+        settings[SETTINGS.ENCHANTMENT_OF_DREAD] === true) {
+        rotation[3].push(ABILITIES.SNIPE_HIT_2);
+        console.log("Adding second snipe hit");
+        console.log(rotation);
+    }
+
     settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 1;
     if (settings[SETTINGS.DAMAGE_PER_UNIT] === SETTINGS.DAMAGE_PER_UNIT_VALUES.TICK) {
         settings[SETTINGS.DAMAGE_PER_UNIT_DIVIDER] = 3;

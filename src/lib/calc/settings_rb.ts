@@ -452,6 +452,8 @@ const SETTINGS = {
     ENDLESS_ASSAULT: 'endless assault', // buff flag, set by Greater Barge when TIME_SINCE_ATTACK >= 8
     KERAPACS_WRIST_WRAPS: 'kerapacs wrist wraps', // buff flag, set by casting Dragon Breath with KWW/KWW_E
     ENCHANTMENT_OF_FLAMES: 'enchantment of flames', // toggle: KWW_E with enchantment unlocks 1.4x instead of 1.25x
+    ENCHANTMENT_OF_DREAD: 'enchantment of dread', // toggle: NG_E with enchantment adds second snipe hit
+    
     TARGET_DISABILITY: 'target disability',
     TARGET_DISABILITY_VALUES: {
         NONE: 'none',
@@ -1919,6 +1921,10 @@ const settingsConfig = {
     },
     [SETTINGS.ENCHANTMENT_OF_FLAMES]: {
         label: "Enchantment of Flames",
+        default: false
+    },
+    [SETTINGS.ENCHANTMENT_OF_DREAD]: {
+        label: "Enchantment of Dread",
         default: false
     },
     [SETTINGS.TARGET_DISABILITY]: {
