@@ -6,6 +6,8 @@
 import { ABILITIES, abils } from '$lib/data/abilities';
 import { ARMOUR } from '$lib/data/armour';
 import { SETTINGS } from '../../settings_rb';
+import { gearSets, GEAR_SET } from '$lib/data/gear-sets';
+import { countSetPieces } from '../gear-registry';
 import { DamageDistribution } from '../../types';
 
 export interface DamageModifierContext {
@@ -186,22 +188,7 @@ export function applyCrueltyScrimshawEffect(
  * Count ghost hunter pieces equipped
  */
 export function countGhostHunterPieces(settings: Record<string, any>): number {
-    let pieces = 0;
-
-    if (settings[SETTINGS.HELMET] === 'ghost hunter goggles') {
-        pieces += 1;
-    }
-    if (settings[SETTINGS.CAPE] === 'ghost hunter backpack') {
-        pieces += 1;
-    }
-    if (settings[SETTINGS.BODY] === 'ghost hunter body') {
-        pieces += 1;
-    }
-    if (settings[SETTINGS.LEGS] === 'ghost hunter legs') {
-        pieces += 1;
-    }
-
-    return pieces;
+    return countSetPieces(settings, gearSets[GEAR_SET.GHOST_HUNTER]);
 }
 
 /**

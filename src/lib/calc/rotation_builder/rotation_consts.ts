@@ -440,7 +440,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.conc_crit_ac,
-                icon: '/ability_icons/magic/30x30/concentrated_blast.png',
+                icon: '/effect_icons/magic/Conc_AC.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.GCONC_CRIT_AC]: {
@@ -449,7 +449,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.gconc_crit_ac,
-                icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png',
+                icon: '/ability_icons/magic/GConc_AC.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
         }

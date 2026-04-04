@@ -24,6 +24,7 @@ export const uiStore = $state({
     settingsPanelCollapsed: false,
     configSectionCollapsed: true,
     abilityFilter: 'popular', // 'popular' | 'owned' | 'all'
+    showSuggestions: { value: false },
     
     // Extra actions panel
     extraActions: {

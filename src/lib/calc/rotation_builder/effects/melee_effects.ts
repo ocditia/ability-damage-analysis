@@ -113,7 +113,7 @@ function applyAbilityPercentModifiers(
     // Bloodlust: Assault damage from 130-150% to 170-190% (add 0.40 to min)
     if (
         abilityKey === ABILITIES.ASSAULT_HIT &&
-        settings['_bloodlust_consumed'] === ABILITIES.ASSAULT
+        (settings['_bloodlust_consumed'] === ABILITIES.ASSAULT || settings['_bloodlust_consumed'] === ABILITIES.ASSAULT_BARGE)
     ) {
         distribution.minHit += 0.40;
     }

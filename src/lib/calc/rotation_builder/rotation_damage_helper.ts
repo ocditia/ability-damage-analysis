@@ -31,16 +31,13 @@ export function getConjureDuration(settings: Record<string, any>): number {
 }
 
 /**
- * Count equipped Robes of the First Necromancer pieces
+ * Count equipped Robes of the First Necromancer pieces.
+ * Crown with addon counts as 2 pieces; capped at 5.
  */
 export function countTFNPieces(settings: Record<string, any>): number {
-    let count = 0;
-    if (settings[SETTINGS.NECRO_HELMET] === ARMOUR.TFN_CROWN) count++;
-    else if (settings[SETTINGS.NECRO_HELMET] === ARMOUR.TFN_CROWN_WITH_ADDON) count += 2;
-    if (settings[SETTINGS.NECRO_BODY] === ARMOUR.TFN_ROBE_TOP) count++;
-    if (settings[SETTINGS.NECRO_LEGS] === ARMOUR.TFN_ROBE_BOTTOM) count++;
-    if (settings[SETTINGS.NECRO_GLOVES] === ARMOUR.TFN_HAND_WRAP) count++;
-    if (settings[SETTINGS.NECRO_BOOTS] === ARMOUR.TFN_FOOT_WRAPS) count++;
+    let count = countSetPieces(settings, gearSets[GEAR_SET.FIRST_NECROMANCER]);
+    // Crown with addon counts as 2 pieces (countSetPieces already counted it as 1)
+    if (settings[SETTINGS.NECRO_HELMET] === ARMOUR.TFN_CROWN_WITH_ADDON) count++;
     return Math.min(count, 5);
 }
 

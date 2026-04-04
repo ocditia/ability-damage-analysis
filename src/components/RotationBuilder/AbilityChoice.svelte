@@ -20,7 +20,7 @@
             !["proc", "perk"].includes(getAbilityType(abil)) && 
             (abil.title && abil.icon) && (
             filter === 'all' ||
-            (filter === 'owned' && ownedItemsStore.items.has(key)) ||
+            (filter === 'owned' && ownedItemsStore.ownedAbilities.has(key)) ||
             (filter === 'popular' && abil.common !== false))
         )}
         {#if filteredAbilities.length > 0}

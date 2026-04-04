@@ -15,14 +15,14 @@
     import RotationConfigManager from '../../components/RotationBuilder/RotationConfigManager.svelte';
     import KeybindConfigModal from '../../components/RotationBuilder/KeybindConfigModal.svelte';
     import KeypressOutputModal from '../../components/RotationBuilder/KeypressOutputModal.svelte';
-    import { allExtraActions } from '$lib/special/abilities';
+    import { rangedGear, meleeGear, magicGear, necroGear, sharedGear, allExtraActions } from '$lib/special/abilities';
     import * as eventHandlers from '$lib/utils/rotationEventHandlers';
+    import { calculateAOEDamage } from '$lib/data/aoe';
     import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
     import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
     import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
     import { getBossPresetWithEnrage, type BossAttack, type BossAttackPattern } from '$lib/data/bosses/boss_presets';
-    import { suggestNextAbility, resolveTumekensAsphyxiate, type AbilitySuggestion } from '$lib/calc/rotation_builder/rotation-damage-calculator';
 
 
     const filterByStyle = (style) => Object.fromEntries(
@@ -361,7 +361,7 @@
 
 	const tabs = [
 		{ id: 'ranged', label: 'Ranged', abilities: rangedAbils },
-		{ id: 'magic', label: 'Magic', abilities: magicAbils },
+		{ id: 'magic', label: 'Magic', abilities: magicAbils, badge: 'beta' },
 		{ id: 'melee', label: 'Melee', abilities: meleeAbils, badge: 'beta' },
 		{ id: 'necro', label: 'Necro', abilities: necroAbils, badge: 'beta' },
 		{ id: 'defence', label: 'Defence', abilities: defAbils, badge: 'beta'}
@@ -376,27 +376,25 @@
 		notifActions
 	};
 
-	// Ability suggestions
-	let suggestions: AbilitySuggestion[] = $state([]);
-	let suggestionsCollapsed = $state(false);
+	// AOE settings
+	let aoeTargetCount = $state(5);
+	let aoeMobHp = $state(0);
+	let aoeResult = $state({ totalDamage: 0, breakdown: new Map() });
 
 	// Wrapper functions for event handlers
 	function calculateTotalDamageNew() {
 		eventHandlers.calculateTotalDamageNew();
-
-		if (uiStore.showSuggestions.value && rotationStore._finalState && rotationStore._finalSettings) {
-			const style = uiStore.activeTab ?? 'melee';
-			const styleMap = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necromancy' };
-			const candidates = Object.entries(abils)
-				.filter(([, a]) => a.title && a.mainStyle === styleMap[style])
-				.map(([key]) => key);
-			suggestions = suggestNextAbility(
-				rotationStore._finalState,
-				rotationStore._finalSettings,
-				candidates
-			);
-		} else if (!uiStore.showSuggestions.value) {
-			suggestions = [];
+		// Post-process for AOE
+		if (rotationStore.distributionStats?.length > 0) {
+			// Build buff tick data for per-tick buff checks
+			const buffTickData: Record<string, any[]> = {};
+			if (rotationStore.buffs) {
+				for (const [key, buff] of Object.entries(rotationStore.buffs)) {
+					if (buff.buffTicks) buffTickData[key] = buff.buffTicks;
+				}
+			}
+			aoeResult = calculateAOEDamage(rotationStore.distributionStats, aoeTargetCount, aoeMobHp, buffTickData);
+			console.log('[AOE] targets:', aoeTargetCount, 'total:', aoeResult.totalDamage, 'breakdown:', [...aoeResult.breakdown.entries()].map(([k,v]) => `${k}: ${v.singleTarget} → ${v.aoeDamage} (${v.targets}t)`));
 		}
 	}
 
@@ -478,92 +476,7 @@
      */
     function buffActive(key: string, tick: number) {
         return rotationStore.buffs[key]?.activeRows.includes(tick) ?? false;
-    }
-
-    // Resolve ability key, handling Tumeken's Asphyxiate swap etc.
-    function resolveAbility(abilKey: string): string {
-        const s = settingsStore.settings;
-        const flat: Record<string, any> = {};
-        for (const k of [SETTINGS.MAGIC_HELMET, SETTINGS.MAGIC_BODY, SETTINGS.MAGIC_LEGS, SETTINGS.MAGIC_BOOTS, SETTINGS.MAGIC_GLOVES]) {
-            flat[k] = s[k]?.value;
-        }
-        return resolveTumekensAsphyxiate(abilKey, flat);
-    }
-
-    // Get effective duration for an ability (explicit duration, or inferred from hits keys for channels)
-    function getAbilityDuration(abil: any): number {
-        if (typeof abil.duration === 'number') return abil.duration;
-        if (abil.abilityClassification === 'channel' && abil.hits) {
-            return Math.max(...Object.keys(abil.hits).map(Number));
-        }
-        return 3;
-    }
-
-    // Derive invalid ability placements: GCD violations and cooldown violations
-    // Maps tick index → reason string
-    let invalidTicks: Record<number, string> = $derived.by(() => {
-        const map: Record<number, string> = {};
-        const bar = rotationStore.abilityBar;
-        let nextGcdTick = 0; // earliest tick the next ability can be placed
-        const cooldownExpiry: Record<string, number> = {}; // abilKey → tick when off cooldown
-
-        for (let i = 0; i < bar.length; i++) {
-            const abilKey = bar[i];
-            if (!abilKey) continue;
-            // Use resolved ability from tickMetadata if available (accounts for runtime swaps)
-            const meta = rotationStore.tickMetadata?.[i];
-            const resolved = meta?.resolvedAbility ?? resolveAbility(abilKey);
-            const abil = abils[resolved];
-            if (!abil) continue;
-
-            // Check GCD violation
-            if (i < nextGcdTick) {
-                map[i] = 'GCD active';
-            }
-
-            // Check cooldown violation (use original key for cooldown tracking)
-            if (cooldownExpiry[abilKey] && i < cooldownExpiry[abilKey]) {
-                const existing = map[i];
-                map[i] = existing ? `${existing} + On cooldown` : 'On cooldown';
-            }
-
-            // Update GCD: minimum 3 ticks, or ability duration if channelled
-            const duration = meta?.duration ?? getAbilityDuration(abil);
-            const gcd = Math.max(3, duration);
-            nextGcdTick = i + gcd;
-
-            // Update cooldown expiry (use original key so same-ability checks work)
-            const cdSeconds = abil.cooldown ?? 0;
-            if (cdSeconds > 0) {
-                const cdTicks = Math.round(cdSeconds / 0.6);
-                cooldownExpiry[abilKey] = i + cdTicks;
-            }
-        }
-        return map;
-    });
-
-    // Derive which ticks are channel continuation ticks (not the cast tick itself)
-    // Maps tick index → { ability key, icon } of the ability being channelled
-    let channelTicks: Record<number, { key: string; icon: string }> = $derived.by(() => {
-        const map: Record<number, { key: string; icon: string }> = {};
-        const bar = rotationStore.abilityBar;
-        for (let i = 0; i < bar.length; i++) {
-            const abilKey = bar[i];
-            if (!abilKey) continue;
-            // Use the resolved ability from tickMetadata if available (accounts for runtime swaps like Endless Assault)
-            const meta = rotationStore.tickMetadata?.[i];
-            const resolved = meta?.resolvedAbility ?? resolveAbility(abilKey);
-            const abil = abils[resolved];
-            if (!abil || abil.abilityClassification !== 'channel') continue;
-            const duration = meta?.duration ?? getAbilityDuration(abil);
-            // Mark ticks after the cast tick as channel ticks (up to duration or next ability)
-            for (let t = i + 1; t < i + duration && t < bar.length; t++) {
-                if (bar[t] != null) break; // Channel cancelled by next ability
-                map[t] = { key: resolved, icon: abil.icon ?? '' };
-            }
-        }
-        return map;
-    });
+    }   
 </script>
 
 <style>
@@ -595,88 +508,6 @@
 		color: #ff6b6b;
 		border-color: #ff6b6b;
 		background: rgba(255, 0, 0, 0.08);
-	}
-
-	.suggestions-floating {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		width: 58.333%;
-		z-index: 50;
-		pointer-events: auto;
-		display: flex;
-		justify-content: center;
-	}
-	.suggestions-bar {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		padding: 8px 16px;
-		background: rgba(23, 29, 33, 0.97);
-		border: 2px solid rgba(255, 255, 255, 0.2);
-		border-bottom: none;
-		border-radius: 12px 12px 0 0;
-		backdrop-filter: blur(10px);
-		box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
-	}
-	.suggestions-label {
-		font-size: 0.85rem;
-		color: #888;
-		margin-right: 4px;
-		white-space: nowrap;
-	}
-	.suggestions-tab {
-		padding: 5px 18px;
-		font-size: 0.8rem;
-		color: #888;
-		background: rgba(23, 29, 33, 0.97);
-		border: 2px solid rgba(255, 255, 255, 0.2);
-		border-bottom: none;
-		border-radius: 10px 10px 0 0;
-		cursor: pointer;
-		backdrop-filter: blur(10px);
-	}
-	.suggestions-tab:hover {
-		color: #ccc;
-	}
-	.suggestions-collapse {
-		padding: 3px 8px;
-		font-size: 0.7rem;
-		color: #666;
-		background: none;
-		border: none;
-		cursor: pointer;
-		margin-left: 6px;
-	}
-	.suggestions-collapse:hover {
-		color: #ccc;
-	}
-	.suggestion-btn {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 2px;
-		padding: 4px;
-		border-radius: 5px;
-		cursor: pointer;
-		background: none;
-		border: 1px solid transparent;
-		transition: all 0.15s;
-	}
-	.suggestion-btn:hover {
-		background: rgba(255, 255, 255, 0.12);
-		border-color: rgba(255, 255, 255, 0.25);
-	}
-	.suggestion-icon {
-		width: 34px;
-		height: 34px;
-		border-radius: 4px;
-	}
-	.suggestion-dmg {
-		font-size: 0.65rem;
-		color: #4CAF50;
-		font-weight: bold;
-		line-height: 1;
 	}
 
 
@@ -790,23 +621,6 @@
 		border: 1px solid #c5c5c5;
 		box-shadow: 0 0 3px rgba(255, 255, 255, 0.572);
 		z-index: 3;
-	}
-
-	.ability-slot.invalid-placement {
-		border: 1px solid #ef4444;
-		box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.4);
-	}
-
-	.ability-slot.invalid-placement > img:first-of-type {
-		opacity: 0.5;
-	}
-
-	.ability-slot .channel-ghost {
-		width: 100%;
-		height: 100%;
-		opacity: 0.3;
-		filter: grayscale(50%);
-		pointer-events: none;
 	}
 
 	.ability-slot.nulled::before {
@@ -1062,7 +876,7 @@
 </style>
 
 <Navbar />
-<Header img="/range_background.png" text="Rotation Calculator Beta" icon="/style_icons/rota_icon.svg" />
+<Header img="/range_background.png" text="AOE Rotation Calculator" icon="/style_icons/rota_icon.svg" />
 
 <div class="space-y-14 mt-10 z-20">
 	<div class="responsive-container {uiStore.activeTool.toLowerCase()}-cursor {uiStore.stallingAbility ? 'stalling' : ''}" 
@@ -1081,17 +895,31 @@
 							Settings ←
 						</button>
 					{/if}
-					<div class="rotation-title-row">
-						<h1 class="rotation-header">{bossName}{#if killTime} <em>{killTime}</em>{/if}</h1>
-						<button class="reset-btn" onclick={clearRotation} title="Reset rotation">Reset</button>
-						<div class="damage-summary">
-								<span class="dmg-total">{(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage + rotationStore.conjureDamage).toLocaleString()}</span>
-								{#if rotationStore.totalDamage > 0 || rotationStore.poisonDamage > 0 || rotationStore.familiarDamage > 0 || rotationStore.dreadnipDamage > 0 || rotationStore.conjureDamage > 0}
-									<span class="dmg-breakdown">(<span class="dmg-val">{rotationStore.totalDamage.toLocaleString()}</span>{#if rotationStore.poisonDamage > 0} + <span class="dmg-val poison">{rotationStore.poisonDamage.toLocaleString()}</span>{/if}{#if rotationStore.familiarDamage > 0} + <span class="dmg-val familiar">{rotationStore.familiarDamage.toLocaleString()}</span>{/if}{#if rotationStore.dreadnipDamage > 0} + <span class="dmg-val dreadnip">{rotationStore.dreadnipDamage.toLocaleString()}</span>{/if}{#if rotationStore.conjureDamage > 0} + <span class="dmg-val conjure">{rotationStore.conjureDamage.toLocaleString()}</span>{/if})</span>
-								{/if}
-							</div>
+					<!-- AOE Controls -->
+					<div class="flex items-center gap-4 flex-wrap mb-3 px-3 py-2" style="background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+						<div class="flex items-center gap-2">
+							<label class="text-sm text-gray-400">Targets:</label>
+							<input type="range" min="1" max="25" bind:value={aoeTargetCount}
+								oninput={() => calculateTotalDamageNew()} class="w-20" />
+							<span class="text-base font-bold text-white w-6 text-center">{aoeTargetCount}</span>
+						</div>
+						<div class="flex items-center gap-2">
+							<img src="/effect_icons/target_hp.png" alt="Mob HP" class="w-4 h-4" />
+							<label class="text-sm text-gray-400">Mob HP:</label>
+							<input type="number" min="0" step="500" bind:value={aoeMobHp}
+								oninput={() => calculateTotalDamageNew()} placeholder="0"
+								class="w-20 text-sm text-center bg-transparent border border-gray-600 rounded px-1 py-0.5 text-white" />
+						</div>
 					</div>
 
+					<div class="rotation-title-row">
+						<h1 class="rotation-header">AOE Rotation{#if killTime} <em>{killTime}</em>{/if}</h1>
+						<button class="reset-btn" onclick={clearRotation} title="Reset rotation">Reset</button>
+						<div class="damage-summary">
+								<span class="dmg-total" style="color: #ffd700;">{aoeResult.totalDamage.toLocaleString()} AOE</span>
+								<span class="dmg-total" style="font-size: 0.75rem; color: #888;">({(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage + rotationStore.conjureDamage).toLocaleString()} single)</span>
+							</div>
+					</div>
 					<GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
 
 					<!-- Damage Distribution Chart -->
@@ -1164,7 +992,6 @@
                                 class:nulled={rotationStore.nulledTicks[index]}
                                 class:selected-tick={uiStore.extraActions.show && uiStore.extraActions.tick === index}
                                 class:has-extra-actions={rotationStore.extraActionBar[index]?.some(action => action !== null)}
-                                class:invalid-placement={invalidTicks[index] && ability}
                                 class:phase-pause={pauseTickSet.has(index)}
                                 tabindex="0"
                                 aria-label="Ability slot"
@@ -1180,18 +1007,12 @@
                                     <img src={allAbils[ability].icon}
                                         alt={allAbils[ability].title}
                                         style="width: 100%; height: 100%;"
-                                        title="{allAbils[ability].title}{invalidTicks[index] ? ` (${invalidTicks[index]})` : ''}"
+                                        title="{allAbils[ability].title}"
                                         draggable="true"
                                         ondragstart={(e) => handleDragStartBar(e, ability, index)}
                                     />
                                 {:else if ability}
                                     <span class="cell-number" title="Unknown: {ability}" style="font-size: 0.5rem; color: #f66;">?</span>
-                                {:else if channelTicks[index]}
-                                    <img src={channelTicks[index].icon}
-                                        alt="Channelling"
-                                        class="channel-ghost"
-                                        title="Channelling: {allAbils[channelTicks[index].key]?.title}"
-                                    />
                                 {/if}
                                 {#if rotationStore.stalledAbilities[index] && allAbils[rotationStore.stalledAbilities[index]]}
                                     <img
@@ -1315,10 +1136,9 @@
                             onToggleNull={() => refreshUI()}
                             onRefreshUI={() => refreshUI()}
                         />
-                    {/if}
-                    <div class:hidden={uiStore.extraActions.show}>
+                    {:else}
                         <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
-                    </div>
+                    {/if}
                 </div>
             </div>
             <div class="col-span-12 mt-8">
@@ -1457,35 +1277,23 @@
 
 <KeybindConfigModal
     bind:show={showKeybindModal}
+    abilityTabs={tabs}
+    gearTabs={[
+        { id: 'ranged', label: 'Ranged', gear: { ...rangedGear, ...sharedGear } },
+        { id: 'melee', label: 'Melee', gear: { ...meleeGear, ...sharedGear } },
+        { id: 'magic', label: 'Magic', gear: { ...magicGear, ...sharedGear } },
+        { id: 'necro', label: 'Necro', gear: { ...necroGear, ...sharedGear } },
+    ]}
 />
 
 <KeypressOutputModal
     bind:show={showKeypressModal}
+    {allAbils}
+    gearTabs={[
+        { id: 'ranged', label: 'Ranged', gear: { ...rangedGear, ...sharedGear } },
+        { id: 'melee', label: 'Melee', gear: { ...meleeGear, ...sharedGear } },
+        { id: 'magic', label: 'Magic', gear: { ...magicGear, ...sharedGear } },
+        { id: 'necro', label: 'Necro', gear: { ...necroGear, ...sharedGear } },
+    ]}
     phaseBreaks={phaseMarkers.map(m => ({ tick: (m.pauseEnd ?? m.tick) + 1, label: m.label }))}
 />
-
-<!-- Floating Ability Suggestions Bar -->
-{#if suggestions.length > 0}
-	<div class="suggestions-floating" class:collapsed={suggestionsCollapsed}>
-		{#if suggestionsCollapsed}
-			<button class="suggestions-tab" onclick={() => suggestionsCollapsed = false}>
-				▲ Suggestions
-			</button>
-		{:else}
-			<div class="suggestions-bar">
-				<span class="suggestions-label">Next:</span>
-				{#each suggestions.slice(0, 10) as suggestion}
-					<button
-						class="suggestion-btn"
-						title="{suggestion.title}: +{suggestion.damage.toLocaleString()} damage"
-						onclick={(e) => handleAbilityClick(e, suggestion.key)}
-					>
-						<img src={suggestion.icon} alt={suggestion.title} class="suggestion-icon" />
-						<span class="suggestion-dmg">+{suggestion.damage >= 1000 ? Math.round(suggestion.damage / 1000) + 'K' : suggestion.damage}</span>
-					</button>
-				{/each}
-				<button class="suggestions-collapse" onclick={() => suggestionsCollapsed = true} title="Collapse">▼</button>
-			</div>
-		{/if}
-	</div>
-{/if}

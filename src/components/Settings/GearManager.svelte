@@ -51,7 +51,7 @@
         return getItemsForSlot(slot, style).filter(i =>
             i.value !== 'none' &&
             !i.value.startsWith('custom') &&
-            ownedItemsStore.items.has(i.value)
+            ownedItemsStore.ownedGear.has(i.value)
         );
     }
 

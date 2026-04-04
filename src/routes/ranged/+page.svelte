@@ -172,7 +172,7 @@
                 <div class="card card-ranged">
                     <h1 class="main-header mb-6 ml-3">Damage Values</h1>
                     <div class="table-container">
-                        <AbilityDamageTable data={damages} columns={columns} />
+                        <AbilityDamageTable data={damages} columns={columns} style="ranged" />
                     </div>
                 </div>
             </div>

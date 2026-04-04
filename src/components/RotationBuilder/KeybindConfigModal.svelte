@@ -26,7 +26,7 @@
         for (const [key, abil] of Object.entries(abils)) {
             if (!abil.icon || !abil.title) continue;
             if (abil.mainStyle !== styleId) continue;
-            entries.push({ key, title: abil.title, icon: abil.icon, group: styleId });
+            entries.push({ key, title: abil.title, icon: abil.icon, group: styleId, kind: 'ability' });
         }
         return entries;
     }
@@ -41,14 +41,14 @@
             if (item.style !== styleId) continue;
             if (seen.has(key)) continue;
             seen.add(key);
-            entries.push({ key, title: item.title, icon: item.icon, group: styleId + ' Gear' });
+            entries.push({ key, title: item.title, icon: item.icon, group: styleId + ' Gear', kind: 'gear' });
         }
         for (const [key, item] of Object.entries(weapons)) {
             if (!item.title || key === 'none') continue;
             if (item.style !== styleId) continue;
             if (seen.has(key)) continue;
             seen.add(key);
-            entries.push({ key, title: item.title, icon: item.icon, group: styleId + ' Gear' });
+            entries.push({ key, title: item.title, icon: item.icon, group: styleId + ' Gear', kind: 'gear' });
         }
         return entries;
     }
@@ -60,16 +60,30 @@
             if (item.style !== 'hybrid') continue;
             if (seen.has(key)) continue;
             seen.add(key);
-            entries.push({ key, title: item.title, icon: item.icon, group: 'Shared Gear' });
+            entries.push({ key, title: item.title, icon: item.icon, group: 'Shared Gear', kind: 'gear' });
         }
         for (const [key, item] of Object.entries(weapons)) {
             if (!item.title || key === 'none') continue;
             if (item.style !== 'hybrid') continue;
             if (seen.has(key)) continue;
             seen.add(key);
-            entries.push({ key, title: item.title, icon: item.icon, group: 'Shared Gear' });
+            entries.push({ key, title: item.title, icon: item.icon, group: 'Shared Gear', kind: 'gear' });
         }
         return entries;
+    }
+
+    function isEntryOwned(entry) {
+        return entry.kind === 'gear'
+            ? ownedItemsStore.ownedGear.has(entry.key)
+            : ownedItemsStore.ownedAbilities.has(entry.key);
+    }
+
+    function toggleEntry(entry) {
+        if (entry.kind === 'gear') {
+            ownedItemsActions.toggleGear(entry.key);
+        } else {
+            ownedItemsActions.toggleAbility(entry.key);
+        }
     }
 
     // Build sections
@@ -97,7 +111,7 @@
             }
             entries.push(...getSharedGearEntries(seen));
             for (const [key, abil] of Object.entries(allExtraActions)) {
-                entries.push({ key, ...abil, group: 'Off-GCD / Items' });
+                entries.push({ key, ...abil, group: 'Off-GCD / Items', kind: 'ability' });
             }
         } else if (tab === 'gear') {
             const seen = new Set();
@@ -107,7 +121,7 @@
             entries.push(...getSharedGearEntries(seen));
         } else if (tab === 'extra') {
             for (const [key, abil] of Object.entries(allExtraActions)) {
-                entries.push({ key, ...abil, group: 'Off-GCD / Items' });
+                entries.push({ key, ...abil, group: 'Off-GCD / Items', kind: 'ability' });
             }
         } else {
             entries.push(...getAbilityEntries(tab));
@@ -129,20 +143,30 @@
     }
 
     function selectAllVisible() {
-        for (const abil of visibleAbilities) {
-            if (!ownedItemsStore.items.has(abil.key)) {
-                ownedItemsStore.items.add(abil.key);
+        for (const entry of visibleAbilities) {
+            if (entry.kind === 'gear') {
+                if (!ownedItemsStore.ownedGear.has(entry.key)) {
+                    ownedItemsStore.ownedGear.set(entry.key, [{ itemKey: entry.key, perks: [] }]);
+                }
+            } else {
+                ownedItemsStore.ownedAbilities.add(entry.key);
             }
         }
-        ownedItemsStore.items = new Set(ownedItemsStore.items);
+        ownedItemsStore.ownedAbilities = new Set(ownedItemsStore.ownedAbilities);
+        ownedItemsStore.ownedGear = new Map(ownedItemsStore.ownedGear);
         ownedItemsActions.saveOwned();
     }
 
     function deselectAllVisible() {
-        for (const abil of visibleAbilities) {
-            ownedItemsStore.items.delete(abil.key);
+        for (const entry of visibleAbilities) {
+            if (entry.kind === 'gear') {
+                ownedItemsStore.ownedGear.delete(entry.key);
+            } else {
+                ownedItemsStore.ownedAbilities.delete(entry.key);
+            }
         }
-        ownedItemsStore.items = new Set(ownedItemsStore.items);
+        ownedItemsStore.ownedAbilities = new Set(ownedItemsStore.ownedAbilities);
+        ownedItemsStore.ownedGear = new Map(ownedItemsStore.ownedGear);
         ownedItemsActions.saveOwned();
     }
 
@@ -225,8 +249,8 @@
                         <input
                             type="checkbox"
                             class="owned-checkbox"
-                            checked={ownedItemsStore.items.has(abil.key)}
-                            onchange={() => ownedItemsActions.toggleOwned(abil.key)}
+                            checked={isEntryOwned(abil)}
+                            onchange={() => toggleEntry(abil)}
                             title="Owned"
                         />
                         <input

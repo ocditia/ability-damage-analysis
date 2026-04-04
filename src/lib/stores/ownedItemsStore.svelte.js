@@ -2,7 +2,8 @@ import { weapons } from '$lib/data/weapons';
 import { armour } from '$lib/data/armour';
 import { abils } from '$lib/data/abilities';
 
-const STORAGE_KEY = 'owned_items';
+const ABILITIES_STORAGE_KEY = 'owned_abilities';
+const LEGACY_STORAGE_KEY = 'owned_items';
 const GEAR_STORAGE_KEY = 'owned_gear';
 
 /**
@@ -18,15 +19,9 @@ const GEAR_STORAGE_KEY = 'owned_gear';
  * @property {string} [label] - Optional user label to distinguish copies
  */
 
-/** Build default owned set from popular gear + common abilities */
-function buildPopularDefaults() {
+/** Build default owned abilities from common abilities */
+function buildAbilityDefaults() {
     const defaults = new Set();
-    for (const [key, item] of Object.entries(weapons)) {
-        if (item.popular) defaults.add(key);
-    }
-    for (const [key, item] of Object.entries(armour)) {
-        if (item.popular) defaults.add(key);
-    }
     for (const [key, item] of Object.entries(abils)) {
         if (item.title && item.common !== false) defaults.add(key);
     }
@@ -34,7 +29,7 @@ function buildPopularDefaults() {
 }
 
 /** Build default owned gear from popular weapons and armour (no perks) */
-function buildPopularGearDefaults() {
+function buildGearDefaults() {
     /** @type {Map<string, OwnedGearItem[]>} */
     const defaults = new Map();
     for (const [key, item] of Object.entries(weapons)) {
@@ -78,8 +73,8 @@ function deserializeGear(json) {
 }
 
 export const ownedItemsStore = $state({
-    /** @type {Set<string>} Set of item/ability keys (legacy, used for abilities) */
-    items: new Set(),
+    /** @type {Set<string>} Set of owned ability keys */
+    ownedAbilities: new Set(),
     /** @type {Map<string, OwnedGearItem[]>} Gear items with perks, keyed by item name */
     ownedGear: new Map()
 });
@@ -87,12 +82,24 @@ export const ownedItemsStore = $state({
 export const ownedItemsActions = {
     loadOwned() {
         try {
-            // Load legacy items (abilities + gear names)
-            const stored = localStorage.getItem(STORAGE_KEY);
+            // Load abilities
+            const stored = localStorage.getItem(ABILITIES_STORAGE_KEY);
             if (stored) {
-                ownedItemsStore.items = new Set(JSON.parse(stored));
+                ownedItemsStore.ownedAbilities = new Set(JSON.parse(stored));
             } else {
-                ownedItemsStore.items = buildPopularDefaults();
+                // Migrate from legacy key if it exists
+                const legacy = localStorage.getItem(LEGACY_STORAGE_KEY);
+                if (legacy) {
+                    const allKeys = new Set(JSON.parse(legacy));
+                    // Filter to only ability keys
+                    const abilityKeys = new Set();
+                    for (const key of allKeys) {
+                        if (abils[key]) abilityKeys.add(key);
+                    }
+                    ownedItemsStore.ownedAbilities = abilityKeys;
+                } else {
+                    ownedItemsStore.ownedAbilities = buildAbilityDefaults();
+                }
             }
 
             // Load gear with perks
@@ -100,21 +107,20 @@ export const ownedItemsActions = {
             if (storedGear) {
                 ownedItemsStore.ownedGear = deserializeGear(storedGear);
             } else {
-                // First visit or migration: build from popular defaults
-                ownedItemsStore.ownedGear = buildPopularGearDefaults();
+                ownedItemsStore.ownedGear = buildGearDefaults();
             }
 
             this.saveOwned();
         } catch (e) {
             console.error('Failed to load owned items:', e);
-            ownedItemsStore.items = new Set();
+            ownedItemsStore.ownedAbilities = new Set();
             ownedItemsStore.ownedGear = new Map();
         }
     },
 
     saveOwned() {
         try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify([...ownedItemsStore.items]));
+            localStorage.setItem(ABILITIES_STORAGE_KEY, JSON.stringify([...ownedItemsStore.ownedAbilities]));
             localStorage.setItem(GEAR_STORAGE_KEY, serializeGear(ownedItemsStore.ownedGear));
         } catch (e) {
             console.error('Failed to save owned items:', e);
@@ -122,33 +128,29 @@ export const ownedItemsActions = {
     },
 
     /**
-     * Toggle ownership of an item (legacy behavior for abilities).
-     * For gear items, also adds/removes from ownedGear.
+     * Toggle ownership of an ability.
      */
-    toggleOwned(itemKey) {
-        if (ownedItemsStore.items.has(itemKey)) {
-            ownedItemsStore.items.delete(itemKey);
-            ownedItemsStore.ownedGear.delete(itemKey);
+    toggleAbility(abilityKey) {
+        if (ownedItemsStore.ownedAbilities.has(abilityKey)) {
+            ownedItemsStore.ownedAbilities.delete(abilityKey);
         } else {
-            ownedItemsStore.items.add(itemKey);
-            // If it's a weapon or armour piece, add to ownedGear with empty perks
-            if (weapons[itemKey] || armour[itemKey]) {
-                if (!ownedItemsStore.ownedGear.has(itemKey)) {
-                    ownedItemsStore.ownedGear.set(itemKey, [{ itemKey, perks: [] }]);
-                }
-            }
+            ownedItemsStore.ownedAbilities.add(abilityKey);
         }
-        // Trigger reactivity by reassigning
-        ownedItemsStore.items = new Set(ownedItemsStore.items);
-        ownedItemsStore.ownedGear = new Map(ownedItemsStore.ownedGear);
+        ownedItemsStore.ownedAbilities = new Set(ownedItemsStore.ownedAbilities);
         this.saveOwned();
     },
 
     /**
-     * Check if an item is owned (checks both legacy set and gear map).
+     * Toggle ownership of a gear item.
      */
-    isOwned(itemKey) {
-        return ownedItemsStore.items.has(itemKey) || ownedItemsStore.ownedGear.has(itemKey);
+    toggleGear(itemKey) {
+        if (ownedItemsStore.ownedGear.has(itemKey)) {
+            ownedItemsStore.ownedGear.delete(itemKey);
+        } else {
+            ownedItemsStore.ownedGear.set(itemKey, [{ itemKey, perks: [] }]);
+        }
+        ownedItemsStore.ownedGear = new Map(ownedItemsStore.ownedGear);
+        this.saveOwned();
     },
 
     /**
@@ -168,13 +170,9 @@ export const ownedItemsActions = {
      */
     addGearInstance(itemKey, perks = [], label = undefined) {
         const existing = ownedItemsStore.ownedGear.get(itemKey) || [];
-        // Create new array (don't mutate in place) so downstream deriveds see a new reference
         const updated = [...existing, { itemKey, perks: [...perks], label }];
         const newMap = new Map(ownedItemsStore.ownedGear);
         newMap.set(itemKey, updated);
-        // Also ensure it's in the legacy set
-        ownedItemsStore.items.add(itemKey);
-        ownedItemsStore.items = new Set(ownedItemsStore.items);
         ownedItemsStore.ownedGear = newMap;
         this.saveOwned();
     },
@@ -189,7 +187,6 @@ export const ownedItemsActions = {
     updateGearInstance(itemKey, instanceIndex, perks, label = undefined) {
         const instances = ownedItemsStore.ownedGear.get(itemKey);
         if (!instances || !instances[instanceIndex]) return;
-        // Create new instance object and new array — never mutate in place
         const updated = instances.map((inst, i) => {
             if (i !== instanceIndex) return inst;
             return {
@@ -212,16 +209,10 @@ export const ownedItemsActions = {
     removeGearInstance(itemKey, instanceIndex) {
         const instances = ownedItemsStore.ownedGear.get(itemKey);
         if (!instances) return;
-        // Create new array without the removed instance — never mutate in place
         const updated = instances.filter((_, i) => i !== instanceIndex);
         const newMap = new Map(ownedItemsStore.ownedGear);
         if (updated.length === 0) {
             newMap.delete(itemKey);
-            // Also remove from legacy set if it's a gear item
-            if (weapons[itemKey] || armour[itemKey]) {
-                ownedItemsStore.items.delete(itemKey);
-                ownedItemsStore.items = new Set(ownedItemsStore.items);
-            }
         } else {
             newMap.set(itemKey, updated);
         }
@@ -230,7 +221,7 @@ export const ownedItemsActions = {
     },
 
     clearAll() {
-        ownedItemsStore.items = new Set();
+        ownedItemsStore.ownedAbilities = new Set();
         ownedItemsStore.ownedGear = new Map();
         this.saveOwned();
     }

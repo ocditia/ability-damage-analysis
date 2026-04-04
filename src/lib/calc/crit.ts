@@ -163,12 +163,12 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
         else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_2) crit_chance += settings['_conc_anima_charged'] ? 0.17 : 0.07;
         else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) crit_chance += settings['_conc_anima_charged'] ? 0.34 : 0.14;
 
-        // (G)Conc crit buff: next non-conc ability gets crit bonus, then consumed
+        // (G)Conc crit buff: apply crit bonus (consumption handled in on_cast)
         if (!["proc", "perk"].includes(getAbilityClassification(abils[abilityKey]))) {
-            if (settings[SETTINGS.CONC_CRIT] === true) { crit_chance += 0.15; settings[SETTINGS.CONC_CRIT] = false; }
-            else if (settings[SETTINGS.GCONC_CRIT] === true) { crit_chance += 0.21; settings[SETTINGS.GCONC_CRIT] = false; }
-            else if (settings[SETTINGS.CONC_CRIT_AC] === true) { crit_chance += 0.45; settings[SETTINGS.CONC_CRIT_AC] = false; }
-            else if (settings[SETTINGS.GCONC_CRIT_AC] === true) { crit_chance += 0.51; settings[SETTINGS.GCONC_CRIT_AC] = false; }
+            if (settings[SETTINGS.CONC_CRIT] === true) crit_chance += 0.15;
+            else if (settings[SETTINGS.GCONC_CRIT] === true) crit_chance += 0.21;
+            else if (settings[SETTINGS.CONC_CRIT_AC] === true) crit_chance += 0.45;
+            else if (settings[SETTINGS.GCONC_CRIT_AC] === true) crit_chance += 0.51;
         }
 
         // smoke tendrils

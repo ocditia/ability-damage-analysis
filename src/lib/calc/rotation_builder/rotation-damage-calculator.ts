@@ -10,6 +10,8 @@ import { create_damage_object } from './rota_object_helper';
 import { buffs } from './rotation_consts';
 import { gearSwaps, allExtraActions as specialAbils, CONSUMABLES } from '../../special/abilities';
 import { isExtraAction, normalizeLegacy, type ExtraAction } from './extra-action';
+import { gearSets, GEAR_SET } from '$lib/data/gear-sets';
+import { countSetPieces } from './gear-registry';
 import { getSettingsKeyForItem } from './gear-registry';
 import { CombatStyle, DamageObject, RotationInput } from '../types';
 import { familiars, dreadnipData, calculateFamiliarHitChance } from '$lib/data/familiars';
@@ -24,20 +26,9 @@ const logger = Logger.getInstance();
 
 type OnTickCallback = (tick: number, settings: any, timers: Record<string, number>, rotation?: RotationInput, state?: RotationState) => void;
 
-/** Count equipped Tumeken's Resplendence pieces (uses per-style MAGIC_ keys) */
-function countTumekensResplendence(settings: Record<string, any>): number {
-    let count = 0;
-    if (settings[SETTINGS.MAGIC_HELMET] === ARMOUR.TUMEKENS_MASK) count++;
-    if (settings[SETTINGS.MAGIC_BODY] === ARMOUR.TUMEKENS_ROBE_TOP) count++;
-    if (settings[SETTINGS.MAGIC_LEGS] === ARMOUR.TUMEKENS_ROBE_BOTTOM) count++;
-    if (settings[SETTINGS.MAGIC_BOOTS] === ARMOUR.TUMEKENS_BOOTS) count++;
-    if (settings[SETTINGS.MAGIC_GLOVES] === ARMOUR.TUMEKENS_GLOVES) count++;
-    return count;
-}
-
 /** Swap asphyxiate for Tumeken's variant if 4+ pieces equipped */
 export function resolveTumekensAsphyxiate(abilityKey: string, settings: Record<string, any>): string {
-    if (abilityKey === ABILITIES.ASPHYXIATE && countTumekensResplendence(settings) >= 4) {
+    if (abilityKey === ABILITIES.ASPHYXIATE && countSetPieces(settings, gearSets[GEAR_SET.TUMEKENS_RESPLENDENCE]) >= 4) {
         return ABILITIES.TUMEKEN_ASPHYXIATE;
     }
     return abilityKey;
@@ -293,8 +284,8 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     // UI callback: write per-tick buff/stack/cooldown state to stores for timeline rendering
     const onTick: OnTickCallback = (tick, settings, timers) => {
         copyStacks(tick, settings, timers);
-        // Keep capturing until we pass the placement tick
-        if (tick <= captureTick) {
+        // Keep capturing until we pass the placement tick (only when suggestions enabled)
+        if (uiStore.showSuggestions?.value && tick <= captureTick) {
             capturedSuggestState = {
                 dmgs: [],
                 damageQueue: {},
@@ -1265,6 +1256,9 @@ function processMultiHitAbility(
     let subHitIndex = 0;
 
     let dmgObject = create_damage_object(settingsCopy, abilityKey);
+    console.log("ABILITY KEY", abilityKey);
+    console.log("CRIT CHANCE", dmgObject.distributions['crit']['probability']);
+    console.log(settingsCopy[SETTINGS.GCONC_CRIT]);
     let dmgObjects = on_cast(settingsCopy, dmgObject, state.timers, abilityKey);
     dmgObjects.forEach(element => {
         // Determine tick offset: sub-hits of the parent ability use hitTimings, procs land with the previous sub-hit

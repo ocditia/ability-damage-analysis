@@ -67,8 +67,9 @@ function on_stall(settings: Record<string, any>, abilityKey: string, timers?: Re
     // Bloodlust consumption: Assault, Hurricane, Flurry/Greater Flurry consume 4 stacks
     if (
         (settings[SETTINGS.BLOODLUST_STACKS] || 0) >= 4 &&
-        (abilityKey === ABILITIES.ASSAULT || abilityKey === ABILITIES.HURRICANE ||
-         abilityKey === ABILITIES.FLURRY || abilityKey === ABILITIES.GREATER_FLURRY)
+        (abilityKey === ABILITIES.ASSAULT || abilityKey === ABILITIES.ASSAULT_BARGE || 
+        abilityKey === ABILITIES.HURRICANE || abilityKey === ABILITIES.FLURRY || abilityKey === ABILITIES.GREATER_FLURRY ||
+        abilityKey === ABILITIES.FLURRY_BARGE || abilityKey === ABILITIES.GREATER_FLURRY_BARGE)
     ) {
         settings[SETTINGS.BLOODLUST_STACKS] -= 4;
         settings['_bloodlust_consumed'] = abilityKey;
@@ -155,6 +156,15 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
     });
     // Track time since last attack (increments every tick, reset by ability casts)
     settings[SETTINGS.TIME_SINCE_ATTACK] = 0;
+
+    // Consume (G)Conc crit buff after all hits have been processed
+    const classification = abils[abilityKey]?.abilityClassification;
+    if (classification !== 'channel' && classification !== 'proc' && classification !== 'perk') {
+        if (settings[SETTINGS.CONC_CRIT] === true) settings[SETTINGS.CONC_CRIT] = false;
+        else if (settings[SETTINGS.GCONC_CRIT] === true) settings[SETTINGS.GCONC_CRIT] = false;
+        else if (settings[SETTINGS.CONC_CRIT_AC] === true) settings[SETTINGS.CONC_CRIT_AC] = false;
+        else if (settings[SETTINGS.GCONC_CRIT_AC] === true) settings[SETTINGS.GCONC_CRIT_AC] = false;
+    }
 
     return dmgObjects;
 }

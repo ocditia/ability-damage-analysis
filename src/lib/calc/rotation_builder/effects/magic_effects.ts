@@ -250,6 +250,7 @@ function applyStackEffects(ctx: EffectContext): void {
     } else if (abilityKey === ABILITIES.GREATER_CONCENTRATED_BLAST_3) {
         const buffKey = settings['_conc_anima_charged'] ? SETTINGS.GCONC_CRIT_AC : SETTINGS.GCONC_CRIT;
         settings[buffKey] = true;
+        ctx.timers[buffKey] = 100;
         settings['_channelBuffJustActivated'] = buffKey;
     }
 }

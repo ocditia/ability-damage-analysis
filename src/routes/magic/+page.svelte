@@ -146,7 +146,7 @@
                 <div class="card card-magic">
                     <h1 class="main-header mb-6 ml-3">Damage Values</h1>
                     <div class="table-container">
-                        <AbilityDamageTable data={damages} columns={columns} />
+                        <AbilityDamageTable data={damages} columns={columns} style="magic" />
                     </div>
                 </div>
             </div>
@@ -328,20 +328,31 @@
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.ENCHANTMENT_OF_FLAMES]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/Enchantment_of_flames_detail.png"
-                                />
-                                <Number
-                                    bind:setting={settings[SETTINGS.CONCENTRATED_BLAST_STACKS]}
-                                    onchange={() => updateDamages()}
-                                    img="/effect_icons/gconc.png"
-                                    step="1"
-                                    max="3"
-                                    min="0"
+                                    img="/effect_icons/magic/Enchantment_of_flames_detail.png"
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.GCONC_UNLOCK]}
+                                    bind:setting={settings[SETTINGS.CONC_CRIT]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/gconc.png"
+                                    img="/ability_icons/magic/30x30/concentrated_blast.png"
+                                    title="Conc Crit"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.GCONC_CRIT]}
+                                    onchange={() => updateDamages()}
+                                    img="/ability_icons/magic/30x30/greater_concentrated_blast.png"
+                                    title="GConc Crit"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.CONC_CRIT_AC]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/magic/Conc_AC.png"
+                                    title="Conc Crit (AC)"
+                                />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.GCONC_CRIT_AC]}
+                                    onchange={() => updateDamages()}
+                                    img="/effect_icons/magic/GConc_AC.png"
+                                    title="GConc Crit (AC)"
                                 />
                                 <Number
                                     bind:setting={settings[SETTINGS.STONE_OF_JAS]}
@@ -517,24 +528,10 @@
                     <div class="card card-magic">
                         <div class="card-title pb-5">User Guide</div>
                         <div class="pb-5">
-                            <p>
-                                Ability damage is automatically calculated based on the settings you
-                                have selected, however, you can manually override it by entering a
-                                value other than zero in the setting field.
-                            </p>
-                        </div>
-                        <div class="pb-5">
-                            <p>
-                                This page uses the unified rotation builder calculation pipeline.
-                                Compare results with the original magic page to verify accuracy.
-                            </p>
-                        </div>
-                        <div>
-                            <p>
-                                Certain value or stack based effects have higher bounds than what
-                                exists in the live game which we have done to allow for more freedom
-                                with testing.
-                            </p>
+                            To custom filter shown abilities, you can use the button in the top right of the ability panel to
+                            select relevant abilities to you, then toggle the filter to "Owned" to only show abilities you have selected.
+
+                
                         </div>
                     </div>
                 </div>

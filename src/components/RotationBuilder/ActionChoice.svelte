@@ -38,8 +38,8 @@
             const items = getItemsForSlot(slot, gearStyle);
             for (const item of items) {
                 if (item.value === 'none') continue;
-                if (gearFilterSetting === 'owned' && !ownedItemsStore.items.has(item.value)) continue;
-                if (gearFilterSetting === 'popular' && !item.popular && !ownedItemsStore.items.has(item.value)) continue;
+                if (gearFilterSetting === 'owned' && !ownedItemsStore.ownedGear.has(item.value)) continue;
+                if (gearFilterSetting === 'popular' && !item.popular && !ownedItemsStore.ownedGear.has(item.value)) continue;
 
                 // For perkable slots, expand into per-instance entries
                 const instances = PERKABLE_SLOTS.has(slot) ? ownedItemsStore.ownedGear.get(item.value) : null;
@@ -89,7 +89,7 @@
     }
 
     // Force reactivity on showAllGear, style, and owned items by referencing them
-    $: _gearDeps = [gearFilterSetting, style, ownedItemsStore.items.size];
+    $: _gearDeps = [gearFilterSetting, style, ownedItemsStore.ownedGear.size];
     $: gearRowData = _gearDeps && gearRows.map(r => ({ label: r.label, items: getGearRowItems(r.slots) })).filter(r => r.items.length > 0);
     $: abilityItems = recordToItems(offGcdAbilities);
     $: prayerItems = recordToItems(prayers);

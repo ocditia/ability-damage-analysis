@@ -343,7 +343,7 @@ export const weapons: Record<string, Equipment> = {
         tier: 95,
         type: 'none',
         classification: 'none',
-    popular: false,
+        popular: false,
         title: 'Dark Shard of Leng',
         icon: '/gear_icons/melee/dark shard of leng.png'    
     },
@@ -359,6 +359,17 @@ export const weapons: Record<string, Equipment> = {
         icon: '/gear_icons/melee/dark sliver of leng.png'    
     },
     [WEAPONS.DARK_SHARD_OF_LENG_IM]: {
+        style: 'melee',
+        'weapon type': 'main-hand',
+        slot: 'mainhand',
+        tier: 100,
+        type: 'none',
+        classification: 'none',
+        popular: true,
+        title: 'Dark Sliver of Leng [IM]',
+        icon: '/gear_icons/melee/dark shard of leng.png'    
+    },
+    [WEAPONS.DARK_SLIVER_OF_LENG_IM]: {
         style: 'melee',
         'weapon type': 'off-hand',
         slot: 'offhand',
