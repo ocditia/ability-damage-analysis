@@ -8,7 +8,6 @@ import { DamageObject, DamageKind, DamageDistribution } from '../types';
 // Import and re-export from calculation_utils
 import { addAdrenaline } from './calculation_utils';
 import { armour } from '$lib/data/armour';
-export { addAdrenaline as add_adrenaline };
 
 /**
  * Calculate conjure spirit duration in ticks based on Spirit Pact level
@@ -105,7 +104,7 @@ function calc_channelled_hit(settings: Record<string, any>, hit_index: number, r
 }
 
 /**
- * Handles the toggling and timer initialisation of most ranged buffs, exlcuding (e)dracolich
+ * Handles the toggling and timer initialisation of most buffs, exlcuding (e)dracolich
  * The buffs handled are those which are activated upon casting the ability
  * @param settings 
  * @param timers - map of (buff_name -> buff_duration)

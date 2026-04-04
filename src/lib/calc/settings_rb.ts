@@ -1,4 +1,5 @@
 import { ARMOUR } from '$lib/data/armour';
+import { PERKS } from '$lib/data/perks';
 
 const SETTINGS = {
     // General
@@ -135,10 +136,11 @@ const SETTINGS = {
     },
     TARGET_HP_PERCENT: 'target hp percent',
     PLAYER_HP_PERCENT: 'player hp percent',
-    GENOCIDAL: 'genocidal',
-    IMPATIENT: 'impatient',
-    AFTERSHOCK: 'aftershock',
-    CRACKLING: 'crackling',
+    GENOCIDAL: PERKS.GENOCIDAL,
+    IMPATIENT: PERKS.IMPATIENT,
+    INVIGORATING: PERKS.INVIGORATING,
+    AFTERSHOCK: PERKS.AFTERSHOCK,
+    CRACKLING: PERKS.CRACKLING,
     // Familiars
     FAMILIAR: 'familiar',
     FAMILIAR_VALUES: {
@@ -187,9 +189,9 @@ const SETTINGS = {
     },
     SMOKE_CLOUD: 'smoke cloud',
     CRYPTBLOOM: 'cryptbloom',
-    SLAYER_PERK_UNDEAD: 'undead slayer perk',
-    SLAYER_PERK_DRAGON: 'dragon slayer perk',
-    SLAYER_PERK_DEMON: 'demon slayer perk',
+    SLAYER_PERK_UNDEAD: PERKS.SLAYER_PERK_UNDEAD,
+    SLAYER_PERK_DRAGON: PERKS.SLAYER_PERK_DRAGON,
+    SLAYER_PERK_DEMON: PERKS.SLAYER_PERK_DEMON,
     UNDEAD_SLAYER_ABILITY: 'undead slayer ability',
     DRAGON_SLAYER_ABILITY: 'dragon slayer ability',
     DEMON_SLAYER_ABILITY: 'demon slayer ability',
@@ -394,19 +396,19 @@ const SETTINGS = {
     },
     // Perks
     LVL20ARMOUR: 'level 20 armour',
-    BITING: 'biting',
-    PRECISE: 'precise',
-    ERUPTIVE: 'eruptive',
-    EQ_PERK: 'eq perk',
-    FLANKING: 'flanking',
-    CAROMING: 'caroming',
+    BITING: PERKS.BITING,
+    PRECISE: PERKS.PRECISE,
+    ERUPTIVE: PERKS.ERUPTIVE,
+    EQ_PERK: PERKS.EQ_PERK,
+    FLANKING: PERKS.FLANKING,
+    CAROMING: PERKS.CAROMING,
     CHAIN_MODIFIER: 'chain modifier',
     CHAIN_MODIFIER_VALUES: {
         NONE: 'none',
         REGULAR: 'regular',
         GREATER: 'greater',
     },
-    RUTHLESS_RANK: 'ruthless rank',
+    RUTHLESS_RANK: PERKS.RUTHLESS,
     // Boss Specific Buffs
     TELOS_RED_BEAM: 'Telos red beam',
     TELOS_BLACK_BEAM: 'Telos black beam',
@@ -562,7 +564,7 @@ const SETTINGS = {
         CORBICULA_1: '1 corbicula',
         CORBICULA_2: '2 corbicula',
     },
-    LUNGING: 'lunging',
+    LUNGING: PERKS.LUNGING,
     RUIN: 'ruin',
     VALOUR_STACKS: 'valour stacks',
     HITCAP: 'hit cap',
@@ -608,7 +610,7 @@ const SETTINGS = {
     },
 
     ENERGISING: 'energising',
-    ULTIMATUMS: 'ultimatums',
+    ULTIMATUMS: PERKS.ULTIMATUMS,
     BLAST_INFUSED: 'blast infused',
     GCONC_UNLOCK: 'gconc unlock',
     STRENGTH_MASTER_CAPE: 'strength master cape',
@@ -874,6 +876,10 @@ const settingsConfig = {
     [SETTINGS.IMPATIENT]: {
         label: 'Impatient',
         default: 4
+    },
+    [SETTINGS.INVIGORATING]: {
+        label: 'Invigorating',
+        default: 0
     },
     [SETTINGS.AFTERSHOCK]: {
         label: 'Aftershock',
@@ -2100,7 +2106,7 @@ const settingsConfig = {
     },
     [SETTINGS.TIME_SINCE_ATTACK]: {
         label: 'Time since last attack',
-        default: 9
+        default: 10
     },
     [SETTINGS.CHANNELLER_RING_STACKS]: {
         label: 'Channelers ring stacks',

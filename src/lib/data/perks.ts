@@ -9,21 +9,37 @@
  * Swapping gear (e.g. in a rotation) changes which perks are active.
  */
 
-import { SETTINGS } from '$lib/calc/settings_rb';
-
 export type PerkSlotType = 'weapon' | 'armour' | 'any';
 
 export interface PerkDefinition {
     /** Display name */
     name: string;
-    /** Settings key this perk maps to */
-    settingsKey: string;
     /** Which gear type this perk can be applied to */
     slotType: PerkSlotType;
     /** Maximum rank */
     maxRank: number;
     /** Icon path */
     icon: string;
+}
+
+export enum PERKS {
+    PRECISE = 'precise',
+    ERUPTIVE = 'eruptive',
+    EQ_PERK = 'eq perk',
+    AFTERSHOCK = 'aftershock',
+    CAROMING = 'caroming',
+    FLANKING = 'flanking',
+    LUNGING = 'lunging',
+    CRACKLING = 'crackling',
+    BITING = 'biting',
+    IMPATIENT = 'impatient',
+    GENOCIDAL = 'genocidal',
+    ULTIMATUMS = 'ultimatums',
+    RUTHLESS = 'ruthless rank',
+    INVIGORATING = 'invigorating',
+    SLAYER_PERK_UNDEAD = 'undead slayer perk',
+    SLAYER_PERK_DRAGON = 'dragon slayer perk',
+    SLAYER_PERK_DEMON = 'demon slayer perk',
 }
 
 /**
@@ -37,115 +53,105 @@ export interface PerkInstance {
 }
 
 /** All perk definitions, keyed by a stable identifier */
-export const perks: Record<string, PerkDefinition> = {
-    precise: {
+export const perks: Record<PERKS, PerkDefinition> = {
+    [PERKS.PRECISE]: {
         name: 'Precise',
-        settingsKey: SETTINGS.PRECISE,
         slotType: 'weapon',
         maxRank: 6,
         icon: '/effect_icons/perks/Precise.webp',
     },
-    eruptive: {
+    [PERKS.ERUPTIVE]: {
         name: 'Eruptive',
-        settingsKey: SETTINGS.ERUPTIVE,
         slotType: 'weapon',
         maxRank: 4,
         icon: '/effect_icons/perks/Eruptive.webp',
     },
-    equilibrium: {
+    [PERKS.EQ_PERK]: {
         name: 'Equilibrium',
-        settingsKey: SETTINGS.EQ_PERK,
         slotType: 'weapon',
         maxRank: 4,
         icon: '/effect_icons/perks/Equilibrium.png',
     },
-    aftershock: {
+    [PERKS.AFTERSHOCK]: {
         name: 'Aftershock',
-        settingsKey: SETTINGS.AFTERSHOCK,
         slotType: 'weapon',
         maxRank: 4,
         icon: '/effect_icons/perks/Aftershock.png',
     },
-    caroming: {
+    [PERKS.CAROMING]: {
         name: 'Caroming',
-        settingsKey: SETTINGS.CAROMING,
         slotType: 'weapon',
         maxRank: 4,
         icon: '/effect_icons/perks/caroming.png',
     },
-    flanking: {
+    [PERKS.FLANKING]: {
         name: 'Flanking',
-        settingsKey: SETTINGS.FLANKING,
         slotType: 'weapon',
         maxRank: 4,
         icon: '/effect_icons/perks/Flanking.webp',
     },
-    lunging: {
+    [PERKS.LUNGING]: {
         name: 'Lunging',
-        settingsKey: SETTINGS.LUNGING,
         slotType: 'weapon',
         maxRank: 4,
         icon: '/effect_icons/perks/Lunging.webp',
     },
-    crackling: {
+    [PERKS.CRACKLING]: {
         name: 'Crackling',
-        settingsKey: SETTINGS.CRACKLING,
         slotType: 'armour',
         maxRank: 4,
         icon: '/effect_icons/perks/Crackling.webp',
     },
-    biting: {
+    [PERKS.BITING]: {
         name: 'Biting',
-        settingsKey: SETTINGS.BITING,
         slotType: 'armour',
         maxRank: 4,
         icon: '/effect_icons/perks/Biting.webp',
     },
-    impatient: {
+    [PERKS.IMPATIENT]: {
         name: 'Impatient',
-        settingsKey: SETTINGS.IMPATIENT,
         slotType: 'armour',
         maxRank: 4,
         icon: '/effect_icons/perks/Impatient.png',
     },
-    genocidal: {
+    [PERKS.GENOCIDAL]: {
         name: 'Genocidal',
-        settingsKey: SETTINGS.GENOCIDAL,
         slotType: 'armour',
         maxRank: 1,
         icon: '/effect_icons/perks/genocidal.png',
     },
-    ultimatums: {
+    [PERKS.ULTIMATUMS]: {
         name: 'Ultimatums',
-        settingsKey: SETTINGS.ULTIMATUMS,
         slotType: 'any',
         maxRank: 4,
         icon: '/effect_icons/perks/ultimatums.png',
     },
-    ruthless: {
+    [PERKS.RUTHLESS]: {
         name: 'Ruthless',
-        settingsKey: SETTINGS.RUTHLESS_RANK,
         slotType: 'any',
         maxRank: 3,
         icon: '/effect_icons/perks/Ruthless.webp',
     },
-    undeadSlayer: {
+    [PERKS.INVIGORATING]: {
+        name: 'Invigorating',
+        slotType: 'any',
+        maxRank: 3,
+        icon: '/effect_icons/perks/Invigorating.png',
+    },
+    [PERKS.SLAYER_PERK_UNDEAD]: {
         name: 'Undead Slayer',
-        settingsKey: SETTINGS.SLAYER_PERK_UNDEAD,
         slotType: 'armour',
         maxRank: 1,
         icon: '/effect_icons/perks/25px-Undead_Slayer.webp',
     },
-    dragonSlayer: {
+    [PERKS.SLAYER_PERK_DRAGON]: {
         name: 'Dragon Slayer',
-        settingsKey: SETTINGS.SLAYER_PERK_DRAGON,
         slotType: 'armour',
         maxRank: 1,
         icon: '/effect_icons/perks/dragon_slayer_perk.png',
     },
-    demonSlayer: {
+    [PERKS.SLAYER_PERK_DEMON]: {
         name: 'Demon Slayer',
-        settingsKey: SETTINGS.SLAYER_PERK_DEMON,
         slotType: 'armour',
         maxRank: 1,
         icon: '/effect_icons/perks/demon_slayer_perk.webp',
@@ -245,24 +251,23 @@ export function applyPerksToSettings(
     activePerks: PerkInstance[]
 ): void {
     // Reset all perks to 0/false
-    for (const perk of Object.values(perks)) {
-        const current = settings[perk.settingsKey];
+    for (const key of Object.keys(perks)) {
+        const current = settings[key];
         if (typeof current === 'boolean') {
-            settings[perk.settingsKey] = false;
+            settings[key] = false;
         } else {
-            settings[perk.settingsKey] = 0;
+            settings[key] = 0;
         }
     }
 
     // Apply active perks
     for (const instance of activePerks) {
-        const def = perks[instance.perkKey];
-        if (!def) continue;
-        const current = settings[def.settingsKey];
+        if (!perks[instance.perkKey]) continue;
+        const current = settings[instance.perkKey];
         if (typeof current === 'boolean') {
-            settings[def.settingsKey] = true;
+            settings[instance.perkKey] = true;
         } else {
-            settings[def.settingsKey] = Math.max(settings[def.settingsKey] ?? 0, instance.rank);
+            settings[instance.perkKey] = Math.max(settings[instance.perkKey] ?? 0, instance.rank);
         }
     }
 }

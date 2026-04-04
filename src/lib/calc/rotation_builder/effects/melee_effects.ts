@@ -144,7 +144,10 @@ function applyMinVarEffects(
     distribution: DamageDistribution
 ): void {
     const { settings, abilityKey } = ctx;
-
+    if (abilityKey === ABILITIES.GREATER_BARGE) {
+        distribution.minHit = distribution.minHit + Math.min(0.05 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.5);
+        distribution.varHit = distribution.varHit + Math.min(0.07 * settings[SETTINGS.TIME_SINCE_ATTACK], 0.7);
+    }
 }
 
 /**

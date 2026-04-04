@@ -1103,9 +1103,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee'
-    ,
-        cooldown: 10.2,
+        damageType: 'melee',
+        adrenaline: 50,
+        cooldown: 0.0,
         title: 'Quick smash',
         icon: '/ability_icons/melee/30x30/gmaul-bg.png',
         common: false
@@ -1166,6 +1166,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
+        adrenaline: 40,
+        cooldown: 60.0,
         title: 'Sunfall Slam',
         icon: '/gear_icons/melee/tumeken\'s light.png',
     },
@@ -1191,8 +1193,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee'
-    ,
+        damageType: 'melee',
         title: 'Purifying Light',
     },
     [ABILITIES.SLICE_N_DICE_1]: {
@@ -1205,8 +1206,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee'
-    ,
+        damageType: 'melee',
         cooldown: 3},
     [ABILITIES.SLICE_N_DICE_2]: {
         // ability name
@@ -1218,8 +1218,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee'
-    ,
+        damageType: 'melee',
         cooldown: 3},
     [ABILITIES.SLICE_N_DICE_3]: {
         // ability name
@@ -1231,8 +1230,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee'
-    ,
+        damageType: 'melee',
         cooldown: 3},
     [ABILITIES.SLICE_N_DICE]: {
         // ability name
@@ -1258,8 +1256,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         },
         hitTimings: [0, 1, 1, 1],
         cooldown: 3,
-        adrenaline: 50
-    ,
+        adrenaline: 50,
         title: 'Slice & dice',
         icon: '/ability_icons/melee/30x30/dclaw-bg.png',
     },
@@ -1274,8 +1271,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
-        adrenaline: 50
-    ,
+        adrenaline: 50,
         cooldown: 0,
         title: 'Powerstab',
         icon: '/ability_icons/melee/30x30/dragon_2h_sword.png',
@@ -1291,8 +1287,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee'
-    ,
+        damageType: 'melee',
+        adrenaline: 25,
         cooldown: 0,
         title: 'Draconic Slash',
         icon: '/ability_icons/melee/30x30/dragon_scimitar.png',
@@ -1309,8 +1305,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
-        adrenaline: 35
-    ,
+        adrenaline: 35,
         cooldown: 0,
         title: 'Obliterate',
         icon: '/ability_icons/melee/30x30/statius_warhammer.png',
@@ -1326,8 +1321,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee'
-    ,
+        damageType: 'melee',
+        adrenaline: 25,
         cooldown: 7.2,
         title: 'Draconic Cleave',
         icon: '/ability_icons/melee/30x30/dlong-bg.png',
@@ -1378,10 +1373,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hits: {
             1: [ABILITIES.DRACONIC_PUNCTURE_HIT, 'next hit', ABILITIES.DRACONIC_PUNCTURE_HIT]
         },
-        hitTimings: [1, 1],
+        hitTimings: [0, 1],
         cooldown: 0,
-        adrenaline: 25
-    ,
+        adrenaline: 25,
         title: 'Draconic Puncture',
         icon: '/ability_icons/melee/dds.png',
         common: false
@@ -1415,8 +1409,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             1: [ABILITIES.SWEEP_HIT, 'next hit', ABILITIES.SWEEP_HIT]
         },
         hitTimings: [1, 1], //Todo fix
-        cooldown: 0
-    ,
+        cooldown: 0,
         title: 'Sweep',
         icon: '/ability_icons/melee/30x30/dhally.png',
         common: false
@@ -1431,8 +1424,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee'
-    ,
+        damageType: 'melee',
+        adrenaline: 20,
         cooldown: 0,
         title: 'Draconic Blow',
         icon: '/ability_icons/melee/dmace.png',
@@ -1451,8 +1444,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         damageType: 'melee',
         adrenaline: 50,
         cooldown: 0,
-        title: 'Warstrike',
-        icon: '/ability_icons/melee/30x30/bandos_godsword.png',
+        title: 'Vine Call Initial',
         common: false
     },
     [ABILITIES.VINE_CALL_AOE]: {
@@ -1468,8 +1460,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         damageType: 'melee',
         adrenaline: 0,
         cooldown: 0,
-        title: 'Warstrike',
-        icon: '/ability_icons/melee/30x30/bandos_godsword.png',
+        title: 'Vine Call AOE',
         common: false
     },
     [ABILITIES.VINE_CALL]: {
@@ -1489,9 +1480,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         },
         cooldown: 19.8,
         hitTimings: [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30],
-
         title: 'Vine Call',
-        icon: '/gear_icons/melee/abilities/abyssal_vine_whip.png',
+        icon: '/gear_icons/melee/Abyssal_vine_whip.png',
         common: false
     },
     [ABILITIES.WARSTRIKE]: {
@@ -1754,8 +1744,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee'
-    ,
+        damageType: 'melee',
+        adrenaline: 50,
         cooldown: 0,
         title: 'Spear Wall',
         icon: '/ability_icons/melee/30x30/vestas_spear.png',
@@ -1772,6 +1762,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
+        adrenaline: 60,
         cooldown: 7.2,
         title: 'Ice Cleave',
         icon: '/ability_icons/melee/30x30/zamorak_godsword.png',
@@ -1817,8 +1808,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
-        adrenaline: 50
-    ,
+        adrenaline: 50,
         cooldown: 0,
         title: 'Blackhole',
         icon: '/ability_icons/melee/blackhole.webp',
@@ -3701,8 +3691,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'spell',
         mainStyle: 'necromancy',
         damageType: 'necrotic',
-        cooldown: 0
-    ,
+        cooldown: 45,
         title: 'Life Transfer',
         icon: '/ability_icons/necro/incantations/Life_Transfer.png',
     },
@@ -4037,8 +4026,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         },
         adrenaline: 0,
         hitTimings: [3],
-        cooldown: 60.0
-    ,
+        cooldown: 60.0,
         title: 'Snipe',
         icon: '/ability_icons/ranged/30x30/snipe.png',
     },
@@ -4472,12 +4460,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
-        abilityClassification: 'channel', // bleed, dot, burn, channel, regular, multihit
+        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         //TODO implement this properly
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'ranged',
         damageType: 'ranged',
-    
         cooldown: 0,
         parent: ABILITIES.AIMED_SHOT
     },
@@ -4501,9 +4488,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             4: [],
             5: [ABILITIES.AIMED_SHOT_HIT]   
         },
+        // hitTimings: [5],
         cooldown: 0,
-        adrenaline: 35
-    ,
+        adrenaline: 35,
         title: 'Aimed shot',
         icon: '/ability_icons/ranged/30x30/hand_cannon.png',
         common: false

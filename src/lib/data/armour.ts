@@ -702,6 +702,8 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'helmet',
         style: 'necromancy',
         popular: true,
+        title: 'Deathdealer Hood (T90)',
+        icon: "/gear_icons/necro/deathdealer hood (tier 90).png",
     },
     [ARMOUR.DEATHDEALER_ROBE_TOP_T90]: {
         'necromancy strength': 34.8,
@@ -712,6 +714,8 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'body',
         style: 'necromancy',
         popular: true,
+        title: 'Deathdealer Robe Top (T90)',
+        icon: "/gear_icons/necro/deathdealer robe top (tier 90).png",
     },
     [ARMOUR.DEATHDEALER_ROBE_BOTTOM_T90]: {
         'necromancy strength': 29,
@@ -722,6 +726,8 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'legs',
         style: 'necromancy',
         popular: true,
+        title: 'Deathdealer Robe Bottom (T90)',
+        icon: "/gear_icons/necro/deathdealer robe bottom (tier 90).png",
     },
     [ARMOUR.DEATHDEALER_GLOVES_T90]: {
         'necromancy strength': 14.5,
@@ -732,6 +738,8 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'gloves',
         style: 'necromancy',
         popular: true,
+        title: 'Deathdealer Gloves (T90)',
+        icon: "/gear_icons/necro/deathdealer gloves (tier 90).png",
     },
     [ARMOUR.DEATHDEALER_BOOTS_T90]: {
         'necromancy strength': 14.5,
@@ -742,6 +750,8 @@ export const armour: Record<ARMOUR, Equipment> = {
         slot: 'boots',
         style: 'necromancy',
         popular: true,
+        title: 'Deathdealer Boots (T90)',
+        icon: "/gear_icons/necro/deathdealer boots (tier 90).png",
     },
     [ARMOUR.CINDERBANE_GLOVES]: {
         'necromancy strength': 11,

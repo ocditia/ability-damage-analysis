@@ -105,6 +105,8 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
 
     // Consume Anima Charged buff for empowered magic abilities
     consumeAnimaCharged(settings, timers, abilityKey);
+    
+
 
     // scale to hit chance / damage potential
     logger.log(LogCategory.ABILITY_DAMAGE, `on_cast called for ${abilityKey}`, {
@@ -152,6 +154,8 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
     dmgObjects.forEach(dmgObject => {
         set_min_var(settings, dmgObject);
     });
+    // Track time since last attack (increments every tick, reset by ability casts)
+    settings[SETTINGS.TIME_SINCE_ATTACK] = 0;
 
     // Clear conc stacks after the consuming ability's damage objects have been created
     // (crit chance was already calculated with the stacks included)
@@ -432,10 +436,24 @@ function handleAdrenalineCost(settings: Record<string, any>, abilityKey: string,
         if (settings[SETTINGS.METEOR_STRIKE_BUFF] === true && abils[abilityKey]?.mainStyle === 'melee') {
             basicAdren = Math.floor(basicAdren * 1.5);
         }
-        addAdrenaline(settings, basicAdren);
-        if (settings[SETTINGS.EXPECTED_ADRENALINE]) {
-            addAdrenaline(settings, settings[SETTINGS.IMPATIENT] * 0.09 * 3);
+        // Invigorating: +5% adrenaline per rank on autos
+        let invigBoost = 1
+        const autoAbilityKeys = [
+            ABILITIES.RANGED_AUTO,
+            ABILITIES.MELEE_AUTO,
+            ABILITIES.MAGIC_AUTO,
+            ABILITIES.NECRO_AUTO,
+        ].map(key => String(key));
+        if (autoAbilityKeys.includes(abilityKey)) {
+            invigBoost += settings[SETTINGS.INVIGORATING] * 0.05;
         }
+
+        addAdrenaline(settings, basicAdren * invigBoost);
+        if (settings[SETTINGS.EXPECTED_ADRENALINE]) {
+            const impAdren = settings[SETTINGS.IMPATIENT] * 0.09 * 3 * invigBoost;
+            addAdrenaline(settings, impAdren);
+        }
+
         // Deathmark (hydrix bolts): +1% adrenaline from basic abilities
         if (settings[SETTINGS.DEATHMARK]) {
             addAdrenaline(settings, 1);

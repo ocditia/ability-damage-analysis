@@ -672,10 +672,6 @@ function processCurrentTickCore(
 
     processAbilityCore(state, settingsCopy, abilityKey as ABILITIES, abil_duration, rotation, onTick);
 
-    // Reset time since last attack after the ability has been processed
-    // (Greater Barge reads this value in handleBuffs before we reset it)
-    // Set to -1 because processTickOperationsCore will increment it to 0 on this same tick
-    settingsCopy[SETTINGS.TIME_SINCE_ATTACK] = -1;
 }
 
 /**
@@ -695,6 +691,10 @@ function processTickOperationsCore(
     rotation: RotationInput,
     onTick?: OnTickCallback
 ) {
+    if (tickToProcess < 50) {
+        console.log('TICK:', tickToProcess, ' - TIME_SINCE_ATTACK: ', settingsCopy[SETTINGS.TIME_SINCE_ATTACK]);
+    }
+    settingsCopy[SETTINGS.TIME_SINCE_ATTACK] = (settingsCopy[SETTINGS.TIME_SINCE_ATTACK] ?? 0) + 1;
     // During boss phase pause (invulnerable): still tick down buffs/timers, but skip damage
     if (state.pauseTicksRemaining > 0) {
         state.pauseTicksRemaining--;
@@ -719,9 +719,7 @@ function processTickOperationsCore(
     checkPhaseTransition(state, settingsCopy);
     updateBossHpPercent(state, settingsCopy);
 
-    // Track time since last attack (increments every tick, reset by ability casts)
-    settingsCopy[SETTINGS.TIME_SINCE_ATTACK] = (settingsCopy[SETTINGS.TIME_SINCE_ATTACK] ?? 0) + 1;
-
+    
     state.tick += 1;
 }
 
