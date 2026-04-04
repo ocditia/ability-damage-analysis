@@ -168,7 +168,7 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
     if (!concAbilities.has(abilityKey) && settings[SETTINGS.CONCENTRATED_BLAST_STACKS] > 0
         && !["proc", "perk"].includes(abilClassification)) {
         settings[SETTINGS.CONCENTRATED_BLAST_STACKS] = 0;
-        delete settings['_conc_is_greater'];
+        delete settings[SETTINGS.GCONC_UNLOCK];
         delete settings['_conc_anima_charged'];
     }
 

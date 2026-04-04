@@ -345,8 +345,9 @@
                                     min="0"
                                 />
                                 <Checkbox
-                                    bind:setting={settings[SETTINGS.DEVOURER_NEXUS]}
+                                    bind:setting={settings[SETTINGS.ENCHANTMENT_OF_DREAD]}
                                     onchange={() => updateDamages()}
+                                    img="/effect_icons/ranged/Enchantment_of_dread.png"
                                 />
                             </div>
                             <div class="md:col-span-1 space-y-2">
