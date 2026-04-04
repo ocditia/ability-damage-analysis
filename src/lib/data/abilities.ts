@@ -4026,8 +4026,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         },
         adrenaline: 0,
         hitTimings: [3],
-        cooldown: 60.0
-    ,
+        cooldown: 60.0,
         title: 'Snipe',
         icon: '/ability_icons/ranged/30x30/snipe.png',
     },
@@ -4461,12 +4460,11 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
-        abilityClassification: 'channel', // bleed, dot, burn, channel, regular, multihit
+        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         //TODO implement this properly
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'ranged',
         damageType: 'ranged',
-    
         cooldown: 0,
         parent: ABILITIES.AIMED_SHOT
     },
@@ -4490,9 +4488,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             4: [],
             5: [ABILITIES.AIMED_SHOT_HIT]   
         },
+        // hitTimings: [5],
         cooldown: 0,
-        adrenaline: 35
-    ,
+        adrenaline: 35,
         title: 'Aimed shot',
         icon: '/ability_icons/ranged/30x30/hand_cannon.png',
         common: false
