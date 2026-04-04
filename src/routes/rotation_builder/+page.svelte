@@ -384,21 +384,21 @@
 	function calculateTotalDamageNew() {
 		eventHandlers.calculateTotalDamageNew();
 
-		// // Compute ability suggestions from captured final state
-		// if (rotationStore._finalState && rotationStore._finalSettings) {
-		// 	const style = uiStore.activeTab ?? 'melee';
-		// 	const styleMap = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necromancy' };
-		// 	const candidates = Object.entries(abils)
-		// 		.filter(([, a]) => a.title && a.mainStyle === styleMap[style])
-		// 		.map(([key]) => key);
-		// 	const newSuggestions = suggestNextAbility(
-		// 		rotationStore._finalState,
-		// 		rotationStore._finalSettings,
-		// 		candidates
-		// 	);
-		// 	// Force reactivity by creating a new array reference
-		// 	suggestions = [...newSuggestions];
-		// }
+		// Compute ability suggestions from captured final state
+		if (rotationStore._finalState && rotationStore._finalSettings) {
+			const style = uiStore.activeTab ?? 'melee';
+			const styleMap = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necromancy' };
+			const candidates = Object.entries(abils)
+				.filter(([, a]) => a.title && a.mainStyle === styleMap[style])
+				.map(([key]) => key);
+			const newSuggestions = suggestNextAbility(
+				rotationStore._finalState,
+				rotationStore._finalSettings,
+				candidates
+			);
+			// Force reactivity by creating a new array reference
+			suggestions = [...newSuggestions];
+		}
 	}
 
 	function refreshUI(calcDmg = true) {
