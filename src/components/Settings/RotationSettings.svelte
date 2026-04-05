@@ -612,7 +612,7 @@ import { WEAPONS } from '$lib/data/weapons';
                         {#if uiState?.showSuggestions}
                         <ToggleButton
                             bind:setting={uiState.showSuggestions}
-                            img="/ability_icons/special/Surge.webp"
+                            img="/ability_icons/special/Surge.png"
                             title="Show ability suggestions"
                             toggle={true}
                             borderColor={activeStyleColor}
