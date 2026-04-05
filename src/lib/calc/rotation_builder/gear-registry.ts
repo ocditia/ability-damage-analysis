@@ -159,17 +159,12 @@ const SHARED_SLOT_KEYS: Record<string, string> = {
     pocket: 'pocket', ammo: 'ammo',
 };
 
-// Generic (non-style-prefixed) gear slot keys, set by style_specific_unification
-const GENERIC_SLOT_KEYS = [
-    'helmet', 'body', 'legs', 'gloves', 'boots',
-    'necklace', 'cape', 'ring', 'pocket', 'ammo',
-    'main-hand weapon', 'off-hand weapon',
-];
-
-// Pre-built list of all settings keys that hold gear values
-// Includes style-prefixed keys (e.g. 'melee helmet') and generic keys (e.g. 'helmet')
-const GEAR_SETTINGS_KEYS: string[] = [...GENERIC_SLOT_KEYS];
-const gearKeySet = new Set<string>(GENERIC_SLOT_KEYS);
+// Pre-built list of all settings keys that hold gear values.
+// Only style-prefixed keys (e.g. 'melee helmet') and shared keys (e.g. 'necklace').
+// Generic keys (e.g. 'helmet') are excluded to avoid double-counting after style_specific_unification
+// copies the style-prefixed value to the generic key.
+const GEAR_SETTINGS_KEYS: string[] = [];
+const gearKeySet = new Set<string>();
 for (const styleMap of Object.values(STYLE_SLOT_TO_SETTINGS_KEY)) {
     for (const key of Object.values(styleMap)) {
         if (!gearKeySet.has(key)) { gearKeySet.add(key); GEAR_SETTINGS_KEYS.push(key); }
