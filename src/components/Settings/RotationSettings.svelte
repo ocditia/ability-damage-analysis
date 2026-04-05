@@ -609,6 +609,7 @@ import { WEAPONS } from '$lib/data/weapons';
                                 onchange={updateDamages}
                             />
                         {/each}
+                        {#if uiState?.showSuggestions}
                         <ToggleButton
                             bind:setting={uiState.showSuggestions}
                             img="/ability_icons/special/Surge.webp"
@@ -617,6 +618,7 @@ import { WEAPONS } from '$lib/data/weapons';
                             borderColor={activeStyleColor}
                             onchange={updateDamages}
                         />
+                        {/if}
                     </div>
                 </div>
             {:else if tab === 'equipment'}
