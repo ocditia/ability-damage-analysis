@@ -6,10 +6,15 @@
     import { STYLE_COLORS } from '$lib/utils/colors';
     import ActionIcon from '$components/UI/ActionIcon.svelte';
 
-    let { show = $bindable(false) } = $props();
+    let { show = $bindable(false), initialStyle = 'ranged' } = $props();
 
-    let styleTab = $state('ranged');
+    let styleTab = $state(initialStyle);
+
+    // Sync styleTab when initialStyle changes (e.g. reopening the modal for a different style)
+    $effect(() => { styleTab = initialStyle; });
     let selectedItem = $state(null); // { itemKey, instanceIndex } for editing perks
+    let addingSlot = $state(null); // which slot's "add gear" panel is open
+    let addFilter = $state('');
 
     // Perk editor state
     let newPerkKey = $state('');
@@ -53,6 +58,20 @@
             !i.value.startsWith('custom') &&
             ownedItemsStore.ownedGear.has(i.value)
         );
+    }
+
+    // Get unowned items for a slot+style (for the "add gear" picker)
+    function getUnownedItems(slot, style) {
+        return getItemsForSlot(slot, style).filter(i =>
+            i.value !== 'none' &&
+            !i.value.startsWith('custom') &&
+            !ownedItemsStore.ownedGear.has(i.value)
+        );
+    }
+
+    // Add an item to owned gear and close the picker
+    function addOwnedItem(itemKey) {
+        ownedItemsActions.addGearInstance(itemKey, []);
     }
 
     // Reactive snapshot of ownedGear — converts the Map into a plain object
@@ -184,7 +203,7 @@
         <div class="bg-[#171d21] rounded-lg shadow-2xl w-full max-w-4xl mx-4" onclick={(e) => e.stopPropagation()}>
             <!-- Header -->
             <div class="flex justify-between items-center p-4 border-b border-gray-700">
-                <h2 class="text-lg font-bold text-[#b2dbee] uppercase tracking-wider">Perk Manager</h2>
+                <h2 class="text-lg font-bold text-[#b2dbee] uppercase tracking-wider">Gear Manager</h2>
                 <button class="text-gray-400 hover:text-white text-2xl leading-none px-2" onclick={close}>&times;</button>
             </div>
 
@@ -205,9 +224,44 @@
                 <div class="border-r border-gray-700 max-h-[70vh] overflow-y-auto">
                     {#each slotsByStyle[styleTab] as slotDef}
                         {@const available = getOwnedItems(slotDef.slot, styleTab)}
+                        {@const isAdding = addingSlot === slotDef.slot}
                         <div class="border-b border-gray-700/50">
-                            <h3 class="text-xs uppercase font-semibold text-gray-400 px-3 py-2 bg-gray-800/50">{slotDef.label}</h3>
-                            {#if available.length === 0}
+                            <div class="flex items-center justify-between px-3 py-2 bg-gray-800/50">
+                                <h3 class="text-xs uppercase font-semibold text-gray-400">{slotDef.label}</h3>
+                                <button
+                                    class="text-md px-1.5 py-0.5 rounded transition-colors {isAdding ? 'text-gray-100 hover:text-red-400' : 'text-gray-100 hover:text-green-400'}"
+                                    title={isAdding ? 'Close' : 'Add gear'}
+                                    onclick={() => { addingSlot = isAdding ? null : slotDef.slot; addFilter = ''; }}
+                                >
+                                    {isAdding ? '×' : '+'}
+                                </button>
+                            </div>
+                            {#if isAdding}
+                                {@const unowned = getUnownedItems(slotDef.slot, styleTab)}
+                                <div class="px-3 py-2 bg-gray-900/50 border-b border-gray-700/30">
+                                    <input
+                                        type="text"
+                                        class="w-full mb-2 px-2 py-1 text-xs text-gray-300 bg-gray-800 border border-gray-600 rounded outline-none focus:border-gray-400"
+                                        placeholder="Filter..."
+                                        bind:value={addFilter}
+                                    />
+                                    <div class="max-h-40 overflow-y-auto space-y-0.5">
+                                        {#each unowned.filter(i => !addFilter || i.text.toLowerCase().includes(addFilter.toLowerCase())) as item}
+                                            {@const iconFolder = item.style === 'hybrid' ? 'shared' : ({ melee: 'melee', ranged: 'ranged', magic: 'magic', necromancy: 'necro' }[item.style] ?? styleTab)}
+                                            <button
+                                                class="flex items-center gap-2 w-full px-2 py-1 rounded text-left hover:bg-gray-700/50 transition-colors"
+                                                onclick={() => addOwnedItem(item.value)}
+                                            >
+                                                <ActionIcon value={item.value} folder={iconFolder} size="sm" bare={true} title={item.text} />
+                                                <span class="text-xs text-gray-300">{item.text}</span>
+                                            </button>
+                                        {:else}
+                                            <div class="text-xs text-gray-500 py-1">No more items to add</div>
+                                        {/each}
+                                    </div>
+                                </div>
+                            {/if}
+                            {#if available.length === 0 && !isAdding}
                                 <div class="px-3 py-2 text-xs text-gray-500">No owned items</div>
                             {/if}
                             {#each available as item}

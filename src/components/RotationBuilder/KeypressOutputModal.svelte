@@ -441,7 +441,7 @@
         border-radius: 6px;
         margin-bottom: 0.75rem;
         overflow-y: auto;
-        max-height: 50vh;
+        max-height: 80vh;
     }
 
     .phase-break {

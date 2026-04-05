@@ -548,7 +548,7 @@ export function suggestNextAbility(
 
             // Run remaining ticks to resolve queued damage
             while (trialState.tick < miniBarSize) {
-                processTickOperationsCore(trialState.tick, trialState, trialSettings, miniRotation);
+                processTickOperations(trialState.tick, trialState, trialSettings, miniRotation);
             }
 
             const trialDamage = trialState.dmgs.reduce((a: number, b: number) => a + b, 0);
@@ -666,16 +666,16 @@ function processCurrentTickCore(
 }
 
 /**
- * Core version - handles null ability tick without store access
+ * Core version - handles null ability tick (no ability on this tick) without store access
  */
 function handleNullAbilityTickCore(state: RotationState, settingsCopy: any, rotation: RotationInput, onTick?: OnTickCallback) {
-    processTickOperationsCore(state.tick, state, settingsCopy, rotation, onTick);
+    processTickOperations(state.tick, state, settingsCopy, rotation, onTick);
 }
 
 /**
- * Core version - processes tick operations without store access for UI updates
+ * Processes tick operations (without store access for UI updates)
  */
-function processTickOperationsCore(
+function processTickOperations(
     tickToProcess: number,
     state: RotationState,
     settingsCopy: any,
@@ -699,12 +699,7 @@ function processTickOperationsCore(
     processQueuedDamage(tickToProcess, state, settingsCopy);
     handleAftershock(state, settingsCopy);
     handleCrackling(state, settingsCopy);
-    processFamiliarTick(state, settingsCopy);
-    processDreadnipTick(state, settingsCopy);
-    processConjureTick(state, settingsCopy);
-    // Phase check for secondary damage sources (familiar/dreadnip/conjure)
-    // Ability hits are already checked per-hit inside processQueuedDamage
-    checkPhaseTransition(state, settingsCopy);
+    processSecondaryDamageWithBudget(state, settingsCopy);
     updateBossHpPercent(state, settingsCopy);
 
     
@@ -721,6 +716,42 @@ const SUMMONING_RENEWAL_REGEN_RATE = 60 / 600; // 0.1 points per tick
 const PRISM_REGEN_RATE = 1 / 3;
 // Prism scroll save chance
 const PRISM_SCROLL_SAVE_CHANCE = 0.1;
+
+/**
+ * Process secondary damage sources (familiar, dreadnip, conjure) with phase budget awareness.
+ * Snapshots damage before and after each source, and clamps any excess if a capped phase is active.
+ */
+function processSecondaryDamageWithBudget(state: RotationState, settingsCopy: any) {
+    const sources: Array<{ process: () => void, field: 'scrollDamage' | 'dreadnipDamage' | 'conjureDamage' }> = [
+        { process: () => processFamiliarTick(state, settingsCopy), field: 'scrollDamage' },
+        { process: () => processDreadnipTick(state, settingsCopy), field: 'dreadnipDamage' },
+        { process: () => processConjureTick(state, settingsCopy), field: 'conjureDamage' },
+    ];
+
+    for (const source of sources) {
+        const budget = getPhaseDamageBudget(state);
+        const before = state[source.field];
+        source.process();
+        const added = state[source.field] - before;
+
+        if (budget !== null && added > 0) {
+            const allowed = Math.max(0, Math.min(added, budget));
+            state[source.field] = before + allowed;
+            // Update per-tick array to reflect clamped value
+            if (source.field === 'scrollDamage' && state.tick < state.familiarPerTick.length) {
+                state.familiarPerTick[state.tick] = state[source.field];
+            } else if (source.field === 'dreadnipDamage' && state.tick < state.dreadnipPerTick.length) {
+                state.dreadnipPerTick[state.tick] = state[source.field];
+            } else if (source.field === 'conjureDamage' && state.tick < state.conjurePerTick.length) {
+                state.conjurePerTick[state.tick] = state[source.field];
+            }
+        }
+
+        checkPhaseTransition(state, settingsCopy);
+    }
+
+    updateBossHpPercent(state, settingsCopy);
+}
 
 /**
  * Process familiar actions for a single tick:
@@ -1044,7 +1075,7 @@ function processConjureTick(state: RotationState, settings: any) {
 
 function handleExtraActionsCore(settings: any, timers: Record<string, number>, tick: number, rotation: RotationInput) {
     if (timers["Adrenaline renewal potion"] >= 0) {
-        settings[SETTINGS.ADRENALINE] += 4;
+        addAdrenaline(settings, 4);
     }
     // Essence corruption adrenaline buff: +1% per tick while active
     if (timers[SETTINGS.ESS_CORRUPTION_ADREN] > 0) {
@@ -1132,7 +1163,7 @@ function processAbilityTicksCore(
         if (isChannel && hasHits) {
             processChannelledTickCore(state, settingsCopy, abilityKey, i, rota, rotation);
         }
-        processTickOperationsCore(i, state, settingsCopy, rotation, onTick);
+        processTickOperations(i, state, settingsCopy, rotation, onTick);
         if (rotation.abilityBar[i+1]) {
             break;
         }
@@ -1256,9 +1287,6 @@ function processMultiHitAbility(
     let subHitIndex = 0;
 
     let dmgObject = create_damage_object(settingsCopy, abilityKey);
-    console.log("ABILITY KEY", abilityKey);
-    console.log("CRIT CHANCE", dmgObject.distributions['crit']['probability']);
-    console.log(settingsCopy[SETTINGS.GCONC_CRIT]);
     let dmgObjects = on_cast(settingsCopy, dmgObject, state.timers, abilityKey);
     dmgObjects.forEach(element => {
         // Determine tick offset: sub-hits of the parent ability use hitTimings, procs land with the previous sub-hit
@@ -1332,6 +1360,27 @@ function updateBossHpPercent(state: RotationState, settingsCopy: any) {
  * Currently applies: soft cap changes, pause ticks.
  * TODO: recalculate hit chance when defence/armour/affinities change at phase transitions.
  */
+/**
+ * Returns the remaining damage budget before the current phase's HP cap.
+ * Returns null if there's no capped phase (unlimited damage allowed).
+ */
+function getPhaseDamageBudget(state: RotationState): number | null {
+    if (!state.bossPhases || state.currentPhaseIdx >= state.bossPhases.length) return null;
+    const currentPhase = state.bossPhases[state.currentPhaseIdx];
+    if (!currentPhase.capped) return null;
+
+    const cumulativeDamage = state.dmgs.reduce((a, b) => a + b, 0)
+        + state.poisonDamage + state.scrollDamage + state.dreadnipDamage + state.conjureDamage;
+    return Math.max(0, currentPhase.hp - cumulativeDamage);
+}
+
+/**
+ * Check if cumulative damage has crossed the current phase's HP threshold.
+ * If so, apply the next phase's stat overrides and set pause ticks.
+ *
+ * Damage capping is handled upstream via getPhaseDamageBudget.
+ * TODO: recalculate hit chance when defence/armour/affinities change at phase transitions.
+ */
 function checkPhaseTransition(state: RotationState, settingsCopy: any) {
     if (!state.bossPhases || state.currentPhaseIdx >= state.bossPhases.length) return;
 
@@ -1340,15 +1389,6 @@ function checkPhaseTransition(state: RotationState, settingsCopy: any) {
 
     const currentPhase = state.bossPhases[state.currentPhaseIdx];
     if (cumulativeDamage < currentPhase.hp) return;
-
-    // Clamp damage to phase threshold — excess damage is wasted
-    if (currentPhase.capped) {
-        const excess = cumulativeDamage - currentPhase.hp;
-        if (excess > 0) {
-            const idx = state.tick < state.dmgs.length ? state.tick : state.dmgs.length - 1;
-            state.dmgs[idx] = Math.max(0, state.dmgs[idx] - excess);
-        }
-    }
 
     // Phase transition triggered
     const pause = currentPhase.pause || 0;
@@ -1421,6 +1461,9 @@ function handleEssenceCorruptionStack(abilityKey: string, settings: Record<strin
 function processQueuedDamage(tick: number, state: RotationState, settingsCopy: any) {
     if (!state.damageQueue[tick]) return;
 
+    // Track whether a capped phase transitioned on this tick — all subsequent hits are nullified
+    let cappedOnThisTick = false;
+
     for (const namedDmgObject of state.damageQueue[tick]) {
         settingsCopy['ability'] = namedDmgObject.ability;
         const scale = namedDmgObject.likelihood;
@@ -1436,20 +1479,53 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
         }
         for (const dmgObj of damageObjects) {
             const softCap = settingsCopy['_softCap'];
-            let dmg = applySoftCap(get_user_value(settingsCopy, dmgObj), softCap);
-            state.dmgs.push(Math.floor(dmg * scale)); // Scale damage by likelihood of hit occuring
+            let dmg = cappedOnThisTick ? 0 : applySoftCap(get_user_value(settingsCopy, dmgObj), softCap);
+
+            // Cap damage to phase budget (capped phases nullify excess)
+            let budget: number | null = null;
+            if (!cappedOnThisTick) {
+                budget = getPhaseDamageBudget(state);
+                if (budget !== null) {
+                    dmg = Math.min(dmg, budget / scale);
+                }
+            }
+
+            const dmgValue = Math.floor(dmg * scale);
+            if (Number.isNaN(dmgValue)) {
+                const crit = dmgObj.distributions?.crit;
+                const nonCrit = dmgObj.distributions?.non_crit;
+                console.warn('NaN damage detected', {
+                    ability: namedDmgObject.ability, tick,
+                    crit: crit ? { minHit: crit.minHit, varHit: crit.varHit, boostedAD: crit['boosted AD'], listLen: crit['damage list']?.length, prob: crit.probability } : 'missing',
+                    nonCrit: nonCrit ? { minHit: nonCrit.minHit, varHit: nonCrit.varHit, boostedAD: nonCrit['boosted AD'], listLen: nonCrit['damage list']?.length, prob: nonCrit.probability } : 'missing',
+                    abilityDamage: settingsCopy[SETTINGS.ABILITY_DAMAGE],
+                });
+                // Only log first occurrence
+                break;
+            }
+            state.dmgs.push(dmgValue);
             state.cinderHitCount += scale;
 
             // Accumulate poison damage per-hit (scales with current Bik stacks)
-            state.poisonDamage += calcPoisonDamagePerHit(scale, settingsCopy);
+            if (!cappedOnThisTick) {
+                state.poisonDamage += calcPoisonDamagePerHit(scale, settingsCopy);
+            }
             if (tick < state.poisonPerTick.length) {
                 state.poisonPerTick[tick] = state.poisonDamage;
             }
 
-            // Check phase transition after each hit (capped phases clamp excess per-hit)
-            checkPhaseTransition(state, settingsCopy);
+            if (!cappedOnThisTick) {
+                const phaseIdxBefore = state.currentPhaseIdx;
+                checkPhaseTransition(state, settingsCopy);
+                if (state.currentPhaseIdx > phaseIdxBefore &&
+                    state.bossPhases?.[phaseIdxBefore]?.capped) {
+                    cappedOnThisTick = true;
+                }
+            }
 
-            // Collect distribution statistics for Gaussian modeling
+            // Skip distribution stats for zero-damage hits (capped out)
+            if (cappedOnThisTick && dmg === 0) continue;
+
             // Treat crit and non-crit as a single combined distribution per ability
             const critDist = dmgObj.distributions['crit'];
             const nonCritDist = dmgObj.distributions['non_crit'];
@@ -1462,21 +1538,34 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
                 const nonCritDamageList = nonCritDist['damage list'];
 
                 // Crit stats
-                const critMin = Math.min(...critDamageList);
-                const critMax = Math.max(...critDamageList);
-                const critMean = (critMin + critMax) / 2;
-                const critVariance = Math.pow((critMax - critMin) / 2, 2) / 3;
+                let critMin = Math.min(...critDamageList);
+                let critMax = Math.max(...critDamageList);
+                let critMean = (critMin + critMax) / 2;
+                let critVariance = Math.pow((critMax - critMin) / 2, 2) / 3;
 
                 // Non-crit stats
-                const nonCritMin = Math.min(...nonCritDamageList);
-                const nonCritMax = Math.max(...nonCritDamageList);
-                const nonCritMean = (nonCritMin + nonCritMax) / 2;
-                const nonCritVariance = Math.pow((nonCritMax - nonCritMin) / 2, 2) / 3;
+                let nonCritMin = Math.min(...nonCritDamageList);
+                let nonCritMax = Math.max(...nonCritDamageList);
+                let nonCritMean = (nonCritMin + nonCritMax) / 2;
+                let nonCritVariance = Math.pow((nonCritMax - nonCritMin) / 2, 2) / 3;
 
                 // Calculate combined min/max for display (includes both crit and non-crit)
                 const allDamage = [...critDamageList, ...nonCritDamageList];
-                const minDamage = Math.min(...allDamage);
-                const maxDamage = Math.max(...allDamage);
+                let minDamage = Math.min(...allDamage);
+                let maxDamage = Math.max(...allDamage);
+
+                // Scale distribution stats to match capped damage
+                if (budget !== null && maxDamage > 0) {
+                    const uncappedDmg = applySoftCap(get_user_value(settingsCopy, dmgObj), softCap);
+                    if (uncappedDmg > 0 && dmg < uncappedDmg) {
+                        const capScale = dmg / uncappedDmg;
+                        critMin *= capScale; critMax *= capScale; critMean *= capScale;
+                        critVariance *= capScale * capScale;
+                        nonCritMin *= capScale; nonCritMax *= capScale; nonCritMean *= capScale;
+                        nonCritVariance *= capScale * capScale;
+                        minDamage *= capScale; maxDamage *= capScale;
+                    }
+                }
 
                 // Store as a single distribution with mixture components
                 state.distributionStats.push({
@@ -1535,14 +1624,15 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
  */
 function calcPoisonDamagePerHit(hitScale: number, settingsCopy: any): number {
     let poison_tier = Object.values(SETTINGS.POISON_VALUES).indexOf(settingsCopy[SETTINGS.POISON]);
-    if (settingsCopy[SETTINGS.GLOVES] === ARMOUR.CINDERBANE_GLOVES) {
+    const cinders = settingsCopy[SETTINGS.GLOVES] === ARMOUR.CINDERBANE_GLOVES
+    if (cinders) {
         poison_tier = Math.max(2, poison_tier + 1);
     }
     if (poison_tier === 0) {
         return 0;
     }
     const abilDmg = settingsCopy[SETTINGS.ABILITY_DAMAGE];
-    let basePoisonDmg = Math.floor(abilDmg * 0.125 * (0.15 + 0.05 * poison_tier) * 0.975);
+    let basePoisonDmg = Math.floor(abilDmg * (0.15 + 0.05 * poison_tier) * 0.975 / (cinders ? 7 : 8));
 
     // Bik arrows Evolving Toxin: +3% poison damage per stack
     const bikStacks = settingsCopy[SETTINGS.BIK_STACKS] || 0;

@@ -345,7 +345,6 @@ export function handleDracolichInfusion(settings: Record<string, any>, timers: R
     const nEDracoPieces = countSetPieces(settings, gearSets[GEAR_SET.ELITE_DRACOLICH]);
     const nDracoPieces = countSetPieces(settings, gearSets[GEAR_SET.DRACOLICH]);
     const nPieces = Math.max(nEDracoPieces, nDracoPieces);
-
     if (abilityKey == ABILITIES.RAPID_FIRE_HIT || abilityKey == ABILITIES.RAPID_FIRE_LAST_HIT) {
         addAdrenaline(settings, nEDracoPieces * 0.5);
         addAdrenaline(settings, nDracoPieces * 0.2);
@@ -462,12 +461,14 @@ export function get_user_value(settings: Record<string, any>, dmgObject: DamageO
 function get_mean_damage(settings: Record<string, any>, dmgObject: DamageObject) {
     let mean = 0;
     iterateDistributions(dmgObject, (distribution) => {
+        const list = distribution['damage list'];
+        if (list.length === 0) return;
         let total = 0;
         let prob = distribution['probability'];
-        for (let i = 0; i < distribution['damage list'].length; i++) {
-            total += distribution['damage list'][i];
+        for (let i = 0; i < list.length; i++) {
+            total += list[i];
         }
-        total = total / distribution['damage list'].length;
+        total = total / list.length;
         mean += total * prob;
     });
     return Math.round(mean);
@@ -476,7 +477,7 @@ function get_mean_damage(settings: Record<string, any>, dmgObject: DamageObject)
 function get_mean_no_crit(settings: Record<string, any>, dmgObject: DamageObject) {
     let mean = 0;
     const nonCritDist = getDamageDistribution(dmgObject, 'non_crit');
-    if (nonCritDist) {
+    if (nonCritDist && nonCritDist['damage list'].length > 0) {
         let total = 0;
         for (let i = 0; i < nonCritDist['damage list'].length; i++) {
             total += nonCritDist['damage list'][i];
@@ -495,14 +496,12 @@ function get_mean_crit(settings: Record<string, any>, dmgObject: DamageObject) {
         return get_mean_damage(settings, dmgObject);
     }
 
-    let mean = 0;
+    if (critDist['damage list'].length === 0) return 0;
     let total = 0;
     for (let i = 0; i < critDist['damage list'].length; i++) {
         total += critDist['damage list'][i];
     }
-    total = total / critDist['damage list'].length;
-    mean += total;
-    return Math.round(mean);
+    return Math.round(total / critDist['damage list'].length);
 }
 
 function get_min_no_crit(settings: Record<string, any>, dmgObject: DamageObject) {
