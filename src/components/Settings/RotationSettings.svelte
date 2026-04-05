@@ -656,10 +656,11 @@ import { WEAPONS } from '$lib/data/weapons';
                                 {/each}
                             </div>
                             <button
-                                class="w-full text-xs text-sky-300 hover:text-white border border-sky-300/30 hover:border-sky-300 rounded px-2 py-1.5 mt-2 transition-colors"
+                                class="flex items-center justify-center gap-2 w-full text-xs text-sky-300 hover:text-white border border-sky-300/30 hover:border-sky-300 rounded px-2 py-1.5 mt-2 transition-colors"
                                 onclick={() => showGearManager = true}
                             >
-                                Manage Perks
+                                <img src="/settings_icons/Options_icon.png" alt="" class="w-4 h-4" />
+                                Manage Gear
                             </button>
                         </div>
                     </div>
@@ -762,7 +763,7 @@ import { WEAPONS } from '$lib/data/weapons';
     {/if}
 </div>
 
-<GearManager bind:show={showGearManager} />
+<GearManager bind:show={showGearManager} initialStyle={styleColorMap[styleTab] ?? 'ranged'} />
 
 <style>
     .stack-toggle {

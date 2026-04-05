@@ -25,7 +25,14 @@
     import Number from '$components/Settings/Number.svelte';
     import PerkSelection from '$components/Settings/PerkSelection.svelte';
     import Select from '$components/Settings/Select.svelte';
+    import GearManager from '$components/Settings/GearManager.svelte';
+    import ActionIcon from '$components/UI/ActionIcon.svelte';
+    import { perks as perkDefs } from '$lib/data/perks';
+    import { STYLE_COLORS } from '$lib/utils/colors';
+    import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
+    import { weapons } from '$lib/data/weapons';
 
+    let showGearManager = $state(false);
     let openDropdown = $state(null);
 
     let tab = $state('general');
@@ -58,6 +65,29 @@
             ])
         )
     );
+
+    let gearFilter = $derived(settings[SETTINGS.GEAR_FILTER]?.value ?? 'popular');
+    let useOwnedGearPerks = $derived(gearFilter === 'owned');
+
+    function getEquippedPerks(settingsKey) {
+        const itemKey = settings[settingsKey]?.value;
+        if (!itemKey || itemKey === 'none' || itemKey.startsWith('custom')) return [];
+        const instances = ownedItemsStore.ownedGear.get(itemKey);
+        if (!instances || instances.length === 0) return [];
+        const gearInstances = settings['_gearInstances']?.value;
+        const instanceInfo = gearInstances?.[settingsKey];
+        const idx = instanceInfo?.instanceIndex ?? 0;
+        return instances[idx]?.perks ?? instances[0]?.perks ?? [];
+    }
+
+    let weaponPerks = $derived.by(() => {
+        if (!useOwnedGearPerks) return [];
+        const mhPerks = getEquippedPerks(SETTINGS.NECRO_MH);
+        const ohPerks = getEquippedPerks(SETTINGS.NECRO_OH);
+        return [...mhPerks, ...ohPerks];
+    });
+    let bodyPerks = $derived.by(() => useOwnedGearPerks ? getEquippedPerks(SETTINGS.NECRO_BODY) : []);
+    let legsPerks = $derived.by(() => useOwnedGearPerks ? getEquippedPerks(SETTINGS.NECRO_LEGS) : []);
 
     function saveSettings() {
         if (typeof localStorage !== 'undefined') {
@@ -461,12 +491,38 @@
                             <div class="md:col-span-1">
                                 <GearSelection {settings} styleTab={SettingsCombatStyles.NECROMANCY} {updateDamages} bind:openDropdown />
                             </div>
-                            <div class="md:col-span-1">
-                                <PerkSelection {settings} {updateDamages} />
-                            </div>
+                            {#if !useOwnedGearPerks}
+                                <div class="md:col-span-1">
+                                    <PerkSelection {settings} {updateDamages} />
+                                </div>
+                            {:else}
+                                <div class="md:col-span-1">
+                                    <h5 class="uppercase font-bold text-lg text-center mb-4">Active Perks</h5>
+                                    <div class="space-y-2">
+                                        {#each [weaponPerks, bodyPerks, legsPerks] as slotPerks}
+                                            <div class="flex gap-1 flex-wrap justify-center">
+                                                {#each slotPerks as perk}
+                                                    {@const def = perkDefs[perk.perkKey]}
+                                                    {#if def}
+                                                        <ActionIcon type="perk" src={def.icon} size="md" badgeText={perk.rank} borderColor={STYLE_COLORS.perks} title="{def.name} {perk.rank}" />
+                                                    {/if}
+                                                {/each}
+                                            </div>
+                                        {/each}
+                                    </div>
+                                </div>
+                            {/if}
                             <div class="md:col-span-1">
                                 <FamiliarSelection {settings} {updateDamages} bind:openDropdown />
                             </div>
+                            <button
+                                class="flex items-center justify-center gap-2 w-full text-xs text-sky-300 hover:text-white border border-sky-300/30 hover:border-sky-300 rounded px-2 py-1.5 mt-2 transition-colors"
+                                onclick={() => showGearManager = true}
+                            >
+                                <img src="/settings_icons/Options_icon.png" alt="" class="w-4 h-4" />
+                                Manage Gear
+                            </button>
+                            <GearManager bind:show={showGearManager} initialStyle="necromancy" />
                         {:else if tab === 'bosses'}
                             <div class="md:col-span-1 space-y-2">
                                 <Checkbox

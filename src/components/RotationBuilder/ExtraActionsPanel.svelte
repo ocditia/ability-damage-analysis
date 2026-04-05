@@ -233,20 +233,42 @@
     let currentStalledAbility = $derived(tick !== undefined && tick >= 0 && gameState.stalledAbilities && gameState.stalledAbilities[tick] ? allAbils[gameState.stalledAbilities[tick]] : null);
     let isNulled = $derived(tick !== undefined && tick >= 0 && rotationStore.nulledTicks && rotationStore.nulledTicks[tick]);
 
-    // Boss HP: from preset or custom setting
+    // Boss HP: actual health (not including heals)
     let bossHp = $derived.by(() => {
         const bossKey = settingsStore.settings[SETTINGS.BOSS_PRESET]?.value;
         if (bossKey && bossKey !== 'none') {
             const enrage = settingsStore.settings[SETTINGS.BOSS_ENRAGE]?.value ?? 0;
             const boss = getBossPresetWithEnrage(bossKey, enrage);
-            if (boss?.health) {
-                const totalHeal = (boss.phases ?? []).reduce((sum, p) => sum + (p.heal || 0), 0);
-                return boss.health + totalHeal;
-            }
+            if (boss?.health) return boss.health;
         }
         const customHp = settingsStore.settings[SETTINGS.BOSS_HP]?.value;
         return customHp > 0 ? customHp : 0;
     });
+
+    // Get boss phases for remaining HP calculation
+    let bossPhases = $derived.by(() => {
+        const bossKey = settingsStore.settings[SETTINGS.BOSS_PRESET]?.value;
+        if (bossKey && bossKey !== 'none') {
+            const enrage = settingsStore.settings[SETTINGS.BOSS_ENRAGE]?.value ?? 0;
+            const boss = getBossPresetWithEnrage(bossKey, enrage);
+            return boss?.phases ?? [];
+        }
+        return [];
+    });
+
+    /**
+     * Calculate remaining boss HP accounting for phase heals.
+     * Heals only count once cumulative damage has passed the phase threshold.
+     */
+    function getRemainingHp(cumulativeDamage) {
+        let healed = 0;
+        for (const phase of bossPhases) {
+            if (cumulativeDamage >= phase.hp) {
+                healed += phase.heal ?? 0;
+            }
+        }
+        return Math.max(0, bossHp + healed - cumulativeDamage);
+    }
 
     // Per-tick damage breakdown, grouped by ability
     function getTickDamage(tick) {
@@ -351,9 +373,10 @@
             return damage.toLocaleString();
         }
         if (damage >= 1000000) {
-            return (damage / 1000000).toFixed(1) + 'M';
+            const val = damage / 1000000;
+            return (val % 1 === 0 ? val.toFixed(0) : val.toFixed(1)) + 'M';
         } else if (damage >= 1000) {
-            return (damage / 1000).toFixed(1) + 'K';
+            return Math.round(damage / 1000) + 'K';
         }
         return damage.toString();
     }
@@ -422,19 +445,22 @@
                             {#if cumDmgInline.min !== cumDmgInline.max}
                                 <span class="text-xs text-gray-500">({formatDamage(cumDmgInline.min)}-{formatDamage(cumDmgInline.max)})</span>
                             {/if}
-                            {#if bossHp > 0}
-                                {@const remaining = bossHp - cumDmgInline.total}
-                                <span class="boss-hp-line">
-                                    <img src="/effect_icons/target_hp.png" alt="HP" style="width: 12px; height: 12px;" />
-                                    <span class="text-xs text-gray-400">{formatDamage(cumDmgInline.total)}/{formatDamage(bossHp)}</span>
-                                    {#if remaining > 0}
-                                        <span class="text-xs text-red-400">{formatDamage(remaining)} left</span>
-                                    {:else}
-                                        <span class="text-xs text-green-400">dead</span>
-                                    {/if}
-                                </span>
-                            {/if}
                         </span>
+                    {/if}
+                    {#if bossHp > 0 && cumDmgInline.total > 0}
+                        {@const remaining = getRemainingHp(cumDmgInline.total)}
+                        {@const hpPercent = Math.max(0, Math.min(100, (remaining / bossHp) * 100))}
+                        <div class="boss-hp-bar-container">
+                            <div class="boss-hp-bar-track">
+                                <div
+                                    class="boss-hp-bar-fill"
+                                    style="width: {hpPercent}%; background: {hpPercent > 50 ? '#4CAF50' : hpPercent > 25 ? '#FFA726' : '#EF5350'};"
+                                ></div>
+                                <span class="boss-hp-bar-text">
+                                    {remaining > 0 ? formatDamage(remaining) : 'Dead'} / {formatDamage(bossHp)}
+                                </span>
+                            </div>
+                        </div>
                     {/if}
                 {/if}
             </div>
@@ -663,10 +689,38 @@
         color: #4CAF50;
     }
 
-    .boss-hp-line {
+    .boss-hp-bar-container {
+        margin-top: 4px;
+        width: 100%;
+    }
+    .boss-hp-bar-track {
+        height: 22px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 3px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .boss-hp-bar-fill {
+        height: 100%;
+        border-radius: 2px 0 0 2px;
+        transition: width 0.2s ease;
+    }
+    .boss-hp-bar-text {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
         display: flex;
         align-items: center;
-        gap: 3px;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: #fff;
+        white-space: nowrap;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        pointer-events: none;
     }
 
     .nulled-badge {

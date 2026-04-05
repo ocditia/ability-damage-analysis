@@ -28,6 +28,14 @@
     import Checkbox from '$components/Settings/Checkbox.svelte';
     import FamiliarSelection from '$components/Settings/FamiliarSelection.svelte';
     import GearSelection from '$components/Settings/GearSelection.svelte';
+    import GearManager from '$components/Settings/GearManager.svelte';
+    import ActionIcon from '$components/UI/ActionIcon.svelte';
+    import { perks as perkDefs } from '$lib/data/perks';
+    import { STYLE_COLORS } from '$lib/utils/colors';
+    import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
+    import { weapons } from '$lib/data/weapons';
+
+    let showGearManager = $state(false);
     import Number from '$components/Settings/Number.svelte';
     import PerkSelection from '$components/Settings/PerkSelection.svelte';
     import Select from '$components/Settings/Select.svelte';
@@ -64,6 +72,31 @@
             ])
         )
     );
+
+    let gearFilter = $derived(settings[SETTINGS.GEAR_FILTER]?.value ?? 'popular');
+    let useOwnedGearPerks = $derived(gearFilter === 'owned');
+
+    function getEquippedPerks(settingsKey) {
+        const itemKey = settings[settingsKey]?.value;
+        if (!itemKey || itemKey === 'none' || itemKey.startsWith('custom')) return [];
+        const instances = ownedItemsStore.ownedGear.get(itemKey);
+        if (!instances || instances.length === 0) return [];
+        const gearInstances = settings['_gearInstances']?.value;
+        const instanceInfo = gearInstances?.[settingsKey];
+        const idx = instanceInfo?.instanceIndex ?? 0;
+        return instances[idx]?.perks ?? instances[0]?.perks ?? [];
+    }
+
+    let weaponPerks = $derived.by(() => {
+        if (!useOwnedGearPerks) return [];
+        const mhVal = settings[SETTINGS.MAGIC_MH]?.value;
+        const is2h = mhVal && weapons[mhVal]?.['weapon type'] === 'two-hand';
+        const mhPerks = getEquippedPerks(SETTINGS.MAGIC_MH);
+        const ohPerks = is2h ? [] : getEquippedPerks(SETTINGS.MAGIC_OH);
+        return [...mhPerks, ...ohPerks];
+    });
+    let bodyPerks = $derived.by(() => useOwnedGearPerks ? getEquippedPerks(SETTINGS.MAGIC_BODY) : []);
+    let legsPerks = $derived.by(() => useOwnedGearPerks ? getEquippedPerks(SETTINGS.MAGIC_LEGS) : []);
 
     function saveSettings() {
         if (typeof localStorage !== 'undefined') {
@@ -482,12 +515,52 @@
                             <div class="md:col-span-1">
                                 <GearSelection {settings} styleTab={SettingsCombatStyles.MAGIC} {updateDamages} bind:openDropdown />
                             </div>
-                            <div class="md:col-span-1">
-                                <PerkSelection {settings} {updateDamages} />
-                            </div>
+                            {#if !useOwnedGearPerks}
+                                <div class="md:col-span-1">
+                                    <PerkSelection {settings} {updateDamages} />
+                                </div>
+                            {:else}
+                                <div class="md:col-span-1">
+                                    <h5 class="uppercase font-bold text-lg text-center mb-4">Active Perks</h5>
+                                    <div class="space-y-2">
+                                        <div class="flex gap-1 flex-wrap justify-center">
+                                            {#each weaponPerks as perk}
+                                                {@const def = perkDefs[perk.perkKey]}
+                                                {#if def}
+                                                    <ActionIcon type="perk" src={def.icon} size="md" badgeText={perk.rank} borderColor={STYLE_COLORS.perks} title="{def.name} {perk.rank}" />
+                                                {/if}
+                                            {/each}
+                                        </div>
+                                        <div class="flex gap-1 flex-wrap justify-center">
+                                            {#each bodyPerks as perk}
+                                                {@const def = perkDefs[perk.perkKey]}
+                                                {#if def}
+                                                    <ActionIcon type="perk" src={def.icon} size="md" badgeText={perk.rank} borderColor={STYLE_COLORS.perks} title="{def.name} {perk.rank}" />
+                                                {/if}
+                                            {/each}
+                                        </div>
+                                        <div class="flex gap-1 flex-wrap justify-center">
+                                            {#each legsPerks as perk}
+                                                {@const def = perkDefs[perk.perkKey]}
+                                                {#if def}
+                                                    <ActionIcon type="perk" src={def.icon} size="md" badgeText={perk.rank} borderColor={STYLE_COLORS.perks} title="{def.name} {perk.rank}" />
+                                                {/if}
+                                            {/each}
+                                        </div>
+                                    </div>
+                                </div>
+                            {/if}
                             <div class="md:col-span-1">
                                 <FamiliarSelection {settings} {updateDamages} bind:openDropdown />
                             </div>
+                            <button
+                                class="flex items-center justify-center gap-2 w-full text-xs text-sky-300 hover:text-white border border-sky-300/30 hover:border-sky-300 rounded px-2 py-1.5 mt-2 transition-colors"
+                                onclick={() => showGearManager = true}
+                            >
+                                <img src="/settings_icons/Options_icon.png" alt="" class="w-4 h-4" />
+                                Manage Gear
+                            </button>
+                            <GearManager bind:show={showGearManager} initialStyle="magic" />
                         {:else if tab === 'bosses'}
                             <div class="md:col-span-1 space-y-2">
                                 <Checkbox

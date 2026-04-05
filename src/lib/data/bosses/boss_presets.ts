@@ -2297,11 +2297,18 @@ function generateTelosEnrage(base: BossPreset, enrage: number): BossPreset {
 		{ name: 'Auto', type: 'auto', ticks: 4, count: 2, style: 'melee' },
 	]};
 
+	// P4 (font) is split into 4 equal sub-phases with 27-tick transitions between them
+	const fontQuarter = Math.floor(quarter / 4);
+	const p4Start = quarter * 3;
+
 	result.phases = [
-		{ hp: quarter, pause: 10, attackPattern: telosP1 },
-		{ hp: quarter * 2, pause: 10, attackPattern: telosP2 },
-		{ hp: quarter * 3, pause: 10, attackPattern: telosP3 },
-		{ hp: result.health, heal: p5Hp, pause: 10, attackPattern: telosP4 },
+		{ hp: quarter, pause: 10, attackPattern: telosP1, capped: true },
+		{ hp: quarter * 2, pause: 10, attackPattern: telosP2, capped: true },
+		{ hp: quarter * 3, pause: 10, attackPattern: telosP3, capped: true },
+		{ hp: p4Start + fontQuarter, pause: 27, attackPattern: telosP4, capped: true, stats: { name: 'P4 (75%)' } },
+		{ hp: p4Start + fontQuarter * 2, pause: 27, attackPattern: telosP4, capped: true, stats: { name: 'P4 (50%)' } },
+		{ hp: p4Start + fontQuarter * 3, pause: 27, attackPattern: telosP4, capped: true, stats: { name: 'P4 (25%)' } },
+		{ hp: result.health, heal: p5Hp, pause: 10, attackPattern: telosP4, capped: true, stats: { name: 'P5' } },
 		{ hp: result.health + p5Hp, attackPattern: telosP5 },
 	];
 
