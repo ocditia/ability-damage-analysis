@@ -207,10 +207,8 @@ function consumeStacks(ctx: EffectContext): void {
     const { settings, abilityKey } = ctx;
 
     // Volley of Souls — consumes all residual souls
-    console.log('consumeStacks - abilityKey:', abilityKey);
     if ((abilityKey === ABILITIES.VOLLEY_OF_SOULS_DYNAMIC ||
         abilityKey === ABILITIES.VOLLEY_OF_SOULS) && (settings[SETTINGS.RESIDUAL_SOULS] || 0) >= 2) {
-        console.log('Volley of Souls - consuming all residual souls');
         settings[SETTINGS.RESIDUAL_SOULS] = 0;
     }
 

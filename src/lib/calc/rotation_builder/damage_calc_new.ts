@@ -502,7 +502,8 @@ const COOLDOWN_PREFIX = 'cd_';
  * (counts down each tick via handleTimers). The timer key is prefixed with 'cd_'.
  */
 function startCooldown(timers: Record<string, number>, abilityKey: string, settings?: Record<string, any>): void {
-    let cdSeconds = abils[abilityKey]?.['cooldown'];
+    const key = abils[abilityKey]?.parent ?? abilityKey;
+    let cdSeconds = abils[key]?.['cooldown'];
     if (cdSeconds && cdSeconds > 0) {
         // Living Death: Death Skulls cooldown reduced to 10.2s (17 ticks)
         if (abilityKey === ABILITIES.DEATHSKULLS_4 && settings?.[SETTINGS.LIVING_DEATH] === true) {

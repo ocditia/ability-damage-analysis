@@ -224,7 +224,9 @@ function applyStackEffects(ctx: EffectContext): void {
     }
 
     // Shadow Imbued (Imbue Shadows buff) - each ranged hit generates 5% adrenaline
-    if (settings[SETTINGS.SHADOW_IMBUED] === true && abils[abilityKey]?.mainStyle === 'ranged') {
+    if (settings[SETTINGS.SHADOW_IMBUED] === true && abils[abilityKey]?.mainStyle === 'ranged' &&
+        abils[abilityKey]?.abilityClassification !== 'perk'
+    ) {
         addAdrenaline(settings, 5)
     }
 

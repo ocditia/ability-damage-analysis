@@ -564,6 +564,17 @@
         }
         return map;
     });
+
+    // Set of ticks where damage hitsplats land (from distributionStats)
+    let damageTicks: Set<number> = $derived.by(() => {
+        const s = new Set<number>();
+        if (!rotationStore.distributionStats) return s;
+        for (const stat of rotationStore.distributionStats) {
+            if (stat.source) continue; // skip familiar/poison/etc — only ability damage
+            s.add(stat.tick);
+        }
+        return s;
+    });
 </script>
 
 <style>
@@ -836,14 +847,16 @@
 	.ability-slot.has-extra-actions::after {
 		content: '';
 		position: absolute;
-		bottom: -2px;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 6px;
-		height: 6px;
-		background-color: #ffff00;
-		border-radius: 50%;
+		bottom: 0;
+		left: 2px;
+		right: 2px;
+		height: 2px;
+		background-color: #b8a04a;
 		z-index: 2;
+	}
+
+	.ability-slot.has-damage {
+		border-top: 2px solid #a65a5a;
 	}
 
 	.cell-number {
@@ -968,6 +981,19 @@
 		z-index: 2;
 	}
 
+	.cooldown-ready-container {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		z-index: 2;
+		pointer-events: none;
+	}
+
+	.cooldown-ready-container.has-overflow {
+		pointer-events: auto;
+		cursor: pointer;
+	}
+
 	.cooldown-ready-icon {
 		position: absolute;
 		bottom: 0px;
@@ -978,6 +1004,17 @@
 		opacity: 0.8;
 		z-index: 2;
 		pointer-events: none;
+		transition: opacity 0.15s ease, bottom 0.15s ease;
+	}
+
+	/* Hide extra icons by default (only first visible) */
+	.cooldown-ready-container .cooldown-ready-icon:not(:first-of-type) {
+		opacity: 0;
+	}
+
+	/* On hover, reveal all icons */
+	.cooldown-ready-container:hover .cooldown-ready-icon:not(:first-of-type) {
+		opacity: 0.8;
 	}
 
 	.cooldown-overflow {
@@ -991,6 +1028,12 @@
 		z-index: 3;
 		pointer-events: none;
 		line-height: 1;
+		transition: opacity 0.15s ease;
+	}
+
+	/* Hide the +N label on hover since all icons are shown */
+	.cooldown-ready-container:hover .cooldown-overflow {
+		opacity: 0;
 	}
 
 	.stall-cursor.stalling {
@@ -1164,6 +1207,7 @@
                                 class:nulled={rotationStore.nulledTicks[index]}
                                 class:selected-tick={uiStore.extraActions.show && uiStore.extraActions.tick === index}
                                 class:has-extra-actions={rotationStore.extraActionBar[index]?.some(action => action !== null)}
+                                class:has-damage={damageTicks.has(index)}
                                 class:invalid-placement={invalidTicks[index] && ability}
                                 class:phase-pause={pauseTickSet.has(index)}
                                 tabindex="0"
@@ -1203,21 +1247,23 @@
                                 {/if}
                                 {#if rotationStore.cooldownReady[index]}
                                     {@const cdList = rotationStore.cooldownReady[index]}
-                                    {#each cdList.slice(0, 3) as readyAbilKey, cdIdx}
-                                        {@const abilInfo = allExtraActions[readyAbilKey] || allAbils[readyAbilKey]}
-                                        {#if abilInfo?.icon}
-                                            <img
-                                                class="cooldown-ready-icon"
-                                                src={abilInfo.icon}
-                                                alt="Off cooldown"
-                                                title="{abilInfo.title} ready"
-                                                style="bottom: {2 + cdIdx * 10}px;"
-                                            />
+                                    <div class="cooldown-ready-container" class:has-overflow={cdList.length > 1}>
+                                        {#each cdList as readyAbilKey, cdIdx}
+                                            {@const abilInfo = allExtraActions[readyAbilKey] || allAbils[readyAbilKey]}
+                                            {#if abilInfo?.icon}
+                                                <img
+                                                    class="cooldown-ready-icon"
+                                                    src={abilInfo.icon}
+                                                    alt="Off cooldown"
+                                                    title="{abilInfo.title} ready"
+                                                    style="bottom: {2 + cdIdx * 10}px;"
+                                                />
+                                            {/if}
+                                        {/each}
+                                        {#if cdList.length > 1}
+                                            <span class="cooldown-overflow" style="bottom: {2 + 1 * 10}px;">+{cdList.length - 1}</span>
                                         {/if}
-                                    {/each}
-                                    {#if cdList.length > 3}
-                                        <span class="cooldown-overflow" style="bottom: {2 + 3 * 10}px;">+{cdList.length - 3}</span>
-                                    {/if}
+                                    </div>
                                 {/if}
                                 {#if phaseTickMap.has(index)}
                                     {@const marker = phaseTickMap.get(index)}
