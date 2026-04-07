@@ -406,7 +406,7 @@
                                 <Number
                                     bind:setting={settings[SETTINGS.PRIMORDIAL_ICE]}
                                     onchange={() => updateDamages()}
-                                    img="/effect_icons/primordial_ice.png"
+                                    img="/effect_icons/melee/primordial_ice.png"
                                     step="1"
                                     max="10"
                                     min="0"

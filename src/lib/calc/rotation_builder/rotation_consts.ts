@@ -478,6 +478,15 @@ export function createStackTimings(barSize: number) {
                 colour: STACK_COLORS.bloodlust,
                 combatStyle: SettingsCombatStyles.MELEE
             },
+            [SETTINGS.PRIMORDIAL_ICE]: {
+                title: 'Primordial Ice stacks',
+                displaySetting: SETTINGS.SHOW_PRIMORDIAL_ICE_STACKS,
+                idx: -1,
+                image: '/effect_icons/melee/primordial_ice.png',
+                stackTicks: Array(barSize).fill(0),
+                colour: STACK_COLORS.primordial_ice,
+                combatStyle: SettingsCombatStyles.MELEE
+            },
             [SETTINGS.PERFECT_EQUILIBRIUM_STACKS]: {
                 title: 'Perfect Equilibrium stacks',
                 displaySetting: SETTINGS.SHOW_BOLG_STACKS,

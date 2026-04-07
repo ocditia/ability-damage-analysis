@@ -90,6 +90,7 @@ export const STACK_COLORS = {
     blood_tithe:          '#cc0000',
     glacial_embrace:      '#5AC8E1',
     familiar_spec_points: '#ff9900',
+    primordial_ice:       '#7ADAF8',
 } as const;
 
 // ─── Convenience: unified lookup for chart colours ──────────────────────────

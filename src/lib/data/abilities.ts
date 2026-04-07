@@ -1045,7 +1045,6 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hitTimings: [1],
         adrenaline: 50,
         cooldown: 60,
-    
         title: 'Igneous showdown',
         icon: '/ability_icons/melee/30x30/ezk-bg.png',
     },
@@ -1122,7 +1121,9 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
-        cooldown: 0},
+        cooldown: 0,
+        parent: ABILITIES.ICY_TEMPEST
+    },
     [ABILITIES.ICY_TEMPEST_2]: {
         // ability name
         minHit: 1.75, // min % of abil expressed as a decimal
@@ -1134,7 +1135,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
-        cooldown: 0
+        cooldown: 0,
+        parent: ABILITIES.ICY_TEMPEST
     },
     [ABILITIES.ICY_TEMPEST]: {
         // ability name
@@ -3977,8 +3979,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         },
         adrenaline: 25,
         cooldown: 20.4,
-        hitTimings: [0, 1, 2, 3, 4, 5, 6, 7]
-    ,
+        hitTimings: [1, 2, 3, 4, 5, 6, 7, 8],
         title: 'Rapid Fire',
         icon: '/ability_icons/ranged/30x30/rapid.png',
     },

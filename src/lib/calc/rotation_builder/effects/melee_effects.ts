@@ -74,7 +74,7 @@ function applyAbilitySpecificEffects(
     const { settings, abilityKey } = ctx;
 
     // Dismember lunging - (10 + 3 per rank)% more damage
-    if (abilityKey === ABILITIES.DISMEMBER_HIT && settings[SETTINGS.LUNGING] > 0) {
+    if (abilityKey === ABILITIES.DISMEMBER && settings[SETTINGS.LUNGING] > 0) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * (1 + (0.10 + 0.03 * settings[SETTINGS.LUNGING])));
     }
     
@@ -259,9 +259,9 @@ function applyBonusDamageEffects(
  */
 function consumeStacks(ctx: EffectContext): void {
     const { settings, abilityKey } = ctx;
-
+    const ability = abils[abilityKey]?.parent ?? abilityKey;
     // Icy Tempest — consumes all Primordial Ice stacks
-    if (abilityKey === ABILITIES.ICY_TEMPEST) {
+    if (ability === ABILITIES.ICY_TEMPEST) {
         settings[SETTINGS.PRIMORDIAL_ICE] = 0;
     }
 }

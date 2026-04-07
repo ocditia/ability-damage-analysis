@@ -564,6 +564,17 @@
         }
         return map;
     });
+
+    // Set of ticks where damage hitsplats land (from distributionStats)
+    let damageTicks: Set<number> = $derived.by(() => {
+        const s = new Set<number>();
+        if (!rotationStore.distributionStats) return s;
+        for (const stat of rotationStore.distributionStats) {
+            if (stat.source) continue; // skip familiar/poison/etc — only ability damage
+            s.add(stat.tick);
+        }
+        return s;
+    });
 </script>
 
 <style>
@@ -836,14 +847,16 @@
 	.ability-slot.has-extra-actions::after {
 		content: '';
 		position: absolute;
-		bottom: -2px;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 6px;
-		height: 6px;
-		background-color: #ffff00;
-		border-radius: 50%;
+		bottom: 0;
+		left: 2px;
+		right: 2px;
+		height: 2px;
+		background-color: #b8a04a;
 		z-index: 2;
+	}
+
+	.ability-slot.has-damage {
+		border-top: 2px solid #a65a5a;
 	}
 
 	.cell-number {
@@ -968,6 +981,21 @@
 		z-index: 2;
 	}
 
+	.cooldown-ready-container {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 2;
+		pointer-events: none;
+	}
+
+	.cooldown-ready-container.has-overflow {
+		pointer-events: auto;
+		cursor: pointer;
+	}
+
 	.cooldown-ready-icon {
 		position: absolute;
 		bottom: 0px;
@@ -978,6 +1006,23 @@
 		opacity: 0.8;
 		z-index: 2;
 		pointer-events: none;
+		transform-origin: bottom left;
+		transition: opacity 0.2s ease, transform 0.2s ease;
+	}
+
+	/* Hide extra icons by default, collapsed to first icon position */
+	.cooldown-ready-container .cooldown-ready-icon:not(:first-of-type) {
+		opacity: 0;
+		transform: translateY(100%) scale(0.6);
+	}
+
+	/* On hover, reveal all icons at full size */
+	.cooldown-ready-container:hover .cooldown-ready-icon {
+		transform: scale(1.15);
+	}
+
+	.cooldown-ready-container:hover .cooldown-ready-icon:not(:first-of-type) {
+		opacity: 0.9;
 	}
 
 	.cooldown-overflow {
@@ -991,6 +1036,52 @@
 		z-index: 3;
 		pointer-events: none;
 		line-height: 1;
+		transition: opacity 0.15s ease;
+	}
+
+	/* Hide the +N label on hover since all icons are shown */
+	.cooldown-ready-container:hover .cooldown-overflow {
+		opacity: 0;
+	}
+
+	/* Extra action preview icons (above slot, shown on hover) */
+	.extra-action-preview {
+		position: absolute;
+		bottom: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		gap: 1px;
+		z-index: 4;
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.15s ease;
+		padding-bottom: 2px;
+	}
+
+	.ability-slot:hover .extra-action-preview {
+		opacity: 1;
+	}
+
+	.extra-action-icon-box {
+		width: 27px;
+		height: 27px;
+		min-width: 27px;
+		min-height: 27px;
+		border: 1px solid #b8a04a;
+		background: rgba(23, 29, 33, 0.95);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.extra-action-icon-box img {
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: contain;
+		filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.708));
 	}
 
 	.stall-cursor.stalling {
@@ -1164,6 +1255,7 @@
                                 class:nulled={rotationStore.nulledTicks[index]}
                                 class:selected-tick={uiStore.extraActions.show && uiStore.extraActions.tick === index}
                                 class:has-extra-actions={rotationStore.extraActionBar[index]?.some(action => action !== null)}
+                                class:has-damage={damageTicks.has(index)}
                                 class:invalid-placement={invalidTicks[index] && ability}
                                 class:phase-pause={pauseTickSet.has(index)}
                                 tabindex="0"
@@ -1203,21 +1295,37 @@
                                 {/if}
                                 {#if rotationStore.cooldownReady[index]}
                                     {@const cdList = rotationStore.cooldownReady[index]}
-                                    {#each cdList.slice(0, 3) as readyAbilKey, cdIdx}
-                                        {@const abilInfo = allExtraActions[readyAbilKey] || allAbils[readyAbilKey]}
-                                        {#if abilInfo?.icon}
-                                            <img
-                                                class="cooldown-ready-icon"
-                                                src={abilInfo.icon}
-                                                alt="Off cooldown"
-                                                title="{abilInfo.title} ready"
-                                                style="bottom: {2 + cdIdx * 10}px;"
-                                            />
+                                    <div class="cooldown-ready-container" class:has-overflow={cdList.length > 1}>
+                                        {#each cdList as readyAbilKey, cdIdx}
+                                            {@const abilInfo = allExtraActions[readyAbilKey] || allAbils[readyAbilKey]}
+                                            {#if abilInfo?.icon}
+                                                <img
+                                                    class="cooldown-ready-icon"
+                                                    src={abilInfo.icon}
+                                                    alt="Off cooldown"
+                                                    title="{abilInfo.title} ready"
+                                                    style="bottom: {2 + cdIdx * 22}px;"
+                                                />
+                                            {/if}
+                                        {/each}
+                                        {#if cdList.length > 1}
+                                            <span class="cooldown-overflow" style="bottom: {2 + 1 * 16}px;">+{cdList.length - 1}</span>
                                         {/if}
-                                    {/each}
-                                    {#if cdList.length > 3}
-                                        <span class="cooldown-overflow" style="bottom: {2 + 3 * 10}px;">+{cdList.length - 3}</span>
-                                    {/if}
+                                    </div>
+                                {/if}
+                                {#if rotationStore.extraActionBar[index]?.some(a => a !== null)}
+                                    {@const extraActions = rotationStore.extraActionBar[index].filter(a => a !== null)}
+                                    <div class="extra-action-preview">
+                                        {#each extraActions as action}
+                                            {@const icon = action.icon || allExtraActions[action]?.icon || ''}
+                                            {@const title = action.title || allExtraActions[action]?.title || ''}
+                                            {#if icon}
+                                                <div class="extra-action-icon-box" title={title}>
+                                                    <img src={icon} alt={title} />
+                                                </div>
+                                            {/if}
+                                        {/each}
+                                    </div>
                                 {/if}
                                 {#if phaseTickMap.has(index)}
                                     {@const marker = phaseTickMap.get(index)}

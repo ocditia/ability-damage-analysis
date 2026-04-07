@@ -545,6 +545,7 @@ const SETTINGS = {
     DESPERADO: 'desperado',    
 
     SHOW_BLOODLUST_STACKS: 'show bloodlust stacks',
+    SHOW_PRIMORDIAL_ICE_STACKS: 'show primordial ice stacks',
     SHOW_BOLG_STACKS: 'show bolg stacks',
     SHOW_ICY_CHILL_STACKS: 'show icy chill stacks',
     SHOW_BIK_STACKS: 'show bik stacks',
@@ -2182,6 +2183,10 @@ const settingsConfig = {
     },
     [SETTINGS.SHOW_BLOODLUST_STACKS]: {
         label: 'Show Bloodlust Stacks',
+        default: true
+    },
+    [SETTINGS.SHOW_PRIMORDIAL_ICE_STACKS]: {
+        label: 'Show Primordial Ice Stacks',
         default: true
     },
     [SETTINGS.SHOW_BOLG_STACKS]: {
