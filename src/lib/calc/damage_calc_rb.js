@@ -126,7 +126,7 @@ function calc_bonus(settings) {
     const slots = [
         SETTINGS.HELMET, SETTINGS.BODY, SETTINGS.LEGS,
         SETTINGS.GLOVES, SETTINGS.BOOTS, SETTINGS.NECKLACE,
-        SETTINGS.RING, SETTINGS.CAPE, SETTINGS.POCKET
+        SETTINGS.RING, SETTINGS.CAPE, SETTINGS.POCKET, SETTINGS.AMMO
     ];
 
     for (const slotSetting of slots) {
