@@ -104,6 +104,7 @@ const SLOT_MULTIPLIERS = {
     'legs': 0.3125,
     'pocket': 0.15625,
     'ring': 0.375,
+    'melee ammo': 0.26875,
     'not used': 0,
 };
 
@@ -126,7 +127,7 @@ function calc_bonus(settings) {
     const slots = [
         SETTINGS.HELMET, SETTINGS.BODY, SETTINGS.LEGS,
         SETTINGS.GLOVES, SETTINGS.BOOTS, SETTINGS.NECKLACE,
-        SETTINGS.RING, SETTINGS.CAPE, SETTINGS.POCKET, SETTINGS.AMMO
+        SETTINGS.RING, SETTINGS.CAPE, SETTINGS.POCKET
     ];
 
     for (const slotSetting of slots) {
@@ -134,6 +135,11 @@ function calc_bonus(settings) {
         if (piece?.offensiveTier) {
             bonus += calcSlotBonus(piece.offensiveTier[tierKey], piece.slot);
         }
+    }
+
+    if (style === 'melee' && settings[SETTINGS.AMMO] !== 'none') {
+        const piece = armour[settings[SETTINGS.AMMO]];
+        bonus += calcSlotBonus(piece.offensiveTier[tierKey], 'melee ammo');
     }
 
     logger.trace('Strength Bonus', bonus, `Gear slots${settings[SETTINGS.REAPER_CREW] ? ' + Reaper Crew (+12)' : ''}`);
