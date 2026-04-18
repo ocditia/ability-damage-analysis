@@ -339,6 +339,10 @@
                                     max="9999"
                                     min="0"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.DEVOURER_NEXUS]}
+                                    onchange={() => updateDamages()}
+                                />
                                 <Select
                                     bind:setting={settings[SETTINGS.CHAIN_MODIFIER]}
                                     onchange={() => updateDamages()}
