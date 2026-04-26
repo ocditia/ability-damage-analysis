@@ -46,6 +46,14 @@ function applyBoostedADEffects(
         else if ([WEAPONS.KERIS_PROC, WEAPONS.PRIMED_KERIS_PROC, WEAPONS.CONSECRATED_KERIS_PROC].includes(settings[SETTINGS.MH])) {
             distribution['boosted AD'] = 3 * distribution['boosted AD'];
         }
+        else if ([WEAPONS.KERIS_AVG, WEAPONS.PRIMED_KERIS_AVG, WEAPONS.CONSECRATED_KERIS_AVG].includes(settings[SETTINGS.MH])) {
+            if (settings[SETTINGS.NECKLACE] === ARMOUR.DESERT_AMULET_4) {
+                distribution['boosted AD'] = 3 * distribution['boosted AD'] * 0.033 + 0.333 * distribution['boosted AD'] * 0.967 + distribution['boosted AD'];
+            }
+            else {
+                distribution['boosted AD'] = 3 * distribution['boosted AD'] * 0.02 + 0.333 * distribution['boosted AD'] * 0.98 +distribution['boosted AD'];
+            }
+        }
     }
 
     // Chaos roar (1.75x boosted AD for next ability)

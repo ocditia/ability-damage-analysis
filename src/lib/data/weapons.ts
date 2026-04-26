@@ -388,7 +388,7 @@ export const weapons: Record<string, Equipment> = {
         type: 'none',
         classification: 'none',
         popular: false,
-        title: 'Keris',
+        title: 'Keris no proc',
         icon: '/gear_icons/melee/keris.png', // TODO: icon missing
     },
     [WEAPONS.KERIS_PROC]: {
@@ -421,7 +421,7 @@ export const weapons: Record<string, Equipment> = {
         type: 'none',
         classification: 'none',
         popular: false,
-        title: 'Primed Keris',
+        title: 'Primed Keris no proc',
         icon: '/gear_icons/melee/primed keris.png', // TODO: icon missing
     },
     [WEAPONS.PRIMED_KERIS_PROC]: {
@@ -454,7 +454,7 @@ export const weapons: Record<string, Equipment> = {
         type: 'none',
         classification: 'none',
         popular: false,
-        title: 'Consecrated Keris',
+        title: 'Consecrated Keris no proc',
         icon: '/gear_icons/melee/consecrated keris.png', // TODO: icon missing
     },
     [WEAPONS.CONSECRATED_KERIS_PROC]: {
