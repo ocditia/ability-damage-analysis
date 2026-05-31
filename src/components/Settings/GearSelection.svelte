@@ -6,7 +6,7 @@
     import { getItemsForSlot, getItemForValue } from '$lib/calc/rotation_builder/gear-registry';
     import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
     import { formatPerkAbbrev, itemDisplayText as _itemDisplayText, expandOptionsWithInstances as _expandOptions } from '$lib/data/perks';
-    import { stripVariantSuffix } from '$lib/utils/gearVariants';
+    import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
     import ActionIcon from '$components/UI/ActionIcon.svelte';
     import PillToggle from '$components/UI/PillToggle.svelte';
     import InfoTip from '$components/UI/InfoTip.svelte';
@@ -112,13 +112,13 @@
     }
 
     function isWeaponTwoHand(value) {
-        if (!value || value === 'custom' || value === 'none') return false;
+        if (!value || value === 'none') return false;
         const weapon = weapons[value];
         return weapon?.['weapon type'] === 'two-hand';
     }
 
     function isCustomWeapon(value) {
-        return value?.startsWith('custom');
+        return isCustomEquipment(value);
     }
 
     function onWeaponSelected(ws, value) {
@@ -136,67 +136,54 @@
         return styleFolderMap[item.style] ?? fallbackFolder;
     }
 
-    function gearIcon(settingKey, fallback, folder = 'shared') {
-        const val = settings[settingKey]?.value;
-        if (!val || val === 'none') return fallback;
-        const base = stripVariantSuffix(val);
-        if (base !== val) return `/gear_icons/${folder}/${base}.png`;
-        return `/gear_icons/${folder}/${val}.png`;
-    }
-
-    function gearBadge(settingKey) {
-        const val = settings[settingKey]?.value;
-        return getGearBadge(val);
-    }
-
     const armourSlotsByStyle = {
         [SettingsCombatStyles.RANGED]: [
-            { key: SETTINGS.RANGED_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: GearSlots.HELMET },
-            { key: SETTINGS.RANGED_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
-            { key: SETTINGS.RANGED_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
-            { key: SETTINGS.RANGED_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
-            { key: SETTINGS.RANGED_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
-            { key: SETTINGS.RANGED_NECKLACE, fallback: '/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
-            { key: SETTINGS.RANGED_CAPE, fallback: '/armour_icons/Back_slot.png', gearSlot: 'cape' },
-            { key: SETTINGS.RANGED_RING, fallback: '/armour_icons/Ring_slot.png', gearSlot: 'ring' },
-            { key: SETTINGS.RANGED_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
-            { key: SETTINGS.RANGED_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
+            { key: SETTINGS.RANGED_HELMET, fallback: '/rs-rot/armour_icons/Head_slot.webp', gearSlot: GearSlots.HELMET },
+            { key: SETTINGS.RANGED_BODY, fallback: '/rs-rot/armour_icons/Torso_slot.png', gearSlot: 'body' },
+            { key: SETTINGS.RANGED_LEGS, fallback: '/rs-rot/armour_icons/Legs_slot.png', gearSlot: 'legs' },
+            { key: SETTINGS.RANGED_GLOVES, fallback: '/rs-rot/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
+            { key: SETTINGS.RANGED_BOOTS, fallback: '/rs-rot/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.RANGED_NECKLACE, fallback: '/rs-rot/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
+            { key: SETTINGS.RANGED_CAPE, fallback: '/rs-rot/armour_icons/Back_slot.png', gearSlot: 'cape' },
+            { key: SETTINGS.RANGED_RING, fallback: '/rs-rot/armour_icons/Ring_slot.png', gearSlot: 'ring' },
+            { key: SETTINGS.RANGED_POCKET, fallback: '/rs-rot/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
+            { key: SETTINGS.RANGED_AMMO_SLOT, fallback: '/rs-rot/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
         [SettingsCombatStyles.MAGIC]: [
-            { key: SETTINGS.MAGIC_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
-            { key: SETTINGS.MAGIC_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
-            { key: SETTINGS.MAGIC_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
-            { key: SETTINGS.MAGIC_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
-            { key: SETTINGS.MAGIC_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
-            { key: SETTINGS.MAGIC_NECKLACE, fallback: '/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
-            { key: SETTINGS.MAGIC_CAPE, fallback: '/armour_icons/Back_slot.png', gearSlot: 'cape' },
-            { key: SETTINGS.MAGIC_RING, fallback: '/armour_icons/Ring_slot.png', gearSlot: 'ring' },
-            { key: SETTINGS.MAGIC_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
-            { key: SETTINGS.MAGIC_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
+            { key: SETTINGS.MAGIC_HELMET, fallback: '/rs-rot/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
+            { key: SETTINGS.MAGIC_BODY, fallback: '/rs-rot/armour_icons/Torso_slot.png', gearSlot: 'body' },
+            { key: SETTINGS.MAGIC_LEGS, fallback: '/rs-rot/armour_icons/Legs_slot.png', gearSlot: 'legs' },
+            { key: SETTINGS.MAGIC_GLOVES, fallback: '/rs-rot/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
+            { key: SETTINGS.MAGIC_BOOTS, fallback: '/rs-rot/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.MAGIC_NECKLACE, fallback: '/rs-rot/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
+            { key: SETTINGS.MAGIC_CAPE, fallback: '/rs-rot/armour_icons/Back_slot.png', gearSlot: 'cape' },
+            { key: SETTINGS.MAGIC_RING, fallback: '/rs-rot/armour_icons/Ring_slot.png', gearSlot: 'ring' },
+            { key: SETTINGS.MAGIC_POCKET, fallback: '/rs-rot/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
+            { key: SETTINGS.MAGIC_AMMO_SLOT, fallback: '/rs-rot/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
         [SettingsCombatStyles.MELEE]: [
-            { key: SETTINGS.MELEE_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
-            { key: SETTINGS.MELEE_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
-            { key: SETTINGS.MELEE_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
-            { key: SETTINGS.MELEE_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
-            { key: SETTINGS.MELEE_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
-            { key: SETTINGS.MELEE_NECKLACE, fallback: '/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
-            { key: SETTINGS.MELEE_CAPE, fallback: '/armour_icons/Back_slot.png', gearSlot: 'cape' },
-            { key: SETTINGS.MELEE_RING, fallback: '/armour_icons/Ring_slot.png', gearSlot: 'ring' },
-            { key: SETTINGS.MELEE_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
-            { key: SETTINGS.MELEE_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
+            { key: SETTINGS.MELEE_HELMET, fallback: '/rs-rot/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
+            { key: SETTINGS.MELEE_BODY, fallback: '/rs-rot/armour_icons/Torso_slot.png', gearSlot: 'body' },
+            { key: SETTINGS.MELEE_LEGS, fallback: '/rs-rot/armour_icons/Legs_slot.png', gearSlot: 'legs' },
+            { key: SETTINGS.MELEE_GLOVES, fallback: '/rs-rot/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
+            { key: SETTINGS.MELEE_BOOTS, fallback: '/rs-rot/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.MELEE_NECKLACE, fallback: '/rs-rot/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
+            { key: SETTINGS.MELEE_CAPE, fallback: '/rs-rot/armour_icons/Back_slot.png', gearSlot: 'cape' },
+            { key: SETTINGS.MELEE_RING, fallback: '/rs-rot/armour_icons/Ring_slot.png', gearSlot: 'ring' },
+            { key: SETTINGS.MELEE_POCKET, fallback: '/rs-rot/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
+            { key: SETTINGS.MELEE_AMMO_SLOT, fallback: '/rs-rot/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
         [SettingsCombatStyles.NECROMANCY]: [
-            { key: SETTINGS.NECRO_HELMET, fallback: '/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
-            { key: SETTINGS.NECRO_BODY, fallback: '/armour_icons/Torso_slot.png', gearSlot: 'body' },
-            { key: SETTINGS.NECRO_LEGS, fallback: '/armour_icons/Legs_slot.png', gearSlot: 'legs' },
-            { key: SETTINGS.NECRO_GLOVES, fallback: '/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
-            { key: SETTINGS.NECRO_BOOTS, fallback: '/armour_icons/Feet_slot.png', gearSlot: 'boots' },
-            { key: SETTINGS.NECRO_NECKLACE, fallback: '/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
-            { key: SETTINGS.NECRO_CAPE, fallback: '/armour_icons/Back_slot.png', gearSlot: 'cape' },
-            { key: SETTINGS.NECRO_RING, fallback: '/armour_icons/Ring_slot.png', gearSlot: 'ring' },
-            { key: SETTINGS.NECRO_POCKET, fallback: '/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
-            { key: SETTINGS.NECRO_AMMO_SLOT, fallback: '/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
+            { key: SETTINGS.NECRO_HELMET, fallback: '/rs-rot/armour_icons/Head_slot.webp', gearSlot: 'helmet' },
+            { key: SETTINGS.NECRO_BODY, fallback: '/rs-rot/armour_icons/Torso_slot.png', gearSlot: 'body' },
+            { key: SETTINGS.NECRO_LEGS, fallback: '/rs-rot/armour_icons/Legs_slot.png', gearSlot: 'legs' },
+            { key: SETTINGS.NECRO_GLOVES, fallback: '/rs-rot/armour_icons/Hands_slot.webp', gearSlot: 'gloves' },
+            { key: SETTINGS.NECRO_BOOTS, fallback: '/rs-rot/armour_icons/Feet_slot.png', gearSlot: 'boots' },
+            { key: SETTINGS.NECRO_NECKLACE, fallback: '/rs-rot/armour_icons/Neck_slot.png', gearSlot: 'necklace' },
+            { key: SETTINGS.NECRO_CAPE, fallback: '/rs-rot/armour_icons/Back_slot.png', gearSlot: 'cape' },
+            { key: SETTINGS.NECRO_RING, fallback: '/rs-rot/armour_icons/Ring_slot.png', gearSlot: 'ring' },
+            { key: SETTINGS.NECRO_POCKET, fallback: '/rs-rot/armour_icons/Pocket_slot.webp', gearSlot: 'pocket' },
+            { key: SETTINGS.NECRO_AMMO_SLOT, fallback: '/rs-rot/armour_icons/Ammo_slot.png', gearSlot: 'ammo' },
         ],
     };
 
@@ -455,7 +442,7 @@
             <ActionIcon
                 value={settings[ws.mh]?.value ?? 'none'}
                 folder={styleFolder[styleTab]}
-                fallback="/armour_icons/Main_hand_slot.webp"
+                fallback="/rs-rot/armour_icons/Main_hand_slot.webp"
                 size="md"
                 active={!!currentValue && currentValue !== 'none'}
                 borderColor={activeStyleColor}
@@ -494,7 +481,7 @@
                 <ActionIcon
                     value={settings[ws.oh]?.value ?? 'none'}
                     folder={styleFolder[styleTab]}
-                    fallback="/armour_icons/Off-hand_slot.webp"
+                    fallback="/rs-rot/armour_icons/Off-hand_slot.webp"
                     size="md"
                     active={settings[ws.oh]?.value && settings[ws.oh]?.value !== 'none'}
                     borderColor={activeStyleColor}
@@ -549,8 +536,8 @@
             title="Pernix Quiver (+4% damage when target ≤25% HP)"
             onclick={() => { settings[SETTINGS.QUIVER].value = !settings[SETTINGS.QUIVER].value; updateDamages(); }}
         >
-            <img src="/gear_icons/ranged/pernix quiver.png" alt="Pernix Quiver" class="w-7 h-7 object-contain"
-                onerror={(e) => { e.target.onerror = null; e.target.src = '/armour_icons/Ammo_slot.png'; }}
+            <img src={getEquipmentIcon(ARMOUR.PERNIX_QUIVER, '/rs-rot/armour_icons/Ammo_slot.png')} alt="Pernix Quiver" class="w-7 h-7 object-contain"
+                onerror={(e) => { e.target.onerror = null; e.target.src = '/rs-rot/armour_icons/Ammo_slot.png'; }}
             />
         </button>
     {/if}
@@ -565,10 +552,10 @@
             >
                 <img
                     src={
-                        settings[SETTINGS.AUTO_CAST]?.value === 'exsanguinate' ? '/effect_icons/Exsanguinate_icon.webp' :
-                        settings[SETTINGS.AUTO_CAST]?.value === 'incite fear' ? '/ability_icons/magic/Incite_Fear_icon.webp' :
-                        settings[SETTINGS.AUTO_CAST]?.value === 'crumble undead' ? '/ability_icons/magic/Crumble_Undead_icon.png'
-                        : '/ability_icons/magic/Vanilla_fudge_log.png'}
+                        settings[SETTINGS.AUTO_CAST]?.value === 'exsanguinate' ? '/rs-rot/effect_icons/Exsanguinate_icon.webp' : 
+                        settings[SETTINGS.AUTO_CAST]?.value === 'incite fear' ? '/rs-rot/ability_icons/magic/Incite_Fear_icon.webp' :
+                        settings[SETTINGS.AUTO_CAST]?.value === 'crumble undead' ? '/rs-rot/ability_icons/magic/Crumble_Undead_icon.png' 
+                        : '/rs-rot/ability_icons/magic/Vanilla_fudge_log.png'}
                     alt="Auto Cast"
                     class="w-7 h-7 object-contain"
                 />

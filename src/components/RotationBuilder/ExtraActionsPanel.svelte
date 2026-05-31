@@ -6,7 +6,7 @@
     import { SETTINGS } from '$lib/calc/settings_rb';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
-    import { stripVariantSuffix } from '$lib/utils/gearVariants';
+    import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
     import ActionIcon from '$components/UI/ActionIcon.svelte';
     import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
     import { perks as perkDefs } from '$lib/data/perks';
@@ -63,7 +63,7 @@
                         continue;
                     }
                     // Legacy format fallback
-                    const key = typeof action === 'string' ? action : action.title;
+                    const key = typeof action === 'string' ? action : (action.value ?? action.title);
                     if (!key) continue;
                     const slot = getSettingsKeyForItem(key) || gearSwaps[key];
                     if (slot) {
@@ -84,16 +84,16 @@
     }
 
     const slotFallbacks = {
-        helmet: '/armour_icons/Head_slot.webp',
-        body: '/armour_icons/Torso_slot.png',
-        legs: '/armour_icons/Legs_slot.png',
-        gloves: '/armour_icons/Hands_slot.webp',
-        boots: '/armour_icons/Feet_slot.png',
-        necklace: '/armour_icons/Neck_slot.png',
-        cape: '/armour_icons/Back_slot.png',
-        ring: '/armour_icons/Ring_slot.png',
-        pocket: '/armour_icons/Pocket_slot.webp',
-        ammo: '/armour_icons/Ammo_slot.png',
+        helmet: '/rs-rot/armour_icons/Head_slot.webp',
+        body: '/rs-rot/armour_icons/Torso_slot.png',
+        legs: '/rs-rot/armour_icons/Legs_slot.png',
+        gloves: '/rs-rot/armour_icons/Hands_slot.webp',
+        boots: '/rs-rot/armour_icons/Feet_slot.png',
+        necklace: '/rs-rot/armour_icons/Neck_slot.png',
+        cape: '/rs-rot/armour_icons/Back_slot.png',
+        ring: '/rs-rot/armour_icons/Ring_slot.png',
+        pocket: '/rs-rot/armour_icons/Pocket_slot.webp',
+        ammo: '/rs-rot/armour_icons/Ammo_slot.png',
     };
 
     const stylePrefix = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necro' };
@@ -137,9 +137,8 @@
         // Check per-style ammo slot first, then fall back to old shared 'ammo' key
         const key = ammoKeys[uiState.activeTab];
         const val = (key && gs[key]) || gs[SETTINGS.AMMO];
-        if (!val || val === 'none' || val === 'custom') return slotFallbacks.ammo;
-        const base = stripVariantSuffix(val);
-        return `/gear_icons/ranged/${base}.png`;
+        if (!val || val === 'none' || isCustomEquipment(val)) return slotFallbacks.ammo;
+        return getEquipmentIcon(val, slotFallbacks.ammo);
     }
 
     const slotKeyMaps = { pocket: pocketKeys, necklace: necklaceKeys, cape: capeKeys, ring: ringKeys, ammo: ammoKeys };
@@ -154,18 +153,8 @@
             key = prefix + slot;
         }
         const val = getGearState()[key];
-        if (!val || val === 'none' || val === 'custom' || val === 'custom oh' || val === 'custom th') return slotFallbacks[slot];
-        // Use gear registry to resolve the correct icon folder from item's style
-        const item = getItemForValue(val);
-        let folder = sharedSlots.includes(slot) ? 'shared' : (stylePrefix[uiState.activeTab] ?? 'shared');
-        if (item) {
-            if (item.style === 'hybrid') folder = 'shared';
-            else {
-                const map = { melee: 'melee', ranged: 'ranged', magic: 'magic', necromancy: 'necro' };
-                folder = map[item.style] ?? folder;
-            }
-        }
-        return `/gear_icons/${folder}/${val}.png`;
+        if (!val || val === 'none' || isCustomEquipment(val)) return slotFallbacks[slot];
+        return getEquipmentIcon(val, slotFallbacks[slot]);
     }
 
     const weaponTypeKeys = {
@@ -188,7 +177,7 @@
         const key = hand === 'th' ? wk.th : hand === 'oh' ? wk.oh : wk.mh;
         if (!key) return 'none';
         const val = getGearState()[key];
-        if (!val || val === 'custom' || val === 'custom oh' || val === 'custom th') return 'none';
+        if (!val || isCustomEquipment(val)) return 'none';
         return val;
     }
 
@@ -202,7 +191,7 @@
             key = prefix + slot;
         }
         const val = getGearState()[key];
-        if (!val || val === 'none' || val === 'custom' || val === 'custom oh' || val === 'custom th') return 'none';
+        if (!val || val === 'none' || isCustomEquipment(val)) return 'none';
         return val;
     }
 
@@ -216,14 +205,14 @@
     }
 
     function getWeaponFallback(hand) {
-        return hand === 'mh' ? '/armour_icons/Main_hand_slot.webp'
-            : hand === 'th' ? '/armour_icons/2h_slot.png'
-            : '/armour_icons/Off-hand_slot.webp';
+        return hand === 'mh' ? '/rs-rot/armour_icons/Main_hand_slot.webp'
+            : hand === 'th' ? '/rs-rot/armour_icons/2h_slot.png'
+            : '/rs-rot/armour_icons/Off-hand_slot.webp';
     }
 
     // Get perks for an equipped item by value
     function getPerksForItem(itemValue) {
-        if (!itemValue || itemValue === 'none' || itemValue.startsWith('custom')) return [];
+        if (!itemValue || itemValue === 'none' || isCustomEquipment(itemValue)) return [];
         const instances = ownedItemsStore.ownedGear.get(itemValue);
         return instances?.[0]?.perks ?? [];
     }

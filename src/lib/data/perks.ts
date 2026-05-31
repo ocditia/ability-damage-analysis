@@ -1,3 +1,5 @@
+import { isCustomEquipment } from '$lib/data/equipment';
+
 /**
  * Perk definitions for RuneScape 3
  *
@@ -58,103 +60,103 @@ export const perks: Record<PERKS, PerkDefinition> = {
         name: 'Precise',
         slotType: 'weapon',
         maxRank: 6,
-        icon: '/effect_icons/perks/Precise.webp',
+        icon: '/rs-rot/effect_icons/perks/Precise.webp',
     },
     [PERKS.ERUPTIVE]: {
         name: 'Eruptive',
         slotType: 'weapon',
         maxRank: 4,
-        icon: '/effect_icons/perks/Eruptive.webp',
+        icon: '/rs-rot/effect_icons/perks/Eruptive.webp',
     },
     [PERKS.EQ_PERK]: {
         name: 'Equilibrium',
         slotType: 'weapon',
         maxRank: 4,
-        icon: '/effect_icons/perks/Equilibrium.png',
+        icon: '/rs-rot/effect_icons/perks/Equilibrium.png',
     },
     [PERKS.AFTERSHOCK]: {
         name: 'Aftershock',
         slotType: 'weapon',
         maxRank: 4,
-        icon: '/effect_icons/perks/Aftershock.png',
+        icon: '/rs-rot/effect_icons/perks/Aftershock.png',
     },
     [PERKS.CAROMING]: {
         name: 'Caroming',
         slotType: 'weapon',
         maxRank: 4,
-        icon: '/effect_icons/perks/caroming.png',
+        icon: '/rs-rot/effect_icons/perks/caroming.png',
     },
     [PERKS.FLANKING]: {
         name: 'Flanking',
         slotType: 'weapon',
         maxRank: 4,
-        icon: '/effect_icons/perks/Flanking.webp',
+        icon: '/rs-rot/effect_icons/perks/Flanking.webp',
     },
     [PERKS.LUNGING]: {
         name: 'Lunging',
         slotType: 'weapon',
         maxRank: 4,
-        icon: '/effect_icons/perks/Lunging.webp',
+        icon: '/rs-rot/effect_icons/perks/Lunging.webp',
     },
     [PERKS.CRACKLING]: {
         name: 'Crackling',
         slotType: 'armour',
         maxRank: 4,
-        icon: '/effect_icons/perks/Crackling.webp',
+        icon: '/rs-rot/effect_icons/perks/Crackling.webp',
     },
     [PERKS.BITING]: {
         name: 'Biting',
         slotType: 'armour',
         maxRank: 4,
-        icon: '/effect_icons/perks/Biting.webp',
+        icon: '/rs-rot/effect_icons/perks/Biting.webp',
     },
     [PERKS.IMPATIENT]: {
         name: 'Impatient',
         slotType: 'armour',
         maxRank: 4,
-        icon: '/effect_icons/perks/Impatient.png',
+        icon: '/rs-rot/effect_icons/perks/Impatient.png',
     },
     [PERKS.GENOCIDAL]: {
         name: 'Genocidal',
         slotType: 'armour',
         maxRank: 1,
-        icon: '/effect_icons/perks/genocidal.png',
+        icon: '/rs-rot/effect_icons/perks/genocidal.png',
     },
     [PERKS.ULTIMATUMS]: {
         name: 'Ultimatums',
         slotType: 'any',
         maxRank: 4,
-        icon: '/effect_icons/perks/ultimatums.png',
+        icon: '/rs-rot/effect_icons/perks/ultimatums.png',
     },
     [PERKS.RUTHLESS]: {
         name: 'Ruthless',
         slotType: 'any',
         maxRank: 3,
-        icon: '/effect_icons/perks/Ruthless.webp',
+        icon: '/rs-rot/effect_icons/perks/Ruthless.webp',
     },
     [PERKS.INVIGORATING]: {
         name: 'Invigorating',
         slotType: 'any',
         maxRank: 3,
-        icon: '/effect_icons/perks/Invigorating.png',
+        icon: '/rs-rot/effect_icons/perks/Invigorating.png',
     },
     [PERKS.SLAYER_PERK_UNDEAD]: {
         name: 'Undead Slayer',
         slotType: 'armour',
         maxRank: 1,
-        icon: '/effect_icons/perks/25px-Undead_Slayer.webp',
+        icon: '/rs-rot/effect_icons/perks/25px-Undead_Slayer.webp',
     },
     [PERKS.SLAYER_PERK_DRAGON]: {
         name: 'Dragon Slayer',
         slotType: 'armour',
         maxRank: 1,
-        icon: '/effect_icons/perks/dragon_slayer_perk.png',
+        icon: '/rs-rot/effect_icons/perks/dragon_slayer_perk.png',
     },
     [PERKS.SLAYER_PERK_DEMON]: {
         name: 'Demon Slayer',
         slotType: 'armour',
         maxRank: 1,
-        icon: '/effect_icons/perks/demon_slayer_perk.webp',
+        icon: '/rs-rot/effect_icons/perks/demon_slayer_perk.webp',
     },
 };
 
@@ -198,7 +200,7 @@ export function collectActivePerks(equippedPerks: PerkInstance[][]): PerkInstanc
  * To use a specific instance, pass selectedInstances: { itemKey: instanceIndex }.
  */
 export function buildGearPerksMap(
-    ownedGear: Map<string, { itemKey: string, perks: PerkInstance[] }[]>,
+    ownedGear: Map<string | number, { itemKey: string | number, perks: PerkInstance[] }[]>,
 ): Record<string, PerkInstance[]> {
     const map: Record<string, PerkInstance[]> = {};
     // Deep-copy perks to strip Svelte 5 proxies (structuredClone can't handle them)
@@ -233,7 +235,7 @@ export function buildGearPerksMap(
  */
 export function attachGearPerks(
     settings: Record<string, any>,
-    ownedGear: Map<string, { itemKey: string, perks: PerkInstance[] }[]>,
+    ownedGear: Map<string | number, { itemKey: string | number, perks: PerkInstance[] }[]>,
 ): void {
     settings['_gearPerks'] = buildGearPerksMap(ownedGear);
     // Deep-copy _gearInstances to strip Svelte proxies
@@ -291,12 +293,12 @@ export function formatPerkAbbrev(perkInstances: PerkInstance[]): string {
  * Get display text for an item, appending perks from a specific owned instance.
  */
 export function itemDisplayText(
-    itemValue: string,
+    itemValue: string | number,
     baseText: string,
-    ownedGear: Map<string, { itemKey: string, perks: PerkInstance[] }[]>,
+    ownedGear: Map<string | number, { itemKey: string | number, perks: PerkInstance[] }[]>,
     instanceIndex: number = 0
 ): string {
-    if (!itemValue || itemValue === 'none' || itemValue.startsWith('custom')) return baseText;
+    if (!itemValue || itemValue === 'none' || isCustomEquipment(itemValue)) return baseText;
     const instances = ownedGear.get(itemValue);
     if (!instances || instances.length === 0) return baseText;
     const instance = instances[instanceIndex] ?? instances[0];
@@ -309,9 +311,9 @@ export function itemDisplayText(
  * multiple owned copies with different perks.
  * Each expanded option carries `instanceIndex` and `perks` for downstream use.
  */
-export function expandOptionsWithInstances<T extends { value: string; text: string }>(
+export function expandOptionsWithInstances<T extends { value: string | number; text: string }>(
     options: T[],
-    ownedGear: Map<string, { itemKey: string, perks: PerkInstance[], label?: string }[]>,
+    ownedGear: Map<string | number, { itemKey: string | number, perks: PerkInstance[], label?: string }[]>,
 ): (T & { instanceIndex: number; perks: PerkInstance[] })[] {
     const expanded: (T & { instanceIndex: number; perks: PerkInstance[] })[] = [];
     for (const option of options) {
