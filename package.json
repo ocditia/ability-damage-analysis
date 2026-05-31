@@ -4,6 +4,7 @@
     "private": true,
     "scripts": {
         "start": "vite dev --open --port 3000",
+        "equipment:generate": "python3 scripts/generateEquipment.py",
         "build": "vite build",
         "preview": "vite preview",
         "test": "vitest",

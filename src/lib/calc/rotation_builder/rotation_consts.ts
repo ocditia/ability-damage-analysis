@@ -1,6 +1,8 @@
 import { settingsConfig, SETTINGS } from '../settings_rb';
 import { SettingsCombatStyles } from './types/SettingsCombatStyles';
 import { BUFF_COLORS, STACK_COLORS } from '../../utils/colors';
+import { ARMOUR } from '$lib/data/armour';
+import { getEquipmentIcon } from '$lib/data/equipment';
 
 /*
  * All the buffs displayed as bars under the rotation in the UI.
@@ -61,7 +63,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.crit_buff,
-                icon: '/effect_icons/magic/Crit_buff.png',
+                icon: '/rs-rot/effect_icons/magic/Crit_buff.png',
                 combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.DEATH_SWIFTNESS]: {
@@ -70,7 +72,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.death_swiftness,
-                icon: '/ability_icons/ranged/Greater_Death\'s_Swiftness.png',
+                icon: '/rs-rot/ability_icons/ranged/Greater_Death\'s_Swiftness.png',
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.SUNSHINE]: {
@@ -79,7 +81,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.sunshine,
-                icon: '/ability_icons/magic/Greater_Sunshine.png',
+                icon: '/rs-rot/ability_icons/magic/Greater_Sunshine.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.BERSERK]: {
@@ -88,7 +90,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.berserk,
-                icon: '/ability_icons/melee/berserk.webp',
+                icon: '/rs-rot/ability_icons/melee/berserk.webp',
                 combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.NATURAL_INSTINCT]: {
@@ -97,7 +99,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.natural_instinct,
-                icon: '/ability_icons/defence/30px-Natural_Instinct.png',
+                icon: '/rs-rot/ability_icons/defence/30px-Natural_Instinct.png',
                 combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.SPLIT_SOUL]: {
@@ -106,7 +108,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.split_soul,
-                icon: '/effect_icons/Split_Soul_icon.png',
+                icon: '/rs-rot/effect_icons/Split_Soul_icon.png',
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.GREATER_DRACOLICH_INFUSION]: {
@@ -115,7 +117,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.greater_dracolich,
-                icon: '/effect_icons/dracolich_infusion.png',
+                icon: '/rs-rot/effect_icons/dracolich_infusion.png',
                 combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.ICY_PRECISION]: {
@@ -124,7 +126,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.icy_precision,
-                icon: '/effect_icons/icy_precision.png',
+                icon: '/rs-rot/effect_icons/icy_precision.png',
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.BALANCE_BY_FORCE]: {
@@ -133,7 +135,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.balance_by_force,
-                icon: '/effect_icons/balance_by_force.png',
+                icon: '/rs-rot/effect_icons/balance_by_force.png',
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.INSTABILITY]: {
@@ -142,7 +144,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.instability,
-                icon: '/effect_icons/instability.png',
+                icon: '/rs-rot/effect_icons/instability.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.CHAOS_ROAR]: {
@@ -151,7 +153,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.chaos_roar,
-                icon: '/effect_icons/Chaos_Roar.webp',
+                icon: '/rs-rot/effect_icons/Chaos_Roar.webp',
                 combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.BLACKHOLE]: {
@@ -160,7 +162,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.blackhole,
-                icon: '/effect_icons/melee/Blackhole_(self_status).png',
+                icon: '/rs-rot/effect_icons/melee/Blackhole_(self_status).png',
                 combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.SEARING_WINDS]: {
@@ -169,7 +171,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.searing_winds,
-                icon: '/effect_icons/ranged/Searing_Winds.png',
+                icon: '/rs-rot/effect_icons/ranged/Searing_Winds.png',
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.SHADOW_IMBUED]: {
@@ -178,7 +180,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.shadow_imbued,
-                icon: '/ability_icons/ranged/30x30/imbue_shadows.png',
+                icon: '/rs-rot/ability_icons/ranged/30x30/imbue_shadows.png',
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.DEATHSPORE_BUFF]: {
@@ -187,7 +189,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.deathspore_buff,
-                icon: '/gear_icons/ranged/deathspore arrows.png',
+                icon: getEquipmentIcon(ARMOUR.DEATHSPORE_ARROWS),
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.ESS_CORRUPTION_ADREN]: {
@@ -196,7 +198,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.essence_corruption_adren,
-                icon: '/effect_icons/Essence_Corruption_Adrenaline.png',
+                icon: '/rs-rot/effect_icons/Essence_Corruption_Adrenaline.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.LIVING_DEATH]: {
@@ -205,7 +207,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.living_death,
-                icon: '/effect_icons/living_death.png',
+                icon: '/rs-rot/effect_icons/living_death.png',
                 combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.HAUNTED]: {
@@ -214,7 +216,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.haunted,
-                icon: '/effect_icons/haunted.png',
+                icon: '/rs-rot/effect_icons/haunted.png',
                 combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.THREADS_OF_FATE]: {
@@ -223,7 +225,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.threads_of_fate,
-                icon: '/ability_icons/necro/incantations/Threads_of_Fate_icon.png',
+                icon: '/rs-rot/ability_icons/necro/incantations/Threads_of_Fate_icon.png',
                 combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.INVOKE_DEATH]: {
@@ -232,7 +234,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.invoke_death,
-                icon: '/ability_icons/necro/incantations/Invoke_Death_icon.png',
+                icon: '/rs-rot/ability_icons/necro/incantations/Invoke_Death_icon.png',
                 combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.SPLIT_SOUL_NECRO]: {
@@ -241,7 +243,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.split_soul_necro,
-                icon: '/effect_icons/Split_Soul_icon.png',
+                icon: '/rs-rot/effect_icons/Split_Soul_icon.png',
                 combatStyle: SettingsCombatStyles.NECROMANCY
             },
             [SETTINGS.METEOR_STRIKE_BUFF]: {
@@ -250,7 +252,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.meteor_strike_buff,
-                icon: '/effect_icons/melee/Meteor_Strike_(status).png',
+                icon: '/rs-rot/effect_icons/melee/Meteor_Strike_(status).png',
                 combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.VESTMENTS_REGEN]: {
@@ -259,7 +261,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.vestments_regen,
-                icon: '/effect_icons/melee/Havoc_(status).png',
+                icon: '/rs-rot/effect_icons/melee/Havoc_(status).png',
                 combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.RAMPAGE]: {
@@ -268,7 +270,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.rampage,
-                icon: '/effect_icons/rampage.png',
+                icon: '/rs-rot/effect_icons/rampage.png',
                 combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.FLOW]: {
@@ -277,7 +279,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#0ce6ff',
-                icon: '/effect_icons/magic/Flow.png',
+                icon: '/rs-rot/effect_icons/magic/Flow.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.GREATER_FLOW]: {
@@ -286,7 +288,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#0ce6ff',
-                icon: '/effect_icons/magic/Greater_Flow.png',
+                icon: '/rs-rot/effect_icons/magic/Greater_Flow.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.FLOW_AC]: {
@@ -295,7 +297,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#0ce6ff',
-                icon: '/effect_icons/magic/Flow.png',
+                icon: '/rs-rot/effect_icons/magic/Flow.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.GREATER_FLOW_AC]: {
@@ -304,7 +306,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#0ce6ff',
-                icon: '/effect_icons/magic/Greater_Flow.png',
+                icon: '/rs-rot/effect_icons/magic/Greater_Flow.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.ANIMA_CHARGED]: {
@@ -313,7 +315,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#a855f7',
-                icon: '/effect_icons/magic/Anima_Charged.png',
+                icon: '/rs-rot/effect_icons/magic/Anima_Charged.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.BARRICADE]: {
@@ -322,7 +324,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.barricade,
-                icon: '/ability_icons/defence/30px-Barricade.png',
+                icon: '/rs-rot/ability_icons/defence/30px-Barricade.png',
                 combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.CHANNELLED_MIGHT]: {
@@ -331,7 +333,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.tumekens_asphyx,
-                icon: '/effect_icons/magic/Channelled_Might.png',
+                icon: '/rs-rot/effect_icons/magic/Channelled_Might.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.GREATER_CHANNELLED_MIGHT]: {
@@ -340,7 +342,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.tumekens_asphyx,
-                icon: '/effect_icons/magic/Channelled_Might.png',
+                icon: '/rs-rot/effect_icons/magic/Channelled_Might.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.SMOKE_CLOUD]: {
@@ -349,7 +351,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#7B68EE',
-                icon: '/effect_icons/Smoke_Cloud_icon.webp',
+                icon: '/rs-rot/effect_icons/Smoke_Cloud_icon.webp',
                 combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.UNDEAD_SLAYER_ABILITY]: {
@@ -358,7 +360,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#8B5CF6',
-                icon: '/ability_icons/special/Undead_Slayer_(ability).png',
+                icon: '/rs-rot/ability_icons/special/Undead_Slayer_(ability).png',
                 combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.DRAGON_SLAYER_ABILITY]: {
@@ -367,7 +369,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#EF4444',
-                icon: '/ability_icons/special/Dragon_Slayer_(ability).png',
+                icon: '/rs-rot/ability_icons/special/Dragon_Slayer_(ability).png',
                 combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.DEMON_SLAYER_ABILITY]: {
@@ -376,7 +378,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#F97316',
-                icon: '/ability_icons/special/Demon_Slayer_(ability).png',
+                icon: '/rs-rot/ability_icons/special/Demon_Slayer_(ability).png',
                 combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.CONFLAGRATE]: {
@@ -385,7 +387,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#FF4500',
-                icon: '/effect_icons/conflagrate.png',
+                icon: '/rs-rot/effect_icons/conflagrate.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.KERAPACS_WRIST_WRAPS]: {
@@ -394,7 +396,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#C0392B',
-                icon: '/effect_icons/Kerapac\'s_wrist_wraps.webp',
+                icon: '/rs-rot/effect_icons/Kerapac\'s_wrist_wraps.webp',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.BLAST_INFUSED]: {
@@ -403,7 +405,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#E67E22',
-                icon: '/effect_icons/magic/Blast_Infused.png',
+                icon: '/rs-rot/effect_icons/magic/Blast_Infused.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.ENDLESS_ASSAULT]: {
@@ -412,7 +414,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: '#c78d68',
-                icon: '/effect_icons/melee/Endless_Assault.png',
+                icon: '/rs-rot/effect_icons/melee/Endless_Assault.png',
                 combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.CONC_CRIT]: {
@@ -421,7 +423,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.conc_crit,
-                icon: '/ability_icons/magic/30x30/concentrated_blast.png',
+                icon: '/rs-rot/ability_icons/magic/30x30/concentrated_blast.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.GCONC_CRIT]: {
@@ -430,7 +432,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.gconc_crit,
-                icon: '/ability_icons/magic/30x30/greater_concentrated_blast.png',
+                icon: '/rs-rot/ability_icons/magic/30x30/greater_concentrated_blast.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.CONC_CRIT_AC]: {
@@ -439,7 +441,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.conc_crit_ac,
-                icon: '/effect_icons/magic/Conc_AC.png',
+                icon: '/rs-rot/effect_icons/magic/Conc_AC.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.GCONC_CRIT_AC]: {
@@ -448,7 +450,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.gconc_crit_ac,
-                icon: '/effect_icons/magic/GConc_AC.png',
+                icon: '/rs-rot/effect_icons/magic/GConc_AC.png',
                 combatStyle: SettingsCombatStyles.MAGIC
             },
         }
@@ -462,7 +464,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Adrenaline',
                 displaySetting: SETTINGS.SHOW_ADRENALINE,
                 idx: -1,
-                image: '/effect_icons/Adrenaline.png',
+                image: '/rs-rot/effect_icons/Adrenaline.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.adrenaline,
                 number: 'true',
@@ -472,7 +474,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Bloodlust stacks',
                 displaySetting: SETTINGS.SHOW_BLOODLUST_STACKS,
                 idx: -1,
-                image: '/effect_icons/Bloodlust.png',
+                image: '/rs-rot/effect_icons/Bloodlust.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.bloodlust,
                 combatStyle: SettingsCombatStyles.MELEE
@@ -481,7 +483,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Primordial Ice stacks',
                 displaySetting: SETTINGS.SHOW_PRIMORDIAL_ICE_STACKS,
                 idx: -1,
-                image: '/effect_icons/melee/primordial_ice.png',
+                image: '/rs-rot/effect_icons/melee/primordial_ice.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.primordial_ice,
                 combatStyle: SettingsCombatStyles.MELEE
@@ -490,7 +492,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Perfect Equilibrium stacks',
                 displaySetting: SETTINGS.SHOW_BOLG_STACKS,
                 idx: -1,
-                image: '/effect_icons/Perfect Equilibrium (self status).png',
+                image: '/rs-rot/effect_icons/Perfect Equilibrium (self status).png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.perfect_equilibrium,
                 combatStyle: SettingsCombatStyles.RANGED
@@ -499,7 +501,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Icy Chill stacks',
                 displaySetting: SETTINGS.SHOW_ICY_CHILL_STACKS,
                 idx: -1,
-                image: '/effect_icons/Icy_Chill.png',
+                image: '/rs-rot/effect_icons/Icy_Chill.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.icy_chill,
                 combatStyle: SettingsCombatStyles.RANGED
@@ -508,7 +510,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Evolving Toxin stacks',
                 displaySetting: SETTINGS.SHOW_BIK_STACKS,
                 idx: -1,
-                image: '/effect_icons/evolving_toxin.png',
+                image: '/rs-rot/effect_icons/evolving_toxin.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.bik,
                 combatStyle: SettingsCombatStyles.RANGED
@@ -517,7 +519,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Feasting Spores stacks',
                 displaySetting: SETTINGS.SHOW_DEATHSPORE_STACKS,
                 idx: -1,
-                image: '/gear_icons/ranged/deathspore arrows.png',
+                image: getEquipmentIcon(ARMOUR.DEATHSPORE_ARROWS),
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.deathspore,
                 combatStyle: SettingsCombatStyles.RANGED
@@ -526,7 +528,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Necrosis stacks',
                 displaySetting: SETTINGS.SHOW_NECROSIS_STACKS,
                 idx: -1,
-                image: '/effect_icons/necrosis.png',
+                image: '/rs-rot/effect_icons/necrosis.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.necrosis,
                 combatStyle: SettingsCombatStyles.NECROMANCY
@@ -535,7 +537,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Residual Souls',
                 displaySetting: SETTINGS.SHOW_RESIDUAL_SOULS,
                 idx: -1,
-                image: '/effect_icons/residual_soul.png',
+                image: '/rs-rot/effect_icons/residual_soul.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.residual_souls,
                 combatStyle: SettingsCombatStyles.NECROMANCY
@@ -544,7 +546,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Essence Corruption',
                 displaySetting: SETTINGS.SHOW_ESSENCE_CORRUPTION,
                 idx: -1,
-                image: '/effect_icons/essence_corruption.png',
+                image: '/rs-rot/effect_icons/essence_corruption.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.essence_corruption,
                 combatStyle: SettingsCombatStyles.MAGIC
@@ -553,7 +555,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Death Spark',
                 displaySetting: SETTINGS.SHOW_DEATH_SPARK_STACKS,
                 idx: -1,
-                image: '/effect_icons/necromancy/death_spark2.png',
+                image: '/rs-rot/effect_icons/necromancy/death_spark2.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.death_spark,
                 combatStyle: SettingsCombatStyles.NECROMANCY
@@ -562,7 +564,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Soul Reave',
                 displaySetting: SETTINGS.SHOW_SOUL_REAVE_STACKS,
                 idx: -1,
-                image: '/effect_icons/necromancy/soul_reave2.png',
+                image: '/rs-rot/effect_icons/necromancy/soul_reave2.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.soul_reave,
                 combatStyle: SettingsCombatStyles.NECROMANCY
@@ -571,7 +573,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Blood Tithe stacks',
                 displaySetting: SETTINGS.SHOW_BLOOD_TITHE,
                 idx: -1,
-                image: '/effect_icons/Exsanguinate_icon.webp',
+                image: '/rs-rot/effect_icons/Exsanguinate_icon.webp',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.blood_tithe,
                 combatStyle: SettingsCombatStyles.MAGIC
@@ -580,7 +582,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Glacial Embrace stacks',
                 displaySetting: SETTINGS.SHOW_GLACIAL_EMBRACE,
                 idx: -1,
-                image: '/effect_icons/Glacial_Embrace.png',
+                image: '/rs-rot/effect_icons/Glacial_Embrace.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.glacial_embrace,
                 combatStyle: SettingsCombatStyles.MAGIC
@@ -589,7 +591,7 @@ export function createStackTimings(barSize: number) {
                 title: 'Special Move Points',
                 displaySetting: SETTINGS.SHOW_FAMILIAR_SPEC_POINTS,
                 idx: -1,
-                image: '/effect_icons/familiar.png',
+                image: '/rs-rot/effect_icons/familiar.png',
                 stackTicks: Array(barSize).fill(0),
                 colour: STACK_COLORS.familiar_spec_points,
                 number: 'true',
