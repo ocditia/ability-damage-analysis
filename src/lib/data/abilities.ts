@@ -388,7 +388,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'basic',
         mainStyle: 'melee',
         damageType: 'melee',
-        cooldown: 5.4,
+        cooldown: 10.2,
         title: 'Rend',
         icon: '/rs-rot/ability_icons/melee/Rend.png',
     },
