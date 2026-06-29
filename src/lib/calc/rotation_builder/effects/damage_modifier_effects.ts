@@ -113,6 +113,14 @@ export function applyDemonSlayerEffect(
     if (settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DEMON) {
         damage = Math.floor(damage * 1.15);
     }
+    console.log(SETTINGS.SLAYER_PERK_DEMON)
+    if (settings[SETTINGS.SLAYER_PERK_DEMON] === true) {
+        damage = Math.floor(damage * 1.07);
+    }
+
+    if (settings[SETTINGS.DEMON_SLAYER_ABILITY] === true) {
+        damage = Math.floor(damage * 1.15);
+    }
 
     return damage;
 }
