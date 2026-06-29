@@ -1695,21 +1695,21 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee',
+        damageType: 'magic',
         cooldown: 0,
         parent: ABILITIES.SARADOMINS_LIGHTNING
     },
     [ABILITIES.SARADOMINS_LIGHTNING]: {
         // ability name
-        minHit: 1.1, // min % of abil expressed as a decimal
-        varHit: 0.3,
+        minHit: 2.85, // min % of abil expressed as a decimal
+        varHit: 0.4,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
-        damageType: 'melee',
+        damageType: 'magic',
         hits: {
             1: [ABILITIES.SARADOMINS_LIGHTNING_HIT, 'next hit', ABILITIES.SARADOMINS_LIGHTNING_HIT]
         },
