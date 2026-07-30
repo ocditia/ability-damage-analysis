@@ -388,8 +388,11 @@ function applyEnduringRuinBleedEffect(ctx: DamageModifierContext, damage: number
 /**
  * Apply hit cap (30000 max damage)
  */
-export function applyHitCap(damage: number): number {
-    return Math.min(damage, 30000);
+export function applyHitCap(ctx, damage: number): number {
+    if (ctx.settings[SETTINGS.HITCAP] === true) {
+        return Math.min(damage, 30000);
+    }
+    return damage
 }
 
 // =============================================================================
@@ -469,7 +472,7 @@ export function applyAllDamageModifiers(
     }
 
     // Hit cap (must be last)
-    damage = applyHitCap(damage);
+    damage = applyHitCap(ctx, damage);
 
     return damage;
 }
