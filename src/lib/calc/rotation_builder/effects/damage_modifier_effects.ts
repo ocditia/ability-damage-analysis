@@ -58,6 +58,11 @@ export function applyUndeadSlayerEffect(
         damage = Math.floor(damage * 1.15);
     }
 
+    if (settings[SETTINGS.DEMON_SLAYER_ABILITY] === true) {
+        damage = Math.floor(damage * 1.15);
+    }
+
+
     return damage;
 }
 
@@ -113,7 +118,7 @@ export function applyDemonSlayerEffect(
     if (settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DEMON) {
         damage = Math.floor(damage * 1.15);
     }
-    console.log(SETTINGS.SLAYER_PERK_DEMON)
+    
     if (settings[SETTINGS.SLAYER_PERK_DEMON] === true) {
         damage = Math.floor(damage * 1.07);
     }
@@ -435,7 +440,11 @@ export function applyAllDamageModifiers(
 
     // Essence corruption (flat addition)
     damage = applyEssenceCorruptionEffect(ctx, damage);
-
+    
+    if (ctx.settings[SETTINGS.LEAGUES_TWO_TOGGLE] === true && ctx.settings[SETTINGS.LEAGUES_TWO_BIG_BONED] === true) {
+        damage += Math.floor(0.05 * ctx.settings[SETTINGS.MAX_LIFE_POINTS]);
+    }
+    
     // Tokkul-zo ring (+10%)
     if (ctx.settings[SETTINGS.RING] === ARMOUR.TOKKUL_ZO) {
         damage = Math.floor(damage * 1.1);
