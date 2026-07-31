@@ -17,23 +17,15 @@
                     <h1 class="main-header mb-6 ml-3">Welcome to RS Analysis</h1>
                     <div class="card border-b border-card-light">
                         <div class="pb-5">
-                            <div class="card-title">About</div>
+                            <div class="card-title">We have moved</div>
                             <div>
                                 <p>
-                                    We are a community of RuneScape players who are passionate about
-                                    the game and its mechanics. We aim to provide the community with
-                                    accurate and up-to-date information about the game, and to help
-                                    players make informed decisions about their gear and ability
-                                    rotations. We are always working on new projects ranging from
-                                    web based damage analysis tools to comprehensive research
-                                    papers. If you want to stay up to date with our latest projects
-                                    or get involved with research and development check out our
-                                    discord community linked below!
+                                    Please visit https://tools.runescape.wiki/rs-rot/ to find us hosted by the official runescape wiki!
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <a href="/magic" class="flex flex-col group">
+                    <a href="https://tools.runescape.wiki/rs-rot/magic" class="flex flex-col group">
                         <div class="card border-b border-card-light">
                             <div
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
@@ -43,7 +35,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="/melee" class="flex flex-col group">
+                    <a href="https://tools.runescape.wiki/rs-rot/melee" class="flex flex-col group">
                         <div class="card border-b border-card-light">
                             <div
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
@@ -53,7 +45,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="/ranged" class="flex flex-col group">
+                    <a href="https://tools.runescape.wiki/rs-rot/ranged" class="flex flex-col group">
                         <div class="card border-b border-card-light">
                             <div
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
@@ -63,7 +55,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="/necromancy" class="flex flex-col group">
+                    <a href="https://tools.runescape.wiki/rs-rot/necromancy" class="flex flex-col group">
                         <div class="card border-b border-card-light">
                             <div
                                 class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all"
@@ -73,7 +65,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="/rotation_builder" class="flex flex-col group">
+                    <a href="https://tools.runescape.wiki/rs-rot/rotation_builder" class="flex flex-col group">
                         <div class="card">
                             <div class="flex items-center transform-gpu translate-x-0 group-hover:translate-x-2 transition-all">
                                 <div class="icon-position">
