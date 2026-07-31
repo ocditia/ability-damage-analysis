@@ -66,13 +66,13 @@ function calc_base_ad(settings) {
     logger.trace('Base AD', base_AD, buff !== 1 ? `floor(${rawAD} × ${buff})` : 'No eruptive/equilibrium');
 
     if (settings[SETTINGS.LEAGUES_TWO_TOGGLE] === true && settings[SETTINGS.LEAGUES_TWO_TERAGARDS_AEGIS] === true) {
-        base_AD += settings[SETTINGS.ARMOUR_VALUE]
+        base_AD += 0.25*settings[SETTINGS.ARMOUR_VALUE];
         if (settings[SETTINGS.AEGIS_OFF_HAND] === SETTINGS.AEGIS_OFF_HAND_VALUES.DEFENDER) {
-            base_AD += settings[SETTINGS.ARMOUR_VALUE]
+            base_AD += 0.25*settings[SETTINGS.ARMOUR_VALUE];
         }
         else if (settings[SETTINGS.AEGIS_OFF_HAND] === SETTINGS.AEGIS_OFF_HAND_VALUES.SHIELD) {
-            base_AD += settings[SETTINGS.ARMOUR_VALUE]
-            base_AD += settings[SETTINGS.ARMOUR_VALUE]
+            base_AD += 0.25*settings[SETTINGS.ARMOUR_VALUE];
+            base_AD += 0.25*settings[SETTINGS.ARMOUR_VALUE];
         }
     }
     return base_AD;
