@@ -203,8 +203,8 @@ function applyBonusDamageEffects(
 ): void {
     // Necromancy currently has no flat bonus damage effects
     // Leagues 2 abyssal cinders
-    if (settings[SETTINGS.LEAGUES_TWO_TOGGLE] === true && settings[SETTINGS.LEAGUES_TWO_ABYSSAL_CINDERS] === true) {
-        const bonus = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 0.15);
+    if (ctx.settings[SETTINGS.LEAGUES_TWO_TOGGLE] === true && ctx.settings[SETTINGS.LEAGUES_TWO_ABYSSAL_CINDERS] === true) {
+        const bonus = Math.floor(ctx.settings[SETTINGS.ABILITY_DAMAGE] * 0.15);
         distribution.minHit += bonus;
     }
 }
