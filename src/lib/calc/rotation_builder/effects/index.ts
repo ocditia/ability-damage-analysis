@@ -192,6 +192,7 @@ export function applyStyleMultiplicativeEffects(
 
     // Revenge (shield/defender ability)
     const ohWeaponType = weapons[settings[SETTINGS.OH]]?.['weapon type'];
+    console.log(weapons[settings[SETTINGS.OH]])
     if (ohWeaponType === 'shield' || ohWeaponType === 'defender') {
         let revenge = 0.025 * settings[SETTINGS.REVENGE];
         // Boost is twice as big if done with a shield
