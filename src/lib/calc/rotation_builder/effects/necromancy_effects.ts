@@ -94,8 +94,8 @@ function applyAbilityPercentModifiers(
 
     // soul crush
     if (settings['ability'] === ABILITIES.SOUL_CRUSH) {
-        distribution.minHit += distribution.minHit * 1.35 * settings[SETTINGS.RESIDUAL_SOULS];
-        distribution.varHit += distribution.varHit * 0.3 * settings[SETTINGS.RESIDUAL_SOULS];
+        distribution.minHit += 1.35 * settings[SETTINGS.RESIDUAL_SOULS];
+        distribution.varHit += 0.3 * settings[SETTINGS.RESIDUAL_SOULS];
     }
 
     // Flanking - Soul Strike (basic stun)
