@@ -532,6 +532,7 @@ const SETTINGS = {
     //SPLIT_SOUL_ECB: 'split soul ecb',
     BLACKHOLE: 'blackhole',
     SEARING_WINDS: 'searing winds',
+    CRIMSON_SALVO: 'crimson salvo',
     VESTMENTS_REGEN: 'vestments regen',
     METEOR_STRIKE_BUFF: 'meteor strike buff',
     SHADOW_IMBUED: 'shadow imbued',
@@ -2168,6 +2169,10 @@ const settingsConfig = {
     },
     [SETTINGS.SEARING_WINDS]: {
         label: 'Searing Winds',
+        default: false
+    },
+    [SETTINGS.CRIMSON_SALVO]: {
+        label: 'Crimson Salvo',
         default: false
     },
     [SETTINGS.SHADOW_IMBUED]: {

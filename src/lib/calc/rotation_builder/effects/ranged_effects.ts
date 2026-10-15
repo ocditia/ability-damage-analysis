@@ -319,6 +319,12 @@ function applyBonusDamageEffects(
         const bonus = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 0.2);
         distribution.minHit += bonus;
     }
+
+    // Crimson Salvo - adds 20% of ability damage as flat bonus to each hit
+    if (settings[SETTINGS.CRIMSON_SALVO] === true) {
+        const bonus = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 0.2);
+        distribution.minHit += bonus;
+    }
 }
 
 export const rangedEffects: StyleEffects = {
