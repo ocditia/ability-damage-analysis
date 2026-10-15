@@ -55,7 +55,7 @@ export function applyUndeadSlayerEffect(
     }
 
     if (settings[SETTINGS.UNDEAD_SLAYER_ABILITY] === true ||
-        settings[SETTINGS.SLAYER_SIGIL] === settings[SETTINGS.SLAYER_SIGIL_VALUES.UNDEAD]
+        settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.UNDEAD
     ) {
         damage = Math.floor(damage * 1.15);
     }
@@ -77,7 +77,7 @@ export function applyDragonSlayerEffect(
     }
 
     if (settings[SETTINGS.DRAGON_SLAYER_ABILITY] === true ||
-        settings[SETTINGS.SLAYER_SIGIL] === settings[SETTINGS.SLAYER_SIGIL_VALUES.DRAGON]
+        settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DRAGON
     ) {
         damage = Math.floor(damage * 1.15);
     }
@@ -98,7 +98,7 @@ export function applyDemonSlayerEffect(
     }
 
     if (settings[SETTINGS.DEMON_SLAYER_ABILITY] === true ||
-        settings[SETTINGS.SLAYER_SIGIL] === settings[SETTINGS.SLAYER_SIGIL_VALUES.DEMON]
+        settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DEMON
     ) {
         damage = Math.floor(damage * 1.15);
     }
@@ -109,23 +109,19 @@ export function applyDemonSlayerEffect(
 /**
  * Apply vampyre slayer effects (perk + sigil)
  */
-/*export function applyVampyreSlayerEffect(
+export function applyVampyreSlayerEffect(
     ctx: DamageModifierContext,
     damage: number
 ): number {
     const { settings } = ctx;
 
-    if (settings[SETTINGS.SLAYER_PERK_VAMPYRE] === true) {
-        damage = Math.floor(damage * 1.07);
-    }
-
     if (settings[SETTINGS.VAMPYRE_SLAYER_ABILITY] === true ||
-        settings[SETTINGS.SLAYER_SIGIL] === settings[SETTINGS.SLAYER_SIGIL_VALUES.VAMPYRE]
+        settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.VAMPYRE
     ) {
         damage = Math.floor(damage * 1.15);
     }
     return damage;
-}*/
+}
 
 /**
  * Apply all slayer effects
@@ -137,7 +133,7 @@ export function applyAllSlayerEffects(
     damage = applyUndeadSlayerEffect(ctx, damage);
     damage = applyDragonSlayerEffect(ctx, damage);
     damage = applyDemonSlayerEffect(ctx, damage);
-    //damage = applyVampyreSlayerEffect(ctx, damage);
+    damage = applyVampyreSlayerEffect(ctx, damage);
     return damage;
 }
 

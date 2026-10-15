@@ -196,7 +196,7 @@ const SETTINGS = {
     UNDEAD_SLAYER_ABILITY: 'undead slayer ability',
     DRAGON_SLAYER_ABILITY: 'dragon slayer ability',
     DEMON_SLAYER_ABILITY: 'demon slayer ability',
-    //VAMPYRE_SLAYER_ABILITY: 'vampyre slayer ability',
+    VAMPYRE_SLAYER_ABILITY: 'vampyre slayer ability',
     SLAYER_PERK: 'slayer perk',
     SLAYER_PERK_VALUES: {
         NONE: 'none',
@@ -210,7 +210,7 @@ const SETTINGS = {
         UNDEAD: 'undead',
         DRAGON: 'dragon',
         DEMON: 'demon',
-        //VAMPYRE: 'vampyre'
+        VAMPYRE: 'vampyre'
     },
     HAUNTED: 'haunted',
     HAUNTED_AD: 'haunted AD',
@@ -1046,10 +1046,10 @@ const settingsConfig = {
         label: 'Demon slayer Sigil',
         default: false
     },
-    /*[SETTINGS.VAMPYRE_SLAYER_ABILITY]: {
+    [SETTINGS.VAMPYRE_SLAYER_ABILITY]: {
         label: 'Vampyre slayer Sigil',
         default: false
-    },*/
+    },
     [SETTINGS.SLAYER_SIGIL]: {
         label: 'Slayer sigil',
         default: SETTINGS.SLAYER_SIGIL_VALUES.NONE,
@@ -1058,7 +1058,7 @@ const settingsConfig = {
             { text: 'Undead', value: SETTINGS.SLAYER_SIGIL_VALUES.UNDEAD},
             { text: 'Dragon', value: SETTINGS.SLAYER_SIGIL_VALUES.DRAGON},
             { text: 'Demon', value: SETTINGS.SLAYER_SIGIL_VALUES.DEMON},
-            //{ text: 'Vampyre', value: SETTINGS.SLAYER_SIGIL_VALUES.VAMPYRE},
+            { text: 'Vampyre', value: SETTINGS.SLAYER_SIGIL_VALUES.VAMPYRE},
         ]
     },
     [SETTINGS.HAUNTED]: {
