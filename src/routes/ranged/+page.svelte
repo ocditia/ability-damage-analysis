@@ -405,6 +405,11 @@
                                     onchange={() => updateDamages()}
                                     img="/rs-rot/ability_icons/ranged/30x30/galeshot.png"
                                 />
+                                <Checkbox
+                                    bind:setting={settings[SETTINGS.CRIMSON_SALVO]}
+                                    onchange={() => updateDamages()}
+                                    img="/rs-rot/effect_icons/crimson_salvo.png"
+                                />
                                 <Number
                                     bind:setting={settings[SETTINGS.STONE_OF_JAS]}
                                     onchange={() => updateDamages()}

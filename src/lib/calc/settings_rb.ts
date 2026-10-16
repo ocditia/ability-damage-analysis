@@ -196,19 +196,21 @@ const SETTINGS = {
     UNDEAD_SLAYER_ABILITY: 'undead slayer ability',
     DRAGON_SLAYER_ABILITY: 'dragon slayer ability',
     DEMON_SLAYER_ABILITY: 'demon slayer ability',
+    VAMPYRE_SLAYER_ABILITY: 'vampyre slayer ability',
     SLAYER_PERK: 'slayer perk',
     SLAYER_PERK_VALUES: {
         NONE: 'none',
         UNDEAD: 'undead',
         DRAGON: 'dragon',
-        DEMON: 'demon'
+        DEMON: 'demon',
     },
     SLAYER_SIGIL: 'slayer sigil',
     SLAYER_SIGIL_VALUES: {
         NONE: 'none',
         UNDEAD: 'undead',
         DRAGON: 'dragon',
-        DEMON: 'demon'
+        DEMON: 'demon',
+        VAMPYRE: 'vampyre'
     },
     HAUNTED: 'haunted',
     HAUNTED_AD: 'haunted AD',
@@ -532,6 +534,7 @@ const SETTINGS = {
     //SPLIT_SOUL_ECB: 'split soul ecb',
     BLACKHOLE: 'blackhole',
     SEARING_WINDS: 'searing winds',
+    CRIMSON_SALVO: 'crimson salvo',
     VESTMENTS_REGEN: 'vestments regen',
     METEOR_STRIKE_BUFF: 'meteor strike buff',
     SHADOW_IMBUED: 'shadow imbued',
@@ -1028,7 +1031,7 @@ const settingsConfig = {
             { text: 'None', value: SETTINGS.SLAYER_PERK_VALUES.NONE },
             { text: 'Undead', value: SETTINGS.SLAYER_PERK_VALUES.UNDEAD},
             { text: 'Dragon', value: SETTINGS.SLAYER_PERK_VALUES.DRAGON},
-            { text: 'Demon', value: SETTINGS.SLAYER_PERK_VALUES.DEMON},
+            { text: 'Demon', value: SETTINGS.SLAYER_PERK_VALUES.DEMON}
         ]
     },
     [SETTINGS.UNDEAD_SLAYER_ABILITY]: {
@@ -1043,6 +1046,10 @@ const settingsConfig = {
         label: 'Demon slayer Sigil',
         default: false
     },
+    [SETTINGS.VAMPYRE_SLAYER_ABILITY]: {
+        label: 'Vampyre slayer Sigil',
+        default: false
+    },
     [SETTINGS.SLAYER_SIGIL]: {
         label: 'Slayer sigil',
         default: SETTINGS.SLAYER_SIGIL_VALUES.NONE,
@@ -1051,6 +1058,7 @@ const settingsConfig = {
             { text: 'Undead', value: SETTINGS.SLAYER_SIGIL_VALUES.UNDEAD},
             { text: 'Dragon', value: SETTINGS.SLAYER_SIGIL_VALUES.DRAGON},
             { text: 'Demon', value: SETTINGS.SLAYER_SIGIL_VALUES.DEMON},
+            { text: 'Vampyre', value: SETTINGS.SLAYER_SIGIL_VALUES.VAMPYRE},
         ]
     },
     [SETTINGS.HAUNTED]: {
@@ -2168,6 +2176,10 @@ const settingsConfig = {
     },
     [SETTINGS.SEARING_WINDS]: {
         label: 'Searing Winds',
+        default: false
+    },
+    [SETTINGS.CRIMSON_SALVO]: {
+        label: 'Crimson Salvo',
         default: false
     },
     [SETTINGS.SHADOW_IMBUED]: {

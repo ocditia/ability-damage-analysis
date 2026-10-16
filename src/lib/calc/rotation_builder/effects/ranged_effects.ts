@@ -150,6 +150,12 @@ function applyMinVarEffects(
         }
     }
 
+    // Dragon bane bolt effects
+    if (settings[SETTINGS.AMMO] === 21640 || settings[SETTINGS.AMMO] === 21660) {
+        distribution.minHit = Math.floor(distribution.minHit * 1.4);
+        distribution.varHit = Math.floor(distribution.varHit * 1.4);
+    }
+
     // Jas arrows bane effect
     if (settings[SETTINGS.AMMO] === ARMOUR.JAS_ARROWS) {
         distribution.minHit = Math.floor(distribution.minHit * 1.3);
@@ -316,6 +322,12 @@ function applyBonusDamageEffects(
 
     // Searing Winds (Galeshot buff) - adds 20% of ability damage as flat bonus to each hit
     if (settings[SETTINGS.SEARING_WINDS] === true && abilityKey != ABILITIES.GALESHOT) {
+        const bonus = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 0.2);
+        distribution.minHit += bonus;
+    }
+
+    // Crimson Salvo - adds 20% of ability damage as flat bonus to each hit
+    if (settings[SETTINGS.CRIMSON_SALVO] === true) {
         const bonus = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 0.2);
         distribution.minHit += bonus;
     }

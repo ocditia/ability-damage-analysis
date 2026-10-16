@@ -54,14 +54,11 @@ export function applyUndeadSlayerEffect(
         damage = Math.floor(damage * 1.07);
     }
 
-    if (settings[SETTINGS.UNDEAD_SLAYER_ABILITY] === true) {
+    if (settings[SETTINGS.UNDEAD_SLAYER_ABILITY] === true ||
+        settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.UNDEAD
+    ) {
         damage = Math.floor(damage * 1.15);
     }
-
-    if (settings[SETTINGS.DEMON_SLAYER_ABILITY] === true) {
-        damage = Math.floor(damage * 1.15);
-    }
-
 
     return damage;
 }
@@ -79,10 +76,11 @@ export function applyDragonSlayerEffect(
         damage = Math.floor(damage * 1.07);
     }
 
-    if (settings[SETTINGS.DRAGON_SLAYER_ABILITY] === true) {
+    if (settings[SETTINGS.DRAGON_SLAYER_ABILITY] === true ||
+        settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DRAGON
+    ) {
         damage = Math.floor(damage * 1.15);
     }
-
     return damage;
 }
 
@@ -95,38 +93,33 @@ export function applyDemonSlayerEffect(
 ): number {
     const { settings } = ctx;
 
-    if (settings[SETTINGS.SLAYER_PERK] === SETTINGS.SLAYER_PERK_VALUES.UNDEAD ) {
-        damage = Math.floor(damage * 1.07);
-    }
-
-    if (settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.UNDEAD) {
-        damage = Math.floor(damage * 1.15);
-    }
-
-    if (settings[SETTINGS.SLAYER_PERK] === SETTINGS.SLAYER_PERK_VALUES.DRAGON ) {
-        damage = Math.floor(damage * 1.07);
-    }
-
-    if (settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DRAGON) {
-        damage = Math.floor(damage * 1.15);
-    }
-
-    if (settings[SETTINGS.SLAYER_PERK] === SETTINGS.SLAYER_PERK_VALUES.DEMON ) {
-        damage = Math.floor(damage * 1.07);
-    }
-
-    if (settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DEMON) {
-        damage = Math.floor(damage * 1.15);
-    }
-    
     if (settings[SETTINGS.SLAYER_PERK_DEMON] === true) {
         damage = Math.floor(damage * 1.07);
     }
 
-    if (settings[SETTINGS.DEMON_SLAYER_ABILITY] === true) {
+    if (settings[SETTINGS.DEMON_SLAYER_ABILITY] === true ||
+        settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.DEMON
+    ) {
         damage = Math.floor(damage * 1.15);
     }
 
+    return damage;
+}
+
+/**
+ * Apply vampyre slayer effects (perk + sigil)
+ */
+export function applyVampyreSlayerEffect(
+    ctx: DamageModifierContext,
+    damage: number
+): number {
+    const { settings } = ctx;
+
+    if (settings[SETTINGS.VAMPYRE_SLAYER_ABILITY] === true ||
+        settings[SETTINGS.SLAYER_SIGIL] === SETTINGS.SLAYER_SIGIL_VALUES.VAMPYRE
+    ) {
+        damage = Math.floor(damage * 1.15);
+    }
     return damage;
 }
 
@@ -140,6 +133,24 @@ export function applyAllSlayerEffects(
     damage = applyUndeadSlayerEffect(ctx, damage);
     damage = applyDragonSlayerEffect(ctx, damage);
     damage = applyDemonSlayerEffect(ctx, damage);
+    damage = applyVampyreSlayerEffect(ctx, damage);
+    return damage;
+}
+
+export function applyHavensilverEffect(
+    ctx: DamageModifierContext,
+    damage: number
+): number {
+    const { settings, abilityKey } = ctx;
+    const style = abils[abilityKey]?.mainStyle;
+
+    if ( ((settings[SETTINGS.TH] ===  63862 || settings[SETTINGS.TH] === 60300) && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH) ||
+           (settings[SETTINGS.MH] === 60305 && settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.DW) ||
+           (settings[SETTINGS.AMMO] === 60322 && style == 'ranged')
+
+    ) {
+        damage = Math.floor(1.5 * damage);
+    }
     return damage;
 }
 
@@ -424,6 +435,9 @@ export function applyAllDamageModifiers(
 
     // Slayer effects
     damage = applyAllSlayerEffects(ctx, damage);
+
+    // Havensilver
+    damage = applyHavensilverEffect(ctx, damage);
 
     // Nope (spider buff)
     damage = applyNopeEffect(ctx, damage);
