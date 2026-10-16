@@ -175,6 +175,15 @@ export function createBuffTimings(barSize: number) {
                 icon: '/rs-rot/effect_icons/ranged/Searing_Winds.png',
                 combatStyle: SettingsCombatStyles.RANGED
             },
+            [SETTINGS.CRIMSON_SALVO]: {
+                title: 'Crimson Salvo',
+                idx: -1,
+                buffTicks: Array(barSize).fill(0),
+                activeRows: [],
+                colour: BUFF_COLORS.searing_winds,
+                icon: '/rs-rot/effect_icons/crimson_salvo.png',
+                combatStyle: SettingsCombatStyles.RANGED
+            },
             [SETTINGS.SHADOW_IMBUED]: {
                 title: 'Shadow Imbued',
                 idx: -1,
