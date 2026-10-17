@@ -116,6 +116,8 @@ export enum ABILITIES {
     DEEP_BURN = 'deep burn',
     DEFIANCE = 'defiance',
     LOCATE = 'locate',
+    SANGUINE_VOLLEY = 'sanguine volley',
+    SANGUINE_VOLLEY_HIT = 'sanguine volley hit',
     BOLG_PROC = 'bolg proc',
     BOLG_PROC_PERCENTAGES = 'bolg proc percentages',
 
@@ -4349,6 +4351,41 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0,
         title: 'Balance by force',
         icon: '/rs-rot/ability_icons/ranged/30x30/bolg.png',
+    },
+    [ABILITIES.SANGUINE_VOLLEY_HIT]: {
+        // ability name
+        minHit: 0.7, // min % of abil expressed as a decimal
+        varHit: 0.2,
+        onHitEffects: true, // does the ability get on-hit effects
+        critEffects: true, // can the ability crit
+        damagePotentialEffects: true, // is the ability affected by damage potential
+        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
+        abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        mainStyle: 'ranged',
+        damageType: 'ranged',
+        cooldown: 60
+    },
+    [ABILITIES.SANGUINE_VOLLEY]: {
+        // ability name
+        minHit: 0.7, // min % of abil expressed as a decimal
+        varHit: 0.2,
+        onHitEffects: true, // does the ability get on-hit effects
+        critEffects: true, // can the ability crit
+        damagePotentialEffects: true, // is the ability affected by damage potential
+        abilityClassification: 'multihit', // bleed, dot, burn, channel, regular, multihit
+        abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        mainStyle: 'ranged',
+        damageType: 'ranged',
+        hits: {
+             1: [ABILITIES.SANGUINE_VOLLEY_HIT, ABILITIES.SANGUINE_VOLLEY_HIT, ABILITIES.SANGUINE_VOLLEY_HIT, ABILITIES.SANGUINE_VOLLEY_HIT,
+                ABILITIES.SANGUINE_VOLLEY_HIT]
+        },
+        cooldown: 0,
+        hitTimings: [4,4,4,4,4], //todo actual hit timings
+        adrenaline: 40
+    ,
+        title: 'Sanguine Volley',
+        icon: '/rs-rot/ability_icons/ranged/30x30/Malachis_tooth.png',
     },
     [ABILITIES.DESCENT_OF_DARKNESS_HIT]: {
         // ability name
