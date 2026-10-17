@@ -117,6 +117,8 @@ export enum ABILITIES {
     LOCATE = 'locate',
     BOLG_PROC = 'bolg proc',
     BOLG_PROC_PERCENTAGES = 'bolg proc percentages',
+    SANGUINE_VOLLEY = 'sanguine volley',
+    SANGUINE_VOLLEY_HIT = 'sanguine volley hit',
 
     // Mage Basics
     MAGIC_AUTO = 'magic auto',
@@ -4383,6 +4385,40 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     ,
         title: 'Descent of Darkness',
         icon: '/ability_icons/ranged/30x30/dbow.png',
+    },
+    [ABILITIES.SANGUINE_VOLLEY_HIT]: {
+        // ability name
+        minHit: 0.7, // min % of abil expressed as a decimal
+        varHit: 0.2,
+        onHitEffects: true, // does the ability get on-hit effects
+        critEffects: true, // can the ability crit
+        damagePotentialEffects: true, // is the ability affected by damage potential
+        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
+        abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        mainStyle: 'ranged',
+        damageType: 'ranged',
+        cooldown: 60},
+    [ABILITIES.SANGUINE_VOLLEY]: {
+        // ability name
+        minHit: 0.7, // min % of abil expressed as a decimal
+        varHit: 0.2,
+        onHitEffects: true, // does the ability get on-hit effects
+        critEffects: true, // can the ability crit
+        damagePotentialEffects: true, // is the ability affected by damage potential
+        abilityClassification: 'multihit', // bleed, dot, burn, channel, regular, multihit
+        abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        mainStyle: 'ranged',
+        damageType: 'ranged',
+        hits: {
+             1: [ABILITIES.SANGUINE_VOLLEY_HIT, ABILITIES.SANGUINE_VOLLEY_HIT, ABILITIES.SANGUINE_VOLLEY_HIT, ABILITIES.SANGUINE_VOLLEY_HIT,
+                ABILITIES.SANGUINE_VOLLEY_HIT]
+        },
+        cooldown: 0,
+        hitTimings: [4,4,4,4,4], //todo actual hit timings
+        adrenaline: 40
+    ,
+        title: 'Sanguine Volley',
+        icon: '/ability_icons/ranged/30x30/Malachis_tooth.png',
     },
     [ABILITIES.DESTRUCTIVE_SHOT_HIT]: {
         // ability name
