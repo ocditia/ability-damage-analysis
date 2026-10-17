@@ -899,7 +899,7 @@
 				<div class="pb-3">
 					<p class="text-sm">
 						Please report any bugs or errors in the RSA discord. For a more comprehensive guide, check out our
-						<a href="/rotation_builder_guide" class="text-blue-400 hover:underline hover:text-blue-300">
+						<a href="https://tools.runescape.wiki/rs-rot/rotation_builder_guide" class="text-blue-400 hover:underline hover:text-blue-300">
 						full guide</a>.
 					</p>
 				</div>

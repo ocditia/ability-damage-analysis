@@ -81,7 +81,7 @@
                         <ul class="pt-2" aria-labelledby="dropdownLargeButton">
                             <li>
                                 <a
-                                    href="/magic"
+                                    href="https://tools.runescape.wiki/rs-rot/magic"
                                     class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
                                 >
                                     <img
@@ -93,7 +93,7 @@
                             </li>
                             <li>
                                 <a
-                                    href="/melee"
+                                    href="https://tools.runescape.wiki/rs-rot/melee"
                                     class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
                                 >
                                     <img
@@ -105,7 +105,7 @@
                             </li>
                             <li>
                                 <a
-                                    href="/ranged"
+                                    href="https://tools.runescape.wiki/rs-rot/ranged"
                                     class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
                                 >
                                     <img
@@ -117,7 +117,7 @@
                             </li>
                             <li>
                                 <a
-                                    href="/necromancy"
+                                    href="https://tools.runescape.wiki/rs-rot/ranged/ranged"
                                     class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
                                 >
                                     <img
@@ -129,7 +129,7 @@
                             </li>
                             <li>
                                 <a
-                                    href="/rotation_builder"
+                                    href="https://tools.runescape.wiki/rs-rot/rotation_builder"
                                     class="block py-2 px-3 md:hover:bg-transparent md:border-0 md:p-0 hover:text-link tracking-wide block mb-2 text-xl"
                                 >
                                     <img
