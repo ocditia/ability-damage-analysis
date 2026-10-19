@@ -172,11 +172,11 @@
 		const numRows = Math.ceil(totalSlots / columnsPerRow);
 		const newRowData: typeof rowLayoutData = [];
         const buffLanes: Record<string, number> = {};
-        for (const key of Object.keys(rotationStore.buffs)) {
-            if (rotationStore.buffs[key].activeRows?.length) {
-                buffLanes[key] = Object.keys(buffLanes).length;
-            }
-        }
+        // First activation determines the order; keep that order across every wrapped row.
+        const orderedBuffs = Object.keys(rotationStore.buffs)
+            .filter(key => rotationStore.buffs[key].activeRows?.length)
+            .sort((a, b) => Math.min(...rotationStore.buffs[a].activeRows) - Math.min(...rotationStore.buffs[b].activeRows));
+        orderedBuffs.forEach((key, index) => { buffLanes[key] = index; });
 
 		for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
 			const startIndex = rowIndex * columnsPerRow;
