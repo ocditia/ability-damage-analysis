@@ -6,7 +6,7 @@ import { offGcdAbilities, consumables, CONSUMABLES } from '$lib/special/abilitie
 // selected tick's extra-action slots rather than consuming a global cooldown.
 export const slayerAbilities = [ABILITIES.UNDEAD_SLAYER_ABILITY, ABILITIES.DRAGON_SLAYER_ABILITY, ABILITIES.DEMON_SLAYER_ABILITY, ABILITIES.VAMPYRE_SLAYER_ABILITY];
 const utilities = {
-    [CONSUMABLES.ADRENALINE_CRYSTAL]: {...consumables[CONSUMABLES.ADRENALINE_CRYSTAL], shared: true, description: "Adds 100% adrenaline immediately, capped at your maximum. Represents a completed crystal refill, before the ability on this tick. Natural Instinct does not double it.", wikiUrl: "https://runescape.wiki/w/Adrenaline_crystal_(War%27s_Retreat)"},
+    [CONSUMABLES.ADRENALINE_CRYSTAL]: {...consumables[CONSUMABLES.ADRENALINE_CRYSTAL], shared: true, description: "Starts channeling: first refill next tick, then every 3 ticks. Restores 25%, or 100% with War's Blessing 4, capped at your maximum. Can share a tick with Death's Swiftness or another self-cast buff. A later cast, stall or release stops channeling. Natural Instinct does not double it.", wikiUrl: "https://runescape.wiki/w/Adrenaline_crystal_(War%27s_Retreat)"},
     ...Object.fromEntries(slayerAbilities.map(key => [key, {...abils[key], shared: true, wikiUrl: 'https://runescape.wiki/w/' + abils[key].title.replaceAll(' ', '_') + '_(ability)'}])),
     [ABILITIES.DIVE]: { ...offGcdAbilities[ABILITIES.DIVE], mainStyle: 'melee' },
     [ABILITIES.ESCAPE]: { ...offGcdAbilities[ABILITIES.ESCAPE], mainStyle: 'ranged' },

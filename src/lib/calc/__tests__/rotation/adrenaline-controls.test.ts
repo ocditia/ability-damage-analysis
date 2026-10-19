@@ -31,20 +31,27 @@ describe('adrenaline controls',()=>{
   expect(run(settings(),r)[0][SETTINGS.ADRENALINE]).toBe(100);
   expect(run(settings({[SETTINGS.HEIGHTENED_SENSES]:true}),r)[0][SETTINGS.ADRENALINE]).toBe(110);
  });
- it('adds 100 immediately without delayed pulses or Natural Instinct doubling',()=>{
+ it('starts crystal gains next tick and repeats every GCD without Natural Instinct doubling',()=>{
   const r=empty();r.extraActionBar[0]=[{type:'ability',value:CONSUMABLES.ADRENALINE_CRYSTAL}];
-  const seen=run(settings({[SETTINGS.NATURAL_INSTINCT]:true,[SETTINGS.HEIGHTENED_SENSES]:true}),r);
-  expect(seen[0][SETTINGS.ADRENALINE]).toBe(100);expect(seen[3][SETTINGS.ADRENALINE]).toBe(100);expect(seen[12][SETTINGS.ADRENALINE]).toBe(100);
+  const seen=run(settings({[SETTINGS.NATURAL_INSTINCT]:true}),r);
+  expect(seen[0][SETTINGS.ADRENALINE]).toBe(0);expect(seen[1][SETTINGS.ADRENALINE]).toBe(25);
+  expect(seen[3][SETTINGS.ADRENALINE]).toBe(25);expect(seen[4][SETTINGS.ADRENALINE]).toBe(50);
+  expect(seen[10][SETTINGS.ADRENALINE]).toBe(100);
  });
- it('caps a crystal refill at the relic maximum even with uncapped planning enabled',()=>{
+ it('restores 100 with the blessing, capped at maximum',()=>{
   const r=empty();r.extraActionBar[0]=[{type:'ability',value:CONSUMABLES.ADRENALINE_CRYSTAL}];
-  const seen=run(settings({[SETTINGS.ADRENALINE]:50,[SETTINGS.CAP_ADRENALINE]:false,[SETTINGS.HEIGHTENED_SENSES]:true}),r);
-  expect(seen[0][SETTINGS.ADRENALINE]).toBe(110);
+  const seen=run(settings({[SETTINGS.ADRENALINE]:50,[SETTINGS.WAR_BLESSING_4]:true,[SETTINGS.CAP_ADRENALINE]:false,[SETTINGS.HEIGHTENED_SENSES]:true}),r);
+  expect(seen[0][SETTINGS.ADRENALINE]).toBe(50);expect(seen[1][SETTINGS.ADRENALINE]).toBe(110);
  });
- it('refills before an ability on the same tick, without adding later pulses',()=>{
-  const r=empty();r.extraActionBar[0]=[{type:'ability',value:CONSUMABLES.ADRENALINE_CRYSTAL}];r.abilityBar[0]=ABILITIES.IMBUE_SHADOWS;
-  const seen=run(settings(),r);
-  expect(seen[0][SETTINGS.ADRENALINE]).toBe(60);expect(seen[12][SETTINGS.ADRENALINE]).toBe(60);
+ it.each([[false,25],[true,100]])('allows Deaths Swiftness and crystal together with blessing %s', (blessing,refill)=>{
+  const r=empty();r.extraActionBar[0]=[{type:'ability',value:CONSUMABLES.ADRENALINE_CRYSTAL}];r.abilityBar[0]=ABILITIES.DEATHS_SWIFTNESS;
+  const seen=run(settings({[SETTINGS.ADRENALINE]:100,[SETTINGS.VIGOUR]:false,[SETTINGS.CONSERVATION_OF_ENERGY]:false,[SETTINGS.WAR_BLESSING_4]:blessing}),r);
+  expect(seen[0][SETTINGS.ADRENALINE]).toBe(0);expect(seen[1][SETTINGS.ADRENALINE]).toBe(refill);
+ });
+ it('a later self-cast stops subsequent crystal pulses',()=>{
+  const r=empty();r.extraActionBar[0]=[{type:'ability',value:CONSUMABLES.ADRENALINE_CRYSTAL}];r.abilityBar[2]=ABILITIES.IMBUE_SHADOWS;
+  const seen=run(settings({[SETTINGS.ADRENALINE]:50}),r);
+  expect(seen[1][SETTINGS.ADRENALINE]).toBe(75);expect(seen[2][SETTINGS.ADRENALINE]).toBe(35);expect(seen[10][SETTINGS.ADRENALINE]).toBe(35);
  });
  it('Persistent Rage only regenerates outside combat and is not doubled by Natural Instinct',()=>{
   const r=empty();r.tickEvents[0]={outOfCombat:true};r.tickEvents[5]={outOfCombat:false};

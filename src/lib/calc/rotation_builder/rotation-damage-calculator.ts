@@ -1,4 +1,4 @@
-import { prepareAdrenalineTick, enterCombat } from './adrenalineEvents';
+import { prepareAdrenalineTick, enterCombat, startCrystalChannel, interruptCrystalChannel } from './adrenalineEvents';
 import { applyAccuracyEvent } from './tickEvents';
 import { QUIVER_SLOT_1, QUIVER_SLOT_2, selectQuiverSlot } from './quiver';
 import { finishMalachiCast, tickProcProbabilities } from './effects/enchanted_bolts';
@@ -8,7 +8,7 @@ import { ARMOUR } from '$lib/data/armour';
 import { targetCountAt } from './targets';
 import { WEAPONS, weapons } from '$lib/data/weapons';
 import { style_specific_unification, calc_base_ad } from '../damage_calc_rb';
-import { get_hit_sequence, addAdrenaline, maxAdrenaline } from './calculation_utils';
+import { get_hit_sequence, addAdrenaline } from './calculation_utils';
 import { handleBuffs, get_user_value, handleDracolichInfusion, handleChanneledAsphyx, handleChannellers, getConjureDamageMultiplier } from './rotation_damage_helper';
 import { SETTINGS } from '../settings_rb';
 import { resolveBolgImpact, applyActivationEffects, on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
@@ -610,6 +610,7 @@ function prepareTick(state: RotationState, settings: any, rotation: RotationInpu
     if (state.preparedTick === state.tick) return;
     state.preparedTick = state.tick;
     const event = rotation.tickEvents?.[state.tick];
+    settings._rotationTick = state.tick;
     settings._malachiResetOverride = event?.malachiReset;
     applyAccuracyEvent(settings, event);
     prepareAdrenalineTick(settings, state.tick, event);
@@ -637,6 +638,7 @@ function processCurrentTickCore(
     // Stalling pays/generates adrenaline now; it never enters the hit pipeline.
     const stalledAbility = rotation.stalledAbilities[state.tick];
     if (stalledAbility && abils[stalledAbility] && !['channel', 'self cast', 'proc', 'perk'].includes(abils[stalledAbility].abilityClassification)) {
+        interruptCrystalChannel(settingsCopy);
         style_specific_unification(settingsCopy, abils[stalledAbility].mainStyle);
         settingsCopy['ability'] = stalledAbility;
         on_stall(settingsCopy, stalledAbility, state.timers, true);
@@ -674,6 +676,8 @@ function processCurrentTickCore(
         return;
     }
 
+    // A crystal started alongside a self-cast buff begins charging on the next tick.
+    if (settingsCopy._crystalStartedTick !== state.tick) interruptCrystalChannel(settingsCopy);
     if (abils[abilityKey]?.abilityClassification !== 'self cast') enterCombat(settingsCopy);
     delete settingsCopy._pendingStall; // A new cast replaces an unreleased ability.
 
@@ -1907,8 +1911,7 @@ function processExtraActionByValue(value: string, settings: any, timers: Record<
         settings[key] = value.endsWith(' on');
     }
     else if (value === CONSUMABLES.ADRENALINE_CRYSTAL) {
-        // A completed crystal refill, placed before the ability on this tick.
-        settings[SETTINGS.ADRENALINE] = Math.min(maxAdrenaline(settings), settings[SETTINGS.ADRENALINE] + 100);
+        startCrystalChannel(settings, settings._rotationTick);
     }
     else if (value === CONSUMABLES.ADRENALINE_RENEWAL) {
         timers[value] = 10;
