@@ -51,6 +51,12 @@ const SETTINGS = {
         REGULAR: 'necromancy potion'
     },
     HIT_CHANCE: 'hit chance',
+    AUTO_ACCURACY: 'automatic accuracy',
+    ACCURACY_MULTIPLIER: 'accuracy multiplier',
+    AFFINITY_BONUS: 'affinity bonus',
+    TARGET_DEFENCE_DRAIN: 'target defence drain',
+    GHRAZI_DISTANCE: 'ghrazi distance',
+    TARGET_ARMOUR_MULTIPLIER: 'target armour multiplier',
     REAPER_CREW: 'reaper crew',
 
     //Prayers
@@ -697,6 +703,12 @@ const settingsConfig = {
             { text: 'Regular', value: SETTINGS.POTION_VALUES.REGULAR }
         ]
     },
+    [SETTINGS.AUTO_ACCURACY]: { label: 'Calculate from target', default: false },
+    [SETTINGS.ACCURACY_MULTIPLIER]: { label: 'Additional accuracy multiplier', default: 1 },
+    [SETTINGS.AFFINITY_BONUS]: { label: 'Affinity bonus', default: 0 },
+    [SETTINGS.TARGET_DEFENCE_DRAIN]: { label: 'Defence levels drained', default: 0 },
+    [SETTINGS.GHRAZI_DISTANCE]: { label: 'Distance between knights (tiles)', default: 3 },
+    [SETTINGS.TARGET_ARMOUR_MULTIPLIER]: { label: 'Target armour multiplier', default: 1 },
     [SETTINGS.HIT_CHANCE]: {
         label: 'Hit chance',
         default: 100

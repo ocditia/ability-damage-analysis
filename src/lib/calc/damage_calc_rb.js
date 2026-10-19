@@ -1,3 +1,4 @@
+import { damagePotential } from './accuracy';
 import { resolveQuiverAmmo } from './rotation_builder/quiver';
 import { resolveEquipmentPerks } from '$lib/data/perks';
 import { equipmentMechanicId } from '$lib/data/equipment';
@@ -156,7 +157,7 @@ function calc_bonus(settings) {
 function calc_damage_potential(settings, dmgObject) {
     let hit_chance = 1;
     if (abils[settings['ability']].damagePotentialEffects === true) {
-        hit_chance = Math.min(settings[SETTINGS.HIT_CHANCE] / 100, 1);
+        hit_chance = damagePotential(settings, settings['ability']);
     }
     return Math.floor(dmgObject['base AD'] * hit_chance);
 }

@@ -1,4 +1,5 @@
 <script>
+    import TargetAccuracy from '$components/Settings/TargetAccuracy.svelte';
     import RangedAmmoEffects from '$components/Settings/RangedAmmoEffects.svelte';
     import { onMount } from 'svelte';
 import { ARMOUR } from '$lib/data/armour';
@@ -231,6 +232,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
 
     // Handle boss selection change — reset enrage to default
     function onBossChange() {
+        settings[SETTINGS.AUTO_ACCURACY].value = true;
         const bossKey = settings[SETTINGS.BOSS_PRESET]?.value;
         const base = bossKey && bossKey !== 'none' ? bossPresets[bossKey] : null;
         enrageValue = base?.enrage?.default ?? 0;
@@ -402,15 +404,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                         />
                     {/if}
 
-                    <Number
-                        bind:setting={settings[SETTINGS.HIT_CHANCE]}
-                        onchange={() => updateDamages()}
-
-                        img="/rs-rot/settings_icons/Zero_weakness_icon.png"
-                        step="1"
-                        max="100"
-                        min="0"
-                    />
+                    <TargetAccuracy {settings} onchange={updateDamages} style={styleTab} />
                     <Number
                         bind:setting={settings[SETTINGS.TARGET_SIZE]}
                         onchange={() => updateDamages()}

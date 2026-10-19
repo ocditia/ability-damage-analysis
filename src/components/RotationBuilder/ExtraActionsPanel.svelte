@@ -2,8 +2,9 @@
     import { isPernixQuiver, quiverProfileKey, resolveQuiverAmmo, selectQuiverSlot, QUIVER_SLOT_1, QUIVER_SLOT_2 } from '$lib/calc/rotation_builder/quiver';
     import { weaponSelectionUpdates } from '$lib/data/equipmentSlots';
     import EquipmentSlots from '$components/Settings/EquipmentSlots.svelte';
-    import { accuracyAt, normalizeTickEvent } from '$lib/calc/rotation_builder/tickEvents';
+    import { applyAccuracyEvent, accuracyAt, normalizeTickEvent } from '$lib/calc/rotation_builder/tickEvents';
     import { targetCountAt, normalizeTargetCount } from '$lib/calc/rotation_builder/targets';
+    import { isGhrazi } from '$lib/calc/accuracy';
     import { onMount } from 'svelte';
     import ActionChoice from './ActionChoice.svelte';
     import { allExtraActions, gearSwaps } from '$lib/special/abilities';
@@ -412,6 +413,12 @@
     }
     let tickEvent = $derived(rotationStore.tickEvents[tick] ?? {});
     let effectiveAccuracy = $derived(accuracyAt(rotationStore.tickEvents, tick, Number(settingsStore.settings[SETTINGS.HIT_CHANCE]?.value ?? 100)));
+    let accuracyConditions = $derived.by(() => {
+        const result = buildGearState(tick);
+        for (let t = 0; t <= tick; t++) applyAccuracyEvent(result, rotationStore.tickEvents[t]);
+        return result;
+    });
+    let automaticAccuracy = $derived(accuracyConditions[SETTINGS.AUTO_ACCURACY] === true && !!bossPresets[accuracyConditions[SETTINGS.BOSS_PRESET]]);
     let currentGear = $derived.by(() => {
         const result = buildGearState(tick);
         const prefix = stylePrefix[uiState.activeTab] ?? 'ranged';
@@ -528,9 +535,21 @@
             <section class="tick-controls" aria-label="Tick conditions">
                 <div class="condition-row"><label for="targets-in-range">Targets in range</label>
                     <input id="targets-in-range" type="number" min="1" max="9" value={targetCountAt(rotationStore.targetCounts,tick)} onchange={e => {rotationStore.targetCounts[tick] = normalizeTargetCount(e.currentTarget.value); onRefreshUI();}} /></div>
-                <div class="condition-row"><label for="tick-accuracy">Damage potential</label><div class="percent-field"><input id="tick-accuracy" type="number" min="0" max="100" step="0.1" value={effectiveAccuracy} onchange={e => updateTickEvent({accuracy:Number(e.currentTarget.value)})} /><span aria-hidden="true">%</span></div></div>
-                <p class="condition-note">Conditions apply from this tick onward.</p>
-                {#if tickEvent.accuracy != null || rotationStore.targetCounts[tick] != null}<button class="text-button" onclick={() => {rotationStore.targetCounts[tick] = null; updateTickEvent({accuracy:undefined});}}>Use previous conditions</button>{/if}
+                <label class="phase-name">Fighting<select value={accuracyConditions[SETTINGS.BOSS_PRESET] ?? 'none'} onchange={e => updateTickEvent({target:e.currentTarget.value, automaticAccuracy:true})}><option value="none">No target</option>{#each Object.keys(bossPresets).sort() as key}<option value={key}>{bossPresets[key].name}</option>{/each}</select></label>
+                {#if bossPresets[accuracyConditions[SETTINGS.BOSS_PRESET]]}
+                    <label class="phase-toggle"><input type="checkbox" checked={automaticAccuracy} onchange={e => updateTickEvent({automaticAccuracy:e.currentTarget.checked})} /> Automatic damage potential</label>
+                {/if}
+                {#if automaticAccuracy}
+                    <p class="condition-note">Calculated per hit from target, equipment and buffs. Untick to enter a damage potential override.</p>
+                {:else}
+                    <div class="condition-row"><label for="tick-accuracy">Damage potential</label><div class="percent-field"><input id="tick-accuracy" type="number" min="0" max="100" step="0.1" value={effectiveAccuracy} onchange={e => updateTickEvent({accuracy:Number(e.currentTarget.value), automaticAccuracy:false})} /><span aria-hidden="true">%</span></div></div>
+                {/if}
+                {#if isGhrazi(accuracyConditions[SETTINGS.BOSS_PRESET])}
+                    <label class="phase-name">Distance between knights<select value={String(Math.min(3, accuracyConditions[SETTINGS.GHRAZI_DISTANCE] ?? 3))} onchange={e => updateTickEvent({ghraziDistance:Number(e.currentTarget.value)})}><option value="3">3+ clear tiles</option><option value="2">2 clear tiles (+30)</option><option value="1">1 clear tile (+120)</option><option value="0">Overlapping (+160)</option></select></label>
+                {/if}
+                {#if isGhrazi(accuracyConditions[SETTINGS.BOSS_PRESET])}<p class="condition-note">Proximity scaling is approximate, calibrated from same-gear melee readings (99 / 60 / 34 / 18%). Untick automatic damage potential to use an exact in-game value.</p>{/if}
+                <p class="condition-note">Target, distance and accuracy apply from this tick until changed again.</p>
+                {#if ['accuracy', 'automaticAccuracy', 'target', 'ghraziDistance', 'armourMultiplier'].some(key => tickEvent[key] != null) || rotationStore.targetCounts[tick] != null}<button class="text-button" onclick={() => {rotationStore.targetCounts[tick] = null; updateTickEvent({accuracy:undefined, automaticAccuracy:undefined, target:undefined, ghraziDistance:undefined, armourMultiplier:undefined});}}>Use previous conditions</button>{/if}
                 <label class="phase-toggle"><input type="checkbox" checked={!!tickEvent.phase} onchange={e => updateTickEvent({phase:e.currentTarget.checked ? 'Phase transition' : undefined, downtime:0})} /> Phase transition</label>
                 {#if tickEvent.phase}
                     <label class="phase-name">Phase name<input value={tickEvent.phase} maxlength="80" onchange={e => updateTickEvent({phase:e.currentTarget.value})} /></label>

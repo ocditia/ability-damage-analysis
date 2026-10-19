@@ -1,3 +1,4 @@
+import { damagePotential } from '../accuracy';
 import { branchBoltHit, emeraldPoisonHit } from './effects/enchanted_bolts';
 import { ABILITIES, abils } from '$lib/data/abilities';
 import { WEAPONS } from '$lib/data/weapons';
@@ -116,9 +117,7 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
     });
     logger.log(LogCategory.ABILITY_DAMAGE, 'BASE AD', settings[SETTINGS.ABILITY_DAMAGE]);
     const dmgObjects: DamageObject[] = [];
-    // The user supplies final damage potential; uncapped accuracy cannot be
-    // reconstructed from it, so do not multiply it by tooltip accuracy bonuses.
-    const hitChance = Math.min(settings[SETTINGS.HIT_CHANCE] / 100, 1);
+    const hitChance = damagePotential(settings, abilityKey);
     iterateDistributions(dmgObject, (distribution) => {
         distribution['boosted AD'] = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * hitChance);
         distribution['damage potential'] = hitChance;
@@ -794,35 +793,31 @@ function handleBolgProc(
     // Reset stacks and create proc damage
     settings[SETTINGS.PERFECT_EQUILIBRIUM_STACKS] = 0;
 
-    let bolgDmgObject = create_damage_object(settings, ABILITIES.BOLG_PROC);
-    bolgDmgObject = on_cast(settings, bolgDmgObject, timers, ABILITIES.BOLG_PROC)[0];
-
-    // Get damage list from triggering hit to calculate bonus damage
     const dmgList = getDamageDistribution(dmgObject, 'non_crit')?.['damage list'] || [];
-
-    // Add 33-37% of triggering hit's damage to BOLG proc
-    if (dmgList.length > 0) {
-        const minBonus = Math.floor(dmgList[0] * 0.33);
-        const maxBonus = Math.floor(dmgList[dmgList.length - 1] * 0.37);
-        const varBonus = maxBonus - minBonus;
-
-        const bolgCritDist = getDamageDistribution(bolgDmgObject, 'crit');
-        const bolgNonCritDist = getDamageDistribution(bolgDmgObject, 'non_crit');
-
-        if (bolgCritDist) {
-            bolgCritDist.minHit += minBonus;
-            bolgCritDist.varHit += varBonus;
-        }
-        if (bolgNonCritDist) {
-            bolgNonCritDist.minHit += minBonus;
-            bolgNonCritDist.varHit += varBonus;
-        }
-    }
-
-    const bolgDmgObjects = on_hit(settings, bolgDmgObject, timers, ABILITIES.BOLG_PROC);
-    dmgObjects.push(...bolgDmgObjects);
+    const pending = create_damage_object(settings, ABILITIES.BOLG_PROC);
+    (pending as any)._bolgImpact = {
+        min: Math.floor((dmgList[0] ?? 0) * .33),
+        max: Math.floor((dmgList[dmgList.length - 1] ?? 0) * .37)
+    };
+    if (settings._deferBolgProcs) dmgObjects.push(pending);
+    else dmgObjects.push(...resolveBolgImpact(settings, pending, timers));
 
     return true;
+}
+
+/** Resolve the passive using impact-time equipment, ammo and target conditions. */
+export function resolveBolgImpact(settings: Record<string, any>, pending: DamageObject, timers: Record<string, number>): DamageObject[] {
+    const bonus = (pending as any)._bolgImpact;
+    if (!bonus) return [pending];
+    let object = on_cast(settings, create_damage_object(settings, ABILITIES.BOLG_PROC), timers, ABILITIES.BOLG_PROC)[0];
+    const potential = damagePotential(settings, ABILITIES.BOLG_PROC);
+    iterateDistributions(object, distribution => {
+        distribution.minHit += Math.floor(bonus.min * potential);
+        distribution.varHit += Math.floor((bonus.max - bonus.min) * potential);
+    });
+    object.likelihood = pending.likelihood;
+    (object as any).targetIndex = (pending as any).targetIndex;
+    return on_hit(settings, object, timers, ABILITIES.BOLG_PROC);
 }
 
 /**

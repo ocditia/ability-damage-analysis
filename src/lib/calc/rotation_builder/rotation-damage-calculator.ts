@@ -1,3 +1,4 @@
+import { applyAccuracyEvent } from './tickEvents';
 import { QUIVER_SLOT_1, QUIVER_SLOT_2, selectQuiverSlot } from './quiver';
 import { finishMalachiCast, tickProcProbabilities } from './effects/enchanted_bolts';
 import { weaponSelectionUpdates } from '$lib/data/equipmentSlots';
@@ -9,7 +10,7 @@ import { style_specific_unification, calc_base_ad } from '../damage_calc_rb';
 import { get_hit_sequence, addAdrenaline } from './calculation_utils';
 import { handleBuffs, get_user_value, handleDracolichInfusion, handleChanneledAsphyx, handleChannellers, getConjureDamageMultiplier } from './rotation_damage_helper';
 import { SETTINGS } from '../settings_rb';
-import { applyActivationEffects, on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
+import { resolveBolgImpact, applyActivationEffects, on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
 import { create_damage_object } from './rota_object_helper';
 import { buffs } from './rotation_consts';
 import { gearSwaps, allExtraActions as specialAbils, CONSUMABLES } from '../../special/abilities';
@@ -606,7 +607,7 @@ function prepareTick(state: RotationState, settings: any, rotation: RotationInpu
     state.preparedTick = state.tick;
     const event = rotation.tickEvents?.[state.tick];
     settings._malachiResetOverride = event?.malachiReset;
-    if (event?.accuracy != null) settings[SETTINGS.HIT_CHANCE] = Math.max(0, Math.min(100, Number(event.accuracy)));
+    applyAccuracyEvent(settings, event);
     if (event?.phase) {
         const pause = Math.max(0, Math.min(300, Math.floor(event.downtime ?? 0)));
         state.pauseTicksRemaining = Math.max(state.pauseTicksRemaining, pause);
@@ -1280,6 +1281,7 @@ function processStalledAbility(
 }
 
 function zeroDamageObject(dmgObject: DamageObject) {
+    (dmgObject as any)._nulled = true;
     // Zero out all damage values while preserving the object structure
     Object.values(dmgObject.distributions).forEach(distribution => {
         if (distribution) {
@@ -1396,7 +1398,7 @@ function updateBossHpPercent(state: RotationState, settingsCopy: any) {
  * If so, apply the next phase's stat overrides and set pause ticks.
  *
  * Currently applies: soft cap changes, pause ticks.
- * TODO: recalculate hit chance when defence/armour/affinities change at phase transitions.
+ * Automatic accuracy uses the current phase defence, armour and affinities.
  */
 /**
  * Returns the remaining damage budget before the current phase's HP cap.
@@ -1417,7 +1419,7 @@ function getPhaseDamageBudget(state: RotationState): number | null {
  * If so, apply the next phase's stat overrides and set pause ticks.
  *
  * Damage capping is handled upstream via getPhaseDamageBudget.
- * TODO: recalculate hit chance when defence/armour/affinities change at phase transitions.
+ * Automatic accuracy uses the current phase defence, armour and affinities.
  */
 function checkPhaseTransition(state: RotationState, settingsCopy: any) {
     if (!state.bossPhases || state.currentPhaseIdx >= state.bossPhases.length) return;
@@ -1450,6 +1452,7 @@ function checkPhaseTransition(state: RotationState, settingsCopy: any) {
     // Apply stat overrides from this phase
     if (currentPhase.stats) {
         const stats = currentPhase.stats;
+        settingsCopy._targetPhaseStats = {...settingsCopy._targetPhaseStats, ...stats};
         // Update soft cap (may be null to remove it, or a new value)
         if ('softCap' in stats) {
             settingsCopy['_softCap'] = stats.softCap ?? undefined;
@@ -1516,7 +1519,10 @@ function hitTargets(state: RotationState, settings: any, object: DamageObject, k
     for (let target = 0; target < count; target++) {
         const primaryBik = settings[SETTINGS.BIK_STACKS];
         if (target) settings[SETTINGS.BIK_STACKS] = state.secondaryBik[target] ?? 0;
+        const previousDefer = settings._deferBolgProcs;
+        settings._deferBolgProcs = true;
         const hits = on_hit(settings, structuredClone(object), state.timers, key);
+        settings._deferBolgProcs = previousDefer;
         for (const hit of hits) {
             (hit as any).targetIndex = target;
             results.push(hit);
@@ -1535,7 +1541,30 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
     // Track whether a capped phase transitioned on this tick — all subsequent hits are nullified
     let cappedOnThisTick = false;
 
-    for (const namedDmgObject of state.damageQueue[tick]) {
+    const impactQueue = [...state.damageQueue[tick]];
+    for (let impactIndex = 0; impactIndex < impactQueue.length; impactIndex++) {
+        const namedDmgObject = impactQueue[impactIndex];
+        if ((namedDmgObject as any)._bolgImpact) {
+            if ((namedDmgObject as any)._nulled) continue;
+            style_specific_unification(settingsCopy, 'ranged');
+            if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
+            const target = namedDmgObject.targetIndex ?? 0;
+            const primaryBik = settingsCopy[SETTINGS.BIK_STACKS];
+            if (target) settingsCopy[SETTINGS.BIK_STACKS] = state.secondaryBik?.[target] ?? 0;
+            const hits = resolveBolgImpact(settingsCopy, namedDmgObject, state.timers);
+            if (target) {
+                state.secondaryBik ??= {};
+                state.secondaryBik[target] = settingsCopy[SETTINGS.BIK_STACKS];
+                settingsCopy[SETTINGS.BIK_STACKS] = primaryBik;
+            }
+            for (const hit of hits) {
+                (hit as any).targetIndex = namedDmgObject.targetIndex ?? 0;
+
+            }
+            impactQueue.splice(impactIndex, 1, ...hits);
+            impactIndex--;
+            continue;
+        }
         settingsCopy['ability'] = namedDmgObject.ability;
         const scale = namedDmgObject.likelihood;
 

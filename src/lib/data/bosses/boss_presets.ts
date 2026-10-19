@@ -2348,7 +2348,16 @@ export function getBossPresetWithEnrage(bossKey: string, enrage: number): BossPr
     return generator(base, enrage);
 }
 
+// Base combat stats: https://runescape.wiki/w/Lady_Karmina_Ghrazi and /Lord_Vasily_Ghrazi.
+// Proximity is separately calibrated from observed damage potential in calc/accuracy.ts.
+const ghrazi: BossPreset = {
+    name: 'Ghrazi', defenceLevel: 95, armour: 2765, weakness: 'None', style: 'Melee',
+    affinities: {weakness: .9, melee: .55, ranged: .55, magic: .55},
+    taggable: false, curseImmune: true, popular: true
+};
 export const bossPresets: Record<string, BossPreset> = {
+    'Lady Karmina Ghrazi': {...ghrazi, name: 'Lady Karmina Ghrazi'},
+    'Lord Vasily Ghrazi': {...ghrazi, name: 'Lord Vasily Ghrazi'},
     // Araxxor / Araxxi
     'Araxxi': araxxi,
     'Araxxor (Magic)': araxxorMagic,

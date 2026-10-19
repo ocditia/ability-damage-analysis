@@ -1,4 +1,5 @@
 <script>
+    import TargetAccuracy from '$components/Settings/TargetAccuracy.svelte';
     import RangedAmmoEffects from '$components/Settings/RangedAmmoEffects.svelte';
     import { renderComponent } from '@tanstack/svelte-table';
 
@@ -314,14 +315,7 @@
                                     onchange={() => updateDamages()}
                                     img="/rs-rot/effect_icons/death.png"
                                 />
-                                <Number
-                                    bind:setting={settings[SETTINGS.HIT_CHANCE]}
-                                    onchange={() => updateDamages()}
-                                    img="/rs-rot/settings_icons/Zero_weakness_icon.png"
-                                    step="1"
-                                    max="100"
-                                    min="0"
-                                />
+                                <TargetAccuracy {settings} onchange={updateDamages} style="ranged" />
                                 <RangedAmmoEffects {settings} onchange={updateDamages} />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.HITCAP]}

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { tickConditionLabel } from '$lib/calc/rotation_builder/tickEvents';
 	import { onMount, onDestroy } from 'svelte';
 	import Navbar from '$components/Layout/Navbar.svelte';
     import RotationDamageSummary from '$components/RotationBuilder/RotationDamageSummary.svelte';
@@ -715,7 +716,7 @@
                                 class:invalid-placement={invalidTicks[index] && ability}
                                 class:phase-pause={pauseTickSet.has(index)}
                                 class:tick-event={!!rotationStore.tickEvents[index]}
-                                title={rotationStore.tickEvents[index]?.phase || (rotationStore.tickEvents[index]?.accuracy != null ? `Damage potential: ${rotationStore.tickEvents[index].accuracy}%` : undefined)}
+                                title={tickConditionLabel(rotationStore.tickEvents[index])}
                                 tabindex="0"
                                 aria-label={`Tick ${index}, ${(index * 0.6).toFixed(1)} seconds: ${ability ? allAbils[ability]?.title ?? ability : "empty"}`}
                                 onclick={(e) => handleBarLeftClick(e, ability, index)}
@@ -725,7 +726,7 @@
                                 ondragenter={(e) => handleDragEnter(e, index)}
                                 ondragleave={(e) => handleDragLeave(e, index)}
                             >
-                                <span class="cell-number">{index}{rotationStore.tickEvents[index]?.phase ? " P" : rotationStore.tickEvents[index]?.accuracy != null ? " %" : ""}</span>
+                                <span class="cell-number">{index}{rotationStore.tickEvents[index]?.phase ? " P" : rotationStore.tickEvents[index]?.accuracy != null ? " %" : rotationStore.tickEvents[index] ? " *" : ""}</span>
                                 {#if ability && allAbils[ability]}
                                     <img src={allAbils[ability].icon}
                                         alt={allAbils[ability].title}

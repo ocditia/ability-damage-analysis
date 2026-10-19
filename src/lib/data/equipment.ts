@@ -10,6 +10,8 @@ export type EquipmentId = number;
 export type EquipmentValue = EquipmentId | 'none';
 
 type RawBonuses = {
+    accuracy?: number;
+    armour?: number;
     class?: string;
     slot?: string;
     type?: string;
