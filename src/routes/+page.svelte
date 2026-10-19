@@ -287,9 +287,13 @@
                                 <div
                                     class="mx-auto w-24 h-24 rounded-full bg-black overflow-hidden mb-3"
                                 >
-                                    <img src="/rs-rot/style_icons/rota_icon2.svg" alt="" />
+                                    <img
+                                        src="/rs-rot/contributors/saltea.gif"
+                                        alt="Saltea"
+                                        class="w-full h-full object-cover"
+                                    />
                                 </div>
-                                <div class="text-center text-gray-light">Lo Sugar</div>
+                                <div class="text-center text-gray-light">Saltea</div>
                                 <div class="text-center text-gray-light">Rotation Builder</div>
                             </div>
                         </div>
