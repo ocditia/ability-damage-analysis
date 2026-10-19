@@ -31,21 +31,20 @@ describe('adrenaline controls',()=>{
   expect(run(settings(),r)[0][SETTINGS.ADRENALINE]).toBe(100);
   expect(run(settings({[SETTINGS.HEIGHTENED_SENSES]:true}),r)[0][SETTINGS.ADRENALINE]).toBe(110);
  });
- it('channels crystal pulses every 3 ticks, unaffected by Natural Instinct',()=>{
+ it('adds 100 immediately without delayed pulses or Natural Instinct doubling',()=>{
   const r=empty();r.extraActionBar[0]=[{type:'ability',value:CONSUMABLES.ADRENALINE_CRYSTAL}];
-  const seen=run(settings({[SETTINGS.NATURAL_INSTINCT]:true}),r);
-  expect(seen[2][SETTINGS.ADRENALINE]).toBe(0);expect(seen[3][SETTINGS.ADRENALINE]).toBe(25);
-  expect(seen[6][SETTINGS.ADRENALINE]).toBe(50);expect(seen[12][SETTINGS.ADRENALINE]).toBe(100);
+  const seen=run(settings({[SETTINGS.NATURAL_INSTINCT]:true,[SETTINGS.HEIGHTENED_SENSES]:true}),r);
+  expect(seen[0][SETTINGS.ADRENALINE]).toBe(100);expect(seen[3][SETTINGS.ADRENALINE]).toBe(100);expect(seen[12][SETTINGS.ADRENALINE]).toBe(100);
  });
- it('uses upgraded crystal pulses and stops at the relic maximum',()=>{
+ it('caps a crystal refill at the relic maximum even with uncapped planning enabled',()=>{
   const r=empty();r.extraActionBar[0]=[{type:'ability',value:CONSUMABLES.ADRENALINE_CRYSTAL}];
-  const seen=run(settings({[SETTINGS.WAR_BLESSING_4]:true,[SETTINGS.HEIGHTENED_SENSES]:true}),r);
-  expect(seen[3][SETTINGS.ADRENALINE]).toBe(100);expect(seen[6][SETTINGS.ADRENALINE]).toBe(110);
+  const seen=run(settings({[SETTINGS.ADRENALINE]:50,[SETTINGS.CAP_ADRENALINE]:false,[SETTINGS.HEIGHTENED_SENSES]:true}),r);
+  expect(seen[0][SETTINGS.ADRENALINE]).toBe(110);
  });
- it('interrupts the crystal when a self-cast buff is used',()=>{
-  const r=empty();r.extraActionBar[0]=[{type:'ability',value:CONSUMABLES.ADRENALINE_CRYSTAL}];r.abilityBar[4]=ABILITIES.IMBUE_SHADOWS;
-  const seen=run(settings({[SETTINGS.ADRENALINE]:50}),r);
-  expect(seen[4][SETTINGS.ADRENALINE]).toBe(35);expect(seen[12][SETTINGS.ADRENALINE]).toBe(35);
+ it('refills before an ability on the same tick, without adding later pulses',()=>{
+  const r=empty();r.extraActionBar[0]=[{type:'ability',value:CONSUMABLES.ADRENALINE_CRYSTAL}];r.abilityBar[0]=ABILITIES.IMBUE_SHADOWS;
+  const seen=run(settings(),r);
+  expect(seen[0][SETTINGS.ADRENALINE]).toBe(60);expect(seen[12][SETTINGS.ADRENALINE]).toBe(60);
  });
  it('Persistent Rage only regenerates outside combat and is not doubled by Natural Instinct',()=>{
   const r=empty();r.tickEvents[0]={outOfCombat:true};r.tickEvents[5]={outOfCombat:false};
