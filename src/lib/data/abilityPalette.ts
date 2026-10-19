@@ -4,7 +4,9 @@ import { offGcdAbilities } from '$lib/special/abilities';
 
 // Utility actions belong beside their combat style, but are placed in the
 // selected tick's extra-action slots rather than consuming a global cooldown.
+export const slayerAbilities = [ABILITIES.UNDEAD_SLAYER_ABILITY, ABILITIES.DRAGON_SLAYER_ABILITY, ABILITIES.DEMON_SLAYER_ABILITY, ABILITIES.VAMPYRE_SLAYER_ABILITY];
 const utilities = {
+    ...Object.fromEntries(slayerAbilities.map(key => [key, {...abils[key], shared: true, wikiUrl: 'https://runescape.wiki/w/' + abils[key].title.replaceAll(' ', '_') + '_(ability)'}])),
     [ABILITIES.DIVE]: { ...offGcdAbilities[ABILITIES.DIVE], mainStyle: 'melee' },
     [ABILITIES.ESCAPE]: { ...offGcdAbilities[ABILITIES.ESCAPE], mainStyle: 'ranged' },
     [ABILITIES.SURGE]: { ...offGcdAbilities[ABILITIES.SURGE], mainStyle: 'magic' },

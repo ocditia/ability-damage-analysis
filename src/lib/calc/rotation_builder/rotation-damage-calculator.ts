@@ -1909,17 +1909,11 @@ function processExtraActionByValue(value: string, settings: any, timers: Record<
         const amount = parseInt(value.split(" ")[1]);
         settings[SETTINGS.ADRENALINE] += amount;
     }
-    else if (value === ABILITIES.UNDEAD_SLAYER_ABILITY) {
-            settings[SETTINGS.UNDEAD_SLAYER_ABILITY] = true;
-            timers[SETTINGS.UNDEAD_SLAYER_ABILITY] = 17;
-    }
-    else if (value === ABILITIES.DRAGON_SLAYER_ABILITY) {
-        settings[SETTINGS.DRAGON_SLAYER_ABILITY] = true;
-        timers[SETTINGS.DRAGON_SLAYER_ABILITY] = 17;
-    }
-    else if (value === ABILITIES.DEMON_SLAYER_ABILITY) {
-        settings[SETTINGS.DEMON_SLAYER_ABILITY] = true;
-        timers[SETTINGS.DEMON_SLAYER_ABILITY] = 17;
+    else if ([ABILITIES.UNDEAD_SLAYER_ABILITY, ABILITIES.DRAGON_SLAYER_ABILITY,
+        ABILITIES.DEMON_SLAYER_ABILITY, ABILITIES.VAMPYRE_SLAYER_ABILITY].includes(value as ABILITIES)) {
+        if (timers[COOLDOWN_PREFIX + value] > 0) return;
+        settings[value] = true;
+        timers[value] = 17;
     }
     else if (value === 'sanguine offering') {
         delete timers[COOLDOWN_PREFIX + ABILITIES.RUNIC_CHARGE];

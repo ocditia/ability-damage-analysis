@@ -32,7 +32,7 @@ describe('current four-style ability book', () => {
     });
     it('groups utility and necromancy abilities with readable headings', () => {
         const groups = groupAbilitiesByType(paletteAbilities);
-        expect(groups.some(group => group.type === 'utility' && group.abilities.length === 8)).toBe(true);
+        expect(groups.some(group => group.type === 'utility' && group.abilities.length === 12)).toBe(true);
         expect(groups.find(group => group.type === 'threshold')?.title).toBe('Enhanced Abilities');
     });
 });

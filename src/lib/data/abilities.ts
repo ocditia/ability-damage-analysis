@@ -328,6 +328,7 @@ export enum ABILITIES {
     DRAGON_SLAYER_ABILITY = 'dragon slayer ability',
     DEMON_SLAYER_ABILITY = 'demon slayer ability',
     UNDEAD_SLAYER_ABILITY = 'undead slayer ability',
+    VAMPYRE_SLAYER_ABILITY = 'vampyre slayer ability',
     RUNIC_CHARGE = 'runic charge',
     EXSANGUINATE = 'exsanguinate',
     INCITE_FEAR = 'incite fear',
@@ -5015,42 +5016,42 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         mainStyle: 'defence',//TODO??
         damageType: 'defence',//TODO??
         cooldown: 90},
-    [ABILITIES.DEMON_SLAYER_ABILITY]: {
-        // ability name
-        minHit: 0.0, // min % of abil expressed as a decimal
-        varHit: 0.0,
-        onHitEffects: false, // does the ability get on-hit effects
-        critEffects: false, // can the ability crit
-        damagePotentialEffects: false, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
-        mainStyle: 'defence',//TODO??
-        damageType: 'defence',//TODO??
-        cooldown: 60},
-    [ABILITIES.DRAGON_SLAYER_ABILITY]: {
-        // ability name
-        minHit: 0.0, // min % of abil expressed as a decimal
-        varHit: 0.0,
-        onHitEffects: false, // does the ability get on-hit effects
-        critEffects: false, // can the ability crit
-        damagePotentialEffects: false, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
-        mainStyle: 'defence',//TODO??
-        damageType: 'defence',//TODO??
-        cooldown: 60},
     [ABILITIES.UNDEAD_SLAYER_ABILITY]: {
-        // ability name
-        minHit: 0.0, // min % of abil expressed as a decimal
-        varHit: 0.0,
-        onHitEffects: false, // does the ability get on-hit effects
-        critEffects: false, // can the ability crit
-        damagePotentialEffects: false, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
-        mainStyle: 'defence',//TODO??
-        damageType: 'defence',//TODO??
-        cooldown: 60},
+        title: 'Undead Slayer',
+        icon: '/rs-rot/ability_icons/special/Undead_Slayer_(ability).png',
+        minHit: 0, varHit: 0, onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'self cast',
+        abilityType: 'utility', mainStyle: 'defence', damageType: 'defence',
+        adrenaline: 0, cooldown: 60,
+        description: 'Increases damage against undead by 15% for 10.2 seconds (17 ticks), including bleeds. Off global cooldown; no adrenaline gained or spent. Use against a susceptible target.'
+    },
+    [ABILITIES.DRAGON_SLAYER_ABILITY]: {
+        title: 'Dragon Slayer',
+        icon: '/rs-rot/ability_icons/special/Dragon_Slayer_(ability).png',
+        minHit: 0, varHit: 0, onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'self cast',
+        abilityType: 'utility', mainStyle: 'defence', damageType: 'defence',
+        adrenaline: 0, cooldown: 60,
+        description: 'Increases damage against dragons by 15% for 10.2 seconds (17 ticks), including bleeds. Off global cooldown; no adrenaline gained or spent. Use against a susceptible target.'
+    },
+    [ABILITIES.DEMON_SLAYER_ABILITY]: {
+        title: 'Demon Slayer',
+        icon: '/rs-rot/ability_icons/special/Demon_Slayer_(ability).png',
+        minHit: 0, varHit: 0, onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'self cast',
+        abilityType: 'utility', mainStyle: 'defence', damageType: 'defence',
+        adrenaline: 0, cooldown: 60,
+        description: 'Increases damage against demons by 15% for 10.2 seconds (17 ticks), including bleeds. Off global cooldown; no adrenaline gained or spent. Use against a susceptible target.'
+    },
+    [ABILITIES.VAMPYRE_SLAYER_ABILITY]: {
+        title: 'Vampyre Slayer',
+        icon: '/rs-rot/ability_icons/special/Vampyre_Slayer_(ability).png',
+        minHit: 0, varHit: 0, onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'self cast',
+        abilityType: 'utility', mainStyle: 'defence', damageType: 'defence',
+        adrenaline: 0, cooldown: 60,
+        description: 'Increases damage against vampyres by 15% for 10.2 seconds (17 ticks), including bleeds. Off global cooldown; no adrenaline gained or spent. Use against a susceptible target.'
+    },
     [ABILITIES.SURGE]: {
         // ability name
         minHit: 0.0, // min % of abil expressed as a decimal

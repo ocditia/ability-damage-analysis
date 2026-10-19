@@ -28,7 +28,7 @@
     import { suggestNextAbility, resolveTumekensAsphyxiate, type AbilitySuggestion } from '$lib/calc/rotation_builder/rotation-damage-calculator';
 
     const filterByStyle = (style) => Object.fromEntries(
-        Object.entries(paletteAbilities).filter(([, a]) => a.title && !a.parent && a.mainStyle === style)
+        Object.entries(paletteAbilities).filter(([, a]) => a.title && !a.parent && (a.mainStyle === style || a.shared))
     );
     const rangedAbils = filterByStyle('ranged');
     const magicAbils = filterByStyle('magic');

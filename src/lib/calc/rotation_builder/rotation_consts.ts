@@ -46,6 +46,7 @@ export const buffs = [
     SETTINGS.UNDEAD_SLAYER_ABILITY,
     SETTINGS.DRAGON_SLAYER_ABILITY,
     SETTINGS.DEMON_SLAYER_ABILITY,
+    SETTINGS.VAMPYRE_SLAYER_ABILITY,
     SETTINGS.CONFLAGRATE,
     SETTINGS.KERAPACS_WRIST_WRAPS,
     SETTINGS.BLAST_INFUSED,
@@ -369,6 +370,11 @@ export function createBuffTimings(barSize: number) {
                 activeRows: [],
                 colour: '#7B68EE',
                 icon: '/rs-rot/effect_icons/Smoke_Cloud_icon.webp',
+                combatStyle: SettingsCombatStyles.ALL
+            },
+            [SETTINGS.VAMPYRE_SLAYER_ABILITY]: {
+                title: 'Vampyre Slayer', idx: -1, buffTicks: Array(barSize).fill(0), activeRows: [],
+                colour: '#C74C64', icon: '/rs-rot/ability_icons/special/Vampyre_Slayer_(ability).png',
                 combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.UNDEAD_SLAYER_ABILITY]: {

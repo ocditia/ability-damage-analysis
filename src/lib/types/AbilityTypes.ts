@@ -11,7 +11,7 @@ export type AbilityClassification =
     'conjure' | 'proc' | 'perk';
 
 // Ability type categories - 'ability' is used for necro abils
-export type AbilityType = 'basic' | 'threshold' | 'special attack' | 'ability' | 'spell' | 'ultimate' | 'auto'| 'conjure' | 'proc' | 'perk';
+export type AbilityType = 'basic' | 'threshold' | 'special attack' | 'ability' | 'spell' | 'ultimate' | 'auto'| 'conjure' | 'proc' | 'perk' | 'utility';
 
 // Combat styles
 export type CombatStyle = 'melee' | 'ranged' | 'magic' | 'necromancy' | 'defence' | 'poison';

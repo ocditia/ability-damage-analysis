@@ -73,6 +73,10 @@ export const offGcdAbilities: Record<string, { title: string; icon: string }> = 
         title: 'Demon Slayer',
         icon: '/rs-rot/ability_icons/special/Demon_Slayer_(ability).png'
     },
+    [ABILITIES.VAMPYRE_SLAYER_ABILITY]: {
+        title: 'Vampyre Slayer',
+        icon: '/rs-rot/ability_icons/special/Vampyre_Slayer_(ability).png'
+    },
     [ABILITIES.UNDEAD_SLAYER_ABILITY]: {
         title: 'Undead Slayer',
         icon: '/rs-rot/ability_icons/special/Undead_Slayer_(ability).png'

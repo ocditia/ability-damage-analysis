@@ -48,7 +48,7 @@
         {#if reference}<span>Equipment: {reference.equipment}</span>{/if}
         {#if info.specialDamage}<span>Average ability damage: {info.specialDamage}</span>{/if}
         {#if info.description}<span>{info.description}</span>{/if}
-        <a href={reference?.url ?? `https://runescape.wiki/w/${encodeURIComponent(info.title.replaceAll(' ', '_'))}`} target="_blank" rel="noreferrer">Ability details on the Wiki</a>
+        <a href={info.wikiUrl ?? reference?.url ?? `https://runescape.wiki/w/${encodeURIComponent(info.title.replaceAll(' ', '_'))}`} target="_blank" rel="noreferrer">Ability details on the Wiki</a>
         <button type="button" onclick={() => { setAbilityHidden(hovered, true, info.title); hovered = null; }}>Hide ability</button>
     {:else}<span>Hover or focus an icon for its name, requirements and cooldown.</span>{/if}
 </div>
