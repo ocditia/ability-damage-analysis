@@ -65,7 +65,13 @@
         handleAbilityClick(event, ability.actionKey ?? key);
     }
     function dragFromPalette(event, key) {
-        handleDragStart(event, paletteAbilities[key].actionKey ?? key);
+        const ability = paletteAbilities[key];
+        if (uiStore.activeTool === ToolMode.Stall && !ability.offGcd) {
+            if (!eventHandlers.canStall(key)) { event.preventDefault(); return; }
+            event.dataTransfer.setData('text/plain', JSON.stringify({kind:'stall', ability:key}));
+            return;
+        }
+        handleDragStart(event, ability.actionKey ?? key);
     }
 
     let abilitySearch = $state('');
@@ -73,8 +79,8 @@
     let showFullTimeline = $state(false);
     const modes = [
         { value: ToolMode.Regular, label: 'Edit', key: 'E', hint: 'Click an ability to append it. Drag to place or move it. Click a tick to inspect; right-click to remove.' },
-        { value: ToolMode.Release, label: 'Release', key: 'R', hint: 'Click a tick to release the pending stalled ability. Release applies damage and hit effects without paying adrenaline again.' },
-        { value: ToolMode.Stall, label: 'Stall', key: 'S', hint: 'Choose an ability, then click a tick to stall it. Click a stalled tick again to remove it.' },
+        { value: ToolMode.Release, label: 'Release', key: 'R', hint: 'Release appends the held ability at the next GCD tick. Drag its icon to move it; the next ability shares that tick.' },
+        { value: ToolMode.Stall, label: 'Stall', key: 'S', hint: 'Click an ability to stall it at the next GCD, or drag it onto a tick. Stall spends or gains adrenaline without hits.' },
         { value: ToolMode.Null, label: 'Null', key: 'N', hint: 'Click ticks to toggle zero damage. Buffs and stacks still apply.' },
         { value: ToolMode.Insert, label: 'Insert ticks', key: 'I', hint: 'Click a tick to insert time before it. Right-click to remove time and shift the rotation left.' }
     ];
@@ -530,8 +536,23 @@
         eventHandlers.handleBarRightClick(event, index, innerIdx, stores, refreshUI, calculateTotalDamageNew);
     }
 
+    function selectMode(mode) {
+        if (mode === ToolMode.Release) eventHandlers.appendRelease(stores, calculateTotalDamageNew, refreshUI);
+        else uiActions.setActiveTool(mode);
+    }
     function handleKeypress(event: KeyboardEvent) {
+        const target = event.target as HTMLElement;
+        if (target?.isContentEditable || ['INPUT','TEXTAREA','SELECT'].includes(target?.tagName) || event.ctrlKey || event.metaKey || event.altKey) return;
+        if (event.key.toLowerCase() === 'r') {
+            event.preventDefault();
+            if (!event.repeat) selectMode(ToolMode.Release);
+            return;
+        }
         eventHandlers.handleKeypress(event, stores);
+    }
+    function dragTimelineAction(event, kind, ability, startIndex) {
+        event.stopPropagation();
+        event.dataTransfer.setData('text/plain', JSON.stringify({kind, ability, startIndex}));
     }
 
     function focusOnMount(node: HTMLElement) {
@@ -724,7 +745,7 @@
 					{/each}
 	                <div class="timeline-heading"><h2>Timeline</h2><span>1 tick = 0.6 seconds</span></div>
                     <div class="edit-toolbar" role="group" aria-label="Editing mode">
-                        {#each modes as mode}<button class:active={uiStore.activeTool === mode.value} aria-pressed={uiStore.activeTool === mode.value} onclick={() => uiActions.setActiveTool(mode.value)}>{mode.label} <kbd>{mode.key}</kbd></button>{/each}
+                        {#each modes as mode}<button class:active={uiStore.activeTool === mode.value} aria-pressed={uiStore.activeTool === mode.value} onclick={() => selectMode(mode.value)}>{mode.label} <kbd>{mode.key}</kbd></button>{/each}
                     </div>
                     <p class="mode-hint">{modes.find(mode => mode.value === uiStore.activeTool)?.hint}</p>
                     {#if !usedTicks}<div class="timeline-empty"><strong>Add your first ability above</strong><span>Abilities append at the next available tick. Configure your gear in Settings to get meaningful damage estimates.</span></div>{/if}
@@ -740,6 +761,7 @@
                                 class:highlight-green={uiStore.dragDrop.hoveredSlot === index && uiStore.dragDrop.validSlot}
                                 class:nulled={rotationStore.nulledTicks[index]}
                                 class:selected-tick={uiStore.extraActions.show && uiStore.extraActions.tick === index}
+                                class:combined-cast={!!ability && !!rotationStore.releasedAbilities[index]}
                                 class:has-extra-actions={rotationStore.extraActionBar[index]?.some(action => action !== null)}
                                 class:has-damage={damageTicks.has(index)}
                                 class:invalid-placement={invalidTicks[index] && ability}
@@ -757,7 +779,7 @@
                             >
                                 <span class="cell-number">{index}{rotationStore.tickEvents[index]?.phase ? " P" : rotationStore.tickEvents[index]?.accuracy != null ? " %" : rotationStore.tickEvents[index] ? " *" : ""}</span>
                                 {#if ability && allAbils[ability]}
-                                    <img src={allAbils[ability].icon}
+                                    <img class="regular-ability" src={allAbils[ability].icon}
                                         alt={allAbils[ability].title}
                                         style="width: 100%; height: 100%;"
                                         title="{allAbils[ability].title}{invalidTicks[index] ? ` (${invalidTicks[index]})` : ''}"
@@ -777,15 +799,17 @@
                                     <img
                                         class="stalled-ability"
                                         src={allAbils[rotationStore.stalledAbilities[index]].icon}
+                                        draggable="true" ondragstart={(e) => dragTimelineAction(e, 'stall', rotationStore.stalledAbilities[index], index)}
                                         alt="Stalled ability"
                                         title="Stalled: {allAbils[rotationStore.stalledAbilities[index]].title}"
                                     />
                                 {/if}
                                 {#if rotationStore.stalledAbilities[index]}<span class="stall-label" title="Stalled: adrenaline only">S</span>{/if}
                                 {#if rotationStore.releasedAbilities[index] && allAbils[rotationStore.releasedAbilities[index]]}
-                                    <img class="stalled-ability" src={allAbils[rotationStore.releasedAbilities[index]].icon} alt="Released ability" title="Release: {allAbils[rotationStore.releasedAbilities[index]].title}" />
+                                    <img class="released-ability" draggable="true" ondragstart={(e) => dragTimelineAction(e, 'release', rotationStore.releasedAbilities[index], index)} src={allAbils[rotationStore.releasedAbilities[index]].icon} alt="Released ability" title="Release: {allAbils[rotationStore.releasedAbilities[index]].title}" />
                                     <span class="stall-label release-label" class:invalid-release={!validRelease(index)} title={validRelease(index) ? "Release held ability" : "No matching held ability: this release does no damage"}>R</span>
                                 {/if}
+                                {#if ability && rotationStore.releasedAbilities[index]}<span class="cast-divider" aria-hidden="true"></span>{/if}
                                 {#if rotationStore.cooldownReady[index]}
                                     {@const cdList = rotationStore.cooldownReady[index]}
                                     <div class="cooldown-ready-container" class:has-overflow={cdList.length > 1}>
@@ -808,8 +832,8 @@
                                 {/if}
                                 {#if rotationStore.extraActionBar[index]?.some(a => a !== null)}
                                     {@const extraActions = rotationStore.extraActionBar[index].filter(a => a !== null)}
-                                    <div class="extra-action-preview">
-                                        {#each extraActions as action}
+                                    <div class="extra-action-preview" title={extraActions.map(a => a.title || allExtraActions[a]?.title || a.value || a).join(", ")}>
+                                        {#each extraActions.slice(0, 1) as action}
                                             {@const icon = action.icon || allExtraActions[action]?.icon || ''}
                                             {@const title = action.title || allExtraActions[action]?.title || ''}
                                             {#if icon}
@@ -818,6 +842,7 @@
                                                 </div>
                                             {/if}
                                         {/each}
+                                        {#if extraActions.length > 1}<span class="extra-count">+{extraActions.length - 1}</span>{/if}
                                     </div>
                                 {/if}
                                 {#if phaseTickMap.has(index)}
@@ -977,7 +1002,7 @@
                     <p class="text-sm leading-relaxed mt-2">
                         <strong>Tool Modes</strong> &mdash; switch between 4 modes via the toolbar or keyboard:
                         <strong>Edit</strong> (<strong>E</strong>) is the default for adding, removing, and dragging abilities.
-                        <strong>Stall (S)</strong> pays or gains adrenaline without dealing damage or generating hit stacks. Choose an ability and click a tick. <strong>Release (R)</strong> then releases it on a later tick without paying again. A new cast or stall replaces the held ability. Channels and self-cast buffs cannot be stalled. <strong>Edit (E)</strong> returns to normal editing.
+                        <strong>Stall (S)</strong> pays or gains adrenaline without dealing damage or generating hit stacks. Click an ability to stall it at the next GCD, or drag it to a tick. <strong>Release (R)</strong> adds the held ability at the next GCD without paying again. The next ability shares that tick; drag the release icon to move it. A new cast or stall replaces the held ability. Channels and self-cast buffs cannot be stalled. <strong>Edit (E)</strong> returns to normal editing.
                         <strong>Null</strong> (<strong>N</strong>) marks ticks as nulled &mdash; 0 damage but buffs and stacks still apply (e.g. boss phase transitions).
                         <strong>Insert</strong> (<strong>I</strong>) left-click a tick to insert empty ticks (shifting everything right), right-click to remove ticks (shifting everything left).
                     </p>
@@ -1293,11 +1318,11 @@
     }
 
     .stall-cursor {
-        cursor: wait; /* Default stall cursor */
+        cursor: default; /* Default stall cursor */
     }
 
     .stall-cursor.stalling {
-        cursor: wait; /* Will be overridden if there's an ability being stalled */
+        cursor: default; /* Will be overridden if there's an ability being stalled */
     }
 
     .null-cursor {
@@ -1506,17 +1531,10 @@
         border: 1px solid rgba(0, 231, 54, 0.789);
     }
 
-    .stalled-ability {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 55%;
-        height: 55%;
-        opacity: 0.8;
-        border: 1px solid #ffff72;
-        box-sizing: border-box;
-        z-index: 2;
-    }
+    .stalled-ability, .released-ability {position:absolute; inset:0; width:100%; height:100%; object-fit:contain; cursor:grab; z-index:1;}
+    .combined-cast .regular-ability {clip-path:polygon(100% 0, 100% 100%, 0 100%);}
+    .combined-cast .released-ability {clip-path:polygon(0 0, 100% 0, 0 100%);}
+    .cast-divider {position:absolute; inset:0; pointer-events:none; z-index:2; background:linear-gradient(135deg, transparent calc(50% - 1px), #e3d6b1 calc(50% - 1px), #e3d6b1 calc(50% + 1px), transparent calc(50% + 1px));}
 
     .cooldown-ready-container {
         position: absolute;
@@ -1583,38 +1601,9 @@
         opacity: 0;
     }
 
-    /* Extra action preview icons (above slot, shown on hover) */
-    .extra-action-preview {
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 1px;
-        z-index: 4;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.15s ease;
-        padding-bottom: 2px;
-    }
-
-    .ability-slot:hover .extra-action-preview {
-        opacity: 1;
-    }
-
-    .extra-action-icon-box {
-        width: 27px;
-        height: 27px;
-        min-width: 27px;
-        min-height: 27px;
-        border: 1px solid #b8a04a;
-        background: rgba(23, 29, 33, 0.95);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        pointer-events: none;
-    }
+    .extra-action-preview {position:absolute; bottom:0; right:0; display:flex; z-index:5; pointer-events:none;}
+    .extra-action-icon-box {width:17px; height:17px; border:1px solid #b8a04a; background:#171d21; display:flex; align-items:center; justify-content:center; overflow:hidden;}
+    .extra-count {position:absolute; right:17px; bottom:0; font-size:9px; background:#171d21; color:#e3d6b1; padding:0 2px;}
 
     .extra-action-icon-box img {
         max-width: 100%;
@@ -1624,7 +1613,7 @@
     }
 
     .stall-cursor.stalling {
-        cursor: wait; /* Will be overridden if there's an ability being stalled */
+        cursor: default; /* Will be overridden if there's an ability being stalled */
     }
 
     .null-cursor {
