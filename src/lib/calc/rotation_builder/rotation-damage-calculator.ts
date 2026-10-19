@@ -1,3 +1,4 @@
+import { recalcFulProbability, rollFulHit } from './ful';
 import { isAreaAttack, prepareChainCast } from './castTargets';
 import { handleWenBuffConsumption } from './effects';
 import { prepareReaperStacks, gainReaperStack } from '../necklace';
@@ -168,73 +169,6 @@ function forwardFillCumulative(arr: number[]) {
     }
 }
 
-const FUL_BUFF_DURATION = 25; // 15 seconds = 25 ticks
-// Cooldown runs concurrently with buff (both 15s from proc), so no additional cooldown-only period
-const FUL_TOTAL_LOCKOUT = 25; // Total ticks from proc where no new proc can happen
-const FUL_PROC_CHANCE = 0.066;
-
-/**
- * Update Scripture of Ful probability on ability release.
- * Tracks probability mass of procs at each tick using fulProcHistory.
- * fulProcHistory[t] = probability that a NEW proc started at tick t.
- */
-function updateFulProbability(state: RotationState, settings: Record<string, any>) {
-    if (settings[SETTINGS.POCKET] !== ARMOUR.FUL_BOOK) {
-        settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = 0;
-        return;
-    }
-
-    const tick = state.tick;
-
-    // Calculate current probability of being in buff or lockout state
-    // by summing proc history over the relevant windows
-    let buffProb = 0; // probability buff is active (procced within last FUL_BUFF_DURATION ticks)
-    let lockoutProb = 0; // probability locked out but buff expired (shouldn't happen with concurrent timing)
-
-    for (let i = 0; i < state.fulProcHistory.length; i++) {
-        const mass = state.fulProcHistory[i] || 0; // Handle sparse array (undefined entries between ability ticks)
-        if (mass === 0) continue;
-        const ticksAgo = tick - i;
-        if (ticksAgo >= 0 && ticksAgo < FUL_BUFF_DURATION) {
-            buffProb += mass;
-        } else if (ticksAgo >= FUL_BUFF_DURATION && ticksAgo < FUL_TOTAL_LOCKOUT) {
-            lockoutProb += mass;
-        }
-    }
-
-    // Probability we're in the "can proc" state (not in buff or lockout)
-    const canProcProb = Math.max(0, 1);// - buffProb - lockoutProb);
-
-    // New proc probability mass this tick
-    const newProcMass = canProcProb * FUL_PROC_CHANCE;
-    state.fulProcHistory[tick] = (state.fulProcHistory[tick] || 0) + newProcMass;
-
-    // The triggering hit doesn't benefit, so the buff probability for THIS tick's damage
-    // is the buffProb BEFORE adding the new proc (later hits on this tick will use updated value)
-    settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = buffProb;
-}
-
-/**
- * Recalculate Ful buff probability for the current tick (for non-ability ticks).
- */
-function recalcFulProbability(state: RotationState, settings: Record<string, any>) {
-    if (settings[SETTINGS.POCKET] !== ARMOUR.FUL_BOOK) {
-        settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = 0;
-        return;
-    }
-
-    const tick = state.tick;
-    let buffProb = 0;
-    for (let i = 0; i < state.fulProcHistory.length; i++) {
-        const mass = state.fulProcHistory[i] || 0;
-        if (mass === 0) continue;
-        const ticksAgo = tick - i;
-        if (ticksAgo >= 0 && ticksAgo < FUL_BUFF_DURATION) {
-            buffProb += mass;
-        }
-    }
-    settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = buffProb;
-}
 /**
  * Calculates the total damage for a given rotation over a specified number of ticks.
  *
@@ -625,6 +559,7 @@ function prepareTick(state: RotationState, settings: any, rotation: RotationInpu
     }
     handleExtraActionsCore(settings, state.timers, state.tick, rotation);
     prepareReaperStacks(settings, state.tick);
+    recalcFulProbability(state, settings);
     if (settings._chainPending && state.tick >= settings._chainPending.expires) {
         settings._chainPending = null;
         settings[SETTINGS.GREATER_CHAIN] = false;
@@ -666,7 +601,6 @@ function processCurrentTickCore(
         const hitTick = state.tick + state.hit_delay;
         state.damageQueue[hitTick] ??= [];
         applyActivationEffects(settingsCopy, releasedAbility, state.timers);
-        updateFulProbability(state, settingsCopy);
         settingsCopy._salvoCastKey = releasedAbility;
         settingsCopy._salvoCastBonus = settingsCopy[SETTINGS.CRIMSON_SALVO] ? 1 : (settingsCopy._salvoProbability ?? 0);
         handleBuffs(settingsCopy, state.timers, releasedAbility);
@@ -1157,7 +1091,6 @@ function processAbilityCore(
     style_specific_unification(settingsCopy, abils[abilityKey].mainStyle);
     rotationState.combatStyle = abils[abilityKey].mainStyle;
     settingsCopy['ability'] = abilityKey;
-    updateFulProbability(rotationState, settingsCopy);
 
     on_stall(settingsCopy, abilityKey, rotationState.timers);
     prepareChainCast(settingsCopy, abilityKey, rotationState.tick, targetCountAt(rotationState.targetCounts, rotationState.tick));
@@ -1562,6 +1495,8 @@ function hitTargets(state: RotationState, settings: any, object: DamageObject, k
             }
         }
         const hits = on_hit(settings, targetObject, state.timers, key);
+        // Roll after calculating this hit: the triggering hit does not receive the buff.
+        rollFulHit(state, settings, key, object.likelihood);
         settings._deferBolgProcs = previousDefer;
         for (const hit of hits) {
             (hit as any).targetIndex = target;
@@ -1592,6 +1527,7 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
             const primaryBik = settingsCopy[SETTINGS.BIK_STACKS];
             if (target) settingsCopy[SETTINGS.BIK_STACKS] = state.secondaryBik?.[target] ?? 0;
             const hits = resolveBolgImpact(settingsCopy, namedDmgObject, state.timers);
+            rollFulHit(state, settingsCopy, ABILITIES.BOLG_PROC, namedDmgObject.likelihood);
             if (target) {
                 state.secondaryBik ??= {};
                 state.secondaryBik[target] = settingsCopy[SETTINGS.BIK_STACKS];

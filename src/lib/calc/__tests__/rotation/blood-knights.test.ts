@@ -15,8 +15,8 @@ it('retains Wen and Locate for the final Shadowfall in the Blood Knights rotatio
     const frames:Record<number,any>={};
     const out=calculateRotationDamageCore(s,rotation,60,(t,v)=>frames[t]={...v});
     const total=out.regularDamage+out.familiarDamage+Object.values(out.secondaryDamage??{}).reduce((a,b)=>a+b,0);
-    expect(total).toBeGreaterThan(650000);
-    expect(total).toBeLessThan(675000);
+    expect(total).toBeGreaterThan(695000);
+    expect(total).toBeLessThan(710000);
     const last=out.distributionStats.find(x=>x.ability===ABILITIES.SHADOWFALL_2 && x.tick===44)!;
     expect(last.critMax).toBeGreaterThan(25000);
     expect(frames[40][SETTINGS.LOCATE]).toBe(true);
