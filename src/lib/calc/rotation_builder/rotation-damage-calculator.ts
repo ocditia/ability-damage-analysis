@@ -441,6 +441,9 @@ export function calculateRotationDamageCore(
         );
     }
 
+    // Reconcile a saved starting value after changing maximum-adrenaline relics.
+    addAdrenaline(settingsCopy, 0, false);
+
     // Initialize familiar spec points and regen accumulator
     settingsCopy[SETTINGS.FAMILIAR_SPEC_POINTS] = 60;
     settingsCopy[SETTINGS.FAMILIAR_SPEC_REGEN_ACCUMULATOR] = 0;

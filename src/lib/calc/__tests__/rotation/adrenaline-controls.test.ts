@@ -10,6 +10,9 @@ const settings=(extra={})=>createRangedSettings({[SETTINGS.ADRENALINE]:0,[SETTIN
 function run(s,r){const seen={};calculateRotationDamageCore(s,r,18,(t,v)=>seen[t]={...v});return seen;}
 const empty=()=>({...createRotationFromAbilities([],18),tickEvents:Array(18).fill(null)});
 describe('adrenaline controls',()=>{
+ it('caps a saved starting value when Heightened Senses is disabled',()=>{
+  expect(run(settings({[SETTINGS.ADRENALINE]:110}),empty())[0][SETTINGS.ADRENALINE]).toBe(100);
+ });
  it('applies Fury of the Small and Conservation of Energy independently',()=>{
   const basic=empty();basic.abilityBar[0]=ABILITIES.RANGED_AUTO;
   expect(run(settings(),basic)[3][SETTINGS.ADRENALINE]).toBe(9);
