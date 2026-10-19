@@ -1,0 +1,1228 @@
+{
+  "Abomination (Normal)": {
+    "name": "Abomination (Normal)",
+    "defenceLevel": 60,
+    "armour": 850,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": true,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Abomination",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 198000
+  },
+  "Abomination (Ragged)": {
+    "name": "Abomination (Ragged)",
+    "defenceLevel": 60,
+    "armour": 850,
+    "weakness": "Nothing",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": true,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Abomination",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 66001
+  },
+  "Agoroth": {
+    "name": "Agoroth",
+    "defenceLevel": 30,
+    "armour": 850,
+    "weakness": "Nothing",
+    "style": "None",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.45,
+      "magic": 0.65
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Agoroth",
+    "notes": "Combat-level-dependent health and shell mechanics are not simulated."
+  },
+  "Akrisae the Doomed (Barrows)": {
+    "name": "Akrisae the Doomed (Barrows)",
+    "defenceLevel": 70,
+    "armour": 1486,
+    "weakness": "Bolt",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.5,
+      "ranged": 0.7,
+      "magic": 0.6
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Akrisae_the_Doomed",
+    "notes": "Protection prayer changes are not simulated.",
+    "health": 12000
+  },
+  "Amascut, the Devourer (Eclipse of the Heart)": {
+    "name": "Amascut, the Devourer (Eclipse of the Heart)",
+    "defenceLevel": 90,
+    "armour": 2458,
+    "weakness": "None",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Amascut%2C_the_Devourer",
+    "notes": "Base target stats; enrage-specific mechanics, barriers and phase health are not simulated."
+  },
+  "Amascut, the Devourer (Enraged)": {
+    "name": "Amascut, the Devourer (Enraged)",
+    "defenceLevel": 95,
+    "armour": 2765,
+    "weakness": "None",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Amascut%2C_the_Devourer",
+    "notes": "Base target stats; enrage-specific mechanics, barriers and phase health are not simulated."
+  },
+  "Amascut, the Devourer (Regular)": {
+    "name": "Amascut, the Devourer (Regular)",
+    "defenceLevel": 95,
+    "armour": 2765,
+    "weakness": "None",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Amascut%2C_the_Devourer",
+    "notes": "Base target stats; enrage-specific mechanics, barriers and phase health are not simulated."
+  },
+  "Arch-Glacor (Normal mode)": {
+    "name": "Arch-Glacor (Normal mode)",
+    "defenceLevel": 75,
+    "armour": 1694,
+    "weakness": "None",
+    "style": "Magic, Range",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Arch-Glacor",
+    "notes": "Normal-mode target stats; mechanic-dependent health scaling is not simulated."
+  },
+  "Avatar of Creation": {
+    "name": "Avatar of Creation",
+    "defenceLevel": 1,
+    "armour": 1486,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Avatar_of_Creation",
+    "notes": "Soul Wars avatar; Slayer-level requirements are not simulated.",
+    "health": 125000
+  },
+  "Avatar of Destruction": {
+    "name": "Avatar of Destruction",
+    "defenceLevel": 1,
+    "armour": 1486,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Avatar_of_Destruction",
+    "notes": "Soul Wars avatar; Slayer-level requirements are not simulated.",
+    "health": 125000
+  },
+  "Bork (In combat)": {
+    "name": "Bork (In combat)",
+    "defenceLevel": 70,
+    "armour": 1486,
+    "weakness": "Crush",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.75,
+      "melee": 0.5,
+      "ranged": 0.1,
+      "magic": 0.5
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Bork",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 45000
+  },
+  "Cliff (16)": {
+    "name": "Cliff (16)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Cliff",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 3250
+  },
+  "Cliff (28)": {
+    "name": "Cliff (28)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Cliff",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 3250
+  },
+  "Cliff (37)": {
+    "name": "Cliff (37)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Cliff",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 3250
+  },
+  "Cliff (49)": {
+    "name": "Cliff (49)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Cliff",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 3250
+  },
+  "Cliff (58)": {
+    "name": "Cliff (58)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Cliff",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 3250
+  },
+  "Cliff (7)": {
+    "name": "Cliff (7)",
+    "defenceLevel": 5,
+    "armour": 150,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Cliff",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 2000
+  },
+  "Cliff (70)": {
+    "name": "Cliff (70)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Cliff",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 3250
+  },
+  "Cliff (81)": {
+    "name": "Cliff (81)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.4,
+      "melee": 0.4,
+      "ranged": 0.4,
+      "magic": 0.4
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Cliff",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 3250
+  },
+  "Cliff (91 Magic)": {
+    "name": "Cliff (91 Magic)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Arrows",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.5,
+      "ranged": 0.7,
+      "magic": 0.6
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Cliff",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 3250
+  },
+  "Cliff (91 Melee)": {
+    "name": "Cliff (91 Melee)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Air",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.6,
+      "ranged": 0.5,
+      "magic": 0.7
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Cliff",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 3250
+  },
+  "Cliff (91 Ranged)": {
+    "name": "Cliff (91 Ranged)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Slash",
+    "style": "Ranged",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.7,
+      "ranged": 0.6,
+      "magic": 0.5
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Cliff",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 3250
+  },
+  "Dharok the Wretched (Normal)": {
+    "name": "Dharok the Wretched (Normal)",
+    "defenceLevel": 70,
+    "armour": 1299,
+    "weakness": "Fire",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.6,
+      "ranged": 0.5,
+      "magic": 0.7
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Dharok_the_Wretched",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 12000
+  },
+  "Dragith Nurn": {
+    "name": "Dragith Nurn",
+    "defenceLevel": 19,
+    "armour": 304,
+    "weakness": "Arrows",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.5,
+      "ranged": 0.7,
+      "magic": 0.6
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Dragith_Nurn",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 7900
+  },
+  "Flesh-hatcher Mhekarnahz": {
+    "name": "Flesh-hatcher Mhekarnahz",
+    "defenceLevel": 55,
+    "armour": 983,
+    "weakness": "Ranged",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.65,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Flesh-hatcher_Mhekarnahz",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 125000
+  },
+  "Giant mole (Hard Mode)": {
+    "name": "Giant mole (Hard Mode)",
+    "defenceLevel": 45,
+    "armour": 732,
+    "weakness": "None",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.45,
+      "magic": 0.65
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Giant_mole",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 78000
+  },
+  "Guthan the Infested (Normal)": {
+    "name": "Guthan the Infested (Normal)",
+    "defenceLevel": 70,
+    "armour": 1486,
+    "weakness": "Air",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.6,
+      "ranged": 0.5,
+      "magic": 0.7
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Guthan_the_Infested",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 12000
+  },
+  "Hermod, the Spirit of War (Normal)": {
+    "name": "Hermod, the Spirit of War (Normal)",
+    "defenceLevel": 70,
+    "armour": 1486,
+    "weakness": "Necromancy",
+    "style": "Necromancy",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.65,
+      "necromancy": 0.9
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Hermod%2C_the_Spirit_of_War",
+    "notes": "Only Necromancy can directly attack this boss. Encounter-specific mechanics are not simulated.",
+    "allowedStyles": [
+      "necromancy"
+    ],
+    "health": 200000
+  },
+  "Hermod, the Spirit of War (Quest)": {
+    "name": "Hermod, the Spirit of War (Quest)",
+    "defenceLevel": 70,
+    "armour": 1486,
+    "weakness": "Necromancy",
+    "style": "Necromancy",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.65,
+      "necromancy": 0.9
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Hermod%2C_the_Spirit_of_War",
+    "notes": "Only Necromancy can directly attack this boss. Encounter-specific mechanics are not simulated.",
+    "allowedStyles": [
+      "necromancy"
+    ],
+    "health": 100000
+  },
+  "Hollowtoof": {
+    "name": "Hollowtoof",
+    "defenceLevel": 55,
+    "armour": 983,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.45,
+      "magic": 0.65
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Hollowtoof",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 50000
+  },
+  "Ivar, King of Bones": {
+    "name": "Ivar, King of Bones",
+    "defenceLevel": 40,
+    "armour": 850,
+    "weakness": "Air",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.6,
+      "ranged": 0.5,
+      "magic": 0.7
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Ivar%2C_King_of_Bones",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 40000
+  },
+  "Karil the Tainted (Normal)": {
+    "name": "Karil the Tainted (Normal)",
+    "defenceLevel": 70,
+    "armour": 1299,
+    "weakness": "Stab",
+    "style": "Ranged",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.7,
+      "ranged": 0.6,
+      "magic": 0.5
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Karil_the_Tainted",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 12000
+  },
+  "Kerapac, the bound (Hard mode)": {
+    "name": "Kerapac, the bound (Hard mode)",
+    "defenceLevel": 80,
+    "armour": 1924,
+    "weakness": "Nothing",
+    "style": "Melee,Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Kerapac%2C_the_bound",
+    "notes": "Target accuracy stats only; phase health and Time Warp are not simulated by this entry."
+  },
+  "Kerapac, the bound (Normal mode)": {
+    "name": "Kerapac, the bound (Normal mode)",
+    "defenceLevel": 80,
+    "armour": 1924,
+    "weakness": "Nothing",
+    "style": "Melee,Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Kerapac%2C_the_bound",
+    "notes": "Target accuracy stats only; phase health and Time Warp are not simulated by this entry."
+  },
+  "Kezalam, the Wanderer (Hard mode)": {
+    "name": "Kezalam, the Wanderer (Hard mode)",
+    "defenceLevel": 85,
+    "armour": 2178,
+    "weakness": "Magic",
+    "style": "Magic, Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.6,
+      "ranged": 0.6,
+      "magic": 0.7
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Kezalam%2C_the_Wanderer",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 900000
+  },
+  "Kezalam, the Wanderer (Normal mode)": {
+    "name": "Kezalam, the Wanderer (Normal mode)",
+    "defenceLevel": 85,
+    "armour": 2178,
+    "weakness": "Magic",
+    "style": "Magic, Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.65
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Kezalam%2C_the_Wanderer",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 600000
+  },
+  "Legio Primus": {
+    "name": "Legio Primus",
+    "defenceLevel": 85,
+    "armour": 2178,
+    "weakness": "Ranged",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.7,
+      "melee": 0.07,
+      "ranged": 0.7,
+      "magic": 0.15
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Legio_Primus",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 30000
+  },
+  "Legio Quartus": {
+    "name": "Legio Quartus",
+    "defenceLevel": 85,
+    "armour": 2178,
+    "weakness": "Ranged",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.7,
+      "melee": 0.07,
+      "ranged": 0.7,
+      "magic": 0.15
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Legio_Quartus",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 30000
+  },
+  "Legio Quintus": {
+    "name": "Legio Quintus",
+    "defenceLevel": 85,
+    "armour": 2178,
+    "weakness": "Ranged",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.7,
+      "melee": 0.07,
+      "ranged": 0.7,
+      "magic": 0.15
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Legio_Quintus",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 30000
+  },
+  "Legio Secundus": {
+    "name": "Legio Secundus",
+    "defenceLevel": 85,
+    "armour": 2178,
+    "weakness": "Ranged",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.7,
+      "melee": 0.07,
+      "ranged": 0.7,
+      "magic": 0.15
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Legio_Secundus",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 30000
+  },
+  "Legio Sextus": {
+    "name": "Legio Sextus",
+    "defenceLevel": 85,
+    "armour": 2178,
+    "weakness": "Ranged",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.7,
+      "melee": 0.07,
+      "ranged": 0.7,
+      "magic": 0.15
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Legio_Sextus",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 30000
+  },
+  "Legio Tertius": {
+    "name": "Legio Tertius",
+    "defenceLevel": 85,
+    "armour": 2178,
+    "weakness": "Ranged",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.7,
+      "melee": 0.07,
+      "ranged": 0.7,
+      "magic": 0.15
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Legio_Tertius",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 30000
+  },
+  "Nakatra, Devourer Eternal (Hard mode)": {
+    "name": "Nakatra, Devourer Eternal (Hard mode)",
+    "defenceLevel": 110,
+    "armour": 3862,
+    "weakness": "none",
+    "style": "Magic, Ranged",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.6,
+      "ranged": 0.6,
+      "magic": 0.6
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Nakatra%2C_Devourer_Eternal",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 1200000
+  },
+  "Nakatra, Devourer Eternal (Normal mode)": {
+    "name": "Nakatra, Devourer Eternal (Normal mode)",
+    "defenceLevel": 95,
+    "armour": 2765,
+    "weakness": "none",
+    "style": "Magic, Ranged",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.65,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Nakatra%2C_Devourer_Eternal",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 800000
+  },
+  "Osseous": {
+    "name": "Osseous",
+    "defenceLevel": 90,
+    "armour": 2458,
+    "weakness": "Necromancy",
+    "style": "Necromancy",
+    "affinities": {
+      "weakness": 1.0,
+      "melee": 0.1,
+      "ranged": 0.1,
+      "magic": 0.1,
+      "necromancy": 1.0
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Osseous",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 350000
+  },
+  "Phoenix": {
+    "name": "Phoenix",
+    "defenceLevel": 60,
+    "armour": 1132,
+    "weakness": "Arrows",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.5,
+      "ranged": 0.7,
+      "magic": 0.6
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Phoenix",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 10000
+  },
+  "Rasial, the First Necromancer (Alpha vs Omega)": {
+    "name": "Rasial, the First Necromancer (Alpha vs Omega)",
+    "defenceLevel": 95,
+    "armour": 2458,
+    "weakness": "Necromancy",
+    "style": "Necromancy",
+    "affinities": {
+      "weakness": 0.55,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55,
+      "necromancy": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Rasial%2C_the_First_Necromancer",
+    "notes": "Only Necromancy can directly attack this boss. Encounter-specific mechanics are not simulated.",
+    "allowedStyles": [
+      "necromancy"
+    ],
+    "health": 400000
+  },
+  "Rasial, the First Necromancer (Normal)": {
+    "name": "Rasial, the First Necromancer (Normal)",
+    "defenceLevel": 95,
+    "armour": 2458,
+    "weakness": "Necromancy",
+    "style": "Necromancy",
+    "affinities": {
+      "weakness": 0.55,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55,
+      "necromancy": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Rasial%2C_the_First_Necromancer",
+    "notes": "Only Necromancy can directly attack this boss. Encounter-specific mechanics are not simulated.",
+    "allowedStyles": [
+      "necromancy"
+    ],
+    "health": 800000
+  },
+  "Silverquill, the Dreadhog": {
+    "name": "Silverquill, the Dreadhog",
+    "defenceLevel": 50,
+    "armour": 732,
+    "weakness": "Stab",
+    "style": "Melee, Ranged, Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.6,
+      "ranged": 0.5,
+      "magic": 0.7
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Silverquill%2C_the_Dreadhog",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 80000
+  },
+  "Skeletal horror (Intact)": {
+    "name": "Skeletal horror (Intact)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.55,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": true,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Skeletal_horror",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 50000
+  },
+  "Skeletal horror (Missing both arms and tail)": {
+    "name": "Skeletal horror (Missing both arms and tail)",
+    "defenceLevel": 58,
+    "armour": 1070,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.55,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": true,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Skeletal_horror",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 12500
+  },
+  "Skeletal horror (Missing both arms)": {
+    "name": "Skeletal horror (Missing both arms)",
+    "defenceLevel": 58,
+    "armour": 1070,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.55,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": true,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Skeletal_horror",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 25000
+  },
+  "Skeletal horror (Missing one arm)": {
+    "name": "Skeletal horror (Missing one arm)",
+    "defenceLevel": 58,
+    "armour": 1070,
+    "weakness": "Nothing",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.55,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": true,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Skeletal_horror",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 37500
+  },
+  "Torag the Corrupted (Normal)": {
+    "name": "Torag the Corrupted (Normal)",
+    "defenceLevel": 70,
+    "armour": 1299,
+    "weakness": "Water",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.6,
+      "ranged": 0.5,
+      "magic": 0.7
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Torag_the_Corrupted",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 12000
+  },
+  "Tormented wraith": {
+    "name": "Tormented wraith",
+    "defenceLevel": 30,
+    "armour": 628,
+    "weakness": "Bolts",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.5,
+      "ranged": 0.7,
+      "magic": 0.6
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Tormented_wraith",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 4500
+  },
+  "Verac the Defiled (Normal)": {
+    "name": "Verac the Defiled (Normal)",
+    "defenceLevel": 70,
+    "armour": 1299,
+    "weakness": "Earth",
+    "style": "Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.6,
+      "ranged": 0.5,
+      "magic": 0.7
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Verac_the_Defiled",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 12000
+  },
+  "Vermyx, Brood Mother (Hard mode)": {
+    "name": "Vermyx, Brood Mother (Hard mode)",
+    "defenceLevel": 85,
+    "armour": 2178,
+    "weakness": "Melee",
+    "style": "Ranged, Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.7,
+      "ranged": 0.6,
+      "magic": 0.6
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Vermyx%2C_Brood_Mother",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 600000
+  },
+  "Vermyx, Brood Mother (Normal mode)": {
+    "name": "Vermyx, Brood Mother (Normal mode)",
+    "defenceLevel": 85,
+    "armour": 2178,
+    "weakness": "Melee",
+    "style": "Ranged, Melee",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.65,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Vermyx%2C_Brood_Mother",
+    "notes": "Base target stats; encounter-specific mechanics are not simulated.",
+    "health": 400000
+  },
+  "Vorkath (Hard mode)": {
+    "name": "Vorkath (Hard mode)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Nothing",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Vorkath",
+    "notes": "Solo base health. Group health scaling is not simulated.",
+    "health": 1500000
+  },
+  "Vorkath (Normal mode)": {
+    "name": "Vorkath (Normal mode)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Nothing",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Vorkath",
+    "notes": "Solo base health. Group health scaling is not simulated.",
+    "health": 750000
+  },
+  "Vorkath (Story mode)": {
+    "name": "Vorkath (Story mode)",
+    "defenceLevel": 65,
+    "armour": 1299,
+    "weakness": "Nothing",
+    "style": "Magic",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Vorkath",
+    "notes": "Solo base health. Group health scaling is not simulated.",
+    "health": 375000
+  },
+  "Zemouregal (Hard mode)": {
+    "name": "Zemouregal (Hard mode)",
+    "defenceLevel": 70,
+    "armour": 2765,
+    "weakness": "None",
+    "style": "Necromancy",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Zemouregal",
+    "notes": "Target stats after Vorkath leaves. His barrier while Vorkath is present is not simulated.",
+    "health": 500000
+  },
+  "Zemouregal (Normal mode)": {
+    "name": "Zemouregal (Normal mode)",
+    "defenceLevel": 70,
+    "armour": 2765,
+    "weakness": "None",
+    "style": "Necromancy",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Zemouregal",
+    "notes": "Target stats after Vorkath leaves. His barrier while Vorkath is present is not simulated.",
+    "health": 250000
+  },
+  "Zemouregal (Story mode)": {
+    "name": "Zemouregal (Story mode)",
+    "defenceLevel": 70,
+    "armour": 2765,
+    "weakness": "None",
+    "style": "Necromancy",
+    "affinities": {
+      "weakness": 0.9,
+      "melee": 0.55,
+      "ranged": 0.55,
+      "magic": 0.55
+    },
+    "taggable": false,
+    "curseImmune": false,
+    "popular": true,
+    "source": "https://runescape.wiki/w/Zemouregal",
+    "notes": "Target stats after Vorkath leaves. His barrier while Vorkath is present is not simulated.",
+    "health": 125000
+  }
+}

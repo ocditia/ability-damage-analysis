@@ -8,7 +8,10 @@ export interface Familiar {
     has_dps_spec: boolean;
     spec_damage: number;
     spec_cost: number;
-    combat_style: 'melee' | 'ranged' | 'magic';
+    combat_style: 'melee' | 'ranged' | 'magic' | 'necromancy';
+    player_accuracy_style?: 'melee' | 'ranged' | 'magic' | 'necromancy';
+    necromancy_accuracy?: number;
+    description?: string;
     accuracy: number;
     // Per-style accuracy values from game data
     melee_accuracy: number;
@@ -112,6 +115,7 @@ export const familiars: Record<string, Familiar> = {
         magic_accuracy: 1816,
         spec_min_roll: 0.2,
         icon: '/rs-rot/familiars/Talon_beast_chathead.png',
+        scroll_icon: '/rs-rot/familiars/scrolls/Talon_beast_scroll.png',
     },
     'hellhound': {
         name: 'Hellhound',
@@ -157,6 +161,28 @@ export const familiars: Record<string, Familiar> = {
     },
 };
 
+// Nihil variants share the existing familiar attack model but only boost the
+// player's matching style. Ice nihil has used Necromancy since August 2023.
+// Sources: https://runescape.wiki/w/Ice_nihil_(familiar) and sibling variant pages.
+for (const [variant, style] of Object.entries({blood: 'melee', shadow: 'ranged', smoke: 'magic', ice: 'necromancy'})) {
+    familiars[`${variant} nihil`] = {
+        ...familiars.nihil,
+        name: `${variant[0].toUpperCase()}${variant.slice(1)} Nihil`,
+        combat_style: style as Familiar['combat_style'],
+        player_accuracy_style: style as Familiar['player_accuracy_style'],
+        melee_accuracy: style === 'melee' ? 2795 : 0,
+        ranged_accuracy: style === 'ranged' ? 2795 : 0,
+        magic_accuracy: style === 'magic' ? 2795 : 0,
+        necromancy_accuracy: style === 'necromancy' ? 2795 : 0,
+        icon: `/rs-rot/familiars/${variant[0].toUpperCase()}${variant.slice(1)}_nihil_(familiar)_chathead.png`,
+        description: `Increases your ${style} accuracy by 5% before damage potential is capped. Auto-attacks are included; Annihilate scroll damage is not modelled.`,
+    };
+}
+
+export function familiarAccuracyMultiplier(familiar: string, style: string): number {
+    return familiars[familiar]?.player_accuracy_style === style ? 1.05 : 1;
+}
+
 /**
  * Dreadnip data — modeled separately as a deployable, not a familiar
  * Duration: 45s (75 ticks), attacks every 6 ticks, avg auto 450.5
@@ -180,7 +206,7 @@ export const dreadnipData = {
 export function calculateFamiliarHitChance(
     familiar: Familiar,
     targetArmour: number,
-    affinities: { melee: number; ranged: number; magic: number },
+    affinities: { melee: number; ranged: number; magic: number; necromancy?: number },
     affinityBonus: number = 0
 ): number {
     if (targetArmour <= 0) return 1;
@@ -196,6 +222,10 @@ export function calculateFamiliarHitChance(
         styles.push({ acc: familiar.magic_accuracy, aff: affinities.magic + affinityBonus });
     }
 
+    if (familiar.necromancy_accuracy > 0) {
+        const affinity = affinities.necromancy ?? [affinities.melee, affinities.ranged, affinities.magic].sort((a, b) => a - b)[1];
+        styles.push({acc: familiar.necromancy_accuracy, aff: affinity + affinityBonus});
+    }
     if (styles.length === 0) return 0;
 
     let bestHitChance = 0;

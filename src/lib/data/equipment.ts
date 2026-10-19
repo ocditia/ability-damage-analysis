@@ -69,6 +69,9 @@ const syntheticIcons: Record<number, string> = {
     1000002: '/rs-rot/armour_icons/2h_slot.png',
     1000003: '/rs-rot/armour_icons/Off-hand_slot.webp',
     1000316: '/rs-rot/armour_icons/Ammo_slot.png',
+    1000304: '/rs-rot/armour_icons/Jas_dragonbane_arrow.png',
+    53043: '/rs-rot/armour_icons/Jas_dragonbane_arrow.png',
+    53050: '/rs-rot/armour_icons/Jas_demonbane_arrow.png',
 };
 
 export function equipmentImageUrl(image: string | undefined): string {

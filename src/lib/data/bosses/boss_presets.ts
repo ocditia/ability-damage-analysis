@@ -1,8 +1,11 @@
+import additionalTargets from './additional_targets.json';
+
 export interface BossAffinities {
     weakness: number;
     melee: number;
     ranged: number;
     magic: number;
+    necromancy?: number;
 }
 
 /** Stat overrides that can change at a phase transition */
@@ -65,6 +68,9 @@ export interface BossAttackPattern {
 }
 
 export interface BossPreset {
+    source?: string;
+    notes?: string;
+    allowedStyles?: string[];
     name: string;
     defenceLevel: number;
     armour: number;
@@ -2356,6 +2362,7 @@ const ghrazi: BossPreset = {
     taggable: false, curseImmune: true, popular: true
 };
 export const bossPresets: Record<string, BossPreset> = {
+    ...additionalTargets,
     'Lady Karmina Ghrazi': {...ghrazi, name: 'Lady Karmina Ghrazi'},
     'Lord Vasily Ghrazi': {...ghrazi, name: 'Lord Vasily Ghrazi'},
     // Araxxor / Araxxi

@@ -539,6 +539,7 @@
                 {#if bossPresets[accuracyConditions[SETTINGS.BOSS_PRESET]]}
                     <label class="phase-toggle"><input type="checkbox" checked={automaticAccuracy} onchange={e => updateTickEvent({automaticAccuracy:e.currentTarget.checked})} /> Automatic damage potential</label>
                 {/if}
+                {#if bossPresets[accuracyConditions[SETTINGS.BOSS_PRESET]]?.notes}<p class="condition-note">{bossPresets[accuracyConditions[SETTINGS.BOSS_PRESET]].notes}</p>{/if}
                 {#if automaticAccuracy}
                     <p class="condition-note">Calculated per hit from target, equipment and buffs. Untick to enter a damage potential override.</p>
                 {:else}

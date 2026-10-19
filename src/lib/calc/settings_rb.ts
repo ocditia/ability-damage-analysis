@@ -155,6 +155,12 @@ const SETTINGS = {
         RIPPER_DEMON: 'ripper demon',
         KALGERION_DEMON: 'kalgerion demon',
         STEEL_TITAN: 'steel titan',
+        BLOOD_NIHIL: 'blood nihil',
+        SHADOW_NIHIL: 'shadow nihil',
+        SMOKE_NIHIL: 'smoke nihil',
+        ICE_NIHIL: 'ice nihil',
+        TALON_BEAST: 'talon beast',
+        SMOKE_DEVIL: 'smoke devil',
     },
     FAMILIAR_ACCURACY: 'familiar accuracy',
     KALG_SPEC: 'kalg spec',
@@ -921,7 +927,13 @@ const settingsConfig = {
             { text: 'None', value: SETTINGS.FAMILIAR_VALUES.NONE },
             { text: 'Ripper demon', value: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON },
             { text: 'Kalgerion demon', value: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON },
-            { text: 'Steel titan', value: SETTINGS.FAMILIAR_VALUES.STEEL_TITAN }
+            { text: 'Steel titan', value: SETTINGS.FAMILIAR_VALUES.STEEL_TITAN },
+            { text: 'Blood nihil (Melee accuracy)', value: SETTINGS.FAMILIAR_VALUES.BLOOD_NIHIL },
+            { text: 'Shadow nihil (Ranged accuracy)', value: SETTINGS.FAMILIAR_VALUES.SHADOW_NIHIL },
+            { text: 'Smoke nihil (Magic accuracy)', value: SETTINGS.FAMILIAR_VALUES.SMOKE_NIHIL },
+            { text: 'Ice nihil (Necromancy accuracy)', value: SETTINGS.FAMILIAR_VALUES.ICE_NIHIL },
+            { text: 'Talon beast', value: SETTINGS.FAMILIAR_VALUES.TALON_BEAST },
+            { text: 'Smoke devil', value: SETTINGS.FAMILIAR_VALUES.SMOKE_DEVIL }
         ]
     },
     [SETTINGS.FAMILIAR_ACCURACY]: {

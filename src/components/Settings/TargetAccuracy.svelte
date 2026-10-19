@@ -27,11 +27,14 @@
     {#if bossPresets[settings[SETTINGS.BOSS_PRESET]?.value]}
         <label class="toggle"><input type="checkbox" checked={settings[SETTINGS.AUTO_ACCURACY]?.value === true} onchange={e => change(SETTINGS.AUTO_ACCURACY, e.currentTarget.checked)} /> Calculate damage potential from target</label>
     {/if}
+    {#if bossPresets[settings[SETTINGS.BOSS_PRESET]?.value]?.notes}
+        <p>{bossPresets[settings[SETTINGS.BOSS_PRESET].value].notes} <a href={bossPresets[settings[SETTINGS.BOSS_PRESET].value].source} target="_blank" rel="noreferrer">Wiki stats</a></p>
+    {/if}
     {#if automatic}
         <div class="field"><span>Damage potential</span><strong>{preview.potential.toFixed(1)}%</strong></div>
         <p>Recalculates for each attack using its style, equipped weapon, combat level and prayer. Wen and Ful use the uncapped accuracy.</p>
         <details><summary>Accuracy modifiers</summary>
-            <p>Combat levels include potions, before prayer. Enter additional accuracy boosts (for example 1.05 for a matching nihil). Target weakness, affinity debuffs and defence drains are not inferred.</p>
+            <p>Combat levels include potions, before prayer. The selected Nihil bonus is included automatically. Enter only other accuracy boosts here. Target weakness, affinity debuffs and defence drains are not inferred.</p>
             <label class="field"><span>Additional accuracy ×</span><input type="number" min="0" max="10" step="0.01" value={settings[SETTINGS.ACCURACY_MULTIPLIER]?.value ?? 1} onchange={e => change(SETTINGS.ACCURACY_MULTIPLIER, Number(e.currentTarget.value))} /></label>
             <label class="field"><span>Affinity bonus</span><input type="number" min="0" max="10" value={settings[SETTINGS.AFFINITY_BONUS]?.value ?? 0} onchange={e => change(SETTINGS.AFFINITY_BONUS, Number(e.currentTarget.value))} /></label>
             <label class="field"><span>Defence levels drained</span><input type="number" min="0" max="200" value={settings[SETTINGS.TARGET_DEFENCE_DRAIN]?.value ?? 0} onchange={e => change(SETTINGS.TARGET_DEFENCE_DRAIN, Number(e.currentTarget.value))} /></label>

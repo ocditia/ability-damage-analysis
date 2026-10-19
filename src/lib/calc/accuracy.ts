@@ -1,3 +1,4 @@
+import { familiarAccuracyMultiplier } from '$lib/data/familiars';
 import { SETTINGS } from './settings_rb';
 import { ABILITIES, abils } from '$lib/data/abilities';
 import { ARMOUR } from '$lib/data/armour';
@@ -55,9 +56,12 @@ export function calculateAccuracy(settings: Record<string, any>, ability: string
     }
     let accuracy = Math.max(0, levelAccuracy(Number(settings[levelKey] ?? 99) + prayerLevels) + weaponAccuracy - penalty);
     accuracy *= Math.max(0, Number(settings[SETTINGS.ACCURACY_MULTIPLIER] ?? 1));
+    accuracy *= familiarAccuracyMultiplier(settings[SETTINGS.FAMILIAR], style);
     if (style === 'ranged' && settings[SETTINGS.AMMO] === ARMOUR.FUL_ARROWS) accuracy *= .9;
+    if (boss.allowedStyles && !boss.allowedStyles.includes(style))
+        return {potential: 0, uncapped: 0, automatic: true, accuracy, armour: 0};
     let affinity = style === 'necromancy'
-        ? [boss.affinities.melee, boss.affinities.ranged, boss.affinities.magic].sort((a, b) => a - b)[1]
+        ? boss.affinities.necromancy ?? [boss.affinities.melee, boss.affinities.ranged, boss.affinities.magic].sort((a, b) => a - b)[1]
         : boss.affinities[style] ?? .55;
     affinity += Math.max(0, Math.min(10, Number(settings[SETTINGS.AFFINITY_BONUS] ?? 0))) / 100;
     const defence = Math.max(0, boss.defenceLevel - Number(settings[SETTINGS.TARGET_DEFENCE_DRAIN] ?? 0));

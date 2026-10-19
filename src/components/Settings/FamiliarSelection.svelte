@@ -20,16 +20,11 @@
         SETTINGS.SPIRIT_WEED_INCENSE_VALUES.LVL4,
     ];
 
-    const showScrollOptions = $derived(
-        settings[SETTINGS.FAMILIAR]?.value === SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON ||
-        settings[SETTINGS.FAMILIAR]?.value === SETTINGS.FAMILIAR_VALUES.STEEL_TITAN
-    );
-
-    function scrollIcon(value) {
-        return settings[SETTINGS.FAMILIAR]?.value === SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON
-            ? '/rs-rot/familiars/scrolls/Ripper_Demon_scroll_(Death_From_Above).png'
-            : '/rs-rot/familiars/scrolls/Steel_Titan_scroll_(Steel_of_Legends).png';
+    const showScrollOptions = $derived(familiars[settings[SETTINGS.FAMILIAR]?.value]?.has_dps_spec === true);
+    function scrollIcon() {
+        return familiars[settings[SETTINGS.FAMILIAR]?.value]?.scroll_icon ?? '/rs-rot/effect_icons/familiar.png';
     }
+
 </script>
 
 <h5 class="uppercase font-bold text-lg text-center mb-4">Familiars</h5>
@@ -95,3 +90,5 @@
         />
     {/if}
 </div>
+{#if familiars[settings[SETTINGS.FAMILIAR]?.value]?.description}<p class="familiar-help">{familiars[settings[SETTINGS.FAMILIAR].value].description}</p>{/if}
+<style>.familiar-help {font-size:.75rem; color:#a7b8c3; line-height:1.5; margin:.5rem 0;}</style>

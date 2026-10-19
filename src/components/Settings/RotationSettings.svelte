@@ -222,7 +222,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
         const hitChance = calculateFamiliarHitChance(
             familiar,
             finalArmour,
-            { melee: boss.affinities.melee, ranged: boss.affinities.ranged, magic: boss.affinities.magic }
+            boss.affinities
         );
 
         settings[SETTINGS.FAMILIAR_ACCURACY].value = Math.round(hitChance * 100);
