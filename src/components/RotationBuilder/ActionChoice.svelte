@@ -25,10 +25,10 @@
 
     // Gear row definitions
     const gearRows = [
-        { label: 'W', slots: [GearSlots.MAINHAND, GearSlots.OFFHAND] },
-        { label: 'A', slots: [GearSlots.AMMO, GearSlots.POCKET] },
-        { label: 'J', slots: [GearSlots.RING, GearSlots.NECKLACE, GearSlots.CAPE] },
-        { label: 'E', slots: [GearSlots.HELMET, GearSlots.BODY, GearSlots.LEGS, GearSlots.GLOVES, GearSlots.BOOTS] },
+        { label: 'Weapons', slots: [GearSlots.MAINHAND, GearSlots.OFFHAND] },
+        { label: 'Ammo / pocket', slots: [GearSlots.AMMO, GearSlots.POCKET] },
+        { label: 'Accessories', slots: [GearSlots.RING, GearSlots.NECKLACE, GearSlots.CAPE] },
+        { label: 'Armour', slots: [GearSlots.HELMET, GearSlots.BODY, GearSlots.LEGS, GearSlots.GLOVES, GearSlots.BOOTS] },
     ];
 
     function getGearRowItems(slots) {
@@ -131,7 +131,7 @@
     {#if abilityItems.length > 0}
         <div class="section-header"><span class="section-title">Abilities</span></div>
         <div class="item-row" style="border-left: 2px solid #8888ff;">
-            <span class="row-label">A</span>
+            <span class="row-label">Abilities</span>
             <div class="item-grid">
                 {#each abilityItems as item}
                     <ActionIcon
@@ -152,7 +152,7 @@
     <!-- Prayers -->
     {#if prayerItems.length > 0}
         <div class="item-row" style="border-left: 2px solid #ffdd57;">
-            <span class="row-label">P</span>
+            <span class="row-label">Prayers</span>
             <div class="item-grid">
                 {#each prayerItems as item}
                     <ActionIcon
@@ -173,7 +173,7 @@
     <!-- Spells -->
     {#if spellItems.length > 0}
         <div class="item-row" style="border-left: 2px solid #44ccff;">
-            <span class="row-label">S</span>
+            <span class="row-label">Spells</span>
             <div class="item-grid">
                 {#each spellItems as item}
                     <ActionIcon
@@ -194,7 +194,7 @@
     <!-- Consumables -->
     {#if consumableItems.length > 0}
         <div class="item-row" style="border-left: 2px solid #ff8844;">
-            <span class="row-label">C</span>
+            <span class="row-label">Consumables</span>
             <div class="item-grid">
                 {#each consumableItems as item}
                     <ActionIcon
@@ -272,4 +272,5 @@
         gap: 1px;
     }
 
+.item-row { flex-direction: column; align-items: flex-start; gap: 5px; } .row-label { width: auto; font-size: 10px; color: #adb9c2; }
 </style>

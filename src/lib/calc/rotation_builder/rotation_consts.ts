@@ -16,6 +16,7 @@ export const buffs = [
     SETTINGS.SPLIT_SOUL,
     SETTINGS.GREATER_DRACOLICH_INFUSION,
     SETTINGS.ICY_PRECISION,
+    SETTINGS.LOCATE,
     SETTINGS.BALANCE_BY_FORCE,
     SETTINGS.INSTABILITY,
     SETTINGS.CHAOS_ROAR,
@@ -128,6 +129,12 @@ export function createBuffTimings(barSize: number) {
                 activeRows: [],
                 colour: BUFF_COLORS.icy_precision,
                 icon: '/rs-rot/effect_icons/icy_precision.png',
+                combatStyle: SettingsCombatStyles.RANGED
+            },
+            [SETTINGS.LOCATE]: {
+                title: 'Locate (Decimation)', idx: -1,
+                buffTicks: Array(barSize).fill(0), activeRows: [],
+                colour: '#ba84e8', icon: '/rs-rot/ability_icons/ranged/Decimation.png',
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.BALANCE_BY_FORCE]: {
@@ -262,7 +269,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.meteor_strike_buff,
-                icon: '/rs-rot/effect_icons/melee/Meteor_Strike_(status).png',
+                icon: '/rs-rot/ability_icons/current/meteor_strike.png',
                 combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.VESTMENTS_REGEN]: {

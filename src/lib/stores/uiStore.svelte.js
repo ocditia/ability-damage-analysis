@@ -154,6 +154,9 @@ export const uiActions = {
 
         switch (event.key) {
             case "r":
+                this.setActiveTool(ToolMode.Release);
+                break;
+            case "e":
                 this.setActiveTool(ToolMode.Regular);
                 break;
             case "s":

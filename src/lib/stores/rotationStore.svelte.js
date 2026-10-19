@@ -1,3 +1,4 @@
+import { normalizeTickEvent } from '$lib/calc/rotation_builder/tickEvents';
 import { createBuffTimings, createStackTimings } from '$lib/calc/rotation_builder/rotation_consts.ts';
 import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
 import { normalizeLegacy } from '$lib/calc/rotation_builder/extra-action';
@@ -17,10 +18,14 @@ export const rotationStore = $state({
     activeRotationId: null, // ID of the currently loaded rotation
 
     // Current rotation data
+    targetCounts: Array(BAR_SIZE).fill(null),
+    tickEvents: Array(BAR_SIZE).fill(null),
+    secondaryDamage: {},
     abilityBar: Array(BAR_SIZE).fill(null),
     extraActionBar: Array(BAR_SIZE).fill(null),
     nulledTicks: Array(BAR_SIZE).fill(false),
     stalledAbilities: Array(BAR_SIZE).fill(null),
+    releasedAbilities: Array(BAR_SIZE).fill(null),
 
     // Buffs and stacks
     buffs: createBuffTimings(BAR_SIZE),
@@ -60,6 +65,7 @@ function restoreSettings(snapshot) {
     if (!snapshot || !settingsStore.initialized) return;
     migrateEquipmentSettings(snapshot);
     for (const [key, value] of Object.entries(snapshot)) {
+        if (key === '_gearInstances' && !settingsStore.settings[key]) settingsStore.settings[key] = {value: {}};
         if (settingsStore.settings[key]) {
             settingsStore.settings[key].value = value;
         }
@@ -105,7 +111,10 @@ export const rotationActions = {
             a: rotationStore.abilityBar.map(a => a || ''),
             e: rotationStore.extraActionBar.map(row => row ? row.map(a => a || '') : []),
             n: rotationStore.nulledTicks,
+            c: [...rotationStore.targetCounts],
+            v: rotationStore.tickEvents.map(event => event ? {...event} : null),
             t: rotationStore.stalledAbilities.map(a => a || ''),
+            r: rotationStore.releasedAbilities.map(a => a || ''),
             s: getSettingsSnapshot()
         };
     },
@@ -183,6 +192,9 @@ export const rotationActions = {
             rotationStore.extraActionBar = config.data.e.map(row => row.map(a => a ? (normalizeLegacy(a, gearSwaps, allExtraActions) || a) : null));
             rotationStore.nulledTicks = config.data.n;
             rotationStore.stalledAbilities = config.data.t.map(a => a || null);
+            rotationStore.releasedAbilities = Array.from({length: BAR_SIZE}, (_, i) => config.data.r?.[i] || null);
+            rotationStore.targetCounts = Array.from({length: BAR_SIZE}, (_, i) => config.data.c?.[i] ?? null);
+            rotationStore.tickEvents = Array.from({length: BAR_SIZE}, (_, i) => normalizeTickEvent(config.data.v?.[i]));
 
             // Restore settings if saved with the rotation
             if (config.data.s) {
@@ -242,6 +254,10 @@ export const rotationActions = {
         rotationStore.extraActionBar = Array(BAR_SIZE).fill(null);
         rotationStore.nulledTicks = Array(BAR_SIZE).fill(false);
         rotationStore.stalledAbilities = Array(BAR_SIZE).fill(null);
+        rotationStore.releasedAbilities = Array(BAR_SIZE).fill(null);
+        rotationStore.targetCounts = Array(BAR_SIZE).fill(null);
+        rotationStore.tickEvents = Array(BAR_SIZE).fill(null);
+        rotationStore.secondaryDamage = {};
         rotationStore.totalDamage = 0;
         rotationStore.cooldownReady = Array(BAR_SIZE).fill(null);
 
@@ -262,7 +278,7 @@ export const rotationActions = {
     },
 
     insertTicks(pos, count) {
-        const fills = { abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null };
+        const fills = { tickEvents: null, targetCounts: null, abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null, releasedAbilities: null };
         for (const [key, fill] of Object.entries(fills)) {
             const arr = rotationStore[key];
             rotationStore[key] = [...arr.slice(0, pos), ...Array(count).fill(fill), ...arr.slice(pos)].slice(0, BAR_SIZE);
@@ -270,7 +286,7 @@ export const rotationActions = {
     },
 
     removeTicks(pos, count) {
-        const fills = { abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null };
+        const fills = { tickEvents: null, targetCounts: null, abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null, releasedAbilities: null };
         for (const [key, fill] of Object.entries(fills)) {
             const arr = rotationStore[key];
             const removed = [...arr.slice(0, pos), ...arr.slice(pos + count)];
@@ -288,6 +304,9 @@ export const rotationActions = {
             rotationStore.extraActionBar = rotationData.e.map(row => row.map(a => a ? (normalizeLegacy(a, gearSwaps, allExtraActions) || a) : null));
             rotationStore.nulledTicks = rotationData.n;
             rotationStore.stalledAbilities = rotationData.t.map(a => a || null);
+            rotationStore.releasedAbilities = Array.from({length: BAR_SIZE}, (_, i) => rotationData.r?.[i] || null);
+            rotationStore.targetCounts = Array.from({length: BAR_SIZE}, (_, i) => rotationData.c?.[i] ?? null);
+            rotationStore.tickEvents = Array.from({length: BAR_SIZE}, (_, i) => normalizeTickEvent(rotationData.v?.[i]));
 
             // Restore settings if present
             if (rotationData.s) {
@@ -377,6 +396,7 @@ export const rotationActions = {
     updateDamageCalculations(calculateTotalDamage, calculateGaussianParameters) {
         const dmgResult = calculateTotalDamage(BAR_SIZE);
         rotationStore.totalDamage = dmgResult.regularDamage;
+        rotationStore.secondaryDamage = dmgResult.secondaryDamage ?? {};
         rotationStore.poisonDamage = dmgResult.poisonDamage;
         rotationStore.familiarDamage = dmgResult.familiarDamage;
         rotationStore.dreadnipDamage = dmgResult.dreadnipDamage || 0;

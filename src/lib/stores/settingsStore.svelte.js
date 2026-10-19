@@ -28,6 +28,7 @@ export function initializeSettings() {
                 }
             ])
         );
+    settingsStore.settings._gearInstances = {value: storedSettings._gearInstances?.value ?? {}};
     migrateEquipmentSettings(settingsStore.settings);
     settingsStore.settings[SETTINGS.INSTABILITY].value = false;
     settingsStore.settings[SETTINGS.BALANCE_BY_FORCE].value = false;
@@ -87,6 +88,7 @@ export const settingsActions = {
                 { ...value, key: key, value: coerceEquipmentValue(value.default, key) }
             ])
         );
-        migrateEquipmentSettings(settingsStore.settings);
+        settingsStore.settings._gearInstances = {value: {}};
+    migrateEquipmentSettings(settingsStore.settings);
     }
 };

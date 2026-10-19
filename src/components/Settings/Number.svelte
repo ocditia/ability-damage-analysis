@@ -52,6 +52,7 @@
                 style="width: {width};"
                 type="text"
                 id={setting.key}
+                aria-label={setting.label}
                 value={formatCompact(setting.value)}
                 readonly
                 onfocus={handleFocus}
@@ -62,6 +63,7 @@
                 style="width: {width};"
                 type="number"
                 id={setting.key}
+                aria-label={setting.label}
                 bind:value={setting.value}
                 onblur={handleBlur}
                 step={step}

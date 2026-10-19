@@ -17,6 +17,7 @@
         setting = $bindable(),          // { value, ... } — the settings store entry
         img,                            // Icon path string, or function(value) => path
         title = '',                     // Tooltip text
+        readable = false,               // Labeled controls for the rotation setup panel
         toggle = false,                 // Binary on/off mode
         step = 1,                       // Ranked: increment step
         max = undefined,                // Ranked: max value (presence triggers ranked mode)
@@ -158,6 +159,23 @@
     }
 </script>
 
+{#if readable}
+    <label class="readable-setting">
+        <img src={resolvedImg} alt="" />
+        <span>{title.replace(/ \(.*\)$/, '')}</span>
+        {#if toggle}
+            <input type="checkbox" checked={!!setting?.value} onchange={handleClick} />
+        {:else if isRanked}
+            <input type="number" value={setting?.value ?? 0} min="0" {max} {step} oninput={handleInput} />
+        {:else if isCycle || isDropdown}
+            <select value={setting?.value} onchange={(event) => { setting.value = event.currentTarget.value; onchange(); }}>
+                {#each options ?? cycle.map(value => ({ value, text: String(value) })) as option}
+                    <option value={option.value}>{option.text}</option>
+                {/each}
+            </select>
+        {/if}
+    </label>
+{:else}
 <div class="toggle-wrapper"
     bind:this={wrapperEl}
     onwheel={handleWheel}
@@ -211,8 +229,16 @@
         </div>
     {/if}
 </div>
+{/if}
 
 <style>
+    .readable-setting { display: flex; align-items: center; gap: 9px; width: 100%; min-height: 36px; font-size: 12px; color: #d3dce2; }
+    .readable-setting img { width: 24px; height: 24px; object-fit: contain; }
+    .readable-setting span { flex: 1; }
+    .readable-setting input[type=checkbox] { width: 16px; height: 16px; accent-color: #c2ba9e; }
+    .readable-setting input[type=number] { width: 65px; }
+    .readable-setting select { max-width: 120px; }
+    .readable-setting input[type=number], .readable-setting select { background: #11181d; border: 1px solid #52606a; border-radius: 3px; padding: 4px; color: #e1e6e9; }
     .toggle-wrapper {
         position: relative;
         display: inline-block;

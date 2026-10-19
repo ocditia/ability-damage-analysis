@@ -1,3 +1,6 @@
+import { resolveQuiverAmmo } from './rotation_builder/quiver';
+import { resolveEquipmentPerks } from '$lib/data/perks';
+import { equipmentMechanicId } from '$lib/data/equipment';
 import { settingsActions } from '$lib/stores';
 import { ARMOUR } from '$lib/data/armour';
 import { WEAPONS } from '$lib/data/weapons';
@@ -1560,6 +1563,12 @@ function style_specific_unification(settings, style = null) {
     }
 
     // Resolve perks from equipped gear if _gearPerks map is present
+    // Track equipped style for passive effects on ticks without an ability.
+    if (['melee', 'ranged', 'magic', 'necromancy'].includes(effectiveStyle)) {
+        const activeWeapon = settings[settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH ? SETTINGS.TH : SETTINGS.MH];
+        settings['_equippedWeaponStyle'] = activeWeapon && activeWeapon !== 'none'
+            ? (isCustomEquipment(activeWeapon) ? effectiveStyle : weapons[activeWeapon]?.style ?? effectiveStyle) : null;
+    }
     const gearPerks = settings['_gearPerks'];
     if (gearPerks) {
         const rawGearInstances = settings['_gearInstances'] || {};
@@ -1587,27 +1596,22 @@ function style_specific_unification(settings, style = null) {
             if (rawGearInstances[SETTINGS.NECRO_LEGS]) gearInstances[SETTINGS.LEGS] = rawGearInstances[SETTINGS.NECRO_LEGS];
         }
         // Only MH, OH, body, and legs can have perks (gizmo slots)
-        const equippedSlots = [
-            { item: settings[SETTINGS.MH], key: SETTINGS.MH },
-            { item: settings[SETTINGS.OH], key: SETTINGS.OH },
-            { item: settings[SETTINGS.BODY], key: SETTINGS.BODY },
-            { item: settings[SETTINGS.LEGS], key: SETTINGS.LEGS },
-        ];
-        const perkLists = [];
-        for (const { item, key } of equippedSlots) {
-            if (!item) continue;
-            // Check if a specific instance was selected for this slot
-            const instanceInfo = gearInstances[key];
-            if (instanceInfo && instanceInfo.itemKey === item && gearPerks[`${item}#${instanceInfo.instanceIndex}`]) {
-                perkLists.push(gearPerks[`${item}#${instanceInfo.instanceIndex}`]);
-            } else if (gearPerks[item]) {
-                perkLists.push(gearPerks[item]);
-            }
-        }
-        const activePerks = collectActivePerks(perkLists);
-        applyPerksToSettings(settings, activePerks);
+        const twoHanded = settings[SETTINGS.WEAPON] === SETTINGS.WEAPON_VALUES.TH;
+        if (twoHanded && !gearInstances[SETTINGS.MH]) gearInstances[SETTINGS.MH] = gearInstances[SETTINGS.TH];
+        resolveEquipmentPerks(settings, [
+            {item: settings[twoHanded ? SETTINGS.TH : SETTINGS.MH], key: SETTINGS.MH, slot: 'mainhand'},
+            ...(!twoHanded ? [{item: settings[SETTINGS.OH], key: SETTINGS.OH, slot: 'offhand'}] : []),
+            {item: settings[SETTINGS.BODY], key: SETTINGS.BODY, slot: 'body'},
+            {item: settings[SETTINGS.LEGS], key: SETTINGS.LEGS, slot: 'legs'},
+        ], gearInstances);
     }
 
+    if (effectiveStyle === 'ranged') settings[SETTINGS.AMMO] = resolveQuiverAmmo(settings);
+
+    // Resolve variant IDs after perk lookup so copies keep their own assignments.
+    for (const key of [SETTINGS.MH, SETTINGS.TH, SETTINGS.OH, SETTINGS.BODY, SETTINGS.LEGS, SETTINGS.HELMET, SETTINGS.GLOVES, SETTINGS.BOOTS]) {
+        settings[key] = equipmentMechanicId(settings[key]);
+    }
     return settings;
 }
 

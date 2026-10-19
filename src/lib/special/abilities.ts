@@ -93,6 +93,10 @@ export const offGcdAbilities: Record<string, { title: string; icon: string }> = 
 
 // Prayers
 export const prayers: Record<string, { title: string; icon: string }> = {
+    'divine rage on': {title:'Divine Rage: on', icon:'/rs-rot/ability_icons/special/Divine_Rage.png'},
+    'divine rage off': {title:'Divine Rage: off', icon:'/rs-rot/ability_icons/special/Divine_Rage.png'},
+    'eclipsed soul on': {title:'Eclipsed Soul: on', icon:'/rs-rot/ability_icons/special/Eclipsed_Soul.png'},
+    'eclipsed soul off': {title:'Eclipsed Soul: off', icon:'/rs-rot/ability_icons/special/Eclipsed_Soul.png'},
     [ABILITIES.DEFLECT_MAGIC]: {
         title: 'Deflect Magic',
         icon: '/rs-rot/ability_icons/special/Deflect_Magic.png'
@@ -157,6 +161,8 @@ const eofItems: Record<string, { title: string; icon: string }> = {
 
 // Combined lookup for extra action bar rendering (needs to find both abilities, consumables, and gear)
 export const allExtraActions: Record<string, { title: string; icon: string }> = {
+    'quiver ammo slot 1': {title:'Quiver ammo slot 1',icon:'/rs-rot/ability_icons/special/Quiver_ammo_slot_1.png'},
+    'quiver ammo slot 2': {title:'Quiver ammo slot 2',icon:'/rs-rot/ability_icons/special/Quiver_ammo_slot_2.png'},
     ...offGcdAbilities,
     ...prayers,
     ...spells,

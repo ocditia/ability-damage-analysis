@@ -183,6 +183,11 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             settings['death swiftness'] = true;
             timers['death swiftness'] = 63;
             break;
+        case ABILITIES.LOCATE:
+            settings[SETTINGS.LOCATE] = true;
+            timers[SETTINGS.LOCATE] = 18;
+            settings._locateWeapon = [settings[SETTINGS.WEAPON], settings[SETTINGS.TH], settings[SETTINGS.MH], settings[SETTINGS.OH]].join('|');
+            break;
         case ABILITIES.BALANCE_BY_FORCE:
             settings[ABILITIES.BALANCE_BY_FORCE] = true;
             timers[ABILITIES.BALANCE_BY_FORCE] = 50;
@@ -218,6 +223,15 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             // Vestments of Havoc: 3+ pieces extends Berserk by 10 ticks
             const vestPieces = countSetPieces(settings, gearSets[GEAR_SET.VESTMENTS_OF_HAVOC]);
             timers[SETTINGS.BERSERK] = vestPieces >= 3 ? 43 : 33;
+            break;
+        case 'gravitate':
+            settings[SETTINGS.GRAVITATE_ACTIVE] = true;
+            settings[SETTINGS.GRAVITATE] = 0;
+            timers[SETTINGS.GRAVITATE_ACTIVE] = 50;
+            break;
+        case ABILITIES.DEEP_BURN:
+            settings._darkBurnSnapshot = settings[SETTINGS.DARK_BURN] ?? 0;
+            settings[SETTINGS.DARK_BURN] = 0;
             break;
         case ABILITIES.BLACKHOLE:
             settings[SETTINGS.BLACKHOLE] = true;

@@ -50,6 +50,9 @@ export interface AbilityInfo {
     // UI properties (if applicable)
     title?: string; // display name
     icon?: string; // icon path
+    specialAccuracy?: number;
+    specialDamage?: string;
+    specialWeapon?: string;
     description?: string; // ability description
     common?: boolean // For UI filtering of irrelevant abilities
 

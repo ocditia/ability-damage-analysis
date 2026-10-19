@@ -1,3 +1,4 @@
+import { getEquipment } from '$lib/data/equipment';
 /**
  * Pure utility functions for damage calculation
  * These have no dependencies on on_cast/on_hit to avoid circular imports
@@ -77,7 +78,9 @@ export function calc_split_soul_hit(hit: number, settings: Record<string, any>):
  */
 export function get_hit_sequence(settings: Record<string, any>): Record<number, string[]> {
     const abilityKey = settings['ability'];
-    let rotation = JSON.parse(JSON.stringify(abils[abilityKey]['hits'])); // Deep copy
+    let rotation = JSON.parse(JSON.stringify(abils[abilityKey]['hits']));
+    const godArrow = {[ABILITIES.RESTORATIVE_SHOT]:'saradomin arrows',[ABILITIES.BALANCED_SHOT]:'guthix arrows',[ABILITIES.DESTRUCTIVE_SHOT]:'zamorak arrows'}[abilityKey];
+    if (godArrow && getEquipment(settings[SETTINGS.AMMO])?.name.toLowerCase() === godArrow) rotation[1].push('next hit','god bow magic hit'); // Deep copy
 
     // Igneous Showdown with EZK and Flamebound Rival
     if (
@@ -180,8 +183,8 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
 // Adrenaline
 // =============================================================================
 
-export function addAdrenaline(settings: Record<string, any>, amount: number) {
-    if (settings[SETTINGS.NATURAL_INSTINCT] && amount > 0) {
+export function addAdrenaline(settings: Record<string, any>, amount: number, naturalInstinctApplies = true) {
+    if (naturalInstinctApplies && settings[SETTINGS.NATURAL_INSTINCT] && amount > 0) {
         amount *= 2;
     }
     let new_adren = settings[SETTINGS.ADRENALINE] + amount;

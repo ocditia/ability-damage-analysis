@@ -47,10 +47,13 @@ export interface Equipment {
  * Input for rotation damage calculation - decoupled from stores
  */
 export interface RotationInput {
+    targetCounts?: (number | null)[];
+    tickEvents?: ({accuracy?: number; phase?: string; downtime?: number} | null)[];
     abilityBar: (string | null)[];
     extraActionBar: (any[] | null)[];
     nulledTicks: boolean[];
     stalledAbilities: (string | null)[];
+    releasedAbilities?: (string | null)[];
 }
 
 /**

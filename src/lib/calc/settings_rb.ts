@@ -509,6 +509,7 @@ const SETTINGS = {
     PERFECT_EQUILIBRIUM_STACKS: 'perfect equilibrium stacks',
     BLOODLUST_STACKS: 'bloodlust stacks',
     BALANCE_BY_FORCE: 'balance by force',
+    LOCATE: 'locate',
     TARGET_SIZE: 'target size',
     PRIMORDIAL_ICE: 'primordial ice',
     FROSTBLADES: 'frostblades',
@@ -588,6 +589,18 @@ const SETTINGS = {
         ALL: 'all',
     },
     QUIVER: 'quiver',
+    PERNIX_QUIVERS: 'pernix quiver loadouts',
+    POISON_IMMUNE: 'poison immune',
+    KWUARM: 'kwuarm potency',
+    DARK_BURN: 'dark burn damage',
+    TARGET_MAGIC_LEVEL: 'target magic level',
+    GRAVITATE_ACTIVE: 'gravitate active',
+    RANGED_CAPE_PERK: 'ranged cape perk',
+    SEERS_ELITE: 'seers elite',
+    DRAGONFIRE_IMMUNE: 'dragonfire immune',
+    BOLT_TARGET_WEAKNESS: 'bolt target weakness',
+    TIRANNWN_DIARY_TIER: 'tirannwn diary tier',
+    DIARY_TARGET: 'diary target',
     DAMAGE_QUALIFIER: 'damage qualifier',
     DAMAGE_QUALIFIER_VALUES: {
         TOTAL: 'total',
@@ -621,16 +634,16 @@ const SETTINGS = {
 
 const settingsConfig = {
     [SETTINGS.MODE]: {
-        label: 'Mode',
+        label: 'Damage estimate',
         default: SETTINGS.MODE_VALUES.MEAN,
         options: [
-            { text: 'Mean', value: SETTINGS.MODE_VALUES.MEAN },
-            { text: 'Mean no crit', value: SETTINGS.MODE_VALUES.MEAN_NO_CRIT },
-            { text: 'Mean crit', value: SETTINGS.MODE_VALUES.MEAN_CRIT },
-            { text: 'Min no crit', value: SETTINGS.MODE_VALUES.MIN_NO_CRIT },
-            { text: 'Min crit', value: SETTINGS.MODE_VALUES.MIN_CRIT },
-            { text: 'Max no crit', value: SETTINGS.MODE_VALUES.MAX_NO_CRIT },
-            { text: 'Max crit', value: SETTINGS.MODE_VALUES.MAX_CRIT }
+            { text: 'Average (with crit chance)', value: SETTINGS.MODE_VALUES.MEAN },
+            { text: 'Average non-critical hit', value: SETTINGS.MODE_VALUES.MEAN_NO_CRIT },
+            { text: 'Average critical hit', value: SETTINGS.MODE_VALUES.MEAN_CRIT },
+            { text: 'Minimum non-critical hit', value: SETTINGS.MODE_VALUES.MIN_NO_CRIT },
+            { text: 'Minimum critical hit', value: SETTINGS.MODE_VALUES.MIN_CRIT },
+            { text: 'Maximum non-critical hit', value: SETTINGS.MODE_VALUES.MAX_NO_CRIT },
+            { text: 'Maximum critical hit', value: SETTINGS.MODE_VALUES.MAX_CRIT }
         ]
     },
     [SETTINGS.CALC_TYPE]: {
@@ -2335,8 +2348,20 @@ const settingsConfig = {
         label: 'Gear filter',
         default: SETTINGS.GEAR_FILTER_VALUES.POPULAR,
     },
+    [SETTINGS.POISON_IMMUNE]: {label:'Target immune to poison',default:false},
+    [SETTINGS.KWUARM]: {label:'Kwuarm incense potency',default:0},
+    [SETTINGS.DARK_BURN]: {label:'Stored Dark Burn damage',default:0},
+    [SETTINGS.TARGET_MAGIC_LEVEL]: {label:'Target Magic level (Soulshot)',default:99},
+    [SETTINGS.GRAVITATE_ACTIVE]: {label:'Gravitate active',default:false},
+    [SETTINGS.RANGED_CAPE_PERK]: { label: 'Ranged cape perk active', default: false },
+    [SETTINGS.SEERS_ELITE]: { label: "Elite Seers' achievements completed", default: false },
+    [SETTINGS.DRAGONFIRE_IMMUNE]: { label: 'Target immune to dragonfire', default: false },
+    [SETTINGS.BOLT_TARGET_WEAKNESS]: { label: 'Target elemental weakness', default: 'none', options: [{text:'Neither',value:'none'},{text:'Water',value:'water'},{text:'Fire',value:'fire'}] },
+    [SETTINGS.TIRANNWN_DIARY_TIER]: { label: 'Tirannwn achievement tier', default: 0 },
+    [SETTINGS.DIARY_TARGET]: { label: 'Achievement target', default:'none', options:[{text:'Other',value:'none'},{text:'Mourner / knight in Mourner HQ',value:'mourner'},{text:'Shadow creature in Prifddinas',value:'shadow'},{text:'Elf in Prifddinas',value:'elf'},{text:'Dark beast',value:'dark beast'},{text:'Wild dog in Brimhaven Dungeon',value:'wild dog'}] },
+    [SETTINGS.PERNIX_QUIVERS]: { label: 'Pernix quiver loadouts', default: {} },
     [SETTINGS.QUIVER]: {
-        label: 'Pernix quiver',
+        label: 'Pernix quiver equipped',
         default: true
     },
     [SETTINGS.DAMAGE_QUALIFIER]: {

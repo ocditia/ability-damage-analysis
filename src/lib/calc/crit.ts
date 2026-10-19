@@ -27,7 +27,7 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
 
     // eclipsed soul
     if (settings[SETTINGS.ECLIPSED_SOUL] === true &&
-        (prayers[settings[SETTINGS.PRAYER]].book === "normal")) {
+        (["normal", "none"].includes(prayers[settings[SETTINGS.PRAYER]]?.book))) {
         crit_chance += 0.04;
     }
 

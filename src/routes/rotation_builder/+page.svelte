@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import Navbar from '$components/Layout/Navbar.svelte';
-	import Header from '$components/Layout/Header.svelte';
+    import RotationDamageSummary from '$components/RotationBuilder/RotationDamageSummary.svelte';
+    import { ToolMode } from '$lib/calc/rotation_builder/ui_material/toolModes';
     import { abils } from '$lib/data/abilities';
+    import { paletteAbilities } from '$lib/data/abilityPalette';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings_rb';
     import RotationSettings from '../../components/Settings/RotationSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
@@ -10,7 +12,7 @@
     import DamageDistributionChart from '../../components/RotationBuilder/DamageDistributionChart.svelte';
 	import TabButton from '../../components/UI/TabButton.svelte';
     import GradientSeparator from '../../components/UI/GradientSeparator.svelte';
-    import PillToggle from '../../components/UI/PillToggle.svelte';
+
     import Popup from '../../components/UI/Popup.svelte';
     import RotationConfigManager from '../../components/RotationBuilder/RotationConfigManager.svelte';
     import KeybindConfigModal from '../../components/RotationBuilder/KeybindConfigModal.svelte';
@@ -25,7 +27,7 @@
     import { suggestNextAbility, resolveTumekensAsphyxiate, type AbilitySuggestion } from '$lib/calc/rotation_builder/rotation-damage-calculator';
 
     const filterByStyle = (style) => Object.fromEntries(
-        Object.entries(abils).filter(([, a]) => a.title && a.mainStyle === style)
+        Object.entries(paletteAbilities).filter(([, a]) => a.title && !a.parent && a.mainStyle === style)
     );
     const rangedAbils = filterByStyle('ranged');
     const magicAbils = filterByStyle('magic');
@@ -35,6 +37,56 @@
 	// let defAbils = {...def_abilities};
     let allAbils = {...abils};
 
+    function validRelease(tick) {
+        let pending = null;
+        for (let i = 0; i < tick; i++) {
+            if (rotationStore.stalledAbilities[i]) pending = rotationStore.stalledAbilities[i];
+            if (rotationStore.releasedAbilities[i] || rotationStore.abilityBar[i]) pending = null;
+        }
+        return pending === rotationStore.releasedAbilities[tick];
+    }
+
+    function addFromPalette(event, key) {
+        const ability = paletteAbilities[key];
+        if (ability.offGcd) {
+            const tick = uiStore.extraActions.show ? uiStore.extraActions.tick : Math.min(299, uiStore.bar.index);
+            uiActions.showExtraActions(tick, rotationStore.abilityBar[tick]);
+            uiStore.settingsPanelCollapsed = false;
+            if (uiStore.extraActions.barIndex >= 12) {
+                notifActions.showNotification('Tick is full', 'Remove an extra action at this tick before adding another.', 'warning');
+                return;
+            }
+            rotationStore.extraActionBar[tick] ??= Array(12).fill(null);
+            rotationStore.extraActionBar[tick][uiStore.extraActions.barIndex] = { type: 'ability', value: key, title: ability.title, icon: ability.icon };
+            refreshUI();
+            return;
+        }
+        handleAbilityClick(event, ability.actionKey ?? key);
+    }
+    function dragFromPalette(event, key) {
+        if (paletteAbilities[key].offGcd) { event.preventDefault(); return; }
+        handleDragStart(event, paletteAbilities[key].actionKey ?? key);
+    }
+
+    let abilitySearch = $state('');
+    let expandedTicks = $state(60);
+    let showFullTimeline = $state(false);
+    const modes = [
+        { value: ToolMode.Regular, label: 'Edit', key: 'E', hint: 'Click an ability to append it. Drag to place or move it. Click a tick to inspect; right-click to remove.' },
+        { value: ToolMode.Release, label: 'Release', key: 'R', hint: 'Click a tick to release the pending stalled ability. Release applies damage and hit effects without paying adrenaline again.' },
+        { value: ToolMode.Stall, label: 'Stall', key: 'S', hint: 'Choose an ability, then click a tick to stall it. Click a stalled tick again to remove it.' },
+        { value: ToolMode.Null, label: 'Null', key: 'N', hint: 'Click ticks to toggle zero damage. Buffs and stacks still apply.' },
+        { value: ToolMode.Insert, label: 'Insert ticks', key: 'I', hint: 'Click a tick to insert time before it. Right-click to remove time and shift the rotation left.' }
+    ];
+    let usedTicks = $derived.by(() => {
+        let last = -1;
+        for (let i = 0; i < rotationStore.abilityBar.length; i++) {
+            if (rotationStore.tickEvents[i] || rotationStore.targetCounts[i] != null || rotationStore.abilityBar[i] || rotationStore.stalledAbilities[i] || rotationStore.releasedAbilities[i] || rotationStore.nulledTicks[i] || rotationStore.extraActionBar[i]?.some(Boolean)) last = i;
+        }
+        return last + 1;
+    });
+    let visibleTicks = $derived(showFullTimeline ? rotationStore.abilityBar.length : Math.min(rotationStore.abilityBar.length, Math.max(expandedTicks, Math.ceil((usedTicks + 12) / 30) * 30)));
+
     // Keybind modal state
     let showKeybindModal = $state(false);
     let showKeypressModal = $state(false);
@@ -43,7 +95,6 @@
 	const stackFontSize = 10;
 	const baseStackOffset = 42;
 	const stackPadding = 5;
-	const buffLineWidth = 42;
 	const buffLineHeight = 6;
 	const CELL_SIZE = 40;
 	const BASE_ROW_HEIGHT = 40;
@@ -110,7 +161,7 @@
 		const newColumnsPerRow = Math.max(1, Math.floor(containerWidth / CELL_SIZE));
 		columnsPerRow = newColumnsPerRow;
 
-		const totalSlots = rotationStore.abilityBar.length;
+		const totalSlots = visibleTicks;
 		const numRows = Math.ceil(totalSlots / columnsPerRow);
 		const newRowData: typeof rowLayoutData = [];
 
@@ -386,7 +437,7 @@
 			const style = uiStore.activeTab ?? 'melee';
 			const styleMap = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necromancy' };
 			const candidates = Object.entries(abils)
-				.filter(([, a]) => a.title && a.mainStyle === styleMap[style])
+				.filter(([, a]) => a.title && !a.parent && a.mainStyle === styleMap[style])
 				.map(([key]) => key);
 			suggestions = suggestNextAbility(
 				rotationStore._finalState,
@@ -574,9 +625,13 @@
 </script>
 
 <Navbar />
-<Header img="/rs-rot/range_background.png" text="Rotation Calculator Beta" icon="/rs-rot/style_icons/rota_icon.svg" />
+<svelte:head><title>Rotation builder | RS Analysis</title></svelte:head>
+<header class="builder-heading">
+    <div><h1>Rotation builder</h1></div>
+    <a href="/rs-rot/rotation_builder_guide">Builder guide</a>
+</header>
 
-<div class="space-y-14 mt-10 z-20">
+<div class="builder-page">
 	<div class="responsive-container {uiStore.activeTool.toLowerCase()}-cursor {uiStore.stallingAbility ? 'stalling' : ''}"
 		tabindex="-1"
 		role="button"
@@ -595,40 +650,15 @@
                         </button>
 					{/if}
 					<div class="rotation-title-row">
-						<h1 class="rotation-header">{bossName}{#if killTime} <em>{killTime}</em>{/if}</h1>
+						<h2 class="rotation-header">{bossName === "ROTATION" ? "Your rotation" : bossName}{#if killTime} <em>{killTime}</em>{/if}</h2>
 						<button class="reset-btn" onclick={clearRotation} title="Reset rotation">Reset</button>
-						<div class="damage-summary">
-							<span class="dmg-total">{(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage + rotationStore.conjureDamage).toLocaleString()}</span>
-							{#if rotationStore.totalDamage > 0 || rotationStore.poisonDamage > 0 || rotationStore.familiarDamage > 0 || rotationStore.dreadnipDamage > 0 || rotationStore.conjureDamage > 0}
-							    <span class="dmg-breakdown">(<span class="dmg-val">{rotationStore.totalDamage.toLocaleString()}</span>{#if rotationStore.poisonDamage > 0} + <span class="dmg-val poison">{rotationStore.poisonDamage.toLocaleString()}</span>{/if}{#if rotationStore.familiarDamage > 0} + <span class="dmg-val familiar">{rotationStore.familiarDamage.toLocaleString()}</span>{/if}{#if rotationStore.dreadnipDamage > 0} + <span class="dmg-val dreadnip">{rotationStore.dreadnipDamage.toLocaleString()}</span>{/if}{#if rotationStore.conjureDamage > 0} + <span class="dmg-val conjure">{rotationStore.conjureDamage.toLocaleString()}</span>{/if})</span>
-							{/if}
-						</div>
+						<div class="damage-summary"><span class="damage-label">Total damage - all targets</span>
+<span class="dmg-total">{Math.round(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage + rotationStore.conjureDamage + Object.values(rotationStore.secondaryDamage).reduce((sum, value) => sum + Number(value), 0)).toLocaleString()}</span></div>
 					</div>
 
-					<GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
+					<GradientSeparator marginTop="0.0rem" marginBottom="0.75rem" />
 
-					<!-- Damage Distribution Chart -->
-					<DamageDistributionChart
-						distributionStats={rotationStore.distributionStats}
-						totalDamage={rotationStore.totalDamage}
-						poisonDamage={rotationStore.poisonDamage}
-						familiarDamage={rotationStore.familiarDamage}
-						dreadnipDamage={rotationStore.dreadnipDamage}
-						conjureDamage={rotationStore.conjureDamage}
-						poisonPerTick={rotationStore.poisonPerTick}
-						familiarPerTick={rotationStore.familiarPerTick}
-						familiarVariancePerTick={rotationStore.familiarVariancePerTick}
-						dreadnipPerTick={rotationStore.dreadnipPerTick}
-						dreadnipVariancePerTick={rotationStore.dreadnipVariancePerTick}
-						conjurePerTick={rotationStore.conjurePerTick}
-						conjureVariancePerTick={rotationStore.conjureVariancePerTick}
-						{allAbils}
-						familiarKey={settingsStore.settings[SETTINGS.FAMILIAR]?.value ?? 'none'}
-						phaseTransitions={rotationStore.phaseTransitions}
-						barSize={uiStore.bar.size}
-						patternStartTick={settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? -1}
-						hasBossPreset={settingsStore.settings[SETTINGS.BOSS_PRESET]?.value && settingsStore.settings[SETTINGS.BOSS_PRESET]?.value !== 'none'}
-					/>
+                    <RotationDamageSummary />
 
                     <RotationConfigManager
                         {refreshUI}
@@ -636,7 +666,7 @@
                         onShowKeypresses={() => showKeypressModal = true}
                     />
 
-                    <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center items-center">
+                    <ul class="style-tabs flex flex-wrap text-sm font-medium text-center items-center">
                         {#each tabs as tab}
                             <TabButton
                                 id={tab.id}
@@ -646,31 +676,34 @@
                                 onClick={() => uiActions.setActiveTab(tab.id)}
                             />
                         {/each}
-                        <li class="ml-auto mr-2">
-                            <PillToggle
-                                value={uiStore.abilityFilter}
-                                onchange={() => uiActions.cycleAbilityFilter()}
-                            />
-                        </li>
                     </ul>
-					<br>
+                    <div class="library-controls">
+                        <label class="search-label">Find an ability<input type="search" placeholder="Search this combat style..." bind:value={abilitySearch} /></label>
+                        <span class="all-abilities-note">All abilities shown unless you hide them</span>
+                    </div>
                     {#each tabs as tab}
                         {#if uiStore.activeTab === tab.id}
                             <AbilityChoice
+                                search={abilitySearch}
                                 abilities={tab.abilities}
-                                handleAbilityClick={handleAbilityClick}
-                                handleDragStart={handleDragStart}
+                                handleAbilityClick={addFromPalette}
+                                handleDragStart={dragFromPalette}
                                 style={tab.id}
-                                filter={uiStore.abilityFilter}
                             />
                         {/if}
 					{/each}
-	                <div
-						bind:this={abilityBarElement}
+	                <div class="timeline-heading"><h2>Timeline</h2><span>1 tick = 0.6 seconds</span></div>
+                    <div class="edit-toolbar" role="group" aria-label="Editing mode">
+                        {#each modes as mode}<button class:active={uiStore.activeTool === mode.value} aria-pressed={uiStore.activeTool === mode.value} onclick={() => uiActions.setActiveTool(mode.value)}>{mode.label} <kbd>{mode.key}</kbd></button>{/each}
+                    </div>
+                    <p class="mode-hint">{modes.find(mode => mode.value === uiStore.activeTool)?.hint}</p>
+                    {#if !usedTicks}<div class="timeline-empty"><strong>Add your first ability above</strong><span>Abilities append at the next available tick. Configure your gear in Settings to get meaningful damage estimates.</span></div>{/if}
+                    <div
+                        bind:this={abilityBarElement}
 						style="grid-template-rows: {getGridTemplateRows()}; grid-template-columns: repeat({columnsPerRow}, {CELL_SIZE}px);"
 						class="ability-bar"
 					>
-                        {#each rotationStore.abilityBar as ability, index (index)}
+                        {#each rotationStore.abilityBar.slice(0, visibleTicks) as ability, index (index)}
                             <button
                                 class="ability-slot"
                                 class:highlight-red={uiStore.dragDrop.hoveredSlot === index && !uiStore.dragDrop.validSlot}
@@ -681,8 +714,10 @@
                                 class:has-damage={damageTicks.has(index)}
                                 class:invalid-placement={invalidTicks[index] && ability}
                                 class:phase-pause={pauseTickSet.has(index)}
+                                class:tick-event={!!rotationStore.tickEvents[index]}
+                                title={rotationStore.tickEvents[index]?.phase || (rotationStore.tickEvents[index]?.accuracy != null ? `Damage potential: ${rotationStore.tickEvents[index].accuracy}%` : undefined)}
                                 tabindex="0"
-                                aria-label="Ability slot"
+                                aria-label={`Tick ${index}, ${(index * 0.6).toFixed(1)} seconds: ${ability ? allAbils[ability]?.title ?? ability : "empty"}`}
                                 onclick={(e) => handleBarLeftClick(e, ability, index)}
                                 oncontextmenu={(e) => handleBarRightClick(e, index)}
                                 ondrop={(e) => handleDrop(e, index)}
@@ -690,7 +725,7 @@
                                 ondragenter={(e) => handleDragEnter(e, index)}
                                 ondragleave={(e) => handleDragLeave(e, index)}
                             >
-                                <span class="cell-number">{index}</span>
+                                <span class="cell-number">{index}{rotationStore.tickEvents[index]?.phase ? " P" : rotationStore.tickEvents[index]?.accuracy != null ? " %" : ""}</span>
                                 {#if ability && allAbils[ability]}
                                     <img src={allAbils[ability].icon}
                                         alt={allAbils[ability].title}
@@ -715,6 +750,11 @@
                                         alt="Stalled ability"
                                         title="Stalled: {allAbils[rotationStore.stalledAbilities[index]].title}"
                                     />
+                                {/if}
+                                {#if rotationStore.stalledAbilities[index]}<span class="stall-label" title="Stalled: adrenaline only">S</span>{/if}
+                                {#if rotationStore.releasedAbilities[index] && allAbils[rotationStore.releasedAbilities[index]]}
+                                    <img class="stalled-ability" src={allAbils[rotationStore.releasedAbilities[index]].icon} alt="Released ability" title="Release: {allAbils[rotationStore.releasedAbilities[index]].title}" />
+                                    <span class="stall-label release-label" class:invalid-release={!validRelease(index)} title={validRelease(index) ? "Release held ability" : "No matching held ability: this release does no damage"}>R</span>
                                 {/if}
                                 {#if rotationStore.cooldownReady[index]}
                                     {@const cdList = rotationStore.cooldownReady[index]}
@@ -768,7 +808,7 @@
                                             position: absolute;
                                             bottom: {-(buffLineHeight * 1.5) - (buffLineHeight * getBuffLocalIndex(key, index))}px;
                                             left: -1px;
-                                            width: {buffLineWidth}px;
+                                            width: calc(100% + 2px); pointer-events: none;
                                             height: {buffLineHeight}px;
                                             background-color: {rotationStore.buffs[key].colour};
                                             box-sizing: border-box; ">
@@ -825,6 +865,40 @@
                             </button>
                         {/each}
                     </div>
+                    <div class="timeline-footer"><span>Showing {visibleTicks} of 300 ticks</span>
+                        {#if visibleTicks < 300}<button onclick={() => expandedTicks = Math.min(300, visibleTicks + 30)}>+ 30 ticks</button>{/if}
+                        <label><input type="checkbox" bind:checked={showFullTimeline} /> Show all ticks</label>
+                    </div>
+                    {#if rotationStore.targetCounts.some(v => v != null)}
+                        <div class="tick-help"><strong>Target-count changes</strong>
+                            {#each rotationStore.targetCounts as count, tick}{#if count != null}<span> &middot; Tick {tick}: {count} target{count === 1 ? '' : 's'}</span>{/if}{/each}
+                        </div>
+                    {/if}
+                    <details class="results-panel" open><summary>Damage analysis - main target</summary>
+					<!-- Damage Distribution Chart -->
+					<DamageDistributionChart
+						distributionStats={rotationStore.distributionStats}
+						totalDamage={rotationStore.totalDamage}
+						poisonDamage={rotationStore.poisonDamage}
+						familiarDamage={rotationStore.familiarDamage}
+						dreadnipDamage={rotationStore.dreadnipDamage}
+						conjureDamage={rotationStore.conjureDamage}
+						poisonPerTick={rotationStore.poisonPerTick}
+						familiarPerTick={rotationStore.familiarPerTick}
+						familiarVariancePerTick={rotationStore.familiarVariancePerTick}
+						dreadnipPerTick={rotationStore.dreadnipPerTick}
+						dreadnipVariancePerTick={rotationStore.dreadnipVariancePerTick}
+						conjurePerTick={rotationStore.conjurePerTick}
+						conjureVariancePerTick={rotationStore.conjureVariancePerTick}
+						{allAbils}
+						familiarKey={settingsStore.settings[SETTINGS.FAMILIAR]?.value ?? 'none'}
+						phaseTransitions={rotationStore.phaseTransitions}
+						barSize={uiStore.bar.size}
+						patternStartTick={settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? -1}
+						hasBossPreset={settingsStore.settings[SETTINGS.BOSS_PRESET]?.value && settingsStore.settings[SETTINGS.BOSS_PRESET]?.value !== 'none'}
+					/>
+
+                    </details>
                 </div>
                 <div class="overflow-hidden settings-content {uiStore.settingsPanelCollapsed ? 'w-0' : 'w-1/3'}">
                     <div class="xl:w-full lg:w-70 xl:min-w-100 lg:min-w-full">
@@ -846,7 +920,7 @@
                             />
                         {/if}
                         <div class:hidden={uiStore.extraActions.show}>
-                            <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
+                            <RotationSettings styleTab={uiStore.activeTab === 'defence' ? 'ranged' : uiStore.activeTab} updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
                         </div>
                     </div>
                 </div>
@@ -872,8 +946,8 @@
 
                     <p class="text-sm leading-relaxed mt-2">
                         <strong>Tool Modes</strong> &mdash; switch between 4 modes via the toolbar or keyboard:
-                        <strong>Regular</strong> (<strong>R</strong>) is the default for adding, removing, and dragging abilities.
-                        <strong>Stall</strong> (<strong>S</strong>) lets you select an ability to stall, then click a tick to place it (click again to remove; channelled abilities cannot be stalled).
+                        <strong>Edit</strong> (<strong>E</strong>) is the default for adding, removing, and dragging abilities.
+                        <strong>Stall (S)</strong> pays or gains adrenaline without dealing damage or generating hit stacks. Choose an ability and click a tick. <strong>Release (R)</strong> then releases it on a later tick without paying again. A new cast or stall replaces the held ability. Channels and self-cast buffs cannot be stalled. <strong>Edit (E)</strong> returns to normal editing.
                         <strong>Null</strong> (<strong>N</strong>) marks ticks as nulled &mdash; 0 damage but buffs and stacks still apply (e.g. boss phase transitions).
                         <strong>Insert</strong> (<strong>I</strong>) left-click a tick to insert empty ticks (shifting everything right), right-click to remove ticks (shifting everything left).
                     </p>
@@ -1014,6 +1088,10 @@
 {/if}
 
 <style>
+    .stall-label { position: absolute; top: 0; right: 1px; z-index: 3; background: #172126; color: #e9c46a; font-weight: bold; font-size: 11px; padding: 0 2px; }
+    .release-label { color: #89ddbb; }
+    .invalid-release { color: #ff9988; outline: 1px solid #ff9988; }
+    .ability-slot.tick-event { border-top: 3px solid #c8b477; }
     .rotation-title-row {
         display: flex;
         align-items: baseline;
@@ -1268,7 +1346,7 @@
     }
 
     .ability-slot.selected-tick {
-        border: 2px solid #ffd700;
+        border: 1px solid #ffd700; outline: 1px solid #ffd700; outline-offset: -1px;
         box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
         z-index: 3;
     }
@@ -1569,4 +1647,49 @@
     :global(.credits a:hover) {
         text-decoration: underline;
     }
+
+    .builder-heading { max-width: 1600px; margin: 0 auto; padding: 30px 28px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .builder-heading h1 { font-size: 30px; line-height: 1.3; font-weight: 650; margin: 6px 0; color: #edf1f4; }
+    .builder-heading p { color: #a5b3bf; font-size: 14px; }
+    .builder-heading .eyebrow { font-size: 10px; letter-spacing: .14em; color: #c7b281; }
+    .builder-heading a { color: #d7c293; font-size: 13px; white-space: nowrap; }
+    .builder-page .responsive-container { width: 100%; max-width: 1600px; margin: auto; padding: 0 28px 40px; }
+    .builder-page .wrapper { align-items: flex-start; gap: 20px; }
+    .builder-page .card-rotation { background: #19242d; border: 1px solid #34414b; border-radius: 8px; padding: 22px; min-width: 0; }
+    .builder-page .wrapper > .card-rotation { flex: 1; width: auto; }
+    .builder-page .settings-content { width: 390px; flex-shrink: 0; border-radius: 8px; top: 16px; }
+    .builder-page .settings-content.w-0 { display: none; }
+    .builder-page .settings-content > div { min-width: 0; width: 100%; }
+    .rotation-header { font-size: 18px; text-transform: none; letter-spacing: 0; }
+    .damage-label { font-size: 11px; color: #a5b3bf; }
+    .library-controls { display: flex; gap: 12px; margin: 16px 0; }
+    .library-controls label { display: grid; gap: 6px; font-size: 11px; color: #b4c1cd; }
+    .search-label { flex: 1; }
+    .library-controls input, .library-controls select { width: 100%; min-height: 38px; padding: 8px 10px; border: 1px solid #42515d; border-radius: 5px; background: #111d26; color: #e2e9ed; font-size: 13px; }
+    .timeline-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 1px solid #35434d; margin-top: 20px; padding-top: 20px; }
+    .timeline-heading h2 { font-size: 17px; font-weight: 600; }
+    .timeline-heading span, .timeline-footer { color: #a5b3bf; font-size: 12px; }
+    .edit-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0 8px; }
+    .edit-toolbar button, .timeline-footer button { border: 1px solid #46545e; border-radius: 4px; padding: 7px 10px; color: #d7e0e7; background: #24313b; font-size: 12px; cursor: pointer; }
+    .edit-toolbar button.active { background: #c9b17d; color: #16212a; border-color: #c9b17d; }
+    kbd { font: inherit; opacity: .6; margin-left: 8px; }
+    .mode-hint { font-size: 12px; color: #b0bec9; min-height: 34px; line-height: 1.6; }
+    .timeline-empty { display: flex; flex-direction: column; gap: 5px; padding: 16px; background: #202f39; border-left: 2px solid #c9b17d; margin: 8px 0; font-size: 13px; }
+    .timeline-empty span { color: #a8b8c5; font-size: 12px; }
+    .timeline-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 12px 0 20px; }
+    .timeline-footer label { display: flex; align-items: center; gap: 6px; }
+    .results-panel { border-top: 1px solid #35434d; padding-top: 16px; }
+    .results-panel summary { font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 16px; }
+    .ability-slot { background: #121e27; border-color: #445460; }
+    .builder-page :global(button:focus-visible), .builder-page :global(input:focus-visible), .builder-page :global(select:focus-visible) { outline: 2px solid #dcc18a; outline-offset: 2px; }
+    @media (max-width: 1050px) { .builder-page .settings-content { width: 340px; } .builder-page .responsive-container { padding: 0 16px 30px; } .builder-page .card-rotation { padding: 16px; } }
+    @media (max-width: 800px) { .builder-page .wrapper { flex-direction: column; } .builder-page .wrapper > .card-rotation, .builder-page .settings-content { width: 100%; } .builder-page .settings-content { position: static; max-height: none; } .builder-heading { padding: 24px 16px; } .builder-heading h1 { font-size: 25px; } .library-controls { flex-wrap: wrap; } .search-label { min-width: 160px; } .builder-heading > a { display: none; } }
+
+
+    .all-abilities-note { align-self: end; padding: 10px 0; font-size: 11px; color: #aeb9c1; }
+    .builder-page :global(.style-tabs button) { font-size: 15px; text-transform: none; padding: 10px 5px; }
+    .builder-page :global(.style-tabs) { margin-top: 12px; border-bottom: 1px solid #3b454c; }
+    .builder-page .card-rotation { background: #171d21; color: #d4dce2; }
+    .builder-page .timeline-heading { margin-top: 8px; }
+.builder-heading { width: 100%; padding-top: 14px; padding-bottom: 14px; } .builder-heading h1 { font-size: 24px; }
 </style>

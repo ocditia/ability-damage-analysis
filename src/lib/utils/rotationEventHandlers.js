@@ -67,10 +67,10 @@ function toExtraAction(input) {
 export function handleAbilityClick(event, abilityKey, mainBar = true, stores, calculateTotalDamageNew, refreshUI) {
     const { uiStore, rotationStore, notifActions } = stores;
 
-    if (uiStore.activeTool === ToolMode.Stall) {
+    if (uiStore.activeTool === ToolMode.Stall || uiStore.activeTool === ToolMode.Release) {
         // Check if ability is channeled
-        if (abils[abilityKey].abilityClassification === 'channel') {
-            notifActions.showNotification('Sorry!','Channeled abilities cannot be stalled currently.', 'info');
+        if (['channel', 'self cast'].includes(abils[abilityKey]?.abilityClassification)) {
+            notifActions.showNotification('Sorry!','Channels and self-cast buffs cannot be stalled.', 'info');
             return;
         }
         uiStore.stallingAbility = abilityKey;
@@ -154,7 +154,7 @@ export function handleDrop(event, index, stores, refreshUI, calculateTotalDamage
         }
     }
     uiActions.clearDragDrop();
-    refreshUI();
+    refreshUI(false);
     calculateTotalDamageNew();
 }
 
@@ -236,7 +236,7 @@ export function handleBarLeftClick(event, ability, index, stores, refreshUI, cal
                 const count = parseInt(value);
                 if (count > 0) {
                     rotationActions.insertTicks(index, count);
-                    refreshUI();
+                    refreshUI(false);
                     calculateTotalDamageNew();
                 }
             }
@@ -250,26 +250,29 @@ export function handleBarLeftClick(event, ability, index, stores, refreshUI, cal
         return;
     }
 
-    if (uiStore.activeTool === ToolMode.Stall) {
-        if (rotationStore.stalledAbilities[index]) {
-            rotationStore.stalledAbilities[index] = null;
-        } else if (uiStore.stallingAbility) {
-            rotationStore.stalledAbilities[index] = uiStore.stallingAbility;
-            uiActions.clearStallingAbility();
-        } else {
-            // Find the last non-null ability before this tick
-            let stalledAbility = null;
-            for (let i = index - 1; i >= 0; i--) {
-                if (rotationStore.abilityBar[i]) {
-                    stalledAbility = rotationStore.abilityBar[i];
-                    break;
-                }
-            }
-            if (stalledAbility) {
-                rotationStore.stalledAbilities[index] = stalledAbility;
-            }
+    if (uiStore.activeTool === ToolMode.Stall || uiStore.activeTool === ToolMode.Release) {
+        const releasing = uiStore.activeTool === ToolMode.Release;
+        const bar = releasing ? rotationStore.releasedAbilities : rotationStore.stalledAbilities;
+        let pending = null;
+        for (let i = 0; i < index; i++) {
+            if (rotationStore.stalledAbilities[i]) pending = rotationStore.stalledAbilities[i];
+            if (rotationStore.releasedAbilities[i] || rotationStore.abilityBar[i]) pending = null;
         }
-        refreshUI();
+        const selected = uiStore.stallingAbility || (releasing ? pending : ability);
+        if (bar[index]) bar[index] = null;
+        else if (!selected || (releasing && selected !== pending)) {
+            notifActions.showNotification('No matching stall', releasing ? 'Stall this ability on an earlier tick before releasing it.' : 'Choose an ability first, then click its stall tick.', 'info');
+            return;
+        } else if (['channel', 'self cast'].includes(abils[selected]?.abilityClassification)) {
+            notifActions.showNotification('Cannot stall', 'Channels and self-cast buffs cannot be stalled.', 'info');
+            return;
+        } else {
+            bar[index] = selected;
+            if (!releasing) rotationStore.abilityBar[index] = null;
+            uiActions.clearStallingAbility();
+        }
+        calculateTotalDamageNew();
+        refreshUI(false);
         return;
     }
 
@@ -314,7 +317,7 @@ export function handleBarRightClick(event, index, innerIdx = null, stores, refre
                 const count = parseInt(value);
                 if (count > 0) {
                     rotationActions.removeTicks(index, count);
-                    refreshUI();
+                    refreshUI(false);
                     calculateTotalDamageNew();
                 }
             }
@@ -327,8 +330,10 @@ export function handleBarRightClick(event, index, innerIdx = null, stores, refre
     }
     else {
         rotationStore.abilityBar[index] = null;
+        rotationStore.stalledAbilities[index] = null;
+        rotationStore.releasedAbilities[index] = null;
     }
-    refreshUI();
+    refreshUI(false);
     calculateTotalDamageNew();
 }
 
@@ -355,6 +360,10 @@ export function clearRotation(stores, refreshUI, calculateTotalDamageNew) {
     rotationStore.extraActionBar = Array(BAR_SIZE).fill(null);
     rotationStore.nulledTicks = Array(BAR_SIZE).fill(false);
     rotationStore.stalledAbilities = Array(BAR_SIZE).fill(null);
+    rotationStore.releasedAbilities = Array(BAR_SIZE).fill(null);
+    rotationStore.targetCounts = Array(BAR_SIZE).fill(null);
+    rotationStore.tickEvents = Array(BAR_SIZE).fill(null);
+    rotationStore.secondaryDamage = {};
     rotationStore.totalDamage = 0;
 
     // Reset stacks
@@ -370,7 +379,7 @@ export function clearRotation(stores, refreshUI, calculateTotalDamageNew) {
         }
     }
 
-    refreshUI();
+    refreshUI(false);
     calculateTotalDamageNew();
 }
 
@@ -392,7 +401,7 @@ export function refreshUI(calcDmg = true, stores, calculateTotalDamageNew) {
     //Update ability bar pointer
     uiActions.updateBarLastIndex(0);
     for (let i = 0; i < BAR_SIZE; i++) {
-        if (rotationStore.abilityBar[i] != null) {
+        if (rotationStore.abilityBar[i] != null || rotationStore.stalledAbilities[i] || rotationStore.releasedAbilities[i]) {
             uiActions.updateBarLastIndex(i);
         }
     }
@@ -402,6 +411,10 @@ export function refreshUI(calcDmg = true, stores, calculateTotalDamageNew) {
     if (meta) {
         // Use pipeline-resolved duration (accounts for gear swaps, Tumeken's, etc.)
         uiActions.updateBarIndex(lastIdx + meta.duration);
+    } else if (rotationStore.releasedAbilities[lastIdx]) {
+        uiActions.updateBarIndex(lastIdx + 1);
+    } else if (rotationStore.stalledAbilities[lastIdx]) {
+        uiActions.updateBarIndex(lastIdx + 3);
     } else if (rotationStore.abilityBar[lastIdx]) {
         // Fallback: read duration from static ability data
         const abilToAdd = abils[rotationStore.abilityBar[lastIdx]];
@@ -476,6 +489,7 @@ export function calculateTotalDamageNew() {
     logger.log(LogCategory.ROTATION, 'Damage calculation result:', dmgResult);
 
     rotationStore.totalDamage = dmgResult.regularDamage;
+    rotationStore.secondaryDamage = dmgResult.secondaryDamage ?? {};
     rotationStore.poisonDamage = dmgResult.poisonDamage;
     rotationStore.familiarDamage = dmgResult.familiarDamage;
     rotationStore.dreadnipDamage = dmgResult.dreadnipDamage || 0;

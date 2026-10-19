@@ -97,7 +97,9 @@ function getValidAbilities(
     const flowReduction = isMagicStyle ? getFlowReduction(settings) : 0;
 
     for (const [key, abil] of Object.entries(abils)) {
-        if (!abil.title) continue;
+        if (!abil.title || abil.parent) continue;
+        // Off-global-cooldown actions belong in extra actions, not the main bar.
+        if (abil.duration === 0) continue;
         if (abil.mainStyle !== style) continue;
         if (EXCLUDED_CLASSIFICATIONS.has(abil.abilityClassification)) continue;
         if (EXCLUDED_ABILITIES.has(key)) continue;
@@ -156,7 +158,7 @@ function runEpisode(
     let nextAvailableTick = 0;
 
     const onTick = (tick: number, tickSettings: any, timers: Record<string, number>, rot?: RotationInput, tickState?: any) => {
-        if (!rot || tick < nextAvailableTick) return;
+        if (!rot || tick >= barSize || tick < nextAvailableTick) return;
 
         const valid = getValidAbilities(tickSettings, timers, style);
         if (valid.length === 0) return;

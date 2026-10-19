@@ -11,7 +11,7 @@
         const result = [];
         const f = filter.toLowerCase();
         for (const [key, abil] of Object.entries(abils)) {
-            if (!abil.icon || !abil.title) continue;
+            if (!abil.icon || !abil.title || abil.parent) continue;
             if (abil.mainStyle !== style) continue;
             if (["proc", "perk"].includes(getAbilityType(abil))) continue;
             if (f && !abil.title.toLowerCase().includes(f) && !key.toLowerCase().includes(f)) continue;

@@ -2,12 +2,13 @@
     import { renderComponent } from '@tanstack/svelte-table';
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
-    import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
+    import { createDamageTableClient } from '$lib/calc/damage-table-client';
+    import { onMount, onDestroy } from 'svelte';
     import { abils } from '$lib/data/abilities.ts';
 
     const abilities = Object.fromEntries(
         Object.entries(abils).filter(([, a]) =>
-            a.title && a.mainStyle === 'necromancy' &&
+            a.title && !a.parent && a.mainStyle === 'necromancy' &&
             // a.abilityClassification !== 'conjure' &&
             a.abilityClassification !== 'self cast'
         )
@@ -104,30 +105,23 @@
         if (settings) saveSettings();
     });
 
-    const updateDamages = () => {
-        const adaptedSettings = Object.fromEntries(
-            Object.entries(settings).map(([key, value]) => [key, value.value])
-        );
-
-        damages = damages.map(ability => {
-            adaptedSettings['ability'] = ability.key;
-
-            const regular = calculateSingleAbilityDamage(adaptedSettings, {
-                ability: ability.key
-            });
-            const ss = calculateSingleAbilityDamage(adaptedSettings, {
-                ability: ability.key,
-                buffs: { splitSoulNecro: true }
-            });
-
-            ability.regular = Math.round(regular.expected);
-            ability.ss = Math.round(ss.expected);
-
-            return ability;
-        })
+    let visibleAbilityKeys = $state(damages.filter(row => row.common !== false).map(row => row.key));
+    function visibleAbilitiesChanged(keys) {
+        if (JSON.stringify(keys) === JSON.stringify(visibleAbilityKeys)) return;
+        visibleAbilityKeys = keys; updateDamages();
     }
-
-    updateDamages()
+    let calculating = $state(false);
+    let calculationError = $state('');
+    const calculator = createDamageTableClient(
+        rows => { const results = new Map(rows.map(row => [row.key, row])); damages = damages.map(row => ({...row, ...results.get(row.key)})); },
+        (busy, error) => { calculating = busy; calculationError = error; }
+    );
+    const updateDamages = () => calculator.update(
+        Object.fromEntries(Object.entries(settings).map(([key, value]) => [key, value.value])),
+        visibleAbilityKeys, {regular:{}, ss:{splitSoulNecro:true}}
+    );
+    onMount(updateDamages);
+    onDestroy(() => calculator.dispose());
 
     const sortAbilities = (rowA, rowB) => {
         const nameA = rowA.original.abilityInfo.title;
@@ -176,7 +170,8 @@
                 <div class="card card-necro">
                     <h1 class="main-header mb-6 ml-3">Damage Values</h1>
                     <div class="table-container">
-                        <AbilityDamageTable data={damages} columns={columns} style="necromancy" />
+                        <p class="calculation-status" role="status">{calculating ? "Updating damage..." : calculationError}</p>
+                <AbilityDamageTable onVisibleKeysChange={visibleAbilitiesChanged} data={damages} columns={columns} style="necromancy" />
                     </div>
                 </div>
             </div>
@@ -602,3 +597,5 @@
         </section>
     </div>
 </div>
+
+<style>.calculation-status{min-height:18px;color:#b6cbd6;font-size:12px;margin:4px 0}</style>

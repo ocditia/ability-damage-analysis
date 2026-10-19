@@ -9,7 +9,7 @@
     import PillToggle from '$components/UI/PillToggle.svelte';
     import AbilityOwnershipModal from './AbilityOwnershipModal.svelte';
 
-    let { data, columns, style = 'magic' } = $props();
+    let { data, columns, style = 'magic', onVisibleKeysChange } = $props();
     let showOwnershipModal = $state(false);
 
     let abilityFilter = $state('popular');
@@ -20,6 +20,8 @@
         abilityFilter === 'owned' ? data.filter(d => ownedItemsStore.ownedAbilities.has(d.key)) :
         data.filter(d => d.common !== false)
     );
+
+    $effect(() => { onVisibleKeysChange?.(filteredData.map(row => row.key)); });
 
     const setSorting = updater => {
         if (updater instanceof Function) {
@@ -38,6 +40,7 @@
 
     let options = $derived({
         data: filteredData,
+        getRowId: row => row.key,
         columns,
         state: {
             sorting
@@ -106,9 +109,9 @@
     {/each}
     </thead>
     <tbody>
-    {#each table.getRowModel().rows as row}
+    {#each table.getRowModel().rows as row (row.id)}
         <tr>
-            {#each row.getVisibleCells() as cell}
+            {#each row.getVisibleCells() as cell (cell.id)}
                 <td {...cell.column.columnDef.meta}>
                     <FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
                 </td>

@@ -1,4 +1,6 @@
 <script>
+    import RotationImport from "./RotationImport.svelte";
+    let showRotationImport = $state(false);
     import { rotationStore, rotationActions } from '$lib/stores/rotationStore.svelte.js';
     import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
     import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
@@ -114,7 +116,7 @@
 
     function copyDiscordFormat() {
         try {
-            const text = exportToPvme(rotationStore.abilityBar);
+            const text = exportToPvme(rotationStore.abilityBar, {stalledAbilities:rotationStore.stalledAbilities,releasedAbilities:rotationStore.releasedAbilities});
             navigator.clipboard.writeText(text);
             notifActions.showNotification('Success!', 'Rotation copied in Discord format!', 'success');
         } catch (e) {
@@ -150,29 +152,30 @@
         <!-- Action buttons always visible -->
         <div class="config-content">
             <div class="action-row">
+                <button class="action-btn" onclick={() => showRotationImport=true}>Import image / PVME</button>
                 <button class="action-btn primary" onclick={handleSaveRotation} title="Save current rotation">
                     Save
                 </button>
                 <button class="action-btn" onclick={exportToFile} title="Export to file">
-                    Export
+                    Download file
                 </button>
                 <button class="action-btn" onclick={importFromFile} title="Import from file">
-                    Import
+                    Open file
                 </button>
                 <button class="action-btn" onclick={importFromString} title="Import rotation string">
-                    Paste
+                    Paste code
                 </button>
                 <button class="action-btn" onclick={exportToString} title="Copy rotation to clipboard">
-                    Copy
+                    Copy code
                 </button>
                 <button class="action-btn" onclick={copyDiscordFormat} title="Copy rotation as Discord text (pvme format)">
-                    Discord
+                    Copy for Discord
                 </button>
                 <button class="action-btn" onclick={onOpenKeybinds} title="Manage owned actions and keybinds">
-                    Actions
+                    Keybinds & unlocks
                 </button>
                 <button class="action-btn" onclick={onShowKeypresses} title="Show keypress sequence for rotation">
-                    Keys
+                    View key sequence
                 </button>
             </div>
         </div>
@@ -229,6 +232,8 @@
     </div>
 </div>
 
+{#if showRotationImport}<RotationImport onclose={() => showRotationImport=false} {refreshUI} />{/if}
+
 <style>
     .config-section {
         border: 1px solid #444;
@@ -274,6 +279,7 @@
     .action-row {
         display: flex;
         gap: 4px;
+        flex-wrap: wrap;
     }
 
     .action-btn {

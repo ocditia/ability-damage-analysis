@@ -1,4 +1,4 @@
-import { isCustomEquipment } from '$lib/data/equipment';
+import { isCustomEquipment, isAugmentable } from '$lib/data/equipment';
 
 /**
  * Perk definitions for RuneScape 3
@@ -210,14 +210,14 @@ export function buildGearPerksMap(
     for (const [itemKey, instances] of ownedGear) {
         if (instances.length === 0) continue;
         // Default entry uses first instance
-        if (instances[0].perks.length > 0) {
+        if (instances[0]) {
             map[itemKey] = copyPerks(instances[0].perks);
         }
         // For items with multiple instances, also store indexed entries
         // so the calc can look up specific instances via "itemKey#index"
         if (instances.length > 1) {
             for (let i = 0; i < instances.length; i++) {
-                if (instances[i].perks.length > 0) {
+                if (instances[i]) {
                     map[`${itemKey}#${i}`] = copyPerks(instances[i].perks);
                 }
             }
@@ -238,6 +238,7 @@ export function attachGearPerks(
     ownedGear: Map<string | number, { itemKey: string | number, perks: PerkInstance[] }[]>,
 ): void {
     settings['_gearPerks'] = buildGearPerksMap(ownedGear);
+    settings['_defaultPerks'] ??= Object.fromEntries(Object.keys(perks).map(key => [key, settings[key] ?? 0]));
     // Deep-copy _gearInstances to strip Svelte proxies
     if (settings['_gearInstances'] && typeof settings['_gearInstances'] === 'object') {
         settings['_gearInstances'] = JSON.parse(JSON.stringify(settings['_gearInstances']));
@@ -341,4 +342,21 @@ export function expandOptionsWithInstances<T extends { value: string | number; t
         }
     }
     return expanded;
+}
+
+/** Resolve each equipped copy independently. Empty assignments inherit compatible defaults. */
+export function resolveEquipmentPerks(settings: Record<string, any>, slots: {item: any; key: string; slot: string}[], instances: Record<string, any>): void {
+    settings._defaultPerks ??= Object.fromEntries(Object.keys(perks).map(key => [key, settings[key] ?? 0]));
+    const lists: PerkInstance[][] = [];
+    for (const {item, key, slot} of slots) {
+        if (!isAugmentable(item)) continue;
+        const selected = instances[key];
+        const own = selected?.itemKey === item ? selected : undefined;
+        const assigned = own?.perks ?? settings._gearPerks?.[`${item}#${own?.instanceIndex ?? 0}`] ?? settings._gearPerks?.[item] ?? [];
+        const kind = slot === 'body' || slot === 'legs' ? 'armour' : 'weapon';
+        const compatible = (key: string) => perks[key] && (perks[key].slotType === kind || perks[key].slotType === 'any');
+        const source = assigned.length ? assigned : Object.entries(settings._defaultPerks).filter(([key, value]) => compatible(key) && Number(value) > 0).map(([perkKey, rank]) => ({perkKey, rank: Number(rank)}));
+        lists.push(source.filter(p => compatible(p.perkKey)).map(p => ({perkKey: p.perkKey, rank: Math.max(1, Math.min(perks[p.perkKey].maxRank, Math.floor(p.rank)))})));
+    }
+    applyPerksToSettings(settings, collectActivePerks(lists));
 }
