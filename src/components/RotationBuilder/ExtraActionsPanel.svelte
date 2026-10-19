@@ -418,6 +418,14 @@
         for (let t = 0; t <= tick; t++) applyAccuracyEvent(result, rotationStore.tickEvents[t]);
         return result;
     });
+    const distanceLabels = ['Overlapping (+160)', '1 clear tile (+120)', '2 clear tiles (+30)', '3+ clear tiles'];
+    let previousDistance = $derived.by(() => {
+        for (let t = tick - 1; t >= 0; t--) {
+            const value = rotationStore.tickEvents[t]?.ghraziDistance;
+            if (value != null) return Math.min(3, value);
+        }
+        return Math.min(3, settingsStore.settings[SETTINGS.GHRAZI_DISTANCE]?.value ?? 3);
+    });
     let automaticAccuracy = $derived(accuracyConditions[SETTINGS.AUTO_ACCURACY] === true && !!bossPresets[accuracyConditions[SETTINGS.BOSS_PRESET]]);
     let outsideCombat = $derived.by(() => {
         if (tickEvent.outOfCombat != null) return tickEvent.outOfCombat;
@@ -558,7 +566,13 @@
                     <div class="condition-row"><label for="tick-accuracy">Damage potential</label><div class="percent-field"><input id="tick-accuracy" type="number" min="0" max="100" step="0.1" value={effectiveAccuracy} onchange={e => updateTickEvent({accuracy:Number(e.currentTarget.value), automaticAccuracy:false})} /><span aria-hidden="true">%</span></div></div>
                 {/if}
                 {#if isGhrazi(accuracyConditions[SETTINGS.BOSS_PRESET])}
-                    <label class="phase-name">Distance between knights<select value={String(Math.min(3, accuracyConditions[SETTINGS.GHRAZI_DISTANCE] ?? 3))} onchange={e => updateTickEvent({ghraziDistance:Number(e.currentTarget.value)})}><option value="3">3+ clear tiles</option><option value="2">2 clear tiles (+30)</option><option value="1">1 clear tile (+120)</option><option value="0">Overlapping (+160)</option></select></label>
+                    <label class="phase-name">Distance between knights
+                        <select value={tickEvent.ghraziDistance == null ? 'previous' : String(Math.min(3, tickEvent.ghraziDistance))} onchange={e => updateTickEvent({ghraziDistance:e.currentTarget.value === 'previous' ? undefined : Number(e.currentTarget.value)})}>
+                            <option value="previous">Use previous ? {distanceLabels[previousDistance]}</option>
+                            <option value="3">3+ clear tiles</option><option value="2">2 clear tiles (+30)</option><option value="1">1 clear tile (+120)</option><option value="0">Overlapping (+160)</option>
+                        </select>
+                    </label>
+                    <p class="condition-note">Choose ?Use previous? to remove this tick?s distance change and inherit the earlier value, or the starting setup if none was set.</p>
                 {/if}
                 {#if isGhrazi(accuracyConditions[SETTINGS.BOSS_PRESET])}<p class="condition-note">Proximity scaling is approximate, calibrated from same-gear melee readings (99 / 60 / 34 / 18%). Untick automatic damage potential to use an exact in-game value.</p>{/if}
                 <p class="condition-note">Target, distance and accuracy apply from this tick until changed again.</p>
