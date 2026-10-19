@@ -1,3 +1,4 @@
+import { hasReaperPassive } from './necklace';
 import { familiarAccuracyMultiplier } from '$lib/data/familiars';
 import { SETTINGS } from './settings_rb';
 import { ABILITIES, abils } from '$lib/data/abilities';
@@ -54,7 +55,9 @@ export function calculateAccuracy(settings: Record<string, any>, ability: string
         const strongAgainst = {melee: 'ranged', ranged: 'magic', magic: 'melee'}[style];
         penalty += Number(item.bonuses.armour ?? 0) * (style === 'necromancy' || armourStyle === strongAgainst ? 1.5 : .8);
     }
-    let accuracy = Math.max(0, levelAccuracy(Number(settings[levelKey] ?? 99) + prayerLevels) + weaponAccuracy - penalty);
+    const energising = Math.max(0, Math.min(4, Number(settings[SETTINGS.ENERGISING] ?? 0)));
+    const perkAccuracy = energising > 0 ? 50 + 25 * energising : 0;
+    let accuracy = Math.max(0, perkAccuracy + levelAccuracy(Number(settings[levelKey] ?? 99) + prayerLevels) + weaponAccuracy - penalty);
     accuracy *= Math.max(0, Number(settings[SETTINGS.ACCURACY_MULTIPLIER] ?? 1));
     accuracy *= familiarAccuracyMultiplier(settings[SETTINGS.FAMILIAR], style);
     if (style === 'ranged' && settings[SETTINGS.AMMO] === ARMOUR.FUL_ARROWS) accuracy *= .9;
@@ -68,8 +71,10 @@ export function calculateAccuracy(settings: Record<string, any>, ability: string
     const proximity = isGhrazi(key) ? ghraziArmourMultiplier(Number(settings[SETTINGS.GHRAZI_DISTANCE] ?? 3)) : 1;
     const armour = (npcArmour(boss.armour) + levelAccuracy(defence)) * Math.max(.01, Number(settings[SETTINGS.TARGET_ARMOUR_MULTIPLIER] ?? 1)) * proximity;
     let uncapped = 100 * affinity * accuracy / armour * (abils[ability]?.specialAccuracy ?? 1);
+    if (hasReaperPassive(settings)) uncapped += Math.max(0, Math.min(30, Number(settings[SETTINGS.REAPER_STACKS] ?? 0))) / 10;
     // Icy Precision grants flat hit chance, only for eligible attacks; never for Perfect Equilibrium.
-    if (wenEligible(ability) && settings[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settings[SETTINGS.ICY_PRECISION] > 0) uncapped += 30;
+    if (wenEligible(ability) && settings[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settings[SETTINGS.ICY_PRECISION] > 0
+        && (settings._rotationTick ?? Infinity) >= (settings._wenAccuracyFrom ?? 0)) uncapped += 30;
     return {potential: Math.max(0, Math.min(100, uncapped)), uncapped, automatic: true, accuracy, armour};
 }
 

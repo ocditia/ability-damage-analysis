@@ -17,6 +17,27 @@ function simulate(rotation: any, overrides = {}) {
     return {result,ticks};
 }
 describe('equipment copies and defaults',()=>{
+    it('uses the Energising rank of the equipped copy and falls back to defaults',()=>{
+        const settings:any={[SETTINGS.ENERGISING]:4,_gearPerks:{[bow]:[{perkKey:SETTINGS.ENERGISING,rank:2}]}};
+        resolveEquipmentPerks(settings,[{item:bow,key:'weapon',slot:'mainhand'}],{});
+        expect(settings[SETTINGS.ENERGISING]).toBe(2);
+        settings._gearPerks={};
+        resolveEquipmentPerks(settings,[{item:bow,key:'weapon',slot:'mainhand'}],{});
+        expect(settings[SETTINGS.ENERGISING]).toBe(4);
+    });
+
+    it('inherits armour perks for Elite Dracolich and its augmentable variants',()=>{
+        const variants=Object.values(equipment).filter(x=>/^Elite Dracolich (hauberk|chaps)( \(|$)/.test(x.name));
+        expect(variants.length).toBeGreaterThan(1);
+        for (const item of variants) expect(isAugmentable(item.id)).toBe(true);
+        const settings:any={[SETTINGS.BITING]:4,[SETTINGS.IMPATIENT]:4,[SETTINGS.CRACKLING]:4,_gearPerks:{}};
+        resolveEquipmentPerks(settings,[{item:56114,key:'body',slot:'body'},{item:56132,key:'legs',slot:'legs'}],{});
+        expect(settings[SETTINGS.BITING]).toBe(4);
+        expect(settings[SETTINGS.IMPATIENT]).toBe(4);
+        expect(settings[SETTINGS.CRACKLING]).toBe(4);
+        expect(isAugmentable(56128)).toBe(false);
+    });
+
     it('loads low-tier and dyed equipment with augmentation metadata and canonical passives',()=>{
         expect(equipment[1277].name).toBe('Bronze sword');
         expect(isAugmentable(1277)).toBe(false);

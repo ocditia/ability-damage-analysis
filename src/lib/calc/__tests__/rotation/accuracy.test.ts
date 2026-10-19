@@ -25,6 +25,12 @@ function settings(overrides = {}) {
 }
 
 describe('target damage potential', () => {
+    it.each([[0,0],[1,75],[2,100],[3,125],[4,150]])('adds the current Energising rank %s accuracy bonus', (rank, bonus) => {
+        const s=settings({[SETTINGS.FAMILIAR]:'none'});
+        const base=calculateAccuracy(s,ABILITIES.RANGED_AUTO);
+        expect(calculateAccuracy({...s,[SETTINGS.ENERGISING]:rank},ABILITIES.RANGED_AUTO).accuracy-base.accuracy).toBeCloseTo(bonus);
+    });
+
     it.each([[3, 99], [2, 60], [1, 34], [0, 18]])('calibrates Ghrazi distance %s to observed %s%% before capping', (distance, expected) => {
         const base = settings();
         const correction = 99 / calculateAccuracy(base, ABILITIES.RANGED_AUTO).uncapped;

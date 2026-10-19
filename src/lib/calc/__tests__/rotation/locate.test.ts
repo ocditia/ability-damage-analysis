@@ -52,9 +52,10 @@ describe('Locate target hits', () => {
         expect(snapshots[4][SETTINGS.PERFECT_EQUILIBRIUM_STACKS]).toBe(6);
         expect(Object.keys(result.secondaryDamage ?? {})).toHaveLength(5);
     });
-    it('expires at tick 18', () => {
+    it('keeps the expiry-tick cast and expires before the following tick', () => {
         expect(simulate({0: ABILITIES.LOCATE, 17: ABILITIES.RANGED_AUTO}).snapshots[19][SETTINGS.PERFECT_EQUILIBRIUM_STACKS]).toBe(2);
-        expect(simulate({0: ABILITIES.LOCATE, 18: ABILITIES.RANGED_AUTO}).snapshots[19][SETTINGS.PERFECT_EQUILIBRIUM_STACKS]).toBe(1);
+        expect(simulate({0: ABILITIES.LOCATE, 18: ABILITIES.RANGED_AUTO}).snapshots[20][SETTINGS.PERFECT_EQUILIBRIUM_STACKS]).toBe(2);
+        expect(simulate({0: ABILITIES.LOCATE, 19: ABILITIES.RANGED_AUTO}).snapshots[21][SETTINGS.PERFECT_EQUILIBRIUM_STACKS]).toBe(1);
     });
     it('refreshes the buff when recast', () => {
         expect(simulate({0: ABILITIES.LOCATE, 15: ABILITIES.LOCATE, 20: ABILITIES.RANGED_AUTO}).snapshots[22][SETTINGS.PERFECT_EQUILIBRIUM_STACKS]).toBe(2);

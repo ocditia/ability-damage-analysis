@@ -185,7 +185,8 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             break;
         case ABILITIES.LOCATE:
             settings[SETTINGS.LOCATE] = true;
-            timers[SETTINGS.LOCATE] = 18;
+            // The activation tick is processed immediately; retain the buff for 18 following ticks.
+            timers[SETTINGS.LOCATE] = 19;
             settings._locateWeapon = [settings[SETTINGS.WEAPON], settings[SETTINGS.TH], settings[SETTINGS.MH], settings[SETTINGS.OH]].join('|');
             break;
         case ABILITIES.BALANCE_BY_FORCE:
@@ -349,7 +350,9 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
 export function handle_wen_buff(settings: Record<string, any>, timers: Record<string, number>) {
     settings[SETTINGS.ICY_PRECISION] = 1; // flat buff, no longer per-stack
     settings[SETTINGS.ICY_CHILL_STACKS] = 0;
-    timers[SETTINGS.ICY_PRECISION] = 15; // fixed 15 tick duration
+    settings._wenAccuracyFrom = (settings._rotationTick ?? -1) + 1;
+    // Wen activates on the consuming hit, one tick after the cast in this engine.
+    timers[SETTINGS.ICY_PRECISION] = settings[SETTINGS.CALC_TYPE] === SETTINGS.CALC_TYPE_VALUES.ROTATION ? 16 : 15;
 }
 
 /**

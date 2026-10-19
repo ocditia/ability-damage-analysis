@@ -1,3 +1,4 @@
+import { prepareReaperStacks, gainReaperStack } from '../necklace';
 import { prepareAdrenalineTick, enterCombat, startCrystalChannel, interruptCrystalChannel } from './adrenalineEvents';
 import { applyAccuracyEvent } from './tickEvents';
 import { QUIVER_SLOT_1, QUIVER_SLOT_2, selectQuiverSlot } from './quiver';
@@ -620,6 +621,7 @@ function prepareTick(state: RotationState, settings: any, rotation: RotationInpu
         state.phaseTransitions.push({tick: state.tick, phaseIdx: state.currentPhaseIdx, label: event.phase, hp: 0, pause});
     }
     handleExtraActionsCore(settings, state.timers, state.tick, rotation);
+    prepareReaperStacks(settings, state.tick);
 }
 
 function processCurrentTickCore(
@@ -1585,6 +1587,13 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
 
         const targetIndex = namedDmgObject.targetIndex ?? 0;
         const { results: damageObjects, delayed } = on_damage(settingsCopy, namedDmgObject);
+        // One stack per landed hit, weighted for mutually exclusive proc branches.
+        // Split Soul is derived damage, not another weapon hit.
+        if (!(namedDmgObject as any)._nulled && !cappedOnThisTick
+            && abils[namedDmgObject.ability]?.damageType !== 'split soul'
+            && damageObjects.some(hit => get_user_value(settingsCopy, hit) > 0)) {
+            gainReaperStack(settingsCopy, tick, scale);
+        }
         // Queue delayed hits (e.g. Split Soul) for the next tick
         for (const delayedObj of delayed) {
             (delayedObj as any).targetIndex = targetIndex;
@@ -1867,6 +1876,7 @@ function processExtraAction(element: any, settings: any, timers: Record<string, 
             // Ammo/pocket swaps: also update the generic key so the calc engine sees it
             if (element.slot.includes('ammo')) settings[SETTINGS.AMMO] = element.value;
             if (element.slot.includes('pocket')) settings[SETTINGS.POCKET] = element.value;
+            if (element.slot.includes('necklace')) settings[SETTINGS.NECKLACE] = element.value;
             settings._gearInstances ??= {};
             settings._gearInstances[element.slot] = {itemKey: element.value, instanceId: element.instanceId,
                 instanceIndex: element.instanceIndex ?? 0, perks: element.perks ?? [], label: element.label};
@@ -1896,6 +1906,7 @@ function processExtraAction(element: any, settings: any, timers: Record<string, 
             settings[slot] = element.title;
             if (slot.includes('ammo')) settings[SETTINGS.AMMO] = element.title;
             if (slot.includes('pocket')) settings[SETTINGS.POCKET] = element.title;
+            if (slot.includes('necklace')) settings[SETTINGS.NECKLACE] = element.title;
         }
         return;
     }

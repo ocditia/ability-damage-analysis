@@ -1,3 +1,4 @@
+import { hasSoulsPassive } from './necklace';
 import { damagePotential } from './accuracy';
 import { resolveQuiverAmmo } from './rotation_builder/quiver';
 import { resolveEquipmentPerks } from '$lib/data/perks';
@@ -1310,13 +1311,7 @@ function calc_soul_split_hit(hit, settings) {
     }
 
     // amulet of souls bonus healing
-    const aos_amulets = [
-        ARMOUR.AOS,
-        ARMOUR.AOS_OR,
-        ARMOUR.EOF,
-        ARMOUR.EOF_OR
-    ];
-    if (aos_amulets.includes(settings['amulet'])) {
+    if (hasSoulsPassive(settings)) {
         heal = heal * 1.1875;
     }
 

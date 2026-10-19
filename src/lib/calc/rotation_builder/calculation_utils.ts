@@ -1,3 +1,4 @@
+import { hasSoulsPassive } from '../necklace';
 import { getEquipment } from '$lib/data/equipment';
 /**
  * Pure utility functions for damage calculation
@@ -43,13 +44,7 @@ function calc_soul_split_hit(hit: number, settings: Record<string, any>): number
     }
 
     // Amulet of souls bonus healing (+18.75%)
-    const aos_amulets = [
-        ARMOUR.AOS,
-        ARMOUR.AOS_OR,
-        ARMOUR.EOF,
-        ARMOUR.EOF_OR
-    ];
-    if (aos_amulets.includes(settings['amulet'])) {
+    if (hasSoulsPassive(settings)) {
         heal = heal * 1.1875;
     }
 

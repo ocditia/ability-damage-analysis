@@ -39,6 +39,7 @@ export enum PERKS {
     ULTIMATUMS = 'ultimatums',
     RUTHLESS = 'ruthless rank',
     INVIGORATING = 'invigorating',
+    ENERGISING = 'energising',
     SLAYER_PERK_UNDEAD = 'undead slayer perk',
     SLAYER_PERK_DRAGON = 'dragon slayer perk',
     SLAYER_PERK_DEMON = 'demon slayer perk',
@@ -134,10 +135,14 @@ export const perks: Record<PERKS, PerkDefinition> = {
         maxRank: 3,
         icon: '/rs-rot/effect_icons/perks/Ruthless.webp',
     },
+    [PERKS.ENERGISING]: {
+        name: 'Energising', slotType: 'any', maxRank: 4,
+        icon: '/rs-rot/effect_icons/perks/Energising.png',
+    },
     [PERKS.INVIGORATING]: {
         name: 'Invigorating',
         slotType: 'any',
-        maxRank: 3,
+        maxRank: 4,
         icon: '/rs-rot/effect_icons/perks/Invigorating.png',
     },
     [PERKS.SLAYER_PERK_UNDEAD]: {

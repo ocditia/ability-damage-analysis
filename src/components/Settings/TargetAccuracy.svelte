@@ -36,6 +36,8 @@
         <details><summary>Accuracy modifiers</summary>
             <p>Combat levels include potions, before prayer. The selected Nihil bonus is included automatically. Enter only other accuracy boosts here. Target weakness, affinity debuffs and defence drains are not inferred.</p>
             <label class="field"><span>Additional accuracy ×</span><input type="number" min="0" max="10" step="0.01" value={settings[SETTINGS.ACCURACY_MULTIPLIER]?.value ?? 1} onchange={e => change(SETTINGS.ACCURACY_MULTIPLIER, Number(e.currentTarget.value))} /></label>
+            <label class="field"><span>Starting Reaper stacks</span><input type="number" min="0" max="30" step="1" value={settings[SETTINGS.REAPER_STACKS]?.value ?? 0} onchange={e => change(SETTINGS.REAPER_STACKS, Math.max(0, Math.min(30, Number(e.currentTarget.value))))} /></label>
+            <p>Reaper necklace and Essence of Finality gain stacks from landed hits, up to 30 (+3 percentage points). Stacks last 54 seconds after the last hit.</p>
             <label class="field"><span>Affinity bonus</span><input type="number" min="0" max="10" value={settings[SETTINGS.AFFINITY_BONUS]?.value ?? 0} onchange={e => change(SETTINGS.AFFINITY_BONUS, Number(e.currentTarget.value))} /></label>
             <label class="field"><span>Defence levels drained</span><input type="number" min="0" max="200" value={settings[SETTINGS.TARGET_DEFENCE_DRAIN]?.value ?? 0} onchange={e => change(SETTINGS.TARGET_DEFENCE_DRAIN, Number(e.currentTarget.value))} /></label>
         </details>

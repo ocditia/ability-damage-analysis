@@ -345,9 +345,15 @@ export function equipmentMechanicId(value: unknown): any {
     const base = item.name.replace(/^Augmented /i, '').replace(/ \((barrows|shadow|blood|third age|ice|aurora|soul)\)$/i, '').toLowerCase();
     return equipmentByName.get(base) ?? item.id;
 }
+// The Wiki distinguishes "already augmented" from "can be augmented" for
+// some families. An existing augmented counterpart proves eligibility too.
+const augmentableNames = new Set(Object.values(equipment)
+    .filter(item => /^Augmented /i.test(item.name))
+    .map(item => item.name.replace(/^Augmented /i, '').toLowerCase()));
 export function isAugmentable(value: unknown): boolean {
     const item = getEquipment(value);
     if (!item) return false;
     const variantBase = equipmentByName.get(item.name.replace(/ \[IM\]$|\+$/, '').toLowerCase());
-    return item.augmentable || !!equipment[variantBase]?.augmentable || !!equipment[equipmentMechanicId(value)]?.augmentable || isCustomEquipment(value) && ['mainhand', 'offhand', 'body', 'legs'].includes(item.slot);
+    const name = item.name.replace(/^Augmented /i, '').replace(/ \[IM\]$|\+$/, '').toLowerCase();
+    return item.augmentable || augmentableNames.has(name) || !!equipment[variantBase]?.augmentable || !!equipment[equipmentMechanicId(value)]?.augmentable || isCustomEquipment(value) && ['mainhand', 'offhand', 'body', 'legs'].includes(item.slot);
 }
