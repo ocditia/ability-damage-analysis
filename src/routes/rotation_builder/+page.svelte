@@ -153,14 +153,14 @@
 		endIndex: number;
 		activeBuffs: string[];
 		buffIndices: Record<string, number>;
-		buffCount: number;  // Number of active buffs on this row (for stack positioning)
+		buffCount: number;  // Reserved lanes through the lowest active buff on this row
 		height: number;
 		activeStacks: string[];
 		stackIndices: Record<string, number>;
 	}>>([]);
 	let resizeObserver: ResizeObserver | null = null;
 
-	// Calculate which buffs are active on each visual row and assign compact indices
+	// Allocate buff lanes once for the rotation, independent of wrapping and viewport width.
 	function recalculateRowLayout() {
 		if (!abilityBarElement) return;
 
@@ -171,6 +171,12 @@
 		const totalSlots = visibleTicks;
 		const numRows = Math.ceil(totalSlots / columnsPerRow);
 		const newRowData: typeof rowLayoutData = [];
+        const buffLanes: Record<string, number> = {};
+        for (const key of Object.keys(rotationStore.buffs)) {
+            if (rotationStore.buffs[key].activeRows?.length) {
+                buffLanes[key] = Object.keys(buffLanes).length;
+            }
+        }
 
 		for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
 			const startIndex = rowIndex * columnsPerRow;
@@ -198,12 +204,13 @@
 				}
 			}
 
-			// Assign compact local indices to active buffs (0, 1, 2...)
+			// Preserve empty lanes when another buff ends or starts on a different row.
 			const activeBuffs = [...activeBuffsSet];
 			const buffIndices: Record<string, number> = {};
-			activeBuffs.forEach((buffKey, idx) => {
-				buffIndices[buffKey] = idx;
+			activeBuffs.forEach(buffKey => {
+				buffIndices[buffKey] = buffLanes[buffKey];
 			});
+            const buffCount = activeBuffs.length ? Math.max(...activeBuffs.map(key => buffLanes[key])) + 1 : 0;
 
 			// Assign compact local indices to active stacks
 			const activeStacks = [...activeStacksSet];
@@ -214,7 +221,7 @@
 
 			// Calculate row height: base slot height + space for buffs below + space for stacks below buffs + constant gap
 			// Buff bars extend below slot: initial 9px offset + 6px per buff
-			const buffSpace = activeBuffs.length > 0 ? 9 + activeBuffs.length * buffLineHeight : 0;
+			const buffSpace = buffCount > 0 ? 9 + buffCount * buffLineHeight : 0;
 			// Stacks positioned below buffs: each stack takes ~12px
 			const stackSpace = activeStacks.length * (stackFontSize + stackPadding);
 			// Additional padding when there's content below the slot
@@ -228,7 +235,7 @@
 				endIndex,
 				activeBuffs,
 				buffIndices,
-				buffCount: activeBuffs.length,
+				buffCount,
 				height,
 				activeStacks,
 				stackIndices
