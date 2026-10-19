@@ -7,6 +7,7 @@ import { migrateEquipmentSettings } from '$lib/data/equipment';
 
 // Configuration constants
 const STORAGE_KEY = 'rotation_configs';
+export const DRAFT_STORAGE_KEY = 'rotation_draft_v1';
 const MAX_SAVED_CONFIGS = 20;
 const BAR_SIZE = 300;
 const EXTRA_BAR_SIZE = 12;
@@ -15,6 +16,7 @@ const EXTRA_BAR_SIZE = 12;
 export const rotationStore = $state({
     // Saved rotations
     savedRotations: [],
+    draftStatus: 'Your changes are saved automatically in this browser.',
     activeRotationId: null, // ID of the currently loaded rotation
 
     // Current rotation data
@@ -107,7 +109,7 @@ export const rotationActions = {
 
     // Get current rotation data for export (includes settings)
     getCurrentRotationData() {
-        return {
+        return JSON.parse(JSON.stringify({
             a: rotationStore.abilityBar.map(a => a || ''),
             e: rotationStore.extraActionBar.map(row => row ? row.map(a => a || '') : []),
             n: rotationStore.nulledTicks,
@@ -116,7 +118,65 @@ export const rotationActions = {
             t: rotationStore.stalledAbilities.map(a => a || ''),
             r: rotationStore.releasedAbilities.map(a => a || ''),
             s: getSettingsSnapshot()
+        }));
+    },
+
+    // One validated, atomic path for draft, file and named-save restoration.
+    applyRotationData(data) {
+        if (!data || !Array.isArray(data.a) || data.a.length > BAR_SIZE)
+            throw new Error('Invalid rotation data');
+        for (const key of ['e', 'n', 't', 'r', 'c', 'v']) {
+            if (data[key] != null && (!Array.isArray(data[key]) || data[key].length > BAR_SIZE))
+                throw new Error('Invalid rotation field');
+        }
+        for (const key of ['a', 't', 'r']) {
+            if (data[key]?.some(value => value != null && typeof value !== 'string'))
+                throw new Error('Invalid ability');
+        }
+        if (data.e?.some(row => row != null && (!Array.isArray(row) || row.length > EXTRA_BAR_SIZE)))
+            throw new Error('Invalid extra actions');
+        const pad = (key, transform) => Array.from({length: BAR_SIZE}, (_, i) => transform(data[key]?.[i]));
+        const next = {
+            abilityBar: pad('a', value => value || null),
+            extraActionBar: pad('e', row => row ? row.map(a => a ? (normalizeLegacy(a, gearSwaps, allExtraActions) || a) : null) : null),
+            nulledTicks: pad('n', value => value === true),
+            stalledAbilities: pad('t', value => value || null),
+            releasedAbilities: pad('r', value => value || null),
+            targetCounts: pad('c', value => value ?? null),
+            tickEvents: pad('v', normalizeTickEvent),
         };
+        if (data.s != null && (typeof data.s !== 'object' || Array.isArray(data.s))) throw new Error('Invalid settings');
+        restoreSettings(data.s);
+        Object.assign(rotationStore, next);
+    },
+
+    saveDraft(style) {
+        try {
+            const draft = {version: 1, data: this.getCurrentRotationData(), style,
+                activeRotationId: rotationStore.activeRotationId};
+            localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+            rotationStore.draftStatus = 'Autosaved in this browser';
+            return true;
+        } catch {
+            rotationStore.draftStatus = 'Autosave unavailable. Export a file to keep your rotation.';
+            return false;
+        }
+    },
+
+    restoreDraft() {
+        try {
+            const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+            if (!raw) return null;
+            const draft = JSON.parse(raw);
+            if (draft.version !== 1) throw new Error('Unsupported draft');
+            this.applyRotationData(draft.data);
+            rotationStore.activeRotationId = draft.activeRotationId ?? null;
+            rotationStore.draftStatus = 'Previous session restored ? Autosave on';
+            return draft;
+        } catch {
+            rotationStore.draftStatus = 'Could not restore the previous session. Saved rotations and file imports are still available.';
+            return null;
+        }
     },
 
     // Save a new rotation
@@ -188,18 +248,7 @@ export const rotationActions = {
         }
 
         try {
-            rotationStore.abilityBar = config.data.a.map(a => a || null);
-            rotationStore.extraActionBar = config.data.e.map(row => row.map(a => a ? (normalizeLegacy(a, gearSwaps, allExtraActions) || a) : null));
-            rotationStore.nulledTicks = config.data.n;
-            rotationStore.stalledAbilities = config.data.t.map(a => a || null);
-            rotationStore.releasedAbilities = Array.from({length: BAR_SIZE}, (_, i) => config.data.r?.[i] || null);
-            rotationStore.targetCounts = Array.from({length: BAR_SIZE}, (_, i) => config.data.c?.[i] ?? null);
-            rotationStore.tickEvents = Array.from({length: BAR_SIZE}, (_, i) => normalizeTickEvent(config.data.v?.[i]));
-
-            // Restore settings if saved with the rotation
-            if (config.data.s) {
-                restoreSettings(config.data.s);
-            }
+            this.applyRotationData(config.data);
 
             // Import and call the damage calculation function
             const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
@@ -300,18 +349,8 @@ export const rotationActions = {
             // Handle both old format (just data) and new format (with metadata)
             const rotationData = data.data || data;
 
-            rotationStore.abilityBar = rotationData.a.map(a => a || null);
-            rotationStore.extraActionBar = rotationData.e.map(row => row.map(a => a ? (normalizeLegacy(a, gearSwaps, allExtraActions) || a) : null));
-            rotationStore.nulledTicks = rotationData.n;
-            rotationStore.stalledAbilities = rotationData.t.map(a => a || null);
-            rotationStore.releasedAbilities = Array.from({length: BAR_SIZE}, (_, i) => rotationData.r?.[i] || null);
-            rotationStore.targetCounts = Array.from({length: BAR_SIZE}, (_, i) => rotationData.c?.[i] ?? null);
-            rotationStore.tickEvents = Array.from({length: BAR_SIZE}, (_, i) => normalizeTickEvent(rotationData.v?.[i]));
-
-            // Restore settings if present
-            if (rotationData.s) {
-                restoreSettings(rotationData.s);
-            }
+            this.applyRotationData(rotationData);
+            rotationStore.activeRotationId = null;
 
             // Import and call the damage calculation function
             const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
@@ -369,13 +408,14 @@ export const rotationActions = {
     },
 
     // Export rotation as a base64 string to clipboard
-    exportToString(onSuccess, onError) {
+    async exportToString(onSuccess, onError) {
         try {
             const exportData = {
                 data: this.getCurrentRotationData()
             };
-            const str = btoa(JSON.stringify(exportData));
-            navigator.clipboard.writeText(str);
+            const bytes = new TextEncoder().encode(JSON.stringify(exportData));
+            const str = btoa(Array.from(bytes, byte => String.fromCharCode(byte)).join(''));
+            await navigator.clipboard.writeText(str);
             onSuccess('Rotation copied to clipboard!');
         } catch (e) {
             onError('Failed to copy rotation to clipboard.');
@@ -385,7 +425,10 @@ export const rotationActions = {
     // Import rotation from a base64 string
     async importFromString(importStr, onSuccess, onError, refreshUICallback) {
         try {
-            const data = JSON.parse(atob(importStr.trim()));
+            const raw = atob(importStr.trim());
+            let data;
+            try { data = JSON.parse(new TextDecoder('utf-8', {fatal:true}).decode(Uint8Array.from(raw, char => char.charCodeAt(0)))); }
+            catch { data = JSON.parse(raw); } // Older codes encoded Latin-1 directly.
             await this.importRotation(data, onSuccess, onError, refreshUICallback);
         } catch (e) {
             onError('Invalid rotation string. Make sure you pasted the full string.');

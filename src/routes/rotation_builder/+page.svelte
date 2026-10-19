@@ -22,7 +22,7 @@
     import * as eventHandlers from '$lib/utils/rotationEventHandlers';
     import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
     import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
-    import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
+    import { rotationStore, rotationActions } from '$lib/stores/rotationStore.svelte.js';
     import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
     import { getBossPresetWithEnrage, type BossAttack, type BossAttackPattern } from '$lib/data/bosses/boss_presets';
     import { suggestNextAbility, resolveTumekensAsphyxiate, type AbilitySuggestion } from '$lib/calc/rotation_builder/rotation-damage-calculator';
@@ -380,7 +380,36 @@
 		return rowLayoutData.map(row => `${row.height}px`).join(' ');
 	}
 
+    let draftReady = $state(false);
+    let draftTimer;
+    let lastDraftSnapshot = '';
+    function draftSnapshot() {
+        return JSON.stringify({data: rotationActions.getCurrentRotationData(), style: uiStore.activeTab, id: rotationStore.activeRotationId});
+    }
+    function flushDraft() {
+        clearTimeout(draftTimer);
+        if (draftReady && draftSnapshot() !== lastDraftSnapshot) {
+            if (rotationActions.saveDraft(uiStore.activeTab)) lastDraftSnapshot = draftSnapshot();
+        }
+    }
+    $effect(() => {
+        if (!draftReady) return;
+        const snapshot = draftSnapshot();
+        if (snapshot !== lastDraftSnapshot) {
+            clearTimeout(draftTimer);
+            draftTimer = setTimeout(flushDraft, 250);
+        }
+    });
+
 	onMount(() => {
+        const draft = rotationActions.restoreDraft();
+        if (['ranged', 'magic', 'melee', 'necro', 'defence'].includes(draft?.style)) uiStore.activeTab = draft.style;
+        if (draft) refreshUI();
+        lastDraftSnapshot = draftSnapshot();
+        draftReady = true;
+        const onHidden = () => { if (document.visibilityState === 'hidden') flushDraft(); };
+        window.addEventListener('pagehide', flushDraft);
+        document.addEventListener('visibilitychange', onHidden);
 		// Set up ResizeObserver to recalculate on container resize
 		resizeObserver = new ResizeObserver(() => {
 			recalculateRowLayout();
@@ -393,6 +422,7 @@
 				recalculateRowLayout();
 			}
 		}, 0);
+        return () => { flushDraft(); window.removeEventListener('pagehide', flushDraft); document.removeEventListener('visibilitychange', onHidden); };
 	});
 
 	onDestroy(() => {

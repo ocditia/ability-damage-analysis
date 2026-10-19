@@ -14,7 +14,8 @@ export function initializeSettings() {
 
     let storedSettings = {};
     if (typeof localStorage !== 'undefined') {
-        storedSettings = JSON.parse(localStorage.getItem('rotation_settings')) || {};
+        try { storedSettings = JSON.parse(localStorage.getItem('rotation_settings')) || {}; }
+        catch { storedSettings = {}; }
     }
 
     settingsStore.settings =

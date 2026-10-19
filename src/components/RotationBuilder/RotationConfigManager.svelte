@@ -149,18 +149,20 @@
             </svg>
         </button>
 
+        <p class="save-status" role="status">{rotationStore.draftStatus}. Named saves and autosave stay in this browser; export a file for a backup or another device.</p>
+
         <!-- Action buttons always visible -->
         <div class="config-content">
             <div class="action-row">
                 <button class="action-btn" onclick={() => showRotationImport=true}>Import image / PVME</button>
                 <button class="action-btn primary" onclick={handleSaveRotation} title="Save current rotation">
-                    Save
+                    Save rotation
                 </button>
                 <button class="action-btn" onclick={exportToFile} title="Export to file">
-                    Download file
+                    Export file
                 </button>
                 <button class="action-btn" onclick={importFromFile} title="Import from file">
-                    Open file
+                    Import file
                 </button>
                 <button class="action-btn" onclick={importFromString} title="Import rotation string">
                     Paste code
@@ -235,6 +237,7 @@
 {#if showRotationImport}<RotationImport onclose={() => showRotationImport=false} {refreshUI} />{/if}
 
 <style>
+    .save-status {font-size:.75rem; color:#a7b8c3; margin:8px 12px; line-height:1.5;}
     .config-section {
         border: 1px solid #444;
         border-radius: 6px;
