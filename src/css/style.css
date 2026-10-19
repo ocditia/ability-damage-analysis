@@ -1,6 +1,16 @@
 /* Import color variables */
 @import './colors.css';
 
+select {
+    color-scheme: dark;
+}
+
+select option,
+select optgroup {
+    background-color: #171d21;
+    color: #b2dbee;
+}
+
 body {
     font-family: Roboto, sans-serif;
     --tw-text-opacity: 1;
