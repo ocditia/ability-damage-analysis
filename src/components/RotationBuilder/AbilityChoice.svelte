@@ -33,7 +33,7 @@
                         title={`${ability.title} - Shift-click to hide`}
                         onclick={(event) => choose(event, key, ability)}
                         onmouseenter={() => hovered = key} onfocus={() => hovered = key}
-                        draggable={!ability.offGcd} ondragstart={(event) => handleDragStart(event, key)}>
+                        draggable={true} ondragstart={(event) => handleDragStart(event, key)}>
                         <img src={ability.icon} alt="" draggable="false" />
                     </button>
                 {/each}
@@ -43,7 +43,7 @@
 </div>
 <div class="ability-info" aria-live="polite">
     {#if info}
-        <strong>{info.title}</strong>{#if info.offGcd}<span>Click to add an extra action at the selected tick (or next available tick).</span>{/if}
+        <strong>{info.title}</strong>{#if info.offGcd}<span>Click to add at the selected tick, or drag onto any tick. Uses an extra action without replacing its ability.</span>{/if}
         <span>{reference ? `${reference.type} / Level ${reference.level} / ${reference.adrenaline} adrenaline / ${reference.cooldown}` : `${info.abilityType === 'threshold' ? 'Enhanced' : info.abilityType} / ${info.cooldown ?? 0}s cooldown`}</span>
         {#if reference}<span>Equipment: {reference.equipment}</span>{/if}
         {#if info.specialDamage}<span>Average ability damage: {info.specialDamage}</span>{/if}

@@ -65,7 +65,6 @@
         handleAbilityClick(event, ability.actionKey ?? key);
     }
     function dragFromPalette(event, key) {
-        if (paletteAbilities[key].offGcd) { event.preventDefault(); return; }
         handleDragStart(event, paletteAbilities[key].actionKey ?? key);
     }
 

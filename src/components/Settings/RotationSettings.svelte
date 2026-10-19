@@ -11,7 +11,6 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
     import GearSelection from '../../components/Settings/GearSelection.svelte';
     import PerkSelection from '../../components/Settings/PerkSelection.svelte';
     import FamiliarSelection from '../../components/Settings/FamiliarSelection.svelte';
-    import BuffSelection from '../../components/Settings/BuffSelection.svelte';
     import InfoTip from '../UI/InfoTip.svelte';
     import GearManager from '../../components/Settings/GearManager.svelte';
     import ActionIcon from '../UI/ActionIcon.svelte';
@@ -639,9 +638,6 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                 </div>
 
             {:else if tab === 'bosses'}
-                <div class="md:col-span-1 space-y-4">
-                    <BuffSelection settings={settings} updateDamages={updateDamages} styleFilter={styleTab} />
-                </div>
                 <div class="md:col-span-1 space-y-4">
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Boss Preset</h5>
                     <div class="flex justify-center mb-3">

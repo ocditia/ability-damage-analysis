@@ -1,5 +1,6 @@
 import { ToolMode } from '$lib/calc/rotation_builder/ui_material/toolModes';
 import { abils } from '$lib/data/abilities.ts';
+import { paletteAbilities } from '$lib/data/abilityPalette';
 import { calculateTotalDamage, calculateGaussianParameters } from '$lib/calc/rotation_builder/rotation-damage-calculator';
 import { rotationStore, rotationActions } from '$lib/stores/rotationStore.svelte.js';
 import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
@@ -141,7 +142,17 @@ export function handleDrop(event, index, stores, refreshUI, calculateTotalDamage
     const { rotationStore, uiActions } = stores;
 
     const abilityKey = event.dataTransfer.getData('text/plain');
-    if (allAbils[abilityKey]) {
+    const utility = paletteAbilities[abilityKey];
+    if (utility?.offGcd) {
+        const actions = rotationStore.extraActionBar[index] ??= Array(EXTRA_BAR_SIZE).fill(null);
+        const slot = Array.from({length: EXTRA_BAR_SIZE}, (_, i) => i).find(i => !actions[i]);
+        if (slot === undefined) {
+            notifActions.showNotification('Tick is full', 'Remove an extra action at this tick before adding another.', 'warning');
+            uiActions.clearDragDrop();
+            return;
+        }
+        actions[slot] = {type: 'ability', value: abilityKey, title: utility.title, icon: utility.icon};
+    } else if (allAbils[abilityKey]) {
         rotationStore.abilityBar[index] = abilityKey;
     } else {
         try {
@@ -180,6 +191,7 @@ export function handleDragEnter(event, index, stores, allAbils) {
     uiActions.setDragDropValidSlot(true);
 
     let data = event.dataTransfer.getData('text/plain');
+    if (paletteAbilities[data]?.offGcd) return;
     if (!allAbils[data]) {
         try {
             data = JSON.parse(event.dataTransfer.getData('text/plain'));
