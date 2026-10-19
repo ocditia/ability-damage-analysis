@@ -419,6 +419,14 @@
         return result;
     });
     let automaticAccuracy = $derived(accuracyConditions[SETTINGS.AUTO_ACCURACY] === true && !!bossPresets[accuracyConditions[SETTINGS.BOSS_PRESET]]);
+    let outsideCombat = $derived.by(() => {
+        if (tickEvent.outOfCombat != null) return tickEvent.outOfCombat;
+        for (let i = tick - 1; i >= 0; i--) {
+            if ((rotationStore.abilityBar[i] && allAbils[rotationStore.abilityBar[i]]?.abilityClassification !== 'self cast') || rotationStore.releasedAbilities[i]) return false;
+            if (rotationStore.tickEvents[i]?.outOfCombat != null) return rotationStore.tickEvents[i].outOfCombat;
+        }
+        return !!settingsStore.settings[SETTINGS.OUT_OF_COMBAT]?.value;
+    });
     let currentGear = $derived.by(() => {
         const result = buildGearState(tick);
         const prefix = stylePrefix[uiState.activeTab] ?? 'ranged';
@@ -533,6 +541,10 @@
                 <button class="quick-btn" onclick={() => {rotationStore.releasedAbilities[tick] = pendingStall; onRefreshUI();}}>Release {allAbils[pendingStall]?.title || pendingStall} here</button>
             {/if}
             <section class="tick-controls" aria-label="Tick conditions">
+                <div class="condition-row"><label for="tick-adrenaline">Set adrenaline</label><div class="percent-field"><input id="tick-adrenaline" type="number" min="0" max="130" step="0.1" placeholder="Auto" value={tickEvent.adrenaline ?? ''} onchange={e => updateTickEvent({adrenaline:e.currentTarget.value === '' ? undefined : Number(e.currentTarget.value)})} /><span aria-hidden="true">%</span></div></div>
+                <p class="condition-note">Overrides adrenaline before actions on this tick, capped at your maximum. Later gains and costs continue normally. Clear the box to use the calculated value.</p>
+                <label class="phase-toggle"><input type="checkbox" checked={outsideCombat} onchange={e => updateTickEvent({outOfCombat:e.currentTarget.checked})} /> Outside combat (Persistent Rage)</label>
+                <p class="condition-note">Applies until changed or an attack is cast/released. Persistent Rage gains 5% every 2 ticks outside combat.</p>
                 <div class="condition-row"><label for="targets-in-range">Targets in range</label>
                     <input id="targets-in-range" type="number" min="1" max="9" value={targetCountAt(rotationStore.targetCounts,tick)} onchange={e => {rotationStore.targetCounts[tick] = normalizeTargetCount(e.currentTarget.value); onRefreshUI();}} /></div>
                 <label class="phase-name">Fighting<select value={accuracyConditions[SETTINGS.BOSS_PRESET] ?? 'none'} onchange={e => updateTickEvent({target:e.currentTarget.value, automaticAccuracy:true})}><option value="none">No target</option>{#each Object.keys(bossPresets).sort() as key}<option value={key}>{bossPresets[key].name}</option>{/each}</select></label>

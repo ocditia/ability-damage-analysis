@@ -2,6 +2,7 @@ import { ABILITIES } from '$lib/data/abilities';
 import { equipmentImageUrl } from '$lib/data/equipment';
 
 export enum CONSUMABLES {
+    ADRENALINE_CRYSTAL = 'Adrenaline crystal',
     ADRENALINE_RENEWAL = 'Adrenaline renewal potion',
     ADD_1_ADRENALINE = 'Add 1 Adrenaline',
     ADD_5_ADRENALINE = 'Add 5 Adrenaline',
@@ -13,6 +14,7 @@ export enum CONSUMABLES {
 }
 
 export const consumables: Record<string, { title: string; icon: string; group?: string }> = {
+    [CONSUMABLES.ADRENALINE_CRYSTAL]: {title: 'Adrenaline crystal', icon: '/rs-rot/ability_icons/special/Adrenaline_crystal.png'},
     [CONSUMABLES.ADRENALINE_RENEWAL]: {
         title: 'Adrenaline renewal potion',
         icon: '/rs-rot/ability_icons/special/Adrenaline_renewal_potion.png'

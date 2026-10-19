@@ -1,7 +1,9 @@
-export interface TickEvent { accuracy?: number; automaticAccuracy?: boolean; target?: string; ghraziDistance?: number; armourMultiplier?: number; malachiReset?: boolean; phase?: string; downtime?: number }
+export interface TickEvent { adrenaline?: number; outOfCombat?: boolean; accuracy?: number; automaticAccuracy?: boolean; target?: string; ghraziDistance?: number; armourMultiplier?: number; malachiReset?: boolean; phase?: string; downtime?: number }
 export function normalizeTickEvent(value: any): TickEvent | null {
     if (!value || typeof value !== 'object') return null;
     const result: TickEvent = {};
+    if (value.adrenaline != null && Number.isFinite(Number(value.adrenaline))) result.adrenaline = Math.max(0, Math.min(130, Number(value.adrenaline)));
+    if (typeof value.outOfCombat === 'boolean') result.outOfCombat = value.outOfCombat;
     if (typeof value.automaticAccuracy === 'boolean') result.automaticAccuracy = value.automaticAccuracy;
     if (typeof value.target === 'string') result.target = value.target.slice(0, 100);
     if (value.ghraziDistance != null && Number.isFinite(Number(value.ghraziDistance))) result.ghraziDistance = Math.max(0, Math.min(100, Number(value.ghraziDistance)));
@@ -31,7 +33,7 @@ export function applyAccuracyEvent(settings: Record<string, any>, event: TickEve
 
 export function tickConditionLabel(event?: TickEvent | null): string | undefined {
     if (!event) return undefined;
-    return [event.phase, event.target != null ? `Target: ${event.target}` : '',
+    return [event.adrenaline != null ? `Set adrenaline: ${event.adrenaline}%` : '', event.outOfCombat != null ? (event.outOfCombat ? 'Outside combat' : 'In combat') : '', event.phase, event.target != null ? `Target: ${event.target}` : '',
         event.automaticAccuracy === true ? 'Automatic damage potential' : event.accuracy != null ? `Damage potential: ${event.accuracy}%` : '',
         event.ghraziDistance != null ? `Knights: ${event.ghraziDistance === 0 ? 'overlapping' : event.ghraziDistance + ' clear tiles'}` : '']
         .filter(Boolean).join(' | ') || undefined;

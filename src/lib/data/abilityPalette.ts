@@ -1,11 +1,12 @@
 import { currentAbilityIcon } from './abilityIcons';
 import { abils, ABILITIES } from './abilities';
-import { offGcdAbilities } from '$lib/special/abilities';
+import { offGcdAbilities, consumables, CONSUMABLES } from '$lib/special/abilities';
 
 // Utility actions belong beside their combat style, but are placed in the
 // selected tick's extra-action slots rather than consuming a global cooldown.
 export const slayerAbilities = [ABILITIES.UNDEAD_SLAYER_ABILITY, ABILITIES.DRAGON_SLAYER_ABILITY, ABILITIES.DEMON_SLAYER_ABILITY, ABILITIES.VAMPYRE_SLAYER_ABILITY];
 const utilities = {
+    [CONSUMABLES.ADRENALINE_CRYSTAL]: {...consumables[CONSUMABLES.ADRENALINE_CRYSTAL], shared: true, description: "Channel at War's Retreat: +25% adrenaline every 3 ticks (100% with War's Blessing 4), capped at your maximum. Stops when full or when you cast, stall or release an ability. Place before your next attack, not on the same tick.", wikiUrl: "https://runescape.wiki/w/Adrenaline_crystal_(War%27s_Retreat)"},
     ...Object.fromEntries(slayerAbilities.map(key => [key, {...abils[key], shared: true, wikiUrl: 'https://runescape.wiki/w/' + abils[key].title.replaceAll(' ', '_') + '_(ability)'}])),
     [ABILITIES.DIVE]: { ...offGcdAbilities[ABILITIES.DIVE], mainStyle: 'melee' },
     [ABILITIES.ESCAPE]: { ...offGcdAbilities[ABILITIES.ESCAPE], mainStyle: 'ranged' },

@@ -187,7 +187,11 @@ export function addAdrenaline(settings: Record<string, any>, amount: number, nat
     if (naturalInstinctApplies && settings[SETTINGS.NATURAL_INSTINCT] && amount > 0) {
         amount *= 2;
     }
-    let new_adren = settings[SETTINGS.ADRENALINE] + amount;
+    const new_adren = settings[SETTINGS.ADRENALINE] + amount;
+    settings[SETTINGS.ADRENALINE] = settings[SETTINGS.CAP_ADRENALINE] ? Math.min(maxAdrenaline(settings), new_adren) : new_adren;
+}
+
+export function maxAdrenaline(settings: Record<string, any>): number {
 
     // Vestments of Havoc: full set (4 pieces) + melee abilities in rotation = +20 max adrenaline
     const hasFullVestments = settings['_hasMeleeAbilities'] &&
@@ -196,5 +200,5 @@ export function addAdrenaline(settings: Record<string, any>, amount: number, nat
     let max_adren = 100 + (hasFullVestments ? 20 : 0);
     if (settings[SETTINGS.HEIGHTENED_SENSES]) max_adren += 10;
 
-    settings[SETTINGS.ADRENALINE] = settings[SETTINGS.CAP_ADRENALINE] ? Math.min(max_adren, new_adren) : new_adren;
+    return max_adren;
 }

@@ -278,6 +278,8 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
     });
 
     updateDamages();
+    let relicCount = $derived([SETTINGS.FURY_OF_THE_SMALL,SETTINGS.CONSERVATION_OF_ENERGY,SETTINGS.HEIGHTENED_SENSES,SETTINGS.PERSISTENT_RAGE].filter(key=>settings[key]?.value).length+(settings[SETTINGS.BERSERKERS_FURY]?.value>0?1:0));
+    let relicEnergy = $derived((settings[SETTINGS.FURY_OF_THE_SMALL]?.value?150:0)+(settings[SETTINGS.CONSERVATION_OF_ENERGY]?.value?350:0)+(settings[SETTINGS.HEIGHTENED_SENSES]?.value?350:0)+(settings[SETTINGS.PERSISTENT_RAGE]?.value?150:0)+(settings[SETTINGS.BERSERKERS_FURY]?.value>0?250:0));
 </script>
 
 <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-rotation">
@@ -482,7 +484,6 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                     <div class="flex flex-wrap gap-2 justify-center my-2">
                         {#each [
                             { key: SETTINGS.REAPER_CREW, img: '/rs-rot/effect_icons/death.png', title: 'Reaper Crew', toggle: true },
-                            { key: SETTINGS.BERSERKERS_FURY, img: '/rs-rot/effect_icons/berserkers_fury.png', title: "Berserker's Fury", step: 0.5, max: 5.5 },
                             { key: SETTINGS.SMOKE_CLOUD, img: '/rs-rot/effect_icons/smoke_cloud.png', title: 'Smoke Cloud', toggle: true },
                             { key: SETTINGS.SWIFTNESS_OF_THE_AVIANSIE, img: '/rs-rot/effect_icons/swiftness_of_the_avianse.png', title: 'Swiftness of the Aviansie', toggle: true },
                             { key: SETTINGS.STONE_OF_JAS, img: '/rs-rot/effect_icons/stone_of_jas.png', title: 'Stone of Jas', step: 1, max: 6 },
@@ -555,15 +556,36 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                     {/each}
                     </div>
                 </details>
+                <details class="setup-disclosure" open>
+                    <summary>Relics &amp; adrenaline</summary>
+                    <p class="setup-help">Select your active relics. Conservation of Energy and Heightened Senses each cost 350 energy, so you cannot equip both with the 650-energy limit.</p>
+                    <div class="relic-controls">
+                        {#each [
+                            {key:SETTINGS.FURY_OF_THE_SMALL, title:'Fury of the Small', detail:'+1% adrenaline from basics (150 energy)'},
+                            {key:SETTINGS.CONSERVATION_OF_ENERGY, title:'Conservation of Energy', detail:'Returns 10% adrenaline after ultimates (350 energy)'},
+                            {key:SETTINGS.HEIGHTENED_SENSES, title:'Heightened Senses', detail:'+10% maximum adrenaline (350 energy)'},
+                            {key:SETTINGS.PERSISTENT_RAGE, title:'Persistent Rage', detail:'+5% every 2 ticks outside combat (150 energy)'}
+                        ] as relic}
+                            <label><input type="checkbox" checked={!!settings[relic.key]?.value} onchange={e => {
+                                settings[relic.key].value=e.currentTarget.checked;
+                                if(e.currentTarget.checked && relic.key===SETTINGS.CONSERVATION_OF_ENERGY) settings[SETTINGS.HEIGHTENED_SENSES].value=false;
+                                if(e.currentTarget.checked && relic.key===SETTINGS.HEIGHTENED_SENSES) settings[SETTINGS.CONSERVATION_OF_ENERGY].value=false;
+                                updateDamages();
+                            }} /><span>{relic.title}<small>{relic.detail}</small></span></label>
+                        {/each}
+                        <label><span>Berserker's Fury damage bonus<small>0 = inactive; up to 5.5% at low life points (250 energy)</small></span><input aria-label="Berserker's Fury damage bonus" type="number" min="0" max="5.5" step="0.1" value={settings[SETTINGS.BERSERKERS_FURY]?.value ?? 0} onchange={e=>{settings[SETTINGS.BERSERKERS_FURY].value=Math.max(0,Math.min(5.5,Number(e.currentTarget.value)));updateDamages();}} /><span>%</span></label>
+                        <p class="setup-help">{relicCount}/3 relics; {relicEnergy}/650 energy{relicCount>3 || relicEnergy>650 ? ' - this selection exceeds the in-game limit.' : ''}</p>
+                        <label><input type="checkbox" checked={!!settings[SETTINGS.OUT_OF_COMBAT]?.value} onchange={e=>{settings[SETTINGS.OUT_OF_COMBAT].value=e.currentTarget.checked;updateDamages();}} /><span>Start outside combat<small>For pre-builds with Persistent Rage; attacks enter combat automatically.</small></span></label>
+                        <label><input type="checkbox" checked={!!settings[SETTINGS.WAR_BLESSING_4]?.value} onchange={e=>{settings[SETTINGS.WAR_BLESSING_4].value=e.currentTarget.checked;updateDamages();}} /><span>War's Blessing 4<small>Adrenaline crystal restores 100% per pulse instead of 25%.</small></span></label>
+                    </div>
+                    <p class="setup-help">Find Adrenaline crystal in Utility, or click a tick to set adrenaline directly. Negative timeline values mean the planned costs exceed the available adrenaline.</p>
+                </details>
                 <details class="setup-disclosure">
-                    <summary>Adrenaline effects</summary>
+                    <summary>Other adrenaline effects</summary>
                     <p class="setup-help">Enable your equipped unlocks. Expected adrenaline averages random gains rather than assuming every proc happens.</p>
                     <div class="flex flex-wrap gap-2 justify-center">
                         {#each [
                             { key: SETTINGS.VIGOUR, img: getEquipmentIcon(ARMOUR.RING_OF_VIGOUR, '/rs-rot/armour_icons/Ring_slot.png'), title: 'Ring of Vigour' },
-                            { key: SETTINGS.FURY_OF_THE_SMALL, img: '/rs-rot/effect_icons/Fury of the Small.png', title: 'Fury of the Small' },
-                            { key: SETTINGS.CONSERVATION_OF_ENERGY, img: '/rs-rot/effect_icons/Conservation of Energy.png', title: 'Conservation of Energy' },
-                            { key: SETTINGS.HEIGHTENED_SENSES, img: '/rs-rot/effect_icons/Heightened Senses.png', title: 'Heightened Senses' },
                             { key: SETTINGS.EXPECTED_ADRENALINE, img: '/rs-rot/settings_icons/Animal_trait_re-roller.png', title: 'Expected Adrenaline' },
                         ] as toggle}
                             <ToggleButton readable={true}
@@ -731,6 +753,12 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
 <GearManager bind:show={showGearManager} initialStyle={styleColorMap[styleTab] ?? 'ranged'} />
 
 <style>
+    .relic-controls {display:grid;gap:.75rem;margin:.75rem 0;}
+    .relic-controls label {display:flex;align-items:center;gap:.6rem;font-size:.85rem;}
+    .relic-controls label span:first-of-type {flex:1;}
+    .relic-controls small {display:block;font-size:.72rem;color:#a7b8c3;line-height:1.4;}
+    .relic-controls input[type="number"] {width:4rem;background:#101e27;color:#b8dff7;border:1px solid #4d6470;border-radius:4px;padding:.3rem;}
+
     .stack-toggle {
         position: relative;
         padding: 4px;

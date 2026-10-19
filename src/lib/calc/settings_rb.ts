@@ -580,6 +580,9 @@ const SETTINGS = {
     CAP_ADRENALINE: 'cap adrenaline',
     CRIT_BUFF: 'crit buff',
     VIGOUR: 'vigour',
+    PERSISTENT_RAGE: 'persistent rage',
+    OUT_OF_COMBAT: 'out of combat',
+    WAR_BLESSING_4: 'wars blessing 4',
     FURY_OF_THE_SMALL: 'fots',
     HEIGHTENED_SENSES: 'heightened senses',
     CONSERVATION_OF_ENERGY: 'coe',
@@ -2327,6 +2330,9 @@ const settingsConfig = {
         label: 'Vigour Passive',
         default: true
     },
+    [SETTINGS.PERSISTENT_RAGE]: {label: 'Persistent Rage', default: false},
+    [SETTINGS.OUT_OF_COMBAT]: {label: 'Start outside combat', default: false},
+    [SETTINGS.WAR_BLESSING_4]: {label: "War's Blessing 4", default: false},
     [SETTINGS.FURY_OF_THE_SMALL]: {
         label: 'Fury of the Small',
         default: true
