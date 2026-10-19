@@ -453,6 +453,8 @@ export function clearRotation(stores, refreshUI, calculateTotalDamageNew) {
  */
 export function refreshUI(calcDmg = true, stores, calculateTotalDamageNew) {
     const { uiStore, rotationStore, uiActions } = stores;
+    // Resource visibility and insertion pointers must use the new calculation.
+    if (calcDmg) calculateTotalDamageNew();
 
     // UI Constants
     const BASE_BAR_ROW_GAP = 30;
@@ -531,9 +533,6 @@ export function refreshUI(calcDmg = true, stores, calculateTotalDamageNew) {
         }
     }
 
-    if (calcDmg) {
-        calculateTotalDamageNew();
-    }
 }
 
 /**

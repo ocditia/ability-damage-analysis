@@ -78,3 +78,11 @@ describe('stall and release placement',()=>{
     });
 });
 
+
+it('refreshes resource visibility after recalculating zero-to-positive adrenaline',()=>{
+    const {stores}=editingStores();
+    stores.rotationStore.stacks.adrenaline={displaySetting:'show adrenaline',stackTicks:[0],idx:-1};
+    stores.settingsStore.settings['show adrenaline']={value:true};
+    refreshUI(true,stores,()=>{stores.rotationStore.stacks.adrenaline.stackTicks[0]=100;});
+    expect(stores.rotationStore.stacks.adrenaline.idx).toBe(0);
+});
