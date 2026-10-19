@@ -1,4 +1,5 @@
 <script lang="ts">
+    import ShiftRotation from '$components/RotationBuilder/ShiftRotation.svelte';
     import { tickConditionLabel } from '$lib/calc/rotation_builder/tickEvents';
 	import { onMount, onDestroy } from 'svelte';
 	import Navbar from '$components/Layout/Navbar.svelte';
@@ -748,6 +749,7 @@
                         {#each modes as mode}<button class:active={uiStore.activeTool === mode.value} aria-pressed={uiStore.activeTool === mode.value} onclick={() => selectMode(mode.value)}>{mode.label} <kbd>{mode.key}</kbd></button>{/each}
                     </div>
                     <p class="mode-hint">{modes.find(mode => mode.value === uiStore.activeTool)?.hint}</p>
+                    <ShiftRotation {refreshUI} />
                     {#if !usedTicks}<div class="timeline-empty"><strong>Add your first ability above</strong><span>Abilities append at the next available tick. Configure your gear in Settings to get meaningful damage estimates.</span></div>{/if}
                     <div
                         bind:this={abilityBarElement}

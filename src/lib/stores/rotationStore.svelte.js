@@ -326,6 +326,35 @@ export const rotationActions = {
         }
     },
 
+    // Move the complete suffix without dropping events or overwriting the prefix.
+    shiftTicks(start, offset) {
+        if (!Number.isInteger(start) || start < 0 || start >= BAR_SIZE || !Number.isInteger(offset) || offset === 0) {
+            return { success: false, error: 'Enter a valid starting tick and a whole number of ticks to move.' };
+        }
+        const fills = { tickEvents: null, targetCounts: null, abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null, releasedAbilities: null };
+        const occupied = i => Object.keys(fills).some(key => {
+            const value = rotationStore[key][i];
+            return Array.isArray(value) ? value.some(Boolean) : value !== null && value !== undefined && value !== false && value !== '';
+        });
+        let last = BAR_SIZE - 1;
+        while (last >= start && !occupied(last)) last--;
+        if (last < start) return { success: false, error: 'There is nothing to move from this tick onward.' };
+        if (start + offset < 0 || last + offset >= BAR_SIZE) {
+            return { success: false, error: `The shifted rotation must fit between ticks 0 and ${BAR_SIZE - 1}.` };
+        }
+        for (let i = start + offset; i < start; i++) {
+            if (occupied(i)) return { success: false, error: `Tick ${i} already contains an action or condition. Choose a smaller move or an earlier starting tick.` };
+        }
+        for (const [key, fill] of Object.entries(fills)) {
+            const source = rotationStore[key];
+            const shifted = Array(BAR_SIZE).fill(fill);
+            for (let i = 0; i < start; i++) shifted[i] = source[i];
+            for (let i = start; i <= last; i++) shifted[i + offset] = source[i];
+            rotationStore[key] = shifted;
+        }
+        return { success: true };
+    },
+
     insertTicks(pos, count) {
         const fills = { tickEvents: null, targetCounts: null, abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null, releasedAbilities: null };
         for (const [key, fill] of Object.entries(fills)) {
