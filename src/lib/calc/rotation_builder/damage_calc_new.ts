@@ -127,7 +127,7 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
     logger.trace('Boosted AD', Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * hitChance), `floor(${settings[SETTINGS.ABILITY_DAMAGE]} × ${hitChance})`);
 
     // Handle Wen buff consumption for ranged abilities
-    handleWenBuffConsumption(settings, timers, abilityKey);
+    if (!settings._castBuffSnapshot) handleWenBuffConsumption(settings, timers, abilityKey);
     // TODO - accuracy (including offstyle gear penalty and ingen)
     const baseDamage = settings[SETTINGS.ABILITY_DAMAGE];
     const effectCtx: EffectContext = { settings, abilityKey };

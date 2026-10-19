@@ -84,11 +84,11 @@ function applyBoostedADEffects(
         applied = true;
     }
 
-    // Icy precision (Wen arrows) - flat +25% base damage
+    // Icy Precision is snapshotted for the whole cast, including later channel hits.
     if (
         ['threshold', 'ultimate', 'special attack'].includes(abils[abilityKey]?.abilityType) &&
-        settings[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS &&
-        settings[SETTINGS.ICY_PRECISION] > 0
+        (settings._castBuffSnapshot?.wenDamage ??
+            (settings[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settings[SETTINGS.ICY_PRECISION] > 0))
     ) {
         distribution['boosted AD'] = Math.floor(
             distribution['boosted AD'] * 1.3

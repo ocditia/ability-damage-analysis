@@ -12,6 +12,7 @@ export const buffs = [
     SETTINGS.NATURAL_INSTINCT,
     SETTINGS.DEATH_SWIFTNESS,
     SETTINGS.SUNSHINE,
+    SETTINGS.GREATER_CHAIN,
     SETTINGS.BERSERK,
     SETTINGS.SPLIT_SOUL,
     SETTINGS.GREATER_DRACOLICH_INFUSION,
@@ -77,6 +78,11 @@ export function createBuffTimings(barSize: number) {
                 colour: BUFF_COLORS.death_swiftness,
                 icon: '/rs-rot/ability_icons/ranged/Greater_Death\'s_Swiftness.png',
                 combatStyle: SettingsCombatStyles.RANGED
+            },
+            [SETTINGS.GREATER_CHAIN]: {
+                title: 'Chained targets', idx: -1, buffTicks: Array(barSize).fill(0), activeRows: [],
+                colour: '#8db6ec', icon: '/rs-rot/ability_icons/magic/30x30/greater_chain.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.SUNSHINE]: {
                 title: 'Sunshine',

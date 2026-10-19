@@ -1,3 +1,5 @@
+import { isAreaAttack, prepareChainCast } from './castTargets';
+import { handleWenBuffConsumption } from './effects';
 import { prepareReaperStacks, gainReaperStack } from '../necklace';
 import { prepareAdrenalineTick, enterCombat, startCrystalChannel, interruptCrystalChannel } from './adrenalineEvents';
 import { applyAccuracyEvent } from './tickEvents';
@@ -55,6 +57,7 @@ interface RotationState {
     tick: number;
     hit_delay: number;
     start_tick: number;
+    channelBuffSnapshot?: {wenDamage: boolean; wenAccuracy: boolean; locate: boolean};
     cinderHitCount: number;
     poisonDamage: number; // Accumulated poison damage (calculated per-hit for Bik stack scaling)
     poisonPerTick: number[]; // Cumulative poison damage at each tick
@@ -622,6 +625,10 @@ function prepareTick(state: RotationState, settings: any, rotation: RotationInpu
     }
     handleExtraActionsCore(settings, state.timers, state.tick, rotation);
     prepareReaperStacks(settings, state.tick);
+    if (settings._chainPending && state.tick >= settings._chainPending.expires) {
+        settings._chainPending = null;
+        settings[SETTINGS.GREATER_CHAIN] = false;
+    }
 }
 
 function processCurrentTickCore(
@@ -652,6 +659,7 @@ function processCurrentTickCore(
         delete settingsCopy._pendingStall;
         style_specific_unification(settingsCopy, abils[releasedAbility].mainStyle);
         state.combatStyle = abils[releasedAbility].mainStyle;
+        prepareChainCast(settingsCopy, releasedAbility, state.tick, targetCountAt(state.targetCounts, state.tick));
         settingsCopy['ability'] = releasedAbility;
         if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
         state.start_tick = state.tick;
@@ -1152,6 +1160,7 @@ function processAbilityCore(
     updateFulProbability(rotationState, settingsCopy);
 
     on_stall(settingsCopy, abilityKey, rotationState.timers);
+    prepareChainCast(settingsCopy, abilityKey, rotationState.tick, targetCountAt(rotationState.targetCounts, rotationState.tick));
     if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) {
         settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
     }
@@ -1169,7 +1178,13 @@ function processAbilityCore(
     if (abilityKey in abils) {
         const classification = abils[abilityKey]?.abilityClassification;
         if (isChannelled(settingsCopy, abilityKey)) {
-            // Handled in processAbilityTicksCore
+            const wenAccuracy = settingsCopy[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settingsCopy[SETTINGS.ICY_PRECISION] > 0;
+            handleWenBuffConsumption(settingsCopy, rotationState.timers, abilityKey);
+            rotationState.channelBuffSnapshot = {
+                wenAccuracy,
+                wenDamage: settingsCopy[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settingsCopy[SETTINGS.ICY_PRECISION] > 0,
+                locate: settingsCopy[SETTINGS.LOCATE] === true && rotationState.timers[SETTINGS.LOCATE] > 0,
+            };
         } else if (classification === 'multihit') {
             processMultiHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         } else if (classification === 'bleed' || classification === 'burn' || classification === 'dot') {
@@ -1239,6 +1254,8 @@ function processChannelledTickCore(
     let hit_index = 1 + currentTick - state.start_tick;
     let dmgObjects: DamageObject[] = [];
 
+    // Only this channel inherits its cast buffs; expiry still affects new casts and procs.
+    settingsCopy._castBuffSnapshot = state.channelBuffSnapshot;
     if (hitSequence[hit_index].length > 0) {
         for (let hitKey of hitSequence[hit_index]) {
             let dmgObject = create_damage_object(settingsCopy, hitKey);
@@ -1254,6 +1271,7 @@ function processChannelledTickCore(
             handleChannellers(settingsCopy, state.timers, hitKey);
         }
     }
+    delete settingsCopy._castBuffSnapshot;
     dmgObjects.forEach(dmgObject => {
         if (settingsCopy.isNulledTick) {
             dmgObject = zeroDamageObject(dmgObject);
@@ -1520,13 +1538,15 @@ function hitTargets(state: RotationState, settings: any, object: DamageObject, k
         state.timers[SETTINGS.LOCATE] = 0;
     }
     const ability = abils[key];
-    const excluded = /ricochet|bombardment/i.test(key);
-    const eligible = settings[SETTINGS.LOCATE] && state.timers[SETTINGS.LOCATE] > 0
+    const excluded = isAreaAttack(key);
+    const locateAtCast = settings._castBuffSnapshot?.locate ?? (settings[SETTINGS.LOCATE] && state.timers[SETTINGS.LOCATE] > 0);
+    const eligible = locateAtCast
         && ability.mainStyle === 'ranged' && ability.abilityClassification !== 'self cast'
         && ability.abilityType !== 'proc' && !excluded;
     const inRange = targetCountAt(state.targetCounts, state.tick);
-    const count = key === ABILITIES.METEOR_STRIKE ? Math.min(9, inRange)
-        : eligible ? Math.min(6, inRange) : 1;
+    const chain = ability.mainStyle === 'magic' && ability.abilityType !== 'proc' ? settings._chainCast : null;
+    const count = chain?.targets ?? (key === ABILITIES.METEOR_STRIKE ? Math.min(9, inRange)
+        : eligible ? Math.min(6, inRange) : 1);
     const results: DamageObject[] = [];
     state.secondaryBik ??= {};
     for (let target = 0; target < count; target++) {
@@ -1534,7 +1554,14 @@ function hitTargets(state: RotationState, settings: any, object: DamageObject, k
         if (target) settings[SETTINGS.BIK_STACKS] = state.secondaryBik[target] ?? 0;
         const previousDefer = settings._deferBolgProcs;
         settings._deferBolgProcs = true;
-        const hits = on_hit(settings, structuredClone(object), state.timers, key);
+        const targetObject = structuredClone(object);
+        if (target > 0 && chain) {
+            for (const distribution of Object.values(targetObject.distributions)) if (distribution) {
+                distribution.minHit = Math.floor(distribution.minHit * chain.factor);
+                distribution.varHit = Math.floor(distribution.varHit * chain.factor);
+            }
+        }
+        const hits = on_hit(settings, targetObject, state.timers, key);
         settings._deferBolgProcs = previousDefer;
         for (const hit of hits) {
             (hit as any).targetIndex = target;

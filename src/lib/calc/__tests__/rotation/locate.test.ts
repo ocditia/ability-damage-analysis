@@ -77,8 +77,8 @@ describe('Locate target hits', () => {
         expect(snapshots[7][SETTINGS.PERFECT_EQUILIBRIUM_STACKS]).toBe(1);
         expect(snapshots[4][SETTINGS.LOCATE]).toBe(false);
     });
-    it('does not expand Ricochet or Bombardment with Locate', () => {
-        for (const key of [ABILITIES.RICOCHET, ABILITIES.BOMBARDMENT]) {
+    it('does not expand native area attacks with Locate', () => {
+        for (const key of [ABILITIES.RICOCHET, ABILITIES.GREATER_RICOCHET, ABILITIES.BOMBARDMENT, ABILITIES.CORRUPTION_SHOT, ABILITIES.CRYSTAL_RAIN]) {
             expect(simulate({0: ABILITIES.LOCATE, 3: key}).result.secondaryDamage).toEqual({});
         }
     });
@@ -88,6 +88,20 @@ describe('Locate target hits', () => {
         const changed = simulate({0: ABILITIES.LOCATE, 3: ABILITIES.RAPID_FIRE}, counts);
         expect(changed.result.secondaryDamage?.[1]).toBeGreaterThan(0);
         expect(changed.snapshots[6][SETTINGS.PERFECT_EQUILIBRIUM_STACKS]).toBe(one.snapshots[6][SETTINGS.PERFECT_EQUILIBRIUM_STACKS]);
+    });
+    it('keeps Locate on every hit of a channel cast on its last tick', () => {
+        const early=simulate({0:ABILITIES.LOCATE,3:ABILITIES.RAPID_FIRE});
+        const last=simulate({0:ABILITIES.LOCATE,18:ABILITIES.RAPID_FIRE});
+        expect(last.snapshots[20][SETTINGS.LOCATE]).toBe(false);
+        expect(last.result.secondaryDamage).toEqual(early.result.secondaryDamage);
+    });
+    it('keeps Wen damage for a channel after the buff expires', () => {
+        const overrides={[SETTINGS.CALC_TYPE]:SETTINGS.CALC_TYPE_VALUES.ROTATION,[SETTINGS.ICY_CHILL_STACKS]:10};
+        const early=simulate({0:ABILITIES.SNAP_SHOT,3:ABILITIES.RAPID_FIRE},[1],overrides);
+        const last=simulate({0:ABILITIES.SNAP_SHOT,15:ABILITIES.RAPID_FIRE},[1],overrides);
+        expect(last.snapshots[17][SETTINGS.ICY_PRECISION]).toBe(0);
+        const hits=(result:any)=>result.distributionStats.filter((x:any)=>x.ability===ABILITIES.RAPID_FIRE_HIT).map((x:any)=>x.nonCritMean);
+        expect(hits(last.result)).toEqual(hits(early.result));
     });
     it('validates target counts and inherits earlier changes', () => {
         expect(normalizeTargetCount(Infinity)).toBe(1);

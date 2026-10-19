@@ -73,8 +73,10 @@ export function calculateAccuracy(settings: Record<string, any>, ability: string
     let uncapped = 100 * affinity * accuracy / armour * (abils[ability]?.specialAccuracy ?? 1);
     if (hasReaperPassive(settings)) uncapped += Math.max(0, Math.min(30, Number(settings[SETTINGS.REAPER_STACKS] ?? 0))) / 10;
     // Icy Precision grants flat hit chance, only for eligible attacks; never for Perfect Equilibrium.
-    if (wenEligible(ability) && settings[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settings[SETTINGS.ICY_PRECISION] > 0
-        && (settings._rotationTick ?? Infinity) >= (settings._wenAccuracyFrom ?? 0)) uncapped += 30;
+    const wenAccuracy = settings._castBuffSnapshot?.wenAccuracy ??
+        (settings[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settings[SETTINGS.ICY_PRECISION] > 0
+            && (settings._rotationTick ?? Infinity) >= (settings._wenAccuracyFrom ?? 0));
+    if (wenEligible(ability) && wenAccuracy) uncapped += 30;
     return {potential: Math.max(0, Math.min(100, uncapped)), uncapped, automatic: true, accuracy, armour};
 }
 
