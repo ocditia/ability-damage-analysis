@@ -137,3 +137,12 @@ describe('verified base special damage ranges',()=>{
         expect(calculateSingleAbilityDamage(raw(SETTINGS.MODE_VALUES.MAX_NO_CRIT),{ability:ability as string}).expected).toBe(max);
     });
 });
+
+it.each([0, 6])('Gloomfire hits at cast +3, +3 and +4 from tick %s', (castTick) => {
+    const rotation = createRotationFromAbilities([...Array(castTick).fill(null), ABILITIES.SHADOWFALL]);
+    const result = calculateRotationDamageCore(createRangedSettings(), rotation, 30);
+    const hits = result.distributionStats.filter(hit => [ABILITIES.SHADOWFALL_1, ABILITIES.SHADOWFALL_2].includes(hit.ability as ABILITIES));
+    expect(hits.map(hit => [hit.ability, hit.tick])).toEqual([
+        [ABILITIES.SHADOWFALL_1, castTick+3], [ABILITIES.SHADOWFALL_1, castTick+3], [ABILITIES.SHADOWFALL_2, castTick+4]
+    ]);
+});

@@ -4340,7 +4340,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hits: {
             1: [ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_2]
         },
-        hitTimings: [1, 1, 2] // TODO check
+        hitTimings: [2, 2, 3] // Plus the standard 1-tick delay: impacts at cast +3, +3, +4.
     ,
         title: 'Shadowfall',
         icon: equipmentImageUrl('Gloomfire bow.png'),
