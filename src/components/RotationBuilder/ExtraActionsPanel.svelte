@@ -1,4 +1,5 @@
 <script>
+    import { sectionBounds, setSectionEnd } from '$lib/calc/rotation_builder/sectionBounds';
     import { phaseStackOptions } from '$lib/calc/rotation_builder/phaseStacks';
     import { isPernixQuiver, quiverProfileKey, resolveQuiverAmmo, selectQuiverSlot, QUIVER_SLOT_1, QUIVER_SLOT_2 } from '$lib/calc/rotation_builder/quiver';
     import { weaponSelectionUpdates } from '$lib/data/equipmentSlots';
@@ -458,6 +459,20 @@
         }
         return result;
     });
+    let currentSectionBounds = $derived(sectionBounds(rotationStore.tickEvents, tick));
+    function changeSectionEnd(event) {
+        const input = event.currentTarget;
+        input.setCustomValidity('');
+        if (input.value === '') return;
+        try {
+            rotationStore.tickEvents = setSectionEnd(rotationStore.tickEvents, tick, Number(input.value));
+            onRefreshUI();
+        } catch (error) {
+            input.setCustomValidity(error.message);
+            input.reportValidity();
+            input.value = currentSectionBounds.end ?? '';
+        }
+    }
     function updateTickEvent(changes) {
         rotationStore.tickEvents[tick] = normalizeTickEvent({...tickEvent, ...changes});
         onRefreshUI();
@@ -589,6 +604,8 @@
                 {#if tickEvent.phase}
                     <label class="phase-name">Section heading<input value={tickEvent.phase} maxlength="80" onchange={e => updateTickEvent({phase:e.currentTarget.value})} /></label>
                     <p class="condition-note">Starts a new timeline section here. Cooldowns, buffs and stacks carry over by default.</p>
+                    <div class="condition-row"><label for="section-end">End tick (inclusive)</label><input id="section-end" type="number" min={tick} max={currentSectionBounds.maxEnd} step="1" placeholder="End of rotation" value={currentSectionBounds.end ?? ''} disabled={tick > currentSectionBounds.maxEnd} oninput={e => e.currentTarget.setCustomValidity('')} onchange={changeSectionEnd} /></div>
+                    <p class="condition-note">The next section starts one tick after this end. Changing it moves the next heading and its phase reset settings; abilities, gear swaps and target conditions stay on their ticks. If there is no next section, one is created for you to name.</p>
                     <label class="phase-toggle"><input type="checkbox" checked={!!tickEvent.clearStacks?.length} onchange={e => updateTickEvent({clearStacks:e.currentTarget.checked ? phaseStackOptions.map(([key]) => key) : []})} /> Clear stacks at this phase start</label>
                     {#if tickEvent.clearStacks?.length}
                         <details><summary>Choose stacks to clear ({tickEvent.clearStacks.length})</summary>
