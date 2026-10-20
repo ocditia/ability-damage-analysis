@@ -129,6 +129,7 @@ interface PhaseTransitionRecord {
 }
 
 interface TickMeta {
+    cooldownRemaining: number;
     resolvedAbility: string;
     duration: number;
 }
@@ -652,7 +653,9 @@ function processCurrentTickCore(
     }
 
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
-    state.tickMetadata[state.tick] = { resolvedAbility: abilityKey, duration: abil_duration };
+    state.tickMetadata[state.tick] = { resolvedAbility: abilityKey, duration: abil_duration,
+        // Timers include the current tick, which is decremented during processing.
+        cooldownRemaining: Math.max(0, (state.timers[COOLDOWN_PREFIX + abilityKey] ?? 0) - 1) };
     settingsCopy['ability'] = abilityKey;
 
     processAbilityCore(state, settingsCopy, abilityKey as ABILITIES, abil_duration, rotation, onTick);

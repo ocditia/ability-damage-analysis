@@ -631,8 +631,11 @@
                 map[i] = 'GCD active';
             }
 
-            // Check cooldown violation (use original key for cooldown tracking)
-            if (cooldownExpiry[abilKey] && i < cooldownExpiry[abilKey]) {
+            // Prefer simulated timers, including buff reductions and cooldown resets.
+            const onCooldown = meta?.cooldownRemaining !== undefined
+                ? meta.cooldownRemaining > 0
+                : cooldownExpiry[abilKey] && i < cooldownExpiry[abilKey];
+            if (onCooldown) {
                 const existing = map[i];
                 map[i] = existing ? `${existing} + On cooldown` : 'On cooldown';
             }
