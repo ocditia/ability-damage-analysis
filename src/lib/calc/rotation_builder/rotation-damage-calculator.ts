@@ -1,3 +1,4 @@
+import {captureDamageBuffs} from './castDamageBuffs';
 import { clearPhaseStacks } from './phaseStacks';
 import { recalcFulProbability, rollFulHit } from './ful';
 import { isAreaAttack, prepareChainCast } from './castTargets';
@@ -64,7 +65,7 @@ interface RotationState {
     tick: number;
     hit_delay: number;
     start_tick: number;
-    channelBuffSnapshot?: {wenDamage: boolean; wenAccuracy: boolean; locate: boolean};
+    channelBuffSnapshot?: {damageBuffs: Record<string, boolean>; wenDamage: boolean; wenAccuracy: boolean; locate: boolean};
     cinderHitCount: number;
     poisonDamage: number; // Accumulated poison damage (calculated per-hit for Bik stack scaling)
     poisonPerTick: number[]; // Cumulative poison damage at each tick
@@ -1175,6 +1176,7 @@ function processAbilityCore(
             const wenAccuracy = settingsCopy[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settingsCopy[SETTINGS.ICY_PRECISION] > 0;
             handleWenBuffConsumption(settingsCopy, rotationState.timers, abilityKey);
             rotationState.channelBuffSnapshot = {
+                damageBuffs: captureDamageBuffs(settingsCopy),
                 wenAccuracy,
                 wenDamage: settingsCopy[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settingsCopy[SETTINGS.ICY_PRECISION] > 0,
                 locate: settingsCopy[SETTINGS.LOCATE] === true && rotationState.timers[SETTINGS.LOCATE] > 0,

@@ -1,3 +1,4 @@
+import {damageBuffActive} from '../castDamageBuffs';
 import { pernixBonusActive } from '../quiver';
 import { applyBoltResources } from './enchanted_bolts';
 /**
@@ -196,7 +197,7 @@ function applyMultiplicativeEffects(
     const { settings } = ctx;
 
     // Death's Swiftness
-    if (settings[SETTINGS.DEATH_SWIFTNESS] === true) {
+    if (damageBuffActive(settings, SETTINGS.DEATH_SWIFTNESS)) {
         boost = Math.floor(boost * 1.5);
     }
 

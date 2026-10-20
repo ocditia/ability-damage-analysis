@@ -1,3 +1,4 @@
+import {damageBuffActive} from '../castDamageBuffs';
 /**
  * Magic-specific damage calculation effects
  */
@@ -179,7 +180,7 @@ function applyMultiplicativeEffects(
 ): number {
     const { settings, abilityKey } = ctx;
     // Sunshine
-    if (settings[SETTINGS.SUNSHINE] === true) {
+    if (damageBuffActive(settings, SETTINGS.SUNSHINE)) {
         boost = Math.floor(boost * 1.5);
     }
 
