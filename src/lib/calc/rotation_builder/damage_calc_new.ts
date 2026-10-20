@@ -156,8 +156,14 @@ function on_cast(settings: Record<string, any>, dmgObject: DamageObject, timers:
     dmgObjects.forEach(dmgObject => {
         set_min_var(settings, dmgObject);
     });
-    // Track time since last attack (increments every tick, reset by ability casts)
-    settings[SETTINGS.TIME_SINCE_ATTACK] = 0;
+    // Greater Barge measures time without a released attack. Self buffs and passive
+    // procs do not interrupt that gap; stalled abilities never enter on_cast.
+    const attack = abils[abilityKey];
+    if (!['self cast', 'proc', 'perk'].includes(attack?.abilityClassification)
+        && attack?.abilityType !== 'proc' && attack?.damageType !== 'split soul'
+        && (attack?.minHit ?? 0) + (attack?.varHit ?? 0) > 0) {
+        settings[SETTINGS.TIME_SINCE_ATTACK] = 0;
+    }
 
     // Consume (G)Conc crit buff after all hits have been processed
     const classification = abils[abilityKey]?.abilityClassification;
