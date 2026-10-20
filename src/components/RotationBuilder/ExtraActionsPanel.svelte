@@ -1,4 +1,5 @@
 <script>
+    import { phaseStackOptions } from '$lib/calc/rotation_builder/phaseStacks';
     import { isPernixQuiver, quiverProfileKey, resolveQuiverAmmo, selectQuiverSlot, QUIVER_SLOT_1, QUIVER_SLOT_2 } from '$lib/calc/rotation_builder/quiver';
     import { weaponSelectionUpdates } from '$lib/data/equipmentSlots';
     import EquipmentSlots from '$components/Settings/EquipmentSlots.svelte';
@@ -568,20 +569,30 @@
                 {#if isGhrazi(accuracyConditions[SETTINGS.BOSS_PRESET])}
                     <label class="phase-name">Distance between knights
                         <select value={tickEvent.ghraziDistance == null ? 'previous' : String(Math.min(3, tickEvent.ghraziDistance))} onchange={e => updateTickEvent({ghraziDistance:e.currentTarget.value === 'previous' ? undefined : Number(e.currentTarget.value)})}>
-                            <option value="previous">Use previous ? {distanceLabels[previousDistance]}</option>
+                            <option value="previous">Use previous: {distanceLabels[previousDistance]}</option>
                             <option value="3">3+ clear tiles</option><option value="2">2 clear tiles (+30)</option><option value="1">1 clear tile (+120)</option><option value="0">Overlapping (+160)</option>
                         </select>
                     </label>
-                    <p class="condition-note">Choose ?Use previous? to remove this tick?s distance change and inherit the earlier value, or the starting setup if none was set.</p>
+                    <p class="condition-note">Choose Use previous to remove the distance change at this tick and inherit the earlier value, or the starting setup if none was set.</p>
                 {/if}
                 {#if isGhrazi(accuracyConditions[SETTINGS.BOSS_PRESET])}<p class="condition-note">Proximity scaling is approximate, calibrated from same-gear melee readings (99 / 60 / 34 / 18%). Untick automatic damage potential to use an exact in-game value.</p>{/if}
                 <p class="condition-note">Target, distance and accuracy apply from this tick until changed again.</p>
                 {#if ['accuracy', 'automaticAccuracy', 'target', 'ghraziDistance', 'armourMultiplier'].some(key => tickEvent[key] != null) || rotationStore.targetCounts[tick] != null}<button class="text-button" onclick={() => {rotationStore.targetCounts[tick] = null; updateTickEvent({accuracy:undefined, automaticAccuracy:undefined, target:undefined, ghraziDistance:undefined, armourMultiplier:undefined});}}>Use previous conditions</button>{/if}
-                <label class="phase-toggle"><input type="checkbox" checked={!!tickEvent.phase} onchange={e => updateTickEvent({phase:e.currentTarget.checked ? 'Phase transition' : undefined, downtime:0})} /> Phase transition</label>
+                <label class="phase-toggle"><input type="checkbox" checked={!!tickEvent.phase} onchange={e => updateTickEvent({phase:e.currentTarget.checked ? 'Phase transition' : undefined, downtime:0})} /> New phase / section</label>
                 {#if tickEvent.phase}
-                    <label class="phase-name">Phase name<input value={tickEvent.phase} maxlength="80" onchange={e => updateTickEvent({phase:e.currentTarget.value})} /></label>
+                    <label class="phase-name">Section heading<input value={tickEvent.phase} maxlength="80" onchange={e => updateTickEvent({phase:e.currentTarget.value})} /></label>
+                    <p class="condition-note">Starts a new timeline section here. Cooldowns, buffs and stacks carry over by default.</p>
+                    <label class="phase-toggle"><input type="checkbox" checked={!!tickEvent.clearStacks?.length} onchange={e => updateTickEvent({clearStacks:e.currentTarget.checked ? phaseStackOptions.map(([key]) => key) : []})} /> Clear stacks at this phase start</label>
+                    {#if tickEvent.clearStacks?.length}
+                        <details><summary>Choose stacks to clear ({tickEvent.clearStacks.length})</summary>
+                            {#each phaseStackOptions as [key, label]}
+                                <label class="phase-toggle"><input type="checkbox" checked={tickEvent.clearStacks.includes(key)} onchange={e => updateTickEvent({clearStacks:e.currentTarget.checked ? [...tickEvent.clearStacks, key] : tickEvent.clearStacks.filter(value => value !== key)})} /> {label}</label>
+                            {/each}
+                        </details>
+                        <p class="condition-note">Clears selected stacks before this tick's actions. Adrenaline, buffs and cooldowns are kept.</p>
+                    {/if}
                     <div class="condition-row"><label for="phase-downtime">Invulnerable ticks</label><input id="phase-downtime" type="number" min="0" max="300" value={tickEvent.downtime ?? 0} onchange={e => updateTickEvent({downtime:Number(e.currentTarget.value)})} /></div>
-                    <p class="condition-note">0 adds a marker. Higher values pause damage; buffs keep ticking.</p>
+                    <p class="condition-note">0 adds a section heading without interrupting the rotation. Higher values pause damage; buffs keep ticking.</p>
                 {/if}
                 {#if uiState.activeTab === 'ranged'}
                     <label class="phase-name">Malachi cooldown reset<select value={tickEvent.malachiReset === true ? 'yes' : tickEvent.malachiReset === false ? 'no' : 'expected'} onchange={e=>updateTickEvent({malachiReset:e.currentTarget.value === 'expected' ? undefined : e.currentTarget.value === 'yes'})}><option value="expected">Expected chance (25%)</option><option value="yes">Reset occurs on this cast</option><option value="no">No reset on this cast</option></select></label>

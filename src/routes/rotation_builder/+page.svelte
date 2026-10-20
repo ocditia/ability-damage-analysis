@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { timelineRows } from '$lib/calc/rotation_builder/timelineRows';
     import ShiftRotation from '$components/RotationBuilder/ShiftRotation.svelte';
     import { tickConditionLabel } from '$lib/calc/rotation_builder/tickEvents';
 	import { onMount, onDestroy } from 'svelte';
@@ -151,6 +152,9 @@
 	let rowLayoutData = $state<Array<{
 		startIndex: number;
 		endIndex: number;
+        gridRow: number;
+        sectionTitle?: string;
+        sectionEnd?: number;
 		activeBuffs: string[];
 		buffIndices: Record<string, number>;
 		buffCount: number;  // Reserved lanes through the lowest active buff on this row
@@ -169,7 +173,7 @@
 		columnsPerRow = newColumnsPerRow;
 
 		const totalSlots = visibleTicks;
-		const numRows = Math.ceil(totalSlots / columnsPerRow);
+
 		const newRowData: typeof rowLayoutData = [];
         const buffLanes: Record<string, number> = {};
         // First activation determines the order; keep that order across every wrapped row.
@@ -178,9 +182,8 @@
             .sort((a, b) => Math.min(...rotationStore.buffs[a].activeRows) - Math.min(...rotationStore.buffs[b].activeRows));
         orderedBuffs.forEach((key, index) => { buffLanes[key] = index; });
 
-		for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
-			const startIndex = rowIndex * columnsPerRow;
-			const endIndex = Math.min(startIndex + columnsPerRow, totalSlots);
+        for (const row of timelineRows(rotationStore.tickEvents, totalSlots, columnsPerRow)) {
+            const { startIndex, endIndex } = row;
 
 			// Find which buffs are active on any tick in this row
 			const activeBuffsSet = new Set<string>();
@@ -231,6 +234,7 @@
 			const height = BASE_ROW_HEIGHT + buffSpace + stackSpace + contentPadding + patternSpace + ROW_GAP;
 
 			newRowData.push({
+                ...row,
 				startIndex,
 				endIndex,
 				activeBuffs,
@@ -247,7 +251,7 @@
 
 	// Get the local buff index for a specific tick
 	function getBuffLocalIndex(buffKey: string, tickIndex: number): number {
-		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowIndex = rowLayoutData.findIndex(row => tickIndex >= row.startIndex && tickIndex < row.endIndex);
 		const rowData = rowLayoutData[rowIndex];
 		if (!rowData) return -1;
 		return rowData.buffIndices[buffKey] ?? -1;
@@ -255,7 +259,7 @@
 
 	// Get the local stack index for a specific tick
 	function getStackLocalIndex(stackKey: string, tickIndex: number): number {
-		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowIndex = rowLayoutData.findIndex(row => tickIndex >= row.startIndex && tickIndex < row.endIndex);
 		const rowData = rowLayoutData[rowIndex];
 		if (!rowData) return -1;
 		return rowData.stackIndices[stackKey] ?? -1;
@@ -263,7 +267,7 @@
 
 	// Get the local buff count for a specific tick (used for stack positioning)
 	function getLocalBuffCount(tickIndex: number): number {
-		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowIndex = rowLayoutData.findIndex(row => tickIndex >= row.startIndex && tickIndex < row.endIndex);
 		const rowData = rowLayoutData[rowIndex];
 		if (!rowData) return 0;
 		return rowData.buffCount;
@@ -282,7 +286,7 @@
 	// Calculate the vertical offset for the boss attack pattern row
 	function getPatternTopOffset(tickIndex: number): number {
 		const localBuffCount = getLocalBuffCount(tickIndex);
-		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowIndex = rowLayoutData.findIndex(row => tickIndex >= row.startIndex && tickIndex < row.endIndex);
 		const rowData = rowLayoutData[rowIndex];
 		const localStackCount = rowData ? rowData.activeStacks.length : 0;
 		const buffSpace = localBuffCount > 0 ? (buffLineHeight * 1.5) + (localBuffCount * buffLineHeight) : 0;
@@ -391,7 +395,7 @@
 	// Generate CSS for grid-template-rows based on calculated row heights
 	function getGridTemplateRows(): string {
 		if (rowLayoutData.length === 0) return '';
-		return rowLayoutData.map(row => `${row.height}px`).join(' ');
+		return rowLayoutData.flatMap(row => row.sectionTitle ? ['52px', `${row.height}px`] : [`${row.height}px`]).join(' ');
 	}
 
     let draftReady = $state(false);
@@ -763,8 +767,13 @@
 						style="grid-template-rows: {getGridTemplateRows()}; grid-template-columns: repeat({columnsPerRow}, {CELL_SIZE}px);"
 						class="ability-bar"
 					>
+                        {#each rowLayoutData as row}
+                            {#if row.sectionTitle}<div class="timeline-section-heading" style="grid-column: 1 / -1; grid-row: {row.gridRow - 1}"><strong>{row.sectionTitle}</strong><span>Ticks {row.startIndex} to {row.sectionEnd}</span></div>{/if}
+                        {/each}
                         {#each rotationStore.abilityBar.slice(0, visibleTicks) as ability, index (index)}
+                            {@const visualRow = rowLayoutData.find(row => index >= row.startIndex && index < row.endIndex)}
                             <button
+                                style={visualRow ? `grid-row: ${visualRow.gridRow}; grid-column: ${index - visualRow.startIndex + 1}` : undefined}
                                 class="ability-slot"
                                 class:highlight-red={uiStore.dragDrop.hoveredSlot === index && !uiStore.dragDrop.validSlot}
                                 class:highlight-green={uiStore.dragDrop.hoveredSlot === index && uiStore.dragDrop.validSlot}
@@ -854,7 +863,7 @@
                                         {#if extraActions.length > 1}<span class="extra-count">+{extraActions.length - 1}</span>{/if}
                                     </div>
                                 {/if}
-                                {#if phaseTickMap.has(index)}
+                                {#if phaseTickMap.has(index) && !rotationStore.tickEvents[index]?.phase}
                                     {@const marker = phaseTickMap.get(index)}
                                     <div class="phase-marker" title="{marker.label} @ tick {marker.tick} ({marker.hp.toLocaleString()} total dmg)">
                                         <span class="phase-label">{marker.label}</span>
@@ -1152,6 +1161,9 @@
 {/if}
 
 <style>
+    .timeline-section-heading { display: flex; align-items: center; gap: 16px; border-bottom: 1px solid #42565f; color: #cbb780; align-self: start; padding: 4px 0 10px; }
+    .timeline-section-heading strong { font-size: 16px; }
+    .timeline-section-heading span { color: #9bc6df; font-size: 12px; }
     .stall-label { position: absolute; top: 0; right: 1px; z-index: 3; background: #172126; color: #e9c46a; font-weight: bold; font-size: 11px; padding: 0 2px; }
     .release-label { color: #89ddbb; }
     .invalid-release { color: #ff9988; outline: 1px solid #ff9988; }

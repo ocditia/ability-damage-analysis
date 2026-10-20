@@ -1,4 +1,5 @@
-export interface TickEvent { adrenaline?: number; outOfCombat?: boolean; accuracy?: number; automaticAccuracy?: boolean; target?: string; ghraziDistance?: number; armourMultiplier?: number; malachiReset?: boolean; phase?: string; downtime?: number }
+import { phaseStackOptions } from './phaseStacks';
+export interface TickEvent { clearStacks?: string[]; adrenaline?: number; outOfCombat?: boolean; accuracy?: number; automaticAccuracy?: boolean; target?: string; ghraziDistance?: number; armourMultiplier?: number; malachiReset?: boolean; phase?: string; downtime?: number }
 export function normalizeTickEvent(value: any): TickEvent | null {
     if (!value || typeof value !== 'object') return null;
     const result: TickEvent = {};
@@ -13,6 +14,7 @@ export function normalizeTickEvent(value: any): TickEvent | null {
     if (value.accuracy != null && Number.isFinite(Number(value.accuracy))) result.accuracy = Math.min(100, Math.max(0, Number(value.accuracy)));
     if (typeof value.phase === 'string' && value.phase.trim()) {
         result.phase = value.phase.trim().slice(0, 80);
+        if (Array.isArray(value.clearStacks)) result.clearStacks = phaseStackOptions.map(([key]) => key).filter(key => value.clearStacks.includes(key));
         result.downtime = Math.min(300, Math.max(0, Math.floor(Number(value.downtime) || 0)));
     }
     return Object.keys(result).length ? result : null;

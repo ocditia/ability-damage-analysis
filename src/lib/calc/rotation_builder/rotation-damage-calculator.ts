@@ -1,3 +1,4 @@
+import { clearPhaseStacks } from './phaseStacks';
 import { recalcFulProbability, rollFulHit } from './ful';
 import { isAreaAttack, prepareChainCast } from './castTargets';
 import { handleWenBuffConsumption } from './effects';
@@ -553,6 +554,8 @@ function prepareTick(state: RotationState, settings: any, rotation: RotationInpu
     applyAccuracyEvent(settings, event);
     prepareAdrenalineTick(settings, state.tick, event);
     if (event?.phase) {
+        clearPhaseStacks(settings, event.clearStacks);
+        if (event.clearStacks?.includes(SETTINGS.BIK_STACKS)) state.secondaryBik = {};
         const pause = Math.max(0, Math.min(300, Math.floor(event.downtime ?? 0)));
         state.pauseTicksRemaining = Math.max(state.pauseTicksRemaining, pause);
         state.phaseTransitions.push({tick: state.tick, phaseIdx: state.currentPhaseIdx, label: event.phase, hp: 0, pause});
