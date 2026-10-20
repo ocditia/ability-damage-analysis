@@ -106,7 +106,7 @@ describe('Locate target hits', () => {
     it('validates target counts and inherits earlier changes', () => {
         expect(normalizeTargetCount(Infinity)).toBe(1);
         expect(normalizeTargetCount(-1)).toBe(1);
-        expect(normalizeTargetCount(100)).toBe(9);
+        expect(normalizeTargetCount(100)).toBe(25);
         expect(targetCountAt([2, null, 3, null], 3)).toBe(3);
         expect(targetCountAt(undefined, 50)).toBe(1);
     });

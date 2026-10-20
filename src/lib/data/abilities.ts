@@ -1189,7 +1189,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        abilityType: 'proc', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
         title: 'Lesser Purifying Light'
@@ -1202,7 +1202,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        abilityType: 'proc', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
         title: 'Purifying Light',

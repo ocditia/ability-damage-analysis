@@ -426,6 +426,7 @@ export function clearRotation(stores, refreshUI, calculateTotalDamageNew) {
     rotationStore.targetCounts = Array(BAR_SIZE).fill(null);
     rotationStore.tickEvents = Array(BAR_SIZE).fill(null);
     rotationStore.secondaryDamage = {};
+        rotationStore.secondaryHits = [];
     rotationStore.totalDamage = 0;
 
     // Reset stacks
@@ -552,6 +553,7 @@ export function calculateTotalDamageNew() {
 
     rotationStore.totalDamage = dmgResult.regularDamage;
     rotationStore.secondaryDamage = dmgResult.secondaryDamage ?? {};
+    rotationStore.secondaryHits = dmgResult.secondaryHits ?? [];
     rotationStore.poisonDamage = dmgResult.poisonDamage;
     rotationStore.familiarDamage = dmgResult.familiarDamage;
     rotationStore.dreadnipDamage = dmgResult.dreadnipDamage || 0;

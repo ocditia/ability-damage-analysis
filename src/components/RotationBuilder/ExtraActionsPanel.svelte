@@ -311,6 +311,13 @@
                 });
             }
         }
+        for (const hit of rotationStore.secondaryHits ?? []) {
+            if (hit.tick !== tick) continue;
+            const key = `${hit.ability}:${hit.targetIndex}`;
+            const entry = grouped.get(key);
+            if (entry) { entry.expected += hit.expected; entry.hits++; }
+            else grouped.set(key, {...hit, hits: 1});
+        }
         return [...grouped.values()];
     }
 
@@ -555,7 +562,7 @@
                 <label class="phase-toggle"><input type="checkbox" checked={outsideCombat} onchange={e => updateTickEvent({outOfCombat:e.currentTarget.checked})} /> Outside combat (Persistent Rage)</label>
                 <p class="condition-note">Applies until changed or an attack is cast/released. Persistent Rage gains 5% every 2 ticks outside combat.</p>
                 <div class="condition-row"><label for="targets-in-range">Targets in range</label>
-                    <input id="targets-in-range" type="number" min="1" max="9" value={targetCountAt(rotationStore.targetCounts,tick)} onchange={e => {rotationStore.targetCounts[tick] = normalizeTargetCount(e.currentTarget.value); onRefreshUI();}} /></div>
+                    <input id="targets-in-range" type="number" min="1" max="25" value={targetCountAt(rotationStore.targetCounts,tick)} onchange={e => {rotationStore.targetCounts[tick] = normalizeTargetCount(e.currentTarget.value); onRefreshUI();}} /></div>
                 <label class="phase-name">Fighting<select value={accuracyConditions[SETTINGS.BOSS_PRESET] ?? 'none'} onchange={e => updateTickEvent({target:e.currentTarget.value, automaticAccuracy:true})}><option value="none">No target</option>{#each Object.keys(bossPresets).sort() as key}<option value={key}>{bossPresets[key].name}</option>{/each}</select></label>
                 {#if bossPresets[accuracyConditions[SETTINGS.BOSS_PRESET]]}
                     <label class="phase-toggle"><input type="checkbox" checked={automaticAccuracy} onchange={e => updateTickEvent({automaticAccuracy:e.currentTarget.checked})} /> Automatic damage potential</label>
@@ -598,7 +605,7 @@
                     <label class="phase-name">Malachi cooldown reset<select value={tickEvent.malachiReset === true ? 'yes' : tickEvent.malachiReset === false ? 'no' : 'expected'} onchange={e=>updateTickEvent({malachiReset:e.currentTarget.value === 'expected' ? undefined : e.currentTarget.value === 'yes'})}><option value="expected">Expected chance (25%)</option><option value="yes">Reset occurs on this cast</option><option value="no">No reset on this cast</option></select></label>
                     <p class="condition-note">Requires a Malachi crossbow. Both pieces grant Crimson Salvo after a reset. Expected mode weights the buff; it does not guarantee a ready cooldown.</p>
                 {/if}
-                <details class="condition-help"><summary>Target-count help</summary><p>Includes the main target. Locate caps at 6; Meteor Strike caps at 9. Other abilities retain their existing target model.</p></details>
+                <details class="condition-help"><summary>Target-count help</summary><p>Includes the main target. Count enemies inside the attack area: Locate caps at 6; Meteor Strike, Sweep and Sunfall Slam at 9; Powerstab at 25. Position and facing are not simulated.</p></details>
             </section>
             <!-- Quick actions -->
             <div class="quick-actions">
@@ -638,10 +645,11 @@
                                         {:else}
                                             {hit.ability.replace(/\b\w/g, l => l.toUpperCase())}
                                         {/if}
+                                        <span class="text-xs text-gray-500"> {hit.targetIndex ? `Target ${hit.targetIndex + 1}` : 'Main target'}</span>
                                         {#if hit.hits > 1}<span class="text-xs text-gray-500">&times;{hit.hits}</span>{/if}
                                     </span>
                                     <span class="damage-val">{formatDamage(hit.expected, true)}</span>
-                                    <span class="text-xs text-gray-500">({formatDamage(hit.min, true)} - {formatDamage(hit.max, true)})</span>
+                                    {#if hit.min != null}<span class="text-xs text-gray-500">({formatDamage(hit.min, true)} - {formatDamage(hit.max, true)})</span>{/if}
                                 </div>
                             {/each}
                         </div>

@@ -92,6 +92,7 @@ interface RotationState {
     // Per-tick resolved ability info
     tickMetadata: Record<number, TickMeta>;
     secondaryDamage?: Record<number, number>;
+    secondaryHits?: {tick: number; ability: string; targetIndex: number; expected: number}[];
     targetCounts?: (number | null)[];
     secondaryBik?: Record<number, number>;
     preparedTick?: number;
@@ -150,6 +151,7 @@ interface DamageResult {
     /** Per-tick metadata: resolved ability key and effective duration */
     tickMetadata: Record<number, TickMeta>;
     secondaryDamage?: Record<number, number>;
+    secondaryHits?: {tick: number; ability: string; targetIndex: number; expected: number}[];
     /** Captured final state for ability suggestions (only when requested) */
     _finalState?: any;
     _finalSettings?: any;
@@ -410,6 +412,7 @@ export function calculateRotationDamageCore(
     return {
         regularDamage: totalDamage,
         secondaryDamage: state.secondaryDamage ?? {},
+        secondaryHits: state.secondaryHits ?? [],
         poisonDamage: state.poisonDamage,
         familiarDamage: state.scrollDamage,
         dreadnipDamage: state.dreadnipDamage,
@@ -1483,7 +1486,9 @@ function hitTargets(state: RotationState, settings: any, object: DamageObject, k
         && ability.abilityType !== 'proc' && !excluded;
     const inRange = targetCountAt(state.targetCounts, state.tick);
     const chain = ability.mainStyle === 'magic' && ability.abilityType !== 'proc' ? settings._chainCast : null;
-    const count = chain?.targets ?? (key === ABILITIES.METEOR_STRIKE ? Math.min(9, inRange)
+    const areaCap = key === ABILITIES.POWERSTAB ? 25
+        : [ABILITIES.METEOR_STRIKE, ABILITIES.SUNFALL_SLAM, ABILITIES.SWEEP, ABILITIES.SWEEP_HIT].includes(key) ? 9 : 0;
+    const count = chain?.targets ?? (areaCap ? Math.min(areaCap, inRange)
         : eligible ? Math.min(6, inRange) : 1);
     const results: DamageObject[] = [];
     state.secondaryBik ??= {};
@@ -1511,6 +1516,26 @@ function hitTargets(state: RotationState, settings: any, object: DamageObject, k
             state.secondaryBik[target] = settings[SETTINGS.BIK_STACKS];
             settings[SETTINGS.BIK_STACKS] = primaryBik;
         }
+    }
+    if (key === ABILITIES.SUNFALL_SLAM) settings._lesserPurifyingUntil = state.tick + 50;
+    const castToken = `${state.start_tick}:${settings._castBuffSnapshot ? state.tick : 'cast'}`;
+    if (key !== ABILITIES.SUNFALL_SLAM && settings._lesserPurifyingUntil > state.tick
+        && ability.mainStyle === 'melee' && ability.onHitEffects && ability.abilityType !== 'proc'
+        && !['self cast', 'perk', 'proc'].includes(ability.abilityClassification)
+        && ![ABILITIES.LESSER_PURIFYING_LIGHT, ABILITIES.PURIFYING_LIGHT].includes(key)
+        && settings._lesserPurifyingCast !== castToken && inRange > 1) {
+        settings._lesserPurifyingCast = castToken;
+        const savedAbility = settings.ability;
+        for (let target = 1; target < Math.min(3, inRange); target++) {
+            const light = create_damage_object(settings, ABILITIES.LESSER_PURIFYING_LIGHT);
+            for (const cast of on_cast(settings, light, state.timers, ABILITIES.LESSER_PURIFYING_LIGHT)) {
+                for (const hit of on_hit(settings, cast, state.timers, ABILITIES.LESSER_PURIFYING_LIGHT)) {
+                    (hit as any).targetIndex = target;
+                    results.push(hit);
+                }
+            }
+        }
+        settings.ability = savedAbility;
     }
     return results;
 }
@@ -1576,6 +1601,7 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
                 const damage = Math.floor(applySoftCap(get_user_value(settingsCopy, dmgObj), settingsCopy['_softCap']) * scale);
                 state.secondaryDamage ??= {};
                 state.secondaryDamage[targetIndex] = (state.secondaryDamage[targetIndex] ?? 0) + (Number.isFinite(damage) ? damage : 0);
+                (state.secondaryHits ??= []).push({tick, ability: namedDmgObject.ability, targetIndex, expected: Number.isFinite(damage) ? damage : 0});
                 continue; // Secondary targets do not consume the primary boss's HP or phase budget.
             }
             const softCap = settingsCopy['_softCap'];

@@ -23,6 +23,7 @@ export const rotationStore = $state({
     targetCounts: Array(BAR_SIZE).fill(null),
     tickEvents: Array(BAR_SIZE).fill(null),
     secondaryDamage: {},
+    secondaryHits: [],
     abilityBar: Array(BAR_SIZE).fill(null),
     extraActionBar: Array(BAR_SIZE).fill(null),
     nulledTicks: Array(BAR_SIZE).fill(false),
@@ -307,6 +308,7 @@ export const rotationActions = {
         rotationStore.targetCounts = Array(BAR_SIZE).fill(null);
         rotationStore.tickEvents = Array(BAR_SIZE).fill(null);
         rotationStore.secondaryDamage = {};
+        rotationStore.secondaryHits = [];
         rotationStore.totalDamage = 0;
         rotationStore.cooldownReady = Array(BAR_SIZE).fill(null);
 
@@ -469,6 +471,7 @@ export const rotationActions = {
         const dmgResult = calculateTotalDamage(BAR_SIZE);
         rotationStore.totalDamage = dmgResult.regularDamage;
         rotationStore.secondaryDamage = dmgResult.secondaryDamage ?? {};
+    rotationStore.secondaryHits = dmgResult.secondaryHits ?? [];
         rotationStore.poisonDamage = dmgResult.poisonDamage;
         rotationStore.familiarDamage = dmgResult.familiarDamage;
         rotationStore.dreadnipDamage = dmgResult.dreadnipDamage || 0;
