@@ -1,5 +1,5 @@
 import { hasSoulsPassive } from '../necklace';
-import { getEquipment } from '$lib/data/equipment';
+import { getEquipment, equipmentMechanicId } from '$lib/data/equipment';
 /**
  * Pure utility functions for damage calculation
  * These have no dependencies on on_cast/on_hit to avoid circular imports
@@ -188,9 +188,10 @@ export function addAdrenaline(settings: Record<string, any>, amount: number, nat
 
 export function maxAdrenaline(settings: Record<string, any>): number {
 
-    // Vestments of Havoc: full set (4 pieces) + melee abilities in rotation = +20 max adrenaline
-    const hasFullVestments = settings['_hasMeleeAbilities'] &&
-        countSetPieces(settings, gearSets[GEAR_SET.VESTMENTS_OF_HAVOC]) >= 4;
+    // A future melee cast must not raise the cap while another weapon style is equipped.
+    const vestments = new Set(gearSets[GEAR_SET.VESTMENTS_OF_HAVOC]);
+    const hasFullVestments = settings['_equippedWeaponStyle'] === 'melee' &&
+        [SETTINGS.HELMET, SETTINGS.BODY, SETTINGS.LEGS, SETTINGS.BOOTS].every(key => vestments.has(equipmentMechanicId(settings[key])));
 
     let max_adren = 100 + (hasFullVestments ? 20 : 0);
     if (settings[SETTINGS.HEIGHTENED_SENSES]) max_adren += 10;

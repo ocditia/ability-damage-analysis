@@ -373,12 +373,9 @@ export function calculateRotationDamageCore(
         }
     }
 
-    // Check if rotation contains any melee abilities (for Vestments max adrenaline)
-    if (settingsCopy['_hasMeleeAbilities'] === undefined) {
-        settingsCopy['_hasMeleeAbilities'] = [...rotation.abilityBar, ...rotation.stalledAbilities, ...(rotation.releasedAbilities || [])].some(
-            (abilKey: string | null) => abilKey && abils[abilKey as ABILITIES]?.mainStyle === 'melee'
-        );
-    }
+    // Resolve starting equipment before applying its adrenaline cap.
+    const firstCast = rotation.abilityBar.find(key => key && abils[key]?.mainStyle !== 'defence');
+    style_specific_unification(settingsCopy, firstCast ? abils[firstCast].mainStyle : settingsCopy._combatStyle ?? 'ranged');
 
     // Reconcile a saved starting value after changing maximum-adrenaline relics.
     addAdrenaline(settingsCopy, 0, false);
@@ -561,6 +558,7 @@ function prepareTick(state: RotationState, settings: any, rotation: RotationInpu
         state.phaseTransitions.push({tick: state.tick, phaseIdx: state.currentPhaseIdx, label: event.phase, hp: 0, pause});
     }
     handleExtraActionsCore(settings, state.timers, state.tick, rotation);
+    addAdrenaline(settings, 0, false);
     prepareReaperStacks(settings, state.tick);
     recalcFulProbability(state, settings);
     if (settings._chainPending && state.tick >= settings._chainPending.expires) {
@@ -587,6 +585,7 @@ function processCurrentTickCore(
     if (stalledAbility && abils[stalledAbility] && !['channel', 'self cast', 'proc', 'perk'].includes(abils[stalledAbility].abilityClassification)) {
         interruptCrystalChannel(settingsCopy);
         style_specific_unification(settingsCopy, abils[stalledAbility].mainStyle);
+        addAdrenaline(settingsCopy, 0, false);
         settingsCopy['ability'] = stalledAbility;
         on_stall(settingsCopy, stalledAbility, state.timers, true);
         settingsCopy._pendingStall = stalledAbility;
@@ -596,6 +595,7 @@ function processCurrentTickCore(
         enterCombat(settingsCopy);
         delete settingsCopy._pendingStall;
         style_specific_unification(settingsCopy, abils[releasedAbility].mainStyle);
+    addAdrenaline(settingsCopy, 0, false);
         state.combatStyle = abils[releasedAbility].mainStyle;
         prepareChainCast(settingsCopy, releasedAbility, state.tick, targetCountAt(state.targetCounts, state.tick));
         settingsCopy['ability'] = releasedAbility;
@@ -1092,6 +1092,7 @@ function processAbilityCore(
     onTick?: OnTickCallback
 ) {
     style_specific_unification(settingsCopy, abils[abilityKey].mainStyle);
+    addAdrenaline(settingsCopy, 0, false);
     rotationState.combatStyle = abils[abilityKey].mainStyle;
     settingsCopy['ability'] = abilityKey;
 
@@ -1186,6 +1187,7 @@ function processChannelledTickCore(
         return; // Cancel channel if new ability
     }
     style_specific_unification(settingsCopy, abils[abilityKey].mainStyle);
+    addAdrenaline(settingsCopy, 0, false);
     if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
     let hit_index = 1 + currentTick - state.start_tick;
     let dmgObjects: DamageObject[] = [];
@@ -1524,6 +1526,8 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
         const namedDmgObject = impactQueue[impactIndex];
         if ((namedDmgObject as any)._bolgImpact) {
             if ((namedDmgObject as any)._nulled) continue;
+            const equippedStyle = settingsCopy._equippedWeaponStyle;
+            const equippedArmour = Object.fromEntries([SETTINGS.HELMET, SETTINGS.BODY, SETTINGS.LEGS, SETTINGS.BOOTS].map(key => [key, settingsCopy[key]]));
             style_specific_unification(settingsCopy, 'ranged');
             if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
             const target = namedDmgObject.targetIndex ?? 0;
@@ -1531,6 +1535,8 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
             if (target) settingsCopy[SETTINGS.BIK_STACKS] = state.secondaryBik?.[target] ?? 0;
             const hits = resolveBolgImpact(settingsCopy, namedDmgObject, state.timers);
             rollFulHit(state, settingsCopy, ABILITIES.BOLG_PROC, namedDmgObject.likelihood);
+            settingsCopy._equippedWeaponStyle = equippedStyle;
+            Object.assign(settingsCopy, equippedArmour);
             if (target) {
                 state.secondaryBik ??= {};
                 state.secondaryBik[target] = settingsCopy[SETTINGS.BIK_STACKS];
@@ -1839,6 +1845,10 @@ function processExtraAction(element: any, settings: any, timers: Record<string, 
             cancelLocateForWeaponSwap(settings, timers, element.slot, element.value);
             settings[element.slot] = element.value;
             Object.assign(settings, weaponSelectionUpdates(element.slot, element.value));
+            for (const slot of [SETTINGS.HELMET, SETTINGS.BODY, SETTINGS.LEGS, SETTINGS.BOOTS]) {
+                if (element.slot === slot || element.slot.endsWith(' ' + slot)) settings[slot] = element.value;
+            }
+            addAdrenaline(settings, 0, false);
             // Ammo/pocket swaps: also update the generic key so the calc engine sees it
             if (element.slot.includes('ammo')) settings[SETTINGS.AMMO] = element.value;
             if (element.slot.includes('pocket')) settings[SETTINGS.POCKET] = element.value;
