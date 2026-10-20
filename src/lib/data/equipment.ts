@@ -339,11 +339,13 @@ export function migrateOwnedGearEntries(entries: Record<string, any[]>): Map<Equ
 
 /** Cosmetic/augmented variants retain the base equipment's combat passives. */
 const equipmentByName = new Map(Object.values(equipment).map(item => [item.name.toLowerCase(), item.id]));
-export function equipmentMechanicId(value: unknown): any {
-    const item = getEquipment(value);
-    if (!item) return value;
+const mechanicIds = new Map(Object.values(equipment).map(item => {
     const base = item.name.replace(/^Augmented /i, '').replace(/ \((barrows|shadow|blood|third age|ice|aurora|soul)\)$/i, '').toLowerCase();
-    return equipmentByName.get(base) ?? item.id;
+    return [item.id, equipmentByName.get(base) ?? item.id];
+}));
+export function equipmentMechanicId(value: unknown): any {
+    const id = coerceEquipmentValue(value);
+    return typeof id === 'number' ? mechanicIds.get(id) ?? value : value;
 }
 // The Wiki distinguishes "already augmented" from "can be augmented" for
 // some families. An existing augmented counterpart proves eligibility too.

@@ -20,6 +20,7 @@ import {
     applyStyleMultiplicativeEffects,
     calculatePrayerBoost,
     applyAllDamageModifiers,
+    countGhostHunterPieces,
     applyAdditiveBoosts,
     applyPvEBoosts,
     handleWenBuffConsumption,
@@ -317,7 +318,9 @@ function on_hit(settings: Record<string, any>, dmgObject: DamageObject, timers: 
  */
 function on_damage(settings: Record<string, any>, dmgObject: DamageObject): { results: DamageObject[], delayed: DamageObject[] } {
     const abilityKey = dmgObject.ability;
-    const modifierCtx: DamageModifierContext = { settings, abilityKey };
+    // Equipment does not change between possible damage rolls of the same hit.
+    const modifierCtx: DamageModifierContext = { settings, abilityKey,
+        ghostHunterPieces: countGhostHunterPieces(settings) };
 
     // Apply final damage modifiers (vulnerability, slayer sigil, etc.)
     iterateDistributions(dmgObject, (distribution) => {

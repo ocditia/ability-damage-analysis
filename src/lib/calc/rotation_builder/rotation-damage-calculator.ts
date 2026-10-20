@@ -31,7 +31,7 @@ import { Logger, LogCategory } from '$lib/utils/Logger';
 import { attachGearPerks } from '$lib/data/perks';
 import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
 import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
-import { uiActions, uiStore } from '$lib/stores/uiStore.svelte';
+import { uiStore } from '$lib/stores/uiStore.svelte';
 import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
 const logger = Logger.getInstance();
 
@@ -278,6 +278,13 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     };
 
     const result = calculateRotationDamageCore(settingsCopy, rotation, BAR_SIZE, onTick);
+    // Finalize once, after delayed hits too, rather than at a separate UI bar size.
+    let buffIndex = 0;
+    for (const buff of Object.values(rotationStore.buffs) as any[]) {
+        buff.activeRows = buff.buffTicks.flatMap((value: any, tick: number) =>
+            value && value !== 'none' ? [tick] : []);
+        buff.idx = buff.activeRows.length ? buffIndex++ : -1;
+    }
     result._finalState = capturedSuggestState;
     result._finalSettings = capturedSuggestSettings;
     return result;
@@ -1804,35 +1811,7 @@ function copyStacks(tick: number, settings: any, timers?: Record<string, number>
         rotationStore.buffs[buffTitle].buffTicks[tick] = settings[buffTitle];
     });
     delete settings['_channelBuffJustActivated'];
-    //Only calc indices on last tick
-    if (tick === uiStore.bar.size - 1) {
 
-    // Update buff idx values for UI display order and calculate active rows
-        let buffIndex = 0;
-        for (let key in rotationStore.buffs) {
-            if (Object.hasOwnProperty.call(rotationStore.buffs, key)) {
-                // Clear previous active rows
-                rotationStore.buffs[key].activeRows = [];
-
-                // Calculate which rows this buff is active on
-                for (let rowIndex = 0; rowIndex < rotationStore.buffs[key].buffTicks.length; rowIndex++) {
-                    const tickValue = rotationStore.buffs[key].buffTicks[rowIndex];
-                    if (tickValue && tickValue !== 'none') {
-                        rotationStore.buffs[key].activeRows.push(rowIndex);
-                    }
-                }
-
-                // Set idx based on whether buff is active anywhere
-                if (rotationStore.buffs[key].activeRows.length > 0) {
-                    rotationStore.buffs[key].idx = buffIndex;
-                    buffIndex++;
-                } else {
-                    rotationStore.buffs[key].idx = -1;
-                }
-            }
-        }
-        uiActions.updateBarLastIndex(buffIndex);
-    }
 }
 
 /** Process a single extra action entry — handles both new ExtraAction and legacy formats */

@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { LatestWorker } from '$lib/utils/latestWorker';
+    import { snapshotEditorCalculation } from '$lib/calc/rotation_builder/editorCalculation';
     import { timelineRows } from '$lib/calc/rotation_builder/timelineRows';
     import ShiftRotation from '$components/RotationBuilder/ShiftRotation.svelte';
     import { tickConditionLabel } from '$lib/calc/rotation_builder/tickEvents';
@@ -181,6 +183,8 @@
             .filter(key => rotationStore.buffs[key].activeRows?.length)
             .sort((a, b) => Math.min(...rotationStore.buffs[a].activeRows) - Math.min(...rotationStore.buffs[b].activeRows));
         orderedBuffs.forEach((key, index) => { buffLanes[key] = index; });
+        const activeBuffTicks = Object.fromEntries(orderedBuffs.map(key =>
+            [key, new Set(rotationStore.buffs[key].activeRows)]));
 
         for (const row of timelineRows(rotationStore.tickEvents, totalSlots, columnsPerRow)) {
             const { startIndex, endIndex } = row;
@@ -188,9 +192,8 @@
 			// Find which buffs are active on any tick in this row
 			const activeBuffsSet = new Set<string>();
 			for (let i = startIndex; i < endIndex; i++) {
-				for (const buffKey of Object.keys(rotationStore.buffs)) {
-					const buff = rotationStore.buffs[buffKey];
-					if (buff.activeRows && buff.activeRows.includes(i)) {
+				for (const buffKey of orderedBuffs) {
+					if (activeBuffTicks[buffKey].has(i)) {
 						activeBuffsSet.add(buffKey);
 					}
 				}
@@ -429,9 +432,13 @@
         window.addEventListener('pagehide', flushDraft);
         document.addEventListener('visibilitychange', onHidden);
 		// Set up ResizeObserver to recalculate on container resize
-		resizeObserver = new ResizeObserver(() => {
-			recalculateRowLayout();
-		});
+        let previousWidth = -1;
+        resizeObserver = new ResizeObserver(entries => {
+            const width = entries[0]?.contentRect.width;
+            if (width === previousWidth) return;
+            previousWidth = width;
+            recalculateRowLayout();
+        });
 
 		// Initial calculation after DOM is ready
 		setTimeout(() => {
@@ -478,7 +485,7 @@
 	let suggestionsCollapsed = $state(false);
 
 	// Wrapper functions for event handlers
-	function calculateTotalDamageNew() {
+	function calculateSynchronously() {
 		eventHandlers.calculateTotalDamageNew();
 
 		if (uiStore.showSuggestions.value && rotationStore._finalState && rotationStore._finalSettings) {
@@ -496,6 +503,49 @@
 			suggestions = [];
 		}
 	}
+
+    let calculationPending = $state(false);
+    let calculationWorker: LatestWorker | undefined;
+    let workerFailed = false;
+    function calculateTotalDamageNew() {
+        if (typeof Worker === 'undefined' || workerFailed) {
+            calculateSynchronously();
+            return;
+        }
+        calculationPending = true;
+        if (!calculationWorker) {
+            try {
+                calculationWorker = new LatestWorker(new Worker(
+                    new URL('../../lib/calc/rotation_builder/editor.worker.ts', import.meta.url), {type: 'module'}),
+                    data => {
+                        eventHandlers.calculateTotalDamageNew(data.result);
+                        for (const [key, buff] of Object.entries(data.buffs)) Object.assign(rotationStore.buffs[key], buff);
+                        for (const [key, ticks] of Object.entries(data.stacks)) rotationStore.stacks[key].stackTicks = ticks;
+                        rotationStore.cooldownReady = data.cooldownReady;
+                        suggestions = data.suggestions;
+                        eventHandlers.refreshUI(false, stores, calculateTotalDamageNew);
+                        calculationPending = false;
+                    }, error => {
+                        console.error(error);
+                        calculationWorker?.close();
+                        calculationWorker = undefined;
+                        workerFailed = true;
+                        calculationPending = false;
+                        calculateSynchronously();
+                        eventHandlers.refreshUI(false, stores, calculateTotalDamageNew);
+                    });
+            } catch (error) {
+                workerFailed = true;
+                calculationPending = false;
+                calculateSynchronously();
+                return;
+            }
+        }
+        // A replaced ability must use its own duration while new results are pending.
+        rotationStore.tickMetadata = {};
+        calculationWorker.request({input: snapshotEditorCalculation()});
+    }
+    onDestroy(() => calculationWorker?.close());
 
 	function refreshUI(calcDmg = true) {
 		eventHandlers.refreshUI(calcDmg, stores, calculateTotalDamageNew);
@@ -758,7 +808,7 @@
                             />
                         {/if}
 					{/each}
-	                <div class="timeline-heading"><h2>Timeline</h2><span>1 tick = 0.6 seconds</span></div>
+	                <div class="timeline-heading"><h2>Timeline</h2><span role="status">{calculationPending ? 'Updating damage...' : '1 tick = 0.6 seconds'}</span></div>
                     <div class="edit-toolbar" role="group" aria-label="Editing mode">
                         {#each modes as mode}<button class:active={uiStore.activeTool === mode.value} aria-pressed={uiStore.activeTool === mode.value} onclick={() => selectMode(mode.value)}>{mode.label} <kbd>{mode.key}</kbd></button>{/each}
                     </div>

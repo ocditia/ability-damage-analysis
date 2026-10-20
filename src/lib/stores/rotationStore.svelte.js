@@ -251,13 +251,12 @@ export const rotationActions = {
         try {
             this.applyRotationData(config.data);
 
-            // Import and call the damage calculation function
-            const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
-            calculateTotalDamageNew();
-
-            // Refresh UI if callback provided (updates row gap, etc.)
+            // The editor callback schedules one background calculation.
             if (refreshUICallback) {
                 refreshUICallback();
+            } else {
+                const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
+                calculateTotalDamageNew();
             }
 
             rotationStore.activeRotationId = configId;
@@ -383,13 +382,12 @@ export const rotationActions = {
             this.applyRotationData(rotationData);
             rotationStore.activeRotationId = null;
 
-            // Import and call the damage calculation function
-            const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
-            calculateTotalDamageNew();
-
-            // Refresh UI if callback provided (updates row gap, etc.)
+            // The editor callback schedules one background calculation.
             if (refreshUICallback) {
                 refreshUICallback();
+            } else {
+                const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
+                calculateTotalDamageNew();
             }
 
             onSuccess('Rotation imported successfully!');

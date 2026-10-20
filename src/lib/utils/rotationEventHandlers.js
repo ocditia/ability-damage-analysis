@@ -540,14 +540,13 @@ export function refreshUI(calcDmg = true, stores, calculateTotalDamageNew) {
  * Calculates total damage using the new damage calculator
  * @param {Object} stores - Object containing rotationStore, settingsStore
  */
-export function calculateTotalDamageNew() {
+export function calculateTotalDamageNew(dmgResult = calculateTotalDamage(BAR_SIZE)) {
 
     logger.log(LogCategory.ROTATION, 'Starting damage calculation...');
     logger.log(LogCategory.ROTATION, 'Settings store initialized:', settingsStore.initialized);
     logger.log(LogCategory.ROTATION, 'Settings store settings:', settingsStore.settings);
     logger.log(LogCategory.ROTATION, 'Rotation store ability bar:', rotationStore.abilityBar);
 
-    const dmgResult = calculateTotalDamage(BAR_SIZE);
 
     logger.log(LogCategory.ROTATION, 'Damage calculation result:', dmgResult);
 

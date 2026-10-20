@@ -13,6 +13,7 @@ import { DamageDistribution } from '../../types';
 export interface DamageModifierContext {
     settings: Record<string, any>;
     abilityKey: ABILITIES;
+    ghostHunterPieces?: number;
 }
 
 // =============================================================================
@@ -223,7 +224,7 @@ export function applyGhostHunterEffect(
     damage: number
 ): number {
     const { settings } = ctx;
-    const pieces = countGhostHunterPieces(settings);
+    const pieces = ctx.ghostHunterPieces ?? countGhostHunterPieces(settings);
 
     if (pieces === 1) {
         return Math.floor(damage * 1.03);
