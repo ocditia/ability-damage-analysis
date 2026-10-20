@@ -4,7 +4,7 @@ import {ARMOUR} from '$lib/data/armour';
 import {ABILITIES} from '$lib/data/abilities';
 import {WEAPONS} from '$lib/data/weapons';
 import {equipment, getEquipment} from '$lib/data/equipment';
-import {resolveQuiverAmmo, selectQuiverSlot, pernixBonusActive, isPernixQuiver} from '../../rotation_builder/quiver';
+import {applyActionAmmo, resolveQuiverAmmo, selectQuiverSlot, pernixBonusActive, isPernixQuiver} from '../../rotation_builder/quiver';
 import {calculateRotationDamageCore} from '../../rotation_builder/rotation-damage-calculator';
 import {calculateSingleAbilityDamage} from '../../unified-damage-calculator';
 import {createRangedSettings, createRotationFromAbilities} from '../test-helpers';
@@ -83,4 +83,14 @@ describe('additional buff controls',()=>{
         expect(calculateHauntedBonus({settings:s} as any,1000)).toBe(150);
         expect(calculateHauntedBonus({settings:s} as any,10000)).toBe(300);
     });
+});
+
+it('switches action ammo within the equipped quiver and preserves its identity', () => {
+    const s = settings();
+    applyActionAmmo(s, ARMOUR.WEN_ARROWS);
+    expect(resolveQuiverAmmo(s)).toBe(ARMOUR.WEN_ARROWS);
+    applyActionAmmo(s, ARMOUR.FUL_ARROWS);
+    expect(resolveQuiverAmmo(s)).toBe(ARMOUR.FUL_ARROWS);
+    expect(s[SETTINGS.RANGED_AMMO_SLOT]).toBe(52495);
+    expect(pernixBonusActive(s)).toBe(true);
 });

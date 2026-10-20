@@ -1,7 +1,9 @@
 <script>
+    import {teamDebuffOptions, teamDebuffsAt} from '$lib/calc/rotation_builder/targetDebuffs';
+    import { fightTime } from '$lib/calc/rotation_builder/fightTime';
     import { sectionBounds, setSectionEnd } from '$lib/calc/rotation_builder/sectionBounds';
     import { phaseStackOptions } from '$lib/calc/rotation_builder/phaseStacks';
-    import { isPernixQuiver, quiverProfileKey, resolveQuiverAmmo, selectQuiverSlot, QUIVER_SLOT_1, QUIVER_SLOT_2 } from '$lib/calc/rotation_builder/quiver';
+    import { applyActionAmmo, isPernixQuiver, quiverProfileKey, resolveQuiverAmmo, selectQuiverSlot, QUIVER_SLOT_1, QUIVER_SLOT_2 } from '$lib/calc/rotation_builder/quiver';
     import { weaponSelectionUpdates } from '$lib/data/equipmentSlots';
     import EquipmentSlots from '$components/Settings/EquipmentSlots.svelte';
     import { applyAccuracyEvent, accuracyAt, normalizeTickEvent } from '$lib/calc/rotation_builder/tickEvents';
@@ -14,7 +16,7 @@
     import { SETTINGS } from '$lib/calc/settings_rb';
     import { settingsStore, initializeSettings } from '$lib/stores/settingsStore.svelte.js';
     import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
-    import { getEquipmentIcon, getEquipment, isCustomEquipment } from '$lib/data/equipment';
+    import { equipment, getEquipmentIcon, getEquipment, isCustomEquipment } from '$lib/data/equipment';
     import ActionIcon from '$components/UI/ActionIcon.svelte';
     import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
     import { perks as perkDefs } from '$lib/data/perks';
@@ -28,6 +30,7 @@
     });
 
     let {
+        showFightTime = false,
         uiState,
         gameState,
         allAbils,
@@ -43,6 +46,7 @@
         setExtraActionsTab = (tab) => {},
     } = $props();
 
+    const ammoChoices = Object.values(equipment).filter(item => item.slot === 'ammo' && /arrow|bolt/i.test(item.name + ' ' + item.bonuses?.style)).sort((a,b) => a.name.localeCompare(b.name));
     const EXTRA_BAR_SIZE = 12;
     let tick = $derived(uiState.extraActions.tick);
 
@@ -59,8 +63,7 @@
         resolveQuiverAmmo(state);
         if (currentTick >= 0 && rotationStore.extraActionBar) {
             for (let t = 0; t <= currentTick; t++) {
-                const actions = rotationStore.extraActionBar[t];
-                if (!actions) continue;
+                const actions = rotationStore.extraActionBar[t] ?? [];
                 for (const action of actions) {
                     if (!action) continue;
                     // New ExtraAction format — has .type and .slot
@@ -88,6 +91,8 @@
                         }
                     }
                 }
+                if (rotationStore.releasedAbilities[t]) applyActionAmmo(state, rotationStore.tickEvents[t]?.releaseAmmo);
+                if (rotationStore.abilityBar[t]) applyActionAmmo(state, rotationStore.tickEvents[t]?.castAmmo);
             }
         }
         return state;
@@ -334,7 +339,8 @@
     function getTickStacks(tick) {
         if (!rotationStore.stacks || tick === undefined || tick < 0) return [];
         return Object.entries(rotationStore.stacks)
-            .filter(([_, stack]) => stack.idx >= 0 && stack.stackTicks && stack.stackTicks[tick] !== 0)
+            .filter(([key, stack]) => stack.idx >= 0 && stack.stackTicks && Number.isFinite(stack.stackTicks[tick]) &&
+                (key === SETTINGS.PERFECT_EQUILIBRIUM_STACKS || stack.stackTicks[tick] !== 0))
             .map(([key, stack]) => ({
                 key, title: stack.title,
                 value: stack.stackTicks[tick],
@@ -420,6 +426,8 @@
             onRefreshUI();
         }
     }
+    let namedTargets = $derived([...new Set(['Initial target', ...rotationStore.tickEvents.map(event => event?.targetId).filter(Boolean)])]);
+    let activeTeamDebuffs = $derived(teamDebuffsAt(rotationStore.tickEvents, tick));
     let tickEvent = $derived(rotationStore.tickEvents[tick] ?? {});
     let effectiveAccuracy = $derived(accuracyAt(rotationStore.tickEvents, tick, Number(settingsStore.settings[SETTINGS.HIT_CHANCE]?.value ?? 100)));
     let accuracyConditions = $derived.by(() => {
@@ -492,7 +500,7 @@
     <div class="extra-action-section">
         <!-- Header -->
         <div class="flex justify-between items-center w-full">
-            <p class="grow text-center font-bold">Tick {tick} - {(tick * 0.6).toFixed(1)}s</p>
+            <p class="grow text-center font-bold">{#if showFightTime}{fightTime(tick, settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? -1)} into fight · Tick {tick}{:else}Tick {tick} - {(tick * 0.6).toFixed(1)}s{/if}</p>
             <button
                 class="text-[#C2BA9E] font-bold text-xl hover:text-[#968A5C]"
                 onclick={closeExtraActions}
@@ -571,7 +579,34 @@
             {:else if pendingStall && !currentStalledAbility}
                 <button class="quick-btn" onclick={() => {rotationStore.releasedAbilities[tick] = pendingStall; onRefreshUI();}}>Release {allAbils[pendingStall]?.title || pendingStall} here</button>
             {/if}
+            {#if currentReleaseKey}
+                <div class="tick-controls">
+                    <label class="phase-name">Release ammo
+                        <select value={tickEvent.releaseAmmo ?? ''} onchange={e => updateTickEvent({releaseAmmo: e.currentTarget.value || undefined})}>
+                            <option value="">Use equipped ammo</option>
+                            {#each ammoChoices as ammo}<option value={ammo.id}>{ammo.name}</option>{/each}
+                        </select>
+                    </label>
+                    {#if rotationStore.abilityBar[tick]}
+                        <label class="phase-name">Then cast ammo
+                            <select value={tickEvent.castAmmo ?? ''} onchange={e => updateTickEvent({castAmmo: e.currentTarget.value || undefined})}>
+                                <option value="">Keep ammo after release</option>
+                                {#each ammoChoices as ammo}<option value={ammo.id}>{ammo.name}</option>{/each}
+                            </select>
+                        </label>
+                    {/if}
+                    <p class="condition-note">Release first, then swap ammo for the cast on this tick. The final ammo stays equipped.</p>
+                </div>
+            {/if}
             <section class="tick-controls" aria-label="Tick conditions">
+                <details>
+                    <summary>Team-applied target debuffs</summary>
+                    {#each teamDebuffOptions as [key, label]}
+                        <label class="phase-toggle"><input type="checkbox" checked={activeTeamDebuffs[key] === true} onchange={e => updateTickEvent({teamDebuffs:{...tickEvent.teamDebuffs, [key]:e.currentTarget.checked}})} /> {label}</label>
+                    {/each}
+                    <p class="condition-note">Assume teammates maintain these effects from this tick until disabled. They belong to this named target and are remembered when you return. Warhammer and Guthix staff each model one defence drain; affinity bonuses stack. Enable automatic damage potential for accuracy effects.</p>
+                    {#if tickEvent.teamDebuffs}<button class="text-button" onclick={() => updateTickEvent({teamDebuffs:undefined})}>Use previous debuff selections</button>{/if}
+                </details>
                 <div class="condition-row"><label for="tick-adrenaline">Set adrenaline</label><div class="percent-field"><input id="tick-adrenaline" type="number" min="0" max="130" step="0.1" placeholder="Auto" value={tickEvent.adrenaline ?? ''} onchange={e => updateTickEvent({adrenaline:e.currentTarget.value === '' ? undefined : Number(e.currentTarget.value)})} /><span aria-hidden="true">%</span></div></div>
                 <p class="condition-note">Overrides adrenaline before actions on this tick, capped at your maximum. Later gains and costs continue normally. Clear the box to use the calculated value.</p>
                 <label class="phase-toggle"><input type="checkbox" checked={outsideCombat} onchange={e => updateTickEvent({outOfCombat:e.currentTarget.checked})} /> Outside combat (Persistent Rage)</label>
@@ -603,6 +638,11 @@
                 <label class="phase-toggle"><input type="checkbox" checked={!!tickEvent.phase} onchange={e => updateTickEvent({phase:e.currentTarget.checked ? 'Phase transition' : undefined, downtime:0})} /> New phase / section</label>
                 {#if tickEvent.phase}
                     <label class="phase-name">Section heading<input value={tickEvent.phase} maxlength="80" onchange={e => updateTickEvent({phase:e.currentTarget.value})} /></label>
+                    <label class="phase-name">Target identity
+                        <input list="phase-target-identities" value={tickEvent.targetId ?? ''} placeholder="Keep current target" maxlength="80" onchange={e => updateTickEvent({targetId:e.currentTarget.value || undefined})} />
+                        <datalist id="phase-target-identities">{#each namedTargets as target}<option value={target}></option>{/each}</datalist>
+                    </label>
+                    <p class="condition-note">Enter a new name to switch targets, or choose an earlier name to return to it. Blank keeps the current target. Delayed hits and bleeds stay on their original target; ECB Split Soul only applies while that target is selected.</p>
                     <p class="condition-note">Starts a new timeline section here. Cooldowns, buffs and stacks carry over by default.</p>
                     <div class="condition-row"><label for="section-end">End tick (inclusive)</label><input id="section-end" type="number" min={tick} max={currentSectionBounds.maxEnd} step="1" placeholder="End of rotation" value={currentSectionBounds.end ?? ''} disabled={tick > currentSectionBounds.maxEnd} oninput={e => e.currentTarget.setCustomValidity('')} onchange={changeSectionEnd} /></div>
                     <p class="condition-note">The next section starts one tick after this end. Changing it moves the next heading and its phase reset settings; abilities, gear swaps and target conditions stay on their ticks. If there is no next section, one is created for you to name.</p>

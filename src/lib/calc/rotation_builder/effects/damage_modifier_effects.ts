@@ -29,7 +29,7 @@ export function applyVulnerabilityEffect(
 ): number {
     const { settings } = ctx;
 
-    if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.VULNERABILITY) {
+    if ((settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.VULNERABILITY || settings._teamDebuffs?.vulnerability === true)) {
         return Math.floor(damage * 1.1);
     } else if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.CURSE) {
         return Math.floor(damage * 1.05);

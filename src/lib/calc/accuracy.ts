@@ -1,3 +1,4 @@
+import {teamAffinity, teamDefenceMultiplier} from './rotation_builder/targetDebuffs';
 import { hasReaperPassive } from './necklace';
 import { familiarAccuracyMultiplier } from '$lib/data/familiars';
 import { SETTINGS } from './settings_rb';
@@ -66,8 +67,8 @@ export function calculateAccuracy(settings: Record<string, any>, ability: string
     let affinity = style === 'necromancy'
         ? boss.affinities.necromancy ?? [boss.affinities.melee, boss.affinities.ranged, boss.affinities.magic].sort((a, b) => a - b)[1]
         : boss.affinities[style] ?? .55;
-    affinity += Math.max(0, Math.min(10, Number(settings[SETTINGS.AFFINITY_BONUS] ?? 0))) / 100;
-    const defence = Math.max(0, boss.defenceLevel - Number(settings[SETTINGS.TARGET_DEFENCE_DRAIN] ?? 0));
+    affinity += Math.max(0, Math.min(10, (Number(settings[SETTINGS.AFFINITY_BONUS] ?? 0) + teamAffinity(settings._teamDebuffs)))) / 100;
+    const defence = Math.max(0, boss.defenceLevel * teamDefenceMultiplier(settings._teamDebuffs) - Number(settings[SETTINGS.TARGET_DEFENCE_DRAIN] ?? 0));
     const proximity = isGhrazi(key) ? ghraziArmourMultiplier(Number(settings[SETTINGS.GHRAZI_DISTANCE] ?? 3)) : 1;
     const armour = (npcArmour(boss.armour) + levelAccuracy(defence)) * Math.max(.01, Number(settings[SETTINGS.TARGET_ARMOUR_MULTIPLIER] ?? 1)) * proximity;
     let uncapped = 100 * affinity * accuracy / armour * (abils[ability]?.specialAccuracy ?? 1);

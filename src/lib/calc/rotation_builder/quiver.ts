@@ -49,3 +49,15 @@ export function pernixBonusActive(settings: Record<string, any>): boolean {
     // Preserve older rotations which represented a quiver with a checkbox.
     return !Object.keys(settings[SETTINGS.PERNIX_QUIVERS] ?? {}).length && settings[SETTINGS.QUIVER] === true;
 }
+
+/** Swap ammunition immediately before a release or cast, retaining a matching quiver. */
+export function applyActionAmmo(settings: Record<string, any>, value: unknown) {
+    const ammo = getEquipment(value);
+    if (!ammo || ammo.slot !== 'ammo' || !ammoKind(value)) return;
+    if (isPernixQuiver(settings[SETTINGS.RANGED_AMMO_SLOT])) {
+        const slot = (quiverProfile(settings).ammo ?? []).findIndex((entry: unknown) => getEquipment(entry)?.id === ammo.id);
+        if (slot >= 0) { selectQuiverSlot(settings, slot); return; }
+    }
+    settings[SETTINGS.RANGED_AMMO_SLOT] = ammo.id;
+    settings[SETTINGS.AMMO] = coerceEquipmentValue(ammo.id);
+}

@@ -1,4 +1,6 @@
 import { ToolMode } from '$lib/calc/rotation_builder/ui_material/toolModes';
+import { usesBolg } from '$lib/calc/rotation_builder/stackDisplay';
+import { SETTINGS } from '$lib/calc/settings_rb';
 import { abils } from '$lib/data/abilities.ts';
 import { paletteAbilities } from '$lib/data/abilityPalette';
 import { calculateTotalDamage, calculateGaussianParameters } from '$lib/calc/rotation_builder/rotation-damage-calculator';
@@ -71,10 +73,15 @@ export function pendingStallAt(rotation, index, ignoredRelease = -1) {
 
 export function appendRelease(stores, calculate, refresh) {
     const {rotationStore, uiStore, uiActions, notifActions} = stores;
-    const index = uiStore.bar.index;
+    // Repair earlier rotations at the inspected tick, not always the append cursor.
+    const selectedTick = uiStore.extraActions?.show ? uiStore.extraActions.tick : null;
+    const selectedStall = selectedTick != null && rotationStore.stalledAbilities[selectedTick];
+    const index = selectedTick != null
+        ? selectedTick + (selectedStall ? 3 : 0)
+        : uiStore.bar.index;
     const pending = pendingStallAt(rotationStore, index);
     if (!pending || index >= BAR_SIZE || rotationStore.releasedAbilities[index]) {
-        notifActions.showNotification('No held ability', 'Stall an ability before releasing it.', 'info');
+        notifActions.showNotification('No held ability at this tick', 'Select the earlier stalled ability or its release tick, then press Release. A later cast replaces an unreleased ability.', 'info');
         return;
     }
     rotationStore.releasedAbilities[index] = pending;
@@ -511,7 +518,9 @@ export function refreshUI(calcDmg = true, stores, calculateTotalDamageNew) {
         let disp = stores.settingsStore.settings[displaySetting];
         // Only show stacks that are toggled on AND have at least one non-zero value
         const hasNonZero = rotationStore.stacks[key].stackTicks?.some(v => v !== 0);
-        if (disp['value'] && hasNonZero) {
+        const showEmptyBolg = key === SETTINGS.PERFECT_EQUILIBRIUM_STACKS &&
+            usesBolg(stores.settingsStore.settings, rotationStore.extraActionBar);
+        if (disp?.value && (hasNonZero || showEmptyBolg)) {
             rotationStore.stacks[key]['idx'] = i;
             uiActions.updateBarRowGap(uiStore.bar.rowGap + (stackFontSize + stackPadding));
             i++;
@@ -553,6 +562,7 @@ export function calculateTotalDamageNew(dmgResult = calculateTotalDamage(BAR_SIZ
     rotationStore.totalDamage = dmgResult.regularDamage;
     rotationStore.secondaryDamage = dmgResult.secondaryDamage ?? {};
     rotationStore.secondaryHits = dmgResult.secondaryHits ?? [];
+    rotationStore.phaseDamagePerTick = dmgResult.phaseDamagePerTick ?? [];
     rotationStore.poisonDamage = dmgResult.poisonDamage;
     rotationStore.familiarDamage = dmgResult.familiarDamage;
     rotationStore.dreadnipDamage = dmgResult.dreadnipDamage || 0;

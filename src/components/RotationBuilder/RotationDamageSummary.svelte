@@ -1,5 +1,9 @@
 <script>
 import { rotationStore as rotation } from '$lib/stores/rotationStore.svelte.js';
+import { phaseDamageRows } from '$lib/calc/rotation_builder/phaseDamage';
+import { fightTime } from '$lib/calc/rotation_builder/fightTime';
+let {showFightTime = false, startTick = -1} = $props();
+let phases = $derived(phaseDamageRows(rotation.phaseDamagePerTick, rotation.tickEvents, rotation.phaseTransitions));
 let main = $derived(rotation.totalDamage + rotation.poisonDamage + rotation.familiarDamage + rotation.dreadnipDamage + rotation.conjureDamage);
 let targets = $derived(Object.entries(rotation.secondaryDamage).sort(([a],[b]) => Number(a)-Number(b)));
 let additional = $derived(targets.reduce((sum,[,damage]) => sum + Number(damage),0));
@@ -12,6 +16,16 @@ const number = value => Math.round(value).toLocaleString();
 <div><span>Main target</span><strong>{number(main)}</strong></div>
 <div><span>Other targets</span><strong>{number(additional)}</strong></div>
 </div>
+{#if phases.length}
+<details class="breakdown" open><summary>Damage per phase</summary>
+<table><thead><tr><th>Phase</th><th>{showFightTime ? 'Fight time' : 'Ticks'}</th><th>Damage</th></tr></thead><tbody>
+{#each phases as phase}
+<tr><td>{phase.label}</td><td>{showFightTime ? fightTime(phase.start, startTick) : phase.start}–{showFightTime ? fightTime(phase.end, startTick) : phase.end}</td><td>{number(phase.damage)}</td></tr>
+{/each}
+</tbody></table>
+<p>All targets and damage sources included. Damage counts in the phase where it lands; ticks before Start Tick contribute zero.</p>
+</details>
+{/if}
 <details class="breakdown"><summary>Per-target breakdown</summary>
 <table><thead><tr><th>Target</th><th>Damage</th><th>Share</th></tr></thead><tbody>
 {#each [[0,main], ...targets] as [target,damage]}

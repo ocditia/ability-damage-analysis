@@ -1,6 +1,7 @@
 import {describe,it,expect,beforeEach,afterEach,vi} from 'vitest';
 import {rotationStore,rotationActions,DRAFT_STORAGE_KEY} from './rotationStore.svelte.js';
 import {settingsStore} from './settingsStore.svelte.js';
+import {ARMOUR} from '$lib/data/armour';
 import {SETTINGS} from '$lib/calc/settings_rb';
 
 let storage: Map<string,string>;
@@ -11,7 +12,8 @@ describe('rotation persistence',()=>{
   rotationStore.abilityBar[3]='piercing shot';
   rotationStore.extraActionBar[3]=[{type:'ability',value:'undead slayer ability',title:'Undead Slayer',icon:''}];
   rotationStore.stalledAbilities[6]='snipe';rotationStore.releasedAbilities[9]='snipe';
-  rotationStore.targetCounts[12]=3;rotationStore.tickEvents[12]={accuracy:65,automaticAccuracy:false,phase:'Phase 2',downtime:0};
+  rotationStore.tickEvents[9]={releaseAmmo:ARMOUR.WEN_ARROWS,castAmmo:ARMOUR.FUL_ARROWS};
+  rotationStore.targetCounts[12]=3;rotationStore.tickEvents[12]={accuracy:65,automaticAccuracy:false,phase:'Phase 2',targetId:'Boss',teamDebuffs:{warhammer:true,smokeCloud:true},downtime:0};
   rotationStore.nulledTicks[15]=true;settingsStore.settings[SETTINGS.HIT_CHANCE].value=77;
   const expected=rotationActions.getCurrentRotationData();
   expect(rotationActions.saveDraft('ranged')).toBe(true);

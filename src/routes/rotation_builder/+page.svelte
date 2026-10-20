@@ -2,6 +2,9 @@
     import { LatestWorker } from '$lib/utils/latestWorker';
     import { snapshotEditorCalculation } from '$lib/calc/rotation_builder/editorCalculation';
     import { timelineRows } from '$lib/calc/rotation_builder/timelineRows';
+    import { fightTime } from '$lib/calc/rotation_builder/fightTime';
+    import { showTimelineStack } from '$lib/calc/rotation_builder/stackDisplay';
+    import { damageBetween } from '$lib/calc/rotation_builder/phaseDamage';
     import ShiftRotation from '$components/RotationBuilder/ShiftRotation.svelte';
     import { tickConditionLabel } from '$lib/calc/rotation_builder/tickEvents';
 	import { onMount, onDestroy } from 'svelte';
@@ -81,6 +84,7 @@
     let abilitySearch = $state('');
     let expandedTicks = $state(60);
     let showFullTimeline = $state(false);
+    let showFightTime = $state(false);
     const modes = [
         { value: ToolMode.Regular, label: 'Edit', key: 'E', hint: 'Click an ability to append it. Drag to place or move it. Click a tick to inspect; right-click to remove.' },
         { value: ToolMode.Release, label: 'Release', key: 'R', hint: 'Release appends the held ability at the next GCD tick. Drag its icon to move it; the next ability shares that tick.' },
@@ -204,7 +208,7 @@
 			for (let i = startIndex; i < endIndex; i++) {
 				for (const stackKey of Object.keys(rotationStore.stacks)) {
 					const stack = rotationStore.stacks[stackKey];
-					if (stack.idx >= 0 && stack.stackTicks && showStack(i, stack.stackTicks)) {
+					if (stack.idx >= 0 && stack.stackTicks && showTimelineStack(stackKey, i, stack.stackTicks)) {
 						activeStacksSet.add(stackKey);
 					}
 				}
@@ -774,7 +778,7 @@
 
 					<GradientSeparator marginTop="0.0rem" marginBottom="0.75rem" />
 
-                    <RotationDamageSummary />
+                    <RotationDamageSummary {showFightTime} startTick={patternStartTick} />
 
                     <RotationConfigManager
                         {refreshUI}
@@ -808,7 +812,7 @@
                             />
                         {/if}
 					{/each}
-	                <div class="timeline-heading"><h2>Timeline</h2><span role="status">{calculationPending ? 'Updating damage...' : '1 tick = 0.6 seconds'}</span></div>
+	                <div class="timeline-heading"><h2>Timeline</h2><label class="time-toggle"><input type="checkbox" bind:checked={showFightTime} /> Fight time (seconds)</label><span role="status">{calculationPending ? 'Updating damage...' : showFightTime ? 'Time from Start Tick; negative = pre-fight' : '1 tick = 0.6 seconds'}</span></div>
                     <div class="edit-toolbar" role="group" aria-label="Editing mode">
                         {#each modes as mode}<button class:active={uiStore.activeTool === mode.value} aria-pressed={uiStore.activeTool === mode.value} onclick={() => selectMode(mode.value)}>{mode.label} <kbd>{mode.key}</kbd></button>{/each}
                     </div>
@@ -821,7 +825,7 @@
 						class="ability-bar"
 					>
                         {#each rowLayoutData as row}
-                            {#if row.sectionTitle}<div class="timeline-section-heading" style="grid-column: 1 / -1; grid-row: {row.gridRow - 1}"><strong>{row.sectionTitle}</strong><span>Ticks {row.startIndex} to {row.sectionEnd}</span></div>{/if}
+                            {#if row.sectionTitle}<div class="timeline-section-heading" style="grid-column: 1 / -1; grid-row: {row.gridRow - 1}"><strong>{row.sectionTitle}</strong><span>{showFightTime ? `${fightTime(row.startIndex, patternStartTick)} to ${fightTime(row.sectionEnd ?? row.endIndex - 1, patternStartTick)}` : `Ticks ${row.startIndex} to ${row.sectionEnd}`}</span><span>{Math.round(damageBetween(rotationStore.phaseDamagePerTick, row.startIndex, row.sectionEnd ?? row.endIndex - 1)).toLocaleString()} damage</span></div>{/if}
                         {/each}
                         {#each rotationStore.abilityBar.slice(0, visibleTicks) as ability, index (index)}
                             {@const visualRow = rowLayoutData.find(row => index >= row.startIndex && index < row.endIndex)}
@@ -848,7 +852,7 @@
                                 ondragenter={(e) => handleDragEnter(e, index)}
                                 ondragleave={(e) => handleDragLeave(e, index)}
                             >
-                                <span class="cell-number">{index}{rotationStore.tickEvents[index]?.phase ? " P" : rotationStore.tickEvents[index]?.accuracy != null ? " %" : rotationStore.tickEvents[index] ? " *" : ""}</span>
+                                <span class="cell-number" class:time-number={showFightTime} title={`Tick ${index} · ${fightTime(index, patternStartTick)} from fight start`}>{showFightTime ? fightTime(index, patternStartTick) : index}{rotationStore.tickEvents[index]?.phase ? " P" : rotationStore.tickEvents[index]?.accuracy != null ? " %" : rotationStore.tickEvents[index] ? " *" : ""}</span>
                                 {#if ability && allAbils[ability]}
                                     <img class="regular-ability" src={allAbils[ability].icon}
                                         alt={allAbils[ability].title}
@@ -942,7 +946,7 @@
                                     {/if}
                                 {/each}
                                 {#each Object.keys(rotationStore.stacks) as key}
-                                    {#if showStack(index, rotationStore.stacks[key].stackTicks) && getStackLocalIndex(key, index) >= 0}
+                                    {#if showTimelineStack(key, index, rotationStore.stacks[key].stackTicks) && getStackLocalIndex(key, index) >= 0}
                                         {@const localStackIdx = getStackLocalIndex(key, index)}
                                         {@const stackTop = getStackTopOffset(index, localStackIdx)}
                                         <span
@@ -1030,6 +1034,7 @@
                     <div class="xl:w-full lg:w-70 xl:min-w-100 lg:min-w-full">
                         {#if uiStore.extraActions.show}
                             <ExtraActionsPanel
+                                {showFightTime}
                                 uiState={uiStore}
                                 gameState={rotationStore}
                                 {allAbils}
@@ -1502,7 +1507,10 @@
         transform: translateX(-50%);
         font-size: 12px;
         color: #bababa;
+        white-space: nowrap;
     }
+    .cell-number.time-number { font-size: 10px; }
+    .time-toggle { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #bed0dc; cursor: pointer; }
 
     .stacks-text {
         position: absolute;

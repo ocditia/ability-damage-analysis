@@ -5,7 +5,7 @@ import { handleWenBuffConsumption } from './effects';
 import { prepareReaperStacks, gainReaperStack } from '../necklace';
 import { prepareAdrenalineTick, enterCombat, startCrystalChannel, interruptCrystalChannel } from './adrenalineEvents';
 import { applyAccuracyEvent } from './tickEvents';
-import { QUIVER_SLOT_1, QUIVER_SLOT_2, selectQuiverSlot } from './quiver';
+import { QUIVER_SLOT_1, QUIVER_SLOT_2, selectQuiverSlot, applyActionAmmo } from './quiver';
 import { finishMalachiCast, tickProcProbabilities } from './effects/enchanted_bolts';
 import { weaponSelectionUpdates } from '$lib/data/equipmentSlots';
 import { abils, ABILITIES } from '$lib/data/abilities';
@@ -47,12 +47,17 @@ export function resolveTumekensAsphyxiate(abilityKey: string, settings: Record<s
 
 /** Get the vulnerability/curse damage multiplier from settings */
 function getVulnMultiplier(settings: Record<string, any>): number {
-    if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.VULNERABILITY) return 1.1;
+    if ((settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.VULNERABILITY || settings._teamDebuffs?.vulnerability === true)) return 1.1;
     if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.CURSE) return 1.05;
     return 1.0;
 }
 
 interface RotationState {
+    phaseDamagePerTick?: number[];
+    phaseEvents?: RotationInput["tickEvents"];
+    activeTarget?: string;
+    flameboundTargets?: Record<string, boolean>;
+    teamDebuffs?: Record<string, Record<string, boolean>>;
     dmgs: number[];
     damageQueue: Record<number, any[]>;
     timers: Record<string, number>;
@@ -135,6 +140,11 @@ interface TickMeta {
 }
 
 interface DamageResult {
+    phaseDamagePerTick?: number[];
+    phaseEvents?: RotationInput["tickEvents"];
+    activeTarget?: string;
+    flameboundTargets?: Record<string, boolean>;
+    teamDebuffs?: Record<string, Record<string, boolean>>;
     regularDamage: number;
     poisonDamage: number;
     familiarDamage: number;
@@ -340,6 +350,7 @@ export function calculateRotationDamageCore(
         currentPhaseIdx: 0,
         pauseTicksRemaining: 0,
         phaseTransitions: [],
+        phaseEvents: rotation.tickEvents,
         tickMetadata: {}
     };
 
@@ -419,6 +430,7 @@ export function calculateRotationDamageCore(
 
     return {
         regularDamage: totalDamage,
+        phaseDamagePerTick: state.phaseDamagePerTick ?? [],
         secondaryDamage: state.secondaryDamage ?? {},
         secondaryHits: state.secondaryHits ?? [],
         poisonDamage: state.poisonDamage,
@@ -557,6 +569,18 @@ function prepareTick(state: RotationState, settings: any, rotation: RotationInpu
     if (state.preparedTick === state.tick) return;
     state.preparedTick = state.tick;
     const event = rotation.tickEvents?.[state.tick];
+    if (event?.targetId && event.targetId !== state.activeTarget) {
+        const previous = state.activeTarget ?? 'Initial target';
+        const targets = state.flameboundTargets ??= {};
+        targets[previous] = settings[SETTINGS.FLAMEBOUND_RIVAL] === true;
+        // Starting buffs belong to the named starting target.
+        settings[SETTINGS.FLAMEBOUND_RIVAL] = targets[event.targetId] ?? (state.tick === 0 ? targets[previous] : false);
+        state.activeTarget = event.targetId;
+    }
+    const teamTargets = state.teamDebuffs ??= {};
+    const targetId = state.activeTarget ?? 'Initial target';
+    if (event?.teamDebuffs) Object.assign(teamTargets[targetId] ??= {}, event.teamDebuffs);
+    settings._teamDebuffs = teamTargets[targetId] ?? {};
     settings._rotationTick = state.tick;
     settings._malachiResetOverride = event?.malachiReset;
     applyAccuracyEvent(settings, event);
@@ -603,6 +627,7 @@ function processCurrentTickCore(
     }
     const releasedAbility = rotation.releasedAbilities?.[state.tick];
     if (releasedAbility && settingsCopy._pendingStall === releasedAbility) {
+        applyActionAmmo(settingsCopy, rotation.tickEvents?.[state.tick]?.releaseAmmo);
         enterCombat(settingsCopy);
         delete settingsCopy._pendingStall;
         style_specific_unification(settingsCopy, abils[releasedAbility].mainStyle);
@@ -634,10 +659,16 @@ function processCurrentTickCore(
         return;
     }
 
+    applyActionAmmo(settingsCopy, rotation.tickEvents?.[state.tick]?.castAmmo);
+
     // A crystal started alongside a self-cast buff begins charging on the next tick.
     if (settingsCopy._crystalStartedTick !== state.tick) interruptCrystalChannel(settingsCopy);
     if (abils[abilityKey]?.abilityClassification !== 'self cast') enterCombat(settingsCopy);
     delete settingsCopy._pendingStall; // A new cast replaces an unreleased ability.
+
+    // The explicit flank choice uses Snipe's cast rules, cooldown and channel.
+    settingsCopy._nightmareFlankCast = abilityKey === ABILITIES.SNIPE_FLANK;
+    if (settingsCopy._nightmareFlankCast) abilityKey = ABILITIES.SNIPE;
 
     // Swap asphyxiate for Tumeken's variant if wearing 4+ pieces
     abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
@@ -701,11 +732,24 @@ function processTickOperations(
     onTick?.(state.tick, settingsCopy, state.timers);
     recalcFulProbability(state, settingsCopy);
     handleTimers(state.timers, settingsCopy);
+    // Pre-fight actions still advance buffs, gear and cooldowns. Discard hits
+    // landing before Start Tick and keep all damage sources out of boss HP.
+    if (tickToProcess < (settingsCopy[SETTINGS.BOSS_PATTERN_START] ?? -1)) {
+        delete state.damageQueue[tickToProcess];
+        state.tick += 1;
+        return;
+    }
+    const firstHit = state.dmgs.length;
+    const otherDamage = () => state.poisonDamage + state.scrollDamage + state.dreadnipDamage + state.conjureDamage
+        + Object.values(state.secondaryDamage ?? {}).reduce((sum: number, damage: number) => sum + damage, 0);
+    const otherBefore = otherDamage();
     processQueuedDamage(tickToProcess, state, settingsCopy);
     handleAftershock(state, settingsCopy);
     handleCrackling(state, settingsCopy);
     processSecondaryDamageWithBudget(state, settingsCopy);
     updateBossHpPercent(state, settingsCopy);
+    (state.phaseDamagePerTick ??= [])[tickToProcess] = (state.phaseDamagePerTick[tickToProcess] ?? 0) + state.dmgs.slice(firstHit).reduce((sum, damage) => sum + damage, 0)
+        + otherDamage() - otherBefore;
 
     state.tick += 1;
 }
@@ -1228,7 +1272,8 @@ function processChannelledTickCore(
             dmgObject = zeroDamageObject(dmgObject);
         }
 
-        if (dmgObject.distributions['non_crit']['damage list'].length > 0) {
+        // Deferred BOLG procs receive their damage rolls at impact.
+        if ((dmgObject as any)._bolgImpact || dmgObject.distributions['non_crit']['damage list'].length > 0) {
             let hit_tick = currentTick + state.hit_delay;
             (state.damageQueue[hit_tick] ??= []).push(dmgObject);
         }
@@ -1520,6 +1565,7 @@ function hitTargets(state: RotationState, settings: any, object: DamageObject, k
         settings._deferBolgProcs = previousDefer;
         for (const hit of hits) {
             (hit as any).targetIndex = target;
+            (hit as any)._originTick = state.start_tick;
             results.push(hit);
         }
         if (target) {
@@ -1548,6 +1594,21 @@ function hitTargets(state: RotationState, settings: any, object: DamageObject, k
         settings.ability = savedAbility;
     }
     return results;
+}
+
+function selectedTarget(state: RotationState, tick: number): string {
+    for (let i = tick; i >= 0; i--) if (state.phaseEvents?.[i]?.targetId) return state.phaseEvents[i]!.targetId!;
+    return 'Initial target';
+}
+
+/** Reassign reporting only: actual impact times and damage calculation stay intact. */
+function creditCastPhase(state: RotationState, settings: any, source: DamageObject, hit: DamageObject, tick: number, damage: number) {
+    if (hit.ability === ABILITIES.SPLIT_SOUL_ECB) return;
+    const origin = Math.max((source as any)._originTick ?? tick, settings[SETTINGS.BOSS_PATTERN_START] ?? 0, 0);
+    if (origin >= tick || !state.phaseEvents?.some((event, index) => event?.phase && index > origin && index <= tick)) return;
+    const totals = state.phaseDamagePerTick ??= [];
+    totals[origin] = (totals[origin] ?? 0) + damage;
+    totals[tick] = (totals[tick] ?? 0) - damage;
 }
 
 function processQueuedDamage(tick: number, state: RotationState, settingsCopy: any) {
@@ -1579,12 +1640,17 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
             }
             for (const hit of hits) {
                 (hit as any).targetIndex = namedDmgObject.targetIndex ?? 0;
+                (hit as any)._originTick = (namedDmgObject as any)._originTick;
 
             }
             impactQueue.splice(impactIndex, 1, ...hits);
             impactIndex--;
             continue;
         }
+        const originTick = (namedDmgObject as any)._originTick ?? tick;
+        // Target identity survives any number of intervening selections.
+        if (namedDmgObject.ability === ABILITIES.SPLIT_SOUL_ECB &&
+            selectedTarget(state, originTick) !== selectedTarget(state, tick)) continue;
         settingsCopy['ability'] = namedDmgObject.ability;
         const scale = namedDmgObject.likelihood;
 
@@ -1593,7 +1659,13 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
         handleEssenceCorruptionStack(namedDmgObject.ability, settingsCopy);
 
         const targetIndex = namedDmgObject.targetIndex ?? 0;
+        const savedTeamDebuffs = settingsCopy._teamDebuffs;
+        settingsCopy._teamDebuffs = state.teamDebuffs?.[selectedTarget(state, originTick)] ?? {};
+        const savedSplitSoul = settingsCopy[SETTINGS.SPLIT_SOUL];
+        if (selectedTarget(state, originTick) !== selectedTarget(state, tick)) settingsCopy[SETTINGS.SPLIT_SOUL] = false;
         const { results: damageObjects, delayed } = on_damage(settingsCopy, namedDmgObject);
+        settingsCopy[SETTINGS.SPLIT_SOUL] = savedSplitSoul;
+        settingsCopy._teamDebuffs = savedTeamDebuffs;
         // One stack per landed hit, weighted for mutually exclusive proc branches.
         // Split Soul is derived damage, not another weapon hit.
         if (!(namedDmgObject as any)._nulled && !cappedOnThisTick
@@ -1604,12 +1676,14 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
         // Queue delayed hits (e.g. Split Soul) for the next tick
         for (const delayedObj of delayed) {
             (delayedObj as any).targetIndex = targetIndex;
+            (delayedObj as any)._originTick = (namedDmgObject as any)._originTick;
             (state.damageQueue[tick + 1] ??= []).push(delayedObj);
         }
         for (const dmgObj of damageObjects) {
             if (targetIndex > 0) {
                 const damage = Math.floor(applySoftCap(get_user_value(settingsCopy, dmgObj), settingsCopy['_softCap']) * scale);
                 state.secondaryDamage ??= {};
+                creditCastPhase(state, settingsCopy, namedDmgObject, dmgObj, tick, Number.isFinite(damage) ? damage : 0);
                 state.secondaryDamage[targetIndex] = (state.secondaryDamage[targetIndex] ?? 0) + (Number.isFinite(damage) ? damage : 0);
                 (state.secondaryHits ??= []).push({tick, ability: namedDmgObject.ability, targetIndex, expected: Number.isFinite(damage) ? damage : 0});
                 continue; // Secondary targets do not consume the primary boss's HP or phase budget.
@@ -1640,11 +1714,14 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
                 break;
             }
             state.dmgs.push(dmgValue);
+            creditCastPhase(state, settingsCopy, namedDmgObject, dmgObj, tick, dmgValue);
             state.cinderHitCount += scale;
 
             // Accumulate poison damage per-hit (scales with current Bik stacks)
             if (!cappedOnThisTick) {
-                state.poisonDamage += calcPoisonDamagePerHit(scale, settingsCopy);
+                const poisonDamage = calcPoisonDamagePerHit(scale, settingsCopy);
+                state.poisonDamage += poisonDamage;
+                creditCastPhase(state, settingsCopy, namedDmgObject, dmgObj, tick, poisonDamage);
             }
             if (tick < state.poisonPerTick.length) {
                 state.poisonPerTick[tick] = state.poisonDamage;

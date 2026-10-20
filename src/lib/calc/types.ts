@@ -48,7 +48,7 @@ export interface Equipment {
  */
 export interface RotationInput {
     targetCounts?: (number | null)[];
-    tickEvents?: ({accuracy?: number; phase?: string; downtime?: number} | null)[];
+    tickEvents?: (import('./rotation_builder/tickEvents').TickEvent | null)[];
     abilityBar: (string | null)[];
     extraActionBar: (any[] | null)[];
     nulledTicks: boolean[];

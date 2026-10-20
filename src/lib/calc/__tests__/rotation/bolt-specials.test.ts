@@ -43,6 +43,13 @@ describe('enchanted bolt proc chances',()=>{
     });
 });
 describe('Sanguine Volley and equipped passives',()=>{
+    it.each([0, 6])('lands all five hits four ticks after a cast at tick %s', (castTick)=>{
+        const rotation=createRotationFromAbilities([...Array(castTick).fill(null), ABILITIES.SANGUINE_VOLLEY]);
+        const result=calculateRotationDamageCore(settings(),rotation,30);
+        const hits=result.distributionStats.filter(hit=>hit.ability===ABILITIES.SANGUINE_VOLLEY_HIT);
+        expect(hits).toHaveLength(5);
+        expect(hits.map(hit=>hit.tick)).toEqual(Array(5).fill(castTick+4));
+    });
     it('has five 70-90% hits, 40 adrenaline cost, and a 100-tick cooldown',()=>{
         const a=abils[ABILITIES.SANGUINE_VOLLEY];expect(a.adrenaline).toBe(40);expect(a.cooldown).toBe(60);
         expect(a.hits![1].filter(x=>x!=='next hit')).toHaveLength(5);
