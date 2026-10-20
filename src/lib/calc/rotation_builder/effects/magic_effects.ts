@@ -56,7 +56,7 @@ function applyBoostedADEffects(
     }
 
     // caroming chain — reduces bounced hit damage to a percentage
-    if (settings[SETTINGS.CHAIN_MODIFIER] !== SETTINGS.CHAIN_MODIFIER_VALUES.NONE) {
+    if (!settings._chainManaged && settings[SETTINGS.CHAIN_MODIFIER] !== SETTINGS.CHAIN_MODIFIER_VALUES.NONE) {
         let chainModifier = 25;
         if (settings[SETTINGS.CHAIN_MODIFIER] === SETTINGS.CHAIN_MODIFIER_VALUES.GREATER) {
             chainModifier = 50;
@@ -119,7 +119,7 @@ function applyAbilitySpecificEffects(
 
     // Greater chain — non-bleed/burn/dot abilities deal half damage
     if (
-        settings[SETTINGS.GREATER_CHAIN] === true &&
+        !settings._chainManaged && settings[SETTINGS.GREATER_CHAIN] === true &&
         !['bleed', 'burn', 'dot'].includes(abils[abilityKey]?.abilityClassification)
     ) {
         distribution['boosted AD'] = Math.floor(distribution['boosted AD'] * 0.5);

@@ -1,11 +1,22 @@
+import { clearPhaseStacks } from './phaseStacks';
+import { recalcFulProbability, rollFulHit } from './ful';
+import { isAreaAttack, prepareChainCast } from './castTargets';
+import { handleWenBuffConsumption } from './effects';
+import { prepareReaperStacks, gainReaperStack } from '../necklace';
+import { prepareAdrenalineTick, enterCombat, startCrystalChannel, interruptCrystalChannel } from './adrenalineEvents';
+import { applyAccuracyEvent } from './tickEvents';
+import { QUIVER_SLOT_1, QUIVER_SLOT_2, selectQuiverSlot } from './quiver';
+import { finishMalachiCast, tickProcProbabilities } from './effects/enchanted_bolts';
+import { weaponSelectionUpdates } from '$lib/data/equipmentSlots';
 import { abils, ABILITIES } from '$lib/data/abilities';
 import { ARMOUR } from '$lib/data/armour';
-import { WEAPONS } from '$lib/data/weapons';
+import { targetCountAt } from './targets';
+import { WEAPONS, weapons } from '$lib/data/weapons';
 import { style_specific_unification, calc_base_ad } from '../damage_calc_rb';
 import { get_hit_sequence, addAdrenaline } from './calculation_utils';
 import { handleBuffs, get_user_value, handleDracolichInfusion, handleChanneledAsphyx, handleChannellers, getConjureDamageMultiplier } from './rotation_damage_helper';
 import { SETTINGS } from '../settings_rb';
-import { on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
+import { resolveBolgImpact, applyActivationEffects, on_stall, on_cast, on_hit, on_damage, COOLDOWN_PREFIX } from './damage_calc_new.js';
 import { create_damage_object } from './rota_object_helper';
 import { buffs } from './rotation_consts';
 import { gearSwaps, allExtraActions as specialAbils, CONSUMABLES } from '../../special/abilities';
@@ -20,7 +31,7 @@ import { Logger, LogCategory } from '$lib/utils/Logger';
 import { attachGearPerks } from '$lib/data/perks';
 import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
 import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
-import { uiActions, uiStore } from '$lib/stores/uiStore.svelte';
+import { uiStore } from '$lib/stores/uiStore.svelte';
 import { ownedItemsStore } from '$lib/stores/ownedItemsStore.svelte.js';
 const logger = Logger.getInstance();
 
@@ -48,6 +59,7 @@ interface RotationState {
     tick: number;
     hit_delay: number;
     start_tick: number;
+    channelBuffSnapshot?: {wenDamage: boolean; wenAccuracy: boolean; locate: boolean};
     cinderHitCount: number;
     poisonDamage: number; // Accumulated poison damage (calculated per-hit for Bik stack scaling)
     poisonPerTick: number[]; // Cumulative poison damage at each tick
@@ -79,6 +91,11 @@ interface RotationState {
     phaseTransitions: PhaseTransitionRecord[];
     // Per-tick resolved ability info
     tickMetadata: Record<number, TickMeta>;
+    secondaryDamage?: Record<number, number>;
+    secondaryHits?: {tick: number; ability: string; targetIndex: number; expected: number}[];
+    targetCounts?: (number | null)[];
+    secondaryBik?: Record<number, number>;
+    preparedTick?: number;
 }
 
 interface DamageDistributionStat {
@@ -112,6 +129,7 @@ interface PhaseTransitionRecord {
 }
 
 interface TickMeta {
+    cooldownRemaining: number;
     resolvedAbility: string;
     duration: number;
 }
@@ -133,6 +151,8 @@ interface DamageResult {
     phaseTransitions: PhaseTransitionRecord[];
     /** Per-tick metadata: resolved ability key and effective duration */
     tickMetadata: Record<number, TickMeta>;
+    secondaryDamage?: Record<number, number>;
+    secondaryHits?: {tick: number; ability: string; targetIndex: number; expected: number}[];
     /** Captured final state for ability suggestions (only when requested) */
     _finalState?: any;
     _finalSettings?: any;
@@ -153,73 +173,6 @@ function forwardFillCumulative(arr: number[]) {
     }
 }
 
-const FUL_BUFF_DURATION = 25; // 15 seconds = 25 ticks
-// Cooldown runs concurrently with buff (both 15s from proc), so no additional cooldown-only period
-const FUL_TOTAL_LOCKOUT = 25; // Total ticks from proc where no new proc can happen
-const FUL_PROC_CHANCE = 0.066;
-
-/**
- * Update Scripture of Ful probability on ability release.
- * Tracks probability mass of procs at each tick using fulProcHistory.
- * fulProcHistory[t] = probability that a NEW proc started at tick t.
- */
-function updateFulProbability(state: RotationState, settings: Record<string, any>) {
-    if (settings[SETTINGS.POCKET] !== ARMOUR.FUL_BOOK) {
-        settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = 0;
-        return;
-    }
-
-    const tick = state.tick;
-
-    // Calculate current probability of being in buff or lockout state
-    // by summing proc history over the relevant windows
-    let buffProb = 0; // probability buff is active (procced within last FUL_BUFF_DURATION ticks)
-    let lockoutProb = 0; // probability locked out but buff expired (shouldn't happen with concurrent timing)
-
-    for (let i = 0; i < state.fulProcHistory.length; i++) {
-        const mass = state.fulProcHistory[i] || 0; // Handle sparse array (undefined entries between ability ticks)
-        if (mass === 0) continue;
-        const ticksAgo = tick - i;
-        if (ticksAgo >= 0 && ticksAgo < FUL_BUFF_DURATION) {
-            buffProb += mass;
-        } else if (ticksAgo >= FUL_BUFF_DURATION && ticksAgo < FUL_TOTAL_LOCKOUT) {
-            lockoutProb += mass;
-        }
-    }
-
-    // Probability we're in the "can proc" state (not in buff or lockout)
-    const canProcProb = Math.max(0, 1);// - buffProb - lockoutProb);
-
-    // New proc probability mass this tick
-    const newProcMass = canProcProb * FUL_PROC_CHANCE;
-    state.fulProcHistory[tick] = (state.fulProcHistory[tick] || 0) + newProcMass;
-
-    // The triggering hit doesn't benefit, so the buff probability for THIS tick's damage
-    // is the buffProb BEFORE adding the new proc (later hits on this tick will use updated value)
-    settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = buffProb;
-}
-
-/**
- * Recalculate Ful buff probability for the current tick (for non-ability ticks).
- */
-function recalcFulProbability(state: RotationState, settings: Record<string, any>) {
-    if (settings[SETTINGS.POCKET] !== ARMOUR.FUL_BOOK) {
-        settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = 0;
-        return;
-    }
-
-    const tick = state.tick;
-    let buffProb = 0;
-    for (let i = 0; i < state.fulProcHistory.length; i++) {
-        const mass = state.fulProcHistory[i] || 0;
-        if (mass === 0) continue;
-        const ticksAgo = tick - i;
-        if (ticksAgo >= 0 && ticksAgo < FUL_BUFF_DURATION) {
-            buffProb += mass;
-        }
-    }
-    settings[SETTINGS.SCRIPTURE_OF_FUL_PROB] = buffProb;
-}
 /**
  * Calculates the total damage for a given rotation over a specified number of ticks.
  *
@@ -244,6 +197,9 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
         extraActionBar: [...rotationStore.extraActionBar],
         nulledTicks: [...rotationStore.nulledTicks],
         stalledAbilities: [...rotationStore.stalledAbilities],
+        releasedAbilities: [...rotationStore.releasedAbilities],
+        targetCounts: [...rotationStore.targetCounts],
+        tickEvents: rotationStore.tickEvents.map(event => event ? {...event} : null),
     };
 
     // Get settings from the store
@@ -254,16 +210,11 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     // Pocket and ammo are now resolved per-ability in style_specific_unification
 
     // Attach gear perks if "use owned gear" mode is enabled
-    if (adaptedSettings[SETTINGS.USE_OWNED_GEAR]) {
-        attachGearPerks(adaptedSettings, ownedItemsStore.ownedGear);
-    }
+    attachGearPerks(adaptedSettings, ownedItemsStore.ownedGear);
 
-    // Strip any Svelte proxies from internal keys before cloning
-    if (adaptedSettings['_gearInstances'] && typeof adaptedSettings['_gearInstances'] === 'object') {
-        adaptedSettings['_gearInstances'] = JSON.parse(JSON.stringify(adaptedSettings['_gearInstances']));
-    }
-
-    const settingsCopy = structuredClone(adaptedSettings);
+    // Nested loadouts and gear instances are Svelte proxies too. Settings use
+    // the same JSON-safe value format as saved rotations; snapshot all of them.
+    const settingsCopy = JSON.parse(JSON.stringify(adaptedSettings));
     settingsCopy[SETTINGS.CALC_TYPE] = SETTINGS.CALC_TYPE_VALUES.ROTATION;
     settingsCopy['_combatStyle'] = uiStore.activeTab ?? 'melee';
 
@@ -327,6 +278,13 @@ export function calculateTotalDamage(BAR_SIZE: number): DamageResult {
     };
 
     const result = calculateRotationDamageCore(settingsCopy, rotation, BAR_SIZE, onTick);
+    // Finalize once, after delayed hits too, rather than at a separate UI bar size.
+    let buffIndex = 0;
+    for (const buff of Object.values(rotationStore.buffs) as any[]) {
+        buff.activeRows = buff.buffTicks.flatMap((value: any, tick: number) =>
+            value && value !== 'none' ? [tick] : []);
+        buff.idx = buff.activeRows.length ? buffIndex++ : -1;
+    }
     result._finalState = capturedSuggestState;
     result._finalSettings = capturedSuggestSettings;
     return result;
@@ -387,7 +345,7 @@ export function calculateRotationDamageCore(
 
     // Find the last tick that has an ability (familiar/dreadnip stop after this)
     for (let i = rotation.abilityBar.length - 1; i >= 0; i--) {
-        if (rotation.abilityBar[i] != null) {
+        if (rotation.abilityBar[i] != null || rotation.releasedAbilities?.[i]) {
             state.lastAbilityTick = i;
             break;
         }
@@ -395,13 +353,14 @@ export function calculateRotationDamageCore(
 
     // Find the first tick with a non-nulled ability (familiar/dreadnip start here)
     for (let i = 0; i < rotation.abilityBar.length; i++) {
-        if (rotation.abilityBar[i] != null && !(rotation.nulledTicks[i] ?? false)) {
+        if ((rotation.abilityBar[i] != null || rotation.releasedAbilities?.[i]) && !(rotation.nulledTicks[i] ?? false)) {
             state.firstAbilityTick = i;
             break;
         }
     }
 
     const settingsCopy = structuredClone(settings);
+    settingsCopy._gearPerks ??= {};
 
     // Resolve boss preset for soft cap and phase tracking (if not already set by caller)
     if (!settingsCopy['_softCap']) {
@@ -424,12 +383,12 @@ export function calculateRotationDamageCore(
         }
     }
 
-    // Check if rotation contains any melee abilities (for Vestments max adrenaline)
-    if (settingsCopy['_hasMeleeAbilities'] === undefined) {
-        settingsCopy['_hasMeleeAbilities'] = rotation.abilityBar.some(
-            (abilKey: string | null) => abilKey && abils[abilKey as ABILITIES]?.mainStyle === 'melee'
-        );
-    }
+    // Resolve starting equipment before applying its adrenaline cap.
+    const firstCast = rotation.abilityBar.find(key => key && abils[key]?.mainStyle !== 'defence');
+    style_specific_unification(settingsCopy, firstCast ? abils[firstCast].mainStyle : settingsCopy._combatStyle ?? 'ranged');
+
+    // Reconcile a saved starting value after changing maximum-adrenaline relics.
+    addAdrenaline(settingsCopy, 0, false);
 
     // Initialize familiar spec points and regen accumulator
     settingsCopy[SETTINGS.FAMILIAR_SPEC_POINTS] = 60;
@@ -460,6 +419,8 @@ export function calculateRotationDamageCore(
 
     return {
         regularDamage: totalDamage,
+        secondaryDamage: state.secondaryDamage ?? {},
+        secondaryHits: state.secondaryHits ?? [],
         poisonDamage: state.poisonDamage,
         familiarDamage: state.scrollDamage,
         dreadnipDamage: state.dreadnipDamage,
@@ -592,6 +553,31 @@ export function suggestNextAbility(
  * channelled hits, damage queues, timers, and extra actions.
  * When onTick is provided, it fires per-tick for UI state updates (e.g. copyStacks).
  */
+function prepareTick(state: RotationState, settings: any, rotation: RotationInput) {
+    if (state.preparedTick === state.tick) return;
+    state.preparedTick = state.tick;
+    const event = rotation.tickEvents?.[state.tick];
+    settings._rotationTick = state.tick;
+    settings._malachiResetOverride = event?.malachiReset;
+    applyAccuracyEvent(settings, event);
+    prepareAdrenalineTick(settings, state.tick, event);
+    if (event?.phase) {
+        clearPhaseStacks(settings, event.clearStacks);
+        if (event.clearStacks?.includes(SETTINGS.BIK_STACKS)) state.secondaryBik = {};
+        const pause = Math.max(0, Math.min(300, Math.floor(event.downtime ?? 0)));
+        state.pauseTicksRemaining = Math.max(state.pauseTicksRemaining, pause);
+        state.phaseTransitions.push({tick: state.tick, phaseIdx: state.currentPhaseIdx, label: event.phase, hp: 0, pause});
+    }
+    handleExtraActionsCore(settings, state.timers, state.tick, rotation);
+    addAdrenaline(settings, 0, false);
+    prepareReaperStacks(settings, state.tick);
+    recalcFulProbability(state, settings);
+    if (settings._chainPending && state.tick >= settings._chainPending.expires) {
+        settings._chainPending = null;
+        settings[SETTINGS.GREATER_CHAIN] = false;
+    }
+}
+
 function processCurrentTickCore(
     state: RotationState,
     settingsCopy: any,
@@ -599,29 +585,41 @@ function processCurrentTickCore(
     rotation: RotationInput,
     onTick?: OnTickCallback
 ) {
+    state.targetCounts = rotation.targetCounts;
+    prepareTick(state, settingsCopy, rotation);
     // Store nulled state at the start
     const isNulledTick = rotation.nulledTicks[state.tick] ?? false;
     settingsCopy.isNulledTick = isNulledTick;
 
-    // First process any stalled ability on this tick
+    // Stalling pays/generates adrenaline now; it never enters the hit pipeline.
     const stalledAbility = rotation.stalledAbilities[state.tick];
-    if (stalledAbility) {
+    if (stalledAbility && abils[stalledAbility] && !['channel', 'self cast', 'proc', 'perk'].includes(abils[stalledAbility].abilityClassification)) {
+        interruptCrystalChannel(settingsCopy);
         style_specific_unification(settingsCopy, abils[stalledAbility].mainStyle);
-        state.combatStyle = abils[stalledAbility].mainStyle;
-        const abil_duration = typeof abils[stalledAbility]['duration'] === 'number' ? abils[stalledAbility]['duration'] : 3;
+        addAdrenaline(settingsCopy, 0, false);
         settingsCopy['ability'] = stalledAbility;
-
-        if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) {
-            settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
-        }
-
+        on_stall(settingsCopy, stalledAbility, state.timers, true);
+        settingsCopy._pendingStall = stalledAbility;
+    }
+    const releasedAbility = rotation.releasedAbilities?.[state.tick];
+    if (releasedAbility && settingsCopy._pendingStall === releasedAbility) {
+        enterCombat(settingsCopy);
+        delete settingsCopy._pendingStall;
+        style_specific_unification(settingsCopy, abils[releasedAbility].mainStyle);
+    addAdrenaline(settingsCopy, 0, false);
+        state.combatStyle = abils[releasedAbility].mainStyle;
+        prepareChainCast(settingsCopy, releasedAbility, state.tick, targetCountAt(state.targetCounts, state.tick));
+        settingsCopy['ability'] = releasedAbility;
+        if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
         state.start_tick = state.tick;
-        const hit_tick = state.tick + state.hit_delay;
-        state.damageQueue[hit_tick] ??= [];
-        handleBuffs(settingsCopy, state.timers, stalledAbility);
-        if (stalledAbility in abils) {
-            processStalledAbility(state, settingsCopy, stalledAbility, hit_tick);
-        }
+        const hitTick = state.tick + state.hit_delay;
+        state.damageQueue[hitTick] ??= [];
+        applyActivationEffects(settingsCopy, releasedAbility, state.timers);
+        settingsCopy._salvoCastKey = releasedAbility;
+        settingsCopy._salvoCastBonus = settingsCopy[SETTINGS.CRIMSON_SALVO] ? 1 : (settingsCopy._salvoProbability ?? 0);
+        handleBuffs(settingsCopy, state.timers, releasedAbility);
+        processStalledAbility(state, settingsCopy, releasedAbility, hitTick);
+        finishMalachiCast(settingsCopy, releasedAbility, state.timers);
     }
 
     // Let callback set the next ability before we read it
@@ -635,6 +633,11 @@ function processCurrentTickCore(
         handleNullAbilityTickCore(state, settingsCopy, rotation, onTick);
         return;
     }
+
+    // A crystal started alongside a self-cast buff begins charging on the next tick.
+    if (settingsCopy._crystalStartedTick !== state.tick) interruptCrystalChannel(settingsCopy);
+    if (abils[abilityKey]?.abilityClassification !== 'self cast') enterCombat(settingsCopy);
+    delete settingsCopy._pendingStall; // A new cast replaces an unreleased ability.
 
     // Swap asphyxiate for Tumeken's variant if wearing 4+ pieces
     abilityKey = resolveTumekensAsphyxiate(abilityKey, settingsCopy);
@@ -657,7 +660,9 @@ function processCurrentTickCore(
     }
 
     const abil_duration = typeof abils[abilityKey]['duration'] === 'number' ? abils[abilityKey]['duration'] : 3;
-    state.tickMetadata[state.tick] = { resolvedAbility: abilityKey, duration: abil_duration };
+    state.tickMetadata[state.tick] = { resolvedAbility: abilityKey, duration: abil_duration,
+        // Timers include the current tick, which is decremented during processing.
+        cooldownRemaining: Math.max(0, (state.timers[COOLDOWN_PREFIX + abilityKey] ?? 0) - 1) };
     settingsCopy['ability'] = abilityKey;
 
     processAbilityCore(state, settingsCopy, abilityKey as ABILITIES, abil_duration, rotation, onTick);
@@ -685,13 +690,14 @@ function processTickOperations(
     // During boss phase pause (invulnerable): still tick down buffs/timers, but skip damage
     if (state.pauseTicksRemaining > 0) {
         state.pauseTicksRemaining--;
+        delete state.damageQueue[tickToProcess];
         handleTimers(state.timers, settingsCopy);
         onTick?.(state.tick, settingsCopy, state.timers);
         state.tick += 1;
         return;
     }
 
-    handleExtraActionsCore(settingsCopy, state.timers, state.tick, rotation);
+    prepareTick(state, settingsCopy, rotation);
     onTick?.(state.tick, settingsCopy, state.timers);
     recalcFulProbability(state, settingsCopy);
     handleTimers(state.timers, settingsCopy);
@@ -1099,11 +1105,12 @@ function processAbilityCore(
     onTick?: OnTickCallback
 ) {
     style_specific_unification(settingsCopy, abils[abilityKey].mainStyle);
+    addAdrenaline(settingsCopy, 0, false);
     rotationState.combatStyle = abils[abilityKey].mainStyle;
     settingsCopy['ability'] = abilityKey;
-    updateFulProbability(rotationState, settingsCopy);
 
     on_stall(settingsCopy, abilityKey, rotationState.timers);
+    prepareChainCast(settingsCopy, abilityKey, rotationState.tick, targetCountAt(rotationState.targetCounts, rotationState.tick));
     if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) {
         settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
     }
@@ -1112,6 +1119,8 @@ function processAbilityCore(
     const hit_tick = rotationState.tick + rotationState.hit_delay;
     rotationState.damageQueue[hit_tick] ??= [];
 
+    settingsCopy._salvoCastKey = abilityKey;
+    settingsCopy._salvoCastBonus = settingsCopy[SETTINGS.CRIMSON_SALVO] ? 1 : (settingsCopy._salvoProbability ?? 0);
     handleBuffs(settingsCopy, rotationState.timers, abilityKey);
 
     // Cooldowns are now tracked via timers in on_stall (damage_calc_new.ts)
@@ -1119,7 +1128,13 @@ function processAbilityCore(
     if (abilityKey in abils) {
         const classification = abils[abilityKey]?.abilityClassification;
         if (isChannelled(settingsCopy, abilityKey)) {
-            // Handled in processAbilityTicksCore
+            const wenAccuracy = settingsCopy[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settingsCopy[SETTINGS.ICY_PRECISION] > 0;
+            handleWenBuffConsumption(settingsCopy, rotationState.timers, abilityKey);
+            rotationState.channelBuffSnapshot = {
+                wenAccuracy,
+                wenDamage: settingsCopy[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settingsCopy[SETTINGS.ICY_PRECISION] > 0,
+                locate: settingsCopy[SETTINGS.LOCATE] === true && rotationState.timers[SETTINGS.LOCATE] > 0,
+            };
         } else if (classification === 'multihit') {
             processMultiHitAbility(rotationState, settingsCopy, abilityKey, hit_tick);
         } else if (classification === 'bleed' || classification === 'burn' || classification === 'dot') {
@@ -1135,6 +1150,7 @@ function processAbilityCore(
         delete settingsCopy['_pendingFlamebound'];
     }
 
+    finishMalachiCast(settingsCopy, abilityKey, rotationState.timers);
     processAbilityTicksCore(rotationState, settingsCopy, abilityKey, abil_duration, rotation, onTick);
 }
 
@@ -1158,11 +1174,12 @@ function processAbilityTicksCore(
 
     const end_tick = state.start_tick + abil_duration;
     for (let i = state.start_tick; i < end_tick; i++) {
+        prepareTick(state, settingsCopy, rotation);
         if (isChannel && hasHits) {
             processChannelledTickCore(state, settingsCopy, abilityKey, i, rota, rotation);
         }
         processTickOperations(i, state, settingsCopy, rotation, onTick);
-        if (rotation.abilityBar[i+1]) {
+        if (rotation.abilityBar[i+1] || rotation.stalledAbilities[i+1] || rotation.releasedAbilities?.[i+1]) {
             break;
         }
     }
@@ -1182,15 +1199,20 @@ function processChannelledTickCore(
     if (currentTick > state.start_tick && rotation.abilityBar[state.tick]) {
         return; // Cancel channel if new ability
     }
+    style_specific_unification(settingsCopy, abils[abilityKey].mainStyle);
+    addAdrenaline(settingsCopy, 0, false);
+    if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
     let hit_index = 1 + currentTick - state.start_tick;
     let dmgObjects: DamageObject[] = [];
 
+    // Only this channel inherits its cast buffs; expiry still affects new casts and procs.
+    settingsCopy._castBuffSnapshot = state.channelBuffSnapshot;
     if (hitSequence[hit_index].length > 0) {
         for (let hitKey of hitSequence[hit_index]) {
             let dmgObject = create_damage_object(settingsCopy, hitKey);
             let dmgObjs = on_cast(settingsCopy, dmgObject, state.timers, hitKey);
             dmgObjs.forEach(dmgObj => {
-                let o = on_hit(settingsCopy, dmgObj, state.timers, dmgObj.ability);
+                let o = hitTargets(state, settingsCopy, dmgObj, dmgObj.ability);
                 for (let hit of o) {
                     dmgObjects.push(hit);
                 }
@@ -1200,6 +1222,7 @@ function processChannelledTickCore(
             handleChannellers(settingsCopy, state.timers, hitKey);
         }
     }
+    delete settingsCopy._castBuffSnapshot;
     dmgObjects.forEach(dmgObject => {
         if (settingsCopy.isNulledTick) {
             dmgObject = zeroDamageObject(dmgObject);
@@ -1240,6 +1263,7 @@ function processStalledAbility(
 }
 
 function zeroDamageObject(dmgObject: DamageObject) {
+    (dmgObject as any)._nulled = true;
     // Zero out all damage values while preserving the object structure
     Object.values(dmgObject.distributions).forEach(distribution => {
         if (distribution) {
@@ -1264,7 +1288,7 @@ function processSingleHitAbility(
     dmgObjects.forEach(element => {
         let hitKey = element.ability;
         settingsCopy['ability'] = hitKey;
-        let namedDmgObjects = on_hit(settingsCopy, element, state.timers, hitKey);
+        let namedDmgObjects = hitTargets(state, settingsCopy, element, hitKey);
         namedDmgObjects.forEach(namedDmgObject => {
             if (settingsCopy.isNulledTick) {
                 namedDmgObject = zeroDamageObject(namedDmgObject);
@@ -1295,7 +1319,7 @@ function processMultiHitAbility(
         if (isSubHit) subHitIndex++;
 
         const targetTick = hit_tick + tickOffset;
-        let namedDmgObjects = on_hit(settingsCopy, element, state.timers, element.ability);
+        let namedDmgObjects = hitTargets(state, settingsCopy, element, element.ability);
         namedDmgObjects.forEach(namedDmgObject => {
             namedDmgObject = settingsCopy.isNulledTick ? zeroDamageObject(namedDmgObject) : namedDmgObject;
             state.damageQueue[targetTick] ??= [];
@@ -1318,7 +1342,7 @@ function processBleedAbility(
 
     let i = 0;
     dmgObjects.forEach(element => {
-        let hits = on_hit(settingsCopy, element, state.timers, element.ability);
+        let hits = hitTargets(state, settingsCopy, element, element.ability);
         hits.forEach(hit => {
             if (settingsCopy.isNulledTick) {
                 hit = zeroDamageObject(hit);
@@ -1356,7 +1380,7 @@ function updateBossHpPercent(state: RotationState, settingsCopy: any) {
  * If so, apply the next phase's stat overrides and set pause ticks.
  *
  * Currently applies: soft cap changes, pause ticks.
- * TODO: recalculate hit chance when defence/armour/affinities change at phase transitions.
+ * Automatic accuracy uses the current phase defence, armour and affinities.
  */
 /**
  * Returns the remaining damage budget before the current phase's HP cap.
@@ -1377,7 +1401,7 @@ function getPhaseDamageBudget(state: RotationState): number | null {
  * If so, apply the next phase's stat overrides and set pause ticks.
  *
  * Damage capping is handled upstream via getPhaseDamageBudget.
- * TODO: recalculate hit chance when defence/armour/affinities change at phase transitions.
+ * Automatic accuracy uses the current phase defence, armour and affinities.
  */
 function checkPhaseTransition(state: RotationState, settingsCopy: any) {
     if (!state.bossPhases || state.currentPhaseIdx >= state.bossPhases.length) return;
@@ -1410,6 +1434,7 @@ function checkPhaseTransition(state: RotationState, settingsCopy: any) {
     // Apply stat overrides from this phase
     if (currentPhase.stats) {
         const stats = currentPhase.stats;
+        settingsCopy._targetPhaseStats = {...settingsCopy._targetPhaseStats, ...stats};
         // Update soft cap (may be null to remove it, or a new value)
         if ('softCap' in stats) {
             settingsCopy['_softCap'] = stats.softCap ?? undefined;
@@ -1456,13 +1481,110 @@ function handleEssenceCorruptionStack(abilityKey: string, settings: Record<strin
  * @param state - The rotation state containing damage queue and tracking arrays
  * @param settingsCopy - The current game settings used for damage calculation
  */
+/** Cast once, then resolve each target's hit in order so player stacks/procs are shared. */
+function hitTargets(state: RotationState, settings: any, object: DamageObject, key: ABILITIES): DamageObject[] {
+    const weapon = [settings[SETTINGS.WEAPON], settings[SETTINGS.TH], settings[SETTINGS.MH], settings[SETTINGS.OH]].join('|');
+    if (settings[SETTINGS.LOCATE] && settings._locateWeapon !== weapon) {
+        settings[SETTINGS.LOCATE] = false;
+        state.timers[SETTINGS.LOCATE] = 0;
+    }
+    const ability = abils[key];
+    const excluded = isAreaAttack(key);
+    const locateAtCast = settings._castBuffSnapshot?.locate ?? (settings[SETTINGS.LOCATE] && state.timers[SETTINGS.LOCATE] > 0);
+    const eligible = locateAtCast
+        && ability.mainStyle === 'ranged' && ability.abilityClassification !== 'self cast'
+        && ability.abilityType !== 'proc' && !excluded;
+    const inRange = targetCountAt(state.targetCounts, state.tick);
+    const chain = ability.mainStyle === 'magic' && ability.abilityType !== 'proc' ? settings._chainCast : null;
+    const areaCap = key === ABILITIES.POWERSTAB ? 25
+        : [ABILITIES.METEOR_STRIKE, ABILITIES.SUNFALL_SLAM, ABILITIES.SWEEP, ABILITIES.SWEEP_HIT].includes(key) ? 9 : 0;
+    const count = chain?.targets ?? (areaCap ? Math.min(areaCap, inRange)
+        : eligible ? Math.min(6, inRange) : 1);
+    const results: DamageObject[] = [];
+    state.secondaryBik ??= {};
+    for (let target = 0; target < count; target++) {
+        const primaryBik = settings[SETTINGS.BIK_STACKS];
+        if (target) settings[SETTINGS.BIK_STACKS] = state.secondaryBik[target] ?? 0;
+        const previousDefer = settings._deferBolgProcs;
+        settings._deferBolgProcs = true;
+        const targetObject = structuredClone(object);
+        if (target > 0 && chain) {
+            for (const distribution of Object.values(targetObject.distributions)) if (distribution) {
+                distribution.minHit = Math.floor(distribution.minHit * chain.factor);
+                distribution.varHit = Math.floor(distribution.varHit * chain.factor);
+            }
+        }
+        const hits = on_hit(settings, targetObject, state.timers, key);
+        // Roll after calculating this hit: the triggering hit does not receive the buff.
+        rollFulHit(state, settings, key, object.likelihood);
+        settings._deferBolgProcs = previousDefer;
+        for (const hit of hits) {
+            (hit as any).targetIndex = target;
+            results.push(hit);
+        }
+        if (target) {
+            state.secondaryBik[target] = settings[SETTINGS.BIK_STACKS];
+            settings[SETTINGS.BIK_STACKS] = primaryBik;
+        }
+    }
+    if (key === ABILITIES.SUNFALL_SLAM) settings._lesserPurifyingUntil = state.tick + 50;
+    const castToken = `${state.start_tick}:${settings._castBuffSnapshot ? state.tick : 'cast'}`;
+    if (key !== ABILITIES.SUNFALL_SLAM && settings._lesserPurifyingUntil > state.tick
+        && ability.mainStyle === 'melee' && ability.onHitEffects && ability.abilityType !== 'proc'
+        && !['self cast', 'perk', 'proc'].includes(ability.abilityClassification)
+        && ![ABILITIES.LESSER_PURIFYING_LIGHT, ABILITIES.PURIFYING_LIGHT].includes(key)
+        && settings._lesserPurifyingCast !== castToken && inRange > 1) {
+        settings._lesserPurifyingCast = castToken;
+        const savedAbility = settings.ability;
+        for (let target = 1; target < Math.min(3, inRange); target++) {
+            const light = create_damage_object(settings, ABILITIES.LESSER_PURIFYING_LIGHT);
+            for (const cast of on_cast(settings, light, state.timers, ABILITIES.LESSER_PURIFYING_LIGHT)) {
+                for (const hit of on_hit(settings, cast, state.timers, ABILITIES.LESSER_PURIFYING_LIGHT)) {
+                    (hit as any).targetIndex = target;
+                    results.push(hit);
+                }
+            }
+        }
+        settings.ability = savedAbility;
+    }
+    return results;
+}
+
 function processQueuedDamage(tick: number, state: RotationState, settingsCopy: any) {
     if (!state.damageQueue[tick]) return;
 
     // Track whether a capped phase transitioned on this tick — all subsequent hits are nullified
     let cappedOnThisTick = false;
 
-    for (const namedDmgObject of state.damageQueue[tick]) {
+    const impactQueue = [...state.damageQueue[tick]];
+    for (let impactIndex = 0; impactIndex < impactQueue.length; impactIndex++) {
+        const namedDmgObject = impactQueue[impactIndex];
+        if ((namedDmgObject as any)._bolgImpact) {
+            if ((namedDmgObject as any)._nulled) continue;
+            const equippedStyle = settingsCopy._equippedWeaponStyle;
+            const equippedArmour = Object.fromEntries([SETTINGS.HELMET, SETTINGS.BODY, SETTINGS.LEGS, SETTINGS.BOOTS].map(key => [key, settingsCopy[key]]));
+            style_specific_unification(settingsCopy, 'ranged');
+            if (!settingsCopy[SETTINGS.USE_RAW_ABILITY_DAMAGE]) settingsCopy[SETTINGS.ABILITY_DAMAGE] = calc_base_ad(settingsCopy);
+            const target = namedDmgObject.targetIndex ?? 0;
+            const primaryBik = settingsCopy[SETTINGS.BIK_STACKS];
+            if (target) settingsCopy[SETTINGS.BIK_STACKS] = state.secondaryBik?.[target] ?? 0;
+            const hits = resolveBolgImpact(settingsCopy, namedDmgObject, state.timers);
+            rollFulHit(state, settingsCopy, ABILITIES.BOLG_PROC, namedDmgObject.likelihood);
+            settingsCopy._equippedWeaponStyle = equippedStyle;
+            Object.assign(settingsCopy, equippedArmour);
+            if (target) {
+                state.secondaryBik ??= {};
+                state.secondaryBik[target] = settingsCopy[SETTINGS.BIK_STACKS];
+                settingsCopy[SETTINGS.BIK_STACKS] = primaryBik;
+            }
+            for (const hit of hits) {
+                (hit as any).targetIndex = namedDmgObject.targetIndex ?? 0;
+
+            }
+            impactQueue.splice(impactIndex, 1, ...hits);
+            impactIndex--;
+            continue;
+        }
         settingsCopy['ability'] = namedDmgObject.ability;
         const scale = namedDmgObject.likelihood;
 
@@ -1470,12 +1592,28 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
         // when Roar of Awakening or Ode to Deceit equipped
         handleEssenceCorruptionStack(namedDmgObject.ability, settingsCopy);
 
+        const targetIndex = namedDmgObject.targetIndex ?? 0;
         const { results: damageObjects, delayed } = on_damage(settingsCopy, namedDmgObject);
+        // One stack per landed hit, weighted for mutually exclusive proc branches.
+        // Split Soul is derived damage, not another weapon hit.
+        if (!(namedDmgObject as any)._nulled && !cappedOnThisTick
+            && abils[namedDmgObject.ability]?.damageType !== 'split soul'
+            && damageObjects.some(hit => get_user_value(settingsCopy, hit) > 0)) {
+            gainReaperStack(settingsCopy, tick, scale);
+        }
         // Queue delayed hits (e.g. Split Soul) for the next tick
         for (const delayedObj of delayed) {
+            (delayedObj as any).targetIndex = targetIndex;
             (state.damageQueue[tick + 1] ??= []).push(delayedObj);
         }
         for (const dmgObj of damageObjects) {
+            if (targetIndex > 0) {
+                const damage = Math.floor(applySoftCap(get_user_value(settingsCopy, dmgObj), settingsCopy['_softCap']) * scale);
+                state.secondaryDamage ??= {};
+                state.secondaryDamage[targetIndex] = (state.secondaryDamage[targetIndex] ?? 0) + (Number.isFinite(damage) ? damage : 0);
+                (state.secondaryHits ??= []).push({tick, ability: namedDmgObject.ability, targetIndex, expected: Number.isFinite(damage) ? damage : 0});
+                continue; // Secondary targets do not consume the primary boss's HP or phase budget.
+            }
             const softCap = settingsCopy['_softCap'];
             let dmg = cappedOnThisTick ? 0 : applySoftCap(get_user_value(settingsCopy, dmgObj), softCap);
 
@@ -1621,6 +1759,7 @@ function processQueuedDamage(tick: number, state: RotationState, settingsCopy: a
  * @returns The expected poison damage for this hit
  */
 function calcPoisonDamagePerHit(hitScale: number, settingsCopy: any): number {
+    if (settingsCopy[SETTINGS.POISON_IMMUNE]) return 0;
     let poison_tier = Object.values(SETTINGS.POISON_VALUES).indexOf(settingsCopy[SETTINGS.POISON]);
     const cinders = settingsCopy[SETTINGS.GLOVES] === ARMOUR.CINDERBANE_GLOVES
     if (cinders) {
@@ -1638,7 +1777,7 @@ function calcPoisonDamagePerHit(hitScale: number, settingsCopy: any): number {
         basePoisonDmg = Math.floor(basePoisonDmg * (1 + 0.03 * bikStacks));
     }
 
-    return Math.floor(basePoisonDmg * hitScale);
+    return Math.floor(basePoisonDmg * hitScale * (1+.025*Math.max(0,Math.min(4,settingsCopy[SETTINGS.KWUARM] ?? 0))));
 }
 
 /*
@@ -1672,50 +1811,63 @@ function copyStacks(tick: number, settings: any, timers?: Record<string, number>
         rotationStore.buffs[buffTitle].buffTicks[tick] = settings[buffTitle];
     });
     delete settings['_channelBuffJustActivated'];
-    //Only calc indices on last tick
-    if (tick === uiStore.bar.size - 1) {
 
-    // Update buff idx values for UI display order and calculate active rows
-        let buffIndex = 0;
-        for (let key in rotationStore.buffs) {
-            if (Object.hasOwnProperty.call(rotationStore.buffs, key)) {
-                // Clear previous active rows
-                rotationStore.buffs[key].activeRows = [];
-
-                // Calculate which rows this buff is active on
-                for (let rowIndex = 0; rowIndex < rotationStore.buffs[key].buffTicks.length; rowIndex++) {
-                    const tickValue = rotationStore.buffs[key].buffTicks[rowIndex];
-                    if (tickValue && tickValue !== 'none') {
-                        rotationStore.buffs[key].activeRows.push(rowIndex);
-                    }
-                }
-
-                // Set idx based on whether buff is active anywhere
-                if (rotationStore.buffs[key].activeRows.length > 0) {
-                    rotationStore.buffs[key].idx = buffIndex;
-                    buffIndex++;
-                } else {
-                    rotationStore.buffs[key].idx = -1;
-                }
-            }
-        }
-        uiActions.updateBarLastIndex(buffIndex);
-    }
 }
 
 /** Process a single extra action entry — handles both new ExtraAction and legacy formats */
+function trackEquippedWeaponStyle(settings: any, slot: string, value: any) {
+    // Off-hand changes alone do not change the main-hand weapon's combat style.
+    const slots = [SETTINGS.TH, SETTINGS.MH, SETTINGS.MELEE_TH, SETTINGS.MELEE_MH,
+        SETTINGS.RANGED_TH, SETTINGS.RANGED_MH, SETTINGS.MAGIC_TH, SETTINGS.MAGIC_MH,
+        SETTINGS.NECRO_TH, SETTINGS.NECRO_MH];
+    if (!slots.includes(slot)) return;
+    const inferredStyle = slot.startsWith('melee') ? 'melee' : slot.startsWith('ranged') ? 'ranged'
+        : slot.startsWith('magic') ? 'magic' : slot.startsWith('necro') ? 'necromancy' : settings['_equippedWeaponStyle'];
+    settings['_equippedWeaponStyle'] = value && value !== 'none' ? (weapons[value]?.style && weapons[value].style !== 'hybrid' ? weapons[value].style : inferredStyle) : null;
+}
+
+function cancelLocateForWeaponSwap(settings: any, timers: Record<string, number>, slot: string, value: unknown) {
+    const weaponSlots = [SETTINGS.TH, SETTINGS.MH, SETTINGS.OH, SETTINGS.WEAPON,
+        SETTINGS.RANGED_TH, SETTINGS.RANGED_MH, SETTINGS.RANGED_OH, SETTINGS.WEAPON_TYPE_RANGED,
+        SETTINGS.MELEE_TH, SETTINGS.MELEE_MH, SETTINGS.MELEE_OH,
+        SETTINGS.MAGIC_TH, SETTINGS.MAGIC_MH, SETTINGS.MAGIC_OH,
+        SETTINGS.NECRO_MH, SETTINGS.NECRO_OH];
+    const mainHandChange = weaponSlots.includes(slot) && !String(slot).includes('off-hand') && settings[slot] !== value;
+    if (settings[SETTINGS.GRAVITATE_ACTIVE] && weaponSlots.includes(slot) && settings[slot] !== value) {
+        settings[SETTINGS.GRAVITATE_ACTIVE] = false; settings[SETTINGS.GRAVITATE] = 0; timers[SETTINGS.GRAVITATE_ACTIVE] = 0;
+    }
+    if (settings[SETTINGS.SPLIT_SOUL] && mainHandChange) {
+        settings[SETTINGS.SPLIT_SOUL] = false; timers[SETTINGS.SPLIT_SOUL] = 0;
+    }
+    if (settings[SETTINGS.LOCATE] && weaponSlots.includes(slot) && settings[slot] !== value) {
+        settings[SETTINGS.LOCATE] = false;
+        timers[SETTINGS.LOCATE] = 0;
+    }
+}
+
 function processExtraAction(element: any, settings: any, timers: Record<string, number>) {
     // New ExtraAction format
     if (isExtraAction(element)) {
         if (element.type === 'gear' && element.slot) {
+            trackEquippedWeaponStyle(settings, element.slot, element.value);
+            cancelLocateForWeaponSwap(settings, timers, element.slot, element.value);
             settings[element.slot] = element.value;
+            Object.assign(settings, weaponSelectionUpdates(element.slot, element.value));
+            for (const slot of [SETTINGS.HELMET, SETTINGS.BODY, SETTINGS.LEGS, SETTINGS.BOOTS]) {
+                if (element.slot === slot || element.slot.endsWith(' ' + slot)) settings[slot] = element.value;
+            }
+            addAdrenaline(settings, 0, false);
             // Ammo/pocket swaps: also update the generic key so the calc engine sees it
             if (element.slot.includes('ammo')) settings[SETTINGS.AMMO] = element.value;
             if (element.slot.includes('pocket')) settings[SETTINGS.POCKET] = element.value;
-            // Update gear perks if the extra action carries inline perks
-            if (element.perks?.length && settings['_gearPerks']) {
-                settings['_gearPerks'][element.value] = element.perks;
+            if (element.slot.includes('necklace')) settings[SETTINGS.NECKLACE] = element.value;
+            settings._gearInstances ??= {};
+            settings._gearInstances[element.slot] = {itemKey: element.value, instanceId: element.instanceId,
+                instanceIndex: element.instanceIndex ?? 0, perks: element.perks ?? [], label: element.label};
+            for (const key of Object.keys(weaponSelectionUpdates(element.slot, element.value))) {
+                if (key.endsWith('weapon')) settings._gearInstances[key] = {...settings._gearInstances[element.slot]};
             }
+
         } else {
             // Ability/prayer/consumable/spell — process by value
             processExtraActionByValue(element.value, settings, timers);
@@ -1733,9 +1885,12 @@ function processExtraAction(element: any, settings: any, timers: Record<string, 
     if (typeof element === 'object' && element.title) {
         const slot = getSettingsKeyForItem(element.title) || gearSwaps[element.title];
         if (slot) {
+            trackEquippedWeaponStyle(settings, slot, element.title);
+            cancelLocateForWeaponSwap(settings, timers, slot, element.title);
             settings[slot] = element.title;
             if (slot.includes('ammo')) settings[SETTINGS.AMMO] = element.title;
             if (slot.includes('pocket')) settings[SETTINGS.POCKET] = element.title;
+            if (slot.includes('necklace')) settings[SETTINGS.NECKLACE] = element.title;
         }
         return;
     }
@@ -1743,7 +1898,17 @@ function processExtraAction(element: any, settings: any, timers: Record<string, 
 
 /** Process an extra action by its string value key */
 function processExtraActionByValue(value: string, settings: any, timers: Record<string, number>) {
-    if (value === CONSUMABLES.ADRENALINE_RENEWAL) {
+    if (value === QUIVER_SLOT_1 || value === QUIVER_SLOT_2) {
+        selectQuiverSlot(settings, value === QUIVER_SLOT_2 ? 1 : 0);
+    }
+    else if (['divine rage on','divine rage off','eclipsed soul on','eclipsed soul off'].includes(value)) {
+        const key = value.startsWith('divine') ? SETTINGS.DIVINE_RAGE : SETTINGS.ECLIPSED_SOUL;
+        settings[key] = value.endsWith(' on');
+    }
+    else if (value === CONSUMABLES.ADRENALINE_CRYSTAL) {
+        startCrystalChannel(settings, settings._rotationTick);
+    }
+    else if (value === CONSUMABLES.ADRENALINE_RENEWAL) {
         timers[value] = 10;
     }
     else if (value === CONSUMABLES.SPIRITUAL_PRAYER) {
@@ -1753,17 +1918,14 @@ function processExtraActionByValue(value: string, settings: any, timers: Record<
         const amount = parseInt(value.split(" ")[1]);
         settings[SETTINGS.ADRENALINE] += amount;
     }
-    else if (value === ABILITIES.UNDEAD_SLAYER_ABILITY) {
-            settings[SETTINGS.UNDEAD_SLAYER_ABILITY] = true;
-            timers[SETTINGS.UNDEAD_SLAYER_ABILITY] = 17;
+    else if ([ABILITIES.UNDEAD_SLAYER_ABILITY, ABILITIES.DRAGON_SLAYER_ABILITY,
+        ABILITIES.DEMON_SLAYER_ABILITY, ABILITIES.VAMPYRE_SLAYER_ABILITY].includes(value as ABILITIES)) {
+        if (timers[COOLDOWN_PREFIX + value] > 0) return;
+        settings[value] = true;
+        timers[value] = 17;
     }
-    else if (value === ABILITIES.DRAGON_SLAYER_ABILITY) {
-        settings[SETTINGS.DRAGON_SLAYER_ABILITY] = true;
-        timers[SETTINGS.DRAGON_SLAYER_ABILITY] = 17;
-    }
-    else if (value === ABILITIES.DEMON_SLAYER_ABILITY) {
-        settings[SETTINGS.DEMON_SLAYER_ABILITY] = true;
-        timers[SETTINGS.DEMON_SLAYER_ABILITY] = 17;
+    else if (value === 'sanguine offering') {
+        delete timers[COOLDOWN_PREFIX + ABILITIES.RUNIC_CHARGE];
     }
     else if (value === ABILITIES.RUNIC_CHARGE) {
         settings[SETTINGS.ANIMA_CHARGED] = true;
@@ -1787,20 +1949,23 @@ function processExtraActionByValue(value: string, settings: any, timers: Record<
 }
 
 function handleTimers(timers: Record<string, number>, settings: any) {
+    tickProcProbabilities(settings);
     // Vestments of Havoc: 0.5% adrenaline per tick while regen is active
     if (settings[SETTINGS.VESTMENTS_REGEN] === true && timers[SETTINGS.VESTMENTS_REGEN] > 0) {
         addAdrenaline(settings, 0.5);
     }
 
     // Meteor Strike buff: 4.5% adrenaline per tick while active
-    if (settings[SETTINGS.METEOR_STRIKE_BUFF] === true && timers[SETTINGS.METEOR_STRIKE_BUFF] > 0) {
-        addAdrenaline(settings, 4.5);
+    if (settings[SETTINGS.METEOR_STRIKE_BUFF] === true && timers[SETTINGS.METEOR_STRIKE_BUFF] > 0
+        && settings['_equippedWeaponStyle'] === 'melee') {
+        addAdrenaline(settings, 4.5, false);
     }
 
     if (Object.keys(timers).length > 0) {
         for (let key in timers) {
             timers[key] -= 1;
             if (timers[key] <= 0) {
+                if (key === SETTINGS.GRAVITATE_ACTIVE) settings[SETTINGS.GRAVITATE] = 0;
                 if (key === '_glacial_embrace_decay') {
                     settings[SETTINGS.GLACIAL_EMBRACE] = 0;
                     delete timers[key];

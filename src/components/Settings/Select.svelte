@@ -19,6 +19,7 @@
             ${warning ? 'border-red-500' : 'border-slate-600'}
         `}
         id={setting.key}
+        aria-label={setting.label}
         bind:value={setting.value}
         title={warning || ''}
         {onchange}

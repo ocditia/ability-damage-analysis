@@ -1,3 +1,4 @@
+import { getEquipment } from '$lib/data/equipment';
 /**
  * Additive damage boost effects
  * These are flat percentage boosts applied during the on_hit phase
@@ -19,6 +20,9 @@ import { calculateVoidBoost } from './equipment_effects';
 export function calculateAdditiveBoost(ctx: EffectContext): number {
     const { settings, abilityKey } = ctx;
     let boost = 0;
+    const targetTier = {'mourner':1, 'shadow':2, 'elf':3, 'dark beast':4}[settings[SETTINGS.DIARY_TARGET]];
+    if (targetTier && Number(settings[SETTINGS.TIRANNWN_DIARY_TIER]) >= targetTier) boost += .05;
+
 
     // Stone of Jas bonus
     boost += settings[SETTINGS.STONE_OF_JAS] / 100;
@@ -152,6 +156,7 @@ export function calculateGuardhouseBoost(settings: Record<string, any>): number 
 export function calculatePvEBoost(ctx: EffectContext): number {
     const { settings, abilityKey } = ctx;
     let boost = 10000;
+    if (settings[SETTINGS.DIARY_TARGET] === 'wild dog' && getEquipment(settings[SETTINGS.GLOVES])?.name === 'Karamja gloves 4') boost *= 2;
 
     // Slayer helm
     boost = Math.floor(boost * calculateSlayerHelmBoost(settings));

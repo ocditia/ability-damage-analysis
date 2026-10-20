@@ -6,7 +6,7 @@
 
 import { armour } from '$lib/data/armour'
 import { weapons } from '$lib/data/weapons'
-import { coerceEquipmentValue } from '$lib/data/equipment';
+import { coerceEquipmentValue, equipmentMechanicId } from '$lib/data/equipment';
 import { GearSlots } from './gear';
 import type { EquipmentStyle } from '../types';
 
@@ -188,7 +188,7 @@ export function countSetPieces(
     const pieceSet = new Set(setPieces.map((piece) => coerceEquipmentValue(piece)));
     let count = 0;
     for (const key of GEAR_SETTINGS_KEYS) {
-        const value = coerceEquipmentValue(settings[key], key);
+        const value = equipmentMechanicId(coerceEquipmentValue(settings[key], key));
         if (pieceSet.has(value)) count++;
     }
     return count;

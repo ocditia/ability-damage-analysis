@@ -1,15 +1,18 @@
 <script>
+    import TargetAccuracy from '$components/Settings/TargetAccuracy.svelte';
+    import RangedAmmoEffects from '$components/Settings/RangedAmmoEffects.svelte';
     import { renderComponent } from '@tanstack/svelte-table';
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
-    import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
+    import { createDamageTableClient } from '$lib/calc/damage-table-client';
+    import { onMount, onDestroy } from 'svelte';
     import { ABILITIES, abils } from '$lib/data/abilities';
 
     const excludedAbilities = new Set([ABILITIES.DEATHS_SWIFTNESS, ABILITIES.GREATER_DEATHS_SWIFTNESS]);
 
     const abilities = Object.fromEntries(
         Object.entries(abils).filter(([key, a]) =>
-            a.title && a.mainStyle === 'ranged' &&
+            a.title && !a.parent && a.mainStyle === 'ranged' &&
             a.abilityClassification !== 'conjure' &&
             a.abilityClassification !== 'self cast' &&
             !excludedAbilities.has(key) &&
@@ -113,40 +116,23 @@
         if (settings) saveSettings();
     });
 
-    const updateDamages = () => {
-        const adaptedSettings = Object.fromEntries(
-            Object.entries(settings).map(([key, value]) => [key, value.value])
-        );
-
-        damages = damages.map(ability => {
-            adaptedSettings['ability'] = ability.key;
-
-            const regular = calculateSingleAbilityDamage(adaptedSettings, {
-                ability: ability.key
-            });
-            const ss = calculateSingleAbilityDamage(adaptedSettings, {
-                ability: ability.key,
-                buffs: { splitSoul: true }
-            });
-            const swift = calculateSingleAbilityDamage(adaptedSettings, {
-                ability: ability.key,
-                buffs: { deathSwiftness: true }
-            });
-            const ssSwift = calculateSingleAbilityDamage(adaptedSettings, {
-                ability: ability.key,
-                buffs: { splitSoul: true, deathSwiftness: true }
-            });
-
-            ability.regular = Math.round(regular.expected);
-            ability.ss = Math.round(ss.expected);
-            ability.swift = Math.round(swift.expected);
-            ability.ssSwift = Math.round(ssSwift.expected);
-
-            return ability;
-        })
+    let visibleAbilityKeys = $state(damages.filter(row => row.common !== false).map(row => row.key));
+    function visibleAbilitiesChanged(keys) {
+        if (JSON.stringify(keys) === JSON.stringify(visibleAbilityKeys)) return;
+        visibleAbilityKeys = keys; updateDamages();
     }
-
-    updateDamages()
+    let calculating = $state(false);
+    let calculationError = $state('');
+    const calculator = createDamageTableClient(
+        rows => { const results = new Map(rows.map(row => [row.key, row])); damages = damages.map(row => ({...row, ...results.get(row.key)})); },
+        (busy, error) => { calculating = busy; calculationError = error; }
+    );
+    const updateDamages = () => calculator.update(
+        Object.fromEntries(Object.entries(settings).map(([key, value]) => [key, value.value])),
+        visibleAbilityKeys, {regular:{}, ss:{splitSoul:true}, swift:{deathSwiftness:true}, ssSwift:{deathSwiftness:true,splitSoul:true}}
+    );
+    onMount(updateDamages);
+    onDestroy(() => calculator.dispose());
 
     const sortAbilities = (rowA, rowB) => {
         const nameA = rowA.original.abilityInfo.title;
@@ -207,7 +193,8 @@
                 <div class="card card-ranged">
                     <h1 class="main-header mb-6 ml-3">Damage Values</h1>
                     <div class="table-container">
-                        <AbilityDamageTable data={damages} columns={columns} style="ranged" />
+                        <p class="calculation-status" role="status">{calculating ? "Updating damage..." : calculationError}</p>
+                <AbilityDamageTable onVisibleKeysChange={visibleAbilitiesChanged} data={damages} columns={columns} style="ranged" />
                     </div>
                 </div>
             </div>
@@ -328,14 +315,8 @@
                                     onchange={() => updateDamages()}
                                     img="/rs-rot/effect_icons/death.png"
                                 />
-                                <Number
-                                    bind:setting={settings[SETTINGS.HIT_CHANCE]}
-                                    onchange={() => updateDamages()}
-                                    img="/rs-rot/settings_icons/Zero_weakness_icon.png"
-                                    step="1"
-                                    max="100"
-                                    min="0"
-                                />
+                                <TargetAccuracy {settings} onchange={updateDamages} style="ranged" />
+                                <RangedAmmoEffects {settings} onchange={updateDamages} />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.HITCAP]}
                                     onchange={() => updateDamages()}
@@ -602,3 +583,5 @@
         </section>
     </div>
 </div>
+
+<style>.calculation-status{min-height:18px;color:#b6cbd6;font-size:12px;margin:4px 0}</style>

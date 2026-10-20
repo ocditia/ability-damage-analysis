@@ -62,7 +62,7 @@ def getEquipmentData():
                 f".select({fields_csv})"
                 f".limit(500).offset({offset})"
                 f".where('infobox_bonuses.equipment_slot', '!=', bucket.Null())"
-                f".where('infobox_bonuses.is_cosmetic_recolour', '!=', true)"
+
                 #f".where(bucket.Not('Category:Recurring content'))"
                 #".where(bucket.Not({'infobox_item.location_restriction', '!=', bucket.Null()}))"
                 f".orderBy('page_name_sub', 'asc').run()"
@@ -70,14 +70,14 @@ def getEquipmentData():
         }
 
         time.sleep(0.2)
-        r = s.get(API_BASE, params=query)
+        r = s.get(API_BASE, params=query, timeout=60)
+        r.raise_for_status()
         #print(r.url)
 
         data = r.json()
 
         if 'bucket' not in data:
-            # No results?
-            break
+            raise RuntimeError(f'Wiki query failed: {data}')
 
         equipment = equipment + data['bucket']
 
@@ -107,14 +107,14 @@ def getEquipmentData():
         }
 
         time.sleep(0.2)
-        r = s.get(API_BASE, params=query)
+        r = s.get(API_BASE, params=query, timeout=60)
+        r.raise_for_status()
         #print(r.url)
 
         data = r.json()
 
         if 'bucket' not in data:
-            # No results?
-            break
+            raise RuntimeError(f'Wiki query failed: {data}')
 
         for val in data['bucket']:
             pn = val['page_name']
@@ -157,7 +157,11 @@ def format_equipment_output(records):
     for item in records:
         item_id = first_id(item)
         if item_id in by_id:
-            continue
+            # Malachi's normal and Invention Masterwork forms share item IDs.
+            # Keep the tier-95 base here; tier-100 copies live in equipment_synthetic.json.
+            malachi_ids = {64191, 64193, 64195, 64197}
+            if item_id not in malachi_ids or float(item['bonuses'].get('tier') or 0) >= float(by_id[item_id]['bonuses'].get('tier') or 0):
+                continue
         by_id[item_id] = {
             **item,
             'id': item_id,
@@ -172,6 +176,17 @@ def format_equipment_output(records):
 def main():
     # Grab the equipment info using Bucket
     wiki_data, item_data = getEquipmentData()
+    if not wiki_data:
+        raise RuntimeError('Wiki returned no equipment; existing catalogue was not changed')
+    augmentable = set()
+    params = {'action': 'query', 'list': 'categorymembers', 'cmtitle': 'Category:Augmentable items', 'cmlimit': 500, 'format': 'json'}
+    while True:
+        response = s.get(API_BASE, params=params, timeout=30)
+        response.raise_for_status()
+        result = response.json()
+        augmentable.update(row['title'].casefold() for row in result['query']['categorymembers'])
+        if 'continue' not in result: break
+        params.update(result['continue'])
 
     # Use an object rather than an array, so that we can't have duplicate items with the same page_name_sub
     data = {}
@@ -197,8 +212,6 @@ def main():
         if itemname_sub in data:
             continue
 
-        if itemname.startswith('Augmented'):
-            continue
 
         if itemname in ITEMS_TO_SKIP:
             continue
@@ -238,6 +251,7 @@ def main():
             'name': itemname,
             'id': item_ids,
             'version': v.get('infobox_item.version_anchor', ''),
+            'augmentable': itemname.casefold() in augmentable or itemname.startswith('Augmented '),
             'image': img,
             'bonuses': {
                 'class': bonuses.get('class', ''),
@@ -264,16 +278,6 @@ def main():
         for tv in ['tier_damage', 'tier_accuracy', 'tier_armour', 'tier_armour_damage']:
             if bonuses.get(tv) is not None:
                 equipment['bonuses'][tv] = bonuses.get(tv)
-        is_cosmetic = True
-        for bon in BONUS_PARAMS:
-            is_cosmetic &= equipment['bonuses'].get(bon) == 0
-        if is_cosmetic:
-            continue
-        if equipment['bonuses']['slot'] in TIER_SLOTS:
-            t = equipment['bonuses'].get('tier')
-            if (type(t) == int or type(t) == float) and t < 70:
-                continue
-
         # Set the current equipment item to the calc's equipment list
         data[itemname_sub] = equipment
 
@@ -289,7 +293,7 @@ def main():
     equipment_output = format_equipment_output(new_data)
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with open(OUT_PATH, 'w') as f:
+    with open(OUT_PATH, 'w', encoding='utf-8') as f:
         print('Saving to JSON at file: ' + str(OUT_PATH))
         json.dump(equipment_output, f, ensure_ascii=False, indent=2)
         f.write('\n')

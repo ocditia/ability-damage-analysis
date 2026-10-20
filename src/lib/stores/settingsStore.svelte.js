@@ -14,7 +14,8 @@ export function initializeSettings() {
 
     let storedSettings = {};
     if (typeof localStorage !== 'undefined') {
-        storedSettings = JSON.parse(localStorage.getItem('rotation_settings')) || {};
+        try { storedSettings = JSON.parse(localStorage.getItem('rotation_settings')) || {}; }
+        catch { storedSettings = {}; }
     }
 
     settingsStore.settings =
@@ -28,6 +29,7 @@ export function initializeSettings() {
                 }
             ])
         );
+    settingsStore.settings._gearInstances = {value: storedSettings._gearInstances?.value ?? {}};
     migrateEquipmentSettings(settingsStore.settings);
     settingsStore.settings[SETTINGS.INSTABILITY].value = false;
     settingsStore.settings[SETTINGS.BALANCE_BY_FORCE].value = false;
@@ -87,6 +89,7 @@ export const settingsActions = {
                 { ...value, key: key, value: coerceEquipmentValue(value.default, key) }
             ])
         );
-        migrateEquipmentSettings(settingsStore.settings);
+        settingsStore.settings._gearInstances = {value: {}};
+    migrateEquipmentSettings(settingsStore.settings);
     }
 };

@@ -339,7 +339,7 @@ for (const [alias, key] of PVME_ALIASES) {
  * Convert an ability key to its pvme emoji name.
  * Falls back to removing spaces and apostrophes from the key.
  */
-function toPvmeName(abilityKey) {
+export function toPvmeName(abilityKey) {
     if (!abilityKey) return null;
     if (KEY_TO_PVME[abilityKey]) return KEY_TO_PVME[abilityKey];
     // Auto-derive: remove spaces and apostrophes
@@ -350,7 +350,7 @@ function toPvmeName(abilityKey) {
  * Convert a pvme emoji name to our ability key.
  * Returns null if no match found.
  */
-function fromPvmeName(pvmeName) {
+export function fromPvmeName(pvmeName) {
     if (!pvmeName) return null;
     const lower = pvmeName.toLowerCase().trim();
     if (PVME_TO_KEY[lower]) return PVME_TO_KEY[lower];
@@ -374,9 +374,12 @@ export function exportToPvme(abilityBar, options = {}) {
 
     for (let i = 0; i < abilityBar.length; i++) {
         const key = abilityBar[i];
-        if (!key && skipEmpty) continue;
+        const stalled = options.stalledAbilities?.[i];
+        const released = options.releasedAbilities?.[i];
+        if (!key && !stalled && !released && skipEmpty) continue;
 
-        const name = key ? toPvmeName(key) : '\u00b7';
+        const events = [stalled && 's ' + toPvmeName(stalled), released && 'r ' + toPvmeName(released), key && toPvmeName(key)].filter(Boolean);
+        const name = events.length ? events.join(' + ') : '\u00b7';
         parts.push(name);
         lineCount++;
 

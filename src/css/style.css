@@ -1,6 +1,16 @@
 /* Import color variables */
 @import './colors.css';
 
+select {
+    color-scheme: dark;
+}
+
+select option,
+select optgroup {
+    background-color: #171d21;
+    color: #b2dbee;
+}
+
 body {
     font-family: Roboto, sans-serif;
     --tw-text-opacity: 1;
@@ -304,3 +314,11 @@ table {
         transform: translateY(0);
     }
 }
+
+/* Shared dark scrollbars for the page, picker and tick inspector. */
+* { scrollbar-width: thin; scrollbar-color: #58646b #10181d; }
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: #10181d; }
+::-webkit-scrollbar-thumb { background: #58646b; border: 2px solid #10181d; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #9b916f; }
+::-webkit-scrollbar-corner { background: #10181d; }

@@ -180,7 +180,7 @@ export const ownedItemsActions = {
     addGearInstance(itemKey, perks = [], label = undefined) {
         itemKey = coerceEquipmentValue(itemKey);
         const existing = ownedItemsStore.ownedGear.get(itemKey) || [];
-        const updated = [...existing, { itemKey, perks: [...perks], label }];
+        const updated = [...existing, { itemKey, instanceId: crypto.randomUUID(), perks: [...perks], label: label ?? `Copy ${existing.length + 1}` }];
         const newMap = new Map(ownedItemsStore.ownedGear);
         newMap.set(itemKey, updated);
         ownedItemsStore.ownedGear = newMap;

@@ -1,1 +1,4 @@
 @import 'tailwindcss';
+
+/* Image fingerprints and PVME dictionaries are data, not class names. */
+@source not "../../static/rotation-import";

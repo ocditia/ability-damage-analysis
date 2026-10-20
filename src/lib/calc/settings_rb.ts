@@ -51,6 +51,13 @@ const SETTINGS = {
         REGULAR: 'necromancy potion'
     },
     HIT_CHANCE: 'hit chance',
+    AUTO_ACCURACY: 'automatic accuracy',
+    ACCURACY_MULTIPLIER: 'accuracy multiplier',
+    AFFINITY_BONUS: 'affinity bonus',
+    REAPER_STACKS: 'reaper necklace stacks',
+    TARGET_DEFENCE_DRAIN: 'target defence drain',
+    GHRAZI_DISTANCE: 'ghrazi distance',
+    TARGET_ARMOUR_MULTIPLIER: 'target armour multiplier',
     REAPER_CREW: 'reaper crew',
 
     //Prayers
@@ -149,6 +156,12 @@ const SETTINGS = {
         RIPPER_DEMON: 'ripper demon',
         KALGERION_DEMON: 'kalgerion demon',
         STEEL_TITAN: 'steel titan',
+        BLOOD_NIHIL: 'blood nihil',
+        SHADOW_NIHIL: 'shadow nihil',
+        SMOKE_NIHIL: 'smoke nihil',
+        ICE_NIHIL: 'ice nihil',
+        TALON_BEAST: 'talon beast',
+        SMOKE_DEVIL: 'smoke devil',
     },
     FAMILIAR_ACCURACY: 'familiar accuracy',
     KALG_SPEC: 'kalg spec',
@@ -509,6 +522,7 @@ const SETTINGS = {
     PERFECT_EQUILIBRIUM_STACKS: 'perfect equilibrium stacks',
     BLOODLUST_STACKS: 'bloodlust stacks',
     BALANCE_BY_FORCE: 'balance by force',
+    LOCATE: 'locate',
     TARGET_SIZE: 'target size',
     PRIMORDIAL_ICE: 'primordial ice',
     FROSTBLADES: 'frostblades',
@@ -567,6 +581,9 @@ const SETTINGS = {
     CAP_ADRENALINE: 'cap adrenaline',
     CRIT_BUFF: 'crit buff',
     VIGOUR: 'vigour',
+    PERSISTENT_RAGE: 'persistent rage',
+    OUT_OF_COMBAT: 'out of combat',
+    WAR_BLESSING_4: 'wars blessing 4',
     FURY_OF_THE_SMALL: 'fots',
     HEIGHTENED_SENSES: 'heightened senses',
     CONSERVATION_OF_ENERGY: 'coe',
@@ -588,6 +605,18 @@ const SETTINGS = {
         ALL: 'all',
     },
     QUIVER: 'quiver',
+    PERNIX_QUIVERS: 'pernix quiver loadouts',
+    POISON_IMMUNE: 'poison immune',
+    KWUARM: 'kwuarm potency',
+    DARK_BURN: 'dark burn damage',
+    TARGET_MAGIC_LEVEL: 'target magic level',
+    GRAVITATE_ACTIVE: 'gravitate active',
+    RANGED_CAPE_PERK: 'ranged cape perk',
+    SEERS_ELITE: 'seers elite',
+    DRAGONFIRE_IMMUNE: 'dragonfire immune',
+    BOLT_TARGET_WEAKNESS: 'bolt target weakness',
+    TIRANNWN_DIARY_TIER: 'tirannwn diary tier',
+    DIARY_TARGET: 'diary target',
     DAMAGE_QUALIFIER: 'damage qualifier',
     DAMAGE_QUALIFIER_VALUES: {
         TOTAL: 'total',
@@ -609,7 +638,7 @@ const SETTINGS = {
         TH: 'two hand',
     },
 
-    ENERGISING: 'energising',
+    ENERGISING: PERKS.ENERGISING,
     ULTIMATUMS: PERKS.ULTIMATUMS,
     BLAST_INFUSED: 'blast infused',
     GCONC_UNLOCK: 'gconc unlock',
@@ -621,16 +650,16 @@ const SETTINGS = {
 
 const settingsConfig = {
     [SETTINGS.MODE]: {
-        label: 'Mode',
+        label: 'Damage estimate',
         default: SETTINGS.MODE_VALUES.MEAN,
         options: [
-            { text: 'Mean', value: SETTINGS.MODE_VALUES.MEAN },
-            { text: 'Mean no crit', value: SETTINGS.MODE_VALUES.MEAN_NO_CRIT },
-            { text: 'Mean crit', value: SETTINGS.MODE_VALUES.MEAN_CRIT },
-            { text: 'Min no crit', value: SETTINGS.MODE_VALUES.MIN_NO_CRIT },
-            { text: 'Min crit', value: SETTINGS.MODE_VALUES.MIN_CRIT },
-            { text: 'Max no crit', value: SETTINGS.MODE_VALUES.MAX_NO_CRIT },
-            { text: 'Max crit', value: SETTINGS.MODE_VALUES.MAX_CRIT }
+            { text: 'Average (with crit chance)', value: SETTINGS.MODE_VALUES.MEAN },
+            { text: 'Average non-critical hit', value: SETTINGS.MODE_VALUES.MEAN_NO_CRIT },
+            { text: 'Average critical hit', value: SETTINGS.MODE_VALUES.MEAN_CRIT },
+            { text: 'Minimum non-critical hit', value: SETTINGS.MODE_VALUES.MIN_NO_CRIT },
+            { text: 'Minimum critical hit', value: SETTINGS.MODE_VALUES.MIN_CRIT },
+            { text: 'Maximum non-critical hit', value: SETTINGS.MODE_VALUES.MAX_NO_CRIT },
+            { text: 'Maximum critical hit', value: SETTINGS.MODE_VALUES.MAX_CRIT }
         ]
     },
     [SETTINGS.CALC_TYPE]: {
@@ -684,6 +713,13 @@ const settingsConfig = {
             { text: 'Regular', value: SETTINGS.POTION_VALUES.REGULAR }
         ]
     },
+    [SETTINGS.AUTO_ACCURACY]: { label: 'Calculate from target', default: false },
+    [SETTINGS.ACCURACY_MULTIPLIER]: { label: 'Additional accuracy multiplier', default: 1 },
+    [SETTINGS.REAPER_STACKS]: { label: 'Reaper necklace stacks', default: 0 },
+    [SETTINGS.AFFINITY_BONUS]: { label: 'Affinity bonus', default: 0 },
+    [SETTINGS.TARGET_DEFENCE_DRAIN]: { label: 'Defence levels drained', default: 0 },
+    [SETTINGS.GHRAZI_DISTANCE]: { label: 'Distance between knights (tiles)', default: 3 },
+    [SETTINGS.TARGET_ARMOUR_MULTIPLIER]: { label: 'Target armour multiplier', default: 1 },
     [SETTINGS.HIT_CHANCE]: {
         label: 'Hit chance',
         default: 100
@@ -896,7 +932,13 @@ const settingsConfig = {
             { text: 'None', value: SETTINGS.FAMILIAR_VALUES.NONE },
             { text: 'Ripper demon', value: SETTINGS.FAMILIAR_VALUES.RIPPER_DEMON },
             { text: 'Kalgerion demon', value: SETTINGS.FAMILIAR_VALUES.KALGERION_DEMON },
-            { text: 'Steel titan', value: SETTINGS.FAMILIAR_VALUES.STEEL_TITAN }
+            { text: 'Steel titan', value: SETTINGS.FAMILIAR_VALUES.STEEL_TITAN },
+            { text: 'Blood nihil (Melee accuracy)', value: SETTINGS.FAMILIAR_VALUES.BLOOD_NIHIL },
+            { text: 'Shadow nihil (Ranged accuracy)', value: SETTINGS.FAMILIAR_VALUES.SHADOW_NIHIL },
+            { text: 'Smoke nihil (Magic accuracy)', value: SETTINGS.FAMILIAR_VALUES.SMOKE_NIHIL },
+            { text: 'Ice nihil (Necromancy accuracy)', value: SETTINGS.FAMILIAR_VALUES.ICE_NIHIL },
+            { text: 'Talon beast', value: SETTINGS.FAMILIAR_VALUES.TALON_BEAST },
+            { text: 'Smoke devil', value: SETTINGS.FAMILIAR_VALUES.SMOKE_DEVIL }
         ]
     },
     [SETTINGS.FAMILIAR_ACCURACY]: {
@@ -2290,6 +2332,9 @@ const settingsConfig = {
         label: 'Vigour Passive',
         default: true
     },
+    [SETTINGS.PERSISTENT_RAGE]: {label: 'Persistent Rage', default: false},
+    [SETTINGS.OUT_OF_COMBAT]: {label: 'Start outside combat', default: false},
+    [SETTINGS.WAR_BLESSING_4]: {label: "War's Blessing 4", default: false},
     [SETTINGS.FURY_OF_THE_SMALL]: {
         label: 'Fury of the Small',
         default: true
@@ -2335,8 +2380,20 @@ const settingsConfig = {
         label: 'Gear filter',
         default: SETTINGS.GEAR_FILTER_VALUES.POPULAR,
     },
+    [SETTINGS.POISON_IMMUNE]: {label:'Target immune to poison',default:false},
+    [SETTINGS.KWUARM]: {label:'Kwuarm incense potency',default:0},
+    [SETTINGS.DARK_BURN]: {label:'Stored Dark Burn damage',default:0},
+    [SETTINGS.TARGET_MAGIC_LEVEL]: {label:'Target Magic level (Soulshot)',default:99},
+    [SETTINGS.GRAVITATE_ACTIVE]: {label:'Gravitate active',default:false},
+    [SETTINGS.RANGED_CAPE_PERK]: { label: 'Ranged cape perk active', default: false },
+    [SETTINGS.SEERS_ELITE]: { label: "Elite Seers' achievements completed", default: false },
+    [SETTINGS.DRAGONFIRE_IMMUNE]: { label: 'Target immune to dragonfire', default: false },
+    [SETTINGS.BOLT_TARGET_WEAKNESS]: { label: 'Target elemental weakness', default: 'none', options: [{text:'Neither',value:'none'},{text:'Water',value:'water'},{text:'Fire',value:'fire'}] },
+    [SETTINGS.TIRANNWN_DIARY_TIER]: { label: 'Tirannwn achievement tier', default: 0 },
+    [SETTINGS.DIARY_TARGET]: { label: 'Achievement target', default:'none', options:[{text:'Other',value:'none'},{text:'Mourner / knight in Mourner HQ',value:'mourner'},{text:'Shadow creature in Prifddinas',value:'shadow'},{text:'Elf in Prifddinas',value:'elf'},{text:'Dark beast',value:'dark beast'},{text:'Wild dog in Brimhaven Dungeon',value:'wild dog'}] },
+    [SETTINGS.PERNIX_QUIVERS]: { label: 'Pernix quiver loadouts', default: {} },
     [SETTINGS.QUIVER]: {
-        label: 'Pernix quiver',
+        label: 'Pernix quiver equipped',
         default: true
     },
     [SETTINGS.DAMAGE_QUALIFIER]: {

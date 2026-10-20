@@ -1,3 +1,5 @@
+import { pernixBonusActive } from '../quiver';
+import { applyBoltResources } from './enchanted_bolts';
 /**
  * Ranged-specific damage calculation effects
  */
@@ -82,11 +84,11 @@ function applyBoostedADEffects(
         applied = true;
     }
 
-    // Icy precision (Wen arrows) - flat +25% base damage
+    // Icy Precision is snapshotted for the whole cast, including later channel hits.
     if (
         ['threshold', 'ultimate', 'special attack'].includes(abils[abilityKey]?.abilityType) &&
-        settings[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS &&
-        settings[SETTINGS.ICY_PRECISION] > 0
+        (settings._castBuffSnapshot?.wenDamage ??
+            (settings[SETTINGS.AMMO] === ARMOUR.WEN_ARROWS && settings[SETTINGS.ICY_PRECISION] > 0))
     ) {
         distribution['boosted AD'] = Math.floor(
             distribution['boosted AD'] * 1.3
@@ -120,6 +122,8 @@ function applyAbilityPercentModifiers(
     distribution: DamageDistribution
 ): void {
     const { settings, abilityKey } = ctx;
+
+    if (abilityKey === ABILITIES.SOUL_SHOT) distribution.minHit += Math.min(2, Math.max(0, Number(settings[SETTINGS.TARGET_MAGIC_LEVEL] ?? 99)) * .02);
 
     // Flanking - Binding Shot (basic stun)
     if (settings[SETTINGS.FLANKING] > 0) {
@@ -168,14 +172,12 @@ function applyMinVarEffects(
         distribution.varHit = Math.floor(distribution.varHit * 1.15);
 }
 
-    // enchanted bolts (proc based, will come later)
-    // sirenic set effect (proc based, will come later)
     // gemstone armour effect (proc based, will come later)
 
     // Pernix quiver (low HP bonus)
     if (
-        settings[SETTINGS.QUIVER] === true &&
-        settings[SETTINGS.TARGET_HP_PERCENT] <= 25
+        pernixBonusActive(settings) &&
+        settings[SETTINGS.TARGET_HP_PERCENT] < 25
     ) {
         distribution.varHit = Math.floor(
             distribution.varHit + 0.04 * (distribution.minHit + distribution.varHit)
@@ -230,7 +232,7 @@ function applyStackEffects(ctx: EffectContext): void {
 
     // Shadow Imbued (Imbue Shadows buff) - each ranged hit generates 5% adrenaline
     if (settings[SETTINGS.SHADOW_IMBUED] === true && abils[abilityKey]?.mainStyle === 'ranged' &&
-        abils[abilityKey]?.abilityClassification !== 'perk'
+        !['dot', 'self cast', 'perk'].includes(abils[abilityKey]?.abilityClassification)
     ) {
         addAdrenaline(settings, 5)
     }
@@ -269,27 +271,7 @@ function applyStackEffects(ctx: EffectContext): void {
         }
     }
 
-    // Hydrix bakriminel bolts - Deathmark effect (10% proc chance per hit)
-    // Grants 10% adrenaline on proc + 1% extra adrenaline from basics for 25 ticks (15s)
-    // Cannot proc from Corruption Shot. Refreshes on subsequent procs.
-    if (
-        settings[SETTINGS.AMMO] === ARMOUR.HYDRIX_BAKRIMINEL_BOLTS_E &&
-        abils[abilityKey]?.mainStyle === 'ranged' &&
-        abilityKey !== ABILITIES.CORRUPTION_SHOT &&
-        !isCorruptionShotHit(abilityKey)
-    ) {
-        if (settings[SETTINGS.EXPECTED_ADRENALINE]) {
-            // Expected value: 10% chance × 10% adrenaline = 1% per hit
-            addAdrenaline(settings, 1);
-            // Deathmark is treated as always active in expected mode (high uptime with procs per hit)
-            if (ctx.timers) {
-                ctx.timers[SETTINGS.DEATHMARK] = 25;
-            }
-            settings[SETTINGS.DEATHMARK] = true;
-        } else {
-            // TODO: discrete proc simulation for non-expected mode
-        }
-    }
+    applyBoltResources(settings, abilityKey);
 }
 
 /** Check if an ability key is a Corruption Shot hit (the DoT ticks) */
@@ -327,8 +309,10 @@ function applyBonusDamageEffects(
     }
 
     // Crimson Salvo - adds 20% of ability damage as flat bonus to each hit
-    if (settings[SETTINGS.CRIMSON_SALVO] === true) {
-        const bonus = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 0.2);
+    const salvoProbability = settings._salvoCastKey && (String(abilityKey).startsWith(settings._salvoCastKey) || abils[abilityKey]?.parent === settings._salvoCastKey)
+        ? settings._salvoCastBonus : settings[SETTINGS.CRIMSON_SALVO] ? 1 : (settings._salvoProbability ?? 0);
+    if (salvoProbability > 0) {
+        const bonus = Math.floor(settings[SETTINGS.ABILITY_DAMAGE] * 0.2 * salvoProbability);
         distribution.minHit += bonus;
     }
 }

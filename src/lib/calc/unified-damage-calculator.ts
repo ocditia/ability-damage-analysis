@@ -35,7 +35,7 @@ export function calculateSingleAbilityDamage(
     const duration = typeof abilityData?.duration === 'number' ? abilityData.duration : 3;
 
     // Create a synthetic rotation long enough for the ability + extra ticks for hit delays
-    const barSize = Math.max(duration + 10, 15);
+    const barSize = Math.max(duration + 10, Math.max(0, ...(abilityData?.hitTimings ?? [])) + 10, 15);
 
     const rotation: RotationInput = {
         abilityBar: Array(barSize).fill(null),
@@ -51,7 +51,7 @@ export function calculateSingleAbilityDamage(
     const settingsWithBuffs = { ...settings };
 
     // Attach gear perks if "use owned gear" mode is enabled
-    if (settingsWithBuffs[SETTINGS.USE_OWNED_GEAR] && !settingsWithBuffs['_gearPerks'] && ownedItemsStore?.ownedGear?.size > 0) {
+    if (!settingsWithBuffs['_gearPerks'] && ownedItemsStore?.ownedGear?.size > 0) {
         attachGearPerks(settingsWithBuffs, ownedItemsStore.ownedGear);
     }
 

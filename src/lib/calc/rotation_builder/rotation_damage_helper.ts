@@ -183,6 +183,12 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             settings['death swiftness'] = true;
             timers['death swiftness'] = 63;
             break;
+        case ABILITIES.LOCATE:
+            settings[SETTINGS.LOCATE] = true;
+            // The activation tick is processed immediately; retain the buff for 18 following ticks.
+            timers[SETTINGS.LOCATE] = 19;
+            settings._locateWeapon = [settings[SETTINGS.WEAPON], settings[SETTINGS.TH], settings[SETTINGS.MH], settings[SETTINGS.OH]].join('|');
+            break;
         case ABILITIES.BALANCE_BY_FORCE:
             settings[ABILITIES.BALANCE_BY_FORCE] = true;
             timers[ABILITIES.BALANCE_BY_FORCE] = 50;
@@ -218,6 +224,15 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
             // Vestments of Havoc: 3+ pieces extends Berserk by 10 ticks
             const vestPieces = countSetPieces(settings, gearSets[GEAR_SET.VESTMENTS_OF_HAVOC]);
             timers[SETTINGS.BERSERK] = vestPieces >= 3 ? 43 : 33;
+            break;
+        case 'gravitate':
+            settings[SETTINGS.GRAVITATE_ACTIVE] = true;
+            settings[SETTINGS.GRAVITATE] = 0;
+            timers[SETTINGS.GRAVITATE_ACTIVE] = 50;
+            break;
+        case ABILITIES.DEEP_BURN:
+            settings._darkBurnSnapshot = settings[SETTINGS.DARK_BURN] ?? 0;
+            settings[SETTINGS.DARK_BURN] = 0;
             break;
         case ABILITIES.BLACKHOLE:
             settings[SETTINGS.BLACKHOLE] = true;
@@ -335,7 +350,9 @@ export function handleBuffs(settings: Record<string, any>, timers: Record<string
 export function handle_wen_buff(settings: Record<string, any>, timers: Record<string, number>) {
     settings[SETTINGS.ICY_PRECISION] = 1; // flat buff, no longer per-stack
     settings[SETTINGS.ICY_CHILL_STACKS] = 0;
-    timers[SETTINGS.ICY_PRECISION] = 15; // fixed 15 tick duration
+    settings._wenAccuracyFrom = (settings._rotationTick ?? -1) + 1;
+    // Wen activates on the consuming hit, one tick after the cast in this engine.
+    timers[SETTINGS.ICY_PRECISION] = settings[SETTINGS.CALC_TYPE] === SETTINGS.CALC_TYPE_VALUES.ROTATION ? 16 : 15;
 }
 
 /**

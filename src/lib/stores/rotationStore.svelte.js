@@ -1,3 +1,4 @@
+import { normalizeTickEvent } from '$lib/calc/rotation_builder/tickEvents';
 import { createBuffTimings, createStackTimings } from '$lib/calc/rotation_builder/rotation_consts.ts';
 import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
 import { normalizeLegacy } from '$lib/calc/rotation_builder/extra-action';
@@ -6,6 +7,7 @@ import { migrateEquipmentSettings } from '$lib/data/equipment';
 
 // Configuration constants
 const STORAGE_KEY = 'rotation_configs';
+export const DRAFT_STORAGE_KEY = 'rotation_draft_v1';
 const MAX_SAVED_CONFIGS = 20;
 const BAR_SIZE = 300;
 const EXTRA_BAR_SIZE = 12;
@@ -14,13 +16,19 @@ const EXTRA_BAR_SIZE = 12;
 export const rotationStore = $state({
     // Saved rotations
     savedRotations: [],
+    draftStatus: 'Your changes are saved automatically in this browser.',
     activeRotationId: null, // ID of the currently loaded rotation
 
     // Current rotation data
+    targetCounts: Array(BAR_SIZE).fill(null),
+    tickEvents: Array(BAR_SIZE).fill(null),
+    secondaryDamage: {},
+    secondaryHits: [],
     abilityBar: Array(BAR_SIZE).fill(null),
     extraActionBar: Array(BAR_SIZE).fill(null),
     nulledTicks: Array(BAR_SIZE).fill(false),
     stalledAbilities: Array(BAR_SIZE).fill(null),
+    releasedAbilities: Array(BAR_SIZE).fill(null),
 
     // Buffs and stacks
     buffs: createBuffTimings(BAR_SIZE),
@@ -60,6 +68,7 @@ function restoreSettings(snapshot) {
     if (!snapshot || !settingsStore.initialized) return;
     migrateEquipmentSettings(snapshot);
     for (const [key, value] of Object.entries(snapshot)) {
+        if (key === '_gearInstances' && !settingsStore.settings[key]) settingsStore.settings[key] = {value: {}};
         if (settingsStore.settings[key]) {
             settingsStore.settings[key].value = value;
         }
@@ -101,13 +110,74 @@ export const rotationActions = {
 
     // Get current rotation data for export (includes settings)
     getCurrentRotationData() {
-        return {
+        return JSON.parse(JSON.stringify({
             a: rotationStore.abilityBar.map(a => a || ''),
             e: rotationStore.extraActionBar.map(row => row ? row.map(a => a || '') : []),
             n: rotationStore.nulledTicks,
+            c: [...rotationStore.targetCounts],
+            v: rotationStore.tickEvents.map(event => event ? {...event} : null),
             t: rotationStore.stalledAbilities.map(a => a || ''),
+            r: rotationStore.releasedAbilities.map(a => a || ''),
             s: getSettingsSnapshot()
+        }));
+    },
+
+    // One validated, atomic path for draft, file and named-save restoration.
+    applyRotationData(data) {
+        if (!data || !Array.isArray(data.a) || data.a.length > BAR_SIZE)
+            throw new Error('Invalid rotation data');
+        for (const key of ['e', 'n', 't', 'r', 'c', 'v']) {
+            if (data[key] != null && (!Array.isArray(data[key]) || data[key].length > BAR_SIZE))
+                throw new Error('Invalid rotation field');
+        }
+        for (const key of ['a', 't', 'r']) {
+            if (data[key]?.some(value => value != null && typeof value !== 'string'))
+                throw new Error('Invalid ability');
+        }
+        if (data.e?.some(row => row != null && (!Array.isArray(row) || row.length > EXTRA_BAR_SIZE)))
+            throw new Error('Invalid extra actions');
+        const pad = (key, transform) => Array.from({length: BAR_SIZE}, (_, i) => transform(data[key]?.[i]));
+        const next = {
+            abilityBar: pad('a', value => value || null),
+            extraActionBar: pad('e', row => row ? row.map(a => a ? (normalizeLegacy(a, gearSwaps, allExtraActions) || a) : null) : null),
+            nulledTicks: pad('n', value => value === true),
+            stalledAbilities: pad('t', value => value || null),
+            releasedAbilities: pad('r', value => value || null),
+            targetCounts: pad('c', value => value ?? null),
+            tickEvents: pad('v', normalizeTickEvent),
         };
+        if (data.s != null && (typeof data.s !== 'object' || Array.isArray(data.s))) throw new Error('Invalid settings');
+        restoreSettings(data.s);
+        Object.assign(rotationStore, next);
+    },
+
+    saveDraft(style) {
+        try {
+            const draft = {version: 1, data: this.getCurrentRotationData(), style,
+                activeRotationId: rotationStore.activeRotationId};
+            localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+            rotationStore.draftStatus = 'Autosaved in this browser';
+            return true;
+        } catch {
+            rotationStore.draftStatus = 'Autosave unavailable. Export a file to keep your rotation.';
+            return false;
+        }
+    },
+
+    restoreDraft() {
+        try {
+            const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+            if (!raw) return null;
+            const draft = JSON.parse(raw);
+            if (draft.version !== 1) throw new Error('Unsupported draft');
+            this.applyRotationData(draft.data);
+            rotationStore.activeRotationId = draft.activeRotationId ?? null;
+            rotationStore.draftStatus = 'Previous session restored ? Autosave on';
+            return draft;
+        } catch {
+            rotationStore.draftStatus = 'Could not restore the previous session. Saved rotations and file imports are still available.';
+            return null;
+        }
     },
 
     // Save a new rotation
@@ -179,23 +249,14 @@ export const rotationActions = {
         }
 
         try {
-            rotationStore.abilityBar = config.data.a.map(a => a || null);
-            rotationStore.extraActionBar = config.data.e.map(row => row.map(a => a ? (normalizeLegacy(a, gearSwaps, allExtraActions) || a) : null));
-            rotationStore.nulledTicks = config.data.n;
-            rotationStore.stalledAbilities = config.data.t.map(a => a || null);
+            this.applyRotationData(config.data);
 
-            // Restore settings if saved with the rotation
-            if (config.data.s) {
-                restoreSettings(config.data.s);
-            }
-
-            // Import and call the damage calculation function
-            const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
-            calculateTotalDamageNew();
-
-            // Refresh UI if callback provided (updates row gap, etc.)
+            // The editor callback schedules one background calculation.
             if (refreshUICallback) {
                 refreshUICallback();
+            } else {
+                const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
+                calculateTotalDamageNew();
             }
 
             rotationStore.activeRotationId = configId;
@@ -242,6 +303,11 @@ export const rotationActions = {
         rotationStore.extraActionBar = Array(BAR_SIZE).fill(null);
         rotationStore.nulledTicks = Array(BAR_SIZE).fill(false);
         rotationStore.stalledAbilities = Array(BAR_SIZE).fill(null);
+        rotationStore.releasedAbilities = Array(BAR_SIZE).fill(null);
+        rotationStore.targetCounts = Array(BAR_SIZE).fill(null);
+        rotationStore.tickEvents = Array(BAR_SIZE).fill(null);
+        rotationStore.secondaryDamage = {};
+        rotationStore.secondaryHits = [];
         rotationStore.totalDamage = 0;
         rotationStore.cooldownReady = Array(BAR_SIZE).fill(null);
 
@@ -261,8 +327,37 @@ export const rotationActions = {
         }
     },
 
+    // Move the complete suffix without dropping events or overwriting the prefix.
+    shiftTicks(start, offset) {
+        if (!Number.isInteger(start) || start < 0 || start >= BAR_SIZE || !Number.isInteger(offset) || offset === 0) {
+            return { success: false, error: 'Enter a valid starting tick and a whole number of ticks to move.' };
+        }
+        const fills = { tickEvents: null, targetCounts: null, abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null, releasedAbilities: null };
+        const occupied = i => Object.keys(fills).some(key => {
+            const value = rotationStore[key][i];
+            return Array.isArray(value) ? value.some(Boolean) : value !== null && value !== undefined && value !== false && value !== '';
+        });
+        let last = BAR_SIZE - 1;
+        while (last >= start && !occupied(last)) last--;
+        if (last < start) return { success: false, error: 'There is nothing to move from this tick onward.' };
+        if (start + offset < 0 || last + offset >= BAR_SIZE) {
+            return { success: false, error: `The shifted rotation must fit between ticks 0 and ${BAR_SIZE - 1}.` };
+        }
+        for (let i = start + offset; i < start; i++) {
+            if (occupied(i)) return { success: false, error: `Tick ${i} already contains an action or condition. Choose a smaller move or an earlier starting tick.` };
+        }
+        for (const [key, fill] of Object.entries(fills)) {
+            const source = rotationStore[key];
+            const shifted = Array(BAR_SIZE).fill(fill);
+            for (let i = 0; i < start; i++) shifted[i] = source[i];
+            for (let i = start; i <= last; i++) shifted[i + offset] = source[i];
+            rotationStore[key] = shifted;
+        }
+        return { success: true };
+    },
+
     insertTicks(pos, count) {
-        const fills = { abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null };
+        const fills = { tickEvents: null, targetCounts: null, abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null, releasedAbilities: null };
         for (const [key, fill] of Object.entries(fills)) {
             const arr = rotationStore[key];
             rotationStore[key] = [...arr.slice(0, pos), ...Array(count).fill(fill), ...arr.slice(pos)].slice(0, BAR_SIZE);
@@ -270,7 +365,7 @@ export const rotationActions = {
     },
 
     removeTicks(pos, count) {
-        const fills = { abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null };
+        const fills = { tickEvents: null, targetCounts: null, abilityBar: null, extraActionBar: null, nulledTicks: false, stalledAbilities: null, releasedAbilities: null };
         for (const [key, fill] of Object.entries(fills)) {
             const arr = rotationStore[key];
             const removed = [...arr.slice(0, pos), ...arr.slice(pos + count)];
@@ -284,23 +379,15 @@ export const rotationActions = {
             // Handle both old format (just data) and new format (with metadata)
             const rotationData = data.data || data;
 
-            rotationStore.abilityBar = rotationData.a.map(a => a || null);
-            rotationStore.extraActionBar = rotationData.e.map(row => row.map(a => a ? (normalizeLegacy(a, gearSwaps, allExtraActions) || a) : null));
-            rotationStore.nulledTicks = rotationData.n;
-            rotationStore.stalledAbilities = rotationData.t.map(a => a || null);
+            this.applyRotationData(rotationData);
+            rotationStore.activeRotationId = null;
 
-            // Restore settings if present
-            if (rotationData.s) {
-                restoreSettings(rotationData.s);
-            }
-
-            // Import and call the damage calculation function
-            const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
-            calculateTotalDamageNew();
-
-            // Refresh UI if callback provided (updates row gap, etc.)
+            // The editor callback schedules one background calculation.
             if (refreshUICallback) {
                 refreshUICallback();
+            } else {
+                const { calculateTotalDamageNew } = await import('$lib/utils/rotationEventHandlers.js');
+                calculateTotalDamageNew();
             }
 
             onSuccess('Rotation imported successfully!');
@@ -350,13 +437,14 @@ export const rotationActions = {
     },
 
     // Export rotation as a base64 string to clipboard
-    exportToString(onSuccess, onError) {
+    async exportToString(onSuccess, onError) {
         try {
             const exportData = {
                 data: this.getCurrentRotationData()
             };
-            const str = btoa(JSON.stringify(exportData));
-            navigator.clipboard.writeText(str);
+            const bytes = new TextEncoder().encode(JSON.stringify(exportData));
+            const str = btoa(Array.from(bytes, byte => String.fromCharCode(byte)).join(''));
+            await navigator.clipboard.writeText(str);
             onSuccess('Rotation copied to clipboard!');
         } catch (e) {
             onError('Failed to copy rotation to clipboard.');
@@ -366,7 +454,10 @@ export const rotationActions = {
     // Import rotation from a base64 string
     async importFromString(importStr, onSuccess, onError, refreshUICallback) {
         try {
-            const data = JSON.parse(atob(importStr.trim()));
+            const raw = atob(importStr.trim());
+            let data;
+            try { data = JSON.parse(new TextDecoder('utf-8', {fatal:true}).decode(Uint8Array.from(raw, char => char.charCodeAt(0)))); }
+            catch { data = JSON.parse(raw); } // Older codes encoded Latin-1 directly.
             await this.importRotation(data, onSuccess, onError, refreshUICallback);
         } catch (e) {
             onError('Invalid rotation string. Make sure you pasted the full string.');
@@ -377,6 +468,8 @@ export const rotationActions = {
     updateDamageCalculations(calculateTotalDamage, calculateGaussianParameters) {
         const dmgResult = calculateTotalDamage(BAR_SIZE);
         rotationStore.totalDamage = dmgResult.regularDamage;
+        rotationStore.secondaryDamage = dmgResult.secondaryDamage ?? {};
+    rotationStore.secondaryHits = dmgResult.secondaryHits ?? [];
         rotationStore.poisonDamage = dmgResult.poisonDamage;
         rotationStore.familiarDamage = dmgResult.familiarDamage;
         rotationStore.dreadnipDamage = dmgResult.dreadnipDamage || 0;

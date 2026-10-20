@@ -1,3 +1,5 @@
+import { hasSoulsPassive } from '../necklace';
+import { getEquipment, equipmentMechanicId } from '$lib/data/equipment';
 /**
  * Pure utility functions for damage calculation
  * These have no dependencies on on_cast/on_hit to avoid circular imports
@@ -42,13 +44,7 @@ function calc_soul_split_hit(hit: number, settings: Record<string, any>): number
     }
 
     // Amulet of souls bonus healing (+18.75%)
-    const aos_amulets = [
-        ARMOUR.AOS,
-        ARMOUR.AOS_OR,
-        ARMOUR.EOF,
-        ARMOUR.EOF_OR
-    ];
-    if (aos_amulets.includes(settings['amulet'])) {
+    if (hasSoulsPassive(settings)) {
         heal = heal * 1.1875;
     }
 
@@ -77,7 +73,9 @@ export function calc_split_soul_hit(hit: number, settings: Record<string, any>):
  */
 export function get_hit_sequence(settings: Record<string, any>): Record<number, string[]> {
     const abilityKey = settings['ability'];
-    let rotation = JSON.parse(JSON.stringify(abils[abilityKey]['hits'])); // Deep copy
+    let rotation = JSON.parse(JSON.stringify(abils[abilityKey]['hits']));
+    const godArrow = {[ABILITIES.RESTORATIVE_SHOT]:'saradomin arrows',[ABILITIES.BALANCED_SHOT]:'guthix arrows',[ABILITIES.DESTRUCTIVE_SHOT]:'zamorak arrows'}[abilityKey];
+    if (godArrow && getEquipment(settings[SETTINGS.AMMO])?.name.toLowerCase() === godArrow) rotation[1].push('next hit','god bow magic hit'); // Deep copy
 
     // Igneous Showdown with EZK and Flamebound Rival
     if (
@@ -180,18 +178,23 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
 // Adrenaline
 // =============================================================================
 
-export function addAdrenaline(settings: Record<string, any>, amount: number) {
-    if (settings[SETTINGS.NATURAL_INSTINCT] && amount > 0) {
+export function addAdrenaline(settings: Record<string, any>, amount: number, naturalInstinctApplies = true) {
+    if (naturalInstinctApplies && settings[SETTINGS.NATURAL_INSTINCT] && amount > 0) {
         amount *= 2;
     }
-    let new_adren = settings[SETTINGS.ADRENALINE] + amount;
+    const new_adren = settings[SETTINGS.ADRENALINE] + amount;
+    settings[SETTINGS.ADRENALINE] = settings[SETTINGS.CAP_ADRENALINE] ? Math.min(maxAdrenaline(settings), new_adren) : new_adren;
+}
 
-    // Vestments of Havoc: full set (4 pieces) + melee abilities in rotation = +20 max adrenaline
-    const hasFullVestments = settings['_hasMeleeAbilities'] &&
-        countSetPieces(settings, gearSets[GEAR_SET.VESTMENTS_OF_HAVOC]) >= 4;
+export function maxAdrenaline(settings: Record<string, any>): number {
+
+    // A future melee cast must not raise the cap while another weapon style is equipped.
+    const vestments = new Set(gearSets[GEAR_SET.VESTMENTS_OF_HAVOC]);
+    const hasFullVestments = settings['_equippedWeaponStyle'] === 'melee' &&
+        [SETTINGS.HELMET, SETTINGS.BODY, SETTINGS.LEGS, SETTINGS.BOOTS].every(key => vestments.has(equipmentMechanicId(settings[key])));
 
     let max_adren = 100 + (hasFullVestments ? 20 : 0);
     if (settings[SETTINGS.HEIGHTENED_SENSES]) max_adren += 10;
 
-    settings[SETTINGS.ADRENALINE] = settings[SETTINGS.CAP_ADRENALINE] ? Math.min(max_adren, new_adren) : new_adren;
+    return max_adren;
 }

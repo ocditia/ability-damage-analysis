@@ -1,8 +1,10 @@
 <script>
+    import TargetAccuracy from '$components/Settings/TargetAccuracy.svelte';
     import { renderComponent } from '@tanstack/svelte-table';
 
     import { SETTINGS, settingsConfig } from '$lib/calc/settings_rb';
-    import { calculateSingleAbilityDamage } from '$lib/calc/unified-damage-calculator';
+    import { createDamageTableClient } from '$lib/calc/damage-table-client';
+    import { onMount, onDestroy } from 'svelte';
     import { ABILITIES, abils } from '$lib/data/abilities.ts';
 
     const excludedAbilities = new Set([ABILITIES.SUNSHINE, ABILITIES.GREATER_SUNSHINE, ABILITIES.TUMEKEN_ASPHYXIATE]);
@@ -11,7 +13,7 @@
 
     const abilities = Object.fromEntries(
         Object.entries(abils).filter(([key, a]) =>
-            a.title && a.mainStyle === 'magic' &&
+            a.title && !a.parent && a.mainStyle === 'magic' &&
             a.abilityClassification !== 'conjure' &&
             a.abilityClassification !== 'self cast' &&
             !excludedAbilities.has(key)
@@ -112,30 +114,23 @@
         if (settings) saveSettings();
     });
 
-    const updateDamages = () => {
-        const adaptedSettings = Object.fromEntries(
-            Object.entries(settings).map(([key, value]) => [key, value.value])
-        );
-
-        damages = damages.map(ability => {
-            adaptedSettings['ability'] = ability.key;
-
-            const regular = calculateSingleAbilityDamage(adaptedSettings, {
-                ability: ability.key
-            });
-            const sunshine = calculateSingleAbilityDamage(adaptedSettings, {
-                ability: ability.key,
-                buffs: { sunshine: true }
-            });
-
-            ability.regular = Math.round(regular.expected);
-            ability.sunshine = Math.round(sunshine.expected);
-
-            return ability;
-        })
+    let visibleAbilityKeys = $state(damages.filter(row => row.common !== false).map(row => row.key));
+    function visibleAbilitiesChanged(keys) {
+        if (JSON.stringify(keys) === JSON.stringify(visibleAbilityKeys)) return;
+        visibleAbilityKeys = keys; updateDamages();
     }
-
-    updateDamages()
+    let calculating = $state(false);
+    let calculationError = $state('');
+    const calculator = createDamageTableClient(
+        rows => { const results = new Map(rows.map(row => [row.key, row])); damages = damages.map(row => ({...row, ...results.get(row.key)})); },
+        (busy, error) => { calculating = busy; calculationError = error; }
+    );
+    const updateDamages = () => calculator.update(
+        Object.fromEntries(Object.entries(settings).map(([key, value]) => [key, value.value])),
+        visibleAbilityKeys, {regular:{}, sunshine:{sunshine:true}}
+    );
+    onMount(updateDamages);
+    onDestroy(() => calculator.dispose());
 
     const sortAbilities = (rowA, rowB) => {
         const nameA = rowA.original.abilityInfo.title;
@@ -180,7 +175,8 @@
                 <div class="card card-magic">
                     <h1 class="main-header mb-6 ml-3">Damage Values</h1>
                     <div class="table-container">
-                        <AbilityDamageTable data={damages} columns={columns} style="magic" />
+                        <p class="calculation-status" role="status">{calculating ? "Updating damage..." : calculationError}</p>
+                <AbilityDamageTable onVisibleKeysChange={visibleAbilitiesChanged} data={damages} columns={columns} style="magic" />
                     </div>
                 </div>
             </div>
@@ -289,14 +285,7 @@
                                     onchange={() => updateDamages()}
                                     img="/rs-rot/effect_icons/death.png"
                                 />
-                                <Number
-                                    bind:setting={settings[SETTINGS.HIT_CHANCE]}
-                                    onchange={() => updateDamages()}
-                                    img="/rs-rot/settings_icons/Zero_weakness_icon.png"
-                                    step="1"
-                                    max="100"
-                                    min="0"
-                                />
+                                <TargetAccuracy {settings} onchange={updateDamages} style="magic" />
                                 <Checkbox
                                     bind:setting={settings[SETTINGS.HITCAP]}
                                     onchange={() => updateDamages()}
@@ -627,3 +616,5 @@
         </section>
     </div>
 </div>
+
+<style>.calculation-status{min-height:18px;color:#b6cbd6;font-size:12px;margin:4px 0}</style>
