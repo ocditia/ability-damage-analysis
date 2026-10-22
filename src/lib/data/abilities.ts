@@ -5,6 +5,7 @@ import { AbilityInfo } from "$lib/types/AbilityTypes";
 import { equipment, equipmentImageUrl } from '$lib/data/equipment';
 
 export enum ABILITIES {
+    SNIPE_FLANK = 'enhanced nightmare gauntlets flank',
     NECRO_AUTO = 'necromancy auto',
     TOUCH_OF_DEATH = 'touch of death',
     SOUL_SAP = 'soul sap',
@@ -4339,7 +4340,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hits: {
             1: [ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_2]
         },
-        hitTimings: [1, 1, 2] // TODO check
+        hitTimings: [2, 2, 3] // Plus the standard 1-tick delay: impacts at cast +3, +3, +4.
     ,
         title: 'Shadowfall',
         icon: equipmentImageUrl('Gloomfire bow.png'),
@@ -4760,7 +4761,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         title: 'Sanguine Volley', icon: '/rs-rot/ability_icons/current/sanguine_volley.png',
         minHit: .7, varHit: .2, onHitEffects: true, critEffects: true, damagePotentialEffects: true,
         abilityClassification: 'multihit', abilityType: 'special attack', mainStyle: 'ranged', damageType: 'ranged',
-        adrenaline: 40, cooldown: 60, hitTimings: [0,0,0,0,0],
+        // Offsets are added to the standard one-tick hit delay.
+        adrenaline: 40, cooldown: 60, hitTimings: [3,3,3,3,3],
         hits: {1: [ABILITIES.SANGUINE_VOLLEY_HIT, 'next hit', ABILITIES.SANGUINE_VOLLEY_HIT, 'next hit', ABILITIES.SANGUINE_VOLLEY_HIT, 'next hit', ABILITIES.SANGUINE_VOLLEY_HIT, 'next hit', ABILITIES.SANGUINE_VOLLEY_HIT]},
     },
     [ABILITIES.SANGUINE_VOLLEY_HIT]: {
@@ -5358,3 +5360,11 @@ for (const reference of specialAttackReference) {
 }
 
 for (const [key,icon] of Object.entries(specialAttackIcons)) if (abils[key]) abils[key].icon=icon;
+
+// Explicit positional Snipe variant; the rotation engine shares Snipe's cooldown.
+abils[ABILITIES.SNIPE_FLANK] = {
+    ...abils[ABILITIES.SNIPE],
+    title: 'Enhanced Nightmare Gauntlets (flank)',
+    icon: '/rs-rot/ability_icons/current/snipe_flank.svg',
+    description: 'Casts Snipe with the Enchantment of Dread bonus hit for flanking with enhanced nightmare gauntlets. Shares Snipe cooldown and channel time.',
+};

@@ -898,7 +898,7 @@ function calc_crit_damage(settings) {
     let crit_buff = 0.5; // base
 
     // smoke cloud
-    if (settings[SETTINGS.SMOKE_CLOUD] === true) {
+    if ((settings[SETTINGS.SMOKE_CLOUD] === true || settings._teamDebuffs?.smokeCloud === true)) {
         if (abils[settings['ability']].mainStyle === 'magic') {
             crit_buff += 0.15;
         } else {

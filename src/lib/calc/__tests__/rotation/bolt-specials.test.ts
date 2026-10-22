@@ -43,6 +43,13 @@ describe('enchanted bolt proc chances',()=>{
     });
 });
 describe('Sanguine Volley and equipped passives',()=>{
+    it.each([0, 6])('lands all five hits four ticks after a cast at tick %s', (castTick)=>{
+        const rotation=createRotationFromAbilities([...Array(castTick).fill(null), ABILITIES.SANGUINE_VOLLEY]);
+        const result=calculateRotationDamageCore(settings(),rotation,30);
+        const hits=result.distributionStats.filter(hit=>hit.ability===ABILITIES.SANGUINE_VOLLEY_HIT);
+        expect(hits).toHaveLength(5);
+        expect(hits.map(hit=>hit.tick)).toEqual(Array(5).fill(castTick+4));
+    });
     it('has five 70-90% hits, 40 adrenaline cost, and a 100-tick cooldown',()=>{
         const a=abils[ABILITIES.SANGUINE_VOLLEY];expect(a.adrenaline).toBe(40);expect(a.cooldown).toBe(60);
         expect(a.hits![1].filter(x=>x!=='next hit')).toHaveLength(5);
@@ -129,4 +136,13 @@ describe('verified base special damage ranges',()=>{
         expect(calculateSingleAbilityDamage(raw(SETTINGS.MODE_VALUES.MIN_NO_CRIT),{ability:ability as string}).expected).toBe(min);
         expect(calculateSingleAbilityDamage(raw(SETTINGS.MODE_VALUES.MAX_NO_CRIT),{ability:ability as string}).expected).toBe(max);
     });
+});
+
+it.each([0, 6])('Gloomfire hits at cast +3, +3 and +4 from tick %s', (castTick) => {
+    const rotation = createRotationFromAbilities([...Array(castTick).fill(null), ABILITIES.SHADOWFALL]);
+    const result = calculateRotationDamageCore(createRangedSettings(), rotation, 30);
+    const hits = result.distributionStats.filter(hit => [ABILITIES.SHADOWFALL_1, ABILITIES.SHADOWFALL_2].includes(hit.ability as ABILITIES));
+    expect(hits.map(hit => [hit.ability, hit.tick])).toEqual([
+        [ABILITIES.SHADOWFALL_1, castTick+3], [ABILITIES.SHADOWFALL_1, castTick+3], [ABILITIES.SHADOWFALL_2, castTick+4]
+    ]);
 });

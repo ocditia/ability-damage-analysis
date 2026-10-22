@@ -15,9 +15,12 @@ it('includes per-hit Ful activation in the latest Blood Knights export',()=>{
     const frames:Record<number,any>={};
     const out=calculateRotationDamageCore(s,rotation,60,(t,v)=>frames[t]={...v});
     const total=out.regularDamage+out.familiarDamage+Object.values(out.secondaryDamage??{}).reduce((a,b)=>a+b,0);
-    expect(total).toBeGreaterThan(715000);
+    // Start Tick 17 excludes pre-fight damage from this saved rotation.
+    expect(out.distributionStats.every(hit => hit.tick >= 17)).toBe(true);
+    // Shadowfall now resolves one tick later, with impact-time buffs and target conditions.
+    expect(total).toBeGreaterThan(700000);
     expect(total).toBeLessThan(730000);
-    const last=out.distributionStats.find(x=>x.ability===ABILITIES.SHADOWFALL_2 && x.tick===44)!;
+    const last=out.distributionStats.find(x=>x.ability===ABILITIES.SHADOWFALL_2 && x.tick===45)!;
     expect(last.critMax).toBeGreaterThan(25000);
     expect(frames[40][SETTINGS.LOCATE]).toBe(true);
     expect(frames[40][SETTINGS.ICY_PRECISION]).toBe(1);

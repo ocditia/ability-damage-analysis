@@ -108,3 +108,20 @@ it('a normal cast cancels a held ability', () => {
         run(ranged(), baseline).result.regularDamage
     );
 });
+
+it('releases Grico with Wen then casts Tendrils with Ful on the same tick', () => {
+    const r = rotation(ABILITIES.GREATER_RICOCHET, ABILITIES.GREATER_RICOCHET);
+    r.abilityBar[3] = ABILITIES.SHADOW_TENDRILS;
+    r.tickEvents = [];
+    r.tickEvents[3] = {releaseAmmo: ARMOUR.WEN_ARROWS, castAmmo: ARMOUR.FUL_ARROWS};
+    const settings = {...ranged(), [SETTINGS.ADRENALINE]: 100};
+    const mixed = run(settings, r);
+    const wenOnly = structuredClone(r);
+    wenOnly.tickEvents[3].castAmmo = ARMOUR.WEN_ARROWS;
+    const baseline = run(settings, wenOnly);
+    expect(mixed.seen[3][SETTINGS.ICY_CHILL_STACKS]).toBeGreaterThan(0);
+    expect(mixed.seen[4][SETTINGS.RANGED_AMMO_SLOT]).toBe(ARMOUR.FUL_ARROWS);
+    expect(mixed.seen[4][SETTINGS.ICY_CHILL_STACKS]).toBe(baseline.seen[4][SETTINGS.ICY_CHILL_STACKS]);
+    expect(mixed.result.regularDamage).toBeGreaterThan(baseline.result.regularDamage);
+    expect(r.tickEvents[3].releaseAmmo).toBe(ARMOUR.WEN_ARROWS);
+});

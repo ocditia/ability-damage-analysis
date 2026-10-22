@@ -149,8 +149,8 @@ export function get_hit_sequence(settings: Record<string, any>): Record<number, 
     }
 
     // Nightmare gauntlet snipe
-    if (abilityKey === ABILITIES.SNIPE && settings[SETTINGS.GLOVES] === ARMOUR.NIGHTMARE_GAUNTLETS_E &&
-        settings[SETTINGS.ENCHANTMENT_OF_DREAD] === true) {
+    if (abilityKey === ABILITIES.SNIPE && (settings._nightmareFlankCast === true ||
+        (settings[SETTINGS.GLOVES] === ARMOUR.NIGHTMARE_GAUNTLETS_E && settings[SETTINGS.ENCHANTMENT_OF_DREAD] === true))) {
         rotation[3].push(ABILITIES.SNIPE_HIT_2);
     }
 

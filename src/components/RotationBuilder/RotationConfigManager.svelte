@@ -1,10 +1,14 @@
 <script>
     import RotationImport from "./RotationImport.svelte";
+    import RotationPreview from "./RotationPreview.svelte";
+    import {rotationPreview, rotationPreviewText} from '$lib/utils/rotationPreview';
+    import {settingsStore} from '$lib/stores/settingsStore.svelte.js';
+    let showRotationPreview = $state(false);
+    let showSpecialLabels = $state(true);
     let showRotationImport = $state(false);
     import { rotationStore, rotationActions } from '$lib/stores/rotationStore.svelte.js';
     import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
     import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
-    import { exportToPvme } from '$lib/utils/pvmeExport.js';
 
     let { refreshUI, onOpenKeybinds = () => {}, onShowKeypresses = () => {} } = $props();
 
@@ -114,10 +118,11 @@
         );
     }
 
-    function copyDiscordFormat() {
+    async function copyDiscordFormat() {
         try {
-            const text = exportToPvme(rotationStore.abilityBar, {stalledAbilities:rotationStore.stalledAbilities,releasedAbilities:rotationStore.releasedAbilities});
-            navigator.clipboard.writeText(text);
+            const settings = Object.fromEntries(Object.entries(settingsStore.settings).map(([key, entry]) => [key, entry.value]));
+            const text = rotationPreviewText(rotationPreview(rotationStore, settings), true, showSpecialLabels);
+            await navigator.clipboard.writeText(text);
             notifActions.showNotification('Success!', 'Rotation copied in Discord format!', 'success');
         } catch (e) {
             notifActions.showNotification('Failed', 'Could not copy to clipboard.', 'error');
@@ -127,6 +132,7 @@
     const VISIBLE_LIMIT = 10;
     let showAllRotations = $state(false);
 </script>
+<RotationPreview bind:show={showRotationPreview} bind:showSpecials={showSpecialLabels} />
 
 <div class="space-y-4 mt-4">
     <div class="config-section">
@@ -154,6 +160,7 @@
         <!-- Action buttons always visible -->
         <div class="config-content">
             <div class="action-row">
+                <button class="action-btn" onclick={() => showRotationPreview=true}>View rotation</button>
                 <button class="action-btn" onclick={() => showRotationImport=true}>Import image / PVME</button>
                 <button class="action-btn primary" onclick={handleSaveRotation} title="Save current rotation">
                     Save rotation

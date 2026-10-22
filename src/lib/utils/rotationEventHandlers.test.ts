@@ -43,6 +43,36 @@ function editingStores() {
     return {stores,calculate,refresh};
 }
 describe('stall and release placement',()=>{
+    it('repairs a forgotten release at the inspected tick despite later casts',()=>{
+        const {stores,calculate,refresh}=editingStores();
+        stores.rotationStore.stalledAbilities[6]='piercing shot';
+        stores.rotationStore.abilityBar[9]=ABILITIES.RANGED_AUTO;
+        stores.rotationStore.abilityBar[12]=ABILITIES.RANGED_AUTO;
+        stores.uiStore.bar.index=15;
+        Object.assign(stores.uiStore.extraActions,{show:true,tick:9});
+        appendRelease(stores,calculate,refresh);
+        expect(stores.rotationStore.releasedAbilities[9]).toBe('piercing shot');
+        expect(stores.rotationStore.releasedAbilities[15]).toBeNull();
+        expect(stores.rotationStore.abilityBar[9]).toBe(ABILITIES.RANGED_AUTO);
+    });
+    it('repairs from a selected stall at its next GCD',()=>{
+        const {stores,calculate,refresh}=editingStores();
+        stores.rotationStore.stalledAbilities[6]='piercing shot';
+        stores.rotationStore.abilityBar[9]=ABILITIES.RANGED_AUTO;
+        stores.uiStore.bar.index=12;
+        Object.assign(stores.uiStore.extraActions,{show:true,tick:6});
+        appendRelease(stores,calculate,refresh);
+        expect(stores.rotationStore.releasedAbilities[9]).toBe('piercing shot');
+    });
+    it('does not resurrect a held ability after an intervening cast',()=>{
+        const {stores,calculate,refresh}=editingStores();
+        stores.rotationStore.stalledAbilities[0]='piercing shot';
+        stores.rotationStore.abilityBar[3]=ABILITIES.RANGED_AUTO;
+        Object.assign(stores.uiStore.extraActions,{show:true,tick:6});
+        appendRelease(stores,calculate,refresh);
+        expect(stores.rotationStore.releasedAbilities[6]).toBeNull();
+        expect(calculate).not.toHaveBeenCalled();
+    });
     it('appends a stall, exits placement mode, and pairs the release with the next cast',()=>{
         const {stores,calculate,refresh}=editingStores();
         handleAbilityClick({},'piercing shot',true,stores,calculate,refresh);

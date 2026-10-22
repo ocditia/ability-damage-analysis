@@ -1,3 +1,4 @@
+import {captureDamageBuffs} from './castDamageBuffs';
 import { damagePotential } from '../accuracy';
 import { branchBoltHit, emeraldPoisonHit } from './effects/enchanted_bolts';
 import { ABILITIES, abils } from '$lib/data/abilities';
@@ -805,6 +806,7 @@ function handleBolgProc(
     const dmgList = getDamageDistribution(dmgObject, 'non_crit')?.['damage list'] || [];
     const pending = create_damage_object(settings, ABILITIES.BOLG_PROC);
     (pending as any)._bolgImpact = {
+        damageBuffs: captureDamageBuffs(settings),
         min: Math.floor((dmgList[0] ?? 0) * .33),
         max: Math.floor((dmgList[dmgList.length - 1] ?? 0) * .37)
     };
@@ -814,19 +816,26 @@ function handleBolgProc(
     return true;
 }
 
-/** Resolve the passive using impact-time equipment, ammo and target conditions. */
+/** Retain the triggering cast's damage buffs; use impact-time equipment, arrows and target conditions. */
 export function resolveBolgImpact(settings: Record<string, any>, pending: DamageObject, timers: Record<string, number>): DamageObject[] {
     const bonus = (pending as any)._bolgImpact;
     if (!bonus) return [pending];
-    let object = on_cast(settings, create_damage_object(settings, ABILITIES.BOLG_PROC), timers, ABILITIES.BOLG_PROC)[0];
-    const potential = damagePotential(settings, ABILITIES.BOLG_PROC);
-    iterateDistributions(object, distribution => {
-        distribution.minHit += Math.floor(bonus.min * potential);
-        distribution.varHit += Math.floor((bonus.max - bonus.min) * potential);
-    });
-    object.likelihood = pending.likelihood;
-    (object as any).targetIndex = (pending as any).targetIndex;
-    return on_hit(settings, object, timers, ABILITIES.BOLG_PROC);
+    const previousSnapshot = settings._castBuffSnapshot;
+    settings._castBuffSnapshot = {damageBuffs: bonus.damageBuffs, wenDamage: false, wenAccuracy: false};
+    try {
+        let object = on_cast(settings, create_damage_object(settings, ABILITIES.BOLG_PROC), timers, ABILITIES.BOLG_PROC)[0];
+        const potential = damagePotential(settings, ABILITIES.BOLG_PROC);
+        iterateDistributions(object, distribution => {
+            distribution.minHit += Math.floor(bonus.min * potential);
+            distribution.varHit += Math.floor((bonus.max - bonus.min) * potential);
+        });
+        object.likelihood = pending.likelihood;
+        (object as any).targetIndex = (pending as any).targetIndex;
+        return on_hit(settings, object, timers, ABILITIES.BOLG_PROC);
+    } finally {
+        if (previousSnapshot === undefined) delete settings._castBuffSnapshot;
+        else settings._castBuffSnapshot = previousSnapshot;
+    }
 }
 
 /**

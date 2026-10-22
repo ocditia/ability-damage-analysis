@@ -1,3 +1,4 @@
+import {damageBuffActive} from '../castDamageBuffs';
 /**
  * Melee-specific damage calculation effects
  */
@@ -167,12 +168,12 @@ function applyMultiplicativeEffects(
     const { settings, abilityKey } = ctx;
 
     // Berserk
-    if (settings[SETTINGS.BERSERK] === true) {
+    if (damageBuffActive(settings, SETTINGS.BERSERK)) {
         boost = Math.floor(boost * 1.75);
     }
 
     // ZGS Blackhole
-    if (settings[SETTINGS.BLACKHOLE] === true) {
+    if (damageBuffActive(settings, SETTINGS.BLACKHOLE)) {
         boost = Math.floor(boost * 1.25);
     }
 

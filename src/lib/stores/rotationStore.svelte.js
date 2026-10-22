@@ -24,6 +24,7 @@ export const rotationStore = $state({
     tickEvents: Array(BAR_SIZE).fill(null),
     secondaryDamage: {},
     secondaryHits: [],
+    phaseDamagePerTick: [],
     abilityBar: Array(BAR_SIZE).fill(null),
     extraActionBar: Array(BAR_SIZE).fill(null),
     nulledTicks: Array(BAR_SIZE).fill(false),
@@ -470,6 +471,7 @@ export const rotationActions = {
         rotationStore.totalDamage = dmgResult.regularDamage;
         rotationStore.secondaryDamage = dmgResult.secondaryDamage ?? {};
     rotationStore.secondaryHits = dmgResult.secondaryHits ?? [];
+        rotationStore.phaseDamagePerTick = dmgResult.phaseDamagePerTick ?? [];
         rotationStore.poisonDamage = dmgResult.poisonDamage;
         rotationStore.familiarDamage = dmgResult.familiarDamage;
         rotationStore.dreadnipDamage = dmgResult.dreadnipDamage || 0;
