@@ -1,8 +1,18 @@
 <script lang="ts">
+    import { LatestWorker } from '$lib/utils/latestWorker';
+    import { snapshotEditorCalculation } from '$lib/calc/rotation_builder/editorCalculation';
+    import { timelineRows } from '$lib/calc/rotation_builder/timelineRows';
+    import { fightTime } from '$lib/calc/rotation_builder/fightTime';
+    import { showTimelineStack } from '$lib/calc/rotation_builder/stackDisplay';
+    import { damageBetween } from '$lib/calc/rotation_builder/phaseDamage';
+    import ShiftRotation from '$components/RotationBuilder/ShiftRotation.svelte';
+    import { tickConditionLabel } from '$lib/calc/rotation_builder/tickEvents';
 	import { onMount, onDestroy } from 'svelte';
 	import Navbar from '$components/Layout/Navbar.svelte';
-	import Header from '$components/Layout/Header.svelte';
+    import RotationDamageSummary from '$components/RotationBuilder/RotationDamageSummary.svelte';
+    import { ToolMode } from '$lib/calc/rotation_builder/ui_material/toolModes';
     import { abils } from '$lib/data/abilities';
+    import { paletteAbilities } from '$lib/data/abilityPalette';
 	import { settingsConfig, SETTINGS } from '$lib/calc/settings_rb';
     import RotationSettings from '../../components/Settings/RotationSettings.svelte';
     import AbilityChoice from '../../components/RotationBuilder/AbilityChoice.svelte';
@@ -10,7 +20,7 @@
     import DamageDistributionChart from '../../components/RotationBuilder/DamageDistributionChart.svelte';
 	import TabButton from '../../components/UI/TabButton.svelte';
     import GradientSeparator from '../../components/UI/GradientSeparator.svelte';
-    import PillToggle from '../../components/UI/PillToggle.svelte';
+
     import Popup from '../../components/UI/Popup.svelte';
     import RotationConfigManager from '../../components/RotationBuilder/RotationConfigManager.svelte';
     import KeybindConfigModal from '../../components/RotationBuilder/KeybindConfigModal.svelte';
@@ -19,13 +29,13 @@
     import * as eventHandlers from '$lib/utils/rotationEventHandlers';
     import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
     import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
-    import { rotationStore } from '$lib/stores/rotationStore.svelte.js';
+    import { rotationStore, rotationActions } from '$lib/stores/rotationStore.svelte.js';
     import { settingsStore } from '$lib/stores/settingsStore.svelte.js';
     import { getBossPresetWithEnrage, type BossAttack, type BossAttackPattern } from '$lib/data/bosses/boss_presets';
     import { suggestNextAbility, resolveTumekensAsphyxiate, type AbilitySuggestion } from '$lib/calc/rotation_builder/rotation-damage-calculator';
 
     const filterByStyle = (style) => Object.fromEntries(
-        Object.entries(abils).filter(([, a]) => a.title && a.mainStyle === style)
+        Object.entries(paletteAbilities).filter(([, a]) => a.title && !a.parent && (a.mainStyle === style || a.shared))
     );
     const rangedAbils = filterByStyle('ranged');
     const magicAbils = filterByStyle('magic');
@@ -35,6 +45,62 @@
 	// let defAbils = {...def_abilities};
     let allAbils = {...abils};
 
+    function validRelease(tick) {
+        let pending = null;
+        for (let i = 0; i < tick; i++) {
+            if (rotationStore.stalledAbilities[i]) pending = rotationStore.stalledAbilities[i];
+            if (rotationStore.releasedAbilities[i] || rotationStore.abilityBar[i]) pending = null;
+        }
+        return pending === rotationStore.releasedAbilities[tick];
+    }
+
+    function addFromPalette(event, key) {
+        const ability = paletteAbilities[key];
+        if (ability.offGcd) {
+            const tick = uiStore.extraActions.show ? uiStore.extraActions.tick : Math.min(299, uiStore.bar.index);
+            uiActions.showExtraActions(tick, rotationStore.abilityBar[tick]);
+            uiStore.settingsPanelCollapsed = false;
+            if (uiStore.extraActions.barIndex >= 12) {
+                notifActions.showNotification('Tick is full', 'Remove an extra action at this tick before adding another.', 'warning');
+                return;
+            }
+            rotationStore.extraActionBar[tick] ??= Array(12).fill(null);
+            rotationStore.extraActionBar[tick][uiStore.extraActions.barIndex] = { type: 'ability', value: key, title: ability.title, icon: ability.icon };
+            refreshUI();
+            return;
+        }
+        handleAbilityClick(event, ability.actionKey ?? key);
+    }
+    function dragFromPalette(event, key) {
+        const ability = paletteAbilities[key];
+        if (uiStore.activeTool === ToolMode.Stall && !ability.offGcd) {
+            if (!eventHandlers.canStall(key)) { event.preventDefault(); return; }
+            event.dataTransfer.setData('text/plain', JSON.stringify({kind:'stall', ability:key}));
+            return;
+        }
+        handleDragStart(event, ability.actionKey ?? key);
+    }
+
+    let abilitySearch = $state('');
+    let expandedTicks = $state(60);
+    let showFullTimeline = $state(false);
+    let showFightTime = $state(false);
+    const modes = [
+        { value: ToolMode.Regular, label: 'Edit', key: 'E', hint: 'Click an ability to append it. Drag to place or move it. Click a tick to inspect; right-click to remove.' },
+        { value: ToolMode.Release, label: 'Release', key: 'R', hint: 'Release appends the held ability at the next GCD tick. Drag its icon to move it; the next ability shares that tick.' },
+        { value: ToolMode.Stall, label: 'Stall', key: 'S', hint: 'Click an ability to stall it at the next GCD, or drag it onto a tick. Stall spends or gains adrenaline without hits.' },
+        { value: ToolMode.Null, label: 'Null', key: 'N', hint: 'Click ticks to toggle zero damage. Buffs and stacks still apply.' },
+        { value: ToolMode.Insert, label: 'Insert ticks', key: 'I', hint: 'Click a tick to insert time before it. Right-click to remove time and shift the rotation left.' }
+    ];
+    let usedTicks = $derived.by(() => {
+        let last = -1;
+        for (let i = 0; i < rotationStore.abilityBar.length; i++) {
+            if (rotationStore.tickEvents[i] || rotationStore.targetCounts[i] != null || rotationStore.abilityBar[i] || rotationStore.stalledAbilities[i] || rotationStore.releasedAbilities[i] || rotationStore.nulledTicks[i] || rotationStore.extraActionBar[i]?.some(Boolean)) last = i;
+        }
+        return last + 1;
+    });
+    let visibleTicks = $derived(showFullTimeline ? rotationStore.abilityBar.length : Math.min(rotationStore.abilityBar.length, Math.max(expandedTicks, Math.ceil((usedTicks + 12) / 30) * 30)));
+
     // Keybind modal state
     let showKeybindModal = $state(false);
     let showKeypressModal = $state(false);
@@ -43,7 +109,6 @@
 	const stackFontSize = 10;
 	const baseStackOffset = 42;
 	const stackPadding = 5;
-	const buffLineWidth = 42;
 	const buffLineHeight = 6;
 	const CELL_SIZE = 40;
 	const BASE_ROW_HEIGHT = 40;
@@ -93,16 +158,19 @@
 	let rowLayoutData = $state<Array<{
 		startIndex: number;
 		endIndex: number;
+        gridRow: number;
+        sectionTitle?: string;
+        sectionEnd?: number;
 		activeBuffs: string[];
 		buffIndices: Record<string, number>;
-		buffCount: number;  // Number of active buffs on this row (for stack positioning)
+		buffCount: number;  // Reserved lanes through the lowest active buff on this row
 		height: number;
 		activeStacks: string[];
 		stackIndices: Record<string, number>;
 	}>>([]);
 	let resizeObserver: ResizeObserver | null = null;
 
-	// Calculate which buffs are active on each visual row and assign compact indices
+	// Allocate buff lanes once for the rotation, independent of wrapping and viewport width.
 	function recalculateRowLayout() {
 		if (!abilityBarElement) return;
 
@@ -110,20 +178,26 @@
 		const newColumnsPerRow = Math.max(1, Math.floor(containerWidth / CELL_SIZE));
 		columnsPerRow = newColumnsPerRow;
 
-		const totalSlots = rotationStore.abilityBar.length;
-		const numRows = Math.ceil(totalSlots / columnsPerRow);
-		const newRowData: typeof rowLayoutData = [];
+		const totalSlots = visibleTicks;
 
-		for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
-			const startIndex = rowIndex * columnsPerRow;
-			const endIndex = Math.min(startIndex + columnsPerRow, totalSlots);
+		const newRowData: typeof rowLayoutData = [];
+        const buffLanes: Record<string, number> = {};
+        // First activation determines the order; keep that order across every wrapped row.
+        const orderedBuffs = Object.keys(rotationStore.buffs)
+            .filter(key => rotationStore.buffs[key].activeRows?.length)
+            .sort((a, b) => Math.min(...rotationStore.buffs[a].activeRows) - Math.min(...rotationStore.buffs[b].activeRows));
+        orderedBuffs.forEach((key, index) => { buffLanes[key] = index; });
+        const activeBuffTicks = Object.fromEntries(orderedBuffs.map(key =>
+            [key, new Set(rotationStore.buffs[key].activeRows)]));
+
+        for (const row of timelineRows(rotationStore.tickEvents, totalSlots, columnsPerRow)) {
+            const { startIndex, endIndex } = row;
 
 			// Find which buffs are active on any tick in this row
 			const activeBuffsSet = new Set<string>();
 			for (let i = startIndex; i < endIndex; i++) {
-				for (const buffKey of Object.keys(rotationStore.buffs)) {
-					const buff = rotationStore.buffs[buffKey];
-					if (buff.activeRows && buff.activeRows.includes(i)) {
+				for (const buffKey of orderedBuffs) {
+					if (activeBuffTicks[buffKey].has(i)) {
 						activeBuffsSet.add(buffKey);
 					}
 				}
@@ -134,18 +208,19 @@
 			for (let i = startIndex; i < endIndex; i++) {
 				for (const stackKey of Object.keys(rotationStore.stacks)) {
 					const stack = rotationStore.stacks[stackKey];
-					if (stack.idx >= 0 && stack.stackTicks && showStack(i, stack.stackTicks)) {
+					if (stack.idx >= 0 && stack.stackTicks && showTimelineStack(stackKey, i, stack.stackTicks)) {
 						activeStacksSet.add(stackKey);
 					}
 				}
 			}
 
-			// Assign compact local indices to active buffs (0, 1, 2...)
+			// Preserve empty lanes when another buff ends or starts on a different row.
 			const activeBuffs = [...activeBuffsSet];
 			const buffIndices: Record<string, number> = {};
-			activeBuffs.forEach((buffKey, idx) => {
-				buffIndices[buffKey] = idx;
+			activeBuffs.forEach(buffKey => {
+				buffIndices[buffKey] = buffLanes[buffKey];
 			});
+            const buffCount = activeBuffs.length ? Math.max(...activeBuffs.map(key => buffLanes[key])) + 1 : 0;
 
 			// Assign compact local indices to active stacks
 			const activeStacks = [...activeStacksSet];
@@ -156,7 +231,7 @@
 
 			// Calculate row height: base slot height + space for buffs below + space for stacks below buffs + constant gap
 			// Buff bars extend below slot: initial 9px offset + 6px per buff
-			const buffSpace = activeBuffs.length > 0 ? 9 + activeBuffs.length * buffLineHeight : 0;
+			const buffSpace = buffCount > 0 ? 9 + buffCount * buffLineHeight : 0;
 			// Stacks positioned below buffs: each stack takes ~12px
 			const stackSpace = activeStacks.length * (stackFontSize + stackPadding);
 			// Additional padding when there's content below the slot
@@ -166,11 +241,12 @@
 			const height = BASE_ROW_HEIGHT + buffSpace + stackSpace + contentPadding + patternSpace + ROW_GAP;
 
 			newRowData.push({
+                ...row,
 				startIndex,
 				endIndex,
 				activeBuffs,
 				buffIndices,
-				buffCount: activeBuffs.length,
+				buffCount,
 				height,
 				activeStacks,
 				stackIndices
@@ -182,7 +258,7 @@
 
 	// Get the local buff index for a specific tick
 	function getBuffLocalIndex(buffKey: string, tickIndex: number): number {
-		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowIndex = rowLayoutData.findIndex(row => tickIndex >= row.startIndex && tickIndex < row.endIndex);
 		const rowData = rowLayoutData[rowIndex];
 		if (!rowData) return -1;
 		return rowData.buffIndices[buffKey] ?? -1;
@@ -190,7 +266,7 @@
 
 	// Get the local stack index for a specific tick
 	function getStackLocalIndex(stackKey: string, tickIndex: number): number {
-		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowIndex = rowLayoutData.findIndex(row => tickIndex >= row.startIndex && tickIndex < row.endIndex);
 		const rowData = rowLayoutData[rowIndex];
 		if (!rowData) return -1;
 		return rowData.stackIndices[stackKey] ?? -1;
@@ -198,7 +274,7 @@
 
 	// Get the local buff count for a specific tick (used for stack positioning)
 	function getLocalBuffCount(tickIndex: number): number {
-		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowIndex = rowLayoutData.findIndex(row => tickIndex >= row.startIndex && tickIndex < row.endIndex);
 		const rowData = rowLayoutData[rowIndex];
 		if (!rowData) return 0;
 		return rowData.buffCount;
@@ -217,7 +293,7 @@
 	// Calculate the vertical offset for the boss attack pattern row
 	function getPatternTopOffset(tickIndex: number): number {
 		const localBuffCount = getLocalBuffCount(tickIndex);
-		const rowIndex = Math.floor(tickIndex / columnsPerRow);
+		const rowIndex = rowLayoutData.findIndex(row => tickIndex >= row.startIndex && tickIndex < row.endIndex);
 		const rowData = rowLayoutData[rowIndex];
 		const localStackCount = rowData ? rowData.activeStacks.length : 0;
 		const buffSpace = localBuffCount > 0 ? (buffLineHeight * 1.5) + (localBuffCount * buffLineHeight) : 0;
@@ -326,14 +402,47 @@
 	// Generate CSS for grid-template-rows based on calculated row heights
 	function getGridTemplateRows(): string {
 		if (rowLayoutData.length === 0) return '';
-		return rowLayoutData.map(row => `${row.height}px`).join(' ');
+		return rowLayoutData.flatMap(row => row.sectionTitle ? ['52px', `${row.height}px`] : [`${row.height}px`]).join(' ');
 	}
 
+    let draftReady = $state(false);
+    let draftTimer;
+    let lastDraftSnapshot = '';
+    function draftSnapshot() {
+        return JSON.stringify({data: rotationActions.getCurrentRotationData(), style: uiStore.activeTab, id: rotationStore.activeRotationId});
+    }
+    function flushDraft() {
+        clearTimeout(draftTimer);
+        if (draftReady && draftSnapshot() !== lastDraftSnapshot) {
+            if (rotationActions.saveDraft(uiStore.activeTab)) lastDraftSnapshot = draftSnapshot();
+        }
+    }
+    $effect(() => {
+        if (!draftReady) return;
+        const snapshot = draftSnapshot();
+        if (snapshot !== lastDraftSnapshot) {
+            clearTimeout(draftTimer);
+            draftTimer = setTimeout(flushDraft, 250);
+        }
+    });
+
 	onMount(() => {
+        const draft = rotationActions.restoreDraft();
+        if (['ranged', 'magic', 'melee', 'necro', 'defence'].includes(draft?.style)) uiStore.activeTab = draft.style;
+        if (draft) refreshUI();
+        lastDraftSnapshot = draftSnapshot();
+        draftReady = true;
+        const onHidden = () => { if (document.visibilityState === 'hidden') flushDraft(); };
+        window.addEventListener('pagehide', flushDraft);
+        document.addEventListener('visibilitychange', onHidden);
 		// Set up ResizeObserver to recalculate on container resize
-		resizeObserver = new ResizeObserver(() => {
-			recalculateRowLayout();
-		});
+        let previousWidth = -1;
+        resizeObserver = new ResizeObserver(entries => {
+            const width = entries[0]?.contentRect.width;
+            if (width === previousWidth) return;
+            previousWidth = width;
+            recalculateRowLayout();
+        });
 
 		// Initial calculation after DOM is ready
 		setTimeout(() => {
@@ -342,6 +451,7 @@
 				recalculateRowLayout();
 			}
 		}, 0);
+        return () => { flushDraft(); window.removeEventListener('pagehide', flushDraft); document.removeEventListener('visibilitychange', onHidden); };
 	});
 
 	onDestroy(() => {
@@ -379,14 +489,14 @@
 	let suggestionsCollapsed = $state(false);
 
 	// Wrapper functions for event handlers
-	function calculateTotalDamageNew() {
+	function calculateSynchronously() {
 		eventHandlers.calculateTotalDamageNew();
 
 		if (uiStore.showSuggestions.value && rotationStore._finalState && rotationStore._finalSettings) {
 			const style = uiStore.activeTab ?? 'melee';
 			const styleMap = { ranged: 'ranged', magic: 'magic', melee: 'melee', necro: 'necromancy' };
 			const candidates = Object.entries(abils)
-				.filter(([, a]) => a.title && a.mainStyle === styleMap[style])
+				.filter(([, a]) => a.title && !a.parent && a.mainStyle === styleMap[style])
 				.map(([key]) => key);
 			suggestions = suggestNextAbility(
 				rotationStore._finalState,
@@ -397,6 +507,49 @@
 			suggestions = [];
 		}
 	}
+
+    let calculationPending = $state(false);
+    let calculationWorker: LatestWorker | undefined;
+    let workerFailed = false;
+    function calculateTotalDamageNew() {
+        if (typeof Worker === 'undefined' || workerFailed) {
+            calculateSynchronously();
+            return;
+        }
+        calculationPending = true;
+        if (!calculationWorker) {
+            try {
+                calculationWorker = new LatestWorker(new Worker(
+                    new URL('../../lib/calc/rotation_builder/editor.worker.ts', import.meta.url), {type: 'module'}),
+                    data => {
+                        eventHandlers.calculateTotalDamageNew(data.result);
+                        for (const [key, buff] of Object.entries(data.buffs)) Object.assign(rotationStore.buffs[key], buff);
+                        for (const [key, ticks] of Object.entries(data.stacks)) rotationStore.stacks[key].stackTicks = ticks;
+                        rotationStore.cooldownReady = data.cooldownReady;
+                        suggestions = data.suggestions;
+                        eventHandlers.refreshUI(false, stores, calculateTotalDamageNew);
+                        calculationPending = false;
+                    }, error => {
+                        console.error(error);
+                        calculationWorker?.close();
+                        calculationWorker = undefined;
+                        workerFailed = true;
+                        calculationPending = false;
+                        calculateSynchronously();
+                        eventHandlers.refreshUI(false, stores, calculateTotalDamageNew);
+                    });
+            } catch (error) {
+                workerFailed = true;
+                calculationPending = false;
+                calculateSynchronously();
+                return;
+            }
+        }
+        // A replaced ability must use its own duration while new results are pending.
+        rotationStore.tickMetadata = {};
+        calculationWorker.request({input: snapshotEditorCalculation()});
+    }
+    onDestroy(() => calculationWorker?.close());
 
 	function refreshUI(calcDmg = true) {
 		eventHandlers.refreshUI(calcDmg, stores, calculateTotalDamageNew);
@@ -449,8 +602,23 @@
         eventHandlers.handleBarRightClick(event, index, innerIdx, stores, refreshUI, calculateTotalDamageNew);
     }
 
+    function selectMode(mode) {
+        if (mode === ToolMode.Release) eventHandlers.appendRelease(stores, calculateTotalDamageNew, refreshUI);
+        else uiActions.setActiveTool(mode);
+    }
     function handleKeypress(event: KeyboardEvent) {
+        const target = event.target as HTMLElement;
+        if (target?.isContentEditable || ['INPUT','TEXTAREA','SELECT'].includes(target?.tagName) || event.ctrlKey || event.metaKey || event.altKey) return;
+        if (event.key.toLowerCase() === 'r') {
+            event.preventDefault();
+            if (!event.repeat) selectMode(ToolMode.Release);
+            return;
+        }
         eventHandlers.handleKeypress(event, stores);
+    }
+    function dragTimelineAction(event, kind, ability, startIndex) {
+        event.stopPropagation();
+        event.dataTransfer.setData('text/plain', JSON.stringify({kind, ability, startIndex}));
     }
 
     function focusOnMount(node: HTMLElement) {
@@ -517,8 +685,11 @@
                 map[i] = 'GCD active';
             }
 
-            // Check cooldown violation (use original key for cooldown tracking)
-            if (cooldownExpiry[abilKey] && i < cooldownExpiry[abilKey]) {
+            // Prefer simulated timers, including buff reductions and cooldown resets.
+            const onCooldown = meta?.cooldownRemaining !== undefined
+                ? meta.cooldownRemaining > 0
+                : cooldownExpiry[abilKey] && i < cooldownExpiry[abilKey];
+            if (onCooldown) {
                 const existing = map[i];
                 map[i] = existing ? `${existing} + On cooldown` : 'On cooldown';
             }
@@ -574,9 +745,13 @@
 </script>
 
 <Navbar />
-<Header img="/rs-rot/range_background.png" text="Rotation Calculator Beta" icon="/rs-rot/style_icons/rota_icon.svg" />
+<svelte:head><title>Rotation builder | RS Analysis</title></svelte:head>
+<header class="builder-heading">
+    <div><h1>Rotation builder</h1></div>
+    <a href="/rs-rot/rotation_builder_guide">Builder guide</a>
+</header>
 
-<div class="space-y-14 mt-10 z-20">
+<div class="builder-page">
 	<div class="responsive-container {uiStore.activeTool.toLowerCase()}-cursor {uiStore.stallingAbility ? 'stalling' : ''}"
 		tabindex="-1"
 		role="button"
@@ -595,40 +770,15 @@
                         </button>
 					{/if}
 					<div class="rotation-title-row">
-						<h1 class="rotation-header">{bossName}{#if killTime} <em>{killTime}</em>{/if}</h1>
+						<h2 class="rotation-header">{bossName === "ROTATION" ? "Your rotation" : bossName}{#if killTime} <em>{killTime}</em>{/if}</h2>
 						<button class="reset-btn" onclick={clearRotation} title="Reset rotation">Reset</button>
-						<div class="damage-summary">
-							<span class="dmg-total">{(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage + rotationStore.conjureDamage).toLocaleString()}</span>
-							{#if rotationStore.totalDamage > 0 || rotationStore.poisonDamage > 0 || rotationStore.familiarDamage > 0 || rotationStore.dreadnipDamage > 0 || rotationStore.conjureDamage > 0}
-							    <span class="dmg-breakdown">(<span class="dmg-val">{rotationStore.totalDamage.toLocaleString()}</span>{#if rotationStore.poisonDamage > 0} + <span class="dmg-val poison">{rotationStore.poisonDamage.toLocaleString()}</span>{/if}{#if rotationStore.familiarDamage > 0} + <span class="dmg-val familiar">{rotationStore.familiarDamage.toLocaleString()}</span>{/if}{#if rotationStore.dreadnipDamage > 0} + <span class="dmg-val dreadnip">{rotationStore.dreadnipDamage.toLocaleString()}</span>{/if}{#if rotationStore.conjureDamage > 0} + <span class="dmg-val conjure">{rotationStore.conjureDamage.toLocaleString()}</span>{/if})</span>
-							{/if}
-						</div>
+						<div class="damage-summary"><span class="damage-label">Total damage - all targets</span>
+<span class="dmg-total">{Math.round(rotationStore.totalDamage + rotationStore.poisonDamage + rotationStore.familiarDamage + rotationStore.dreadnipDamage + rotationStore.conjureDamage + Object.values(rotationStore.secondaryDamage).reduce((sum, value) => sum + Number(value), 0)).toLocaleString()}</span></div>
 					</div>
 
-					<GradientSeparator marginTop="0.0rem" marginBottom="1.5rem" />
+					<GradientSeparator marginTop="0.0rem" marginBottom="0.75rem" />
 
-					<!-- Damage Distribution Chart -->
-					<DamageDistributionChart
-						distributionStats={rotationStore.distributionStats}
-						totalDamage={rotationStore.totalDamage}
-						poisonDamage={rotationStore.poisonDamage}
-						familiarDamage={rotationStore.familiarDamage}
-						dreadnipDamage={rotationStore.dreadnipDamage}
-						conjureDamage={rotationStore.conjureDamage}
-						poisonPerTick={rotationStore.poisonPerTick}
-						familiarPerTick={rotationStore.familiarPerTick}
-						familiarVariancePerTick={rotationStore.familiarVariancePerTick}
-						dreadnipPerTick={rotationStore.dreadnipPerTick}
-						dreadnipVariancePerTick={rotationStore.dreadnipVariancePerTick}
-						conjurePerTick={rotationStore.conjurePerTick}
-						conjureVariancePerTick={rotationStore.conjureVariancePerTick}
-						{allAbils}
-						familiarKey={settingsStore.settings[SETTINGS.FAMILIAR]?.value ?? 'none'}
-						phaseTransitions={rotationStore.phaseTransitions}
-						barSize={uiStore.bar.size}
-						patternStartTick={settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? -1}
-						hasBossPreset={settingsStore.settings[SETTINGS.BOSS_PRESET]?.value && settingsStore.settings[SETTINGS.BOSS_PRESET]?.value !== 'none'}
-					/>
+                    <RotationDamageSummary {showFightTime} startTick={patternStartTick} />
 
                     <RotationConfigManager
                         {refreshUI}
@@ -636,7 +786,7 @@
                         onShowKeypresses={() => showKeypressModal = true}
                     />
 
-                    <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center items-center">
+                    <ul class="style-tabs flex flex-wrap text-sm font-medium text-center items-center">
                         {#each tabs as tab}
                             <TabButton
                                 id={tab.id}
@@ -646,43 +796,55 @@
                                 onClick={() => uiActions.setActiveTab(tab.id)}
                             />
                         {/each}
-                        <li class="ml-auto mr-2">
-                            <PillToggle
-                                value={uiStore.abilityFilter}
-                                onchange={() => uiActions.cycleAbilityFilter()}
-                            />
-                        </li>
                     </ul>
-					<br>
+                    <div class="library-controls">
+                        <label class="search-label">Find an ability<input type="search" placeholder="Search this combat style..." bind:value={abilitySearch} /></label>
+                        <span class="all-abilities-note">All abilities shown unless you hide them</span>
+                    </div>
                     {#each tabs as tab}
                         {#if uiStore.activeTab === tab.id}
                             <AbilityChoice
+                                search={abilitySearch}
                                 abilities={tab.abilities}
-                                handleAbilityClick={handleAbilityClick}
-                                handleDragStart={handleDragStart}
+                                handleAbilityClick={addFromPalette}
+                                handleDragStart={dragFromPalette}
                                 style={tab.id}
-                                filter={uiStore.abilityFilter}
                             />
                         {/if}
 					{/each}
-	                <div
-						bind:this={abilityBarElement}
+	                <div class="timeline-heading"><h2>Timeline</h2><label class="time-toggle"><input type="checkbox" bind:checked={showFightTime} /> Fight time (seconds)</label><span role="status">{calculationPending ? 'Updating damage...' : showFightTime ? 'Time from Start Tick; negative = pre-fight' : '1 tick = 0.6 seconds'}</span></div>
+                    <div class="edit-toolbar" role="group" aria-label="Editing mode">
+                        {#each modes as mode}<button class:active={uiStore.activeTool === mode.value} aria-pressed={uiStore.activeTool === mode.value} onclick={() => selectMode(mode.value)}>{mode.label} <kbd>{mode.key}</kbd></button>{/each}
+                    </div>
+                    <p class="mode-hint">{modes.find(mode => mode.value === uiStore.activeTool)?.hint}</p>
+                    <ShiftRotation {refreshUI} />
+                    {#if !usedTicks}<div class="timeline-empty"><strong>Add your first ability above</strong><span>Abilities append at the next available tick. Configure your gear in Settings to get meaningful damage estimates.</span></div>{/if}
+                    <div
+                        bind:this={abilityBarElement}
 						style="grid-template-rows: {getGridTemplateRows()}; grid-template-columns: repeat({columnsPerRow}, {CELL_SIZE}px);"
 						class="ability-bar"
 					>
-                        {#each rotationStore.abilityBar as ability, index (index)}
+                        {#each rowLayoutData as row}
+                            {#if row.sectionTitle}<div class="timeline-section-heading" style="grid-column: 1 / -1; grid-row: {row.gridRow - 1}"><strong>{row.sectionTitle}</strong><span>{showFightTime ? `${fightTime(row.startIndex, patternStartTick)} to ${fightTime(row.sectionEnd ?? row.endIndex - 1, patternStartTick)}` : `Ticks ${row.startIndex} to ${row.sectionEnd}`}</span><span>{Math.round(damageBetween(rotationStore.phaseDamagePerTick, row.startIndex, row.sectionEnd ?? row.endIndex - 1)).toLocaleString()} damage</span></div>{/if}
+                        {/each}
+                        {#each rotationStore.abilityBar.slice(0, visibleTicks) as ability, index (index)}
+                            {@const visualRow = rowLayoutData.find(row => index >= row.startIndex && index < row.endIndex)}
                             <button
+                                style={visualRow ? `grid-row: ${visualRow.gridRow}; grid-column: ${index - visualRow.startIndex + 1}` : undefined}
                                 class="ability-slot"
                                 class:highlight-red={uiStore.dragDrop.hoveredSlot === index && !uiStore.dragDrop.validSlot}
                                 class:highlight-green={uiStore.dragDrop.hoveredSlot === index && uiStore.dragDrop.validSlot}
                                 class:nulled={rotationStore.nulledTicks[index]}
                                 class:selected-tick={uiStore.extraActions.show && uiStore.extraActions.tick === index}
+                                class:combined-cast={!!ability && !!rotationStore.releasedAbilities[index]}
                                 class:has-extra-actions={rotationStore.extraActionBar[index]?.some(action => action !== null)}
                                 class:has-damage={damageTicks.has(index)}
                                 class:invalid-placement={invalidTicks[index] && ability}
                                 class:phase-pause={pauseTickSet.has(index)}
+                                class:tick-event={!!rotationStore.tickEvents[index]}
+                                title={tickConditionLabel(rotationStore.tickEvents[index])}
                                 tabindex="0"
-                                aria-label="Ability slot"
+                                aria-label={`Tick ${index}, ${(index * 0.6).toFixed(1)} seconds: ${ability ? allAbils[ability]?.title ?? ability : "empty"}`}
                                 onclick={(e) => handleBarLeftClick(e, ability, index)}
                                 oncontextmenu={(e) => handleBarRightClick(e, index)}
                                 ondrop={(e) => handleDrop(e, index)}
@@ -690,9 +852,9 @@
                                 ondragenter={(e) => handleDragEnter(e, index)}
                                 ondragleave={(e) => handleDragLeave(e, index)}
                             >
-                                <span class="cell-number">{index}</span>
+                                <span class="cell-number" class:time-number={showFightTime} title={`Tick ${index} · ${fightTime(index, patternStartTick)} from fight start`}>{showFightTime ? fightTime(index, patternStartTick) : index}{rotationStore.tickEvents[index]?.phase ? " P" : rotationStore.tickEvents[index]?.accuracy != null ? " %" : rotationStore.tickEvents[index] ? " *" : ""}</span>
                                 {#if ability && allAbils[ability]}
-                                    <img src={allAbils[ability].icon}
+                                    <img class="regular-ability" src={allAbils[ability].icon}
                                         alt={allAbils[ability].title}
                                         style="width: 100%; height: 100%;"
                                         title="{allAbils[ability].title}{invalidTicks[index] ? ` (${invalidTicks[index]})` : ''}"
@@ -712,10 +874,17 @@
                                     <img
                                         class="stalled-ability"
                                         src={allAbils[rotationStore.stalledAbilities[index]].icon}
+                                        draggable="true" ondragstart={(e) => dragTimelineAction(e, 'stall', rotationStore.stalledAbilities[index], index)}
                                         alt="Stalled ability"
                                         title="Stalled: {allAbils[rotationStore.stalledAbilities[index]].title}"
                                     />
                                 {/if}
+                                {#if rotationStore.stalledAbilities[index]}<span class="stall-label" title="Stalled: adrenaline only">S</span>{/if}
+                                {#if rotationStore.releasedAbilities[index] && allAbils[rotationStore.releasedAbilities[index]]}
+                                    <img class="released-ability" draggable="true" ondragstart={(e) => dragTimelineAction(e, 'release', rotationStore.releasedAbilities[index], index)} src={allAbils[rotationStore.releasedAbilities[index]].icon} alt="Released ability" title="Release: {allAbils[rotationStore.releasedAbilities[index]].title}" />
+                                    <span class="stall-label release-label" class:invalid-release={!validRelease(index)} title={validRelease(index) ? "Release held ability" : "No matching held ability: this release does no damage"}>R</span>
+                                {/if}
+                                {#if ability && rotationStore.releasedAbilities[index]}<span class="cast-divider" aria-hidden="true"></span>{/if}
                                 {#if rotationStore.cooldownReady[index]}
                                     {@const cdList = rotationStore.cooldownReady[index]}
                                     <div class="cooldown-ready-container" class:has-overflow={cdList.length > 1}>
@@ -738,8 +907,8 @@
                                 {/if}
                                 {#if rotationStore.extraActionBar[index]?.some(a => a !== null)}
                                     {@const extraActions = rotationStore.extraActionBar[index].filter(a => a !== null)}
-                                    <div class="extra-action-preview">
-                                        {#each extraActions as action}
+                                    <div class="extra-action-preview" title={extraActions.map(a => a.title || allExtraActions[a]?.title || a.value || a).join(", ")}>
+                                        {#each extraActions.slice(0, 1) as action}
                                             {@const icon = action.icon || allExtraActions[action]?.icon || ''}
                                             {@const title = action.title || allExtraActions[action]?.title || ''}
                                             {#if icon}
@@ -748,9 +917,10 @@
                                                 </div>
                                             {/if}
                                         {/each}
+                                        {#if extraActions.length > 1}<span class="extra-count">+{extraActions.length - 1}</span>{/if}
                                     </div>
                                 {/if}
-                                {#if phaseTickMap.has(index)}
+                                {#if phaseTickMap.has(index) && !rotationStore.tickEvents[index]?.phase}
                                     {@const marker = phaseTickMap.get(index)}
                                     <div class="phase-marker" title="{marker.label} @ tick {marker.tick} ({marker.hp.toLocaleString()} total dmg)">
                                         <span class="phase-label">{marker.label}</span>
@@ -768,7 +938,7 @@
                                             position: absolute;
                                             bottom: {-(buffLineHeight * 1.5) - (buffLineHeight * getBuffLocalIndex(key, index))}px;
                                             left: -1px;
-                                            width: {buffLineWidth}px;
+                                            width: calc(100% + 2px); pointer-events: none;
                                             height: {buffLineHeight}px;
                                             background-color: {rotationStore.buffs[key].colour};
                                             box-sizing: border-box; ">
@@ -776,7 +946,7 @@
                                     {/if}
                                 {/each}
                                 {#each Object.keys(rotationStore.stacks) as key}
-                                    {#if showStack(index, rotationStore.stacks[key].stackTicks) && getStackLocalIndex(key, index) >= 0}
+                                    {#if showTimelineStack(key, index, rotationStore.stacks[key].stackTicks) && getStackLocalIndex(key, index) >= 0}
                                         {@const localStackIdx = getStackLocalIndex(key, index)}
                                         {@const stackTop = getStackTopOffset(index, localStackIdx)}
                                         <span
@@ -825,11 +995,46 @@
                             </button>
                         {/each}
                     </div>
+                    <div class="timeline-footer"><span>Showing {visibleTicks} of 300 ticks</span>
+                        {#if visibleTicks < 300}<button onclick={() => expandedTicks = Math.min(300, visibleTicks + 30)}>+ 30 ticks</button>{/if}
+                        <label><input type="checkbox" bind:checked={showFullTimeline} /> Show all ticks</label>
+                    </div>
+                    {#if rotationStore.targetCounts.some(v => v != null)}
+                        <div class="tick-help"><strong>Target-count changes</strong>
+                            {#each rotationStore.targetCounts as count, tick}{#if count != null}<span> &middot; Tick {tick}: {count} target{count === 1 ? '' : 's'}</span>{/if}{/each}
+                        </div>
+                    {/if}
+                    <details class="results-panel" open><summary>Damage analysis - main target</summary>
+					<!-- Damage Distribution Chart -->
+					<DamageDistributionChart
+						distributionStats={rotationStore.distributionStats}
+						totalDamage={rotationStore.totalDamage}
+						poisonDamage={rotationStore.poisonDamage}
+						familiarDamage={rotationStore.familiarDamage}
+						dreadnipDamage={rotationStore.dreadnipDamage}
+						conjureDamage={rotationStore.conjureDamage}
+						poisonPerTick={rotationStore.poisonPerTick}
+						familiarPerTick={rotationStore.familiarPerTick}
+						familiarVariancePerTick={rotationStore.familiarVariancePerTick}
+						dreadnipPerTick={rotationStore.dreadnipPerTick}
+						dreadnipVariancePerTick={rotationStore.dreadnipVariancePerTick}
+						conjurePerTick={rotationStore.conjurePerTick}
+						conjureVariancePerTick={rotationStore.conjureVariancePerTick}
+						{allAbils}
+						familiarKey={settingsStore.settings[SETTINGS.FAMILIAR]?.value ?? 'none'}
+						phaseTransitions={rotationStore.phaseTransitions}
+						barSize={uiStore.bar.size}
+						patternStartTick={settingsStore.settings[SETTINGS.BOSS_PATTERN_START]?.value ?? -1}
+						hasBossPreset={settingsStore.settings[SETTINGS.BOSS_PRESET]?.value && settingsStore.settings[SETTINGS.BOSS_PRESET]?.value !== 'none'}
+					/>
+
+                    </details>
                 </div>
                 <div class="overflow-hidden settings-content {uiStore.settingsPanelCollapsed ? 'w-0' : 'w-1/3'}">
                     <div class="xl:w-full lg:w-70 xl:min-w-100 lg:min-w-full">
                         {#if uiStore.extraActions.show}
                             <ExtraActionsPanel
+                                {showFightTime}
                                 uiState={uiStore}
                                 gameState={rotationStore}
                                 {allAbils}
@@ -846,7 +1051,7 @@
                             />
                         {/if}
                         <div class:hidden={uiStore.extraActions.show}>
-                            <RotationSettings updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
+                            <RotationSettings styleTab={uiStore.activeTab === 'defence' ? 'ranged' : uiStore.activeTab} updateDamages={calculateTotalDamageNew} stacks={rotationStore.stacks} uiState={uiStore} refreshUI={refreshUI} />
                         </div>
                     </div>
                 </div>
@@ -872,8 +1077,8 @@
 
                     <p class="text-sm leading-relaxed mt-2">
                         <strong>Tool Modes</strong> &mdash; switch between 4 modes via the toolbar or keyboard:
-                        <strong>Regular</strong> (<strong>R</strong>) is the default for adding, removing, and dragging abilities.
-                        <strong>Stall</strong> (<strong>S</strong>) lets you select an ability to stall, then click a tick to place it (click again to remove; channelled abilities cannot be stalled).
+                        <strong>Edit</strong> (<strong>E</strong>) is the default for adding, removing, and dragging abilities.
+                        <strong>Stall (S)</strong> pays or gains adrenaline without dealing damage or generating hit stacks. Click an ability to stall it at the next GCD, or drag it to a tick. <strong>Release (R)</strong> adds the held ability at the next GCD without paying again. The next ability shares that tick; drag the release icon to move it. A new cast or stall replaces the held ability. Channels and self-cast buffs cannot be stalled. <strong>Edit (E)</strong> returns to normal editing.
                         <strong>Null</strong> (<strong>N</strong>) marks ticks as nulled &mdash; 0 damage but buffs and stacks still apply (e.g. boss phase transitions).
                         <strong>Insert</strong> (<strong>I</strong>) left-click a tick to insert empty ticks (shifting everything right), right-click to remove ticks (shifting everything left).
                     </p>
@@ -1014,6 +1219,13 @@
 {/if}
 
 <style>
+    .timeline-section-heading { display: flex; align-items: center; gap: 16px; border-bottom: 1px solid #42565f; color: #cbb780; align-self: start; padding: 4px 0 10px; }
+    .timeline-section-heading strong { font-size: 16px; }
+    .timeline-section-heading span { color: #9bc6df; font-size: 12px; }
+    .stall-label { position: absolute; top: 0; right: 1px; z-index: 3; background: #172126; color: #e9c46a; font-weight: bold; font-size: 11px; padding: 0 2px; }
+    .release-label { color: #89ddbb; }
+    .invalid-release { color: #ff9988; outline: 1px solid #ff9988; }
+    .ability-slot.tick-event { border-top: 3px solid #c8b477; }
     .rotation-title-row {
         display: flex;
         align-items: baseline;
@@ -1185,11 +1397,11 @@
     }
 
     .stall-cursor {
-        cursor: wait; /* Default stall cursor */
+        cursor: default; /* Default stall cursor */
     }
 
     .stall-cursor.stalling {
-        cursor: wait; /* Will be overridden if there's an ability being stalled */
+        cursor: default; /* Will be overridden if there's an ability being stalled */
     }
 
     .null-cursor {
@@ -1268,7 +1480,7 @@
     }
 
     .ability-slot.selected-tick {
-        border: 2px solid #ffd700;
+        border: 1px solid #ffd700; outline: 1px solid #ffd700; outline-offset: -1px;
         box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
         z-index: 3;
     }
@@ -1295,7 +1507,10 @@
         transform: translateX(-50%);
         font-size: 12px;
         color: #bababa;
+        white-space: nowrap;
     }
+    .cell-number.time-number { font-size: 10px; }
+    .time-toggle { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #bed0dc; cursor: pointer; }
 
     .stacks-text {
         position: absolute;
@@ -1398,17 +1613,10 @@
         border: 1px solid rgba(0, 231, 54, 0.789);
     }
 
-    .stalled-ability {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 55%;
-        height: 55%;
-        opacity: 0.8;
-        border: 1px solid #ffff72;
-        box-sizing: border-box;
-        z-index: 2;
-    }
+    .stalled-ability, .released-ability {position:absolute; inset:0; width:100%; height:100%; object-fit:contain; cursor:grab; z-index:1;}
+    .combined-cast .regular-ability {clip-path:polygon(100% 0, 100% 100%, 0 100%);}
+    .combined-cast .released-ability {clip-path:polygon(0 0, 100% 0, 0 100%);}
+    .cast-divider {position:absolute; inset:0; pointer-events:none; z-index:2; background:linear-gradient(135deg, transparent calc(50% - 1px), #e3d6b1 calc(50% - 1px), #e3d6b1 calc(50% + 1px), transparent calc(50% + 1px));}
 
     .cooldown-ready-container {
         position: absolute;
@@ -1475,38 +1683,9 @@
         opacity: 0;
     }
 
-    /* Extra action preview icons (above slot, shown on hover) */
-    .extra-action-preview {
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 1px;
-        z-index: 4;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.15s ease;
-        padding-bottom: 2px;
-    }
-
-    .ability-slot:hover .extra-action-preview {
-        opacity: 1;
-    }
-
-    .extra-action-icon-box {
-        width: 27px;
-        height: 27px;
-        min-width: 27px;
-        min-height: 27px;
-        border: 1px solid #b8a04a;
-        background: rgba(23, 29, 33, 0.95);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        pointer-events: none;
-    }
+    .extra-action-preview {position:absolute; bottom:0; right:0; display:flex; z-index:5; pointer-events:none;}
+    .extra-action-icon-box {width:17px; height:17px; border:1px solid #b8a04a; background:#171d21; display:flex; align-items:center; justify-content:center; overflow:hidden;}
+    .extra-count {position:absolute; right:17px; bottom:0; font-size:9px; background:#171d21; color:#e3d6b1; padding:0 2px;}
 
     .extra-action-icon-box img {
         max-width: 100%;
@@ -1516,7 +1695,7 @@
     }
 
     .stall-cursor.stalling {
-        cursor: wait; /* Will be overridden if there's an ability being stalled */
+        cursor: default; /* Will be overridden if there's an ability being stalled */
     }
 
     .null-cursor {
@@ -1569,4 +1748,49 @@
     :global(.credits a:hover) {
         text-decoration: underline;
     }
+
+    .builder-heading { max-width: 1600px; margin: 0 auto; padding: 30px 28px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .builder-heading h1 { font-size: 30px; line-height: 1.3; font-weight: 650; margin: 6px 0; color: #edf1f4; }
+    .builder-heading p { color: #a5b3bf; font-size: 14px; }
+    .builder-heading .eyebrow { font-size: 10px; letter-spacing: .14em; color: #c7b281; }
+    .builder-heading a { color: #d7c293; font-size: 13px; white-space: nowrap; }
+    .builder-page .responsive-container { width: 100%; max-width: 1600px; margin: auto; padding: 0 28px 40px; }
+    .builder-page .wrapper { align-items: flex-start; gap: 20px; }
+    .builder-page .card-rotation { background: #19242d; border: 1px solid #34414b; border-radius: 8px; padding: 22px; min-width: 0; }
+    .builder-page .wrapper > .card-rotation { flex: 1; width: auto; }
+    .builder-page .settings-content { width: 390px; flex-shrink: 0; border-radius: 8px; top: 16px; }
+    .builder-page .settings-content.w-0 { display: none; }
+    .builder-page .settings-content > div { min-width: 0; width: 100%; }
+    .rotation-header { font-size: 18px; text-transform: none; letter-spacing: 0; }
+    .damage-label { font-size: 11px; color: #a5b3bf; }
+    .library-controls { display: flex; gap: 12px; margin: 16px 0; }
+    .library-controls label { display: grid; gap: 6px; font-size: 11px; color: #b4c1cd; }
+    .search-label { flex: 1; }
+    .library-controls input, .library-controls select { width: 100%; min-height: 38px; padding: 8px 10px; border: 1px solid #42515d; border-radius: 5px; background: #111d26; color: #e2e9ed; font-size: 13px; }
+    .timeline-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 1px solid #35434d; margin-top: 20px; padding-top: 20px; }
+    .timeline-heading h2 { font-size: 17px; font-weight: 600; }
+    .timeline-heading span, .timeline-footer { color: #a5b3bf; font-size: 12px; }
+    .edit-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0 8px; }
+    .edit-toolbar button, .timeline-footer button { border: 1px solid #46545e; border-radius: 4px; padding: 7px 10px; color: #d7e0e7; background: #24313b; font-size: 12px; cursor: pointer; }
+    .edit-toolbar button.active { background: #c9b17d; color: #16212a; border-color: #c9b17d; }
+    kbd { font: inherit; opacity: .6; margin-left: 8px; }
+    .mode-hint { font-size: 12px; color: #b0bec9; min-height: 34px; line-height: 1.6; }
+    .timeline-empty { display: flex; flex-direction: column; gap: 5px; padding: 16px; background: #202f39; border-left: 2px solid #c9b17d; margin: 8px 0; font-size: 13px; }
+    .timeline-empty span { color: #a8b8c5; font-size: 12px; }
+    .timeline-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 12px 0 20px; }
+    .timeline-footer label { display: flex; align-items: center; gap: 6px; }
+    .results-panel { border-top: 1px solid #35434d; padding-top: 16px; }
+    .results-panel summary { font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 16px; }
+    .ability-slot { background: #121e27; border-color: #445460; }
+    .builder-page :global(button:focus-visible), .builder-page :global(input:focus-visible), .builder-page :global(select:focus-visible) { outline: 2px solid #dcc18a; outline-offset: 2px; }
+    @media (max-width: 1050px) { .builder-page .settings-content { width: 340px; } .builder-page .responsive-container { padding: 0 16px 30px; } .builder-page .card-rotation { padding: 16px; } }
+    @media (max-width: 800px) { .builder-page .wrapper { flex-direction: column; } .builder-page .wrapper > .card-rotation, .builder-page .settings-content { width: 100%; } .builder-page .settings-content { position: static; max-height: none; } .builder-heading { padding: 24px 16px; } .builder-heading h1 { font-size: 25px; } .library-controls { flex-wrap: wrap; } .search-label { min-width: 160px; } .builder-heading > a { display: none; } }
+
+
+    .all-abilities-note { align-self: end; padding: 10px 0; font-size: 11px; color: #aeb9c1; }
+    .builder-page :global(.style-tabs button) { font-size: 15px; text-transform: none; padding: 10px 5px; }
+    .builder-page :global(.style-tabs) { margin-top: 12px; border-bottom: 1px solid #3b454c; }
+    .builder-page .card-rotation { background: #171d21; color: #d4dce2; }
+    .builder-page .timeline-heading { margin-top: 8px; }
+.builder-heading { width: 100%; padding-top: 14px; padding-bottom: 14px; } .builder-heading h1 { font-size: 24px; }
 </style>

@@ -1,4 +1,6 @@
-import generatedEquipment from '../../equipment.json';
+import { quiverIcons } from './quiverIcons';
+import generatedEquipmentJson from '../../equipment.json?raw';
+const generatedEquipment = JSON.parse(generatedEquipmentJson);
 import syntheticEquipment from '../../equipment_synthetic.json';
 import popularEquipment from '../../equipment_popular.json';
 import { LEGACY_EQUIPMENT_NAME_TO_ID } from './equipment-legacy';
@@ -8,6 +10,8 @@ export type EquipmentId = number;
 export type EquipmentValue = EquipmentId | 'none';
 
 type RawBonuses = {
+    accuracy?: number;
+    armour?: number;
     class?: string;
     slot?: string;
     type?: string;
@@ -27,6 +31,7 @@ type RawEquipmentRecord = {
     name: string;
     image?: string[];
     bonuses?: RawBonuses;
+    augmentable?: boolean;
     app?: {
         title?: string;
         slot?: EquipmentSlot;
@@ -43,6 +48,7 @@ export type EquipmentRecord = Equipment & {
     name: string;
     image: string[];
     bonuses: RawBonuses;
+    augmentable: boolean;
     icon: string;
 };
 
@@ -54,6 +60,19 @@ const rawEquipment = {
 const popularIds = new Set((popularEquipment as number[]).map(Number));
 
 export const RS_WIKI_IMAGE_BASE = 'https://runescape.wiki/images/';
+
+// Synthetic equipment has no Wiki article/image. Use the local equipment slot
+// sprites instead of requesting nonexistent "Custom ... weapon.png" images.
+const syntheticIcons: Record<number, string> = {
+    1000000: '/rs-rot/armour_icons/Main_hand_slot.webp',
+    1000001: '/rs-rot/armour_icons/Off-hand_slot.webp',
+    1000002: '/rs-rot/armour_icons/2h_slot.png',
+    1000003: '/rs-rot/armour_icons/Off-hand_slot.webp',
+    1000316: '/rs-rot/armour_icons/Ammo_slot.png',
+    1000304: '/rs-rot/armour_icons/Jas_dragonbane_arrow.png',
+    53043: '/rs-rot/armour_icons/Jas_dragonbane_arrow.png',
+    53050: '/rs-rot/armour_icons/Jas_demonbane_arrow.png',
+};
 
 export function equipmentImageUrl(image: string | undefined): string {
     // Spaces are replaced with underscores, but everything else is encoded
@@ -118,7 +137,7 @@ function normalizeWeaponSubtype(record: RawEquipmentRecord, weaponType?: WeaponT
     const name = record.name.toLowerCase();
     if (weaponType === 'shield') return 'shield';
     if (name.includes('bow') && !name.includes('crossbow')) return 'bow';
-    if (name.includes('crossbow')) return 'crossbow';
+    if (name.includes('crossbow') || /bolts?$/i.test(record.bonuses?.style ?? '')) return 'crossbow';
     if (name.includes('staff')) return 'staff';
     if (name.includes('wand')) return 'wand';
     if (name.includes('orb')) return 'orb';
@@ -164,6 +183,7 @@ function normalizeRecord(record: RawEquipmentRecord): EquipmentRecord {
         name: record.name,
         image,
         bonuses,
+        augmentable: record.augmentable ?? false,
         slot,
         style,
         tier,
@@ -180,7 +200,7 @@ function normalizeRecord(record: RawEquipmentRecord): EquipmentRecord {
         'necromancy strength': Number(bonuses.necromancy ?? 0),
         popular: Boolean(record.app?.popular || popularIds.has(id)),
         title,
-        icon: equipmentImageUrl(image[0])
+        icon: quiverIcons[id] ?? syntheticIcons[id] ?? equipmentImageUrl(image[0])
     };
 
     if (weaponType) {
@@ -315,4 +335,27 @@ export function migrateOwnedGearEntries(entries: Record<string, any[]>): Map<Equ
         map.set(itemKey, normalizedInstances);
     }
     return map;
+}
+
+/** Cosmetic/augmented variants retain the base equipment's combat passives. */
+const equipmentByName = new Map(Object.values(equipment).map(item => [item.name.toLowerCase(), item.id]));
+const mechanicIds = new Map(Object.values(equipment).map(item => {
+    const base = item.name.replace(/^Augmented /i, '').replace(/ \((barrows|shadow|blood|third age|ice|aurora|soul)\)$/i, '').toLowerCase();
+    return [item.id, equipmentByName.get(base) ?? item.id];
+}));
+export function equipmentMechanicId(value: unknown): any {
+    const id = coerceEquipmentValue(value);
+    return typeof id === 'number' ? mechanicIds.get(id) ?? value : value;
+}
+// The Wiki distinguishes "already augmented" from "can be augmented" for
+// some families. An existing augmented counterpart proves eligibility too.
+const augmentableNames = new Set(Object.values(equipment)
+    .filter(item => /^Augmented /i.test(item.name))
+    .map(item => item.name.replace(/^Augmented /i, '').toLowerCase()));
+export function isAugmentable(value: unknown): boolean {
+    const item = getEquipment(value);
+    if (!item) return false;
+    const variantBase = equipmentByName.get(item.name.replace(/ \[IM\]$|\+$/, '').toLowerCase());
+    const name = item.name.replace(/^Augmented /i, '').replace(/ \[IM\]$|\+$/, '').toLowerCase();
+    return item.augmentable || augmentableNames.has(name) || !!equipment[variantBase]?.augmentable || !!equipment[equipmentMechanicId(value)]?.augmentable || isCustomEquipment(value) && ['mainhand', 'offhand', 'body', 'legs'].includes(item.slot);
 }

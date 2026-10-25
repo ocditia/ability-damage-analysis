@@ -1,4 +1,6 @@
 <script>
+    import TargetAccuracy from '$components/Settings/TargetAccuracy.svelte';
+    import RangedAmmoEffects from '$components/Settings/RangedAmmoEffects.svelte';
     import { onMount } from 'svelte';
 import { ARMOUR } from '$lib/data/armour';
 import { WEAPONS } from '$lib/data/weapons';
@@ -9,7 +11,6 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
     import GearSelection from '../../components/Settings/GearSelection.svelte';
     import PerkSelection from '../../components/Settings/PerkSelection.svelte';
     import FamiliarSelection from '../../components/Settings/FamiliarSelection.svelte';
-    import BuffSelection from '../../components/Settings/BuffSelection.svelte';
     import InfoTip from '../UI/InfoTip.svelte';
     import GearManager from '../../components/Settings/GearManager.svelte';
     import ActionIcon from '../UI/ActionIcon.svelte';
@@ -36,7 +37,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
     let activeStyleColor = $derived(getStyleColor(styleColorMap[styleTab] ?? 'ranged'));
     let showGearManager = $state(false);
     let gearFilter = $derived(settings[SETTINGS.GEAR_FILTER]?.value ?? 'popular');
-    let useOwnedGearPerks = $derived(gearFilter === 'owned');
+    let useOwnedGearPerks = false;
 
     function setGearFilter(value) {
         if (settings[SETTINGS.GEAR_FILTER]) {
@@ -221,7 +222,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
         const hitChance = calculateFamiliarHitChance(
             familiar,
             finalArmour,
-            { melee: boss.affinities.melee, ranged: boss.affinities.ranged, magic: boss.affinities.magic }
+            boss.affinities
         );
 
         settings[SETTINGS.FAMILIAR_ACCURACY].value = Math.round(hitChance * 100);
@@ -230,6 +231,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
 
     // Handle boss selection change — reset enrage to default
     function onBossChange() {
+        settings[SETTINGS.AUTO_ACCURACY].value = true;
         const bossKey = settings[SETTINGS.BOSS_PRESET]?.value;
         const base = bossKey && bossKey !== 'none' ? bossPresets[bossKey] : null;
         enrageValue = base?.enrage?.default ?? 0;
@@ -276,6 +278,8 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
     });
 
     updateDamages();
+    let relicCount = $derived([SETTINGS.FURY_OF_THE_SMALL,SETTINGS.CONSERVATION_OF_ENERGY,SETTINGS.HEIGHTENED_SENSES,SETTINGS.PERSISTENT_RAGE].filter(key=>settings[key]?.value).length+(settings[SETTINGS.BERSERKERS_FURY]?.value>0?1:0));
+    let relicEnergy = $derived((settings[SETTINGS.FURY_OF_THE_SMALL]?.value?150:0)+(settings[SETTINGS.CONSERVATION_OF_ENERGY]?.value?350:0)+(settings[SETTINGS.HEIGHTENED_SENSES]?.value?350:0)+(settings[SETTINGS.PERSISTENT_RAGE]?.value?150:0)+(settings[SETTINGS.BERSERKERS_FURY]?.value>0?250:0));
 </script>
 
 <div class="xl:col-span-6 xl:row-start-1 xl:row-span-1 card card-rotation">
@@ -285,9 +289,9 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
     >
         → Hide
     </button>
-    <h1 class="rotation-header">Settings</h1>
+    <h1 class="rotation-header">Starting setup</h1><p class="setup-help">Your gear and effects before tick 0. Changes here apply to the whole rotation. Select a timeline tick to add a mid-fight swap instead.</p>
     <GradientSeparator marginTop="0.0rem" marginBottom="1.0rem" />
-    <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
+    <ul class="setup-tabs flex flex-wrap text-sm font-medium text-center">
         <TabButton
             id="ranged"
             label="Ranged"
@@ -314,10 +318,10 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
         />
     </ul>
     <GradientSeparator marginTop="0.0rem" marginBottom="0.25rem" />
-    <ul class="flex flex-wrap flex-col md:flex-row text-sm font-medium text-center">
+    <ul class="setup-tabs flex flex-wrap text-sm font-medium text-center">
         <TabButton
             id="general"
-            label="General"
+            label="Stats & buffs"
             isActive={tab === 'general'}
             onClick={() => (tab = 'general')}
         />
@@ -329,7 +333,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
         />
         <TabButton
             id="bosses"
-            label="Advanced"
+            label="Target & boss"
             isActive={tab === 'bosses'}
             onClick={() => (tab = 'bosses')}
         />
@@ -341,12 +345,13 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
     </div>
     {:else}
     <form class="w-full" style="--style-color: {activeStyleColor}">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
+        <div class="setup-sections">
             {#if tab === 'general'}
                 <div class="md:col-span-1 space-y-2">
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">General</h5>
+                    <h5 class="section-heading">Combat stats</h5><p class="setup-help">Use your boosted combat level. Average damage includes the chance of a critical hit. Hit chance scales damage; target size is the enemy's width in tiles.</p>
                     <Select
                         bind:setting={settings[SETTINGS.MODE]}
+                        style="width: 170px; font-size: 11px;"
                         img="/rs-rot/settings_icons/Skills_icon.png"
                         onchange={() => updateDamages()}
                     />
@@ -400,15 +405,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                         />
                     {/if}
 
-                    <Number
-                        bind:setting={settings[SETTINGS.HIT_CHANCE]}
-                        onchange={() => updateDamages()}
-
-                        img="/rs-rot/settings_icons/Zero_weakness_icon.png"
-                        step="1"
-                        max="100"
-                        min="0"
-                    />
+                    <TargetAccuracy {settings} onchange={updateDamages} style={styleTab} />
                     <Number
                         bind:setting={settings[SETTINGS.TARGET_SIZE]}
                         onchange={() => updateDamages()}
@@ -426,8 +423,9 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                         min="0"
                     />
                 </div>
-                <div class="md:col-span-1 space-y-2">
-                    <h5 class="uppercase font-bold text-lg text-center">Damage Buffs</h5>
+                {#if styleTab === 'ranged'}<RangedAmmoEffects {settings} onchange={updateDamages} />{/if}
+                <details class="setup-disclosure">
+                    <summary>Damage buffs</summary><p class="setup-help">Enable effects you already have before the rotation. Unchecked effects are off. Numeric fields set their starting strength or rank. Devourer Nexus assumes its Haunted boost is already active after wearing it for 9 seconds. Divine Rage and Eclipsed Soul require the standard prayer book.</p>
                     {#if prayerSettingByStyle[styleTab]}
                     {@const prayerKey = prayerSettingByStyle[styleTab]}
                     <div class="relative inline-block w-full">
@@ -486,17 +484,17 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                     <div class="flex flex-wrap gap-2 justify-center my-2">
                         {#each [
                             { key: SETTINGS.REAPER_CREW, img: '/rs-rot/effect_icons/death.png', title: 'Reaper Crew', toggle: true },
-                            { key: SETTINGS.BERSERKERS_FURY, img: '/rs-rot/effect_icons/berserkers_fury.png', title: "Berserker's Fury", step: 0.5, max: 5.5 },
                             { key: SETTINGS.SMOKE_CLOUD, img: '/rs-rot/effect_icons/smoke_cloud.png', title: 'Smoke Cloud', toggle: true },
                             { key: SETTINGS.SWIFTNESS_OF_THE_AVIANSIE, img: '/rs-rot/effect_icons/swiftness_of_the_avianse.png', title: 'Swiftness of the Aviansie', toggle: true },
                             { key: SETTINGS.STONE_OF_JAS, img: '/rs-rot/effect_icons/stone_of_jas.png', title: 'Stone of Jas', step: 1, max: 6 },
                             { key: SETTINGS.INFERNAL_PUZZLE_BOX, img: '/rs-rot/effect_icons/infernal_puzzlebox.png', title: 'Infernal Puzzle Box', step: 1, max: 6 },
                             { key: SETTINGS.DIVINE_RAGE, img: '/rs-rot/ability_icons/special/Divine_Rage.png', title: 'Divine Rage', toggle: true },
+                            { key: SETTINGS.DEVOURER_NEXUS, img: '/rs-rot/effect_icons/Devourer_nexus.png', title: 'Devourer Nexus (Haunted boost active)', toggle: true },
                             { key: SETTINGS.ECLIPSED_SOUL, img: '/rs-rot/ability_icons/special/Eclipsed_Soul.png', title: 'Eclipsed Soul', toggle: true },
                             { key: SETTINGS.ENCHANTMENT_OF_FLAMES, img: '/rs-rot/effect_icons/magic/Enchantment_of_flames_detail.png', title: 'Enchantment of Flames', toggle: true },
                             { key: SETTINGS.ENCHANTMENT_OF_DREAD, img: '/rs-rot/effect_icons/ranged/Enchantment_of_dread.png', title: 'Enchantment of Dread', toggle: true }
                         ] as buff}
-                            <ToggleButton
+                            <ToggleButton readable={true}
                                 bind:setting={settings[buff.key]}
                                 img={buff.img}
                                 title={buff.title}
@@ -509,7 +507,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                         {/each}
                     </div>
                     <div class="flex flex-wrap gap-2 justify-center my-2">
-                        <ToggleButton
+                        <ToggleButton readable={true}
                             bind:setting={settings[SETTINGS.VULN]}
                             img={(v) => v === SETTINGS.VULN_VALUES.CURSE ? '/rs-rot/effect_icons/magic/Curse_icon.png' : '/rs-rot/effect_icons/magic/Vulnerability_icon.webp'}
                             title="Vulnerability (click to cycle)"
@@ -518,7 +516,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                             borderColor={activeStyleColor}
                             onchange={updateDamages}
                         />
-                        <ToggleButton
+                        <ToggleButton readable={true}
                             bind:setting={settings[SETTINGS.POISON]}
                             img="/rs-rot/effect_icons/poison.png"
                             title="Poison (click to cycle)"
@@ -532,7 +530,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                             borderColor={activeStyleColor}
                             onchange={updateDamages}
                         />
-                        <ToggleButton
+                        <ToggleButton readable={true}
                             bind:setting={settings[SETTINGS.NOPE]}
                             img="/rs-rot/effect_icons/nopenopenope.png"
                             title="Nope nope nope"
@@ -541,63 +539,56 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                             onchange={updateDamages}
                         />
                     </div>
-                </div>
-                <div class="md:col-span-1" space-y-2>
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">
-                        <InfoTip text="Starting stack values for the rotation. Unselected stacks will be hidden.">
-                            Stacks
-                        </InfoTip></h5>
-                    <div class="flex flex-wrap gap-2 justify-center mb-3">
+                </details>
+                <details class="setup-disclosure">
+                    <summary>Starting resources</summary>
+                    <p class="setup-help">Set resources available before your first ability. Show controls whether the resource appears under the timeline.</p>
+                    <div class="starting-stacks">
                     {#each Object.keys(stacks) as key}
                         {#if stacks[key].combatStyle === styleTab || stacks[key].combatStyle === SettingsCombatStyles.ALL}
-                        <button
-                            type="button"
-                            class="stack-toggle"
-                            class:stack-active={settings[stacks[key].displaySetting]?.value}
-                            title="{stacks[key].title} (right-click to set starting value, scroll to adjust)"
-                            onclick={() => { settings[stacks[key].displaySetting].value = !settings[stacks[key].displaySetting].value; updateDamages(); }}
-                            oncontextmenu={(e) => { e.preventDefault(); editingStack = editingStack === key ? null : key; }}
-                            onwheel={(e) => { e.preventDefault(); const curr = settings[key]?.value ?? 0; const next = clampStack(key, curr + (e.deltaY < 0 ? 1 : -1)); if (settings[key]) { settings[key].value = next; updateDamages(); } }}
-                        >
-                            <img src={stacks[key].image} alt={stacks[key].title} class="w-7 h-7" />
-                            {#if settings[key] != null}
-                                <span class="stack-count">{settings[key].value ?? 0}</span>
-                            {/if}
-                            {#if editingStack === key}
-                                <input
-                                    type="number"
-                                    class="stack-edit"
-                                    value={settings[key]?.value ?? 0}
-                                    min="0"
-                                    oninput={(e) => { settings[key].value = clampStack(key, e.target.value); updateDamages(); }}
-                                    onblur={() => { editingStack = null; }}
-                                    onkeydown={(e) => { if (e.key === 'Enter') editingStack = null; }}
-                                    onclick={(e) => e.stopPropagation()}
-                                    use:focusOnMount
-                                />
-                            {/if}
-                        </button>
+                        <div class="starting-stack">
+                            <img src={stacks[key].image} alt="" />
+                            <span>{stacks[key].title}</span>
+                            {#if settings[key] != null}<input aria-label={`Starting ${stacks[key].title}`} type="number" value={settings[key].value ?? 0} min="0" max={stackLimits[key] ?? 999} oninput={(event) => { settings[key].value = clampStack(key, event.currentTarget.value); updateDamages(); }} />{/if}
+                            <label><input type="checkbox" checked={!!settings[stacks[key].displaySetting]?.value} onchange={() => { settings[stacks[key].displaySetting].value = !settings[stacks[key].displaySetting].value; updateDamages(); }} /> Show</label>
+                        </div>
                         {/if}
                     {/each}
                     </div>
-                </div>
-                <div class="md:col-span-1" space-y-2>
-                    <h5 class="uppercase font-bold text-lg text-center mb-4">
-                        <InfoTip
-                            text="If expected adrenaline is enabled, the rotation will show the expected adrenaline value. This accounts for the Impatient perk and
-                            [bma:Tsunami Crit Buff].">
-                            Adrenaline
-                        </InfoTip>
-                    </h5>
+                </details>
+                <details class="setup-disclosure" open>
+                    <summary>Relics &amp; adrenaline</summary>
+                    <p class="setup-help">Select your active relics. Conservation of Energy and Heightened Senses each cost 350 energy, so you cannot equip both with the 650-energy limit.</p>
+                    <div class="relic-controls">
+                        {#each [
+                            {key:SETTINGS.FURY_OF_THE_SMALL, title:'Fury of the Small', detail:'+1% adrenaline from basics (150 energy)'},
+                            {key:SETTINGS.CONSERVATION_OF_ENERGY, title:'Conservation of Energy', detail:'Returns 10% adrenaline after ultimates (350 energy)'},
+                            {key:SETTINGS.HEIGHTENED_SENSES, title:'Heightened Senses', detail:'+10% maximum adrenaline (350 energy)'},
+                            {key:SETTINGS.PERSISTENT_RAGE, title:'Persistent Rage', detail:'+5% every 2 ticks outside combat (150 energy)'}
+                        ] as relic}
+                            <label><input type="checkbox" checked={!!settings[relic.key]?.value} onchange={e => {
+                                settings[relic.key].value=e.currentTarget.checked;
+                                if(e.currentTarget.checked && relic.key===SETTINGS.CONSERVATION_OF_ENERGY) settings[SETTINGS.HEIGHTENED_SENSES].value=false;
+                                if(e.currentTarget.checked && relic.key===SETTINGS.HEIGHTENED_SENSES) settings[SETTINGS.CONSERVATION_OF_ENERGY].value=false;
+                                updateDamages();
+                            }} /><span>{relic.title}<small>{relic.detail}</small></span></label>
+                        {/each}
+                        <label><span>Berserker's Fury damage bonus<small>0 = inactive; up to 5.5% at low life points (250 energy)</small></span><input aria-label="Berserker's Fury damage bonus" type="number" min="0" max="5.5" step="0.1" value={settings[SETTINGS.BERSERKERS_FURY]?.value ?? 0} onchange={e=>{settings[SETTINGS.BERSERKERS_FURY].value=Math.max(0,Math.min(5.5,Number(e.currentTarget.value)));updateDamages();}} /><span>%</span></label>
+                        <p class="setup-help">{relicCount}/3 relics; {relicEnergy}/650 energy{relicCount>3 || relicEnergy>650 ? ' - this selection exceeds the in-game limit.' : ''}</p>
+                        <label><input type="checkbox" checked={!!settings[SETTINGS.OUT_OF_COMBAT]?.value} onchange={e=>{settings[SETTINGS.OUT_OF_COMBAT].value=e.currentTarget.checked;updateDamages();}} /><span>Start outside combat<small>For pre-builds with Persistent Rage; attacks enter combat automatically.</small></span></label>
+                        <label><input type="checkbox" checked={!!settings[SETTINGS.WAR_BLESSING_4]?.value} onchange={e=>{settings[SETTINGS.WAR_BLESSING_4].value=e.currentTarget.checked;updateDamages();}} /><span>War's Blessing 4<small>Adrenaline crystal restores 100% per pulse instead of 25%.</small></span></label>
+                    </div>
+                    <p class="setup-help">Find Adrenaline crystal in Utility, or click a tick to set adrenaline directly. Negative timeline values mean the planned costs exceed the available adrenaline.</p>
+                </details>
+                <details class="setup-disclosure">
+                    <summary>Other adrenaline effects</summary>
+                    <p class="setup-help">Enable your equipped unlocks. Expected adrenaline averages random gains rather than assuming every proc happens.</p>
                     <div class="flex flex-wrap gap-2 justify-center">
                         {#each [
                             { key: SETTINGS.VIGOUR, img: getEquipmentIcon(ARMOUR.RING_OF_VIGOUR, '/rs-rot/armour_icons/Ring_slot.png'), title: 'Ring of Vigour' },
-                            { key: SETTINGS.FURY_OF_THE_SMALL, img: '/rs-rot/effect_icons/Fury of the Small.png', title: 'Fury of the Small' },
-                            { key: SETTINGS.CONSERVATION_OF_ENERGY, img: '/rs-rot/effect_icons/Conservation of Energy.png', title: 'Conservation of Energy' },
-                            { key: SETTINGS.HEIGHTENED_SENSES, img: '/rs-rot/effect_icons/Heightened Senses.png', title: 'Heightened Senses' },
-                            { key: SETTINGS.EXPECTED_ADRENALINE, img: 'settings_icons/Animal_trait_re-roller.png', title: 'Expected Adrenaline' },
+                            { key: SETTINGS.EXPECTED_ADRENALINE, img: '/rs-rot/settings_icons/Animal_trait_re-roller.png', title: 'Expected Adrenaline' },
                         ] as toggle}
-                            <ToggleButton
+                            <ToggleButton readable={true}
                                 bind:setting={settings[toggle.key]}
                                 img={toggle.img}
                                 title={toggle.title}
@@ -607,7 +598,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                             />
                         {/each}
                         {#if uiState?.showSuggestions}
-                        <ToggleButton
+                        <ToggleButton readable={true}
                             bind:setting={uiState.showSuggestions}
                             img="/rs-rot/ability_icons/special/Surge.png"
                             title="Show ability suggestions"
@@ -617,7 +608,7 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                         />
                         {/if}
                     </div>
-                </div>
+                </details>
             {:else if tab === 'equipment'}
                 <div class="md:col-span-1">
                     <GearSelection {settings} {styleTab} {updateDamages} bind:openDropdown {gearFilter} onFilterChange={setGearFilter} />
@@ -669,9 +660,6 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
                 </div>
 
             {:else if tab === 'bosses'}
-                <div class="md:col-span-1 space-y-4">
-                    <BuffSelection settings={settings} updateDamages={updateDamages} styleFilter={styleTab} />
-                </div>
                 <div class="md:col-span-1 space-y-4">
                     <h5 class="uppercase font-bold text-lg text-center mb-4">Boss Preset</h5>
                     <div class="flex justify-center mb-3">
@@ -765,6 +753,12 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
 <GearManager bind:show={showGearManager} initialStyle={styleColorMap[styleTab] ?? 'ranged'} />
 
 <style>
+    .relic-controls {display:grid;gap:.75rem;margin:.75rem 0;}
+    .relic-controls label {display:flex;align-items:center;gap:.6rem;font-size:.85rem;}
+    .relic-controls label span:first-of-type {flex:1;}
+    .relic-controls small {display:block;font-size:.72rem;color:#a7b8c3;line-height:1.4;}
+    .relic-controls input[type="number"] {width:4rem;background:#101e27;color:#b8dff7;border:1px solid #4d6470;border-radius:4px;padding:.3rem;}
+
     .stack-toggle {
         position: relative;
         padding: 4px;
@@ -844,4 +838,18 @@ import { getEquipmentIcon, isCustomEquipment } from '$lib/data/equipment';
         color: var(--style-color, #4ade80);
         font-weight: bold;
     }
+
+    .setup-sections { display: flex; flex-direction: column; gap: 24px; margin-top: 20px; }
+    .setup-help { font-size: 12px; line-height: 1.6; color: #aebbc4; margin: 8px 0 14px; }
+    .section-heading { font-size: 14px; color: #e3dfd1; font-weight: 600; }
+    .starting-stack { display: flex; align-items: center; gap: 8px; min-height: 40px; font-size: 12px; }
+    .starting-stack img { width: 24px; height: 24px; object-fit: contain; }
+    .starting-stack > span { flex: 1; }
+    .starting-stack input[type=number] { width: 56px; border: 1px solid #53616b; padding: 4px; border-radius: 3px; background: #11181d; }
+    .starting-stack label { display: flex; gap: 4px; align-items: center; color: #aebbc4; font-size: 11px; }
+    .setup-tabs :global(button) { font-size: 13px; text-transform: none; padding: 6px 0; }
+    .card-rotation { padding: 18px; border: 1px solid #3a454d; border-radius: 6px; }
+    .rotation-header { font-size: 19px; text-transform: none; letter-spacing: 0; }
+    .setup-sections :global(h5) { font-size: 14px; text-align: left; text-transform: none; margin-bottom: 8px; }
+.setup-disclosure { border-top: 1px solid #3a454d; padding-top: 14px; } .setup-disclosure summary { cursor: pointer; color: #e3dfd1; font-weight: 600; font-size: 14px; margin-bottom: 8px; }
 </style>

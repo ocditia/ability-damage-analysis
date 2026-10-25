@@ -12,10 +12,12 @@ export const buffs = [
     SETTINGS.NATURAL_INSTINCT,
     SETTINGS.DEATH_SWIFTNESS,
     SETTINGS.SUNSHINE,
+    SETTINGS.GREATER_CHAIN,
     SETTINGS.BERSERK,
     SETTINGS.SPLIT_SOUL,
     SETTINGS.GREATER_DRACOLICH_INFUSION,
     SETTINGS.ICY_PRECISION,
+    SETTINGS.LOCATE,
     SETTINGS.BALANCE_BY_FORCE,
     SETTINGS.INSTABILITY,
     SETTINGS.CHAOS_ROAR,
@@ -45,6 +47,7 @@ export const buffs = [
     SETTINGS.UNDEAD_SLAYER_ABILITY,
     SETTINGS.DRAGON_SLAYER_ABILITY,
     SETTINGS.DEMON_SLAYER_ABILITY,
+    SETTINGS.VAMPYRE_SLAYER_ABILITY,
     SETTINGS.CONFLAGRATE,
     SETTINGS.KERAPACS_WRIST_WRAPS,
     SETTINGS.BLAST_INFUSED,
@@ -75,6 +78,11 @@ export function createBuffTimings(barSize: number) {
                 colour: BUFF_COLORS.death_swiftness,
                 icon: '/rs-rot/ability_icons/ranged/Greater_Death\'s_Swiftness.png',
                 combatStyle: SettingsCombatStyles.RANGED
+            },
+            [SETTINGS.GREATER_CHAIN]: {
+                title: 'Chained targets', idx: -1, buffTicks: Array(barSize).fill(0), activeRows: [],
+                colour: '#8db6ec', icon: '/rs-rot/ability_icons/magic/30x30/greater_chain.png',
+                combatStyle: SettingsCombatStyles.MAGIC
             },
             [SETTINGS.SUNSHINE]: {
                 title: 'Sunshine',
@@ -128,6 +136,12 @@ export function createBuffTimings(barSize: number) {
                 activeRows: [],
                 colour: BUFF_COLORS.icy_precision,
                 icon: '/rs-rot/effect_icons/icy_precision.png',
+                combatStyle: SettingsCombatStyles.RANGED
+            },
+            [SETTINGS.LOCATE]: {
+                title: 'Locate (Decimation)', idx: -1,
+                buffTicks: Array(barSize).fill(0), activeRows: [],
+                colour: '#ba84e8', icon: '/rs-rot/ability_icons/ranged/Decimation.png',
                 combatStyle: SettingsCombatStyles.RANGED
             },
             [SETTINGS.BALANCE_BY_FORCE]: {
@@ -262,7 +276,7 @@ export function createBuffTimings(barSize: number) {
                 buffTicks: Array(barSize).fill(0),
                 activeRows: [],
                 colour: BUFF_COLORS.meteor_strike_buff,
-                icon: '/rs-rot/effect_icons/melee/Meteor_Strike_(status).png',
+                icon: '/rs-rot/ability_icons/current/meteor_strike.png',
                 combatStyle: SettingsCombatStyles.MELEE
             },
             [SETTINGS.VESTMENTS_REGEN]: {
@@ -362,6 +376,11 @@ export function createBuffTimings(barSize: number) {
                 activeRows: [],
                 colour: '#7B68EE',
                 icon: '/rs-rot/effect_icons/Smoke_Cloud_icon.webp',
+                combatStyle: SettingsCombatStyles.ALL
+            },
+            [SETTINGS.VAMPYRE_SLAYER_ABILITY]: {
+                title: 'Vampyre Slayer', idx: -1, buffTicks: Array(barSize).fill(0), activeRows: [],
+                colour: '#C74C64', icon: '/rs-rot/ability_icons/special/Vampyre_Slayer_(ability).png',
                 combatStyle: SettingsCombatStyles.ALL
             },
             [SETTINGS.UNDEAD_SLAYER_ABILITY]: {

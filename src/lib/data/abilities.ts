@@ -1,7 +1,11 @@
+import { specialAttackIcons } from './specialAttackIcons';
+import { specialAttackReference } from './specialAttackReference';
+import { currentAbilityIcon } from './abilityIcons';
 import { AbilityInfo } from "$lib/types/AbilityTypes";
-import { equipmentImageUrl } from '$lib/data/equipment';
+import { equipment, equipmentImageUrl } from '$lib/data/equipment';
 
 export enum ABILITIES {
+    SNIPE_FLANK = 'enhanced nightmare gauntlets flank',
     NECRO_AUTO = 'necromancy auto',
     TOUCH_OF_DEATH = 'touch of death',
     SOUL_SAP = 'soul sap',
@@ -115,6 +119,8 @@ export enum ABILITIES {
     SPLIT_SOUL_ECB = 'split soul ecb',
     DEEP_BURN = 'deep burn',
     DEFIANCE = 'defiance',
+    SANGUINE_VOLLEY = 'sanguine volley',
+    SANGUINE_VOLLEY_HIT = 'sanguine volley hit',
     LOCATE = 'locate',
     SANGUINE_VOLLEY = 'sanguine volley',
     SANGUINE_VOLLEY_HIT = 'sanguine volley hit',
@@ -325,6 +331,7 @@ export enum ABILITIES {
     DRAGON_SLAYER_ABILITY = 'dragon slayer ability',
     DEMON_SLAYER_ABILITY = 'demon slayer ability',
     UNDEAD_SLAYER_ABILITY = 'undead slayer ability',
+    VAMPYRE_SLAYER_ABILITY = 'vampyre slayer ability',
     RUNIC_CHARGE = 'runic charge',
     EXSANGUINATE = 'exsanguinate',
     INCITE_FEAR = 'incite fear',
@@ -986,6 +993,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         adrenaline: 60,
         cooldown: 60,
         title: 'Meteor strike',
+        description: '220-250% damage to up to 9 targets. Costs 60% adrenaline. For 30s: melee basics generate 1.5x adrenaline; gain 4.5% per tick while a melee weapon is equipped. Passive gain is unaffected by Natural Instinct.',
         icon: '/rs-rot/ability_icons/melee/30x30/meteor.png',
     },
     [ABILITIES.PULVERISE]: {
@@ -1051,7 +1059,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         icon: '/rs-rot/ability_icons/melee/30x30/ezk-bg.png',
     },
     [ABILITIES.THE_FINAL_FLURRY_1]: {
-        minHit: 0.8,
+        minHit: .8,
         varHit: 0.2,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
@@ -1064,7 +1072,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.THE_FINAL_FLURRY_2]: {
         minHit: 1.5,
-        varHit: 0.3,
+        varHit: .3,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
@@ -1184,7 +1192,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        abilityType: 'proc', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
         title: 'Lesser Purifying Light'
@@ -1197,7 +1205,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
         abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
+        abilityType: 'proc', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
         title: 'Purifying Light',
@@ -1353,7 +1361,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.DRACONIC_PUNCTURE_HIT]: {
         // ability name
-        minHit: 1.1, // min % of abil expressed as a decimal
+        minHit: 1.25, // min % of abil expressed as a decimal
         varHit: 0.3,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
@@ -1372,7 +1380,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
+        abilityClassification: 'multihit', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
@@ -1401,12 +1409,12 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         parent: ABILITIES.SWEEP},
     [ABILITIES.SWEEP]: {
         // ability name
-        minHit: 1.05, // min % of abil expressed as a decimal
+        minHit: 1.2, // min % of abil expressed as a decimal
         varHit: 0.3,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
+        abilityClassification: 'multihit', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
@@ -1438,6 +1446,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         common: false
     },
     [ABILITIES.VINE_CALL_INITIAL]: {
+        parent: ABILITIES.VINE_CALL,
         // ability name
         minHit: 1.0, // min % of abil expressed as a decimal
         varHit: 0.2,
@@ -1454,6 +1463,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         common: false
     },
     [ABILITIES.VINE_CALL_AOE]: {
+        parent: ABILITIES.VINE_CALL,
         // ability name
         minHit: 0.2, // min % of abil expressed as a decimal
         varHit: 0.05,
@@ -1471,12 +1481,12 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.VINE_CALL]: {
         // ability name
-        minHit: 2.25, // min % of abil expressed as a decimal
-        varHit: 0.4,
+        minHit: 1.0, // min % of abil expressed as a decimal
+        varHit: 0.2,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
+        abilityClassification: 'dot', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'melee',
         damageType: 'melee',
@@ -2682,7 +2692,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
             ]//2509, 3840
         },
         cooldown: 45,
-        hitTimings: [0, 0, 3, 6, 9, 12, 15],
+        hitTimings: [0,3,6,9,12,15,18],
         adrenaline: 35,
         title: 'Soulfire',
         icon: '/rs-rot/ability_icons/magic/30x30/roar_of_awakening.png',
@@ -2904,6 +2914,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         common: false
     },
     [ABILITIES.FROM_THE_SHADOWS_HIT]: {
+        parent: ABILITIES.FROM_THE_SHADOWS,
         // ability name
         minHit: 0.55, // min % of abil expressed as a decimal
         varHit: 0.1,
@@ -2918,12 +2929,12 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.FROM_THE_SHADOWS]: {
         // ability name
-        minHit: 1.3, // min % of abil expressed as a decimal
-        varHit: 0.3,
+        minHit: .55, // min % of abil expressed as a decimal
+        varHit: .1,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
+        abilityClassification: 'dot', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'magic',
         damageType: 'magic',
@@ -4185,7 +4196,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         mainStyle: 'ranged',
         damageType: 'ranged',
         cooldown: 30,
-        title: 'Deadshot',
+        parent: ABILITIES.DEADSHOT,
     },
     [ABILITIES.DEADSHOT]: {
         // Non-igneous: 4x 105-125%. Igneous: 8x 55-75%.
@@ -4331,7 +4342,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         hits: {
             1: [ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_1, 'next hit', ABILITIES.SHADOWFALL_2]
         },
-        hitTimings: [1, 1, 2] // TODO check
+        hitTimings: [2, 2, 3] // Plus the standard 1-tick delay: impacts at cast +3, +3, +4.
     ,
         title: 'Shadowfall',
         icon: equipmentImageUrl('Gloomfire bow.png'),
@@ -4554,7 +4565,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     [ABILITIES.TWIN_FANG_HIT]: {
         // ability name
         minHit: 1.15, // min % of abil expressed as a decimal
-        varHit: 0.3,
+        varHit: .3,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
@@ -4566,8 +4577,8 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     },
     [ABILITIES.TWIN_FANG]: {
         // ability name
-        minHit: 1.9, // min % of abil expressed as a decimal
-        varHit: 0.4,
+        minHit: 1.15, // min % of abil expressed as a decimal
+        varHit: .3,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
@@ -4587,6 +4598,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         common: false
     },
     [ABILITIES.PHANTOM_STRIKE_INITIAL]: {
+        parent: ABILITIES.PHANTOM_STRIKE,
         // ability name
         minHit: 1.2, // min % of abil expressed as a decimal
         varHit: 0.2,
@@ -4600,6 +4612,7 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
     ,
         cooldown: 0},
     [ABILITIES.PHANTOM_STRIKE_BLEED]: {
+        parent: ABILITIES.PHANTOM_STRIKE,
         // ability name
         minHit: 0.3, // min % of abil expressed as a decimal
         varHit: 0.1,
@@ -4614,16 +4627,16 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         cooldown: 0},
     [ABILITIES.PHANTOM_STRIKE]: {
         // ability name
-        minHit: 1.9, // min % of abil expressed as a decimal
-        varHit: 0.4,
+        minHit: 1.2, // min % of abil expressed as a decimal
+        varHit: .2,
         onHitEffects: true, // does the ability get on-hit effects
         critEffects: true, // can the ability crit
         damagePotentialEffects: true, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
+        abilityClassification: 'bleed', // bleed, dot, burn, channel, regular, multihit
         abilityType: 'special attack', // basic, threshold, special attack, ability (necromancy classification), ultimate
         mainStyle: 'ranged',
         damageType: 'ranged',
-        hitTimings: [1, 4, 7, 10, 13, 16, 19], //todo actual hit timings
+        hitTimings: [0,3,6,9,12,15], //todo actual hit timings
         hits: {
             1: [
                 ABILITIES.PHANTOM_STRIKE_INITIAL,
@@ -4780,6 +4793,19 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         title: 'Defiance',
         icon: '/rs-rot/ability_icons/ranged/30x30/zaniks_crossbow.png',
         common: false
+    },
+    [ABILITIES.SANGUINE_VOLLEY]: {
+        title: 'Sanguine Volley', icon: '/rs-rot/ability_icons/current/sanguine_volley.png',
+        minHit: .7, varHit: .2, onHitEffects: true, critEffects: true, damagePotentialEffects: true,
+        abilityClassification: 'multihit', abilityType: 'special attack', mainStyle: 'ranged', damageType: 'ranged',
+        // Offsets are added to the standard one-tick hit delay.
+        adrenaline: 40, cooldown: 60, hitTimings: [3,3,3,3,3],
+        hits: {1: [ABILITIES.SANGUINE_VOLLEY_HIT, 'next hit', ABILITIES.SANGUINE_VOLLEY_HIT, 'next hit', ABILITIES.SANGUINE_VOLLEY_HIT, 'next hit', ABILITIES.SANGUINE_VOLLEY_HIT, 'next hit', ABILITIES.SANGUINE_VOLLEY_HIT]},
+    },
+    [ABILITIES.SANGUINE_VOLLEY_HIT]: {
+        minHit: .7, varHit: .2, onHitEffects: true, critEffects: true, damagePotentialEffects: true,
+        abilityClassification: 'regular', abilityType: 'special attack', mainStyle: 'ranged', damageType: 'ranged',
+        parent: ABILITIES.SANGUINE_VOLLEY, cooldown: 0,
     },
     [ABILITIES.LOCATE]: {
         // ability name
@@ -5029,42 +5055,42 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         mainStyle: 'defence',//TODO??
         damageType: 'defence',//TODO??
         cooldown: 90},
-    [ABILITIES.DEMON_SLAYER_ABILITY]: {
-        // ability name
-        minHit: 0.0, // min % of abil expressed as a decimal
-        varHit: 0.0,
-        onHitEffects: false, // does the ability get on-hit effects
-        critEffects: false, // can the ability crit
-        damagePotentialEffects: false, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
-        mainStyle: 'defence',//TODO??
-        damageType: 'defence',//TODO??
-        cooldown: 60},
-    [ABILITIES.DRAGON_SLAYER_ABILITY]: {
-        // ability name
-        minHit: 0.0, // min % of abil expressed as a decimal
-        varHit: 0.0,
-        onHitEffects: false, // does the ability get on-hit effects
-        critEffects: false, // can the ability crit
-        damagePotentialEffects: false, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
-        mainStyle: 'defence',//TODO??
-        damageType: 'defence',//TODO??
-        cooldown: 60},
     [ABILITIES.UNDEAD_SLAYER_ABILITY]: {
-        // ability name
-        minHit: 0.0, // min % of abil expressed as a decimal
-        varHit: 0.0,
-        onHitEffects: false, // does the ability get on-hit effects
-        critEffects: false, // can the ability crit
-        damagePotentialEffects: false, // is the ability affected by damage potential
-        abilityClassification: 'regular', // bleed, dot, burn, channel, regular, multihit
-        abilityType: 'basic', // basic, threshold, special attack, ability (necromancy classification), ultimate TODO new type
-        mainStyle: 'defence',//TODO??
-        damageType: 'defence',//TODO??
-        cooldown: 60},
+        title: 'Undead Slayer',
+        icon: '/rs-rot/ability_icons/special/Undead_Slayer_(ability).png',
+        minHit: 0, varHit: 0, onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'self cast',
+        abilityType: 'utility', mainStyle: 'defence', damageType: 'defence',
+        adrenaline: 0, cooldown: 60,
+        description: 'Increases damage against undead by 15% for 10.2 seconds (17 ticks), including bleeds. Off global cooldown; no adrenaline gained or spent. Use against a susceptible target.'
+    },
+    [ABILITIES.DRAGON_SLAYER_ABILITY]: {
+        title: 'Dragon Slayer',
+        icon: '/rs-rot/ability_icons/special/Dragon_Slayer_(ability).png',
+        minHit: 0, varHit: 0, onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'self cast',
+        abilityType: 'utility', mainStyle: 'defence', damageType: 'defence',
+        adrenaline: 0, cooldown: 60,
+        description: 'Increases damage against dragons by 15% for 10.2 seconds (17 ticks), including bleeds. Off global cooldown; no adrenaline gained or spent. Use against a susceptible target.'
+    },
+    [ABILITIES.DEMON_SLAYER_ABILITY]: {
+        title: 'Demon Slayer',
+        icon: '/rs-rot/ability_icons/special/Demon_Slayer_(ability).png',
+        minHit: 0, varHit: 0, onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'self cast',
+        abilityType: 'utility', mainStyle: 'defence', damageType: 'defence',
+        adrenaline: 0, cooldown: 60,
+        description: 'Increases damage against demons by 15% for 10.2 seconds (17 ticks), including bleeds. Off global cooldown; no adrenaline gained or spent. Use against a susceptible target.'
+    },
+    [ABILITIES.VAMPYRE_SLAYER_ABILITY]: {
+        title: 'Vampyre Slayer',
+        icon: '/rs-rot/ability_icons/special/Vampyre_Slayer_(ability).png',
+        minHit: 0, varHit: 0, onHitEffects: false, critEffects: false,
+        damagePotentialEffects: false, abilityClassification: 'self cast',
+        abilityType: 'utility', mainStyle: 'defence', damageType: 'defence',
+        adrenaline: 0, cooldown: 60,
+        description: 'Increases damage against vampyres by 15% for 10.2 seconds (17 ticks), including bleeds. Off global cooldown; no adrenaline gained or spent. Use against a susceptible target.'
+    },
     [ABILITIES.SURGE]: {
         // ability name
         minHit: 0.0, // min % of abil expressed as a decimal
@@ -5314,4 +5340,68 @@ export const abils: Record<ABILITIES, AbilityInfo> = {
         abilityType: 'perk', // basic, threshold, special attack, ability (necromancy classification), ultimate
         'cooldown': 0
     }
+};
+
+// Use the same current local artwork in the picker, timeline and tick inspector.
+for (const ability of Object.values(abils)) {
+    if (ability.title && ability.icon) ability.icon = currentAbilityIcon(ability.title, ability.icon);
+}
+
+// Fill the remaining current special attacks, including zero-damage utilities.
+const specialNameKey = (name: string) => name.toLowerCase().replace(/\(ecb\)| ecb/g, '').replace(/[^a-z0-9]/g, '');
+for (const ref of specialAttackReference) {
+    const found = Object.entries(abils).find(([key,a]) => !a.parent && [key,a.title ?? ''].some(n=>specialNameKey(n)===specialNameKey(ref.name)) && (a.mainStyle===ref.style || key === 'power of darkness'));
+    if (found) continue;
+    const key = (ref.name.toLowerCase() + (ref.name === 'Mirrorback' ? ' ' + ref.style : '')) as ABILITIES;
+    const range = ref.description.match(/(\d+)%?[-?](\d+)%/);
+    const weapon = Object.values(equipment).filter(i=>ref.weapons.toLowerCase().startsWith(i.name.toLowerCase())).sort((a,b)=>b.name.length-a.name.length)[0];
+    abils[key] = {title:ref.name, icon:weapon?.icon ?? '/rs-rot/ability_icons/current/ranged.png',
+        minHit:range ? Number(range[1])/100 : 0, varHit:range ? (Number(range[2])-Number(range[1]))/100 : 0,
+        onHitEffects:!!range, critEffects:!!range, damagePotentialEffects:!!range,
+        abilityClassification:range ? 'regular' : 'self cast', abilityType:'special attack',
+        mainStyle:ref.style as any, damageType:ref.style === 'necromancy' ? 'necrotic' : ref.style as any,
+        adrenaline:ref.adrenaline, cooldown:ref.cooldown, common:false};
+}
+// Periodic damage must be an actual hit sequence, not a zero-damage buff only.
+abils['blackhole hit' as ABILITIES] = {...abils[ABILITIES.BLACKHOLE], title:undefined, icon:undefined, parent:ABILITIES.BLACKHOLE, minHit:.35,varHit:.1,abilityClassification:'dot',cooldown:0};
+Object.assign(abils[ABILITIES.BLACKHOLE], {abilityClassification:'dot',hits:{1:Array(11).fill('blackhole hit')},hitTimings:Array.from({length:11},(_,i)=>i*3)});
+Object.assign(abils[ABILITIES.FROM_THE_SHADOWS], {hitTimings:[0,4,8,12,16]});
+abils['deep burn initial' as ABILITIES] = {...abils[ABILITIES.DEEP_BURN],title:undefined,icon:undefined,parent:ABILITIES.DEEP_BURN};
+abils['deep burn dot' as ABILITIES] = {...abils[ABILITIES.DEEP_BURN],title:undefined,icon:undefined,parent:ABILITIES.DEEP_BURN,minHit:0,varHit:0,onHitEffects:false,critEffects:false,abilityClassification:'dot'};
+Object.assign(abils[ABILITIES.DEEP_BURN],{abilityClassification:'dot',hits:{1:['deep burn initial',...Array(5).fill('deep burn dot')]},hitTimings:[0,2,4,6,8,10]});
+abils['god bow magic hit' as ABILITIES] = {...abils[ABILITIES.RESTORATIVE_SHOT],title:undefined,icon:undefined,minHit:.55,varHit:.1,damageType:'magic',parent:ABILITIES.RESTORATIVE_SHOT};
+for (const key of [ABILITIES.RESTORATIVE_SHOT,ABILITIES.BALANCED_SHOT]) Object.assign(abils[key],{abilityClassification:'multihit',hits:{1:[key]},hitTimings:[0,0]});
+Object.assign(abils[ABILITIES.POWER_OF_DARKNESS],{title:'Power of Darkness',icon:equipmentImageUrl('Staff of darkness.png'),mainStyle:'magic',abilityType:'special attack',abilityClassification:'self cast',adrenaline:100});
+
+// Share current costs, cooldowns and source descriptions across the builder and
+// all single-ability calculators. Component hits keep their own damage ranges.
+const normalizeSpecialName = (name: string) => name.toLowerCase().replace(/\(ecb\)| ecb/g, '').replace(/[^a-z0-9]/g, '');
+for (const reference of specialAttackReference) {
+    const entry = Object.entries(abils).find(([key,a]) => !a.parent && a.mainStyle === reference.style &&
+        [a.title ?? '', key].some(name => normalizeSpecialName(name) === normalizeSpecialName(reference.name)));
+    if (!entry) continue;
+    const ability = entry[1];
+    ability.abilityType = 'special attack';
+    ability.title ??= reference.name;
+    if (!ability.icon) {
+        const weapon = Object.values(equipment).filter(i=>reference.weapons.toLowerCase().startsWith(i.name.toLowerCase())).sort((a,b)=>b.name.length-a.name.length)[0];
+        ability.icon = weapon?.icon ?? '/rs-rot/ability_icons/current/ranged.png';
+    }
+    ability.adrenaline = reference.adrenaline;
+    ability.cooldown = reference.cooldown;
+    ability.description = `${reference.description} Weapon: ${reference.weapons}; or a compatible Essence of Finality special. Weapon passives require the actual equipment.`;
+    ability.specialDamage = reference.damage;
+    ability.specialWeapon = reference.weapons;
+    const accuracy = reference.description.match(/Hit chance is (increased|reduced) by (\d+)%/i);
+    if (accuracy && !reference.description.includes('if the target is not attacking')) ability.specialAccuracy = 1 + (accuracy[1].toLowerCase() === 'reduced' ? -1 : 1) * Number(accuracy[2])/100;
+}
+
+for (const [key,icon] of Object.entries(specialAttackIcons)) if (abils[key]) abils[key].icon=icon;
+
+// Explicit positional Snipe variant; the rotation engine shares Snipe's cooldown.
+abils[ABILITIES.SNIPE_FLANK] = {
+    ...abils[ABILITIES.SNIPE],
+    title: 'Enhanced Nightmare Gauntlets (flank)',
+    icon: '/rs-rot/ability_icons/current/snipe_flank.svg',
+    description: 'Casts Snipe with the Enchantment of Dread bonus hit for flanking with enhanced nightmare gauntlets. Shares Snipe cooldown and channel time.',
 };

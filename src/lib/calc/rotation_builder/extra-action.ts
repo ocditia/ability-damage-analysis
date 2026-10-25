@@ -21,6 +21,9 @@ export interface ExtraAction {
     slot?: string;
     /** Perks on this gear piece (gear swaps only, inline for self-contained rotations) */
     perks?: { perkKey: string; rank: number }[];
+    instanceId?: string;
+    instanceIndex?: number;
+    label?: string;
 }
 
 /**

@@ -1,8 +1,14 @@
 <script>
+    import RotationImport from "./RotationImport.svelte";
+    import RotationPreview from "./RotationPreview.svelte";
+    import {rotationPreview, rotationPreviewText} from '$lib/utils/rotationPreview';
+    import {settingsStore} from '$lib/stores/settingsStore.svelte.js';
+    let showRotationPreview = $state(false);
+    let showSpecialLabels = $state(true);
+    let showRotationImport = $state(false);
     import { rotationStore, rotationActions } from '$lib/stores/rotationStore.svelte.js';
     import { notificationStore, notifActions } from '$lib/stores/notificationStore.svelte.js';
     import { uiStore, uiActions } from '$lib/stores/uiStore.svelte.js';
-    import { exportToPvme } from '$lib/utils/pvmeExport.js';
 
     let { refreshUI, onOpenKeybinds = () => {}, onShowKeypresses = () => {} } = $props();
 
@@ -112,10 +118,11 @@
         );
     }
 
-    function copyDiscordFormat() {
+    async function copyDiscordFormat() {
         try {
-            const text = exportToPvme(rotationStore.abilityBar);
-            navigator.clipboard.writeText(text);
+            const settings = Object.fromEntries(Object.entries(settingsStore.settings).map(([key, entry]) => [key, entry.value]));
+            const text = rotationPreviewText(rotationPreview(rotationStore, settings), true, showSpecialLabels);
+            await navigator.clipboard.writeText(text);
             notifActions.showNotification('Success!', 'Rotation copied in Discord format!', 'success');
         } catch (e) {
             notifActions.showNotification('Failed', 'Could not copy to clipboard.', 'error');
@@ -125,6 +132,7 @@
     const VISIBLE_LIMIT = 10;
     let showAllRotations = $state(false);
 </script>
+<RotationPreview bind:show={showRotationPreview} bind:showSpecials={showSpecialLabels} />
 
 <div class="space-y-4 mt-4">
     <div class="config-section">
@@ -147,32 +155,36 @@
             </svg>
         </button>
 
+        <p class="save-status" role="status">{rotationStore.draftStatus}. Named saves and autosave stay in this browser; export a file for a backup or another device.</p>
+
         <!-- Action buttons always visible -->
         <div class="config-content">
             <div class="action-row">
+                <button class="action-btn" onclick={() => showRotationPreview=true}>View rotation</button>
+                <button class="action-btn" onclick={() => showRotationImport=true}>Import image / PVME</button>
                 <button class="action-btn primary" onclick={handleSaveRotation} title="Save current rotation">
-                    Save
+                    Save rotation
                 </button>
                 <button class="action-btn" onclick={exportToFile} title="Export to file">
-                    Export
+                    Export file
                 </button>
                 <button class="action-btn" onclick={importFromFile} title="Import from file">
-                    Import
+                    Import file
                 </button>
                 <button class="action-btn" onclick={importFromString} title="Import rotation string">
-                    Paste
+                    Paste code
                 </button>
                 <button class="action-btn" onclick={exportToString} title="Copy rotation to clipboard">
-                    Copy
+                    Copy code
                 </button>
                 <button class="action-btn" onclick={copyDiscordFormat} title="Copy rotation as Discord text (pvme format)">
-                    Discord
+                    Copy for Discord
                 </button>
                 <button class="action-btn" onclick={onOpenKeybinds} title="Manage owned actions and keybinds">
-                    Actions
+                    Keybinds & unlocks
                 </button>
                 <button class="action-btn" onclick={onShowKeypresses} title="Show keypress sequence for rotation">
-                    Keys
+                    View key sequence
                 </button>
             </div>
         </div>
@@ -229,7 +241,10 @@
     </div>
 </div>
 
+{#if showRotationImport}<RotationImport onclose={() => showRotationImport=false} {refreshUI} />{/if}
+
 <style>
+    .save-status {font-size:.75rem; color:#a7b8c3; margin:8px 12px; line-height:1.5;}
     .config-section {
         border: 1px solid #444;
         border-radius: 6px;
@@ -274,6 +289,7 @@
     .action-row {
         display: flex;
         gap: 4px;
+        flex-wrap: wrap;
     }
 
     .action-btn {

@@ -27,7 +27,7 @@ export function calc_crit_chance(settings: Record<string, any>, abilityKey: ABIL
 
     // eclipsed soul
     if (settings[SETTINGS.ECLIPSED_SOUL] === true &&
-        (prayers[settings[SETTINGS.PRAYER]].book === "normal")) {
+        (["normal", "none"].includes(prayers[settings[SETTINGS.PRAYER]]?.book))) {
         crit_chance += 0.04;
     }
 
@@ -292,7 +292,7 @@ export function calc_crit_damage(settings: Record<string, any>, dmgObj: DamageOb
     let crit_buff = 0.5; // base crit damage
     const abilityKey = dmgObj.ability;
     // Smoke cloud (+15% magic, +6% other)
-    if (settings[SETTINGS.SMOKE_CLOUD] === true) {
+    if ((settings[SETTINGS.SMOKE_CLOUD] === true || settings._teamDebuffs?.smokeCloud === true)) {
         if (abils[settings['ability']]?.mainStyle === 'magic') {
             crit_buff += 0.15;
         } else {

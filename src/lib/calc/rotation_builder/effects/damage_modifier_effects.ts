@@ -13,6 +13,7 @@ import { DamageDistribution } from '../../types';
 export interface DamageModifierContext {
     settings: Record<string, any>;
     abilityKey: ABILITIES;
+    ghostHunterPieces?: number;
 }
 
 // =============================================================================
@@ -28,7 +29,7 @@ export function applyVulnerabilityEffect(
 ): number {
     const { settings } = ctx;
 
-    if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.VULNERABILITY) {
+    if ((settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.VULNERABILITY || settings._teamDebuffs?.vulnerability === true)) {
         return Math.floor(damage * 1.1);
     } else if (settings[SETTINGS.VULN] === SETTINGS.VULN_VALUES.CURSE) {
         return Math.floor(damage * 1.05);
@@ -223,7 +224,7 @@ export function applyGhostHunterEffect(
     damage: number
 ): number {
     const { settings } = ctx;
-    const pieces = countGhostHunterPieces(settings);
+    const pieces = ctx.ghostHunterPieces ?? countGhostHunterPieces(settings);
 
     if (pieces === 1) {
         return Math.floor(damage * 1.03);

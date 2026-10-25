@@ -1,6 +1,6 @@
 import { abils } from '$lib/data/abilities';
 // Group order for display
-const GROUP_ORDER = ['basic', 'threshold', 'ultimate', 'special attack', 'spell', 'conjure'];
+const GROUP_ORDER = ['basic', 'threshold', 'ultimate', 'special attack', 'spell', 'conjure', 'ability', 'utility'];
 
 const LABELS: Record<string, string> = {
     'basic': 'B',
@@ -9,7 +9,7 @@ const LABELS: Record<string, string> = {
     'special attack': 'SA',
     'spell': 'S',
     'conjure': 'C',
-    'other': '?'
+    'ability': 'A', 'utility': 'U', 'other': 'Other'
 };
 
 const TITLES: Record<string, string> = {
@@ -19,7 +19,7 @@ const TITLES: Record<string, string> = {
     'special attack': 'Special Attacks',
     'spell': 'Spells & Incantations',
     'conjure': 'Conjures',
-    'other': '?'
+    'ability': 'Enhanced Abilities', 'utility': 'Utility (off global cooldown)', 'other': 'Other'
 };
 
 export function groupAbilitiesByType(abilities: Record<string, any>): Array<{ type: string; label: string; title: string; abilities: [string, any][] }> {
@@ -28,7 +28,7 @@ export function groupAbilitiesByType(abilities: Record<string, any>): Array<{ ty
     groups['other'] = [];
 
     for (const [key, ability] of Object.entries(abilities)) {
-        const abilInfo = abils[key as keyof typeof abils];
+        const abilInfo = ability;
         const type = abilInfo.abilityType || 'other';
         if (groups[type]) {
             groups[type].push([key, ability]);

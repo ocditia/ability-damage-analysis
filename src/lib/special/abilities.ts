@@ -2,6 +2,7 @@ import { ABILITIES } from '$lib/data/abilities';
 import { equipmentImageUrl } from '$lib/data/equipment';
 
 export enum CONSUMABLES {
+    ADRENALINE_CRYSTAL = 'Adrenaline crystal',
     ADRENALINE_RENEWAL = 'Adrenaline renewal potion',
     ADD_1_ADRENALINE = 'Add 1 Adrenaline',
     ADD_5_ADRENALINE = 'Add 5 Adrenaline',
@@ -13,6 +14,7 @@ export enum CONSUMABLES {
 }
 
 export const consumables: Record<string, { title: string; icon: string; group?: string }> = {
+    [CONSUMABLES.ADRENALINE_CRYSTAL]: {title: 'Adrenaline crystal', icon: '/rs-rot/ability_icons/special/Adrenaline_crystal.png'},
     [CONSUMABLES.ADRENALINE_RENEWAL]: {
         title: 'Adrenaline renewal potion',
         icon: '/rs-rot/ability_icons/special/Adrenaline_renewal_potion.png'
@@ -73,6 +75,10 @@ export const offGcdAbilities: Record<string, { title: string; icon: string }> = 
         title: 'Demon Slayer',
         icon: '/rs-rot/ability_icons/special/Demon_Slayer_(ability).png'
     },
+    [ABILITIES.VAMPYRE_SLAYER_ABILITY]: {
+        title: 'Vampyre Slayer',
+        icon: '/rs-rot/ability_icons/special/Vampyre_Slayer_(ability).png'
+    },
     [ABILITIES.UNDEAD_SLAYER_ABILITY]: {
         title: 'Undead Slayer',
         icon: '/rs-rot/ability_icons/special/Undead_Slayer_(ability).png'
@@ -93,6 +99,10 @@ export const offGcdAbilities: Record<string, { title: string; icon: string }> = 
 
 // Prayers
 export const prayers: Record<string, { title: string; icon: string }> = {
+    'divine rage on': {title:'Divine Rage: on', icon:'/rs-rot/ability_icons/special/Divine_Rage.png'},
+    'divine rage off': {title:'Divine Rage: off', icon:'/rs-rot/ability_icons/special/Divine_Rage.png'},
+    'eclipsed soul on': {title:'Eclipsed Soul: on', icon:'/rs-rot/ability_icons/special/Eclipsed_Soul.png'},
+    'eclipsed soul off': {title:'Eclipsed Soul: off', icon:'/rs-rot/ability_icons/special/Eclipsed_Soul.png'},
     [ABILITIES.DEFLECT_MAGIC]: {
         title: 'Deflect Magic',
         icon: '/rs-rot/ability_icons/special/Deflect_Magic.png'
@@ -157,6 +167,8 @@ const eofItems: Record<string, { title: string; icon: string }> = {
 
 // Combined lookup for extra action bar rendering (needs to find both abilities, consumables, and gear)
 export const allExtraActions: Record<string, { title: string; icon: string }> = {
+    'quiver ammo slot 1': {title:'Quiver ammo slot 1',icon:'/rs-rot/ability_icons/special/Quiver_ammo_slot_1.png'},
+    'quiver ammo slot 2': {title:'Quiver ammo slot 2',icon:'/rs-rot/ability_icons/special/Quiver_ammo_slot_2.png'},
     ...offGcdAbilities,
     ...prayers,
     ...spells,

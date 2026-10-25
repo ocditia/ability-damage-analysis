@@ -1,4 +1,5 @@
 <script>
+    import { settingIcons } from '$lib/data/settingIcons';
     import SettingWrapper from '$components/Settings/SettingWrapper.svelte';
     import LabelWrapper from '$components/Settings/LabelWrapper.svelte';
 
@@ -8,7 +9,7 @@
 <SettingWrapper>
     <LabelWrapper
         label={setting.label}
-        img={img}
+        img={img ?? settingIcons[setting.key] ?? settingIcons[setting.label?.toLowerCase()]}
     />
     <label
         class={`
